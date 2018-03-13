@@ -8,10 +8,9 @@ export const sessions_fetched = (session) => {
 }
 
 
-export const fetch_session = () => {
+export const fetch_session = (email, password) => {
   return (dispatch) => {
-    Parse.User.logIn('olivier@olivier.com', 'olivier@olivier.com').then(user =>{
-      //let current_user = Parse.User.current()
+    Parse.User.logIn(email, password).then(user =>{
       dispatch(sessions_fetched({session: user}))
     },error =>{
       console.log(error)
