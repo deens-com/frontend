@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
 
-const HomeComponent = (props) => {
+const SessionsComponent = (props) => {
   return(
     <section>
-      <p>Home</p>
-      <p>{props.test_number}</p>
-      <p>{props.services}</p>
+      <p>Sessions</p>
+      <p>{props.session.id}</p>
     </section>
   )
 }
 
-export default HomeComponent
+export default SessionsComponent

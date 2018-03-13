@@ -5,10 +5,15 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 class SessionsContainer extends Component {
+
+  componentDidMount(){
+    this.props.fetch_session()
+  }
+
   render() {
     return (
       <div className="SessionsContainer">
-        <SessionsComponent />
+        <SessionsComponent session={this.props.session} />
       </div>
     )
   }
@@ -16,8 +21,7 @@ class SessionsContainer extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    services: state.SessionsReducer.services,
-    test_number: state.SessionsReducer.test_number
+    session: state.SessionsReducer.session
   }
 }
 

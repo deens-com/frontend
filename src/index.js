@@ -3,6 +3,10 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './main/app';
 import registerServiceWorker from './registerServiceWorker';
+import Parse from 'parse';
+
+Parse.initialize("myAppId")
+Parse.serverURL = process.env.REACT_APP_PARSE_SERVER_URL || "http://api.please.docker/parse";
 
 ReactDOM.render(
   <App />,
