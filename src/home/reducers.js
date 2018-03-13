@@ -1,5 +1,6 @@
 const initialState = {
-  services: []
+  services: [],
+  test_number: 7
 }
 
 export default function homeReducer(state = initialState, action={}) {

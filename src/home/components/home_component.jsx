@@ -1,8 +1,12 @@
 import React, { Component } from 'react'
 
-const HomeComponent = () => {
+const HomeComponent = (props) => {
   return(
-    <p>Home</p>
+    <section>
+      <p>Home</p>
+      <p>{props.test_number}</p>
+      <p>{props.services}</p>
+    </section>
   )
 }
 
