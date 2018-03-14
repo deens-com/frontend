@@ -1,15 +1,28 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
-const SessionsComponent = (props) => {
-  // const sign_in = () => {
-  //   props.login('olivier@olivier.com', 'olivier@olivier.com')
-  // }
-  return(
+const SessionsComponent = props => {
+  return (
     <section>
+      <label htmlFor="email">Email</label>
+      <input
+        type="email"
+        name="email"
+        id="email"
+        onChange={props.handleInputChange}
+      />
+
+      <label htmlFor="password">Password</label>
+      <input
+        type="password"
+        name="password"
+        id="password"
+        onChange={props.handleInputChange}
+      />
+
       <p onClick={props.submit_login}>Submit Login</p>
       <p>{props.session.id}</p>
     </section>
-  )
-}
+  );
+};
 
-export default SessionsComponent
+export default SessionsComponent;
