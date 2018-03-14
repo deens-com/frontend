@@ -1,8 +1,12 @@
 import Parse from 'parse'
 
+export const types = {
+  SESSION_FETCHED: 'SESSION_FETCHED'
+};
+
 export const sessions_fetched = (session) => {
   return {
-    type: 'SESSION_FETCHED',
+    type: this.types.SESSION_FETCHED,
     payload: session
   }
 }
