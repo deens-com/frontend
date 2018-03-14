@@ -17,8 +17,8 @@ const App = () => {
       <Router history={history}>
         <Switch>
           <Route exact path='/' component={withTracker(Home)} />
-          <Route path='/login' component={withTracker(Sessions)} /> 
-          {/*<Route path='/register' component={withTracker(Registrations)} />*/}
+          <Route path='/login' component={withTracker(Sessions)} />
+          <Route path='/register' component={withTracker(Registrations)} />
         </Switch>
       </Router>
     </Provider>
