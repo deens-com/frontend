@@ -1,5 +1,5 @@
 import Parse from 'parse'
-import history from './../main/history'
+import history from './../../main/history'
 
 export const types = {
   REGISTRATION_SUCCESS: 'REGISTRATION_SUCCESS',

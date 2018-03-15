@@ -1,6 +1,3 @@
-//import React, { Component } from 'react'
-
-
 // NPM
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -9,25 +6,25 @@ import styled from 'styled-components';
 import Media from 'react-media';
 
 // COMPONENTS
-import TopBar from './../../styled_components/TopBar';
-import Section from './../../styled_components/Section';
-import HomeSearch from './../../styled_scenes/Home/components/HomeSearch';
-import BrandFooter from './../../styled_components/BrandFooter';
-import FooterNav from './../../styled_components/FooterNav';
-import DesktopHeroSlider from './../../styled_scenes/Home/components/DesktopHeroSlider';
-import MobileHero from './../../styled_scenes/Home/components/MobileHero';
-import Button from './../../styled_components/Button';
-import hands from './../../styled_scenes/Home/img/hands.jpg';
-import SliderPerson from './../../styled_scenes/Home/components/SliderPerson';
+import TopBar from './../../../styled_components/TopBar';
+import Section from './../../../styled_components/Section';
+import HomeSearch from './../../../styled_scenes/Home/components/HomeSearch';
+import BrandFooter from './../../../styled_components/BrandFooter';
+import FooterNav from './../../../styled_components/FooterNav';
+import DesktopHeroSlider from './../../../styled_scenes/Home/components/DesktopHeroSlider';
+import MobileHero from './../../../styled_scenes/Home/components/MobileHero';
+import Button from './../../../styled_components/Button';
+import hands from './../../../styled_scenes/Home/img/hands.jpg';
+import SliderPerson from './../../../styled_scenes/Home/components/SliderPerson';
 
 // ACTIONS/CONFIG
-import { categories, tags, tripsData, placesData, activitiesData, foodData } from './../../data/home';
-import { sizes } from './../../libs/styled';
-import theme from './../../config/theme';
+import { categories, tags, tripsData, placesData, activitiesData, foodData } from './../../../data/home';
+import { sizes } from './../../../libs/styled';
+import theme from './../../../config/theme';
 
 // STYLES
-import { Page, PageWrapper, PageContent } from './../../styled_components/layout/Page';
-import { Hr } from './../../styled_components/styledComponents/misc';
+import { Page, PageWrapper, PageContent } from './../../../styled_components/layout/Page';
+import { Hr } from './../../../styled_components/styledComponents/misc';
 
 const Hero = styled.div`
   position: relative;
@@ -96,9 +93,6 @@ const SubBG = styled.div`
 const HomeComponent = (props) => {
   return(
     <section>
-      <p>Home</p>
-      <p>{props.test_number}</p>
-      <p>{props.services}</p>
       <Page>
         <Hero>
           <PageWrapper>

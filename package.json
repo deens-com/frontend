@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "gatsby-link": "^1.6.39",
     "history": "^4.7.2",
     "parse": "^1.11.1",
     "prop-types": "^15.6.1",
     "react": "^16.2.0",
+    "react-day-picker": "^7.1.4",
     "react-dom": "^16.2.0",
     "react-ga": "^2.4.1",
     "react-media": "^1.8.0",

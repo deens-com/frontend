@@ -7,9 +7,9 @@ import store from './store'
 import history from './history'
 import ReactGA from 'react-ga'
 import withTracker from './middlewares/with_tracker'
-import Home from './../home/home'
-import Sessions from './../sessions/sessions'
-import Registrations from './../registrations/registrations'
+import Home from './../scenes/home/home'
+import Sessions from './../scenes/sessions/sessions'
+import Registrations from './../scenes/registrations/registrations'
 
 const App = () => {
   return(

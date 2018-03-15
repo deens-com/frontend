@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
-import HomeReducer from '../home/reducers'
-import SessionsReducer from '../sessions/reducers'
-import RegistrationsReducer from '../registrations/reducers'
+import HomeReducer from '../scenes/home/reducers'
+import SessionsReducer from '../scenes/sessions/reducers'
+import RegistrationsReducer from '../scenes/registrations/reducers'
 
 const allReducers = combineReducers({
   HomeReducer,
