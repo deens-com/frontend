@@ -1,0 +1,31 @@
+// NPM
+import React from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+
+// COMPONENTS
+import back from '../img/back.jpg';
+
+// ACTIONS/CONFIG
+
+// STLYES
+const Wrap = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  background-image: linear-gradient(135deg, rgba(7, 82, 83, 0.23) 0%, rgba(2, 38, 54, 0.65)),
+    url(${back});
+  background-size: cover;
+  background-position: center;
+`;
+
+// MODULE
+export default function MobileHero({}) {
+  return <Wrap />;
+}
+
+// Props Validation
+MobileHero.propTypes = {};
