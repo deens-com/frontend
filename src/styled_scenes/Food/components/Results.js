@@ -33,7 +33,7 @@ const Header = styled.div`
 `;
 
 // MODULE
-export default function FoodResutls({ data }) {
+export default function FoodResults({ data }) {
   return (
     <Wrap>
       <Header>
@@ -51,4 +51,4 @@ export default function FoodResutls({ data }) {
 }
 
 // Props Validation
-FoodResutls.propTypes = {};
+FoodResults.propTypes = {};
