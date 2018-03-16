@@ -1,15 +1,15 @@
 // NPM
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import styled from "styled-components";
 
 // COMPONENTS
-import FormControl from '../../../styled_components/FormControl';
-import { Search, Microphone, DateIcon } from '../../../styled_components/icons';
-import FlatControl from '../../../styled_components/Form/FlatControl';
+import FormControl from "../../../shared_components/FormControl";
+import { Search, Microphone, DateIcon } from "../../../shared_components/icons";
+import FlatControl from "../../../shared_components/Form/FlatControl";
 
 // ACTIONS & CONFIG
-import { placeholderMixin } from '../../../libs/styled';
+import { placeholderMixin } from "../../../libs/styled";
 
 // STYLES
 const Button = styled.button`
@@ -32,7 +32,7 @@ const Button = styled.button`
 `;
 
 const Span = styled.span`
-  color: ${props => (props.muted ? '#99a9be' : 'inherit')};
+  color: ${props => (props.muted ? "#99a9be" : "inherit")};
 `;
 
 const Input = styled.input`
@@ -60,7 +60,7 @@ const Wrapper = styled.div`
 
 const TypeIcon = styled.div`
   background: ${props =>
-    props.active ? 'linear-gradient(50deg, #89c8a3, #4fb798)' : 'transparent'};
+    props.active ? "linear-gradient(50deg, #89c8a3, #4fb798)" : "transparent"};
   border-radius: 50%;
   height: 40px;
   width: 40px;
@@ -117,7 +117,7 @@ const DateWrap = styled.div`
 
     &:first-child {
       &:after {
-        content: '';
+        content: "";
         display: block;
         position: absolute;
         width: 1px;
@@ -132,17 +132,17 @@ const DateWrap = styled.div`
 
 // MODULE
 const searchTypes = [
-  { type: 'voice', label: 'V' },
-  { type: 'text', label: 'S' },
-  { type: 'date', label: 'D' }
+  { type: "voice", label: "V" },
+  { type: "text", label: "S" },
+  { type: "date", label: "D" }
 ];
 
 export default class HomeSearch extends Component {
   constructor() {
     super();
     this.state = {
-      type: 'voice',
-      search: ''
+      type: "voice",
+      search: ""
     };
 
     this.setType = this.setType.bind(this);
@@ -151,7 +151,7 @@ export default class HomeSearch extends Component {
   }
 
   componentDidUpdate() {
-    if (this.state.type === 'text') {
+    if (this.state.type === "text") {
       this.input.focus();
     }
   }
@@ -166,8 +166,8 @@ export default class HomeSearch extends Component {
 
   handleSearchSubmit(ev) {
     ev.preventDefault();
-    alert('Searching for' + this.state.search);
-    this.setState({ search: '' });
+    alert("Searching for" + this.state.search);
+    this.setState({ search: "" });
   }
 
   render() {
@@ -182,27 +182,30 @@ export default class HomeSearch extends Component {
                 this.setType(opt.type);
               }}
             >
-              {opt.type === 'voice' && <Microphone style={{ fill: '#fff' }} />}
-              {opt.type === 'text' && <Search style={{ fill: '#fff' }} />}
-              {opt.type === 'date' && <DateIcon style={{ fill: '#fff' }} />}
+              {opt.type === "voice" && <Microphone style={{ fill: "#fff" }} />}
+              {opt.type === "text" && <Search style={{ fill: "#fff" }} />}
+              {opt.type === "date" && <DateIcon style={{ fill: "#fff" }} />}
             </TypeIcon>
           ))}
         </TypeWrapper>
         <SearchBg>
-          {this.state.type === 'voice' && (
+          {this.state.type === "voice" && (
             <div>
               <Button
                 onClick={() => {
-                  alert('Initiating serach');
+                  alert("Initiating serach");
                 }}
               >
                 Click here
               </Button>
-              <Span muted> to user your voice and tell us about your dream stay</Span>
+              <Span muted>
+                {" "}
+                to user your voice and tell us about your dream stay
+              </Span>
             </div>
           )}
-          {this.state.type === 'text' && (
-            <form style={{ width: '100%' }} onSubmit={this.handleSearchSubmit}>
+          {this.state.type === "text" && (
+            <form style={{ width: "100%" }} onSubmit={this.handleSearchSubmit}>
               <Input
                 type="text"
                 name="search"
@@ -215,7 +218,7 @@ export default class HomeSearch extends Component {
               />
             </form>
           )}
-          {this.state.type === 'date' && (
+          {this.state.type === "date" && (
             <DateWrap>
               <FlatControl
                 type="date"

@@ -1,14 +1,14 @@
 // NPM
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import styled from "styled-components";
 
 // COMPONENTS
-import back from '../img/back.jpg';
-import jump from '../img/jump.jpg';
-import mountain from '../img/mountain.jpg';
-import { Arrow } from '../../../styled_components/icons';
-import SliderPerson from './SliderPerson';
+import back from "../img/back.jpg";
+import jump from "../img/jump.jpg";
+import mountain from "../img/mountain.jpg";
+import { Arrow } from "../../../shared_components/icons";
+import SliderPerson from "./SliderPerson";
 
 // ACTIONS/CONFIG
 
@@ -20,8 +20,12 @@ const Wrap = styled.div`
   right: 0;
   bottom: 0;
   z-index: 0;
-  background-image: linear-gradient(176deg, rgba(0, 0, 0, 0.31) 0%, rgba(0, 0, 0, 0.72)),
-    url(${props => props.img || '#'});
+  background-image: linear-gradient(
+      176deg,
+      rgba(0, 0, 0, 0.31) 0%,
+      rgba(0, 0, 0, 0.72)
+    ),
+    url(${props => props.img || "#"});
   background-size: cover;
 `;
 
@@ -72,9 +76,24 @@ const RightArrow = styled.span`
 
 // MODULE
 const slider = [
-  { name: 'Rock diving', location: 'Bali, Indonesia', avatar: '#', image: back },
-  { name: 'Sky diving', location: 'Chaing Mai, Thailand', avatar: '#', image: jump },
-  { name: 'Cycling', location: 'Patagonia, Chile', avatar: '#', image: mountain }
+  {
+    name: "Rock diving",
+    location: "Bali, Indonesia",
+    avatar: "#",
+    image: back
+  },
+  {
+    name: "Sky diving",
+    location: "Chaing Mai, Thailand",
+    avatar: "#",
+    image: jump
+  },
+  {
+    name: "Cycling",
+    location: "Patagonia, Chile",
+    avatar: "#",
+    image: mountain
+  }
 ];
 
 export default class HeroSlider extends Component {
