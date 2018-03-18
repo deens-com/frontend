@@ -10,7 +10,8 @@ export default function SessionsReducer(state = initialState, action = {}) {
     case sessions_actions.types.SESSION_FETCHED:
       return {
         ...state,
-        session: action.payload.session
+        session: action.payload.session,
+        loginError: {}
       };
     case sessions_actions.types.LOGIN_ERROR:
       return {
