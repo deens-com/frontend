@@ -7,7 +7,7 @@ const initialState = {
 
 export default function SessionsReducer(state = initialState, action = {}) {
   switch (action.type) {
-    case sessions_actions.types.SESSION_FETCHED:
+    case sessions_actions.types.LOGIN_SUCCESS:
       return {
         ...state,
         session: action.payload.session,

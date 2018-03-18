@@ -23,10 +23,10 @@ describe("sessions reducer", () => {
     });
   });
 
-  it("should handle SESSION_FETCHED", () => {
+  it("should handle LOGIN_SUCCESS", () => {
     expect(
       reducers(undefined, {
-        type: "SESSION_FETCHED",
+        type: "LOGIN_SUCCESS",
         payload: {
           session: {
             hello: "world"
@@ -41,14 +41,14 @@ describe("sessions reducer", () => {
     });
   });
 
-  it("should clear the previous login error state when handle SESSION_FETCHED", () => {
+  it("should clear the previous login error state when handle LOGIN_SUCCESS", () => {
     const initialState = {
       loginError: { code: 111, message: "Network error" },
       session: {}
     };
     expect(
       reducers(initialState, {
-        type: "SESSION_FETCHED",
+        type: "LOGIN_SUCCESS",
         payload: {
           session: {
             hello: "world"

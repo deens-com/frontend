@@ -1,14 +1,14 @@
 import Parse from "parse";
 
 export const types = {
-  SESSION_FETCHED: "SESSION_FETCHED",
+  LOGIN_SUCCESS: "LOGIN_SUCCESS",
   VALIDATION_ERROR: "VALIDATION_ERROR",
   LOGIN_ERROR: "LOGIN_ERROR"
 };
 
 export const sessionsFetched = session => {
   return {
-    type: this.types.SESSION_FETCHED,
+    type: this.types.LOGIN_SUCCESS,
     payload: session
   };
 };
