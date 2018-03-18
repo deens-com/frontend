@@ -13,7 +13,7 @@ export const sessions_fetched = session => {
   };
 };
 
-export const fetch_session = (email, password) => {
+export const loginRequest = (email, password) => {
   return dispatch => {
     Parse.User.logIn(email, password).then(
       user => {

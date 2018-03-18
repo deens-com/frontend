@@ -16,7 +16,7 @@ class SessionsContainer extends Component {
   }
 
   parse_login = () => {
-    this.props.fetch_session(this.state.email, this.state.password);
+    this.props.loginRequest(this.state.email, this.state.password);
   };
 
   handleInputChange(event) {
