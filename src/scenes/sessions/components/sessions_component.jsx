@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 const SessionsComponent = props => {
   return (
@@ -33,6 +34,10 @@ const SessionsComponent = props => {
   );
 };
 
-// TODO add prop types validation
+SessionsComponent.propTypes = {
+  submit_login: PropTypes.func,
+  validateInput: PropTypes.func,
+  handleInputChange: PropTypes.func
+};
 
 export default SessionsComponent;
