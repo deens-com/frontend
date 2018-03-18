@@ -1,27 +1,6 @@
 import React, { Component } from "react";
 
 const SessionsComponent = props => {
-  const isValid = element => element.checkValidity();
-
-  const markTheInvalidInput = element => {
-    element.classList.add("input-invalid");
-    element.classList.remove("input-valid");
-  };
-
-  const markTheInputIsValid = element => {
-    element.classList.add("input-valid");
-  };
-
-  const validateInput = event => {
-    const { target } = event;
-    if (!isValid(target)) {
-      target.focus();
-      return markTheInvalidInput(target);
-    }
-
-    return markTheInputIsValid(target);
-  };
-
   return (
     <section>
       <form>
@@ -31,7 +10,7 @@ const SessionsComponent = props => {
           name="email"
           id="email"
           onChange={props.handleInputChange}
-          onBlur={validateInput}
+          onBlur={props.validateInput}
           required
         />
 
@@ -41,7 +20,7 @@ const SessionsComponent = props => {
           name="password"
           id="password"
           onChange={props.handleInputChange}
-          onBlur={validateInput}
+          onBlur={props.validateInput}
           minLength={5}
           required
         />
@@ -53,5 +32,7 @@ const SessionsComponent = props => {
     </section>
   );
 };
+
+// TODO add prop types validation
 
 export default SessionsComponent;
