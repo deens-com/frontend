@@ -15,7 +15,8 @@ class SessionsContainer extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
-  parseLogin = () => {
+  parseLogin = event => {
+    event.preventDefault();
     this.props.loginRequest(this.state.email, this.state.password);
   };
 
