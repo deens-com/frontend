@@ -6,7 +6,7 @@ export const types = {
   LOGIN_ERROR: "LOGIN_ERROR"
 };
 
-export const sessions_fetched = session => {
+export const sessionsFetched = session => {
   return {
     type: this.types.SESSION_FETCHED,
     payload: session
@@ -17,7 +17,7 @@ export const loginRequest = (email, password) => {
   return dispatch => {
     Parse.User.logIn(email, password).then(
       user => {
-        dispatch(sessions_fetched({ session: user }));
+        dispatch(sessionsFetched({ session: user }));
       },
       error => {
         dispatch({

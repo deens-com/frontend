@@ -26,7 +26,7 @@ const LoginFormComponent = props => {
           required
         />
 
-        <button type="submit" onClick={props.submit_login}>
+        <button type="submit" onClick={props.submitLogin}>
           Login
         </button>
       </form>
@@ -35,7 +35,7 @@ const LoginFormComponent = props => {
 };
 
 LoginFormComponent.propTypes = {
-  submit_login: PropTypes.func,
+  submitLogin: PropTypes.func,
   validateInput: PropTypes.func,
   handleInputChange: PropTypes.func
 };

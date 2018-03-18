@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import LoginFormComponent from "./../components/login_form_component";
-import * as sessions_actions from "./../actions";
+import * as sessionsActions from "./../actions";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
@@ -15,7 +15,7 @@ class SessionsContainer extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
-  parse_login = () => {
+  parseLogin = () => {
     this.props.loginRequest(this.state.email, this.state.password);
   };
 
@@ -56,7 +56,7 @@ class SessionsContainer extends Component {
         <LoginFormComponent
           session={this.props.session}
           validationErrors={this.props.validationErrors}
-          submit_login={this.parse_login}
+          submitLogin={this.parseLogin}
           email={this.state.email}
           password={this.state.password}
           handleInputChange={this.handleInputChange}
@@ -74,7 +74,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators(sessions_actions, dispatch);
+  return bindActionCreators(sessionsActions, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SessionsContainer);
