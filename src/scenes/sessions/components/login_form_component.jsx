@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-const SessionsComponent = props => {
+const LoginFormComponent = props => {
   return (
     <section>
       <form>
@@ -34,10 +34,10 @@ const SessionsComponent = props => {
   );
 };
 
-SessionsComponent.propTypes = {
+LoginFormComponent.propTypes = {
   submit_login: PropTypes.func,
   validateInput: PropTypes.func,
   handleInputChange: PropTypes.func
 };
 
-export default SessionsComponent;
+export default LoginFormComponent;

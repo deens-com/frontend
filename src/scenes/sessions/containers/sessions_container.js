@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import SessionsComponent from "./../components/sessions_component";
+import LoginFormComponent from "./../components/login_form_component";
 import * as sessions_actions from "./../actions";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -53,7 +53,7 @@ class SessionsContainer extends Component {
   render() {
     return (
       <div className="SessionsContainer">
-        <SessionsComponent
+        <LoginFormComponent
           session={this.props.session}
           validationErrors={this.props.validationErrors}
           submit_login={this.parse_login}
