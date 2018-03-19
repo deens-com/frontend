@@ -1,18 +1,20 @@
 // NPM
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import Link from 'gatsby-link';
+import React from "react";
+import PropTypes from "prop-types";
+import styled from "styled-components";
+import Link from "gatsby-link";
 
 // COMPONENTS
-import Rating from '../Rating';
-import PriceTag from './PriceTag';
-import Thumb from './Thumb';
+import Rating from "../Rating";
+import PriceTag from "./components/PriceTag";
+import Thumb from "./components/Thumb";
+import Col from "../layout/Col";
+import { PinIcon } from "../icons";
 
 // ACTIONS/CONFIG
 
 // STYLES
-import { Cart } from './styles';
+import { Cart } from "./styles";
 
 const ContentWrap = styled.div`
   padding: 20px;
@@ -46,23 +48,55 @@ const Label = styled.span`
   margin-bottom: 5px;
 `;
 
+const Location = styled.span`
+  color: #6e7885;
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+
+  svg {
+    display: inline-block;
+    width: 17px;
+    height: 17px;
+    margin-right: 2px;
+    fill: #d3d7dc;
+    position: relative;
+    left: -3px;
+  }
+`;
+
 // MODULE
-export default function TripCart({ item }) {
+export default function LocationCart({
+  item,
+  href,
+  withShadow,
+  xsBasis,
+  mdBasis
+}) {
   return (
-    <Cart withShadow column>
-      <Thumb url={item.img} />
-      <ContentWrap>
-        <Title>
-          <Link to="/">{item.title}</Link>
-        </Title>
-        <Excerpt>{item.excerpt}</Excerpt>
-        <Rating marginBottom="25px" rating={item.rating} count={item.reviews} />
-        <Label>Starting from</Label>
-        <PriceTag price={item.price} />
-      </ContentWrap>
-    </Cart>
+    <Col xsBasis={xsBasis} mdBasis={mdBasis}>
+      <Cart withShadow={withShadow} column>
+        <Thumb url={item.img} />
+        <ContentWrap>
+          <Title>
+            <Link to={href || "/"}>{item.title}</Link>
+          </Title>
+          <Location>
+            <PinIcon />
+            {item.location}
+          </Location>
+          <Rating
+            marginBottom="25px"
+            rating={item.rating}
+            count={item.reviews}
+          />
+          <Label>Starting from</Label>
+          <PriceTag price={item.price} />
+        </ContentWrap>
+      </Cart>
+    </Col>
   );
 }
 
 // Props Validation
-TripCart.propTypes = {};
+LocationCart.propTypes = {};

@@ -1,29 +1,36 @@
 // NPM
-import React from 'react';
-import PropTypes from 'prop-types';
-import Link from 'gatsby-link';
-import styled, { css } from 'styled-components';
-import Media from 'react-media';
+import React from "react";
+import PropTypes from "prop-types";
+import Link from "gatsby-link";
+import styled, { css } from "styled-components";
+import Media from "react-media";
 
 // COMPONENTS
-import Button from '../../Button';
-import Select from '../../Form/controls/Select';
+import Button from "../../Button";
+import Select from "../../Form/controls/Select";
 
 // ACTIONS/CONFIG
-import { sizes } from '../../../libs/styled';
-import theme from '../../../config/theme';
-import { mainNav, languages, currencies } from '../../../data/nav';
+import { sizes } from "../../../libs/styled";
+import { mainNav, languages, currencies } from "../../../data/nav";
 
 // STYLES
 const Wrap = styled.div`
-  display: flex;
   align-items: center;
+  display: flex;
   margin-left: auto;
+
+  ${props =>
+    props.home &&
+    css`
+      & .Select--single > .Select-control .Select-value {
+        color: white;
+      }
+    `};
 `;
 
 const Nav = styled.nav`
   ${props =>
-    props.homeTheme &&
+    props.home &&
     css`
       a {
         color: white;
@@ -32,10 +39,10 @@ const Nav = styled.nav`
 `;
 
 const NavLink = styled(Link)`
-  padding: 5px;
-  margin-right: 15px;
-  position: relative;
   display: inline-block;
+  margin-right: 15px;
+  padding: 5px;
+  position: relative;
   transition: color 0.1s ease-in;
 
   &:last-child {
@@ -43,17 +50,17 @@ const NavLink = styled(Link)`
   }
 
   &:after {
-    content: '';
-    display: block;
-    width: 100%;
-    height: 2px;
     background: #4fb798;
-    position: absolute;
     bottom: 0;
-    opacity: 0;
+    content: "";
+    display: block;
+    height: 2px;
     left: 50%;
+    opacity: 0;
+    position: absolute;
     transform: translateX(-50%);
     transition: opacity 0.1s ease-in;
+    width: 100%;
   }
 
   &.is-active,
@@ -67,70 +74,73 @@ const NavLink = styled(Link)`
   }
 `;
 
-const Actions = styled.div`
-  display: flex;
+const ActionsWrap = styled.div`
   align-items: center;
+  display: flex;
   padding-left: 15px;
+
+  .Select-multi-value-wrapper {
+    min-width: 37px;
+  }
 
   > div:first-child {
     margin-right: 15px;
   }
 
   > div:nth-child(3) {
-    margin-right: 15px;
     margin-left: 15px;
+    margin-right: 15px;
   }
 `;
 
-const Dropdown = styled.div`
-  display: inline-block;
-  margin-right: 10px;
-`;
-
 // MODULE
-export default function TopBarDesktopNav({ homeTheme, language, currency }) {
+export default function TopBarDesktopNav({ home, language, currency }) {
   return (
     <Media
       query={`(min-width: ${sizes.large})`}
       render={() => (
-        <Wrap>
-          <Nav homeTheme={homeTheme}>
+        <Wrap home={home}>
+          <Nav home={home}>
             {mainNav.map(item => (
-              <NavLink key={item.label} activeClassName="is-active" to={item.href}>
+              <NavLink
+                key={item.label}
+                activeClassName="is-active"
+                to={item.href}
+              >
                 {item.label}
               </NavLink>
             ))}
           </Nav>
-          <Actions>
+          <ActionsWrap>
             <Select
-              onChange={ev => {
-                console.log(ev.target.value);
+              onChange={val => {
+                console.log(val);
               }}
-              value={language}
-              optionList={languages}
-              theme="light"
+              value="eng"
+              options={languages}
+              theme={home ? "light" : "inherit"}
             />
             <Select
-              onChange={ev => {
-                console.log(ev.target.value);
+              onChange={val => {
+                console.log(val);
               }}
-              value={currency}
-              optionList={currencies}
-              theme="light"
+              value="EUR"
+              options={currencies}
+              theme={home ? "light" : "inherit"}
             />
-            <Button type="link" theme={{ ...theme.button.white }} round size="small" href="/login">
+            <Button type="link" theme="white" round size="small" href="/login">
               Login
             </Button>
             <Button
               type="link"
-              theme={{ ...theme.button.mainFilled }}
+              theme="mainFilled"
               round
               size="small"
               href="/signup"
             >
               Sign up
             </Button>
-          </Actions>
+          </ActionsWrap>
         </Wrap>
       )}
     />
@@ -138,4 +148,13 @@ export default function TopBarDesktopNav({ homeTheme, language, currency }) {
 }
 
 // Props Validation
-TopBarDesktopNav.propTypes = {};
+TopBarDesktopNav.propTypes = {
+  home: PropTypes.bool.isRequired,
+  language: PropTypes.string,
+  currency: PropTypes.string
+};
+
+TopBarDesktopNav.defaultProps = {
+  language: "english",
+  currency: "EUR"
+};

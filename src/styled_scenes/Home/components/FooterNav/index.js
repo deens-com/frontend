@@ -1,19 +1,24 @@
 // NPM
-import React from 'react';
-import PropTypes from 'prop-types';
-import Link from 'gatsby-link';
-import styled from 'styled-components';
+import React from "react";
+import PropTypes from "prop-types";
+import Link from "gatsby-link";
+import styled from "styled-components";
 
 // COMPONENTS
-import Row from '../layout/Row';
-import Col from '../layout/Col';
+import Row from "../../../../shared_components/layout/Row";
+import Col from "../../../../shared_components/layout/Col";
 
 // ACTIONS/CONFIG
-import { footer } from '../../data/footer';
-import { media } from '../../libs/styled';
+import { footer } from "../../../../data/footer";
+import { media } from "../../../../libs/styled";
 
 // STYLES
-const Wrapper = styled.div`
+const Wrap = styled.div`
+  margin: 0 0 50px;
+  display: flex;
+  flex-wrap: wrap;
+`;
+const NavWrap = styled.div`
   margin-bottom: 25px;
   ${media.minMedium} {
     margin-bottom: 0;
@@ -35,10 +40,10 @@ const List = styled.ul`
 // MODULE
 export default function HomeFooter({}) {
   return (
-    <Row marginBottom="50px">
+    <Wrap flex margin="0 0 50px">
       {footer.map(col => (
         <Col key={col.title} xsBasis="100%" smBasis="50%" mdBasis="25%">
-          <Wrapper>
+          <NavWrap>
             <Title>{col.title}</Title>
             <List>
               {col.nav.map(link => (
@@ -47,10 +52,10 @@ export default function HomeFooter({}) {
                 </li>
               ))}
             </List>
-          </Wrapper>
+          </NavWrap>
         </Col>
       ))}
-    </Row>
+    </Wrap>
   );
 }
 

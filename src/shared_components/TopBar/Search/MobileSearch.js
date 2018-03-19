@@ -1,37 +1,41 @@
 // NPM
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import Media from 'react-media';
+import React from "react";
+import PropTypes from "prop-types";
+import styled from "styled-components";
+import Media from "react-media";
 
 // COMPONENTS
-import Button from '../../Button';
-import HomeSearch from '../../../styled_scenes/Home/components/HomeSearch';
+import Button from "../../Button";
+// COMMENT: the homeSearch is just for the time being
+import HomeSearch from "../../../styled_scenes/Home/components/HomeSearch";
 
 // ACTIONS/CONFIG
-import { sizes } from '../../../libs/styled';
+import { sizes, media } from "../../../libs/styled";
 
 // STYLES
 const Wrap = styled.div`
-  position: fixed;
-  top: 0;
+  background: white;
   bottom: 0;
   left: 0;
+  position: fixed;
   right: 0;
+  top: 0;
   z-index: 21;
-  background: white;
 `;
 
 const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  height: 95px;
-  padding: 0 25px;
   box-shadow: 0 8px 25px 0 rgba(141, 141, 141, 0.22);
-`;
+  display: flex;
+  height: 65px;
+  justify-content: space-between;
+  padding: 0 15px;
 
-const Content = styled.div``;
+  ${media.minMedium} {
+    height: 95px;
+    padding: 0 25px;
+  }
+`;
 
 // MODULE
 export default function MobileSearch({ searchIsHidden, toggleSearch }) {
@@ -46,16 +50,14 @@ export default function MobileSearch({ searchIsHidden, toggleSearch }) {
             <Button type="button" onClick={toggleSearch} text="close" />
             <span>Where</span>
             <Button
-              type="button"
               onClick={() => {
-                alert('clearing');
+                alert("clearing");
               }}
+              type="button"
               text="clear"
             />
           </Header>
-          <Content>
-            <HomeSearch />
-          </Content>
+          <HomeSearch />
         </Wrap>
       )}
     />
@@ -63,4 +65,7 @@ export default function MobileSearch({ searchIsHidden, toggleSearch }) {
 }
 
 // Props Validation
-MobileSearch.propTypes = {};
+MobileSearch.propTypes = {
+  searchIsHidden: PropTypes.bool.isRequired,
+  toggleSearch: PropTypes.func.isRequired
+};

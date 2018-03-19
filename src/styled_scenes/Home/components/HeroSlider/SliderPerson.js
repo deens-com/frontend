@@ -1,7 +1,7 @@
 // NPM
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import React from "react";
+import PropTypes from "prop-types";
+import styled from "styled-components";
 
 // COMPONENTS
 
@@ -9,35 +9,35 @@ import styled from 'styled-components';
 
 // STYLES
 const Person = styled.div`
-  position: absolute;
-  right: 35px;
+  align-items: center;
   bottom: 35px;
   display: flex;
-  align-items: center;
+  position: absolute;
+  right: 35px;
 `;
 
 const Content = styled.div`
-  margin-right: 15px;
   color: white;
+  margin-right: 15px;
   text-align: right;
 
   span {
     display: block;
 
     &:last-child {
-      margin-top: 6px;
       font-size: 13px;
+      margin-top: 6px;
     }
   }
 `;
 
 const Avatar = styled.div`
-  width: 30px;
+  background: #1e1013;
+  border-radius: 30px;
+  border: 2px solid white;
   height: 30px;
   overflow: hidden;
-  border: 2px solid white;
-  border-radius: 30px;
-  background: #1e1013;
+  width: 30px;
 `;
 
 // MODULE
@@ -49,11 +49,15 @@ export default function SliderPerson({ name, location, avatar }) {
         <span>{location}</span>
       </Content>
       <Avatar>
-        <img src={avatar} />
+        <img src={avatar} alt={name} />
       </Avatar>
     </Person>
   );
 }
 
 // Props Validation
-SliderPerson.propTypes = {};
+SliderPerson.propTypes = {
+  name: PropTypes.string.isRequired,
+  location: PropTypes.string.isRequired,
+  avatar: PropTypes.string.isRequired
+};

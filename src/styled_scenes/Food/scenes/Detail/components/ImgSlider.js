@@ -4,29 +4,25 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 
 // COMPONENTS
-import back from "../img/back.jpg";
-import jump from "../img/jump.jpg";
-import mountain from "../img/mountain.jpg";
-import { Arrow } from "../../../shared_components/icons";
-import SliderPerson from "./SliderPerson";
+import { ArrowIcon } from "../../../../../components/icons";
 
 // ACTIONS/CONFIG
 
 // STYLES
 const Wrap = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 0;
-  background-image: linear-gradient(
-      176deg,
-      rgba(0, 0, 0, 0.31) 0%,
-      rgba(0, 0, 0, 0.72)
-    ),
-    url(${props => props.img || "#"});
-  background-size: cover;
+  height: 100vh;
+  max-height: 800px;
+  width: 42%;
+  background: #eee;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  img {
+    height: 100%;
+  }
 `;
 
 const LeftArrow = styled.span`
@@ -75,28 +71,7 @@ const RightArrow = styled.span`
 `;
 
 // MODULE
-const slider = [
-  {
-    name: "Rock diving",
-    location: "Bali, Indonesia",
-    avatar: "#",
-    image: back
-  },
-  {
-    name: "Sky diving",
-    location: "Chaing Mai, Thailand",
-    avatar: "#",
-    image: jump
-  },
-  {
-    name: "Cycling",
-    location: "Patagonia, Chile",
-    avatar: "#",
-    image: mountain
-  }
-];
-
-export default class HeroSlider extends Component {
+export default class FoodImgSlider extends Component {
   constructor() {
     super();
     this.state = {
@@ -110,7 +85,7 @@ export default class HeroSlider extends Component {
   goToPrevious() {
     let index;
     if (this.state.index - 1 < 0) {
-      index = slider.length - 1;
+      index = this.props.images.length - 1;
     } else {
       index = this.state.index - 1;
     }
@@ -120,27 +95,25 @@ export default class HeroSlider extends Component {
 
   goToNext() {
     let index;
-    if (this.state.index + 1 >= slider.length) {
+    if (this.state.index + 1 >= this.props.images.length) {
       index = 0;
     } else {
       index = this.state.index + 1;
     }
     this.setState({ index });
   }
-
   render() {
     return (
-      <Wrap img={slider[this.state.index].image}>
+      <Wrap>
         <LeftArrow onClick={this.goToPrevious}>
-          <Arrow />
+          <ArrowIcon />
         </LeftArrow>
         <RightArrow onClick={this.goToNext}>
-          <Arrow />
+          <ArrowIcon />
         </RightArrow>
-        <SliderPerson
-          name={slider[this.state.index].name}
-          location={slider[this.state.index].location}
-          avatar={slider[this.state.index].avatar}
+        <img
+          src={this.props.images[this.state.index].src}
+          alt={this.props.images[this.state.index].label}
         />
       </Wrap>
     );
@@ -148,4 +121,4 @@ export default class HeroSlider extends Component {
 }
 
 // Props Validation
-HeroSlider.propTypes = {};
+FoodImgSlider.propTypes = {};

@@ -1,49 +1,70 @@
 // NPM
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import Link from 'gatsby-link';
-import Media from 'react-media';
+import React from "react";
+import PropTypes from "prop-types";
+import styled from "styled-components";
+import Link from "gatsby-link";
+import Media from "react-media";
 
 // COMPONENTS
-import Select from '../../Form/controls/Select';
+import Select from "../../Form/controls/Select";
 
 // ACTIONS/CONFIG
-import { sizes } from '../../../libs/styled';
-import { mainNav, languages, currencies } from '../../../data/nav';
+import { sizes } from "../../../libs/styled";
+import { mainNav, languages, currencies } from "../../../data/nav";
 
 // STYLES
 const Wrap = styled.div`
-  position: fixed;
-  top: 0;
   bottom: 0;
   left: 0;
+  position: fixed;
   right: 0;
+  top: 0;
   z-index: 20;
 
   select {
-    padding: 12px 0;
+    color: #6e7885;
     font-size: 24px;
     margin-bottom: 15px;
-    color: #6e7885;
+    padding: 12px 0;
   }
 `;
 
 const InnerList = styled.ul`
   background: white;
   height: 100%;
-  overflow: hidden;
-  overflow-y: auto;
-  padding: 25px;
-  padding-top: 95px;
   list-style-type: none;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 95px 25px 25px;
+
+  .Select,
+  .Select div,
+  .Select input,
+  .Select span {
+    font-size: 24px;
+    color: #6e7885;
+  }
+
+  .Select-control {
+    padding: 12px 0;
+    margin-bottom: 15px;
+  }
+
+  .Select-placeholder,
+  .Select--single > .Select-control .Select-value {
+    padding: 12px 0;
+  }
+
+  .Select-menu-outer {
+    top: 100%;
+  }
 `;
 
 const NavLink = styled(Link)`
   display: block;
-  padding: 12px 0;
   font-size: 24px;
   margin-bottom: 15px;
+  padding: 12px 0;
 
   &.is-active {
     color: #4fb798;
@@ -51,10 +72,10 @@ const NavLink = styled(Link)`
 `;
 
 const Divider = styled.hr`
-  border: 0px;
-  border-top: 1px solid #efeff0;
+  border: none;
   margin: 15px 0;
-  height: 0px;
+  height: 1px;
+  background: #efeff0;
 `;
 
 // MODULE
@@ -67,41 +88,41 @@ export default function MobileNav({ menuIsOpened, language, currency }) {
       render={() => (
         <Wrap>
           <InnerList>
-            <li ariaHidden="false">
+            <li aria-hidden="false">
               <NavLink to="/">Home</NavLink>
             </li>
-            <li ariaHidden="true">
+            <li aria-hidden="true">
               <Divider />
             </li>
             {mainNav.map(item => (
-              <li ariaHidden="false" key={item.label}>
+              <li aria-hidden="false" key={item.label}>
                 <NavLink activeClassName="is-active" to={item.href}>
                   {item.label}
                 </NavLink>
               </li>
             ))}
-            <li ariaHidden="true">
+            <li aria-hidden="true">
               <Divider />
             </li>
             <li>
               <Select
-                onChange={ev => {
-                  console.log(ev.target.value);
+                onChange={val => {
+                  console.log(val);
                 }}
-                value={language}
-                optionList={languages}
+                value="eng"
+                options={languages}
               />
             </li>
             <li>
               <Select
-                onChange={ev => {
-                  console.log(ev.target.value);
+                onChange={val => {
+                  console.log(val);
                 }}
-                value={currency}
-                optionList={currencies}
+                value="EUR"
+                options={currencies}
               />
             </li>
-            <li ariaHidden="true">
+            <li aria-hidden="true">
               <Divider />
             </li>
             <li>
@@ -118,4 +139,13 @@ export default function MobileNav({ menuIsOpened, language, currency }) {
 }
 
 // Props Validation
-MobileNav.propTypes = {};
+MobileNav.propTypes = {
+  menuIsOpened: PropTypes.bool.isRequired,
+  language: PropTypes.string,
+  currency: PropTypes.string
+};
+
+MobileNav.defaultProps = {
+  language: "english",
+  currency: "EUR"
+};
