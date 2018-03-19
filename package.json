@@ -2,7 +2,7 @@
   "name": "please-frontend",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://pleasecom.github.io",
+  "homepage": "https://pleasecom.github.io/please-frontend",
   "dependencies": {
     "gatsby-link": "^1.6.39",
     "gh-pages": "^1.1.0",
@@ -33,7 +33,7 @@
     "precommit": "pretty-quick --staged",
     "build:semantic-ui": "gulp build",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -b master -d build"
+    "deploy": "gh-pages -d build"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
