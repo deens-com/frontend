@@ -2,7 +2,7 @@
   "name": "please-frontend",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://pleasecom.github.io/please-frontend",
+  "homepage": "https://pleasecom.github.io/please-frontend/build",
   "dependencies": {
     "gatsby-link": "^1.6.39",
     "gh-pages": "^1.1.0",
