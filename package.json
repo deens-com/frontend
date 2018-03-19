@@ -33,7 +33,7 @@
     "precommit": "pretty-quick --staged",
     "build:semantic-ui": "gulp build",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -b master -d build"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
