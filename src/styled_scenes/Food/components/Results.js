@@ -1,27 +1,21 @@
 // NPM
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import React from "react";
+import PropTypes from "prop-types";
+import styled from "styled-components";
 
 // COMPONENTS
-import Col from '../../../components/layout/Col';
-import Row from '../../../components/layout/Row';
-import TripCart from '../../../components/Carts/Trip';
-import Button from '../../../components/Button';
+import Col from "../../../components/layout/Col";
+import Row from "../../../components/layout/Row";
+import TripCart from "../../../components/Carts/Trip";
+import Button from "../../../components/Button";
 
 // ACTIONS/CONFIG
-import theme from '../../../config/theme';
-import { media } from '../../../libs/styled';
-import { trip } from '../../../data/trip';
+import { media } from "../../../libs/styled";
+import { trip } from "../../../data/trip";
 
 // STYLES
 const Wrap = styled.div`
   padding: 25px;
-  padding-top: 125px;
-
-  ${media.minMedium} {
-    padding-top: 25px;
-  }
 `;
 
 const Header = styled.div`
@@ -33,17 +27,23 @@ const Header = styled.div`
 `;
 
 // MODULE
-export default function FoodResults({ data }) {
+export default function FoodResutls({ data }) {
   return (
     <Wrap>
       <Header>
         <h4>Food for you</h4>
       </Header>
-      <Row wrap>
+      <Row>
         {data.map(result => (
-          <Col key={result.label} xsBasis="50%" lgBasis="33.33%">
-            <TripCart withTooltip item={result} href="/food/detail" />
-          </Col>
+          <TripCart
+            key={result.label}
+            smBasis="50%"
+            mdBasis="33.33%"
+            withTooltip
+            withShadow
+            item={result}
+            href="/food/detail"
+          />
         ))}
       </Row>
     </Wrap>
@@ -51,4 +51,4 @@ export default function FoodResults({ data }) {
 }
 
 // Props Validation
-FoodResults.propTypes = {};
+FoodResutls.propTypes = {};

@@ -1,22 +1,30 @@
 // NPM
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import styled from "styled-components";
 
 // COMPONENTS
-import Input from './controls/Input';
-import Label from './controls/Label';
-import DateInput from './DateInput';
-import PersonInput from './PersonInput';
-import { DateIcon, PersonIcon, PinIcon } from '../icons';
-import TimeSelect from './TimeSelect';
-import FormError from './index'
+import Input from "./controls/Input";
+import Label from "./controls/Label";
+import DateInput from "./DateInput";
+import PersonInput from "./PersonInput";
+import { DateIcon, PersonIcon, PinIcon } from "../icons";
+import TimeSelect from "./TimeSelect";
+
 // ACTIONS/CONFIG
 
 // STYLES
 const FormGroup = styled.div`
   position: relative;
-  border: 1px solid ${props => (props.focused ? '#4fb798' : '#eef1f4')};
+  border: 1px solid ${props => (props.focused ? "#4fb798" : "#eef1f4")};
+  border-radius: 4px;
+  padding: 10px 15px;
+  transition: border-color 0.1s ease-out;
+`;
+
+const FormError = styled.div`
+  position: relative;
+  border: 1px solid ${props => (props.focused ? "#4fb798" : "#eef1f4")};
   border-radius: 4px;
   padding: 10px 15px;
   transition: border-color 0.1s ease-out;
@@ -33,17 +41,15 @@ const InnerLeftIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  color: ${props => (props.focused ? "#4fb798" : "#d3d7dc")};
 
   svg {
-    width: 22px;
-    height: 22px;
-    flex: 1;
-    transition: fill 0.1s ease-out;
+    transition: color 0.1s ease-out;
   }
 `;
 
 // MODULE
-export default class FlatControl extends Component {
+export default class FormControl extends Component {
   constructor() {
     super();
     this.state = {
@@ -71,16 +77,14 @@ export default class FlatControl extends Component {
     this.setState({ focused: false });
   }
 
-  getFormIcon(type, normal, active) {
-    const { focused } = this.state;
-    const fill = focused ? active : normal;
+  getFormIcon(type) {
     switch (type) {
-      case 'pin':
-        return <PinIcon style={{ fill }} />;
-      case 'person':
-        return <PersonIcon style={{ fill }} />;
-      case 'date':
-        return <DateIcon style={{ fill }} />;
+      case "pin":
+        return <PinIcon />;
+      case "person":
+        return <PersonIcon />;
+      case "date":
+        return <DateIcon />;
     }
   }
 
@@ -88,7 +92,7 @@ export default class FlatControl extends Component {
     let input;
 
     switch (this.props.type) {
-      case 'text': {
+      case "text": {
         input = (
           <Input
             {...this.props}
@@ -102,7 +106,7 @@ export default class FlatControl extends Component {
         );
         break;
       }
-      case 'date': {
+      case "date": {
         input = (
           <DateInput
             {...this.props}
@@ -116,7 +120,7 @@ export default class FlatControl extends Component {
         );
         break;
       }
-      case 'time': {
+      case "time": {
         input = (
           <TimeSelect
             {...this.props}
@@ -132,7 +136,7 @@ export default class FlatControl extends Component {
         );
         break;
       }
-      case 'person': {
+      case "person": {
         input = (
           <PersonInput
             {...this.props}
@@ -154,16 +158,20 @@ export default class FlatControl extends Component {
     // console.log(this.props, this.input);
     return (
       <FormGroup focused={this.state.focused} onClick={this.focusElement}>
-        {this.props.label && <Label id={this.props.id} label={this.props.label} />}
+        {this.props.label && (
+          <Label id={this.props.id} label={this.props.label} />
+        )}
         <InnerWrap>
-          {typeof this.props.leftIcon !== 'undefined' && (
-            <InnerLeftIcon>
-              {this.getFormIcon(this.props.leftIcon, '#d3d7dc', '#4fb798')}
+          {typeof this.props.leftIcon !== "undefined" && (
+            <InnerLeftIcon focused={this.state.focused}>
+              {this.getFormIcon(this.props.leftIcon)}
             </InnerLeftIcon>
           )}
           {input}
           {this.props.error ||
-            (this.state.error && <FormError>{this.props.error || this.state.error}</FormError>)}
+            (this.state.error && (
+              <FormError>{this.props.error || this.state.error}</FormError>
+            ))}
         </InnerWrap>
       </FormGroup>
     );
@@ -171,4 +179,4 @@ export default class FlatControl extends Component {
 }
 
 // Props Validation
-FlatControl.propTypes = {};
+FormControl.propTypes = {};

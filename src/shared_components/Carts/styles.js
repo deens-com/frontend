@@ -1,16 +1,22 @@
-import Link from 'gatsby-link';
-import styled, { css } from 'styled-components'
+import styled, { css } from "styled-components";
+import Link from "gatsby-link";
+
+import { media } from "../../libs/styled";
+
 export const ContentWrap = styled.div`
-  padding: 25px;
+  padding: 15px;
+
+  ${media.minSmall} {
+    padding: 20px;
+  }
+
+  ${media.minMedium} {
+    padding: 25px;
+  }
 `;
 
-export const CategoryArrow = styled.span`
-  display: block;
-  width: 40px;
-  padding-top: 3px;
-  margin: 0 15px 0 auto;
-  transform: translateX(0%);
-  transition: transform 0.2s ease-in;
+export const More = styled.div`
+  margin-left: auto;
 `;
 
 export const CategoryThumb = styled.div`
@@ -30,44 +36,26 @@ export const CategoryThumb = styled.div`
   }
 `;
 
-export const CartLink = styled(Link)`
-  overflow: hidden;
-  font-weight: 500;
-  color: #3c434b;
-  width: 100%;
-  min-height: 100%;
-  display: flex;
-  align-items: center;
-`;
-
 export const Cart = styled.div`
-  background: ${props => props.background || 'white'};
+  background: ${props => props.background || "white"};
   border-radius: 4px;
   overflow: hidden;
   display: flex;
-  flex-direction: ${props => (props.column ? 'column' : 'row')};
+  flex-direction: ${props => (props.column ? "column" : "row")};
   margin-bottom: 15px;
-  text-align: ${props => props.centerText || 'left'};
-  min-height: ${props => props.height || 'auto'};
-  box-shadow: ${props => (props.withShadow ? '0 8px 25px 0 rgba(141, 141, 141, 0.22)' : 'none')};
+  text-align: ${props => props.centerText || "left"};
+  min-height: ${props => props.height || "auto"};
+  box-shadow: 0 8px 25px 0 rgba(141, 141, 141, 0.22);
   transition: box-shadow 0.1s ease-in, background 0.1s ease-in;
 
   &:hover {
-    box-shadow: ${props => (props.withShadow ? '0 8px 40px 0px rgba(141,141,141,0.28)' : 'none')};
-    background: ${props => props.hoverBg || 'white'};
-
-    & ${CategoryThumb} img {
-      transform: scale(1.05);
-    }
-
-    & ${CategoryArrow} {
-      transform: translateX(-15%);
-    }
+    box-shadow: 0 8px 40px 0px rgba(141, 141, 141, 0.28);
+    background: ${props => props.hoverBg || "white"};
   }
 
   & > a {
-    color: ${props => props.linkColor || 'inherit'};
-    text-align: ${props => props.textAlign || 'left'};
+    color: ${props => props.linkColor || "inherit"};
+    text-align: ${props => props.textAlign || "left"};
   }
 
   ${props =>

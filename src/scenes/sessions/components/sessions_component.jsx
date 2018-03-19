@@ -21,7 +21,7 @@ const SessionsComponent = props => {
 
       <p onClick={props.submit_login}>Submit Login</p>
       <p>{props.session.id}</p>
-      <button class="ui button" role="button">
+      <button className="ui button" role="button">
         Click Here
       </button>
     </section>

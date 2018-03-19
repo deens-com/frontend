@@ -1,4 +1,5 @@
-import styled, { css } from 'styled-components';
+import styled, { css } from "styled-components";
+import { media } from "../../libs/styled";
 
 export const Page = styled.div`
   display: flex;
@@ -7,22 +8,31 @@ export const Page = styled.div`
   ${props =>
     props.topPush &&
     css`
-      margin-top: 95px;
+      margin-top: 65px;
+
+      ${media.minMedium} {
+        margin-top: 95px;
+      }
     `};
 `;
 
 export const PageWrapper = styled.div`
   max-width: 960px;
   margin: 0 auto;
-  padding: ${props => props.padding || '0 10px'};
+  padding: ${props => props.padding || "0 10px"};
 `;
 
 export const PageContent = styled.main`
-  flex: 1;
+  padding: ${props => props.padding || "0"};
+  display: ${props => (props.flex ? "flex" : "block")};
 `;
 
 export const SectionWrap = styled.section`
   margin-bottom: 50px;
+`;
+
+export const More = styled.div`
+  margin-left: auto;
 `;
 
 export const SectionHeader = styled.header`

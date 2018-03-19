@@ -1,52 +1,44 @@
 // NPM
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import Media from 'react-media';
-import Link from 'gatsby-link';
+import React from "react";
+import PropTypes from "prop-types";
+import styled from "styled-components";
+import Media from "react-media";
+import Link from "gatsby-link";
+import GoogleMapReact from "google-map-react";
 
 // COMPONENTS
-import TopBar from '../../../../components/TopBar';
-import BrandFooter from '../../../../components/BrandFooter';
-import Tag from '../../../../components/Tag';
-import Rating from '../../../../components/Rating';
-import mamamia from '../../../../../static/img/food/mamamia.jpg';
-import { BadgeIcon } from './icons';
-import Row from '../../../../components/layout/Row';
-import Col from '../../../../components/layout/Col';
-import TripCart from '../../../../components/Carts/Trip';
-import Review from '../../../../components/Review';
-import Button from '../../../../components/Button';
-import DetailPickers from './components/DetailPickers';
+import TopBar from "../../../../components/TopBar";
+import BrandFooter from "../../../../components/BrandFooter";
+import Tag from "../../../../components/Tag";
+import Rating from "../../../../components/Rating";
+import { BadgeIcon } from "./icons";
+import Row from "../../../../components/layout/Row";
+import Col from "../../../../components/layout/Col";
+import TripCart from "../../../../components/Carts/Trip";
+import Review from "../../../../components/Review";
+import DetailPickers from "./components/DetailPickers";
+import Carousel from "../../../../components/Carousel";
+import Button from "../../../../components/Button";
+import ImgSlider from "./components/ImgSlider";
+import MapMaker from "../../../../components/MapMarker";
 
 // ACTIONS/CONFIG
-import { media, sizes } from '../../../../libs/styled';
-import { restaurant } from '../../../../data/food';
+import { media, sizes } from "../../../../libs/styled";
+import { restaurant } from "../../../../data/food";
 
 // STYLES
-import { Page, PageContent } from '../../../../components/layout/Page';
+import { Page, PageContent } from "../../../../components/layout/Page";
 
 const DetailWrapper = styled.div`
   width: 100%;
-  padding: 50px 25px 25px 50px;
+  padding: 25px 15px;
+
+  ${media.minMedium} {
+    padding: 50px 25px 25px 50px;
+  }
 
   ${media.minLarge} {
     width: 58%;
-  }
-`;
-
-const CarouselWrapper = styled.div`
-  height: 100vh;
-  max-height: 800px;
-  width: 42%;
-  background: #eee;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  img {
-    height: 100%;
   }
 `;
 
@@ -64,8 +56,18 @@ const HeaderWrap = styled.div`
   margin-bottom: 25px;
 
   h2 {
-    font-size: 58px;
+    font-size: 48px;
     margin-bottom: 15px;
+
+    ${media.minSmall} {
+      font-size: 58px;
+    }
+  }
+
+  a {
+    margin-top: 15px;
+    display: inline-block;
+    color: #4fb798;
   }
 `;
 
@@ -101,25 +103,45 @@ const Badge = styled.span`
 `;
 
 const DataWrap = styled.div`
-  margin-bottom: 25px;
+  margin-bottom: 50px;
+
+  ${media.minSmall} {
+    margin-bottom: 25px;
+  }
 `;
 
 const ContactWrap = styled.div`
-  display: flex;
-  margin-bottom: 25px;
+  margin-bottom: 50px;
+
+  ${media.minSmall} {
+    display: flex;
+    margin-bottom: 25px;
+  }
 `;
 
-const Map = styled.div`
-  width: 45%;
-  margin-right: 5%;
+const MapWrap = styled.div`
   background: #eee;
   height: 260px;
+  margin-bottom: 25px;
+
+  ${media.minSmall} {
+    width: 45%;
+    margin-right: 5%;
+    margin-bottom: 0;
+  }
 `;
 
 const Contacts = styled.div`
-  width: 50%;
   dispaly: flex;
   flex-direction: column;
+
+  ${media.minSmall} {
+    width: 50%;
+  }
+
+  a {
+    color: #4fb798;
+  }
 `;
 
 const ContactBlock = styled.div`
@@ -135,11 +157,32 @@ const ContactBlock = styled.div`
   }
 `;
 
+const ButtonsWrap = styled.div`
+  display: flex;
+
+  & div:first-child {
+    order: 1;
+  }
+
+  ${media.minLarge} {
+    flex-direction: column;
+
+    & div:first-child {
+      order: 0;
+      margin-bottom: 10px;
+    }
+  }
+`;
+
 const Hr = styled.hr`
   height: 0;
   border: none;
   border-bottom: 1px solid #eef1f4;
-  margin: 25px 0;
+  margin: 15px 0;
+
+  ${media.minSmall} {
+    margin: 25px 0;
+  }
 `;
 
 const TripsWrap = styled.div`
@@ -152,15 +195,24 @@ const TripsWrap = styled.div`
 `;
 
 const ActionWrap = styled.div`
-  display: flex;
-  margin-bottom: 35px;
+  margin-bottom: 50px;
 
-  & > div {
-    flex: 1;
+  ${media.minMedium} {
+    display: flex;
+    align-items: center;
+    margin-bottom: 35px;
+  }
 
-    &:first-child {
-      flex: 2;
-    }
+  ${media.minLarge} {
+    flex-direction: column;
+    align-items: left;
+    justify-content: center;
+  }
+
+  ${media.minLargePlus} {
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
   }
 `;
 
@@ -169,21 +221,19 @@ export default function FoodDetailScene({}) {
   return (
     <Page topPush>
       <TopBar fixed withPadding />
-      <PageContent>
+      <PageContent flex>
         <Media
           query={`(min-width: ${sizes.large})`}
-          render={() => (
-            <CarouselWrapper>
-              <img src={mamamia} />
-            </CarouselWrapper>
-          )}
+          render={() => <ImgSlider images={restaurant.images} />}
         />
         <DetailWrapper>
-          <TagWrap>{restaurant.tags.map(tag => <Tag key={tag.label} item={tag} />)}</TagWrap>
+          <TagWrap>
+            {restaurant.tags.map(tag => <Tag key={tag.label} item={tag} />)}
+          </TagWrap>
           <HeaderWrap>
             <h2>{restaurant.title}</h2>
             <p>{restaurant.description}</p>
-            <span>More</span>
+            <Link to="#">More</Link>
           </HeaderWrap>
           <DataWrap>
             <DataBlock>
@@ -210,13 +260,40 @@ export default function FoodDetailScene({}) {
           </DataWrap>
           <ActionWrap>
             <DetailPickers />
-            <div>
-              <Button text="Book now" />
-              <Button text="Add to trip" />
-            </div>
+            <ButtonsWrap>
+              <Button
+                type="button"
+                round
+                size="small"
+                onClick={ev => {
+                  alert("Book now.");
+                }}
+                iconAfter="arrow"
+                text="Book now"
+                theme="textGreen"
+              />
+              <Button
+                type="button"
+                round
+                size="small"
+                iconAfter="arrowDown"
+                onClick={ev => {
+                  alert("Adding to trip");
+                }}
+                theme="mainFilled"
+                text="Add to trip"
+              />
+            </ButtonsWrap>
           </ActionWrap>
           <ContactWrap>
-            <Map />
+            <MapWrap>
+              <GoogleMapReact
+                defaultCenter={{ lat: 59.95, lng: 30.33 }}
+                defaultZoom={11}
+              >
+                <MapMaker lat={59.95} lng={30.33} scale={1} color="#4fb798" />
+              </GoogleMapReact>
+            </MapWrap>
             <Contacts>
               <ContactBlock>
                 <div>
@@ -246,13 +323,22 @@ export default function FoodDetailScene({}) {
           </ContactWrap>
           <TripsWrap>
             <h3>Part of trips</h3>
-            <Row>
+            <Carousel
+              show="3"
+              length={restaurant.partOf.length}
+              shadowInside
+              withLoader
+            >
               {restaurant.partOf.map(trip => (
-                <Col key={trip.title} xsBasis="300px">
-                  <TripCart item={trip} href="#" />
-                </Col>
+                <TripCart
+                  item={trip}
+                  withShadow
+                  key={trip.title}
+                  smBasis="50%"
+                  mdBasis="33.33%"
+                />
               ))}
-            </Row>
+            </Carousel>
           </TripsWrap>
           <div>
             {restaurant.reviews.items.map(review => (

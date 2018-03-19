@@ -1,29 +1,37 @@
 // NPM
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled, { css } from 'styled-components';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import styled, { css } from "styled-components";
 
 // COMPONENTS
-import Logo from './Logo';
-import Search from './Search';
-import DesktopNav from './nav/DesktopNav';
-import MobileSearch from './Search/MobileSearch';
-import MobileNav from './nav/MobileNav';
+import Logo from "./Logo";
+import Search from "./Search";
+import DesktopNav from "./nav/DesktopNav";
+import MobileSearch from "./Search/MobileSearch";
+import MobileNav from "./nav/MobileNav";
 
 // ACTIONS/CONFIG
-import { media } from '../../libs/styled';
+import { media } from "../../libs/styled";
 
 // STYLES
-const Wrap = styled.div``;
-
 const InnerWrap = styled.header`
-  height: 95px;
-  width: 100%;
-  background: ${props => (props.transparent ? 'transparent' : 'white')};
-  display: flex;
   align-items: center;
+  background: ${props =>
+    props.home && !props.showMenu ? "transparent" : "white"};
+  display: flex;
+  height: 65px;
+  padding: ${props => (props.withPadding ? "0 15px" : "0")};
+  width: 100%;
   z-index: 21;
-  padding: ${props => (props.withPadding ? '0 25px' : '0')};
+  ${props =>
+    props.showMenu &&
+    css`
+      position: fixed;
+      top: 0;
+    `} ${media.minMedium} {
+    height: 95px;
+    padding: ${props => (props.withPadding ? "0 25px" : "0")};
+  }
 
   ${props =>
     props.showShadow &&
@@ -37,9 +45,9 @@ const InnerWrap = styled.header`
     `} ${props =>
     props.fixed &&
     css`
+      left: 0;
       position: fixed;
       top: 0;
-      left: 0;
     `};
 `;
 
@@ -49,9 +57,7 @@ export default class TopBar extends Component {
     super();
     this.state = {
       showMenu: false,
-      showSearch: false,
-      language: 'english',
-      currency: 'EUR'
+      showSearch: false
     };
 
     this.toggleMenu = this.toggleMenu.bind(this);
@@ -59,48 +65,66 @@ export default class TopBar extends Component {
   }
 
   toggleMenu() {
-    this.setState({ showMenu: !this.state.showMenu });
+    const { showMenu } = this.state;
+    const body = document.body;
+    if (showMenu) {
+      body.style.overflow = "";
+    } else {
+      body.style.overflow = "hidden";
+    }
+    this.setState({ showMenu: !showMenu });
   }
 
   toggleSearch() {
-    this.setState({ showSearch: !this.state.showSearch });
+    const { showSearch } = this.state;
+    this.setState({ showSearch: !showSearch });
   }
 
   render() {
-    const { transparent, fixed, noSearch, withPadding } = this.props;
+    const { home, fixed, noSearch, withPadding } = this.props;
+    const { showMenu, showSearch } = this.state;
 
     return (
-      <Wrap>
+      <div>
         <InnerWrap
-          showShadow={fixed && !this.state.showMenu}
+          role="baner"
+          showShadow={fixed && !showMenu}
+          showMenu={showMenu}
           withPadding={withPadding}
-          transparent={transparent}
+          home={home}
           fixed={fixed}
         >
           <Logo
-            menuIsOpened={this.state.showMenu}
+            menuIsOpened={showMenu}
             toggleMenu={this.toggleMenu}
-            applyFixation={this.state.showMenu && !fixed}
+            applyFixation={showMenu && !fixed}
           />
           {!noSearch && (
-            <Search menuIsOpened={this.state.showMenu} toggleSearch={this.toggleSearch} />
+            <Search menuIsOpened={showMenu} toggleSearch={this.toggleSearch} />
           )}
-          <DesktopNav
-            homeTheme={transparent}
-            language={this.state.language}
-            currency={this.state.currency}
-          />
+          <DesktopNav home={home} />
         </InnerWrap>
-        <MobileSearch searchIsHidden={!this.state.showSearch} toggleSearch={this.toggleSearch} />
-        <MobileNav
-          menuIsOpened={this.state.showMenu}
-          language={this.state.language}
-          currency={this.state.currency}
+        <MobileSearch
+          searchIsHidden={!showSearch}
+          toggleSearch={this.toggleSearch}
         />
-      </Wrap>
+        <MobileNav menuIsOpened={showMenu} />
+      </div>
     );
   }
 }
 
 // Props Validation
-TopBar.propTypes = {};
+TopBar.propTypes = {
+  home: PropTypes.bool,
+  fixed: PropTypes.bool,
+  noSearch: PropTypes.bool,
+  withPadding: PropTypes.bool
+};
+
+TopBar.defaultProps = {
+  home: false,
+  fixed: false,
+  noSearch: false,
+  withPadding: false
+};

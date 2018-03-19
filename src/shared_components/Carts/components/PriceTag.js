@@ -1,7 +1,7 @@
 // NPM
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import React from "react";
+import PropTypes from "prop-types";
+import styled from "styled-components";
 
 // COMPONENTS
 
@@ -13,7 +13,7 @@ const PriceWrap = styled.div`
 `;
 
 const Price = styled.span`
-  font-size: ${props => (props.size === 'big' ? '24px' : '18px')};
+  font-size: ${props => (props.size === "big" ? "24px" : "18px")};
   font-weight: 500;
 `;
 
@@ -27,7 +27,7 @@ export default function PriceTag({ size, price, currency }) {
     <PriceWrap>
       <Price size={size}>
         {price}
-        {currency || '€'}
+        {currency || "€"}
       </Price>
       <Unit>/ person</Unit>
     </PriceWrap>
