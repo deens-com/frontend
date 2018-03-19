@@ -2,8 +2,10 @@
   "name": "please-frontend",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://pleasecom.github.io/please-frontend",
   "dependencies": {
     "gatsby-link": "^1.6.39",
+    "gh-pages": "^1.1.0",
     "history": "^4.7.2",
     "parse": "^1.11.1",
     "prop-types": "^15.6.1",
@@ -27,7 +29,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "precommit": "pretty-quick --staged"
+    "precommit": "pretty-quick --staged",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "devDependencies": {
     "husky": "^0.14.3",
