@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 const SessionsComponent = props => {
   return (
@@ -21,6 +21,9 @@ const SessionsComponent = props => {
 
       <p onClick={props.submit_login}>Submit Login</p>
       <p>{props.session.id}</p>
+      <button className="ui button" role="button">
+        Click Here
+      </button>
     </section>
   );
 };

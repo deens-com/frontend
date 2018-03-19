@@ -1,0 +1,19 @@
+{
+  "base": "",
+  "paths": {
+    "source": {
+      "config": "src/styles/theme.config",
+      "definitions": "src/styles/definitions/",
+      "site": "src/styles/site/",
+      "themes": "src/styles/themes/"
+    },
+    "output": {
+      "packaged": "src/vendor/"
+    },
+    "clean": "src/vendor/"
+  },
+  "permission": false,
+  "autoInstall": true,
+  "rtl": false,
+  "version": "2.3.1"
+}
