@@ -1,22 +1,22 @@
 // NPM
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import Media from 'react-media';
+import React from "react";
+import PropTypes from "prop-types";
+import styled from "styled-components";
+import Media from "react-media";
 
 // COMPONENTS
-import Form from '../../../components/Form';
-import FlatControl from '../../../components/Form/FlatControl';
+import Form from "../../../components/Form";
+import FormControl from "../../../components/Form/FormControl";
 
 // ACTIONS/CONFIG
-import { sizes, media } from '../../../libs/styled';
+import { sizes, media } from "../../../libs/styled";
 
 // STYLES
 
 const Wrap = styled.div`
   border-bottom: 1px solid #eef1f4;
-  padding: 25px;
-  height: 95px;
+  padding: 10px;
+  height: 65px;
   display: flex;
   position: fixed;
   background: #ffffff;
@@ -24,7 +24,13 @@ const Wrap = styled.div`
   z-index: 18;
   box-shadow: 0 8px 25px 0 rgba(141, 141, 141, 0.22);
 
+  ${media.minSmall} {
+    height: 70px;
+  }
+
   ${media.minMedium} {
+    height: 95px;
+    padding: 25px;
     height: auto;
     position: static;
     width: auto;
@@ -45,39 +51,39 @@ export default function ToolBar({ state, onSubmit, onValueChange }) {
       <Media query={`(max-width: ${sizes.small})`}>
         {matches =>
           matches ? (
-            <span>Mobile Filters: TODO</span>
+            <span>Applied filters</span>
           ) : (
             <Form display="flex" onSubmit={onSubmit}>
-              <FlatControl
+              <FormControl
                 onChange={value => {
-                  onValueChange('location', value);
+                  onValueChange("location", value);
                 }}
                 value={state.location}
                 type="text"
                 placeholder="Location"
                 leftIcon="pin"
               />
-              <FlatControl
+              <FormControl
                 onChange={value => {
-                  onValueChange('startDate', value);
+                  onValueChange("startDate", value);
                 }}
                 value={state.startDate}
                 type="date"
                 placeholder="From date"
                 leftIcon="date"
               />
-              <FlatControl
+              <FormControl
                 onChange={value => {
-                  onValueChange('endDate', value);
+                  onValueChange("endDate", value);
                 }}
                 value={state.endDate}
                 type="date"
                 placeholder="To date"
                 leftIcon="date"
               />
-              <FlatControl
+              <FormControl
                 onChange={value => {
-                  onValueChange('person', value);
+                  onValueChange("person", value);
                 }}
                 value={state.person}
                 type="person"

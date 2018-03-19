@@ -1,28 +1,34 @@
 // NPM
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import styled from "styled-components";
+import Select from "../controls/Select";
 
 // COMPONENTS
-import { PlusIcon, MinusIcon } from './icons';
+import { PlusIcon, MinusIcon } from "./icons";
 
 // ACTIONS/CONFIG
 
 // STYLES
-import { InputControl } from '../controls/styles';
-import { Wrapper, Overlay, Button, Value } from './styles';
+import { InputControl } from "../controls/styles";
+import { Overlay, Button, Value } from "./styles";
 
-const DisplayValue = styled.span`
-  display: block;
-  outline: none;
-`;
+const Wrapper = styled.div`
+  position: relative;
+  width: 100%;
 
-const Placeholder = styled.span`
-  display: inline-block;
-  color: #99a9be;
+  .Select-control {
+    padding: 6px 0px 6px 0;
+  }
 `;
 
 // MODULE
+const personOptions = [
+  { value: "one", label: "1" },
+  { value: "two", label: "2" },
+  { value: "three", label: "3" },
+  { value: "four", label: "4" }
+];
 export default class PersonInput extends Component {
   constructor() {
     super();
@@ -34,57 +40,34 @@ export default class PersonInput extends Component {
     this.onBlur = this.onBlur.bind(this);
   }
 
-  onChange(ev) {
-    if (typeof this.props.onChange === 'function') this.props.onChange(ev.target.value);
+  onChange(val) {
+    if (typeof this.props.onChange === "function") this.props.onChange(val);
   }
 
   onFocus() {
     this.setState({ focus: true });
-    if (typeof this.props.onFocus === 'function') this.props.onFocus(this.input);
+    if (typeof this.props.onFocus === "function")
+      this.props.onFocus(this.input);
   }
 
   onBlur(ev) {
-    if (!ev.currentTarget.contains(ev.relatedTarget) && this.state.focus) {
-      this.setState({ focus: false });
-      if (typeof this.props.onBlur === 'function') this.props.onBlur();
-    }
+    this.setState({ focus: false });
+    if (typeof this.props.onBlur === "function") this.props.onBlur();
   }
 
   render() {
     return (
       <Wrapper>
-        {this.props.value === null && !this.props.focused ? (
-          <Placeholder>Persons</Placeholder>
-        ) : (
-          <DisplayValue
-            tabIndex="0"
-            innerRef={value => {
-              this.dispaly = value;
-              this.props.innerRef(value);
-            }}
-            onFocus={this.onFocus}
-            onBlur={this.onBlur}
-          >
-            {this.props.value || '1'}
-          </DisplayValue>
-        )}
-        {this.props.focused && (
-          <Overlay>
-            <div
-              onClick={ev => {
-                console.log('target', ev.target);
-              }}
-            >
-              <Button onClick={this.handleDecrement}>
-                <MinusIcon />
-              </Button>
-              <Value>{this.props.value || 1}</Value>
-              <Button onClick={this.handleIncrement}>
-                <PlusIcon />
-              </Button>
-            </div>
-          </Overlay>
-        )}
+        <Select
+          name="person"
+          value=""
+          placeholder={this.props.placeholder}
+          autoBlur={true}
+          onChange={this.onChange}
+          onBlur={this.onBlur}
+          onFocus={this.onFocus}
+          options={personOptions}
+        />
       </Wrapper>
     );
   }

@@ -1,38 +1,62 @@
 // NPM
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import styled from "styled-components";
 
 // COMPONENTS
-import FlatControl from '../../../../../components/Form/FlatControl';
+import FormControl from "../../../../../components/Form/FormControl";
 
 // ACTIONS/CONFIG
+import { media } from "../../../../../libs/styled";
 
 // STYLES
 
 const Wrap = styled.div`
-  display: flex;
   background: white;
   box-shadow: 0 8px 25px 0 rgba(141, 141, 141, 0.22);
   padding: 10px;
+  margin-bottom: 50px;
+
+  ${media.minMedium} {
+    display: flex;
+    margin-bottom: 0;
+    margin-right: 25px;
+  }
+
+  ${media.minLarge} {
+    margin-bottom: 25px;
+  }
+
+  ${media.minLargePlus} {
+    margin-bottom: 0;
+  }
 
   & > div {
     border: none;
     flex: 1;
+    min-width: 143px;
+    display: flex;
+    align-items: center;
 
-    &:after {
-      content: '';
-      width: 1px;
-      height: 60%;
-      background: #eef1f4;
-      position: absolute;
-      right: 10px;
-      top: 20%;
+    & > div {
+      width: 100%;
     }
 
-    &:last-child {
+    ${media.minMedium} {
       &:after {
-        display: none;
+        content: "";
+        width: 1px;
+        height: 60%;
+        background: #eef1f4;
+        position: absolute;
+        right: 10px;
+        top: 20%;
+      }
+
+      &:last-child {
+        &:after {
+          display: none;
+        }
       }
     }
   }
@@ -51,7 +75,7 @@ export default class FoodDetailPickers extends Component {
   render() {
     return (
       <Wrap>
-        <FlatControl
+        <FormControl
           onChange={value => {
             console.log(value);
           }}
@@ -60,7 +84,7 @@ export default class FoodDetailPickers extends Component {
           placeholder="Pick the date"
           leftIcon="date"
         />
-        <FlatControl
+        <FormControl
           onChange={value => {
             console.log(value);
           }}
@@ -69,13 +93,13 @@ export default class FoodDetailPickers extends Component {
           placeholder="Pick the time"
           leftIcon="date"
         />
-        <FlatControl
+        <FormControl
           onChange={value => {
             console.log(value);
           }}
           value={this.state.person}
           type="person"
-          placeholder="1"
+          placeholder="Person"
           leftIcon="person"
         />
       </Wrap>

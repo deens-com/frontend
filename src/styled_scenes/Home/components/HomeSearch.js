@@ -4,26 +4,22 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 
 // COMPONENTS
-import FormControl from "../../../shared_components/FormControl";
-import { Search, Microphone, DateIcon } from "../../../shared_components/icons";
-import FlatControl from "../../../shared_components/Form/FlatControl";
+import {
+  SearchIcon,
+  MicrophoneIcon,
+  DateIcon
+} from "../../../shared_components/icons";
+import FormControl from "../../../shared_components/Form/FormControl";
 
 // ACTIONS & CONFIG
-import { placeholderMixin } from "../../../libs/styled";
+import { placeholderMixin, resetButton } from "../../../libs/styled";
 
 // STYLES
 const Button = styled.button`
-  font-size: inherit;
-  font-style: inherit;
-  font-family: inherit;
-  color: inherit;
-  background: inherit;
-  border: inherit;
-  cursor: pointer;
+  ${resetButton()} color: #4fb798;
   outline: none;
-
-  color: #4fb798;
   transition: color 0.1s ease-out;
+  width: auto;
 
   &:hover,
   &:focus {
@@ -36,17 +32,17 @@ const Span = styled.span`
 `;
 
 const Input = styled.input`
+  appearance: none;
+  background: none;
+  border-radius: 3px;
+  border: 0;
   display: block;
   font-family: inherit;
   font-size: inherit;
   font-weight: inherit;
-  border-radius: 3px;
-  background: none;
-  width: 100%;
-  border: 0;
   outline: none;
-  appearance: none;
   padding: 10px 0;
+  width: 100%;
 
   ${placeholderMixin(`
     color: #99a9be;
@@ -59,24 +55,24 @@ const Wrapper = styled.div`
 `;
 
 const TypeIcon = styled.div`
+  align-items: center;
   background: ${props =>
     props.active ? "linear-gradient(50deg, #89c8a3, #4fb798)" : "transparent"};
   border-radius: 50%;
-  height: 40px;
-  width: 40px;
-  margin-right: 10px;
   color: white;
   cursor: pointer;
-  overflow: hidden;
-  font-size: 24px;
   display: flex;
-  align-items: center;
+  font-size: 24px;
+  height: 40px;
   justify-content: center;
   line-height: 40px;
+  margin-right: 10px;
+  overflow: hidden;
+  width: 40px;
 
   svg {
-    width: 26px;
     height: 26px;
+    width: 26px;
   }
 
   &:last-child {
@@ -86,24 +82,35 @@ const TypeIcon = styled.div`
 
 const TypeWrapper = styled.div`
   display: flex;
-  padding: 0 10px;
   margin-bottom: 25px;
+  padding: 0 10px;
 `;
 
 const SearchBg = styled.div`
+  position: relative;
+  align-items: center;
   background: #fff;
   border-radius: 4px;
   box-shadow: 0 8px 25px 0 rgba(141, 141, 141, 0.22);
-  padding: 0 25px;
-  height: 72px;
   display: flex;
-  align-items: center;
+  height: 72px;
+  padding: 0 25px;
+`;
+
+const BGPin = styled.div`
+  position: absolute;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3e%3cpath d='M7 4.7c0-.1-.1-.2-.1-.2L2.9.6v1.9l1.8 1.8.7.7-.7.7-1.8 1.8v1.9l3.9-3.9.2-.2c.1-.2.1-.4 0-.6z' fill='white'/%3e%3cpath d='M2.9 2.5v1.8h1.8zM2.9 5.7v1.8l1.8-1.8zM6.9 5.5c0-.1.1-.2.1-.2s-.1.1-.1.2zM6.9 4.5c0 .1.1.2.1.2s-.1-.1-.1-.2zM5.4 5l-.7-.7H2.9v1.4h1.8z' fill='white'/%3e%3c/svg%3e");
+  width: 12px;
+  height: 12px;
+  top: -8px;
+  left: 0px;
+  transition: transform 0.2s;
 `;
 
 const TabIcon = styled.span`
   display: block;
-  width: 100%;
   height: 100%;
+  width: 100%;
 `;
 
 const DateWrap = styled.div`
@@ -111,20 +118,20 @@ const DateWrap = styled.div`
   width: 100%;
 
   & > div {
+    border: none;
     flex: 1;
     position: relative;
-    border: none;
 
     &:first-child {
       &:after {
+        color: red;
         content: "";
         display: block;
-        position: absolute;
-        width: 1px;
         height: 100%;
-        color: red;
+        position: absolute;
         right: 10px;
         top: 0;
+        width: 1px;
       }
     }
   }
@@ -182,13 +189,22 @@ export default class HomeSearch extends Component {
                 this.setType(opt.type);
               }}
             >
-              {opt.type === "voice" && <Microphone style={{ fill: "#fff" }} />}
-              {opt.type === "text" && <Search style={{ fill: "#fff" }} />}
-              {opt.type === "date" && <DateIcon style={{ fill: "#fff" }} />}
+              {opt.type === "voice" && <MicrophoneIcon />}
+              {opt.type === "text" && <SearchIcon />}
+              {opt.type === "date" && <DateIcon />}
             </TypeIcon>
           ))}
         </TypeWrapper>
         <SearchBg>
+          <BGPin
+            style={{
+              transform: `rotate(-90deg) translateY(${
+                this.state.type === "voice"
+                  ? "24"
+                  : this.state.type === "text" ? "72" : "122"
+              }px)`
+            }}
+          />
           {this.state.type === "voice" && (
             <div>
               <Button
@@ -220,7 +236,7 @@ export default class HomeSearch extends Component {
           )}
           {this.state.type === "date" && (
             <DateWrap>
-              <FlatControl
+              <FormControl
                 type="date"
                 onChange={value => {
                   console.log(value);
@@ -229,7 +245,7 @@ export default class HomeSearch extends Component {
                 placeholder="Start date"
                 leftIcon="date"
               />
-              <FlatControl
+              <FormControl
                 type="date"
                 onChange={value => {
                   console.log(value);

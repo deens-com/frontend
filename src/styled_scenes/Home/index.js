@@ -1,33 +1,45 @@
 // NPM
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import Link from 'gatsby-link';
-import Media from 'react-media';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import styled from "styled-components";
+import Link from "gatsby-link";
+import Media from "react-media";
 
 // COMPONENTS
-import TopBar from '../../components/TopBar';
-import Section from '../../components/Section';
-import HomeSearch from './components/HomeSearch';
-import BrandFooter from '../../components/BrandFooter';
-import FooterNav from '../../components/FooterNav';
-import DesktopHeroSlider from './components/DesktopHeroSlider';
-import MobileHero from './components/MobileHero';
-import Button from '../../components/Button';
-import hands from './img/hands.jpg';
-import SliderPerson from './components/SliderPerson';
+import BrandFooter from "../../components/BrandFooter";
+import Button from "../../components/Button";
+import FooterNav from "./components/FooterNav";
+import hands from "./components/HeroSlider/img/hands.jpg";
+import HeroSlider from "./components/HeroSlider";
+import HomeSearch from "./components/HomeSearch";
+import MobileHero from "./components/MobileHero";
+import SectionActivities from "./components/SectionActivities";
+import SectionFood from "./components/SectionFood";
+import SectionHappy from "./components/SectionHappy";
+import SectionMood from "./components/SectionMood";
+import SectionPlaces from "./components/SectionPlaces";
+import SectionTrips from "./components/SectionTrips";
+import SubHero from "./components/SubHero";
+import TopBar from "../../components/TopBar";
 
 // ACTIONS/CONFIG
-import { categories, tags, tripsData, placesData, activitiesData, foodData } from '../../data/home';
-import { sizes } from '../../libs/styled';
-import theme from '../../config/theme';
+import {
+  categories,
+  tags,
+  tripsData,
+  placesData,
+  activitiesData,
+  foodData
+} from "../../data/home";
+import { sizes, media } from "../../libs/styled";
 
 // STYLES
-import { Page, PageWrapper, PageContent } from '../../components/layout/Page';
-import { Hr } from '../../components/styledComponents/misc';
+import { Hr } from "../../components/styledComponents/misc";
+import { Page, PageWrapper, PageContent } from "../../components/layout/Page";
 
 const Hero = styled.div`
   position: relative;
+
   & > div:first-child {
     position: relative;
     z-index: 2;
@@ -36,57 +48,40 @@ const Hero = styled.div`
 
 const HomeTagLine = styled.h1`
   color: #fff;
-  font-size: 113px;
-  margin-top: 180px;
-  margin-left: 13px;
-  position: relative;
+  font-size: 40px;
+  letter-spacing: 0px;
   margin-bottom: 0px;
-  letter-spacing: -4px;
+  margin-left: 13px;
+  margin-top: 180px;
+  position: relative;
+
+  ${media.minSmall} {
+    font-size: 60px;
+  }
+
+  ${media.minMedium} {
+    font-size: 113px;
+    letter-spacing: -4px;
+  }
 
   span {
-    font-family: 'HaydonBrush', Georgia, serif;
-    font-size: 60px;
+    font-family: "HaydonBrush", Georgia, serif;
+    font-size: 36px;
+    left: 26px;
+    letter-spacing: 0;
     position: absolute;
     top: -44px;
-    left: 68px;
-    letter-spacing: 0;
+
+    ${media.minSmall} {
+      font-size: 40px;
+      left: 42px;
+    }
+
+    ${media.minMedium} {
+      font-size: 60px;
+      left: 68px;
+    }
   }
-`;
-
-const SubHero = styled.div`
-  position: relative;
-  padding-top: 15px;
-  padding-bottom: 100px;
-  margin-bottom: 50px;
-  color: white;
-`;
-
-const SubTag = styled.span`
-  font-family: 'HaydonBrush', Georgia, serif;
-  font-size: 44px;
-  display: inline-block;
-  margin-bottom: 15px;
-`;
-
-const SubTitle = styled.p`
-  font-size: 48px;
-  max-width: 520px;
-  margin-bottom: 25px;
-  line-height: 1.2;
-  letter-spacing: -2px;
-`;
-
-const SubBG = styled.div`
-  position: absolute;
-  top: -110px;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: #eee;
-  background: url(${hands});
-  background-size: 120%;
-  background-position: 0% 40%;
-  z-index: -1;
 `;
 
 // MODULE
@@ -96,69 +91,30 @@ export default class HomeScene extends Component {
       <Page>
         <Hero>
           <PageWrapper>
-            <TopBar transparent noSearch />
+            <TopBar home noSearch />
             <HomeTagLine>
               <span>Rewarding</span> Experiences
             </HomeTagLine>
             <HomeSearch />
           </PageWrapper>
           <Media query={`(min-width: ${sizes.large})`}>
-            {matches => (matches ? <DesktopHeroSlider /> : <MobileHero />)}
+            {matches => (matches ? <HeroSlider /> : <MobileHero />)}
           </Media>
         </Hero>
 
-        <PageContent flex>
-          <Section title="What makes you happy?" type="category" data={categories} />
-          <Section title="What is your mood?" type="tag" data={tags} />
-          <Section
-            title="Amazing Trips"
-            type="trip"
-            headerLink={{
-              href: '/trips',
-              text: 'All trips'
-            }}
-            data={tripsData}
-          />
-          <Section
-            title="Popular places"
-            type="trip"
-            headerLink={{
-              href: '/places',
-              text: 'All places'
-            }}
-            data={placesData}
-          />
-          <Section
-            title="Exciting activities"
-            type="location"
-            headerLink={{
-              href: '/activities',
-              text: 'All experiences'
-            }}
-            data={activitiesData}
-          />
-          <SubHero>
-            <PageWrapper>
-              <SubTag>Share your passion</SubTag>
-              <SubTitle>
-                Earn up to 500€ <br />by sharing experience with others
-              </SubTitle>
-              <Button type="link" href="/" round size="medium" theme={theme.button.mainFilled}>
-                Become a host
-              </Button>
-            </PageWrapper>
-            <SliderPerson name="Handmade clay dishes" location="Bali, Indonesia" avatar="#" />
-            <SubBG />
-          </SubHero>
-          <Section
-            title="Delicious food"
-            type="trip"
-            headerLink={{
-              href: '/food',
-              text: 'All foods'
-            }}
-            data={foodData}
-          />
+        <PageContent
+          itemProp="itemList"
+          itemScope
+          itemType="http://schema.org/ItemList"
+          padding="100px 0 0"
+        >
+          <SectionHappy categories={categories} />
+          <SectionMood tags={tags} />
+          <SectionTrips trips={tripsData} />
+          <SectionPlaces trips={placesData} />
+          <SectionActivities locations={activitiesData} />
+          <SubHero />
+          <SectionFood foods={foodData} />
           <PageWrapper>
             <Hr withSpacing />
             <FooterNav />

@@ -1,89 +1,86 @@
 // NPM
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import React from "react";
+import PropTypes from "prop-types";
+import styled from "styled-components";
 
 // COMPONENTS
-import Price from './components/Price';
-import Button from '../../Button';
-import Row from '../../layout/Row';
-import Col from '../../layout/Col';
-import Category from './components/Category';
-import Description from './components/Description';
+import Price from "./components/Price";
+import Button from "../../Button";
+import Row from "../../layout/Row";
+import Col from "../../layout/Col";
+import Category from "./components/Category";
+import Description from "./components/Description";
+import Detail from "./components/Detail";
 
 // ACTIONS/CONFIG
-import theme from '../../../config/theme';
-import { media } from '../../../libs/styled';
+import { media } from "../../../libs/styled";
 
 // STYLES
-import { Thumb, ContentWrap } from '../styles';
+import { ContentWrap } from "../styles";
+
+const CartRow = styled.div`
+  ${media.minSmall} {
+    display: flex;
+  }
+`;
 
 const LeftCol = styled.div`
+  display: inline-block;
   width: 100%;
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
+  margin-bottom: 15px;
 
-  ${media.minSmall} {
-    width: ${props => props.smWidth || '80%'};
-    text-align: ${props => props.align || 'left'};
+  // COMMENT: this is for the detial item
+  & > div {
+    position: relative;
+    top: 2px;
   }
 
-  ${media.minMedium} {
-    width: ${props => props.mdWidth || '80%'};
+  ${media.minSmall} {
+    width: 75%;
+    margin-bottom: 0;
   }
 `;
 
 const RightCol = styled.div`
+  display: inline-block;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
   width: 100%;
 
   ${media.minSmall} {
-    width: ${props => props.smWidth || '20%'};
-    text-align: ${props => props.align || 'left'};
+    border-top: none;
+    width: 25%;
+    text-align: right;
+    padding-top: 0;
   }
 
   ${media.minMedium} {
-    width: ${props => props.mdWidth || '20%'};
+    // padding: 25px;
   }
-`;
-
-const Detail = styled.span`
-  display: inline-block;
-`;
-
-const Row2 = styled.div`
-  display: flex;
-  flex: 0 1 auto;
-  align-items: baseline;
 `;
 
 // MODULE
 export default function Exceprt({ data, toggleExpansion }) {
   return (
     <ContentWrap>
-      <Row noMargin>
+      <CartRow>
         <LeftCol>
           <Category category={data.category} />
-        </LeftCol>
-        <RightCol align="right">
-          <Price price={data.price} currency={data.currency} />
-        </RightCol>
-      </Row>
-      <Row2>
-        <LeftCol>
           <Description description={data.description} type="inline-block" />
-          <Detail>{data.time}</Detail>
+          <Detail inline icon="clock" text={data.time} />
         </LeftCol>
-        <RightCol align="right">
+        <RightCol>
+          <Price price={data.price} currency={data.currency} />
           <Button
             type="button"
             onClick={toggleExpansion}
             text="More info"
             size="text"
-            theme={{ ...theme.button.textGreen }}
+            iconAfter="arrowDown"
+            theme="textGreen"
           />
         </RightCol>
-      </Row2>
+      </CartRow>
     </ContentWrap>
   );
 }
