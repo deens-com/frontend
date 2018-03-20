@@ -21,8 +21,14 @@ const App = () => {
             path={process.env.PUBLIC_URL + "/"}
             component={withTracker(Home)}
           />
-          <Route path="/login" component={withTracker(Sessions)} />
-          <Route path="/register" component={withTracker(Registrations)} />
+          <Route
+            path={process.env.PUBLIC_URL + "/login"}
+            component={withTracker(Sessions)}
+          />
+          <Route
+            path={process.env.PUBLIC_URL + "/register"}
+            component={withTracker(Registrations)}
+          />
         </Switch>
       </Router>
     </Provider>
