@@ -14,19 +14,19 @@ import Registrations from "./../scenes/registrations/registrations";
 const App = () => {
   return (
     <Provider store={store}>
-      <Router history={history}>
+      <Router history={history} basename={process.env.PUBLIC_URL}>
         <Switch>
           <Route
             exact
-            path={process.env.PUBLIC_URL + "/"}
+            path="/"
             component={withTracker(Home)}
           />
           <Route
-            path={process.env.PUBLIC_URL + "/login"}
+            path="/login"
             component={withTracker(Sessions)}
           />
           <Route
-            path={process.env.PUBLIC_URL + "/register"}
+            path="/register"
             component={withTracker(Registrations)}
           />
         </Switch>
