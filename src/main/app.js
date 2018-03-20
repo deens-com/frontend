@@ -16,7 +16,7 @@ const App = () => {
     <Provider store={store}>
       <Router history={history}>
         <Switch>
-          <Route exact path='/' component={withTracker(Home)} />
+          <Route exact path={process.env.PUBLIC_URL + '/'} component={withTracker(Home)} />
           <Route path='/login' component={withTracker(Sessions)} />
           <Route path='/register' component={withTracker(Registrations)} />
         </Switch>
