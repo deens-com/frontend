@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Switch } from "react-router";
-import { Router, Route, Layout } from "react-router-dom";
+import { Router, Route, Layout, HashRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store";
 import history from "./history";
@@ -14,7 +14,7 @@ import Registrations from "./../scenes/registrations/registrations";
 const App = () => {
   return (
     <Provider store={store}>
-      <Router history={history}>
+      <HashRouter history={history}>
         <Switch>
           <Route
             exact
@@ -30,7 +30,7 @@ const App = () => {
             component={withTracker(Registrations)}
           />
         </Switch>
-      </Router>
+      </HashRouter>
     </Provider>
   );
 };
