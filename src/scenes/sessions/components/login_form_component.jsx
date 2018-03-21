@@ -10,6 +10,7 @@ import {
 } from "semantic-ui-react";
 
 import { Logo } from "./../../../shared_components/icons";
+import { Link } from "react-router-dom";
 
 const LoginFormComponent = props => {
   return (
@@ -64,7 +65,7 @@ const LoginFormComponent = props => {
               </Segment>
             </Form>
             <Message>
-              New to us? <a href="#">Sign Up</a>
+              New to us? <Link to="/register">Sign Up</Link>
             </Message>
           </Grid.Column>
         </Grid>
