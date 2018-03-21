@@ -20,7 +20,7 @@ const LoginFormComponent = props => {
               <Logo />
               Log-in to your account
             </Header>
-            <Form size="large">
+            <Form size="large" error={props.isLoginError()}>
               <Segment>
                 <Form.Input
                   fluid
@@ -51,6 +51,12 @@ const LoginFormComponent = props => {
                   required
                 />
 
+                <Message
+                  error={props.isLoginError()}
+                  header="Action Forbidden"
+                  content="You can only sign up for an account once with a given e-mail address."
+                />
+
                 <Button
                   round={true}
                   fontSize="large"
@@ -71,8 +77,9 @@ const LoginFormComponent = props => {
 };
 
 LoginFormComponent.propTypes = {
-  submitLogin: PropTypes.func,
   isInputInvalid: PropTypes.func,
+  isLoginError: PropTypes.func,
+  submitLogin: PropTypes.func,
   validateInput: PropTypes.func,
   handleInputChange: PropTypes.func
 };

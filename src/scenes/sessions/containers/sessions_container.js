@@ -76,6 +76,11 @@ class SessionsContainer extends Component {
     return this.state[name + "-error"];
   }
 
+  isLoginError() {
+    // TODO remove the dummy return value
+    return true;
+  }
+
   render() {
     return (
       <div className="SessionsContainer">
@@ -88,6 +93,7 @@ class SessionsContainer extends Component {
           handleInputChange={this.handleInputChange}
           validateInput={this.validateInput}
           isInputInvalid={this.isInputInvalid}
+          isLoginError={this.isLoginError}
         />
       </div>
     );
