@@ -40,9 +40,9 @@ jobs:
       # run tests!
       - run: yarn test
 
-      - run: git config --global user.email "ducrouxolivier@gmail.com"
+      - run: git config --global user.email "$GIT_AUTHOR_EMAIL" #"ducrouxolivier@gmail.com"
 
-      - run: git config --global user.name "dm0lz"
+      - run: git config --global user.name "$GIT_AUTHOR_NAME" #"dm0lz"
 
       - run:
           command: |
