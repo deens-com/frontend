@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./vendor/semantic.css";
+import "semantic-ui-css/semantic.min.css";
 import "./index.css";
 import App from "./main/app";
 import registerServiceWorker from "./registerServiceWorker";
