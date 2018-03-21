@@ -9,12 +9,11 @@ class SessionsContainer extends Component {
     super(props);
     this.state = {
       email: "",
-      password: "",
-      displayEmailError: false,
-      displayPasswordError: false
+      password: ""
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.isInputInvalid = this.isInputInvalid.bind(this);
   }
 
   parseLogin = event => {
@@ -45,22 +44,21 @@ class SessionsContainer extends Component {
         target.value.includes("@") === false
       ) {
         return this.setState({
-          displayEmailError: true
+          [`${target.name}-error`]: true
         });
       }
 
       if (target.name === "password" && target.value.length < 8) {
         return this.setState({
-          displayPasswordError: true
+          [`${target.name}-error`]: true
         });
       }
     }
-
-    this.setState({
-      displayPasswordError: false,
-      displayEmailError: false
-    });
   };
+
+  isInputInvalid(name) {
+    return this.state[name + "-error"];
+  }
 
   render() {
     return (
@@ -73,9 +71,7 @@ class SessionsContainer extends Component {
           password={this.state.password}
           handleInputChange={this.handleInputChange}
           validateInput={this.validateInput}
-          invalidInputs={this.state.invalidInputs}
-          displayEmailError={this.state.displayEmailError}
-          displayPasswordError={this.state.displayPasswordError}
+          isInputInvalid={this.isInputInvalid}
         />
       </div>
     );
