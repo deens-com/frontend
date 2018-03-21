@@ -54,6 +54,10 @@ class SessionsContainer extends Component {
         });
       }
     }
+
+    const currentState = this.state;
+    delete currentState[`${target.name}-error`];
+    this.setState(currentState);
   };
 
   isInputInvalid(name) {
