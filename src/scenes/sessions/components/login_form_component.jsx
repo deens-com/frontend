@@ -21,7 +21,7 @@ const LoginFormComponent = props => {
               Log-in to your account
             </Header>
             <Form size="large">
-              <Segment stacked>
+              <Segment>
                 <Form.Input
                   fluid
                   icon="user"
