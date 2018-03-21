@@ -1,6 +1,12 @@
-import { createBrowserHistory } from 'history'
-/* https://medium.com/@pshrmn/a-little-bit-of-history-f245306f48dd */
+/* To Read Article : https://medium.com/@pshrmn/a-little-bit-of-history-f245306f48dd */
 
-export default createBrowserHistory({
+//import { createBrowserHistory } from 'history'
+// export default createBrowserHistory({
+//   /* pass a configuration object here if needed */
+// })
+
+// Switching to HashHistory in order to get react-router to work
+import { createHashHistory } from "history";
+export default createHashHistory({
   /* pass a configuration object here if needed */
-})
+});

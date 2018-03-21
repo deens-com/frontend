@@ -2,7 +2,7 @@
   "name": "please-frontend",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://pleasecom.github.io/please-frontend",
+  "homepage": "https://pleasecom.github.io",
   "dependencies": {
     "gatsby-link": "^1.6.39",
     "gh-pages": "^1.1.0",
@@ -22,6 +22,7 @@
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.2",
     "redux-thunk": "^2.2.0",
+    "semantic-ui-css": "^2.3.1",
     "semantic-ui-react": "^0.78.3",
     "styled-components": "^3.2.3"
   },
@@ -31,7 +32,6 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "precommit": "pretty-quick --staged",
-    "build:semantic-ui": "gulp build",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
@@ -40,7 +40,6 @@
     "husky": "^0.14.3",
     "prettier": "1.11.1",
     "pretty-quick": "^1.4.1",
-    "enzyme": "^3.3.0",
-    "semantic-ui": "^2.3.1"
+    "enzyme": "^3.3.0"
   }
 }
