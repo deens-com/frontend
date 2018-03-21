@@ -1,11 +1,10 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import {
   Button,
   Form,
   Grid,
   Header,
-  Image,
   Message,
   Segment
 } from "semantic-ui-react";
