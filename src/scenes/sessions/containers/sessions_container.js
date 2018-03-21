@@ -31,6 +31,32 @@ class SessionsContainer extends Component {
     });
   }
 
+  validateEmailInput(target) {
+    const { name, value } = target;
+
+    if (name === "email" && value.length > 0 && value.includes("@") === false) {
+      return this.setState({
+        [`${name}-error`]: true
+      });
+    }
+  }
+
+  validatePasswordInput(target) {
+    const { name, value } = target;
+
+    if (name === "password" && value.length < 8) {
+      return this.setState({
+        [`${name}-error`]: true
+      });
+    }
+  }
+
+  purgeErrorStates(name) {
+    const currentState = this.state;
+    delete currentState[`${name}-error`];
+    this.setState(currentState);
+  }
+
   validateInput = event => {
     const isValid = element => element.checkValidity();
     const { target } = event;
@@ -39,26 +65,11 @@ class SessionsContainer extends Component {
     if (!isValid(target)) {
       target.focus();
 
-      if (
-        name === "email" &&
-        value.length > 0 &&
-        value.includes("@") === false
-      ) {
-        return this.setState({
-          [`${name}-error`]: true
-        });
-      }
-
-      if (name === "password" && value.length < 8) {
-        return this.setState({
-          [`${name}-error`]: true
-        });
-      }
+      this.validateEmailInput(target);
+      this.validatePasswordInput(target);
     }
 
-    const currentState = this.state;
-    delete currentState[`${name}-error`];
-    this.setState(currentState);
+    this.purgeErrorStates(name);
   };
 
   isInputInvalid(name) {
