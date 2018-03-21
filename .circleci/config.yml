@@ -36,9 +36,8 @@ jobs:
       # run tests!
       - run: yarn test
 
-      - run:
-        name: Running yarn deploy
-        command: |
-          git config --global user.email "ducrouxolivier@gmail.com"
-          git config --global user.name "dm0lz"
-          CI=false yarn deploy
+      - run: git config --global user.email "ducrouxolivier@gmail.com"
+
+      - run: git config --global user.name "dm0lz"
+
+      - run: CI=false yarn deploy
