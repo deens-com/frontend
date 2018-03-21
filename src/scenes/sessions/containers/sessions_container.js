@@ -34,29 +34,30 @@ class SessionsContainer extends Component {
   validateInput = event => {
     const isValid = element => element.checkValidity();
     const { target } = event;
+    const { name, value } = target;
 
     if (!isValid(target)) {
       target.focus();
 
       if (
-        target.name === "email" &&
-        target.value.length > 0 &&
-        target.value.includes("@") === false
+        name === "email" &&
+        value.length > 0 &&
+        value.includes("@") === false
       ) {
         return this.setState({
-          [`${target.name}-error`]: true
+          [`${name}-error`]: true
         });
       }
 
-      if (target.name === "password" && target.value.length < 8) {
+      if (name === "password" && value.length < 8) {
         return this.setState({
-          [`${target.name}-error`]: true
+          [`${name}-error`]: true
         });
       }
     }
 
     const currentState = this.state;
-    delete currentState[`${target.name}-error`];
+    delete currentState[`${name}-error`];
     this.setState(currentState);
   };
 
