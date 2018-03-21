@@ -1,24 +1,25 @@
-import React, { Component } from 'react';
-import SessionsComponent from './../components/sessions_component'
-import * as sessions_actions from './../actions'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
+import React, { Component } from "react";
+import LoginFormComponent from "./../components/login_form_component";
+import * as sessionsActions from "./../actions";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
 class SessionsContainer extends Component {
-
-  constructor(props){
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
-      email: '',
-      password: ''
-    }
+      email: "",
+      password: ""
+    };
 
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.isInputInvalid = this.isInputInvalid.bind(this);
   }
 
-  parse_login = () => {
-    this.props.fetch_session(this.state.email, this.state.password)
-  }
+  parseLogin = event => {
+    event.preventDefault();
+    this.props.loginRequest(this.state.email, this.state.password);
+  };
 
   handleInputChange(event) {
     const target = event.target;
@@ -30,29 +31,77 @@ class SessionsContainer extends Component {
     });
   }
 
+  validateEmailInput(target) {
+    const { name, value } = target;
+
+    if (name === "email" && value.length > 0 && value.includes("@") === false) {
+      return this.setState({
+        [`${name}-error`]: true
+      });
+    }
+  }
+
+  validatePasswordInput(target) {
+    const { name, value } = target;
+
+    if (name === "password" && value.length < 8) {
+      return this.setState({
+        [`${name}-error`]: true
+      });
+    }
+  }
+
+  purgeErrorStates(name) {
+    const currentState = this.state;
+    delete currentState[`${name}-error`];
+    this.setState(currentState);
+  }
+
+  validateInput = event => {
+    const isValid = element => element.checkValidity();
+    const { target } = event;
+    const { name, value } = target;
+
+    if (!isValid(target)) {
+      target.focus();
+
+      this.validateEmailInput(target);
+      this.validatePasswordInput(target);
+    }
+
+    this.purgeErrorStates(name);
+  };
+
+  isInputInvalid(name) {
+    return this.state[name + "-error"];
+  }
+
   render() {
     return (
       <div className="SessionsContainer">
-        <SessionsComponent
+        <LoginFormComponent
           session={this.props.session}
-          submit_login={this.parse_login}
+          validationErrors={this.props.validationErrors}
+          submitLogin={this.parseLogin}
           email={this.state.email}
           password={this.state.password}
           handleInputChange={this.handleInputChange}
+          validateInput={this.validateInput}
+          isInputInvalid={this.isInputInvalid}
         />
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     session: state.SessionsReducer.session
-  }
-}
+  };
+};
 
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators(sessions_actions, dispatch)
-}
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(sessionsActions, dispatch);
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(SessionsContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(SessionsContainer);

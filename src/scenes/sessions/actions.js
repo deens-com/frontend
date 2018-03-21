@@ -1,23 +1,30 @@
-import Parse from 'parse'
+import Parse from "parse";
 
 export const types = {
-  SESSION_FETCHED: 'SESSION_FETCHED'
+  LOGIN_SUCCESS: "LOGIN_SUCCESS",
+  VALIDATION_ERROR: "VALIDATION_ERROR",
+  LOGIN_ERROR: "LOGIN_ERROR"
 };
 
-export const sessions_fetched = (session) => {
+export const sessionsFetched = session => {
   return {
-    type: this.types.SESSION_FETCHED,
+    type: this.types.LOGIN_SUCCESS,
     payload: session
-  }
-}
+  };
+};
 
-
-export const fetch_session = (email, password) => {
-  return (dispatch) => {
-    Parse.User.logIn(email, password).then(user =>{
-      dispatch(sessions_fetched({session: user}))
-    },error =>{
-      console.log(error)
-    })
-  }
-}
+export const loginRequest = (email, password) => {
+  return dispatch => {
+    Parse.User.logIn(email, password).then(
+      user => {
+        dispatch(sessionsFetched({ session: user }));
+      },
+      error => {
+        dispatch({
+          type: types.LOGIN_ERROR,
+          payload: error
+        });
+      }
+    );
+  };
+};
