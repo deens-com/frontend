@@ -1,15 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {
-  Button,
-  Form,
-  Grid,
-  Header,
-  Message,
-  Segment
-} from "semantic-ui-react";
+import { Form, Grid, Header, Message, Segment } from "semantic-ui-react";
 
 import { Logo } from "./../../../shared_components/icons";
+import Button from "./../../../shared_components/Button";
 import { Link } from "react-router-dom";
 
 const LoginFormComponent = props => {
@@ -58,9 +52,8 @@ const LoginFormComponent = props => {
                 />
 
                 <Button
-                  color="teal"
-                  fluid
-                  size="large"
+                  round={true}
+                  fontSize="large"
                   onClick={props.submitLogin}
                 >
                   Login
