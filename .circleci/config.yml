@@ -44,4 +44,8 @@ jobs:
 
       - run: git config --global user.name "dm0lz"
 
-      - run: CI=false yarn deploy
+      - run:
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ];
+              then CI=false yarn deploy;
+            fi
