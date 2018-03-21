@@ -35,5 +35,5 @@ jobs:
 
       # run tests!
       - run: yarn test
-      
-      - run: yarn deploy
+
+      - run: CI=false yarn deploy
