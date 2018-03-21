@@ -38,6 +38,7 @@ const LoginFormComponent = props => {
                   id="email"
                   onChange={props.handleInputChange}
                   onBlur={props.validateInput}
+                  autoFocus
                   required
                 />
                 <Form.Input
