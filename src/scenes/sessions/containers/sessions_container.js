@@ -9,7 +9,9 @@ class SessionsContainer extends Component {
     super(props);
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      displayEmailError: false,
+      displayPasswordError: false
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -32,23 +34,32 @@ class SessionsContainer extends Component {
 
   validateInput = event => {
     const isValid = element => element.checkValidity();
-    const markTheInvalidInput = element => {
-      element.classList.add("input-invalid");
-      element.classList.remove("input-valid");
-    };
-
-    const markTheInputIsValid = element => {
-      element.classList.add("input-valid");
-    };
-
     const { target } = event;
 
     if (!isValid(target)) {
       target.focus();
-      return markTheInvalidInput(target);
+
+      if (
+        target.name === "email" &&
+        target.value.length > 0 &&
+        target.value.includes("@") === false
+      ) {
+        return this.setState({
+          displayEmailError: true
+        });
+      }
+
+      if (target.name === "password" && target.value.length < 8) {
+        return this.setState({
+          displayPasswordError: true
+        });
+      }
     }
 
-    return markTheInputIsValid(target);
+    this.setState({
+      displayPasswordError: false,
+      displayEmailError: false
+    });
   };
 
   render() {
@@ -62,6 +73,9 @@ class SessionsContainer extends Component {
           password={this.state.password}
           handleInputChange={this.handleInputChange}
           validateInput={this.validateInput}
+          invalidInputs={this.state.invalidInputs}
+          displayEmailError={this.state.displayEmailError}
+          displayPasswordError={this.state.displayPasswordError}
         />
       </div>
     );

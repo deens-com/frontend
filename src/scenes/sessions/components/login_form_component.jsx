@@ -38,6 +38,7 @@ const LoginFormComponent = props => {
                   id="email"
                   onChange={props.handleInputChange}
                   onBlur={props.validateInput}
+                  error={props.displayEmailError}
                   autoFocus
                   required
                 />
@@ -51,6 +52,7 @@ const LoginFormComponent = props => {
                   id="password"
                   onChange={props.handleInputChange}
                   onBlur={props.validateInput}
+                  error={props.displayPasswordError}
                   minLength={4}
                   required
                 />
