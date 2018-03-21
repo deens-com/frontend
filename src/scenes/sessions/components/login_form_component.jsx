@@ -6,6 +6,12 @@ import { Logo } from "./../../../shared_components/icons";
 import Button from "./../../../shared_components/Button";
 import { Link } from "react-router-dom";
 
+const displayErrorMessage = (isLoginError, message) => {
+  return isLoginError ? (
+    <Message error header="Can't login" content={message} />
+  ) : null;
+};
+
 const LoginFormComponent = props => {
   return (
     <section>
@@ -50,12 +56,10 @@ const LoginFormComponent = props => {
                   minLength={8}
                   required
                 />
-
-                <Message
-                  error={props.isLoginError()}
-                  header="Action Forbidden"
-                  content="You can only sign up for an account once with a given e-mail address."
-                />
+                {displayErrorMessage(
+                  props.isLoginError(),
+                  props.loginError.message
+                )}
 
                 <Button
                   round={true}

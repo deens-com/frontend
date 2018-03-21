@@ -23,10 +23,15 @@ export const loginRequest = (email, password) => {
         history.push("/");
       },
       error => {
-        dispatch({
-          type: types.LOGIN_ERROR,
-          payload: error
-        });
+        if (error.code === 101) {
+          dispatch({
+            type: types.LOGIN_ERROR,
+            payload: {
+              code: error.code,
+              message: "Invalid email or password"
+            }
+          });
+        }
       }
     );
   };
