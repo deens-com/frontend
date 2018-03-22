@@ -3,7 +3,7 @@ import RegistrationsComponent from "./../components/registrations_component";
 import * as registrations_actions from "./../actions";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-
+import validator from "validator";
 class RegistrationsContainer extends Component {
   constructor(props) {
     super(props);
@@ -63,15 +63,21 @@ class RegistrationsContainer extends Component {
       this.setState({ errors: { message: "Password does not match" } });
       return;
     }
-    if (this.state.password.length < 8) {
+    if (this.state.password.length <= 6) {
       this.setState({
-        errors: { message: "Password must be at least 8 characters long" }
+        errors: { message: "Password must be at least 6 characters long" }
       });
       return;
     }
     if (this.state.username.length < 4) {
       this.setState({
         errors: { message: "Username must be at least 4 characters long" }
+      });
+      return;
+    }
+    if (!validator.isEmail(this.state.email)) {
+      this.setState({
+        errors: { message: "Please enter a valid email address" }
       });
       return;
     }
