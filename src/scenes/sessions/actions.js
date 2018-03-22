@@ -1,4 +1,5 @@
 import Parse from "parse";
+import history from "./../../main/history";
 
 export const types = {
   LOGIN_SUCCESS: "LOGIN_SUCCESS",
@@ -18,6 +19,7 @@ export const loginRequest = (email, password) => {
     Parse.User.logIn(email, password).then(
       user => {
         dispatch(sessionsFetched({ session: user }));
+        history.push("/");
       },
       error => {
         dispatch({
