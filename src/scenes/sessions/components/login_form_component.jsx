@@ -20,6 +20,12 @@ import { Logo } from "./../../../shared_components/icons";
 import { Link } from "react-router-dom";
 import { Hr } from "./../../../shared_components/styledComponents/misc";
 
+const displayErrorMessage = (isLoginError, message) => {
+  return isLoginError ? (
+    <Message error header="Can't login" content={message} />
+  ) : null;
+};
+
 const LoginFormComponent = props => {
   return (
     <section>
@@ -37,7 +43,7 @@ const LoginFormComponent = props => {
                 <Header as="h2" color="teal" textAlign="center">
                   Log-in to your account
                 </Header>
-                <Form size="large">
+                <Form size="large" error={props.isLoginError()}>
                   <Segment stacked>
                     <Form.Input
                       fluid
@@ -67,6 +73,11 @@ const LoginFormComponent = props => {
                       minLength={8}
                       required
                     />
+
+                    {displayErrorMessage(
+                      props.isLoginError(),
+                      props.loginError.message
+                    )}
 
                     <Button
                       color="teal"
@@ -98,8 +109,9 @@ const LoginFormComponent = props => {
 };
 
 LoginFormComponent.propTypes = {
-  submitLogin: PropTypes.func,
   isInputInvalid: PropTypes.func,
+  isLoginError: PropTypes.func,
+  submitLogin: PropTypes.func,
   validateInput: PropTypes.func,
   handleInputChange: PropTypes.func
 };
