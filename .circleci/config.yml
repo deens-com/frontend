@@ -3,12 +3,11 @@
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
 version: 2
-general:
-  branches:
-    ignore:
-      - gh-pages
 jobs:
   build:
+    branches:
+      ignore:
+        - gh-pages
     docker:
       # specify the version you desire here
       - image: circleci/node:8.10

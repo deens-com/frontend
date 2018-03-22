@@ -19,7 +19,6 @@ export const loginRequest = (email, password) => {
     Parse.User.logIn(email, password).then(
       user => {
         dispatch(sessionsFetched({ session: user }));
-        // TODO redirected to authenticated page (e.g. Dashboard)
         history.push("/");
       },
       error => {

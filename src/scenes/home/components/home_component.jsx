@@ -109,8 +109,8 @@ const HomeComponent = props => {
         padding="100px 0 0"
       >
         <SectionHappy categories={categories} />
-        <SectionMood tags={tags} />
-        <SectionTrips trips={tripsData} />
+        <SectionMood tags={props.tags} />
+        <SectionTrips trips={props.trips} />
         <SectionPlaces trips={placesData} />
         <SectionActivities locations={activitiesData} />
         <SubHero />
