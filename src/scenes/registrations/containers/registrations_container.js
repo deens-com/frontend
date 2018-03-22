@@ -47,7 +47,6 @@ class RegistrationsContainer extends Component {
     const { target } = event;
     const { name, value } = target;
     if (!isValid(target)) {
-      //target.focus();
       this.validateEmailInput(target);
       this.validatePasswordInput(target);
     }
@@ -93,7 +92,7 @@ class RegistrationsContainer extends Component {
           password={this.state.password}
           password_confirmation={this.state.password_confirmation}
           errors={this.props.errors}
-          state_errors={this.state.errors}
+          stateErrors={this.state.errors}
           handleInputChange={this.handleInputChange}
           onSubmitRegistration={this.parseRegister}
           validationErrors={this.props.validationErrors}

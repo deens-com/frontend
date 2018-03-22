@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-//import RegistrationFormComponent from "./registration_form_component";
 import { Page, PageContent } from "./../../../shared_components/layout/Page";
 import TopBar from "./../../../shared_components/TopBar";
 import BrandFooter from "./../../../shared_components/BrandFooter";
@@ -34,9 +33,9 @@ const RegistrationsComponent = props => {
                 {props.errors.error.message}
               </Message>
             )}
-            {Object.keys(props.state_errors).length !== 0 && (
+            {Object.keys(props.stateErrors).length !== 0 && (
               <Message style={{ color: "red" }}>
-                {props.state_errors.message}
+                {props.stateErrors.message}
               </Message>
             )}
             <Form size="large">
