@@ -7,6 +7,7 @@ import { bindActionCreators } from "redux";
 class HomeContainer extends Component {
   componentDidMount() {
     this.props.fetch_services();
+    this.props.fetch_trips();
   }
 
   render() {
@@ -15,7 +16,7 @@ class HomeContainer extends Component {
         <HomeComponent
           tags={this.props.tags}
           services={this.props.services}
-          test_number={this.props.test_number}
+          trips={this.props.trips}
         />
       </div>
     );
@@ -26,7 +27,7 @@ const mapStateToProps = state => {
   return {
     services: state.HomeReducer.services,
     tags: state.HomeReducer.tags,
-    test_number: state.HomeReducer.test_number
+    trips: state.HomeReducer.trips
   };
 };
 

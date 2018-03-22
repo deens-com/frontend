@@ -63,6 +63,12 @@ class RegistrationsContainer extends Component {
       this.setState({ errors: { message: "Password does not match" } });
       return;
     }
+    if (this.state.password.length < 8) {
+      this.setState({
+        errors: { message: "Password must be at least 8 characters long" }
+      });
+      return;
+    }
     if (this.state.username.length < 4) {
       this.setState({
         errors: { message: "Username must be at least 4 characters long" }

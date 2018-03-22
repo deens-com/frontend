@@ -7,6 +7,13 @@ export const services_fetched = services => {
   };
 };
 
+export const trips_fetched = trips => {
+  return {
+    type: "TRIPS_FETCHED",
+    payload: trips
+  };
+};
+
 const bgColors = ["#7bbed6", "#82689a", "#75c1a5", "#ed837f", "#ffb777"];
 const hoverBgColors = ["#84c5dd", "#9379ab", "#76caac", "#eb8e8a", "#ffc089"];
 
@@ -55,6 +62,23 @@ export const fetch_services = () => {
         let json_services = JSON.parse(str_services);
         dispatch(services_fetched({ services: json_services }));
         dispatch(retrieve_popular_tags({ services: json_services }));
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+};
+
+export const fetch_trips = () => {
+  return dispatch => {
+    let Trip = Parse.Object.extend("Trip");
+    let query = new Parse.Query(Trip);
+    query
+      .find()
+      .then(response => {
+        let str_trips = JSON.stringify(response);
+        let json_trips = JSON.parse(str_trips);
+        dispatch(trips_fetched({ trips: json_trips }));
       })
       .catch(error => {
         console.log(error);
