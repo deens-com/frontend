@@ -93,7 +93,7 @@ const HomeComponent = props => {
         <PageWrapper>
           <TopBar home noSearch />
           <HomeTagLine>
-            <span>Rewardingz</span> Experiences
+            <span>Rewarding</span> Experiences
           </HomeTagLine>
           <HomeSearch />
         </PageWrapper>
