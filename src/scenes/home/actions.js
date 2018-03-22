@@ -1,18 +1,55 @@
+import Parse from "parse";
 
-export const services_fetched = (services) => {
+export const services_fetched = services => {
   return {
-    type: 'SERVICES_FETCHED',
+    type: "SERVICES_FETCHED",
     payload: services
-  }
-}
+  };
+};
 
+export const retrieve_popular_tags = services => {
+  let services_with_tags = services.services.filter(
+    service => service.tags && service.tags.length
+  );
+  let tags = [];
+  services_with_tags.forEach(service => {
+    tags.push(service.tags);
+  });
+  let flatten_tags = tags.reduce((flatten, arr) => [...flatten, ...arr]);
+  let tag_recurrence_count_hash = new Map(
+    [...new Set(flatten_tags)].map(x => [
+      x,
+      flatten_tags.filter(y => y === x).length
+    ])
+  );
+  let tags_array = [];
+  tag_recurrence_count_hash.forEach((k, v) =>
+    tags_array.push({ tag: v, count: k })
+  );
+  let tags_ordered_by_count = tags_array.sort((a, b) => b.count - a.count);
+  let tags_ordered_by_popularity = tags_ordered_by_count.map(tag => tag.tag);
+  // Ugly code to retrive popular tags but we might refactor tags data model in near future
+  return {
+    type: "POPULAR_TAGS_RETRIEVED",
+    payload: tags_ordered_by_popularity
+  };
+};
 
 export const fetch_services = () => {
-  return (dispatch) => {
-    // Parse.getServices().then((response) => {
-    //   dispatch(services_fetched({services: response.services}))
-    // }).catch((error) => {
-    //   console.log(error)
-    // })
-  }
-}
+  return dispatch => {
+    let Service = Parse.Object.extend("Service");
+    let query = new Parse.Query(Service);
+    query.descending("createdAt");
+    query
+      .find()
+      .then(response => {
+        let str_services = JSON.stringify(response);
+        let json_services = JSON.parse(str_services);
+        dispatch(services_fetched({ services: json_services }));
+        dispatch(retrieve_popular_tags({ services: json_services }));
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+};
