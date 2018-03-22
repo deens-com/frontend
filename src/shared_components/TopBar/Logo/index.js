@@ -1,7 +1,7 @@
 // NPM
 import React from "react";
 import PropTypes from "prop-types";
-import Link from "gatsby-link";
+import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
 import Media from "react-media";
 

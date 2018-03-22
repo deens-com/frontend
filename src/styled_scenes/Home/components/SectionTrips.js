@@ -1,7 +1,7 @@
 // NPM
 import React from "react";
 import PropTypes from "prop-types";
-import Link from "gatsby-link";
+import { Link } from "react-router-dom";
 
 // COMPONENTS
 import Carousel from "../../../shared_components/Carousel";

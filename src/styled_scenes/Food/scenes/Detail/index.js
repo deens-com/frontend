@@ -3,7 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Media from "react-media";
-import Link from "gatsby-link";
+import { Link } from "react-router-dom";
 import GoogleMapReact from "google-map-react";
 
 // COMPONENTS
