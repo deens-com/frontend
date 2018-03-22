@@ -17,6 +17,15 @@ export const trips_fetched = trips => {
 const bgColors = ["#7bbed6", "#82689a", "#75c1a5", "#ed837f", "#ffb777"];
 const hoverBgColors = ["#84c5dd", "#9379ab", "#76caac", "#eb8e8a", "#ffc089"];
 
+/**
+ * Convert the collection to a literal object.
+ * @param {Array} data A collection of ParseObjectSubclass item
+ */
+const normalizeParseResponseData = data => {
+  let dataInJsonString = JSON.stringify(data);
+  return JSON.parse(dataInJsonString);
+};
+
 export const retrieve_popular_tags = services => {
   let services_with_tags = services.services.filter(
     service => service.tags && service.tags.length
@@ -73,14 +82,21 @@ export const fetch_trips = () => {
   return dispatch => {
     let Trip = Parse.Object.extend("Trip");
     let query = new Parse.Query(Trip);
+    query.descending("createdAt");
+    query.equalTo("status", "public");
+    query.limit(4);
     query
       .find()
       .then(response => {
-        let str_trips = JSON.stringify(response);
-        let json_trips = JSON.parse(str_trips);
-        dispatch(trips_fetched({ trips: json_trips }));
+        const convertedResponse = normalizeParseResponseData(response);
+        const responseWithPlaceholderImage = convertedResponse.map(trip => {
+          trip.image = "https://placeimg.com/640/480/nature";
+          return trip;
+        });
+        dispatch(trips_fetched({ trips: responseWithPlaceholderImage }));
       })
       .catch(error => {
+        // TODO dispatch the error to error handler
         console.log(error);
       });
   };
