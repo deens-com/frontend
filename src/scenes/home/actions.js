@@ -7,6 +7,9 @@ export const services_fetched = services => {
   };
 };
 
+const bgColors = ["#7bbed6", "#82689a", "#75c1a5", "#ed837f", "#ffb777"];
+const hoverBgColors = ["#84c5dd", "#9379ab", "#76caac", "#eb8e8a", "#ffc089"];
+
 export const retrieve_popular_tags = services => {
   let services_with_tags = services.services.filter(
     service => service.tags && service.tags.length
@@ -27,7 +30,12 @@ export const retrieve_popular_tags = services => {
     tags_array.push({ tag: v, count: k })
   );
   let tags_ordered_by_count = tags_array.sort((a, b) => b.count - a.count);
-  let tags_ordered_by_popularity = tags_ordered_by_count.map(tag => tag.tag);
+  let tags_ordered_by_popularity = tags_ordered_by_count.map(tag => {
+    let randBg = bgColors[Math.floor(Math.random() * bgColors.length)];
+    let randHoverBg =
+      hoverBgColors[Math.floor(Math.random() * hoverBgColors.length)];
+    return { label: tag.tag, background: randBg, hoverBg: randHoverBg };
+  });
   // Ugly code to retrive popular tags but we might refactor tags data model in near future
   return {
     type: "POPULAR_TAGS_RETRIEVED",
