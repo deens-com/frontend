@@ -64,8 +64,6 @@ class SessionsContainer extends Component {
     const { name, value } = target;
 
     if (!isValid(target)) {
-      target.focus();
-
       this.validateEmailInput(target);
       this.validatePasswordInput(target);
     }
