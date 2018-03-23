@@ -14,6 +14,13 @@ export const trips_fetched = trips => {
   };
 };
 
+export const popularPlacesFetched = popularPlaces => {
+  return {
+    type: "POPULAR_PLACES_FETCHED",
+    payload: popularPlaces
+  };
+};
+
 const bgColors = ["#7bbed6", "#82689a", "#75c1a5", "#ed837f", "#ffb777"];
 const hoverBgColors = ["#84c5dd", "#9379ab", "#76caac", "#eb8e8a", "#ffc089"];
 
@@ -102,11 +109,45 @@ export const fetch_trips = () => {
           // TODO replace dummy rate, reviews, and image once it's ready
           trip.rating = getRandomInt(1, 5);
           trip.reviews = getRandomInt(1, 100);
-          trip.image = "https://placeimg.com/640/480/nature";
+          trip.img = "https://placeimg.com/640/480/nature";
           trip.price = getRandomInt(500, 10000);
           return trip;
         });
         dispatch(trips_fetched({ trips: responseWithPlaceholderImage }));
+      })
+      .catch(error => {
+        // TODO dispatch the error to error handler and retry the request
+        console.log(error);
+      });
+  };
+};
+
+export const fetchPopularPlaces = () => {
+  return dispatch => {
+    let Service = Parse.Object.extend("Service");
+    let query = new Parse.Query(Service);
+    query.descending("createdAt");
+    query.equalTo("type", "place");
+    // query.equalTo("serviceStatus", "activated");
+    query.limit(4);
+
+    query
+      .find()
+      .then(response => {
+        const convertedResponse = normalizeParseResponseData(response);
+        const responseWithDummyDetails = convertedResponse.map(service => {
+          service.excerpt = service.description;
+          service.title = service.name;
+          // TODO replace dummy rate, reviews, and image once it's ready
+          service.rating = getRandomInt(1, 5);
+          service.reviews = getRandomInt(1, 100);
+          service.img = "https://placeimg.com/640/480/arch";
+          service.price = getRandomInt(500, 10000);
+          return service;
+        });
+        dispatch(
+          popularPlacesFetched({ popularPlaces: responseWithDummyDetails })
+        );
       })
       .catch(error => {
         // TODO dispatch the error to error handler and retry the request

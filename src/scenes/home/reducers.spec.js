@@ -3,7 +3,8 @@ import reducers from "./reducers";
 const initialState = {
   services: [],
   trips: [],
-  tags: []
+  tags: [],
+  popularPlaces: []
 };
 
 describe("homes reducer", () => {

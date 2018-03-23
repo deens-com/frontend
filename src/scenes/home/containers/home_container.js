@@ -8,6 +8,7 @@ class HomeContainer extends Component {
   componentDidMount() {
     this.props.fetch_services();
     this.props.fetch_trips();
+    this.props.fetchPopularPlaces();
   }
 
   render() {
@@ -17,6 +18,7 @@ class HomeContainer extends Component {
           tags={this.props.tags}
           services={this.props.services}
           trips={this.props.trips}
+          popularPlaces={this.props.popularPlaces}
         />
       </div>
     );
@@ -27,7 +29,8 @@ const mapStateToProps = state => {
   return {
     services: state.HomeReducer.services,
     tags: state.HomeReducer.tags,
-    trips: state.HomeReducer.trips
+    trips: state.HomeReducer.trips,
+    popularPlaces: state.HomeReducer.popularPlaces
   };
 };
 
