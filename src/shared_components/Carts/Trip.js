@@ -59,7 +59,7 @@ export default function TripCart({ item, withTooltip, href }) {
     <Wrap>
       <Cart column>
         <Thumb
-          url={item.img}
+          url={item.image}
           tripCount={item.partOf}
           withTooltip={withTooltip}
         />
