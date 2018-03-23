@@ -4,7 +4,6 @@ import { Switch } from "react-router";
 import { Router, Route, Layout, HashRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store";
-//import history from "./history";
 import ReactGA from "react-ga";
 import withTracker from "./middlewares/with_tracker";
 import Home from "./../scenes/home/home";
