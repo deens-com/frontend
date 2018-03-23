@@ -30,7 +30,7 @@ export default function HomeSectionTrips({ trips }) {
           </More>
         </SectionHeader>
         <SectionContent>
-          <Carousel shadowInside withLoader>
+          <Carousel show="4" length={trips.length} shadowInside withLoader>
             {trips.map(item => (
               <TripCart
                 item={item}

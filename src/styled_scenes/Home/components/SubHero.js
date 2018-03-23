@@ -18,7 +18,7 @@ const Wrap = styled.div`
   color: white;
   margin-bottom: 50px;
   padding-bottom: 100px;
-  padding-top: 15px;
+  padding-top: 75px;
   position: relative;
 `;
 
@@ -61,7 +61,7 @@ const SubBG = styled.div`
   left: 0;
   position: absolute;
   right: 0;
-  top: -110px;
+  top: 0px;
   z-index: -1;
 `;
 

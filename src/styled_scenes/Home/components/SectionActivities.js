@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 // COMPONENTS
 import Carousel from "../../../shared_components/Carousel";
 import LocationCart from "../../../shared_components/Carts/Location";
-import Row from "../../../shared_components/layout/Row";
 
 // ACTIONS/CONFIG
 
@@ -31,7 +30,7 @@ export default function HomeSectionLocations({ locations }) {
           </More>
         </SectionHeader>
         <SectionContent>
-          <Row>
+          <Carousel show="4" length={locations.length} shadowInside withLoader>
             {locations.map(item => (
               <LocationCart
                 item={item}
@@ -41,7 +40,7 @@ export default function HomeSectionLocations({ locations }) {
                 mdBasis="25%"
               />
             ))}
-          </Row>
+          </Carousel>
         </SectionContent>
       </SectionWrap>
     </PageWrapper>

@@ -32,13 +32,7 @@ export default function HomeSectionFood({ foods }) {
         <SectionContent>
           <Carousel show="4" length={foods.length} shadowInside withLoader>
             {foods.map(item => (
-              <TripCart
-                item={item}
-                withShadow
-                key={item.title}
-                xsBasis="50%"
-                mdBasis="25%"
-              />
+              <TripCart item={item} withShadow key={item.title} />
             ))}
           </Carousel>
         </SectionContent>

@@ -45,56 +45,56 @@ const Overflow = styled.div`
         margin: ${carouselSizes[props.size].overflowMargin};
       `};
   }
-
-  &:before,
-  &:after {
-    content: "";
-    display: none;
-    width: ${props => carouselSizes[props.size].cornerWidth};
-    height: 100%;
-    position: absolute;
-    z-index: 2;
-    top: 0;
-    bottom: 0;
-    transition: background 0.1s;
-
-    ${media.minLarge} {
-      display: block;
-    }
-  }
-
-  &:before {
-    left: ${props => carouselSizes[props.size].cornerPosition};
-    background: white;
-  }
-
-  &:after {
-    right: ${props => carouselSizes[props.size].cornerPosition};
-    background: white;
-  }
-
-  ${props =>
-    props.inTransition &&
-    css`
-      &:before {
-        background: linear-gradient(
-          to right,
-          rgba(255, 255, 255, 1) 0%,
-          rgba(255, 255, 255, 1) 50%,
-          rgba(255, 255, 255, 0) 100%
-        );
-      }
-
-      &:after {
-        background: linear-gradient(
-          to left,
-          rgba(255, 255, 255, 1) 0%,
-          rgba(255, 255, 255, 1) 50%,
-          rgba(255, 255, 255, 0) 100%
-        );
-      }
-    `};
 `;
+
+// &:before,
+// &:after {
+//   content: "";
+//   display: none;
+//   width: ${props => carouselSizes[props.size].cornerWidth};
+//   height: 100%;
+//   position: absolute;
+//   z-index: 2;
+//   top: 0;
+//   bottom: 0;
+//   transition: background 0.1s;
+//
+//   ${media.minLarge} {
+//     display: block;
+//   }
+// }
+//
+// &:before {
+//   left: ${props => carouselSizes[props.size].cornerPosition};
+//   background: white;
+// }
+//
+// &:after {
+//   right: ${props => carouselSizes[props.size].cornerPosition};
+//   background: white;
+// }
+//
+// ${props =>
+//   props.inTransition &&
+//   css`
+//     &:before {
+//       background: linear-gradient(
+//         to right,
+//         rgba(255, 255, 255, 1) 0%,
+//         rgba(255, 255, 255, 1) 50%,
+//         rgba(255, 255, 255, 0) 100%
+//       );
+//     }
+//
+//     &:after {
+//       background: linear-gradient(
+//         to left,
+//         rgba(255, 255, 255, 1) 0%,
+//         rgba(255, 255, 255, 1) 50%,
+//         rgba(255, 255, 255, 0) 100%
+//       );
+//     }
+//   `};
 
 const Mover = styled.div`
   transform: translateX(0);
