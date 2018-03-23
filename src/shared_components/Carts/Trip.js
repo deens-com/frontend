@@ -88,9 +88,9 @@ TripCart.propTypes = {
     partof: PropTypes.number,
     title: PropTypes.string.isRequired,
     excerpt: PropTypes.string,
-    rating: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    review: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    price: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    rating: PropTypes.number,
+    reviews: PropTypes.number,
+    price: PropTypes.number
   }),
   withTooltip: PropTypes.bool,
   href: PropTypes.string,
