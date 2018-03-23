@@ -4,7 +4,6 @@
   "private": true,
   "homepage": "https://pleasecom.github.io",
   "dependencies": {
-    "gatsby-link": "^1.6.39",
     "gh-pages": "^1.1.0",
     "history": "^4.7.2",
     "parse": "^1.11.1",
@@ -24,7 +23,8 @@
     "redux-thunk": "^2.2.0",
     "semantic-ui-css": "^2.3.1",
     "semantic-ui-react": "^0.78.3",
-    "styled-components": "^3.2.3"
+    "styled-components": "^3.2.3",
+    "validator": "^9.4.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -36,10 +36,10 @@
     "deploy": "gh-pages -d build"
   },
   "devDependencies": {
+    "enzyme": "^3.3.0",
     "gulp": "^3.9.1",
     "husky": "^0.14.3",
     "prettier": "1.11.1",
-    "pretty-quick": "^1.4.1",
-    "enzyme": "^3.3.0"
+    "pretty-quick": "^1.4.1"
   }
 }

@@ -1,22 +1,20 @@
-import { withPrefix } from "gatsby-link";
-
 export const categories = [
   {
-    img: withPrefix("/img/categories/trips.png"),
+    img: "/img/categories/trips.png",
     label: "Trips",
     href: "/trips"
   },
   {
-    img: withPrefix("/img/categories/places.png"),
+    img: "/img/categories/places.png",
     label: "Places",
     href: "/places"
   },
   {
-    img: withPrefix("/img/categories/activities.png"),
+    img: "/img/categories/activities.png",
     label: "Activities",
     href: "/activites"
   },
-  { img: withPrefix("/img/categories/food.png"), label: "Food", href: "/food" }
+  { img: "/img/categories/food.png", label: "Food", href: "/food" }
 ];
 
 export const tags = [
@@ -29,7 +27,7 @@ export const tags = [
 
 export const tripsData = [
   {
-    img: withPrefix("/img/trips/new-york.png"),
+    img: "/img/trips/new-york.png",
     title: "Explore New York",
     excerpt: "Winter pearl in the heart of Europe and other stuff here.",
     rating: "5",
@@ -37,7 +35,7 @@ export const tripsData = [
     price: "230"
   },
   {
-    img: withPrefix("/img/trips/bali.png"),
+    img: "/img/trips/bali.png",
     title: "Balinese secrets",
     excerpt: "Winter pearl in the heart.",
     rating: "4",
@@ -45,7 +43,7 @@ export const tripsData = [
     price: "1530"
   },
   {
-    img: withPrefix("/img/trips/africa.png"),
+    img: "/img/trips/africa.png",
     title: "African sunsets",
     excerpt: "Winter pearl in the heart of Europe.",
     rating: "3",
@@ -53,7 +51,7 @@ export const tripsData = [
     price: "430"
   },
   {
-    img: withPrefix("/img/trips/paris.png"),
+    img: "/img/trips/paris.png",
     title: "French baguettes",
     excerpt: "Winter pearl in the heart of.",
     rating: "5",
@@ -61,7 +59,7 @@ export const tripsData = [
     price: "50"
   },
   {
-    img: withPrefix("/img/trips/new-york.png"),
+    img: "/img/trips/new-york.png",
     title: "Explore New York 1",
     excerpt: "Winter pearl in the heart of Europe and other stuff here.",
     rating: "5",
@@ -69,7 +67,7 @@ export const tripsData = [
     price: "230"
   },
   {
-    img: withPrefix("/img/trips/bali.png"),
+    img: "/img/trips/bali.png",
     title: "Balinese secrets 1",
     excerpt: "Winter pearl in the heart.",
     rating: "4",
@@ -77,7 +75,7 @@ export const tripsData = [
     price: "1530"
   },
   {
-    img: withPrefix("/img/trips/africa.png"),
+    img: "/img/trips/africa.png",
     title: "African sunsets 1",
     excerpt: "Winter pearl in the heart of Europe.",
     rating: "3",
@@ -88,7 +86,7 @@ export const tripsData = [
 
 export const placesData = [
   {
-    img: withPrefix("/img/places/tallinn.png"),
+    img: "/img/places/tallinn.png",
     title: "Tallinn, Estonia",
     excerpt: "Winter pearl in the heart of Europe and other stuff here.",
     rating: "5",
@@ -96,7 +94,7 @@ export const placesData = [
     price: "230"
   },
   {
-    img: withPrefix("/img/places/tokyo.png"),
+    img: "/img/places/tokyo.png",
     title: "Tokyo, Japan",
     excerpt: "Winter pearl in the heart.",
     rating: "4",
@@ -104,7 +102,7 @@ export const placesData = [
     price: "1530"
   },
   {
-    img: withPrefix("/img/places/london.png"),
+    img: "/img/places/london.png",
     title: "London, Great Britain",
     excerpt: "Winter pearl in the heart of Europe.",
     rating: "3",
@@ -112,7 +110,7 @@ export const placesData = [
     price: "430"
   },
   {
-    img: withPrefix("/img/places/firenze.png"),
+    img: "/img/places/firenze.png",
     title: "Firenze, Italy",
     excerpt: "Winter pearl in the heart of.",
     rating: "5",
@@ -123,7 +121,7 @@ export const placesData = [
 
 export const activitiesData = [
   {
-    img: withPrefix("/img/places/tallinn.png"),
+    img: "/img/places/tallinn.png",
     title: "Bungee jumping",
     location: "Tallinn, Estonia",
     rating: "5",
@@ -131,7 +129,7 @@ export const activitiesData = [
     price: "230"
   },
   {
-    img: withPrefix("/img/places/tokyo.png"),
+    img: "/img/places/tokyo.png",
     title: "Boat trip",
     location: "Milano, Italy",
     rating: "4",
@@ -139,7 +137,7 @@ export const activitiesData = [
     price: "1530"
   },
   {
-    img: withPrefix("/img/places/london.png"),
+    img: "/img/places/london.png",
     title: "Surfing lesson",
     location: "Tallinn, Estonia",
     rating: "3",
@@ -147,7 +145,7 @@ export const activitiesData = [
     price: "430"
   },
   {
-    img: withPrefix("/img/places/firenze.png"),
+    img: "/img/places/firenze.png",
     title: "Diving adventure",
     location: "Tallinn, Estonia",
     rating: "5",
@@ -158,7 +156,7 @@ export const activitiesData = [
 
 export const foodData = [
   {
-    img: withPrefix("/img/food/italian.png"),
+    img: "/img/food/italian.png",
     title: "Italian cuisine",
     excerpt: "Winter pearl in the heart of Europe and other stuff here.",
     rating: "5",
@@ -166,7 +164,7 @@ export const foodData = [
     price: "230"
   },
   {
-    img: withPrefix("/img/food/bbq.png"),
+    img: "/img/food/bbq.png",
     title: "BBQ dinner outside",
     excerpt: "Winter pearl in the heart.",
     rating: "4",
@@ -174,7 +172,7 @@ export const foodData = [
     price: "1530"
   },
   {
-    img: withPrefix("/img/food/mexican.png"),
+    img: "/img/food/mexican.png",
     title: "Mexican stories",
     excerpt: "Winter pearl in the heart of Europe.",
     rating: "3",
@@ -182,7 +180,7 @@ export const foodData = [
     price: "430"
   },
   {
-    img: withPrefix("/img/food/breakfast.png"),
+    img: "/img/food/breakfast.png",
     title: "Healthy morning",
     excerpt: "Winter pearl in the heart of.",
     rating: "5",

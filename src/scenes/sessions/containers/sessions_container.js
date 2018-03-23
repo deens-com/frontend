@@ -14,6 +14,7 @@ class SessionsContainer extends Component {
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.isInputInvalid = this.isInputInvalid.bind(this);
+    this.isLoginError = this.isLoginError.bind(this);
   }
 
   parseLogin = event => {
@@ -76,6 +77,10 @@ class SessionsContainer extends Component {
     return this.state[name + "-error"];
   }
 
+  isLoginError() {
+    return Object.keys(this.props.loginError).includes("code");
+  }
+
   render() {
     return (
       <div className="SessionsContainer">
@@ -88,6 +93,8 @@ class SessionsContainer extends Component {
           handleInputChange={this.handleInputChange}
           validateInput={this.validateInput}
           isInputInvalid={this.isInputInvalid}
+          isLoginError={this.isLoginError}
+          loginError={this.props.loginError}
         />
       </div>
     );
@@ -96,7 +103,8 @@ class SessionsContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    session: state.SessionsReducer.session
+    session: state.SessionsReducer.session,
+    loginError: state.SessionsReducer.loginError
   };
 };
 

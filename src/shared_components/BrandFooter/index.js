@@ -1,22 +1,24 @@
 // NPM
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import Link from 'gatsby-link';
+import React from "react";
+import PropTypes from "prop-types";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 // COMPONENTS
-import { Logo } from '../icons';
-import { Instagram, Twitter, Facebook } from './icons';
+import { Logo } from "../icons";
+import { Instagram, Twitter, Facebook } from "./icons";
 
 // ACTIONS/CONFIG
-import { media } from '../../libs/styled';
+import { media } from "../../libs/styled";
 
 // STYLES
 const Wrapper = styled.footer`
-  padding: ${props => (props.withPadding ? '10px 25px 15px 25px' : '10px 0 15px 0')};
+  padding: ${props =>
+    props.withPadding ? "10px 25px 15px 25px" : "10px 0 15px 0"};
   display: flex;
   flex-direction: column;
-  border-top: 1px solid ${props => (props.withTopBorder ? '#efeff0' : 'transparent')};
+  border-top: 1px solid
+    ${props => (props.withTopBorder ? "#efeff0" : "transparent")};
 
   ${media.minSmall} {
     flex-direction: row;
@@ -81,30 +83,30 @@ export default function Footer({ withTopBorder, withPadding }) {
           <FLink to="/">
             <Facebook
               style={{
-                height: '16px',
-                width: '16px',
-                display: 'block',
-                fill: 'rgb(118, 118, 118)'
+                height: "16px",
+                width: "16px",
+                display: "block",
+                fill: "rgb(118, 118, 118)"
               }}
             />
           </FLink>
           <FLink to="/">
             <Twitter
               style={{
-                height: '16px',
-                width: '16px',
-                display: 'block',
-                fill: 'rgb(118, 118, 118)'
+                height: "16px",
+                width: "16px",
+                display: "block",
+                fill: "rgb(118, 118, 118)"
               }}
             />
           </FLink>
           <FLink to="/">
             <Instagram
               style={{
-                height: '16px',
-                width: '16px',
-                display: 'block',
-                fill: 'rgb(118, 118, 118)'
+                height: "16px",
+                width: "16px",
+                display: "block",
+                fill: "rgb(118, 118, 118)"
               }}
             />
           </FLink>
