@@ -3,8 +3,8 @@ import React from "react";
 import PropTypes from "prop-types";
 
 // COMPONENTS
-import Carousel from "../../../components/Carousel";
-import Tag from "../../../components/Tag";
+import Carousel from "../../../shared_components/Carousel";
+import Tag from "../../../shared_components/Tag";
 
 // ACTIONS/CONFIG
 
@@ -14,7 +14,7 @@ import {
   SectionWrap,
   SectionHeader,
   SectionContent
-} from "../../../components/layout/Page";
+} from "../../../shared_components/layout/Page";
 
 // MODULE
 export default function HomeSectionMood({ tags }) {

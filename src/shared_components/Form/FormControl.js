@@ -22,6 +22,14 @@ const FormGroup = styled.div`
   transition: border-color 0.1s ease-out;
 `;
 
+const FormError = styled.div`
+  position: relative;
+  border: 1px solid ${props => (props.focused ? "#4fb798" : "#eef1f4")};
+  border-radius: 4px;
+  padding: 10px 15px;
+  transition: border-color 0.1s ease-out;
+`;
+
 const InnerWrap = styled.div`
   display: flex;
   align-items: center;

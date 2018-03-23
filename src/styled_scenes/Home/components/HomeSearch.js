@@ -8,8 +8,8 @@ import {
   SearchIcon,
   MicrophoneIcon,
   DateIcon
-} from "../../../components/icons";
-import FormControl from "../../../components/Form/FormControl";
+} from "../../../shared_components/icons";
+import FormControl from "../../../shared_components/Form/FormControl";
 
 // ACTIONS & CONFIG
 import { placeholderMixin, resetButton } from "../../../libs/styled";
