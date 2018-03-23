@@ -1,14 +1,6 @@
 export const categories = [
-  {
-    img: "/img/categories/trips.png",
-    label: "Trips",
-    href: "/trips"
-  },
-  {
-    img: "/img/categories/places.png",
-    label: "Places",
-    href: "/places"
-  },
+  { img: "/img/categories/trips.png", label: "Trips", href: "/trips" },
+  { img: "/img/categories/places.png", label: "Places", href: "/places" },
   {
     img: "/img/categories/activities.png",
     label: "Activities",
