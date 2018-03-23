@@ -8,7 +8,6 @@ class HomeContainer extends Component {
   componentDidMount() {
     this.props.fetch_services();
     this.props.fetch_trips();
-    this.props.fetchPopularPlaces();
   }
 
   render() {
