@@ -109,7 +109,7 @@ export const fetch_trips = () => {
         dispatch(trips_fetched({ trips: responseWithPlaceholderImage }));
       })
       .catch(error => {
-        // TODO dispatch the error to error handler
+        // TODO dispatch the error to error handler and retry the request
         console.log(error);
       });
   };
