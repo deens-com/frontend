@@ -109,7 +109,7 @@ export const fetch_trips = () => {
           // TODO replace dummy rate, reviews, and image once it's ready
           trip.rating = getRandomInt(1, 5);
           trip.reviews = getRandomInt(1, 100);
-          trip.img = "https://placeimg.com/640/480/nature";
+          trip.image = "https://placeimg.com/640/480/nature";
           trip.price = getRandomInt(500, 10000);
           return trip;
         });
@@ -141,7 +141,7 @@ export const fetchPopularPlaces = () => {
           // TODO replace dummy rate, reviews, and image once it's ready
           service.rating = getRandomInt(1, 5);
           service.reviews = getRandomInt(1, 100);
-          service.img = "https://placeimg.com/640/480/arch";
+          service.image = "https://placeimg.com/640/480/arch";
           service.price = getRandomInt(500, 10000);
           return service;
         });
