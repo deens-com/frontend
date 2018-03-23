@@ -109,7 +109,7 @@ const RegistrationsComponent = props => {
                       size="large"
                       onClick={props.onSubmitRegistration}
                     >
-                      Login
+                      Register
                     </Button>
                   </Segment>
                 </Form>
