@@ -17,8 +17,11 @@ const Wrap = styled.div`
   padding: 10px;
   margin-bottom: 50px;
 
-  ${media.minMedium} {
+  ${media.minSmall} {
     display: flex;
+  }
+
+  ${media.minMedium} {
     margin-bottom: 0;
     margin-right: 25px;
   }

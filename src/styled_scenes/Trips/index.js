@@ -12,6 +12,7 @@ import Results from "./components/Results";
 import ToolBar from "./components/ToolBar";
 import Summary from "./components/Summary";
 import MapMaker from "../../components/MapMarker";
+import Button from "../../components/Button";
 
 // ACTIONS/CONFIG
 import { media, sizes } from "../../libs/styled";
@@ -22,9 +23,73 @@ import { trip } from "../../data/trip";
 import { Page, PageContent } from "../../components/layout/Page";
 import { Hr } from "../../components/styledComponents/misc";
 
+const Wrap = styled.div`
+  ${media.minMediumPlus} {
+    display: flex;
+  }
+`;
+
+const LeftWrap = styled.div`
+  width: 100%;
+
+  ${media.minMediumPlus} {
+    width: 42%;
+  }
+`;
+
+const ShareWrap = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 50px 0;
+  color: white;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0), #000000);
+
+  ${media.minMedium} {
+    min-height: 450px;
+    padding: 0;
+  }
+
+  h3 {
+    text-align: center;
+    font-size: 60px;
+  }
+`;
+
+const FirstLine = styled.span`
+  font-size: 40px;
+  display: block;
+`;
+
+const SecondLine = styled.span`
+  font-size: 20px;
+  display: block;
+`;
+
+const DatesWrap = styled.div`
+  margin: 25px 0;
+`;
+
+const ActionsWrap = styled.div`
+  & > div:first-child {
+    margin-right: 15px;
+  }
+`;
+
+const ShareBg = styled.div`
+  position: absolute;
+  background: url(${props => props.url || "#"}) no-repeat;
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+`;
+
 const MapWrapper = styled.div`
-  height: 100vh;
-  width: 42%;
+  height: 450px;
+  width: 100%;
   background: #5cb89e;
   display: flex;
   align-items: center;
@@ -79,33 +144,85 @@ export default class TripsScene extends Component {
     return (
       <Page topPush>
         <TopBar fixed withPadding />
-        <PageContent flex>
-          <Media
-            query={`(min-width: ${sizes.medium})`}
-            render={() => (
-              <MapWrapper>
-                <GoogleMapReact
-                  defaultCenter={{ lat: 59.95, lng: 30.33 }}
-                  defaultZoom={11}
-                >
-                  <MapMaker lat={59.95} lng={30.33} scale={1} color="#4fb798" />
-                  <MapMaker lat={59.96} lng={30.34} scale={1} color="#4fb798" />
-                  <MapMaker lat={59.96} lng={30.3} scale={1} color="#4fb798" />
-                  <MapMaker lat={59.97} lng={30.31} scale={1} color="#4fb798" />
-                </GoogleMapReact>
-              </MapWrapper>
-            )}
-          />
-          <TripWrapper>
-            <ToolBar
-              onSubmit={this.onSubmit}
-              onValueChange={this.onValueChange}
-              state={this.state}
-            />
-            <Results showDetails={this.state.details} />
-            <Hr />
-            <Summary data={trip} />
-          </TripWrapper>
+        <PageContent>
+          <Wrap>
+            <LeftWrap>
+              <ShareWrap>
+                <h3>
+                  <FirstLine>My trip</FirstLine>
+                  <SecondLine>to</SecondLine>New York
+                </h3>
+                <DatesWrap>
+                  <p>10 Dec 2017 - 12 Dec 2017</p>
+                </DatesWrap>
+                <ActionsWrap>
+                  <Button
+                    onClick={ev => {
+                      alert("adding trip");
+                    }}
+                    type="button"
+                    text="Share the trip"
+                    iconAfter="arrowDown"
+                  />
+                  <Button
+                    onClick={ev => {
+                      alert("adding trip");
+                    }}
+                    type="button"
+                    text="Print"
+                    theme="whiteTransparent"
+                  />
+                </ActionsWrap>
+                <ShareBg url="/img/food/mamamia.jpg" />
+              </ShareWrap>
+              <Media
+                query={`(min-width: ${sizes.medium})`}
+                render={() => (
+                  <MapWrapper>
+                    <GoogleMapReact
+                      defaultCenter={{ lat: 59.95, lng: 30.33 }}
+                      defaultZoom={11}
+                    >
+                      <MapMaker
+                        lat={59.95}
+                        lng={30.33}
+                        scale={1}
+                        color="#4fb798"
+                      />
+                      <MapMaker
+                        lat={59.96}
+                        lng={30.34}
+                        scale={1}
+                        color="#4fb798"
+                      />
+                      <MapMaker
+                        lat={59.96}
+                        lng={30.3}
+                        scale={1}
+                        color="#4fb798"
+                      />
+                      <MapMaker
+                        lat={59.97}
+                        lng={30.31}
+                        scale={1}
+                        color="#4fb798"
+                      />
+                    </GoogleMapReact>
+                  </MapWrapper>
+                )}
+              />
+            </LeftWrap>
+            <TripWrapper>
+              <ToolBar
+                onSubmit={this.onSubmit}
+                onValueChange={this.onValueChange}
+                state={this.state}
+              />
+              <Results showDetails={this.state.details} />
+              <Hr />
+              <Summary data={trip} />
+            </TripWrapper>
+          </Wrap>
         </PageContent>
         <BrandFooter withTopBorder withPadding />
       </Page>

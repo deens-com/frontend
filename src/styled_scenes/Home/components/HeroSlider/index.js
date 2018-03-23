@@ -7,7 +7,7 @@ import styled from "styled-components";
 import back from "./img/back.jpg";
 import jump from "./img/jump.jpg";
 import mountain from "./img/mountain.jpg";
-import { ArrowIcon } from "../../../../shared_components/icons";
+import { ArrowIcon } from "../../../../components/icons";
 import SliderPerson from "./SliderPerson";
 
 // ACTIONS/CONFIG

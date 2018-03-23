@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 // COMPONENTS
-import Row from "../../../../shared_components/layout/Row";
-import Col from "../../../../shared_components/layout/Col";
+import Row from "../../../../components/layout/Row";
+import Col from "../../../../components/layout/Col";
 
 // ACTIONS/CONFIG
 import { footer } from "../../../../data/footer";

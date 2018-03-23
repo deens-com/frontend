@@ -7,6 +7,7 @@ import Media from "react-media";
 
 // COMPONENTS
 import Select from "../../Form/controls/Select";
+import FlagSelect from "../../FlagSelect";
 
 // ACTIONS/CONFIG
 import { sizes } from "../../../libs/styled";
@@ -58,6 +59,27 @@ const InnerList = styled.ul`
   .Select-menu-outer {
     top: 100%;
   }
+
+  .flag-select {
+    padding: 12px 0;
+    width: 100%;
+
+    .selected--flag--option {
+      padding: 0;
+    }
+
+    .arrow-down {
+      position: absolute;
+      right: 8px;
+      padding-right: 5px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .flag-options {
+      width: 100%;
+    }
+  }
 `;
 
 const NavLink = styled(Link)`
@@ -105,12 +127,21 @@ export default function MobileNav({ menuIsOpened, language, currency }) {
               <Divider />
             </li>
             <li>
-              <Select
-                onChange={val => {
-                  console.log(val);
+              <FlagSelect
+                countries={["US", "GB", "FR", "DE", "IT"]}
+                customLabels={{
+                  US: "EN-US",
+                  GB: "EN-GB",
+                  FR: "FR",
+                  DE: "DE",
+                  IT: "IT"
                 }}
-                value="eng"
-                options={languages}
+                placeholder="Select Language"
+                showSelectedLabel={false}
+                defaultCountry="US"
+                onSelect={countryCode => {
+                  console.log(countryCode);
+                }}
               />
             </li>
             <li>
@@ -126,10 +157,10 @@ export default function MobileNav({ menuIsOpened, language, currency }) {
               <Divider />
             </li>
             <li>
-              <NavLink to="/register">Sign up</NavLink>
+              <NavLink to="/sign-in">Sign up</NavLink>
             </li>
             <li>
-              <NavLink to="/login">Log in</NavLink>
+              <NavLink to="/log-in">Log in</NavLink>
             </li>
           </InnerList>
         </Wrap>

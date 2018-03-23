@@ -5,20 +5,20 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 // COMPONENTS
-import Row from "../../../shared_components/layout/Row";
-import Col from "../../../shared_components/layout/Col";
-import { ArrowIcon } from "../../../shared_components/icons";
+import Row from "../../../components/layout/Row";
+import Col from "../../../components/layout/Col";
+import { ArrowIcon } from "../../../components/icons";
 
 // ACTIONS/CONFIG
 
 // STYLES
-import { Cart } from "../../../shared_components/Carts/styles";
+import { Cart } from "../../../components/Carts/styles";
 import {
   PageWrapper,
   SectionWrap,
   SectionHeader,
   SectionContent
-} from "../../../shared_components/layout/Page";
+} from "../../../components/layout/Page";
 
 const CategoryThumb = styled.div`
   height: 88px;

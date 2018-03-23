@@ -59,7 +59,7 @@ export default function TripCart({ item, withTooltip, href }) {
     <Wrap>
       <Cart column>
         <Thumb
-          url={item.image}
+          url={item.img}
           tripCount={item.partOf}
           withTooltip={withTooltip}
         />
@@ -84,13 +84,13 @@ export default function TripCart({ item, withTooltip, href }) {
 // Props Validation
 TripCart.propTypes = {
   item: PropTypes.shape({
-    image: PropTypes.string.isRequired,
+    img: PropTypes.string,
     partof: PropTypes.number,
-    title: PropTypes.string.isRequired,
+    title: PropTypes.string,
     excerpt: PropTypes.string,
-    rating: PropTypes.number,
-    reviews: PropTypes.number,
-    price: PropTypes.number
+    rating: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    review: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    price: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
   }),
   withTooltip: PropTypes.bool,
   href: PropTypes.string,

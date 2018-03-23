@@ -18,7 +18,7 @@ const Wrap = styled.div`
   padding: 10px;
   height: 65px;
   display: flex;
-  position: fixed;
+  // position: fixed;
   background: #ffffff;
   width: 100%;
   z-index: 18;

@@ -46,10 +46,9 @@ const Overflow = styled.div`
       `};
   }
 `;
-
 // &:before,
 // &:after {
-//   content: "";
+//   content: '';
 //   display: none;
 //   width: ${props => carouselSizes[props.size].cornerWidth};
 //   height: 100%;
@@ -58,22 +57,22 @@ const Overflow = styled.div`
 //   top: 0;
 //   bottom: 0;
 //   transition: background 0.1s;
-//
+
 //   ${media.minLarge} {
 //     display: block;
 //   }
 // }
-//
+
 // &:before {
 //   left: ${props => carouselSizes[props.size].cornerPosition};
 //   background: white;
 // }
-//
+
 // &:after {
 //   right: ${props => carouselSizes[props.size].cornerPosition};
 //   background: white;
 // }
-//
+
 // ${props =>
 //   props.inTransition &&
 //   css`
@@ -85,7 +84,7 @@ const Overflow = styled.div`
 //         rgba(255, 255, 255, 0) 100%
 //       );
 //     }
-//
+
 //     &:after {
 //       background: linear-gradient(
 //         to left,

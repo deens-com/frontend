@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 
 // COMPONENTS
-import Button from "../../../shared_components/Button";
+import Button from "../../../components/Button";
 import SliderPerson from "./HeroSlider/SliderPerson";
 import hands from "../components/HeroSlider/img/hands.jpg";
 
@@ -12,7 +12,7 @@ import hands from "../components/HeroSlider/img/hands.jpg";
 import { media } from "../../../libs/styled";
 
 // STYLES
-import { PageWrapper } from "../../../shared_components/layout/Page";
+import { PageWrapper } from "../../../components/layout/Page";
 
 const Wrap = styled.div`
   color: white;

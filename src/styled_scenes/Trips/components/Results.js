@@ -20,11 +20,11 @@ import { tripsData } from "../../../data/home";
 import { Highlight, Header } from "./styles";
 
 const Wrap = styled.div`
-  padding: 95px 10px 10px;
+  padding: 45px 10px 10px;
 
-  ${media.minSMall} {
-    padding-top: 115px;
-  }
+  // ${media.minSMall} {
+  //   padding-top: 115px;
+  // }
 
   ${media.minMedium} {
     padding: 25px;

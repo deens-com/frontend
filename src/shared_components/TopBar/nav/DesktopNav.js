@@ -8,6 +8,7 @@ import Media from "react-media";
 // COMPONENTS
 import Button from "../../Button";
 import Select from "../../Form/controls/Select";
+import FlagSelect from "../../FlagSelect";
 
 // ACTIONS/CONFIG
 import { sizes } from "../../../libs/styled";
@@ -112,13 +113,21 @@ export default function TopBarDesktopNav({ home, language, currency }) {
             ))}
           </Nav>
           <ActionsWrap>
-            <Select
-              onChange={val => {
-                console.log(val);
+            <FlagSelect
+              countries={["US", "GB", "FR", "DE", "IT"]}
+              customLabels={{
+                US: "EN-US",
+                GB: "EN-GB",
+                FR: "FR",
+                DE: "DE",
+                IT: "IT"
               }}
-              value="eng"
-              options={languages}
-              theme={home ? "light" : "inherit"}
+              placeholder="Select Language"
+              showSelectedLabel={false}
+              defaultCountry="US"
+              onSelect={countryCode => {
+                console.log(countryCode);
+              }}
             />
             <Select
               onChange={val => {
@@ -136,7 +145,7 @@ export default function TopBarDesktopNav({ home, language, currency }) {
               theme="mainFilled"
               round
               size="small"
-              href="/register"
+              href="/signup"
             >
               Sign up
             </Button>

@@ -37,8 +37,6 @@ export default function FoodResutls({ data }) {
         {data.map(result => (
           <TripCart
             key={result.label}
-            smBasis="50%"
-            mdBasis="33.33%"
             withTooltip
             withShadow
             item={result}

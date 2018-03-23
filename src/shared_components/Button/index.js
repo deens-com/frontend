@@ -37,7 +37,7 @@ const colors = {
   gray: "#d3d7dc"
 };
 
-const theme = {
+export const theme = {
   mainFilled: {
     background: colors.green,
     backgroundHover: colors.greenActive,
@@ -80,7 +80,7 @@ const theme = {
   }
 };
 
-const Wrap = styled.div`
+export const Wrap = styled.div`
   display: inline-block;
 
   > button,
@@ -122,11 +122,11 @@ const Wrap = styled.div`
   }
 `;
 
-const Btn = styled.button`
+export const Btn = styled.button`
   ${resetButton()} height: 100%;
 `;
 
-const IconBefore = styled.span`
+export const IconBefore = styled.span`
   margin-right: 5px;
   display: inline-block;
   width: 12px;
@@ -134,7 +134,7 @@ const IconBefore = styled.span`
   top: 1px;
 `;
 
-const IconAfter = styled.span`
+export const IconAfter = styled.span`
   margin-left: 5px;
   display: inline-block;
   width: 12px;
@@ -238,7 +238,7 @@ Button.propTypes = {
 Button.defaultProps = {
   theme: "mainFilled",
   type: "button",
-  round: false,
+  round: true,
   size: "small",
   align: "left",
   width: "100%",

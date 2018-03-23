@@ -7,12 +7,12 @@ import styled from "styled-components";
 import { ArrowIcon } from "../../../../../components/icons";
 
 // ACTIONS/CONFIG
+import { media } from "../../../../../libs/styled";
 
 // STYLES
 const Wrap = styled.div`
-  height: 100vh;
-  max-height: 800px;
-  width: 42%;
+  max-height: 400px;
+  margin-bottom: 50px;
   background: #eee;
   overflow: hidden;
   display: flex;
@@ -20,53 +20,58 @@ const Wrap = styled.div`
   justify-content: center;
   position: relative;
 
+  ${media.minLarge} {
+    height: 100vh;
+    width: 42%;
+    max-height: 800px;
+  }
+
   img {
     height: 100%;
   }
 `;
 
 const LeftArrow = styled.span`
-  display: block;
   border-radius: 50px;
-  width: 30px;
+  color: white;
+  cursor: pointer;
+  display: block;
+  font-size: 20px;
   height: 30px;
-  position: absolute;
   left: 35px;
+  position: absolute;
   top: 50%;
   transform: translateY(-50%) scale(1);
-  cursor: pointer;
-  z-index: 2;
   transition: transform 0.15s ease-in;
+  width: 30px;
+  z-index: 2;
 
   &:hover {
     transform: translateY(-50%) scale(1.1);
   }
 
   svg {
-    fill: white;
     transform: rotate(180deg);
   }
 `;
 
 const RightArrow = styled.span`
-  display: block;
   border-radius: 50px;
-  width: 30px;
+  color: white;
+  cursor: pointer;
+  display: block;
+  font-size: 20px;
   height: 30px;
   position: absolute;
   right: 35px;
   top: 50%;
   transform: translateY(-50%) scale(1);
-  cursor: pointer;
-  z-index: 2;
   transition: transform 0.15s ease-in;
+  width: 30px;
+  z-index: 2;
 
   &:hover {
     transform: translateY(-50%) scale(1.1);
-  }
-
-  svg {
-    fill: white;
   }
 `;
 

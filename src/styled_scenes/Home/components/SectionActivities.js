@@ -4,8 +4,8 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 // COMPONENTS
-import Carousel from "../../../shared_components/Carousel";
-import LocationCart from "../../../shared_components/Carts/Location";
+import Carousel from "../../../components/Carousel";
+import LocationCart from "../../../components/Carts/Location";
 
 // ACTIONS/CONFIG
 
@@ -16,7 +16,7 @@ import {
   SectionHeader,
   SectionContent,
   More
-} from "../../../shared_components/layout/Page";
+} from "../../../components/layout/Page";
 
 // MODULE
 export default function HomeSectionLocations({ locations }) {

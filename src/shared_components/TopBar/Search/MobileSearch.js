@@ -7,7 +7,7 @@ import Media from "react-media";
 // COMPONENTS
 import Button from "../../Button";
 // COMMENT: the homeSearch is just for the time being
-import HomeSearch from "../../../styled_scenes/Home/components/HomeSearch";
+import HomeSearch from "../../../scenes/Home/components/HomeSearch";
 
 // ACTIONS/CONFIG
 import { sizes, media } from "../../../libs/styled";

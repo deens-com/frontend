@@ -285,6 +285,10 @@ export default function FoodDetailScene({}) {
               />
             </ButtonsWrap>
           </ActionWrap>
+          <Media
+            query={`(max-width: ${sizes.large})`}
+            render={() => <ImgSlider images={restaurant.images} />}
+          />
           <ContactWrap>
             <MapWrap>
               <GoogleMapReact
