@@ -67,10 +67,9 @@ export const fetch_services = () => {
     query
       .find()
       .then(response => {
-        let str_services = JSON.stringify(response);
-        let json_services = JSON.parse(str_services);
-        dispatch(services_fetched({ services: json_services }));
-        dispatch(retrieve_popular_tags({ services: json_services }));
+        const convertedResponse = normalizeParseResponseData(response);
+        dispatch(services_fetched({ services: convertedResponse }));
+        dispatch(retrieve_popular_tags({ services: convertedResponse }));
       })
       .catch(error => {
         console.log(error);
