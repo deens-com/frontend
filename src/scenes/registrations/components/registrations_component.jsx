@@ -85,7 +85,7 @@ const RegistrationsComponent = props => {
                       onChange={props.handleInputChange}
                       onBlur={props.validateInput}
                       error={props.isInputInvalid("password")}
-                      minLength={8}
+                      minLength={6}
                       required
                     />
                     <Form.Input
@@ -99,7 +99,7 @@ const RegistrationsComponent = props => {
                       onChange={props.handleInputChange}
                       onBlur={props.validateInput}
                       error={props.isInputInvalid("password")}
-                      minLength={8}
+                      minLength={6}
                       required
                     />
 

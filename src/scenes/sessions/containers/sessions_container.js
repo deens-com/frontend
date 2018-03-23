@@ -45,7 +45,7 @@ class SessionsContainer extends Component {
   validatePasswordInput(target) {
     const { name, value } = target;
 
-    if (name === "password" && value.length < 8) {
+    if (name === "password" && value.length < 6) {
       return this.setState({
         [`${name}-error`]: true
       });

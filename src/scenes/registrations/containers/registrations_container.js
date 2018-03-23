@@ -29,7 +29,7 @@ class RegistrationsContainer extends Component {
 
   validatePasswordInput(target) {
     const { name, value } = target;
-    if (name === "password" && value.length < 8) {
+    if (name === "password" && value.length < 6) {
       return this.setState({
         [`${name}-error`]: true
       });
@@ -63,7 +63,7 @@ class RegistrationsContainer extends Component {
       this.setState({ errors: { message: "Password does not match" } });
       return;
     }
-    if (this.state.password.length <= 6) {
+    if (this.state.password.length < 6) {
       this.setState({
         errors: { message: "Password must be at least 6 characters long" }
       });
