@@ -145,7 +145,7 @@ export default function TopBarDesktopNav({ home, language, currency }) {
               theme="mainFilled"
               round
               size="small"
-              href="/signup"
+              href="/register"
             >
               Sign up
             </Button>

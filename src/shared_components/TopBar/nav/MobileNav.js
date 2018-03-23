@@ -157,10 +157,10 @@ export default function MobileNav({ menuIsOpened, language, currency }) {
               <Divider />
             </li>
             <li>
-              <NavLink to="/sign-in">Sign up</NavLink>
+              <NavLink to="/register">Sign up</NavLink>
             </li>
             <li>
-              <NavLink to="/log-in">Log in</NavLink>
+              <NavLink to="/login">Log in</NavLink>
             </li>
           </InnerList>
         </Wrap>
