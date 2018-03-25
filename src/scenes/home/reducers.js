@@ -22,7 +22,7 @@ export default function homeReducer(state = initialState, action = {}) {
         ...state,
         tags: action.payload
       };
-    case "POPULAR_PLACES_FETCHED":
+    case "POPULAR_PLACES_RETRIEVED":
       return {
         ...state,
         popularPlaces: action.payload.popularPlaces

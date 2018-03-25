@@ -149,7 +149,7 @@ export const fetchPopularPlaces = payload => {
     .splice(0, 4);
 
   return {
-    type: "POPULAR_PLACES_FETCHED",
+    type: "POPULAR_PLACES_RETRIEVED",
     payload: {
       popularPlaces: filteredServices
     }
