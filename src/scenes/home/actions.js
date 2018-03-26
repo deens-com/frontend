@@ -90,6 +90,7 @@ export const fetch_services = () => {
         dispatch(retrieveServicePictures({ services: convertedResponse }));
       },
       error => {
+        // TODO dispatch the error to error handler and retry the request
         console.log(error);
       }
     );
@@ -103,9 +104,8 @@ export const fetch_trips = () => {
     query.descending("createdAt");
     query.equalTo("status", "public");
     query.limit(4);
-    query
-      .find()
-      .then(response => {
+    query.find().then(
+      response => {
         const convertedResponse = normalizeParseResponseData(response);
         const responseWithPlaceholderImage = convertedResponse.map(trip => {
           trip.excerpt = trip.description;
@@ -117,11 +117,12 @@ export const fetch_trips = () => {
           return trip;
         });
         dispatch(trips_fetched({ trips: responseWithPlaceholderImage }));
-      })
-      .catch(error => {
+      },
+      error => {
         // TODO dispatch the error to error handler and retry the request
         console.log(error);
-      });
+      }
+    );
   };
 };
 
