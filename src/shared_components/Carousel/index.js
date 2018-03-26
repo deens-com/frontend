@@ -161,13 +161,7 @@ const ButtonRight = Button.extend`
 export default class Carousel extends Component {
   constructor(props) {
     super(props);
-    const propsPages = Math.ceil(props.length / Number(props.show));
-    const remainingEls = props.length % Number(props.show);
-    const pages =
-      props.withLoader && remainingEls === 0 ? propsPages + 1 : propsPages;
-
     this.state = {
-      pages: pages,
       index: 1,
       inTransition: false
     };
@@ -206,6 +200,11 @@ export default class Carousel extends Component {
         return child;
       }
     );
+
+    const propsPages = Math.ceil(this.props.length / Number(this.props.show));
+    const remainingEls = this.props.length % Number(this.props.show);
+    const pages =
+      this.props.withLoader && remainingEls === 0 ? propsPages + 1 : propsPages;
 
     return (
       <Wrap shadowInside={this.props.shadowInside}>
@@ -247,7 +246,7 @@ export default class Carousel extends Component {
             />
           </ButtonLeft>
         )}
-        {this.state.index < this.state.pages && (
+        {this.state.index < pages && (
           <ButtonRight
             position="right"
             onClick={this.moveRight}
