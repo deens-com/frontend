@@ -84,7 +84,7 @@ export default function TripCart({ item, withTooltip, href }) {
 // Props Validation
 TripCart.propTypes = {
   item: PropTypes.shape({
-    img: PropTypes.string,
+    image: PropTypes.string,
     partof: PropTypes.number,
     title: PropTypes.string,
     excerpt: PropTypes.string,

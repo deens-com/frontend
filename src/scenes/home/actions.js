@@ -14,6 +14,13 @@ export const trips_fetched = trips => {
   };
 };
 
+export const popularPlacesFetched = popularPlaces => {
+  return {
+    type: "POPULAR_PLACES_FETCHED",
+    payload: popularPlaces
+  };
+};
+
 const bgColors = ["#7bbed6", "#82689a", "#75c1a5", "#ed837f", "#ffb777"];
 const hoverBgColors = ["#84c5dd", "#9379ab", "#76caac", "#eb8e8a", "#ffc089"];
 
@@ -33,6 +40,15 @@ const getRandomInt = (min, max) => {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+const sortServicesByCreationDateDesc = (service1, service2) => {
+  const date1Object = new Date(service1.createdAt);
+  const date2Object = new Date(service2.createdAt);
+  if (date1Object > date2Object) return -1;
+  if (date1Object < date2Object) return 1;
+
+  return 0;
 };
 
 export const retrieve_popular_tags = services => {
@@ -79,6 +95,7 @@ export const fetch_services = () => {
         const convertedResponse = normalizeParseResponseData(response);
         dispatch(services_fetched({ services: convertedResponse }));
         dispatch(retrieve_popular_tags({ services: convertedResponse }));
+        dispatch(fetchPopularPlaces({ services: convertedResponse }));
       })
       .catch(error => {
         console.log(error);
@@ -112,5 +129,29 @@ export const fetch_trips = () => {
         // TODO dispatch the error to error handler and retry the request
         console.log(error);
       });
+  };
+};
+
+export const fetchPopularPlaces = payload => {
+  const filteredServices = payload.services
+    .filter(service => service.type === "place")
+    .map(service => {
+      service.excerpt = service.description;
+      service.title = service.name;
+      // TODO replace dummy rate, reviews, and image once it's ready
+      service.rating = getRandomInt(1, 5);
+      service.reviews = getRandomInt(1, 100);
+      service.image = "https://placeimg.com/640/480/arch";
+      service.price = getRandomInt(500, 10000);
+      return service;
+    })
+    .sort(sortServicesByCreationDateDesc)
+    .splice(0, 4);
+
+  return {
+    type: "POPULAR_PLACES_RETRIEVED",
+    payload: {
+      popularPlaces: filteredServices
+    }
   };
 };

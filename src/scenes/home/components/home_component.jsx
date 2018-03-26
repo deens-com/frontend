@@ -24,8 +24,6 @@ import SectionTrips from "./../../../styled_scenes/Home/components/SectionTrips"
 import {
   categories,
   tags,
-  tripsData,
-  placesData,
   activitiesData,
   foodData
 } from "./../../../data/home";
@@ -111,7 +109,7 @@ const HomeComponent = props => {
         <SectionHappy categories={categories} />
         <SectionMood tags={props.tags} />
         <SectionTrips trips={props.trips} />
-        <SectionPlaces trips={placesData} />
+        <SectionPlaces trips={props.popularPlaces} />
         <SectionActivities locations={activitiesData} />
         <SubHero />
         <SectionFood foods={foodData} />

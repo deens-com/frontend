@@ -35,7 +35,7 @@ export default function HomeSectionPlaces({ trips }) {
               <TripCart
                 item={item}
                 withShadow
-                key={item.title}
+                key={item.objectId}
                 xsBasis="50%"
                 mdBasis="25%"
               />
