@@ -91,7 +91,7 @@ const HomeComponent = props => {
         <PageWrapper>
           <TopBar home noSearch />
           <HomeTagLine>
-            <span>Rewarding</span> Experiences
+            <span style={{ top: "-75px" }}>Rewarding</span> Experiences
           </HomeTagLine>
           <HomeSearch />
         </PageWrapper>
