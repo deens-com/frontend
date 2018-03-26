@@ -149,47 +149,57 @@ export const retrievePopularPlaces = payload => {
   };
 };
 
+const getImage = async service => {
+  let ServicePicture = Parse.Object.extend("ServicePicture");
+  let query = new Parse.Query(ServicePicture);
+  query.equalTo("service", {
+    __type: "Pointer",
+    className: "Service",
+    objectId: service.objectId
+  });
+  query.limit(1);
+  let pictures = await query.find();
+  pictures = [...pictures];
+  const [picture] = pictures;
+
+  return {
+    serviceId: service.objectId,
+    url: picture.get("picture").url()
+  };
+};
+
+const addPictureToService = (services, servicePictures) => {
+  return services.map(service => {
+    const servicePicture = servicePictures.filter(
+      servicePicture => servicePicture.serviceId === service.objectId
+    );
+    const [pictureObject] = servicePicture;
+    service.image = pictureObject.url;
+
+    return service;
+  });
+};
+
+const getImages = async services => {
+  const getImageRequest = services.map(service => getImage(service));
+  return await Promise.all(getImageRequest);
+};
+
 export const retrieveServicePictures = payload => {
   return async dispatch => {
-    const getImage = async service => {
-      let ServicePicture = Parse.Object.extend("ServicePicture");
-      let query = new Parse.Query(ServicePicture);
-      query.equalTo("service", {
-        __type: "Pointer",
-        className: "Service",
-        objectId: service.objectId
-      });
-      query.limit(1);
-      let pictures = await query.find();
-      pictures = [...pictures];
-      const [picture] = pictures;
+    const servicePictures = await getImages(payload.services);
+    const serviceObjectsWithPictures = addPictureToService(
+      payload.services,
+      servicePictures
+    );
 
-      return {
-        serviceId: service.objectId,
-        url: picture.get("picture").url()
-      };
-    };
-
-    const getImageRequest = payload.services.map(service => getImage(service));
-    const servicePictures = await Promise.all(getImageRequest);
-
-    const newServices = payload.services.map(service => {
-      const servicePicture = servicePictures.filter(
-        servicePicture => servicePicture.serviceId === service.objectId
-      );
-      const [pictureObject] = servicePicture;
-      service.image = pictureObject.url;
-
-      return service;
-    });
-
-    dispatch(retrievePopularPlaces({ services: newServices }));
+    dispatch(retrievePopularPlaces({ services: serviceObjectsWithPictures }));
 
     return {
       type: "SERVICE_PICTURES_FETCHED",
       payload: {
         status: "success",
-        services: newServices
+        services: serviceObjectsWithPictures
       }
     };
   };
