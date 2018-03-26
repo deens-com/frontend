@@ -89,6 +89,7 @@ export const fetch_services = () => {
         dispatch(services_fetched({ services: convertedResponse }));
         dispatch(retrieve_popular_tags({ services: convertedResponse }));
         dispatch(retrievePopularPlaces({ services: convertedResponse }));
+        dispatch(retrieveServicePictures({ services: convertedResponse }));
       })
       .catch(error => {
         console.log(error);
@@ -131,10 +132,9 @@ export const retrievePopularPlaces = payload => {
     .map(service => {
       service.excerpt = service.description;
       service.title = service.name;
-      // TODO replace dummy rate, reviews, and image once it's ready
+      // TODO replace dummy rate, reviews, once it's ready
       service.rating = getRandomInt(1, 5);
       service.reviews = getRandomInt(1, 100);
-      service.image = "https://placeimg.com/640/480/arch";
       service.price = getRandomInt(500, 10000);
       return service;
     })
@@ -145,6 +145,50 @@ export const retrievePopularPlaces = payload => {
     type: "POPULAR_PLACES_RETRIEVED",
     payload: {
       popularPlaces: filteredServices
+    }
+  };
+};
+
+export const retrieveServicePictures = async payload => {
+  const getImage = async service => {
+    let ServicePicture = Parse.Object.extend("ServicePicture");
+    let query = new Parse.Query(ServicePicture);
+    query.equalTo("service", {
+      __type: "Pointer",
+      className: "Service",
+      objectId: service.objectId
+    });
+    query.limit(1);
+    let pictures = await query.find();
+    pictures = [...pictures];
+    const [picture] = pictures;
+
+    return {
+      serviceId: service.objectId,
+      url: picture.get("picture").url()
+    };
+  };
+
+  const getImageRequest = payload.services.map(service => getImage(service));
+  const servicePictures = await Promise.all(getImageRequest);
+
+  const newServices = payload.services.map(service => {
+    const servicePicture = servicePictures.filter(
+      servicePicture => servicePicture.serviceId === service.objectId
+    );
+    const [pictureObject] = servicePicture;
+    service.image = pictureObject.url;
+
+    return service;
+  });
+
+  console.log("newServices");
+  console.dir(newServices);
+
+  return {
+    type: "SERVICE_PICTURES_FETCHED",
+    payload: {
+      services: newServices
     }
   };
 };

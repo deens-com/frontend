@@ -27,6 +27,11 @@ export default function homeReducer(state = initialState, action = {}) {
         ...state,
         popularPlaces: action.payload.popularPlaces
       };
+    case "SERVICE_PICTURES_FETCHED":
+      return {
+        ...state,
+        services: action.payload.services
+      };
     default:
       return state;
   }
