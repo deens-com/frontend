@@ -89,6 +89,7 @@ export const fetch_services = () => {
         dispatch(services_fetched({ services: convertedResponse }));
         dispatch(retrieve_popular_tags({ services: convertedResponse }));
         dispatch(retrievePopularPlaces({ services: convertedResponse }));
+        dispatch(retrieveExcitingActivities({ services: convertedResponse }));
       })
       .catch(error => {
         console.log(error);
@@ -145,6 +146,47 @@ export const retrievePopularPlaces = payload => {
     type: "POPULAR_PLACES_RETRIEVED",
     payload: {
       popularPlaces: filteredServices
+    }
+  };
+};
+
+export const retrieveExcitingActivities = payload => {
+  const filteredServices = payload.services
+    .filter(service => service.type === "activity")
+    .map(service => {
+      service.excerpt = service.description;
+      service.title = service.name;
+      // TODO replace dummy rate, reviews, and image once it's ready
+      service.location = "City, Country";
+      service.rating = getRandomInt(1, 5);
+      service.reviews = getRandomInt(1, 100);
+      // service.image = "https://placeimg.com/640/480/arch";
+      service.price = getRandomInt(500, 10000);
+      return service;
+    })
+    .map(service => {
+      let ServicePicture = Parse.Object.extend("ServicePicture");
+      let query = new Parse.Query(ServicePicture);
+      query.equalTo("service", {
+        __type: "Pointer",
+        className: "Service",
+        objectId: service.objectId
+      });
+      query.find().then(function(pictures) {
+        if (pictures && !pictures.length) {
+          return;
+        }
+        service.image = pictures[0].get("picture").url();
+      });
+      return service;
+    })
+    .sort(sortServicesByCreationDateDesc)
+    .splice(0, 4);
+
+  return {
+    type: "EXCITING_ACTIVITIES_RETRIEVED",
+    payload: {
+      exciting_activities: filteredServices
     }
   };
 };
