@@ -14,13 +14,6 @@ export const trips_fetched = trips => {
   };
 };
 
-export const popularPlacesFetched = popularPlaces => {
-  return {
-    type: "POPULAR_PLACES_FETCHED",
-    payload: popularPlaces
-  };
-};
-
 const bgColors = ["#7bbed6", "#82689a", "#75c1a5", "#ed837f", "#ffb777"];
 const hoverBgColors = ["#84c5dd", "#9379ab", "#76caac", "#eb8e8a", "#ffc089"];
 
@@ -95,7 +88,7 @@ export const fetch_services = () => {
         const convertedResponse = normalizeParseResponseData(response);
         dispatch(services_fetched({ services: convertedResponse }));
         dispatch(retrieve_popular_tags({ services: convertedResponse }));
-        dispatch(fetchPopularPlaces({ services: convertedResponse }));
+        dispatch(retrievePopularPlaces({ services: convertedResponse }));
       })
       .catch(error => {
         console.log(error);
@@ -132,7 +125,7 @@ export const fetch_trips = () => {
   };
 };
 
-export const fetchPopularPlaces = payload => {
+export const retrievePopularPlaces = payload => {
   const filteredServices = payload.services
     .filter(service => service.type === "place")
     .map(service => {
