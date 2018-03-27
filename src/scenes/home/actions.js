@@ -234,7 +234,7 @@ export const async_retrieve_delicious_foods = async payload => {
   let services_filtered = await Promise.all(
     filteredServices.map(async service => {
       let picture = await get_service_image(service);
-      service.img = picture;
+      service.image = picture;
       return service;
     })
   );
