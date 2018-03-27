@@ -17,9 +17,8 @@ import { sizes, media } from "../../../libs/styled";
 const Wrap = styled.div`
   border-bottom: 1px solid #eef1f4;
   padding: 10px;
-  height: 65px;
+  // height: 65px;
   display: flex;
-  // position: fixed;
   background: #ffffff;
   width: 100%;
   z-index: 18;
@@ -48,16 +47,18 @@ const Wrap = styled.div`
 // MODULE
 export default function ToolBar({ state, onSubmit, onValueChange }) {
   return (
-    <Wrap>
-      <Media query={`(max-width: ${sizes.small})`}>
-        {matches =>
-          matches ? (
+    <Media query={`(max-width: ${sizes.small})`}>
+      {matches =>
+        matches ? (
+          <Wrap mobile>
             <MobileFilter
               state={state}
               onSubmit={onSubmit}
               onValueChange={onValueChange}
             />
-          ) : (
+          </Wrap>
+        ) : (
+          <Wrap>
             <Form display="flex" onSubmit={onSubmit}>
               <FormControl
                 onChange={value => {
@@ -96,10 +97,10 @@ export default function ToolBar({ state, onSubmit, onValueChange }) {
                 leftIcon="person"
               />
             </Form>
-          )
-        }
-      </Media>
-    </Wrap>
+          </Wrap>
+        )
+      }
+    </Media>
   );
 }
 
