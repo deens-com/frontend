@@ -98,6 +98,7 @@ export const fetch_services = () => {
           services: convertedResponse
         });
         dispatch(retrieve_delicious_food(delicious_foods));
+        dispatch(retrievePopularPlaces({ services: convertedResponse }));
       })
       .catch(error => {
         console.log(error);
