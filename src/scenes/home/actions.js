@@ -120,9 +120,9 @@ export const fetch_trips = () => {
         const responseWithPlaceholderImage = convertedResponse.map(trip => {
           trip.excerpt = trip.description;
           // TODO replace dummy rate, reviews, and image once it's ready
-          trip.rating = getRandomInt(1, 5);
+          trip.rating = trip.rating;
           trip.reviews = getRandomInt(1, 100);
-          trip.image = "https://placeimg.com/640/480/nature";
+          trip.image = trip.picture.url;
           trip.price = getRandomInt(500, 10000);
           return trip;
         });
