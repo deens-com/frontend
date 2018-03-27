@@ -23,6 +23,15 @@ export const retrieve_exciting_activities = activities => {
   };
 };
 
+export const retrieve_delicious_food = foods => {
+  return {
+    type: "DELICIOUS_FOOD_RETRIEVED",
+    payload: {
+      delicious_foods: foods
+    }
+  };
+};
+
 export const retrieve_popular_tags = services => {
   return {
     type: "POPULAR_TAGS_RETRIEVED",
@@ -86,6 +95,10 @@ export const fetch_services = () => {
           services: convertedResponse
         });
         dispatch(retrieve_exciting_activities(exiciting_activities));
+        const delicious_foods = await async_retrieve_delicious_foods({
+          services: convertedResponse
+        });
+        dispatch(retrieve_delicious_food(delicious_foods));
       })
       .catch(error => {
         console.log(error);
@@ -179,6 +192,7 @@ const get_service_image = async service => {
     className: "Service",
     objectId: service.objectId
   });
+  query.limit(1);
   let pictures = await query.find();
   return pictures[0].get("picture").url();
 };
@@ -186,6 +200,28 @@ const get_service_image = async service => {
 export const async_retrieve_exciting_activities = async payload => {
   const filteredServices = payload.services
     .filter(service => service.type === "activity")
+    .map(service => {
+      service.excerpt = service.description;
+      service.title = service.name;
+      service.location = service.city + ", " + service.country;
+      service.rating = getRandomInt(1, 5);
+      service.reviews = getRandomInt(1, 100);
+      service.price = service.pricePerSession;
+      return service;
+    });
+  let services_filtered = await Promise.all(
+    filteredServices.map(async service => {
+      let picture = await get_service_image(service);
+      service.img = picture;
+      return service;
+    })
+  );
+  return services_filtered;
+};
+
+export const async_retrieve_delicious_foods = async payload => {
+  const filteredServices = payload.services
+    .filter(service => service.type === "food")
     .map(service => {
       service.excerpt = service.description;
       service.title = service.name;
