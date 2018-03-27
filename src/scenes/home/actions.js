@@ -189,11 +189,10 @@ export const async_retrieve_exciting_activities = async payload => {
     .map(service => {
       service.excerpt = service.description;
       service.title = service.name;
-      // TODO replace dummy rate, reviews, and image once it's ready
-      service.location = "City, Country";
+      service.location = service.city + ", " + service.country;
       service.rating = getRandomInt(1, 5);
       service.reviews = getRandomInt(1, 100);
-      service.price = getRandomInt(500, 10000);
+      service.price = service.pricePerSession;
       return service;
     });
   let services_filtered = await Promise.all(
