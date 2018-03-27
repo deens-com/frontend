@@ -7,6 +7,7 @@ import Media from "react-media";
 // COMPONENTS
 import Form from "../../../components/Form";
 import FormControl from "../../../components/Form/FormControl";
+import MobileFilter from "./MobileFilter";
 
 // ACTIONS/CONFIG
 import { sizes, media } from "../../../libs/styled";
@@ -51,7 +52,11 @@ export default function ToolBar({ state, onSubmit, onValueChange }) {
       <Media query={`(max-width: ${sizes.small})`}>
         {matches =>
           matches ? (
-            <span>Applied filters</span>
+            <MobileFilter
+              state={state}
+              onSubmit={onSubmit}
+              onValueChange={onValueChange}
+            />
           ) : (
             <Form display="flex" onSubmit={onSubmit}>
               <FormControl
