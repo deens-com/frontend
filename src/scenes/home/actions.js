@@ -84,6 +84,7 @@ export const fetch_services = () => {
         const exiciting_activities = await async_retrieve_exciting_activities({
           services: convertedResponse
         });
+        dispatch(retrieveServicePictures({ services: convertedResponse }));
         dispatch(retrieve_exciting_activities(exiciting_activities));
       })
       .catch(error => {
