@@ -19,6 +19,7 @@ class HomeContainer extends Component {
           trips={this.props.trips}
           popularPlaces={this.props.popularPlaces}
           exciting_activities={this.props.exciting_activities}
+          delicious_foods={this.props.delicious_foods}
         />
       </div>
     );
@@ -31,7 +32,8 @@ const mapStateToProps = state => {
     tags: state.HomeReducer.tags,
     trips: state.HomeReducer.trips,
     popularPlaces: state.HomeReducer.popularPlaces,
-    exciting_activities: state.HomeReducer.exciting_activities
+    exciting_activities: state.HomeReducer.exciting_activities,
+    delicious_foods: state.HomeReducer.delicious_foods
   };
 };
 
