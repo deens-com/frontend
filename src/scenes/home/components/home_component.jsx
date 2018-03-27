@@ -112,7 +112,7 @@ const HomeComponent = props => {
         <SectionPlaces trips={props.popularPlaces} />
         <SectionActivities locations={props.exciting_activities} />
         <SubHero />
-        <SectionFood foods={foodData} />
+        <SectionFood foods={props.delicious_foods} />
         <PageWrapper>
           <Hr withSpacing />
           <FooterNav />

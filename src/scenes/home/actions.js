@@ -23,6 +23,15 @@ export const retrieve_exciting_activities = activities => {
   };
 };
 
+export const retrieve_delicious_food = foods => {
+  return {
+    type: "DELICIOUS_FOOD_RETRIEVED",
+    payload: {
+      delicious_foods: foods
+    }
+  };
+};
+
 export const retrieve_popular_tags = services => {
   return {
     type: "POPULAR_TAGS_RETRIEVED",
@@ -84,8 +93,11 @@ export const fetch_services = () => {
         const exiciting_activities = await async_retrieve_exciting_activities({
           services: convertedResponse
         });
-        dispatch(retrieveServicePictures({ services: convertedResponse }));
         dispatch(retrieve_exciting_activities(exiciting_activities));
+        const delicious_foods = await async_retrieve_delicious_foods({
+          services: convertedResponse
+        });
+        dispatch(retrieve_delicious_food(delicious_foods));
       })
       .catch(error => {
         console.log(error);
@@ -124,8 +136,8 @@ export const fetch_trips = () => {
 
 /* Helpers Functions */
 
-const find_popular_places = services => {
-  return services
+const find_popular_places = async services => {
+  const filteredServices = services
     .filter(service => service.type === "place")
     .map(service => {
       service.excerpt = service.description;
@@ -138,6 +150,15 @@ const find_popular_places = services => {
     })
     .sort(sortServicesByCreationDateDesc)
     .splice(0, 4);
+
+  let services_filtered = await Promise.all(
+    filteredServices.map(async service => {
+      let picture = await get_service_image(service);
+      service.image = picture;
+      return service;
+    })
+  );
+  return services_filtered;
 };
 
 const find_popular_tags = services => {
@@ -178,6 +199,7 @@ const get_service_image = async service => {
     className: "Service",
     objectId: service.objectId
   });
+  query.limit(1);
   let pictures = await query.find();
   return pictures[0].get("picture").url();
 };
@@ -204,58 +226,24 @@ export const async_retrieve_exciting_activities = async payload => {
   return services_filtered;
 };
 
-const getImage = async service => {
-  let ServicePicture = Parse.Object.extend("ServicePicture");
-  let query = new Parse.Query(ServicePicture);
-  query.equalTo("service", {
-    __type: "Pointer",
-    className: "Service",
-    objectId: service.objectId
-  });
-  query.limit(1);
-  let pictures = await query.find();
-  pictures = [...pictures];
-  const [picture] = pictures;
-
-  return {
-    serviceId: service.objectId,
-    url: picture.get("picture").url()
-  };
-};
-
-const addPictureToService = (services, servicePictures) => {
-  return services.map(service => {
-    const servicePicture = servicePictures.filter(
-      servicePicture => servicePicture.serviceId === service.objectId
-    );
-    const [pictureObject] = servicePicture;
-    service.image = pictureObject.url;
-
-    return service;
-  });
-};
-
-const getImages = async services => {
-  const getImageRequest = services.map(service => getImage(service));
-  return await Promise.all(getImageRequest);
-};
-
-export const retrieveServicePictures = payload => {
-  return async dispatch => {
-    const servicePictures = await getImages(payload.services);
-    const serviceObjectsWithPictures = addPictureToService(
-      payload.services,
-      servicePictures
-    );
-
-    dispatch(retrievePopularPlaces({ services: serviceObjectsWithPictures }));
-
-    return {
-      type: "SERVICE_PICTURES_FETCHED",
-      payload: {
-        status: "success",
-        services: serviceObjectsWithPictures
-      }
-    };
-  };
+export const async_retrieve_delicious_foods = async payload => {
+  const filteredServices = payload.services
+    .filter(service => service.type === "food")
+    .map(service => {
+      service.excerpt = service.description;
+      service.title = service.name;
+      service.location = service.city + ", " + service.country;
+      service.rating = getRandomInt(1, 5);
+      service.reviews = getRandomInt(1, 100);
+      service.price = service.pricePerSession;
+      return service;
+    });
+  let services_filtered = await Promise.all(
+    filteredServices.map(async service => {
+      let picture = await get_service_image(service);
+      service.image = picture;
+      return service;
+    })
+  );
+  return services_filtered;
 };
