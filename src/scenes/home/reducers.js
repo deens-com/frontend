@@ -3,7 +3,8 @@ const initialState = {
   trips: [],
   tags: [],
   popularPlaces: [],
-  exciting_activities: []
+  exciting_activities: [],
+  delicious_foods: []
 };
 
 export default function homeReducer(state = initialState, action = {}) {
@@ -33,6 +34,12 @@ export default function homeReducer(state = initialState, action = {}) {
         ...state,
         exciting_activities: action.payload.exciting_activities
       };
+    case "DELICIOUS_FOOD_RETRIEVED":
+      return {
+        ...state,
+        delicious_foods: action.payload.delicious_foods
+      };
+
     default:
       return state;
   }
