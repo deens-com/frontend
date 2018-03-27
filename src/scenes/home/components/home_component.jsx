@@ -110,7 +110,7 @@ const HomeComponent = props => {
         <SectionMood tags={props.tags} />
         <SectionTrips trips={props.trips} />
         <SectionPlaces trips={props.popularPlaces} />
-        <SectionActivities locations={activitiesData} />
+        <SectionActivities locations={props.exciting_activities} />
         <SubHero />
         <SectionFood foods={foodData} />
         <PageWrapper>

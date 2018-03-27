@@ -4,7 +4,8 @@ const initialState = {
   services: [],
   trips: [],
   tags: [],
-  popularPlaces: []
+  popularPlaces: [],
+  exciting_activities: []
 };
 
 describe("homes reducer", () => {
