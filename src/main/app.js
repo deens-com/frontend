@@ -8,6 +8,7 @@ import ReactGA from "react-ga";
 import withTracker from "./middlewares/with_tracker";
 import Home from "./../scenes/home/home";
 import Sessions from "./../scenes/sessions/sessions";
+import Services from "./../scenes/services/services";
 import Registrations from "./../scenes/registrations/registrations";
 
 const App = () => {
@@ -27,6 +28,10 @@ const App = () => {
           <Route
             path={process.env.PUBLIC_URL + "/register"}
             component={withTracker(Registrations)}
+          />
+          <Route
+            path={process.env.PUBLIC_URL + "/(food|activities|places)/"}
+            component={withTracker(Services)}
           />
         </Switch>
       </HashRouter>
