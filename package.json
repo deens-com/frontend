@@ -32,8 +32,7 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "precommit": "pretty-quick --staged",
-    "predeploy":
-      "npm run build && mkdir build/.circleci && cp -r .circleci/* build/.circleci/",
+    "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
   "devDependencies": {
