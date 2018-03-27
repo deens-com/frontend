@@ -91,6 +91,11 @@ export const fetch_services = () => {
         dispatch(services_fetched({ services: convertedResponse }));
         dispatch(retrieve_popular_tags({ services: convertedResponse }));
 
+        const popular_places = await async_retrieve_popular_places({
+          services: convertedResponse
+        });
+        dispatch(retrievePopularPlaces(popular_places));
+
         const exiciting_activities = await async_retrieve_exciting_activities({
           services: convertedResponse
         });
@@ -100,11 +105,6 @@ export const fetch_services = () => {
           services: convertedResponse
         });
         dispatch(retrieve_delicious_food(delicious_foods));
-
-        const popular_places = await async_retrieve_popular_places({
-          services: convertedResponse
-        });
-        dispatch(retrievePopularPlaces(popular_places));
       },
       error => {
         console.log(error);
