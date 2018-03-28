@@ -1,13 +1,13 @@
 const initialState = {
-  services: []
+  places: []
 };
 
 export default function ServicesReducer(state = initialState, action = {}) {
   switch (action.type) {
-    case "SERVICES_FETCHED":
+    case "PLACES_FETCHED":
       return {
         ...state,
-        services: action.payload.services
+        places: action.payload.places
       };
 
     default:

@@ -1,14 +1,33 @@
 import React, { Component } from "react";
-// import PlacesComponent from "./../components/places_component";
 import ServicesComponent from "./../components/services_component";
-import { foodList } from "./../../../data/food";
+import * as services_actions from "./../actions";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
-export default class PlacesContainer extends Component {
+class PlacesContainer extends Component {
   constructor(props) {
     super(props);
   }
 
+  componentDidMount() {
+    this.props.fetch_places();
+  }
+
   render() {
-    return <ServicesComponent {...this.props} service_data={foodList} />;
+    return (
+      <ServicesComponent {...this.props} service_data={this.props.places} />
+    );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    places: state.ServicesReducer.places
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(services_actions, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PlacesContainer);
