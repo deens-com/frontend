@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import PlacesComponent from "./../components/places_component";
-import ActivitiesComponent from "./../components/activities_component";
-import FoodsComponent from "./../components/foods_component";
+import PlacesContainer from "./places_container";
+import ActivitiesContainer from "./activities_container";
+import FoodsContainer from "./foods_container";
 
 export default class ServicesContainer extends Component {
   constructor(props) {
@@ -17,11 +17,11 @@ export default class ServicesContainer extends Component {
         {(() => {
           switch (this.state.service_type) {
             case "place":
-              return <PlacesComponent {...this.props} />;
+              return <PlacesContainer {...this.props} />;
             case "activitie":
-              return <ActivitiesComponent {...this.props} />;
+              return <ActivitiesContainer {...this.props} />;
             case "food":
-              return <FoodsComponent {...this.props} />;
+              return <FoodsContainer {...this.props} />;
             default:
               return null;
           }
