@@ -1,10 +1,11 @@
 import React from "react";
 import ServicesContainer from "./containers/services_container";
+import history from "./../../main/history";
 
-const Services = () => {
+const Services = props => {
   return (
     <div className="Home">
-      <ServicesContainer />
+      <ServicesContainer {...props} />
     </div>
   );
 };

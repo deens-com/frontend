@@ -30,7 +30,7 @@ const App = () => {
             component={withTracker(Registrations)}
           />
           <Route
-            path={process.env.PUBLIC_URL + "/(food|activities|places)/"}
+            path={process.env.PUBLIC_URL + "/(foods|activities|places)/"}
             component={withTracker(Services)}
           />
         </Switch>
