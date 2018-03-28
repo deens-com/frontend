@@ -14,7 +14,7 @@ import MapMaker from "./../../shared_components/MapMarker";
 
 // ACTIONS/CONFIG
 import { media, sizes } from "../../libs/styled";
-import { foodList } from "../../data/food";
+// import { foodList } from "../../data/food";
 
 // STYLES
 import { Page, PageContent } from "./../../shared_components/layout/Page";
@@ -50,7 +50,7 @@ export default function ServicesScene(props) {
       <PageContent flex>
         <ServicesWrapper>
           <CarouselPicker />
-          <Results {...props} data={foodList} />
+          <Results {...props} data={props.service_data} />
         </ServicesWrapper>
         <Media
           query={`(min-width: ${sizes.large})`}
