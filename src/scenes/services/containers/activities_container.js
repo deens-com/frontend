@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import ActivitiesComponent from "./../components/activities_component";
+// import ActivitiesComponent from "./../components/activities_component";
+import ServicesComponent from "./../components/services_component";
 
 export default class ActivitiesContainer extends Component {
   constructor(props) {
@@ -7,6 +8,6 @@ export default class ActivitiesContainer extends Component {
   }
 
   render() {
-    return <ActivitiesComponent {...this.props} />;
+    return <ServicesComponent {...this.props} />;
   }
 }

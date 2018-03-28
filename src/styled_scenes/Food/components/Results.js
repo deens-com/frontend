@@ -4,10 +4,10 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 
 // COMPONENTS
-import Col from "../../../components/layout/Col";
-import Row from "../../../components/layout/Row";
-import TripCart from "../../../components/Carts/Trip";
-import Button from "../../../components/Button";
+import Col from "../../../shared_components/layout/Col";
+import Row from "../../../shared_components/layout/Row";
+import TripCart from "../../../shared_components/Carts/Trip";
+import Button from "../../../shared_components/Button";
 
 // ACTIONS/CONFIG
 import { media } from "../../../libs/styled";

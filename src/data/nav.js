@@ -2,7 +2,7 @@ export const mainNav = [
   { label: "Trips", href: "/trips" },
   { label: "Places", href: "/places" },
   { label: "Activities", href: "/activities" },
-  { label: "Food", href: "/food" }
+  { label: "Food", href: "/foods" }
 ];
 
 export const languages = [

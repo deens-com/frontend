@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import FoodsComponent from "./../components/foods_component";
+// import FoodsComponent from "./../components/foods_component";
+import ServicesComponent from "./../components/services_component";
 
 export default class FoodsContainer extends Component {
   constructor(props) {
@@ -7,6 +8,6 @@ export default class FoodsContainer extends Component {
   }
 
   render() {
-    return <FoodsComponent {...this.props} />;
+    return <ServicesComponent {...this.props} />;
   }
 }

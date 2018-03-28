@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import PlacesComponent from "./../components/places_component";
+// import PlacesComponent from "./../components/places_component";
+import ServicesComponent from "./../components/services_component";
 
 export default class PlacesContainer extends Component {
   constructor(props) {
@@ -7,6 +8,6 @@ export default class PlacesContainer extends Component {
   }
 
   render() {
-    return <PlacesComponent {...this.props} />;
+    return <ServicesComponent {...this.props} />;
   }
 }

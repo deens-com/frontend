@@ -1,7 +1,8 @@
 import React, { Component } from "react";
+import ActivitiesScene from "./../../../styled_scenes/Activities";
 
 const ActivitiesComponent = props => {
-  return <h1>ActivitiesComponent</h1>;
+  return <ActivitiesScene />;
 };
 
 export default ActivitiesComponent;

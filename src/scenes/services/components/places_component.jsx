@@ -1,7 +1,8 @@
 import React, { Component } from "react";
+import PlacesScene from "./../../../styled_scenes/Places";
 
 const PlacesComponent = props => {
-  return <h1>PlacesComponent</h1>;
+  return <PlacesScene />;
 };
 
 export default PlacesComponent;

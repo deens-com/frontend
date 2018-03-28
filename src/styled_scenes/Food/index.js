@@ -6,18 +6,18 @@ import styled from "styled-components";
 import GoogleMapReact from "google-map-react";
 
 // COMPONENTS
-import TopBar from "../../components/TopBar";
-import BrandFooter from "../../components/BrandFooter";
+import TopBar from "./../../shared_components/TopBar";
+import BrandFooter from "./../../shared_components/BrandFooter";
 import CarouselPicker from "./components/CarouselPicker";
 import Results from "./components/Results";
-import MapMaker from "../../components/MapMarker";
+import MapMaker from "./../../shared_components/MapMarker";
 
 // ACTIONS/CONFIG
 import { media, sizes } from "../../libs/styled";
 import { foodList } from "../../data/food";
 
 // STYLES
-import { Page, PageContent } from "../../components/layout/Page";
+import { Page, PageContent } from "./../../shared_components/layout/Page";
 
 const MapWrapper = styled.div`
   width: 42%;

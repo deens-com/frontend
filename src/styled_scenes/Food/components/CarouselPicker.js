@@ -4,8 +4,8 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 
 // COMPONENTS
-import Carousel from "../../../components/Carousel";
-import Tag from "../../../components/Tag";
+import Carousel from "../../../shared_components/Carousel";
+import Tag from "../../../shared_components/Tag";
 
 // ACTIONS/CONFIG
 import { tags } from "../../../data/food";
