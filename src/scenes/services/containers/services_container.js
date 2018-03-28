@@ -7,7 +7,7 @@ export default class ServicesContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      service_type: props.location.pathname.substring(1).slice(0, -1)
+      service_type: props.location.pathname.substring(1)
     };
   }
 
@@ -16,12 +16,14 @@ export default class ServicesContainer extends Component {
       <section>
         {(() => {
           switch (this.state.service_type) {
-            case "place":
-              return <PlacesContainer {...this.props} />;
-            case "activitie":
-              return <ActivitiesContainer {...this.props} />;
-            case "food":
-              return <FoodsContainer {...this.props} />;
+            case "places":
+              return <PlacesContainer {...this.props} service_type="place" />;
+            case "activities":
+              return (
+                <ActivitiesContainer {...this.props} service_type="activity" />
+              );
+            case "foods":
+              return <FoodsContainer {...this.props} service_type="food" />;
             default:
               return null;
           }

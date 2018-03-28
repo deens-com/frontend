@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import FoodScene from "./../../../styled_scenes/Food";
+import ServicesScene from "./../../../styled_scenes/Services";
 
-const FoodsComponent = props => {
-  return <FoodScene />;
+const ServicesComponent = props => {
+  return <ServicesScene {...props} />;
 };
 
-export default FoodsComponent;
+export default ServicesComponent;
