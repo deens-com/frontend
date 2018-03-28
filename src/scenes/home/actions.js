@@ -161,6 +161,9 @@ const find_popular_tags = services => {
   services_with_tags.forEach(service => {
     tags.push(service.tags);
   });
+  if (!services_with_tags.length) {
+    return [];
+  }
   let flatten_tags = tags.reduce((flatten, arr) => [...flatten, ...arr]);
   let tag_recurrence_count_hash = new Map(
     [...new Set(flatten_tags)].map(x => [
@@ -193,6 +196,9 @@ const get_service_image = async service => {
   });
   query.limit(1);
   let pictures = await query.find();
+  if (!pictures.length) {
+    return "https://dummyimage.com/600x400/000/fff";
+  }
   return pictures[0].get("picture").url();
 };
 
