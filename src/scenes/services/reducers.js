@@ -1,5 +1,7 @@
 const initialState = {
-  places: []
+  places: [],
+  activities: [],
+  foods: []
 };
 
 export default function ServicesReducer(state = initialState, action = {}) {
@@ -8,6 +10,16 @@ export default function ServicesReducer(state = initialState, action = {}) {
       return {
         ...state,
         places: action.payload.places
+      };
+    case "ACTIVITIES_FETCHED":
+      return {
+        ...state,
+        activities: action.payload.activities
+      };
+    case "FOODS_FETCHED":
+      return {
+        ...state,
+        foods: action.payload.foods
       };
 
     default:

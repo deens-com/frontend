@@ -31,7 +31,7 @@ export default function Results(props) {
   return (
     <Wrap>
       <Header>
-        <h4>{props.service_type}s for you</h4>
+        <h4>{props.location.pathname.substring(1)} for you</h4>
       </Header>
       <Row>
         {props.data.map(result => (
