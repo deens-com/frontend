@@ -1,7 +1,7 @@
 import reducers from "./reducers";
 
 const initialState = {
-  services: [],
+  services: {},
   trips: [],
   tags: [],
   popularPlaces: [],
