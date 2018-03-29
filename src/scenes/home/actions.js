@@ -23,6 +23,15 @@ export const retrieve_exciting_activities = activities => {
   };
 };
 
+export const retrieved_popular_places = places => {
+  return {
+    type: "POPULAR_PLACES_RETRIEVED",
+    payload: {
+      popularPlaces: places
+    }
+  };
+};
+
 export const retrieve_delicious_food = foods => {
   return {
     type: "DELICIOUS_FOOD_RETRIEVED",
@@ -36,15 +45,6 @@ export const retrieve_popular_tags = services => {
   return {
     type: "POPULAR_TAGS_RETRIEVED",
     payload: find_popular_tags(services)
-  };
-};
-
-export const retrievePopularPlaces = services => {
-  return {
-    type: "POPULAR_PLACES_RETRIEVED",
-    payload: {
-      popularPlaces: find_popular_places(services)
-    }
   };
 };
 
@@ -80,12 +80,13 @@ const sortServicesByCreationDateDesc = (service1, service2) => {
 /* Actions */
 
 export const fetch_services = () => {
-  return async dispatch => {
-    let Service = Parse.Object.extend("Service");
-    let query = new Parse.Query(Service);
-    query.descending("createdAt");
-    query.find().then(
+  return dispatch => {
+    let services_promise = Parse.Cloud.run("fetch_homepage_services");
+    services_promise.then(
       async response => {
+        // let places = response.places
+        // console.log(places)
+
         const convertedResponse = normalizeParseResponseData(response);
 
         dispatch(services_fetched({ services: convertedResponse }));
@@ -94,7 +95,7 @@ export const fetch_services = () => {
         const popular_places = await async_retrieve_popular_places({
           services: convertedResponse
         });
-        dispatch(retrievePopularPlaces(popular_places));
+        dispatch(retrieved_popular_places(popular_places));
 
         const exiciting_activities = await async_retrieve_exciting_activities({
           services: convertedResponse
@@ -112,6 +113,40 @@ export const fetch_services = () => {
     );
   };
 };
+
+// export const fetch_services = () => {
+//   return async dispatch => {
+//     let Service = Parse.Object.extend("Service");
+//     let query = new Parse.Query(Service);
+//     query.descending("createdAt");
+//     query.find().then(
+//       async response => {
+//         const convertedResponse = normalizeParseResponseData(response);
+//
+//         dispatch(services_fetched({ services: convertedResponse }));
+//         dispatch(retrieve_popular_tags({ services: convertedResponse }));
+//
+//         const popular_places = await async_retrieve_popular_places({
+//           services: convertedResponse
+//         });
+//         dispatch(retrieved_popular_places(popular_places));
+//
+//         const exiciting_activities = await async_retrieve_exciting_activities({
+//           services: convertedResponse
+//         });
+//         dispatch(retrieve_exciting_activities(exiciting_activities));
+//
+//         const delicious_foods = await async_retrieve_delicious_foods({
+//           services: convertedResponse
+//         });
+//         dispatch(retrieve_delicious_food(delicious_foods));
+//       },
+//       error => {
+//         console.log(error);
+//       }
+//     );
+//   };
+// };
 
 export const fetch_trips = () => {
   return dispatch => {
@@ -144,17 +179,11 @@ export const fetch_trips = () => {
 
 /* Helpers Functions */
 
-const find_popular_places = services => {
-  const filteredServices = services
-    .filter(service => service.type === "place")
-    .sort(sortServicesByCreationDateDesc)
-    .splice(0, 4);
-
-  return filteredServices;
-};
-
 const find_popular_tags = services => {
-  let services_with_tags = services.services.filter(
+  let arr_services = services.services.places
+    .concat(services.services.foods)
+    .concat(services.services.activities);
+  let services_with_tags = arr_services.filter(
     service => service.tags && service.tags.length
   );
   let tags = [];
@@ -203,17 +232,15 @@ const get_service_image = async service => {
 };
 
 export const async_retrieve_exciting_activities = async payload => {
-  const filteredServices = payload.services
-    .filter(service => service.type === "activity")
-    .map(service => {
-      service.excerpt = service.description;
-      service.title = service.name;
-      service.location = service.city + ", " + service.country;
-      service.rating = getRandomInt(1, 5);
-      service.reviews = getRandomInt(1, 100);
-      service.price = service.pricePerSession;
-      return service;
-    });
+  const filteredServices = payload.services.activities.map(service => {
+    service.excerpt = service.description;
+    service.title = service.name;
+    service.location = service.city + ", " + service.country;
+    service.rating = getRandomInt(1, 5);
+    service.reviews = getRandomInt(1, 100);
+    service.price = service.pricePerSession;
+    return service;
+  });
   let services_filtered = await Promise.all(
     filteredServices.map(async service => {
       let picture = await get_service_image(service);
@@ -225,17 +252,15 @@ export const async_retrieve_exciting_activities = async payload => {
 };
 
 export const async_retrieve_delicious_foods = async payload => {
-  const filteredServices = payload.services
-    .filter(service => service.type === "food")
-    .map(service => {
-      service.excerpt = service.description;
-      service.title = service.name;
-      service.location = service.city + ", " + service.country;
-      service.rating = getRandomInt(1, 5);
-      service.reviews = getRandomInt(1, 100);
-      service.price = service.pricePerSession;
-      return service;
-    });
+  const filteredServices = payload.services.foods.map(service => {
+    service.excerpt = service.description;
+    service.title = service.name;
+    service.location = service.city + ", " + service.country;
+    service.rating = getRandomInt(1, 5);
+    service.reviews = getRandomInt(1, 100);
+    service.price = service.pricePerSession;
+    return service;
+  });
   let services_filtered = await Promise.all(
     filteredServices.map(async service => {
       let picture = await get_service_image(service);
@@ -247,17 +272,15 @@ export const async_retrieve_delicious_foods = async payload => {
 };
 
 export const async_retrieve_popular_places = async payload => {
-  const filteredServices = payload.services
-    .filter(service => service.type === "place")
-    .map(service => {
-      service.excerpt = service.description;
-      service.title = service.name;
-      service.location = service.city + ", " + service.country;
-      service.rating = getRandomInt(1, 5);
-      service.reviews = getRandomInt(1, 100);
-      service.price = service.pricePerSession;
-      return service;
-    });
+  const filteredServices = payload.services.places.map(service => {
+    service.excerpt = service.description;
+    service.title = service.name;
+    service.location = service.city + ", " + service.country;
+    service.rating = getRandomInt(1, 5);
+    service.reviews = getRandomInt(1, 100);
+    service.price = service.pricePerSession;
+    return service;
+  });
   let services_filtered = await Promise.all(
     filteredServices.map(async service => {
       let picture = await get_service_image(service);

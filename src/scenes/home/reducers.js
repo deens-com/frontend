@@ -1,5 +1,5 @@
 const initialState = {
-  services: [],
+  services: {},
   trips: [],
   tags: [],
   popularPlaces: [],
@@ -12,7 +12,7 @@ export default function homeReducer(state = initialState, action = {}) {
     case "SERVICES_FETCHED":
       return {
         ...state,
-        services: action.payload.services
+        services: action.payload
       };
     case "TRIPS_FETCHED":
       return {
