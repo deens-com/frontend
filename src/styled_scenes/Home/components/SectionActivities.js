@@ -35,8 +35,9 @@ export default function HomeSectionLocations({ locations }) {
               <LocationCart
                 item={item}
                 withShadow
-                key={item.title}
-                xsBasis="50%"
+                key={item.objectId}
+                xsBasis="100%"
+                smBasis="50%"
                 mdBasis="25%"
               />
             ))}

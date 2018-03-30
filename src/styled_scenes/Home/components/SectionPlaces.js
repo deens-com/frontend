@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 // COMPONENTS
 import Carousel from "../../../shared_components/Carousel";
-import TripCart from "../../../shared_components/Carts/Trip";
+import LocationCart from "../../../shared_components/Carts/Location";
 
 // ACTIONS/CONFIG
 
@@ -32,11 +32,12 @@ export default function HomeSectionPlaces({ trips }) {
         <SectionContent>
           <Carousel show="4" length={trips.length} shadowInside withLoader>
             {trips.map(item => (
-              <TripCart
+              <LocationCart
                 item={item}
                 withShadow
                 key={item.objectId}
-                xsBasis="50%"
+                xsBasis="100%"
+                smBasis="50%"
                 mdBasis="25%"
               />
             ))}
