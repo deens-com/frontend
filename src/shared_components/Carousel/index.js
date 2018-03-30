@@ -139,6 +139,7 @@ const Button = styled.button`
 
 const ButtonLeft = Button.extend`
   left: 0px;
+  cursor: pointer;
 
   ${media.minLarge} {
     left: ${props => (props.size === "small" ? "-5px" : "-25px")};
@@ -151,6 +152,7 @@ const ButtonLeft = Button.extend`
 
 const ButtonRight = Button.extend`
   right: 0px;
+  cursor: pointer;
 
   ${media.minLarge} {
     right: ${props => (props.size === "small" ? "-5px" : "-25px")};
