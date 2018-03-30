@@ -9,6 +9,7 @@ import withTracker from "./middlewares/with_tracker";
 import Home from "./../scenes/home/home";
 import Sessions from "./../scenes/sessions/sessions";
 import Services from "./../scenes/services/services";
+import Trips from "./../scenes/trips/trips";
 import Registrations from "./../scenes/registrations/registrations";
 
 const App = () => {
@@ -40,6 +41,10 @@ const App = () => {
           <Route
             path={process.env.PUBLIC_URL + "/places"}
             component={withTracker(Services)}
+          />
+          <Route
+            path={process.env.PUBLIC_URL + "/trips"}
+            component={withTracker(Trips)}
           />
         </Switch>
       </HashRouter>

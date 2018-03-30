@@ -4,14 +4,14 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 
 // COMPONENTS
-import Col from "../../../components/layout/Col";
-import Row from "../../../components/layout/Row";
-import Button from "../../../components/Button";
-import DetailCart from "../../../components/Carts/DetailCart";
-import DropPicker from "../../../components/DropPicker";
-import Trigger from "../../../components/DropPicker/Trigger";
-import Drop from "../../../components/DropPicker/Drop";
-import DropItem from "../../../components/DropPicker/DropItem";
+import Col from "../../../shared_components/layout/Col";
+import Row from "../../../shared_components/layout/Row";
+import Button from "../../../shared_components/Button";
+import DetailCart from "../../../shared_components/Carts/DetailCart";
+import DropPicker from "../../../shared_components/DropPicker";
+import Trigger from "../../../shared_components/DropPicker/Trigger";
+import Drop from "../../../shared_components/DropPicker/Drop";
+import DropItem from "../../../shared_components/DropPicker/DropItem";
 
 // ACTIONS/CONFIG
 import { media } from "../../../libs/styled";

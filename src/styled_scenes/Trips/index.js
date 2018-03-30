@@ -6,13 +6,13 @@ import Media from "react-media";
 import GoogleMapReact from "google-map-react";
 
 // COMPONENTS
-import BrandFooter from "../../components/BrandFooter";
-import TopBar from "../../components/TopBar";
+import BrandFooter from "../../shared_components/BrandFooter";
+import TopBar from "../../shared_components/TopBar";
 import Results from "./components/Results";
 import ToolBar from "./components/ToolBar";
 import Summary from "./components/Summary";
-import MapMaker from "../../components/MapMarker";
-import Button from "../../components/Button";
+import MapMaker from "../../shared_components/MapMarker";
+import Button from "../../shared_components/Button";
 
 // ACTIONS/CONFIG
 import { media, sizes } from "../../libs/styled";
@@ -20,8 +20,8 @@ import { tripsData } from "../../data/home";
 import { trip } from "../../data/trip";
 
 // STYLES
-import { Page, PageContent } from "../../components/layout/Page";
-import { Hr } from "../../components/styledComponents/misc";
+import { Page, PageContent } from "../../shared_components/layout/Page";
+import { Hr } from "../../shared_components/styledComponents/misc";
 
 const Wrap = styled.div`
   ${media.minMediumPlus} {

@@ -4,11 +4,11 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 
 // COMPONENTS
-import Col from "../../../components/layout/Col";
-import Row from "../../../components/layout/Row";
-import TripCart from "../../../components/Carts/Trip";
-import Button from "../../../components/Button";
-import DetailCart from "../../../components/Carts/DetailCart";
+import Col from "../../../shared_components/layout/Col";
+import Row from "../../../shared_components/layout/Row";
+import TripCart from "../../../shared_components/Carts/Trip";
+import Button from "../../../shared_components/Button";
+import DetailCart from "../../../shared_components/Carts/DetailCart";
 import Day from "./Day";
 
 // ACTIONS/CONFIG
@@ -17,7 +17,8 @@ import { trip } from "../../../data/trip";
 import { tripsData } from "../../../data/home";
 
 // STYLES
-import { Highlight, Header } from "./styles";
+import { Highlight } from "./styles";
+import { Header } from "./Day";
 
 const Wrap = styled.div`
   padding: 45px 10px 10px;

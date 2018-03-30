@@ -4,10 +4,10 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 
 // COMPONENTS
-import Button from "../../../components/Button";
-import { FilterIcon } from "../../../components/icons";
-import Form from "../../../components/Form";
-import FormControl from "../../../components/Form/FormControl";
+import Button from "../../../shared_components/Button";
+import { FilterIcon } from "../../../shared_components/icons";
+import Form from "../../../shared_components/Form";
+import FormControl from "../../../shared_components/Form/FormControl";
 
 // ACTIONS/CONFIG
 import { media } from "../../../libs/styled";

@@ -5,8 +5,8 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 // COMPONENTS
-import Col from "../../../components/layout/Col";
-import Button from "../../../components/Button";
+import Col from "../../../shared_components/layout/Col";
+import Button from "../../../shared_components/Button";
 
 // ACTIONS/CONFIG
 import Utils from "../../../libs/Utils";

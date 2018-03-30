@@ -5,8 +5,8 @@ import styled from "styled-components";
 import Media from "react-media";
 
 // COMPONENTS
-import Form from "../../../components/Form";
-import FormControl from "../../../components/Form/FormControl";
+import Form from "../../../shared_components/Form";
+import FormControl from "../../../shared_components/Form/FormControl";
 import MobileFilter from "./MobileFilter";
 
 // ACTIONS/CONFIG
