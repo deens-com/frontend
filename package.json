@@ -35,7 +35,7 @@
     "eject": "react-scripts eject",
     "precommit": "pretty-quick --staged",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build --dotfiles true"
   },
   "devDependencies": {
     "enzyme": "^3.3.0",
