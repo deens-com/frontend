@@ -83,29 +83,19 @@ export const fetch_services = () => {
   return dispatch => {
     let services_promise = Parse.Cloud.run("fetch_homepage_services");
     services_promise.then(
-      async response => {
-        // let places = response.places
-        // console.log(places)
-
-        const convertedResponse = normalizeParseResponseData(response);
+      response => {
+        let convertedResponse = normalizeParseResponseData(response);
+        convertedResponse.activities = mapServiceObjects(
+          convertedResponse.activities
+        );
+        convertedResponse.places = mapServiceObjects(convertedResponse.places);
+        convertedResponse.foods = mapServiceObjects(convertedResponse.foods);
 
         dispatch(services_fetched({ services: convertedResponse }));
         dispatch(retrieve_popular_tags({ services: convertedResponse }));
-
-        const popular_places = await async_retrieve_popular_places({
-          services: convertedResponse
-        });
-        dispatch(retrieved_popular_places(popular_places));
-
-        const exiciting_activities = await async_retrieve_exciting_activities({
-          services: convertedResponse
-        });
-        dispatch(retrieve_exciting_activities(exiciting_activities));
-
-        const delicious_foods = await async_retrieve_delicious_foods({
-          services: convertedResponse
-        });
-        dispatch(retrieve_delicious_food(delicious_foods));
+        dispatch(retrieved_popular_places(convertedResponse.places));
+        dispatch(retrieve_exciting_activities(convertedResponse.activities));
+        dispatch(retrieve_delicious_food(convertedResponse.foods));
       },
       error => {
         console.log(error);
@@ -113,40 +103,6 @@ export const fetch_services = () => {
     );
   };
 };
-
-// export const fetch_services = () => {
-//   return async dispatch => {
-//     let Service = Parse.Object.extend("Service");
-//     let query = new Parse.Query(Service);
-//     query.descending("createdAt");
-//     query.find().then(
-//       async response => {
-//         const convertedResponse = normalizeParseResponseData(response);
-//
-//         dispatch(services_fetched({ services: convertedResponse }));
-//         dispatch(retrieve_popular_tags({ services: convertedResponse }));
-//
-//         const popular_places = await async_retrieve_popular_places({
-//           services: convertedResponse
-//         });
-//         dispatch(retrieved_popular_places(popular_places));
-//
-//         const exiciting_activities = await async_retrieve_exciting_activities({
-//           services: convertedResponse
-//         });
-//         dispatch(retrieve_exciting_activities(exiciting_activities));
-//
-//         const delicious_foods = await async_retrieve_delicious_foods({
-//           services: convertedResponse
-//         });
-//         dispatch(retrieve_delicious_food(delicious_foods));
-//       },
-//       error => {
-//         console.log(error);
-//       }
-//     );
-//   };
-// };
 
 export const fetch_trips = () => {
   return dispatch => {
@@ -215,78 +171,23 @@ const find_popular_tags = services => {
   return tags_ordered_by_popularity;
 };
 
-const get_service_image = async service => {
-  let ServicePicture = Parse.Object.extend("ServicePicture");
-  let query = new Parse.Query(ServicePicture);
-  query.equalTo("service", {
-    __type: "Pointer",
-    className: "Service",
-    objectId: service.objectId
-  });
-  query.limit(1);
-  let pictures = await query.find();
-  if (!pictures.length) {
+const get_service_image = mainPicture => {
+  if (!mainPicture) {
     return "https://dummyimage.com/600x400/000/fff";
   }
-  return pictures[0].get("picture").url();
+
+  return mainPicture.url;
 };
 
-export const async_retrieve_exciting_activities = async payload => {
-  const filteredServices = payload.services.activities.map(service => {
+const mapServiceObjects = services => {
+  return services.map(service => {
     service.excerpt = service.description;
     service.title = service.name;
-    service.location = service.city + ", " + service.country;
+    service.location = `${service.city} ${service.country}`;
     service.rating = getRandomInt(1, 5);
     service.reviews = getRandomInt(1, 100);
     service.price = service.pricePerSession;
+    service.image = get_service_image(service.mainPicture);
     return service;
   });
-  let services_filtered = await Promise.all(
-    filteredServices.map(async service => {
-      let picture = await get_service_image(service);
-      service.img = picture;
-      return service;
-    })
-  );
-  return services_filtered;
-};
-
-export const async_retrieve_delicious_foods = async payload => {
-  const filteredServices = payload.services.foods.map(service => {
-    service.excerpt = service.description;
-    service.title = service.name;
-    service.location = service.city + ", " + service.country;
-    service.rating = getRandomInt(1, 5);
-    service.reviews = getRandomInt(1, 100);
-    service.price = service.pricePerSession;
-    return service;
-  });
-  let services_filtered = await Promise.all(
-    filteredServices.map(async service => {
-      let picture = await get_service_image(service);
-      service.image = picture;
-      return service;
-    })
-  );
-  return services_filtered;
-};
-
-export const async_retrieve_popular_places = async payload => {
-  const filteredServices = payload.services.places.map(service => {
-    service.excerpt = service.description;
-    service.title = service.name;
-    service.location = service.city + ", " + service.country;
-    service.rating = getRandomInt(1, 5);
-    service.reviews = getRandomInt(1, 100);
-    service.price = service.pricePerSession;
-    return service;
-  });
-  let services_filtered = await Promise.all(
-    filteredServices.map(async service => {
-      let picture = await get_service_image(service);
-      service.image = picture;
-      return service;
-    })
-  );
-  return services_filtered;
 };

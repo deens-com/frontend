@@ -77,7 +77,7 @@ export default function LocationCart({
   return (
     <Col xsBasis={xsBasis} mdBasis={mdBasis} smBasis={smBasis}>
       <Cart withShadow={withShadow} column>
-        <Thumb url={item.img} />
+        <Thumb url={item.image} />
         <ContentWrap>
           <Title>
             <Link to={href || "/"}>{item.title}</Link>
