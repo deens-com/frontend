@@ -83,19 +83,19 @@ export const fetch_services = () => {
   return dispatch => {
     let services_promise = Parse.Cloud.run("fetch_homepage_services");
     services_promise.then(
-      async response => {
+      response => {
         let convertedResponse = normalizeParseResponseData(response);
         convertedResponse.activities = mapServiceObjects(
           convertedResponse.activities
         );
         convertedResponse.places = mapServiceObjects(convertedResponse.places);
-        convertedResponse.food = mapServiceObjects(convertedResponse.food);
+        convertedResponse.foods = mapServiceObjects(convertedResponse.foods);
 
         dispatch(services_fetched({ services: convertedResponse }));
         dispatch(retrieve_popular_tags({ services: convertedResponse }));
         dispatch(retrieved_popular_places(convertedResponse.places));
         dispatch(retrieve_exciting_activities(convertedResponse.activities));
-        dispatch(retrieve_delicious_food(convertedResponse.food));
+        dispatch(retrieve_delicious_food(convertedResponse.foods));
       },
       error => {
         console.log(error);
