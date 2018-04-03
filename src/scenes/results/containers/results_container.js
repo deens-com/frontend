@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PlacesContainer from "./places_container";
 import ActivitiesContainer from "./activities_container";
 import FoodsContainer from "./foods_container";
+import TripsContainer from "./trips_container";
 
 export default class ResultsContainer extends Component {
   constructor(props) {
@@ -24,6 +25,8 @@ export default class ResultsContainer extends Component {
               );
             case "food":
               return <FoodsContainer {...this.props} service_type="food" />;
+            case "trip":
+              return <TripsContainer {...this.props} service_type="trip" />;
             default:
               return null;
           }

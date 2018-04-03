@@ -1,7 +1,8 @@
 const initialState = {
   places: [],
   activities: [],
-  foods: []
+  foods: [],
+  trips: []
 };
 
 export default function ResultsReducer(state = initialState, action = {}) {
@@ -20,6 +21,11 @@ export default function ResultsReducer(state = initialState, action = {}) {
       return {
         ...state,
         foods: action.payload.foods
+      };
+    case "TRIPS_FETCHED":
+      return {
+        ...state,
+        trips: action.payload.trips
       };
 
     default:

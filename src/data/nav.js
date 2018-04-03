@@ -1,5 +1,5 @@
 export const mainNav = [
-  { label: "Trips", href: "/trips" },
+  { label: "Trips", href: "/results?type=trip" },
   { label: "Places", href: "/results?type=place" },
   { label: "Activities", href: "/results?type=activity" },
   { label: "Food", href: "/results?type=food" }

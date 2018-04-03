@@ -21,6 +21,13 @@ export const foods_fetched = foods => {
   };
 };
 
+export const trips_fetched = trips => {
+  return {
+    type: "TRIPS_FETCHED",
+    payload: trips
+  };
+};
+
 const normalizeParseResponseData = data => {
   let dataInJsonString = JSON.stringify(data);
   return JSON.parse(dataInJsonString);
@@ -121,6 +128,26 @@ export const fetch_foods = () => {
       },
       error => {
         // TODO dispatch the error to error handler and retry the request
+        console.log(error);
+      }
+    );
+  };
+};
+
+export const fetch_trips = () => {
+  return dispatch => {
+    let Trip = Parse.Object.extend("Trip");
+    let query = new Parse.Query(Trip);
+    query.equalTo("type", "activity");
+    query.descending("createdAt");
+    query.limit(10);
+    query.find().then(
+      response => {
+        const trips = normalizeParseResponseData(response);
+        dispatch(trips_fetched({ trips: trips }));
+      },
+      error => {
+        // TODO dispatch the error to error handler
         console.log(error);
       }
     );
