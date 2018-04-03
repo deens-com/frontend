@@ -138,7 +138,6 @@ export const fetch_trips = () => {
   return dispatch => {
     let Trip = Parse.Object.extend("Trip");
     let query = new Parse.Query(Trip);
-    query.equalTo("type", "activity");
     query.descending("createdAt");
     query.limit(10);
     query.find().then(
