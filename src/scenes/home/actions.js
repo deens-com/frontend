@@ -84,9 +84,6 @@ export const fetch_services = () => {
     let services_promise = Parse.Cloud.run("fetch_homepage_services");
     services_promise.then(
       async response => {
-        // let places = response.places
-        // console.log(places)
-
         let convertedResponse = normalizeParseResponseData(response);
         convertedResponse.activities = mapServiceObjects(
           convertedResponse.activities
