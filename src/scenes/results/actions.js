@@ -28,17 +28,6 @@ export const trips_fetched = trips => {
   };
 };
 
-const normalizeParseResponseData = data => {
-  let dataInJsonString = JSON.stringify(data);
-  return JSON.parse(dataInJsonString);
-};
-
-const getRandomInt = (min, max) => {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-};
-
 export const fetch_places = () => {
   return dispatch => {
     let Service = Parse.Object.extend("Service");
@@ -49,17 +38,9 @@ export const fetch_places = () => {
     query.find().then(
       response => {
         const convertedResponse = normalizeParseResponseData(response);
-        const responseWithPlaceholderImage = convertedResponse.map(service => {
-          service.excerpt = service.description;
-          service.title = service.name;
-          service.location = service.city + ", " + service.country;
-          service.rating = getRandomInt(1, 5);
-          service.reviews = getRandomInt(1, 100);
-          //service.image = ...
-          service.price = service.pricePerSession;
-
-          return service;
-        });
+        const responseWithPlaceholderImage = mapServiceObjects(
+          convertedResponse
+        );
         dispatch(places_fetched({ places: responseWithPlaceholderImage }));
       },
       error => {
@@ -80,17 +61,9 @@ export const fetch_activities = () => {
     query.find().then(
       response => {
         const convertedResponse = normalizeParseResponseData(response);
-        const responseWithPlaceholderImage = convertedResponse.map(service => {
-          service.excerpt = service.description;
-          service.title = service.name;
-          service.location = service.city + ", " + service.country;
-          service.rating = getRandomInt(1, 5);
-          service.reviews = getRandomInt(1, 100);
-          //service.image = ...
-          service.price = service.pricePerSession;
-
-          return service;
-        });
+        const responseWithPlaceholderImage = mapServiceObjects(
+          convertedResponse
+        );
         dispatch(
           activities_fetched({ activities: responseWithPlaceholderImage })
         );
@@ -113,17 +86,9 @@ export const fetch_foods = () => {
     query.find().then(
       response => {
         const convertedResponse = normalizeParseResponseData(response);
-        const responseWithPlaceholderImage = convertedResponse.map(service => {
-          service.excerpt = service.description;
-          service.title = service.name;
-          service.location = service.city + ", " + service.country;
-          service.rating = getRandomInt(1, 5);
-          service.reviews = getRandomInt(1, 100);
-          //service.image = ...
-          service.price = service.pricePerSession;
-
-          return service;
-        });
+        const responseWithPlaceholderImage = mapServiceObjects(
+          convertedResponse
+        );
         dispatch(foods_fetched({ foods: responseWithPlaceholderImage }));
       },
       error => {
@@ -143,6 +108,7 @@ export const fetch_trips = () => {
     query.find().then(
       response => {
         const trips = normalizeParseResponseData(response);
+        const responseWithPlaceholderImage = mapServiceObjects(trips);
         dispatch(trips_fetched({ trips: trips }));
       },
       error => {
@@ -151,4 +117,37 @@ export const fetch_trips = () => {
       }
     );
   };
+};
+
+/* Helpers Functions */
+
+const normalizeParseResponseData = data => {
+  let dataInJsonString = JSON.stringify(data);
+  return JSON.parse(dataInJsonString);
+};
+
+const getRandomInt = (min, max) => {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+const get_service_image = mainPicture => {
+  if (!mainPicture) {
+    return "https://dummyimage.com/600x400/000/fff";
+  }
+  return mainPicture.url;
+};
+
+const mapServiceObjects = services => {
+  return services.map(service => {
+    service.excerpt = service.description;
+    service.title = service.name;
+    service.location = `${service.city} ${service.country}`;
+    service.rating = getRandomInt(1, 5);
+    service.reviews = getRandomInt(1, 100);
+    service.price = service.pricePerSession;
+    service.image = get_service_image(service.mainPicture);
+    return service;
+  });
 };

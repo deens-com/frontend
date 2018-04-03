@@ -16,7 +16,7 @@ class FoodsContainer extends Component {
   }
 
   render() {
-    return <ResultsComponent {...this.props} service_data={foodList} />;
+    return <ResultsComponent {...this.props} service_data={this.props.foods} />;
   }
 }
 
