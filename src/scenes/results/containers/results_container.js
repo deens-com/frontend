@@ -1,37 +1,39 @@
 import React, { Component } from "react";
-import PlacesContainer from "./places_container";
-import ActivitiesContainer from "./activities_container";
-import FoodsContainer from "./foods_container";
-import TripsContainer from "./trips_container";
+import ResultsComponent from "./../components/results_component";
+import * as results_actions from "./../actions";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
-export default class ResultsContainer extends Component {
+class ResultsContainer extends Component {
   constructor(props) {
     super(props);
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.props.fetch_results(this.props.service_type);
+  }
+
+  componentWillUpdate(nextProps) {
+    if (this.props.service_type !== nextProps.service_type) {
+      this.props.fetch_results(nextProps.service_type);
+    }
+  }
 
   render() {
-    let service_type = this.props.location.search.replace("?type=", "");
     return (
-      <section>
-        {(() => {
-          switch (service_type) {
-            case "place":
-              return <PlacesContainer {...this.props} service_type="place" />;
-            case "activity":
-              return (
-                <ActivitiesContainer {...this.props} service_type="activity" />
-              );
-            case "food":
-              return <FoodsContainer {...this.props} service_type="food" />;
-            case "trip":
-              return <TripsContainer {...this.props} service_type="trip" />;
-            default:
-              return null;
-          }
-        })()}
-      </section>
+      <ResultsComponent {...this.props} service_data={this.props.results} />
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    results: state.ResultsReducer.results
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(results_actions, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ResultsContainer);

@@ -1,118 +1,37 @@
 import Parse from "parse";
 
-export const places_fetched = places => {
+export const results_fetched = results => {
   return {
-    type: "PLACES_FETCHED",
-    payload: places
+    type: "RESULTS_FETCHED",
+    payload: results
   };
 };
 
-export const activities_fetched = activities => {
-  return {
-    type: "ACTIVITIES_FETCHED",
-    payload: activities
-  };
-};
-
-export const foods_fetched = foods => {
-  return {
-    type: "FOODS_FETCHED",
-    payload: foods
-  };
-};
-
-export const trips_fetched = trips => {
-  return {
-    type: "TRIPS_FETCHED",
-    payload: trips
-  };
-};
-
-export const fetch_places = () => {
+export const fetch_results = type => {
   return dispatch => {
-    let Service = Parse.Object.extend("Service");
-    let query = new Parse.Query(Service);
-    query.equalTo("type", "place");
-    query.descending("createdAt");
-    query.limit(6);
+    let query = undefined;
+    if (type === "trip") {
+      let Trip = Parse.Object.extend("Trip");
+      query = new Parse.Query(Trip);
+      query.descending("createdAt");
+      query.limit(10);
+    } else {
+      let Service = Parse.Object.extend("Service");
+      query = new Parse.Query(Service);
+      query.equalTo("type", type);
+      query.descending("createdAt");
+      query.limit(8);
+    }
     query.find().then(
       response => {
         const convertedResponse = normalizeParseResponseData(response);
         const responseWithPlaceholderImage = mapServiceObjects(
           convertedResponse
         );
-        dispatch(places_fetched({ places: responseWithPlaceholderImage }));
+        dispatch(results_fetched({ results: responseWithPlaceholderImage }));
       },
       error => {
         // TODO dispatch the error to error handler and retry the request
-        console.log(error);
-      }
-    );
-  };
-};
-
-export const fetch_activities = () => {
-  return dispatch => {
-    let Service = Parse.Object.extend("Service");
-    let query = new Parse.Query(Service);
-    query.equalTo("type", "activity");
-    query.descending("createdAt");
-    query.limit(6);
-    query.find().then(
-      response => {
-        const convertedResponse = normalizeParseResponseData(response);
-        const responseWithPlaceholderImage = mapServiceObjects(
-          convertedResponse
-        );
-        dispatch(
-          activities_fetched({ activities: responseWithPlaceholderImage })
-        );
-      },
-      error => {
-        // TODO dispatch the error to error handler and retry the request
-        console.log(error);
-      }
-    );
-  };
-};
-
-export const fetch_foods = () => {
-  return dispatch => {
-    let Service = Parse.Object.extend("Service");
-    let query = new Parse.Query(Service);
-    query.equalTo("type", "food");
-    query.descending("createdAt");
-    query.limit(6);
-    query.find().then(
-      response => {
-        const convertedResponse = normalizeParseResponseData(response);
-        const responseWithPlaceholderImage = mapServiceObjects(
-          convertedResponse
-        );
-        dispatch(foods_fetched({ foods: responseWithPlaceholderImage }));
-      },
-      error => {
-        // TODO dispatch the error to error handler and retry the request
-        console.log(error);
-      }
-    );
-  };
-};
-
-export const fetch_trips = () => {
-  return dispatch => {
-    let Trip = Parse.Object.extend("Trip");
-    let query = new Parse.Query(Trip);
-    query.descending("createdAt");
-    query.limit(10);
-    query.find().then(
-      response => {
-        const trips = normalizeParseResponseData(response);
-        const responseWithPlaceholderImage = mapServiceObjects(trips);
-        dispatch(trips_fetched({ trips: trips }));
-      },
-      error => {
-        // TODO dispatch the error to error handler
         console.log(error);
       }
     );
