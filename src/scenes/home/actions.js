@@ -114,40 +114,6 @@ export const fetch_services = () => {
   };
 };
 
-// export const fetch_services = () => {
-//   return async dispatch => {
-//     let Service = Parse.Object.extend("Service");
-//     let query = new Parse.Query(Service);
-//     query.descending("createdAt");
-//     query.find().then(
-//       async response => {
-//         const convertedResponse = normalizeParseResponseData(response);
-//
-//         dispatch(services_fetched({ services: convertedResponse }));
-//         dispatch(retrieve_popular_tags({ services: convertedResponse }));
-//
-//         const popular_places = await async_retrieve_popular_places({
-//           services: convertedResponse
-//         });
-//         dispatch(retrieved_popular_places(popular_places));
-//
-//         const exiciting_activities = await async_retrieve_exciting_activities({
-//           services: convertedResponse
-//         });
-//         dispatch(retrieve_exciting_activities(exiciting_activities));
-//
-//         const delicious_foods = await async_retrieve_delicious_foods({
-//           services: convertedResponse
-//         });
-//         dispatch(retrieve_delicious_food(delicious_foods));
-//       },
-//       error => {
-//         console.log(error);
-//       }
-//     );
-//   };
-// };
-
 export const fetch_trips = () => {
   return dispatch => {
     let Trip = Parse.Object.extend("Trip");
