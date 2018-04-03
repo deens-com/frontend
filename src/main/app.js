@@ -31,15 +31,7 @@ const App = () => {
             component={withTracker(Registrations)}
           />
           <Route
-            path={process.env.PUBLIC_URL + "/foods"}
-            component={withTracker(Services)}
-          />
-          <Route
-            path={process.env.PUBLIC_URL + "/activities"}
-            component={withTracker(Services)}
-          />
-          <Route
-            path={process.env.PUBLIC_URL + "/places"}
+            path={process.env.PUBLIC_URL + "/results"}
             component={withTracker(Services)}
           />
           <Route

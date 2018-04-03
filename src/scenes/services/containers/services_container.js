@@ -6,23 +6,23 @@ import FoodsContainer from "./foods_container";
 export default class ServicesContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      service_type: props.location.pathname.substring(1)
-    };
   }
 
+  componentDidMount() {}
+
   render() {
+    let service_type = this.props.location.search.replace("?service_type=", "");
     return (
       <section>
         {(() => {
-          switch (this.state.service_type) {
-            case "places":
+          switch (service_type) {
+            case "place":
               return <PlacesContainer {...this.props} service_type="place" />;
-            case "activities":
+            case "activity":
               return (
                 <ActivitiesContainer {...this.props} service_type="activity" />
               );
-            case "foods":
+            case "food":
               return <FoodsContainer {...this.props} service_type="food" />;
             default:
               return null;

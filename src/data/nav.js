@@ -1,8 +1,8 @@
 export const mainNav = [
   { label: "Trips", href: "/trips" },
-  { label: "Places", href: "/places" },
-  { label: "Activities", href: "/activities" },
-  { label: "Food", href: "/foods" }
+  { label: "Places", href: "/results?service_type=place" },
+  { label: "Activities", href: "/results?service_type=activity" },
+  { label: "Food", href: "/results?service_type=food" }
 ];
 
 export const languages = [

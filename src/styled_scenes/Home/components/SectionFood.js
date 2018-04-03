@@ -26,7 +26,7 @@ export default function HomeSectionFood({ foods }) {
         <SectionHeader>
           <h3>Delicious food</h3>
           <More>
-            <Link to="/food">All foods</Link>
+            <Link to="/results?service_type=food">All foods</Link>
           </More>
         </SectionHeader>
         <SectionContent>
