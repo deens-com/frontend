@@ -110,7 +110,7 @@ export const fetch_trips = () => {
     let query = new Parse.Query(Trip);
     query.descending("createdAt");
     query.equalTo("status", "public");
-    query.limit(4);
+    query.limit(8);
     query.find().then(
       response => {
         const convertedResponse = normalizeParseResponseData(response);
