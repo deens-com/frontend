@@ -138,7 +138,7 @@ export default class CartThumb extends Component {
     return (
       <Wrap withTooltip={withTooltip} onMouseLeave={this.hideTooltip}>
         <Thumb url={url} />
-        {withTooltip && (
+        {/*withTooltip && (
           <TagWrap
             innerRef={tag => {
               tag && this.setTagWidth(tag.offsetWidth);
@@ -150,8 +150,8 @@ export default class CartThumb extends Component {
             </IconWrap>
             <CountWrap>{tripCount}</CountWrap>
           </TagWrap>
-        )}
-        {withTooltip &&
+        )*/}
+        {/*withTooltip &&
           tooltipVisible && (
             <Media
               query={`(min-width: ${sizes.large})`}
@@ -161,7 +161,7 @@ export default class CartThumb extends Component {
                 </Tooltip>
               )}
             />
-          )}
+          )*/}
       </Wrap>
     );
   }
