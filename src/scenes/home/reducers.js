@@ -12,7 +12,7 @@ export default function homeReducer(state = initialState, action = {}) {
     case "SERVICES_FETCHED":
       return {
         ...state,
-        services: action.payload
+        services: action.payload.services
       };
     case "TRIPS_FETCHED":
       return {

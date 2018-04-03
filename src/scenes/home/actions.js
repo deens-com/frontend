@@ -87,25 +87,18 @@ export const fetch_services = () => {
         // let places = response.places
         // console.log(places)
 
-        const convertedResponse = normalizeParseResponseData(response);
+        let convertedResponse = normalizeParseResponseData(response);
+        convertedResponse.activities = mapServiceObjects(
+          convertedResponse.activities
+        );
+        convertedResponse.places = mapServiceObjects(convertedResponse.places);
+        convertedResponse.food = mapServiceObjects(convertedResponse.food);
 
         dispatch(services_fetched({ services: convertedResponse }));
         dispatch(retrieve_popular_tags({ services: convertedResponse }));
-
-        const popular_places = await async_retrieve_popular_places({
-          services: convertedResponse
-        });
-        dispatch(retrieved_popular_places(popular_places));
-
-        const exiciting_activities = await async_retrieve_exciting_activities({
-          services: convertedResponse
-        });
-        dispatch(retrieve_exciting_activities(exiciting_activities));
-
-        const delicious_foods = await async_retrieve_delicious_foods({
-          services: convertedResponse
-        });
-        dispatch(retrieve_delicious_food(delicious_foods));
+        dispatch(retrieved_popular_places(convertedResponse.places));
+        dispatch(retrieve_exciting_activities(convertedResponse.activities));
+        dispatch(retrieve_delicious_food(convertedResponse.food));
       },
       error => {
         console.log(error);
@@ -189,44 +182,15 @@ const get_service_image = mainPicture => {
   return mainPicture.url;
 };
 
-export const async_retrieve_exciting_activities = payload => {
-  const filteredServices = payload.services.activities.map(service => {
+const mapServiceObjects = services => {
+  return services.map(service => {
     service.excerpt = service.description;
     service.title = service.name;
-    service.location = service.city + ", " + service.country;
+    service.location = `${service.city} ${service.country}`;
     service.rating = getRandomInt(1, 5);
     service.reviews = getRandomInt(1, 100);
     service.price = service.pricePerSession;
     service.image = get_service_image(service.mainPicture);
     return service;
   });
-  return filteredServices;
-};
-
-export const async_retrieve_delicious_foods = payload => {
-  const filteredServices = payload.services.foods.map(service => {
-    service.excerpt = service.description;
-    service.title = service.name;
-    service.location = service.city + ", " + service.country;
-    service.rating = getRandomInt(1, 5);
-    service.reviews = getRandomInt(1, 100);
-    service.price = service.pricePerSession;
-    service.image = get_service_image(service.mainPicture);
-    return service;
-  });
-  return filteredServices;
-};
-
-export const async_retrieve_popular_places = payload => {
-  const filteredServices = payload.services.places.map(service => {
-    service.excerpt = service.description;
-    service.title = service.name;
-    service.location = service.city + ", " + service.country;
-    service.rating = getRandomInt(1, 5);
-    service.reviews = getRandomInt(1, 100);
-    service.price = service.pricePerSession;
-    service.image = get_service_image(service.mainPicture);
-    return service;
-  });
-  return filteredServices;
 };
