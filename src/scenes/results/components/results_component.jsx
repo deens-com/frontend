@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import ServicesScene from "./../../../styled_scenes/Services";
 
-const ServicesComponent = props => {
+const ResultsComponent = props => {
   return <ServicesScene {...props} />;
 };
 
-export default ServicesComponent;
+export default ResultsComponent;

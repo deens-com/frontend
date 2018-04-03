@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 // import FoodsComponent from "./../components/foods_component";
-import ServicesComponent from "./../components/services_component";
+import ResultsComponent from "./../components/results_component";
 import { foodList } from "./../../../data/food";
-import * as services_actions from "./../actions";
+import * as results_actions from "./../actions";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
@@ -16,18 +16,18 @@ class FoodsContainer extends Component {
   }
 
   render() {
-    return <ServicesComponent {...this.props} service_data={foodList} />;
+    return <ResultsComponent {...this.props} service_data={foodList} />;
   }
 }
 
 const mapStateToProps = state => {
   return {
-    foods: state.ServicesReducer.foods
+    foods: state.ResultsReducer.foods
   };
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators(services_actions, dispatch);
+  return bindActionCreators(results_actions, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FoodsContainer);

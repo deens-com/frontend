@@ -8,7 +8,7 @@ import ReactGA from "react-ga";
 import withTracker from "./middlewares/with_tracker";
 import Home from "./../scenes/home/home";
 import Sessions from "./../scenes/sessions/sessions";
-import Services from "./../scenes/services/services";
+import Results from "./../scenes/results/results";
 import Trips from "./../scenes/trips/trips";
 import Registrations from "./../scenes/registrations/registrations";
 
@@ -32,7 +32,7 @@ const App = () => {
           />
           <Route
             path={process.env.PUBLIC_URL + "/results"}
-            component={withTracker(Services)}
+            component={withTracker(Results)}
           />
           <Route
             path={process.env.PUBLIC_URL + "/trips"}

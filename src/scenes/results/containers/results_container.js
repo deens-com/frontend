@@ -3,7 +3,7 @@ import PlacesContainer from "./places_container";
 import ActivitiesContainer from "./activities_container";
 import FoodsContainer from "./foods_container";
 
-export default class ServicesContainer extends Component {
+export default class ResultsContainer extends Component {
   constructor(props) {
     super(props);
   }
@@ -11,7 +11,7 @@ export default class ServicesContainer extends Component {
   componentDidMount() {}
 
   render() {
-    let service_type = this.props.location.search.replace("?service_type=", "");
+    let service_type = this.props.location.search.replace("?type=", "");
     return (
       <section>
         {(() => {

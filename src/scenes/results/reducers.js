@@ -4,7 +4,7 @@ const initialState = {
   foods: []
 };
 
-export default function ServicesReducer(state = initialState, action = {}) {
+export default function ResultsReducer(state = initialState, action = {}) {
   switch (action.type) {
     case "PLACES_FETCHED":
       return {

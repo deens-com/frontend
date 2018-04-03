@@ -26,7 +26,7 @@ export default function HomeSectionPlaces({ trips }) {
         <SectionHeader>
           <h3>Popular places</h3>
           <More>
-            <Link to="/results?service_type=place">All places</Link>
+            <Link to="/results?type=place">All places</Link>
           </More>
         </SectionHeader>
         <SectionContent>
