@@ -248,7 +248,8 @@ export default class Carousel extends Component {
             />
           </ButtonLeft>
         )}
-        {/*this.state.index <= pages && (
+
+        {this.state.index < pages && (
           <ButtonRight
             position="right"
             onClick={this.moveRight}
@@ -256,14 +257,7 @@ export default class Carousel extends Component {
           >
             <ArrowIcon style={{ fill: "#50a18a" }} />
           </ButtonRight>
-        )*/}
-        <ButtonRight
-          position="right"
-          onClick={this.moveRight}
-          size={this.props.size}
-        >
-          <ArrowIcon style={{ fill: "#50a18a" }} />
-        </ButtonRight>
+        )}
       </Wrap>
     );
   }
