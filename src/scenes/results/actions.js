@@ -66,7 +66,11 @@ const mapServiceObjects = services => {
     service.rating = getRandomInt(1, 5);
     service.reviews = getRandomInt(1, 100);
     service.price = service.pricePerSession || getRandomInt(200, 800);
-    service.image = get_service_image(service.mainPicture);
+    if (service.type === undefined) {
+      service.image = service.picture.url;
+    } else {
+      service.image = get_service_image(service.mainPicture);
+    }
     return service;
   });
 };
