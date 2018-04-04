@@ -1,16 +1,12 @@
-// NPM
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styled, { css } from "styled-components";
 
-// COMPONENTS
 import { ArrowIcon } from "../icons";
 import Row from "../layout/Row";
 
-// ACTIONS/CONFIG
 import { resetButton, media } from "../../libs/styled";
 
-// STYLES
 const carouselSizes = {
   medium: {
     overflowPadding: "0",
@@ -46,54 +42,6 @@ const Overflow = styled.div`
       `};
   }
 `;
-// &:before,
-// &:after {
-//   content: '';
-//   display: none;
-//   width: ${props => carouselSizes[props.size].cornerWidth};
-//   height: 100%;
-//   position: absolute;
-//   z-index: 2;
-//   top: 0;
-//   bottom: 0;
-//   transition: background 0.1s;
-
-//   ${media.minLarge} {
-//     display: block;
-//   }
-// }
-
-// &:before {
-//   left: ${props => carouselSizes[props.size].cornerPosition};
-//   background: white;
-// }
-
-// &:after {
-//   right: ${props => carouselSizes[props.size].cornerPosition};
-//   background: white;
-// }
-
-// ${props =>
-//   props.inTransition &&
-//   css`
-//     &:before {
-//       background: linear-gradient(
-//         to right,
-//         rgba(255, 255, 255, 1) 0%,
-//         rgba(255, 255, 255, 1) 50%,
-//         rgba(255, 255, 255, 0) 100%
-//       );
-//     }
-
-//     &:after {
-//       background: linear-gradient(
-//         to left,
-//         rgba(255, 255, 255, 1) 0%,
-//         rgba(255, 255, 255, 1) 50%,
-//         rgba(255, 255, 255, 0) 100%
-//       );
-//     }
-//   `};
 
 const Mover = styled.div`
   transform: translateX(0);
@@ -159,7 +107,6 @@ const ButtonRight = Button.extend`
   }
 `;
 
-// MODULE
 export default class Carousel extends Component {
   constructor(props) {
     super(props);
@@ -263,7 +210,6 @@ export default class Carousel extends Component {
   }
 }
 
-// Props Validation
 Carousel.propTypes = {
   show: PropTypes.string.isRequired,
   length: PropTypes.number.isRequired,
@@ -276,7 +222,6 @@ Carousel.propTypes = {
   ]).isRequired
 };
 
-// Default props
 Carousel.defaultProps = {
   size: "medium",
   shadowInside: false,
