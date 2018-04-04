@@ -1,5 +1,22 @@
 import Parse from "parse";
 
+// const get_link_path = (item_tag) => {
+//   if(selected_tags.length){
+//     let selected_tags_array = selected_tags.splice(",")
+//     let tags_str = ""
+//     if(selected_tags_array.includes(item_tag)){
+//       let new_arr = selected_tags.filter(tag => tag !== item_tag)
+//       tags_str = new_arr.join(",")
+//     }else{
+//       selected_tags_array.push(item_tag)
+//       tags_str = selected_tags_array.join(",")
+//     }
+//     return `/results?tags=${tags_str}`
+//   }else{
+//     return `/results?tags=${item_tag}`
+//   }
+// }
+
 export const results_fetched = results => {
   return {
     type: "RESULTS_FETCHED",
@@ -11,6 +28,29 @@ export const search_query_updated = search_query => {
   return {
     type: "SEARCH_QUERY_UPDATED",
     payload: search_query
+  };
+};
+
+export const toggle_tag_from_search_query = (
+  current_search_query,
+  item_tag
+) => {
+  return dispatch => {
+    let search_params = current_search_query;
+    if (current_search_query.tags.length) {
+      let selected_tags_array = current_search_query.tags.splice(",");
+      let tags_str = "";
+      if (selected_tags_array.includes(item_tag)) {
+        let new_arr = selected_tags_array.filter(tag => tag !== item_tag);
+        tags_str = new_arr.join(",");
+      } else {
+        selected_tags_array.push(item_tag);
+        tags_str = selected_tags_array.join(",");
+      }
+      search_params.tags = selected_tags_array;
+    }
+    // add or remove tag
+    dispatch(update_search_query(search_params));
   };
 };
 
