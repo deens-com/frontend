@@ -10,7 +10,9 @@ export const services_fetched = services => {
 export const trips_fetched = trips => {
   return {
     type: "TRIPS_FETCHED",
-    payload: trips
+    payload: {
+      trips: trips.slice(0, 8)
+    }
   };
 };
 
@@ -18,7 +20,7 @@ export const retrieve_exciting_activities = activities => {
   return {
     type: "EXCITING_ACTIVITIES_RETRIEVED",
     payload: {
-      exciting_activities: activities
+      exciting_activities: activities.slice(0, 8)
     }
   };
 };
@@ -27,7 +29,7 @@ export const retrieve_popular_places = places => {
   return {
     type: "POPULAR_PLACES_RETRIEVED",
     payload: {
-      popularPlaces: places
+      popularPlaces: places.slice(0, 8)
     }
   };
 };
@@ -36,7 +38,7 @@ export const retrieve_delicious_food = foods => {
   return {
     type: "DELICIOUS_FOOD_RETRIEVED",
     payload: {
-      delicious_foods: foods
+      delicious_foods: foods.slice(0, 8)
     }
   };
 };
@@ -44,7 +46,7 @@ export const retrieve_delicious_food = foods => {
 export const retrieve_popular_tags = services => {
   return {
     type: "POPULAR_TAGS_RETRIEVED",
-    payload: find_popular_tags(services)
+    payload: find_popular_tags(services).slice(0, 8)
   };
 };
 
@@ -123,7 +125,7 @@ export const fetch_trips = () => {
           trip.price = getRandomInt(500, 10000);
           return trip;
         });
-        dispatch(trips_fetched({ trips: responseWithPlaceholderImage }));
+        dispatch(trips_fetched(responseWithPlaceholderImage));
       },
       error => {
         // TODO dispatch the error to error handler and retry the request
