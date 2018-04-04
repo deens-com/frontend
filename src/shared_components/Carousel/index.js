@@ -158,9 +158,14 @@ export default class Carousel extends Component {
     );
   }
 
+  parseStringToInt(numberInText) {
+    return ~~numberInText;
+  }
+
   renderNextButton() {
-    const propsPages = Math.ceil(this.props.length / Number(this.props.show));
-    const remainingEls = this.props.length % Number(this.props.show);
+    const show = this.parseStringToInt(this.props.show);
+    const propsPages = Math.ceil(this.props.length / show);
+    const remainingEls = this.props.length % show;
     const pages =
       this.props.withLoader && remainingEls === 0 ? propsPages + 1 : propsPages;
 
@@ -184,21 +189,21 @@ export default class Carousel extends Component {
       return null;
     }
 
+    const show = this.parseStringToInt(this.props.show);
+
     return (
-      <Loader
-        width={(100 / Number(this.props.show)).toFixed(2)}
-        offset={this.props.length % Number(this.props.show)}
-      >
+      <Loader width={(100 / show).toFixed(2)} offset={this.props.length % show}>
         Load more...
       </Loader>
     );
   }
 
   render() {
+    const show = this.parseStringToInt(this.props.show);
     const modChildren = React.Children.map(
       this.props.children,
       (child, index) => {
-        const childPageIndex = Math.ceil((index + 1) / this.props.show);
+        const childPageIndex = Math.ceil((index + 1) / show);
         if (!this.state.inTransition && childPageIndex !== this.state.index) {
           return React.cloneElement(child, {
             withShadow: false
