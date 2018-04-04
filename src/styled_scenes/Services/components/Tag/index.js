@@ -77,15 +77,13 @@ export default function CategoryTag(props) {
       background={props.item.background}
     >
       <button
-        style={{
-          color: props.search_query.tags.includes(label_name) ? "black" : ""
-        }}
         onClick={() =>
           props.toggle_tag_from_search_query(props.search_query, label_name)
         }
       >
         {props.item.label}
       </button>
+      <p>{props.search_query.tags.includes(label_name) && "selected"}</p>
     </Wrap>
   );
 }

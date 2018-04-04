@@ -8,14 +8,23 @@ const Results = props => {
     service_type = props.location.search.replace("?type=", "");
   }
 
-  let tags = [];
+  let tags_arr = [];
   if (props.location.search.includes("?tags=")) {
-    tags = [props.location.search.replace("?tags=", "")];
+    let tags = props.location.search.replace("?tags=", "");
+    if (!tags.includes(",")) {
+      tags_arr = [tags];
+    } else {
+      tags_arr = tags.split(",");
+    }
   }
 
   return (
     <div className="Home">
-      <ResultsContainer {...props} service_type={service_type} tags={tags} />
+      <ResultsContainer
+        {...props}
+        service_type={service_type}
+        tags={tags_arr}
+      />
     </div>
   );
 };

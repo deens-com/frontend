@@ -1,21 +1,5 @@
 import Parse from "parse";
-
-// const get_link_path = (item_tag) => {
-//   if(selected_tags.length){
-//     let selected_tags_array = selected_tags.splice(",")
-//     let tags_str = ""
-//     if(selected_tags_array.includes(item_tag)){
-//       let new_arr = selected_tags.filter(tag => tag !== item_tag)
-//       tags_str = new_arr.join(",")
-//     }else{
-//       selected_tags_array.push(item_tag)
-//       tags_str = selected_tags_array.join(",")
-//     }
-//     return `/results?tags=${tags_str}`
-//   }else{
-//     return `/results?tags=${item_tag}`
-//   }
-// }
+import history from "./../../main/history";
 
 export const results_fetched = results => {
   return {
@@ -42,6 +26,7 @@ export const toggle_tag_from_search_query = (
       let tags_str = "";
       if (selected_tags_array.includes(item_tag)) {
         let new_arr = selected_tags_array.filter(tag => tag !== item_tag);
+        selected_tags_array = new_arr;
         tags_str = new_arr.join(",");
       } else {
         selected_tags_array.push(item_tag);
@@ -49,11 +34,38 @@ export const toggle_tag_from_search_query = (
       }
       search_params.tags = selected_tags_array;
     }
-    // add or remove tag
-    dispatch(update_search_query(search_params));
+    dispatch(update_path(search_params));
+    // will trigger update_search_query from results_container
   };
 };
 
+export const update_path = search_params => {
+  return dispatch => {
+    let results_path = "/results";
+    let tags = "";
+    if (search_params.type === "") {
+      if (search_params.tags.length) {
+        tags = search_params.tags.join(",");
+        results_path = results_path + "?tags=" + tags;
+      } else {
+        console.log("no type and no tags");
+      }
+    } else {
+      results_path = results_path + "?type=" + search_params.type;
+      if (search_params.tags.length) {
+        tags = search_params.tags.join(",");
+        results_path = results_path + "&tags=" + tags;
+      } else {
+        console.log("no type and no tags");
+      }
+    }
+    history.push(results_path);
+    // will trigger update_search_query from results_container
+  };
+};
+
+/* called from componentWillUpdate of results_container */
+/* is triggered whenever type or tags props have changed */
 export const update_search_query = search_params => {
   return dispatch => {
     dispatch(search_query_updated({ search_query: search_params }));
