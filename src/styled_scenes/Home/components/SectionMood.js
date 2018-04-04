@@ -25,7 +25,7 @@ export default function HomeSectionMood({ tags }) {
           <h3>What is your mood?</h3>
         </SectionHeader>
         <SectionContent>
-          <Carousel show="5" length={tags.length} shadowInside withLoader>
+          <Carousel show="5" length={tags.length} shadowInside>
             {tags.map(item => (
               <Tag
                 key={item.label}

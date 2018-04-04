@@ -30,7 +30,7 @@ export default function HomeSectionFood({ foods }) {
           </More>
         </SectionHeader>
         <SectionContent>
-          <Carousel show="4" length={foods.length} shadowInside withLoader>
+          <Carousel show="4" length={foods.length} shadowInside>
             {foods.map(item => (
               <LocationCart
                 item={item}
