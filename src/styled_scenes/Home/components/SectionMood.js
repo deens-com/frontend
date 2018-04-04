@@ -1,14 +1,9 @@
-// NPM
 import React from "react";
 import PropTypes from "prop-types";
 
-// COMPONENTS
 import Carousel from "../../../shared_components/Carousel";
 import Tag from "../../../shared_components/Tag";
 
-// ACTIONS/CONFIG
-
-// STYLES
 import {
   PageWrapper,
   SectionWrap,
@@ -16,7 +11,6 @@ import {
   SectionContent
 } from "../../../shared_components/layout/Page";
 
-// MODULE
 export default function HomeSectionMood({ tags }) {
   return (
     <PageWrapper>
@@ -44,7 +38,6 @@ export default function HomeSectionMood({ tags }) {
   );
 }
 
-// Props Validation
 HomeSectionMood.propTypes = {
   tags: PropTypes.arrayOf(PropTypes.object)
 };

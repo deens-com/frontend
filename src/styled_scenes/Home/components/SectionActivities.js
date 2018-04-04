@@ -1,15 +1,10 @@
-// NPM
 import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
-// COMPONENTS
 import Carousel from "../../../shared_components/Carousel";
 import LocationCart from "../../../shared_components/Carts/Location";
 
-// ACTIONS/CONFIG
-
-// STYLES
 import {
   PageWrapper,
   SectionWrap,
@@ -18,7 +13,6 @@ import {
   More
 } from "../../../shared_components/layout/Page";
 
-// MODULE
 export default function HomeSectionLocations({ locations }) {
   return (
     <PageWrapper>
@@ -48,7 +42,6 @@ export default function HomeSectionLocations({ locations }) {
   );
 }
 
-// Props Validation
 HomeSectionLocations.propTypes = {
   locations: PropTypes.arrayOf(PropTypes.object)
 };
