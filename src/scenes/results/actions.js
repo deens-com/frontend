@@ -7,22 +7,47 @@ export const results_fetched = results => {
   };
 };
 
-export const fetch_results = type => {
+export const search_query_updated = search_query => {
+  return {
+    type: "SEARCH_QUERY_UPDATED",
+    payload: search_query
+  };
+};
+
+export const update_search_query = search_params => {
+  return dispatch => {
+    dispatch(search_query_updated({ search_query: search_params }));
+    dispatch(fetch_results(search_params));
+  };
+};
+
+const service_types = ["activity", "food", "place"];
+
+export const fetch_results = search_query => {
   return dispatch => {
     let query = undefined;
+
+    let tags = search_query.tags;
+    let type = search_query.type;
+
     if (type === "trip") {
       let Trip = Parse.Object.extend("Trip");
       query = new Parse.Query(Trip);
       query.descending("createdAt");
       query.limit(10);
-    } else {
+      query = query.find();
+    } else if (service_types.includes(type)) {
       let Service = Parse.Object.extend("Service");
       query = new Parse.Query(Service);
       query.equalTo("type", type);
       query.descending("createdAt");
       query.limit(8);
+      query = query.find();
+    } else if (tags.length) {
+      query = Parse.Cloud.run("fetch_services_from_tags", { tags: tags });
     }
-    query.find().then(
+
+    query.then(
       response => {
         const convertedResponse = normalizeParseResponseData(response);
         const responseWithPlaceholderImage = mapServiceObjects(

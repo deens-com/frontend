@@ -75,7 +75,7 @@ export default function CategoryTag({ size, withShadow, item }) {
       hoverBg={item.hoverBg}
       background={item.background}
     >
-      <Link to="/">{item.label}</Link>
+      <Link to={`/results?tags=${item.label.toLowerCase()}`}>{item.label}</Link>
     </Wrap>
   );
 }

@@ -4,20 +4,33 @@ import * as results_actions from "./../actions";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
+const service_types = ["activity", "food", "place", "trip"];
+
 class ResultsContainer extends Component {
   constructor(props) {
     super(props);
   }
 
   componentDidMount() {
-    this.props.fetch_results(this.props.service_type);
+    let search_query = { type: this.props.service_type, tags: this.props.tags };
+    this.props.update_search_query(search_query);
   }
 
   componentWillUpdate(nextProps) {
-    if (this.props.service_type !== nextProps.service_type) {
-      this.props.fetch_results(nextProps.service_type);
+    if (this.did_search_query_changed(this.props, nextProps)) {
+      this.props.update_search_query({
+        type: nextProps.service_type,
+        tags: nextProps.tags
+      });
     }
   }
+
+  did_search_query_changed = (current_props, next_props) => {
+    return (
+      current_props.service_type !== next_props.service_type ||
+      current_props.tags !== next_props.tags
+    );
+  };
 
   render() {
     return (
@@ -28,7 +41,8 @@ class ResultsContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    results: state.ResultsReducer.results
+    results: state.ResultsReducer.results,
+    search_query: state.ResultsReducer.search_query
   };
 };
 
