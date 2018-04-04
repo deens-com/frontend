@@ -136,6 +136,49 @@ export default class Carousel extends Component {
     this.resetTransition();
   }
 
+  renderPreviousButton() {
+    if (this.state.index === 1) {
+      return null;
+    }
+
+    return (
+      <ButtonLeft
+        position="left"
+        onClick={this.moveLeft}
+        size={this.props.size}
+      >
+        <ArrowIcon
+          style={{
+            fill: "#50a18a",
+            transform: "rotate(180deg)",
+            top: "-1px"
+          }}
+        />
+      </ButtonLeft>
+    );
+  }
+
+  renderNextButton() {
+    const propsPages = Math.ceil(this.props.length / Number(this.props.show));
+    const remainingEls = this.props.length % Number(this.props.show);
+    const pages =
+      this.props.withLoader && remainingEls === 0 ? propsPages + 1 : propsPages;
+
+    if (this.state.index >= pages) {
+      return null;
+    }
+
+    return (
+      <ButtonRight
+        position="right"
+        onClick={this.moveRight}
+        size={this.props.size}
+      >
+        <ArrowIcon style={{ fill: "#50a18a" }} />
+      </ButtonRight>
+    );
+  }
+
   render() {
     const modChildren = React.Children.map(
       this.props.children,
@@ -149,11 +192,6 @@ export default class Carousel extends Component {
         return child;
       }
     );
-
-    const propsPages = Math.ceil(this.props.length / Number(this.props.show));
-    const remainingEls = this.props.length % Number(this.props.show);
-    const pages =
-      this.props.withLoader && remainingEls === 0 ? propsPages + 1 : propsPages;
 
     return (
       <Wrap shadowInside={this.props.shadowInside}>
@@ -169,6 +207,7 @@ export default class Carousel extends Component {
           >
             <Inner>
               {modChildren}
+
               {this.props.withLoader && (
                 <Loader
                   width={(100 / Number(this.props.show)).toFixed(2)}
@@ -180,31 +219,9 @@ export default class Carousel extends Component {
             </Inner>
           </Mover>
         </Overflow>
-        {this.state.index > 1 && (
-          <ButtonLeft
-            position="left"
-            onClick={this.moveLeft}
-            size={this.props.size}
-          >
-            <ArrowIcon
-              style={{
-                fill: "#50a18a",
-                transform: "rotate(180deg)",
-                top: "-1px"
-              }}
-            />
-          </ButtonLeft>
-        )}
 
-        {this.state.index < pages && (
-          <ButtonRight
-            position="right"
-            onClick={this.moveRight}
-            size={this.props.size}
-          >
-            <ArrowIcon style={{ fill: "#50a18a" }} />
-          </ButtonRight>
-        )}
+        {this.renderPreviousButton()}
+        {this.renderNextButton()}
       </Wrap>
     );
   }
