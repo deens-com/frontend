@@ -158,12 +158,8 @@ export default class Carousel extends Component {
     );
   }
 
-  parseStringToInt(numberInText) {
-    return ~~numberInText;
-  }
-
   renderNextButton() {
-    const show = this.parseStringToInt(this.props.show);
+    const show = ~~this.props.show;
     const propsPages = Math.ceil(this.props.length / show);
     const remainingEls = this.props.length % show;
     const pages =
@@ -189,7 +185,7 @@ export default class Carousel extends Component {
       return null;
     }
 
-    const show = this.parseStringToInt(this.props.show);
+    const show = ~~this.props.show;
 
     return (
       <Loader width={(100 / show).toFixed(2)} offset={this.props.length % show}>
@@ -199,7 +195,7 @@ export default class Carousel extends Component {
   }
 
   render() {
-    const show = this.parseStringToInt(this.props.show);
+    const show = ~~this.props.show;
     const modChildren = React.Children.map(
       this.props.children,
       (child, index) => {
