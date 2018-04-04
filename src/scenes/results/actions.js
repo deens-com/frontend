@@ -65,7 +65,7 @@ const mapServiceObjects = services => {
     service.location = `${service.city} ${service.country}`;
     service.rating = getRandomInt(1, 5);
     service.reviews = getRandomInt(1, 100);
-    service.price = service.pricePerSession;
+    service.price = service.pricePerSession || getRandomInt(200, 800);
     service.image = get_service_image(service.mainPicture);
     return service;
   });
