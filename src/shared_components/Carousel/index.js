@@ -179,6 +179,21 @@ export default class Carousel extends Component {
     );
   }
 
+  renderLoader() {
+    if (!this.props.withLoader) {
+      return null;
+    }
+
+    return (
+      <Loader
+        width={(100 / Number(this.props.show)).toFixed(2)}
+        offset={this.props.length % Number(this.props.show)}
+      >
+        Load more...
+      </Loader>
+    );
+  }
+
   render() {
     const modChildren = React.Children.map(
       this.props.children,
@@ -207,15 +222,7 @@ export default class Carousel extends Component {
           >
             <Inner>
               {modChildren}
-
-              {this.props.withLoader && (
-                <Loader
-                  width={(100 / Number(this.props.show)).toFixed(2)}
-                  offset={this.props.length % Number(this.props.show)}
-                >
-                  Load more...
-                </Loader>
-              )}
+              {this.renderLoader()}
             </Inner>
           </Mover>
         </Overflow>
