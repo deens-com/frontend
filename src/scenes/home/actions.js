@@ -23,7 +23,7 @@ export const retrieve_exciting_activities = activities => {
   };
 };
 
-export const retrieved_popular_places = places => {
+export const retrieve_popular_places = places => {
   return {
     type: "POPULAR_PLACES_RETRIEVED",
     payload: {
@@ -93,7 +93,7 @@ export const fetch_services = () => {
 
         dispatch(services_fetched({ services: convertedResponse }));
         dispatch(retrieve_popular_tags({ services: convertedResponse }));
-        dispatch(retrieved_popular_places(convertedResponse.places));
+        dispatch(retrieve_popular_places(convertedResponse.places));
         dispatch(retrieve_exciting_activities(convertedResponse.activities));
         dispatch(retrieve_delicious_food(convertedResponse.foods));
       },
