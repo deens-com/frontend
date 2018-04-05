@@ -18,7 +18,6 @@ import {
   More
 } from "../../../shared_components/layout/Page";
 
-// MODULE
 export default function HomeSectionLocations({ locations }) {
   return (
     <PageWrapper>
@@ -30,7 +29,7 @@ export default function HomeSectionLocations({ locations }) {
           </More>
         </SectionHeader>
         <SectionContent>
-          <Carousel show="4" length={locations.length} shadowInside withLoader>
+          <Carousel show="4" length={locations.length} shadowInside>
             {locations.map(item => (
               <LocationCart
                 item={item}
