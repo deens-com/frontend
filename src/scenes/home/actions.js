@@ -10,7 +10,9 @@ export const services_fetched = services => {
 export const trips_fetched = trips => {
   return {
     type: "TRIPS_FETCHED",
-    payload: trips
+    payload: {
+      trips: trips
+    }
   };
 };
 
@@ -23,7 +25,7 @@ export const retrieve_exciting_activities = activities => {
   };
 };
 
-export const retrieved_popular_places = places => {
+export const retrieve_popular_places = places => {
   return {
     type: "POPULAR_PLACES_RETRIEVED",
     payload: {
@@ -93,7 +95,7 @@ export const fetch_services = () => {
 
         dispatch(services_fetched({ services: convertedResponse }));
         dispatch(retrieve_popular_tags({ services: convertedResponse }));
-        dispatch(retrieved_popular_places(convertedResponse.places));
+        dispatch(retrieve_popular_places(convertedResponse.places));
         dispatch(retrieve_exciting_activities(convertedResponse.activities));
         dispatch(retrieve_delicious_food(convertedResponse.foods));
       },
@@ -123,7 +125,7 @@ export const fetch_trips = () => {
           trip.price = getRandomInt(500, 10000);
           return trip;
         });
-        dispatch(trips_fetched({ trips: responseWithPlaceholderImage }));
+        dispatch(trips_fetched(responseWithPlaceholderImage));
       },
       error => {
         // TODO dispatch the error to error handler and retry the request
@@ -168,7 +170,7 @@ const find_popular_tags = services => {
     return { label: tag.tag, background: randBg, hoverBg: randHoverBg };
   });
   // Ugly code to retrive popular tags but we might refactor tags data model in near future
-  return tags_ordered_by_popularity;
+  return tags_ordered_by_popularity.slice(0, 8);
 };
 
 const get_service_image = mainPicture => {

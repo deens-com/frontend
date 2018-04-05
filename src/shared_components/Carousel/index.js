@@ -1,16 +1,12 @@
-// NPM
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styled, { css } from "styled-components";
 
-// COMPONENTS
 import { ArrowIcon } from "../icons";
 import Row from "../layout/Row";
 
-// ACTIONS/CONFIG
 import { resetButton, media } from "../../libs/styled";
 
-// STYLES
 const carouselSizes = {
   medium: {
     overflowPadding: "0",
@@ -46,54 +42,6 @@ const Overflow = styled.div`
       `};
   }
 `;
-// &:before,
-// &:after {
-//   content: '';
-//   display: none;
-//   width: ${props => carouselSizes[props.size].cornerWidth};
-//   height: 100%;
-//   position: absolute;
-//   z-index: 2;
-//   top: 0;
-//   bottom: 0;
-//   transition: background 0.1s;
-
-//   ${media.minLarge} {
-//     display: block;
-//   }
-// }
-
-// &:before {
-//   left: ${props => carouselSizes[props.size].cornerPosition};
-//   background: white;
-// }
-
-// &:after {
-//   right: ${props => carouselSizes[props.size].cornerPosition};
-//   background: white;
-// }
-
-// ${props =>
-//   props.inTransition &&
-//   css`
-//     &:before {
-//       background: linear-gradient(
-//         to right,
-//         rgba(255, 255, 255, 1) 0%,
-//         rgba(255, 255, 255, 1) 50%,
-//         rgba(255, 255, 255, 0) 100%
-//       );
-//     }
-
-//     &:after {
-//       background: linear-gradient(
-//         to left,
-//         rgba(255, 255, 255, 1) 0%,
-//         rgba(255, 255, 255, 1) 50%,
-//         rgba(255, 255, 255, 0) 100%
-//       );
-//     }
-//   `};
 
 const Mover = styled.div`
   transform: translateX(0);
@@ -159,7 +107,6 @@ const ButtonRight = Button.extend`
   }
 `;
 
-// MODULE
 export default class Carousel extends Component {
   constructor(props) {
     super(props);
@@ -189,11 +136,70 @@ export default class Carousel extends Component {
     this.resetTransition();
   }
 
+  renderPreviousButton() {
+    if (this.state.index === 1) {
+      return null;
+    }
+
+    return (
+      <ButtonLeft
+        position="left"
+        onClick={this.moveLeft}
+        size={this.props.size}
+      >
+        <ArrowIcon
+          style={{
+            fill: "#50a18a",
+            transform: "rotate(180deg)",
+            top: "-1px"
+          }}
+        />
+      </ButtonLeft>
+    );
+  }
+
+  renderNextButton() {
+    const show = ~~this.props.show;
+    const propsPages = Math.ceil(this.props.length / show);
+    const remainingEls = this.props.length % show;
+    const pages =
+      this.props.withLoader && remainingEls === 0 ? propsPages + 1 : propsPages;
+
+    if (this.state.index >= pages) {
+      return null;
+    }
+
+    return (
+      <ButtonRight
+        position="right"
+        onClick={this.moveRight}
+        size={this.props.size}
+      >
+        <ArrowIcon style={{ fill: "#50a18a" }} />
+      </ButtonRight>
+    );
+  }
+
+  renderLoader() {
+    if (!this.props.withLoader) {
+      return null;
+    }
+
+    const show = ~~this.props.show;
+
+    return (
+      <Loader width={(100 / show).toFixed(2)} offset={this.props.length % show}>
+        Load more...
+      </Loader>
+    );
+  }
+
   render() {
+    const show = ~~this.props.show;
     const modChildren = React.Children.map(
       this.props.children,
       (child, index) => {
-        const childPageIndex = Math.ceil((index + 1) / this.props.show);
+        const childPageIndex = Math.ceil((index + 1) / show);
         if (!this.state.inTransition && childPageIndex !== this.state.index) {
           return React.cloneElement(child, {
             withShadow: false
@@ -202,11 +208,6 @@ export default class Carousel extends Component {
         return child;
       }
     );
-
-    const propsPages = Math.ceil(this.props.length / Number(this.props.show));
-    const remainingEls = this.props.length % Number(this.props.show);
-    const pages =
-      this.props.withLoader && remainingEls === 0 ? propsPages + 1 : propsPages;
 
     return (
       <Wrap shadowInside={this.props.shadowInside}>
@@ -222,54 +223,18 @@ export default class Carousel extends Component {
           >
             <Inner>
               {modChildren}
-              {this.props.withLoader && (
-                <Loader
-                  width={(100 / Number(this.props.show)).toFixed(2)}
-                  offset={this.props.length % Number(this.props.show)}
-                >
-                  Load more...
-                </Loader>
-              )}
+              {this.renderLoader()}
             </Inner>
           </Mover>
         </Overflow>
-        {this.state.index > 1 && (
-          <ButtonLeft
-            position="left"
-            onClick={this.moveLeft}
-            size={this.props.size}
-          >
-            <ArrowIcon
-              style={{
-                fill: "#50a18a",
-                transform: "rotate(180deg)",
-                top: "-1px"
-              }}
-            />
-          </ButtonLeft>
-        )}
-        {/*this.state.index <= pages && (
-          <ButtonRight
-            position="right"
-            onClick={this.moveRight}
-            size={this.props.size}
-          >
-            <ArrowIcon style={{ fill: "#50a18a" }} />
-          </ButtonRight>
-        )*/}
-        <ButtonRight
-          position="right"
-          onClick={this.moveRight}
-          size={this.props.size}
-        >
-          <ArrowIcon style={{ fill: "#50a18a" }} />
-        </ButtonRight>
+
+        {this.renderPreviousButton()}
+        {this.renderNextButton()}
       </Wrap>
     );
   }
 }
 
-// Props Validation
 Carousel.propTypes = {
   show: PropTypes.string.isRequired,
   length: PropTypes.number.isRequired,
@@ -282,7 +247,6 @@ Carousel.propTypes = {
   ]).isRequired
 };
 
-// Default props
 Carousel.defaultProps = {
   size: "medium",
   shadowInside: false,
