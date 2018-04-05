@@ -20,7 +20,7 @@ export const retrieve_exciting_activities = activities => {
   return {
     type: "EXCITING_ACTIVITIES_RETRIEVED",
     payload: {
-      exciting_activities: activities.slice(0, 8)
+      exciting_activities: activities
     }
   };
 };
@@ -29,7 +29,7 @@ export const retrieve_popular_places = places => {
   return {
     type: "POPULAR_PLACES_RETRIEVED",
     payload: {
-      popularPlaces: places.slice(0, 8)
+      popularPlaces: places
     }
   };
 };
@@ -38,7 +38,7 @@ export const retrieve_delicious_food = foods => {
   return {
     type: "DELICIOUS_FOOD_RETRIEVED",
     payload: {
-      delicious_foods: foods.slice(0, 8)
+      delicious_foods: foods
     }
   };
 };
