@@ -46,7 +46,7 @@ export const retrieve_delicious_food = foods => {
 export const retrieve_popular_tags = services => {
   return {
     type: "POPULAR_TAGS_RETRIEVED",
-    payload: find_popular_tags(services).slice(0, 8)
+    payload: find_popular_tags(services)
   };
 };
 
@@ -170,7 +170,7 @@ const find_popular_tags = services => {
     return { label: tag.tag, background: randBg, hoverBg: randHoverBg };
   });
   // Ugly code to retrive popular tags but we might refactor tags data model in near future
-  return tags_ordered_by_popularity;
+  return tags_ordered_by_popularity.slice(0, 8);
 };
 
 const get_service_image = mainPicture => {
