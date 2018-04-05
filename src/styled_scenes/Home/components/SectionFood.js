@@ -1,10 +1,15 @@
+// NPM
 import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
+// COMPONENTS
 import Carousel from "../../../shared_components/Carousel";
 import LocationCart from "../../../shared_components/Carts/Location";
 
+// ACTIONS/CONFIG
+
+// STYLES
 import {
   PageWrapper,
   SectionWrap,
@@ -42,6 +47,7 @@ export default function HomeSectionFood({ foods }) {
   );
 }
 
+// Props Validation
 HomeSectionFood.propTypes = {
   foods: PropTypes.arrayOf(PropTypes.object)
 };
