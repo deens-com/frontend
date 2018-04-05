@@ -101,12 +101,11 @@ export const fetch_results = search_query => {
       query = new Parse.Query(Service);
       query.containedIn("type", service_types);
       if (tags.length) {
-        query.containedIn("tags", tags);
+        query.containsAll("tags", tags);
       }
-      //query.descending("createdAt");
-      //query.limit(8);
       query = query.find();
     } else if (service_types.length && service_types.includes("trip")) {
+      // service_types specified and one of them is of type trip
       let services_query = undefined;
 
       if (service_types.length === 1) {
@@ -114,14 +113,13 @@ export const fetch_results = search_query => {
         let Trip = Parse.Object.extend("Trip");
         let trip_query = new Parse.Query(Trip);
         if (tags.length) {
-          trip_query.containedIn("tags", tags);
+          trip_query.containsAll("tags", tags);
         } else {
           trip_query.limit(20);
         }
         services_query = trip_query;
       } else {
         // One service of type trip + at least one service of the 3 types
-
         let Service = Parse.Object.extend("Service");
         let type_service_query = new Parse.Query(Service);
         type_service_query.containedIn("type", service_types);
@@ -129,8 +127,8 @@ export const fetch_results = search_query => {
         if (tags.length) {
           let Service = Parse.Object.extend("Service");
           let tags_service_query = new Parse.Query(Service);
-          tags_service_query.containedIn("tags", tags);
-          services_query = Parse.Query.or(
+          tags_service_query.containsAll("tags", tags);
+          services_query = Parse.Query.and(
             type_service_query,
             tags_service_query
           );
@@ -151,7 +149,7 @@ export const fetch_results = search_query => {
           let Trip = Parse.Object.extend("Trip");
           let trip_query = new Parse.Query(Trip);
           if (tags.length) {
-            trip_query.containedIn("tags", tags);
+            trip_query.containsAll("tags", tags);
           }
           trip_query.find().then(
             response => {
