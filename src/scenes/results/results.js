@@ -1,28 +1,20 @@
 import React from "react";
 import ResultsContainer from "./containers/results_container";
 import history from "./../../main/history";
+import queryString from "query-string";
 
 const Results = props => {
-  let service_type = "";
-  if (props.location.search.includes("?type=")) {
-    service_type = props.location.search.replace("?type=", "");
-  }
-
-  let tags_arr = [];
-  if (props.location.search.includes("?tags=")) {
-    let tags = props.location.search.replace("?tags=", "");
-    if (!tags.includes(",")) {
-      tags_arr = [tags];
-    } else {
-      tags_arr = tags.split(",");
-    }
-  }
+  let search_params = queryString.parse(props.location.search);
+  let service_types =
+    (search_params.service_types && search_params.service_types.split(",")) ||
+    [];
+  let tags_arr = (search_params.tags && search_params.tags.split(",")) || [];
 
   return (
     <div className="Home">
       <ResultsContainer
         {...props}
-        service_type={service_type}
+        service_types={service_types}
         tags={tags_arr}
       />
     </div>

@@ -4,7 +4,7 @@ import * as results_actions from "./../actions";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
-const service_types = ["activity", "food", "place", "trip"];
+const service_types_list = ["activity", "food", "place", "trip"];
 
 class ResultsContainer extends Component {
   constructor(props) {
@@ -12,14 +12,17 @@ class ResultsContainer extends Component {
   }
 
   componentDidMount() {
-    let search_query = { type: this.props.service_type, tags: this.props.tags };
+    let search_query = {
+      type: this.props.service_types,
+      tags: this.props.tags
+    };
     this.props.update_search_query(search_query);
   }
 
   componentWillUpdate(nextProps) {
     if (this.did_search_query_changed(this.props, nextProps)) {
       this.props.update_search_query({
-        type: nextProps.service_type,
+        type: nextProps.service_types,
         tags: nextProps.tags
       });
     }
@@ -27,7 +30,7 @@ class ResultsContainer extends Component {
 
   did_search_query_changed = (current_props, next_props) => {
     return (
-      current_props.service_type !== next_props.service_type ||
+      current_props.service_types !== next_props.service_types ||
       current_props.tags !== next_props.tags
     );
   };
