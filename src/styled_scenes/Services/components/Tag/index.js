@@ -32,11 +32,16 @@ const tagSizes = {
   }
 };
 
+// quick fix to maintain the style
+const ServiceCarouselButton = styled.a``;
+
 const Wrap = styled.div`
   background: ${props => props.background || "#ddd"};
   border-radius: 4px;
+  /*box-shadow: ${props =>
+    props.withShadow ? "0 8px 25px 0 rgba(141,141,141,0.22)" : "none"};*/
   box-shadow: ${props =>
-    props.withShadow ? "0 8px 25px 0 rgba(141,141,141,0.22)" : "none"};
+    props.withShadow ? "0px 8px 10px 0 rgba(0, 0, 0, 0.22)" : "none"};
   cursor: pointer;
   display: inline-block;
   margin-bottom: 15px;
@@ -72,18 +77,17 @@ export default function CategoryTag(props) {
   return (
     <Wrap
       size={props.size}
-      withShadow={props.withShadow}
+      withShadow={props.search_query.tags.includes(label_name)}
       hoverBg={props.item.hoverBg}
       background={props.item.background}
     >
-      <button
+      <ServiceCarouselButton
         onClick={() =>
           props.toggle_tag_from_search_query(props.search_query, label_name)
         }
       >
         {props.item.label}
-      </button>
-      <p>{props.search_query.tags.includes(label_name) && "selected"}</p>
+      </ServiceCarouselButton>
     </Wrap>
   );
 }
