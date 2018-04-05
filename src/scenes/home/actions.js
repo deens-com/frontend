@@ -11,7 +11,7 @@ export const trips_fetched = trips => {
   return {
     type: "TRIPS_FETCHED",
     payload: {
-      trips: trips.slice(0, 8)
+      trips: trips
     }
   };
 };
