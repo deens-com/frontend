@@ -81,6 +81,12 @@ export const update_search_query = search_params => {
   };
 };
 
+const removeDuplicates = (myArr, prop) => {
+  return myArr.filter((obj, pos, arr) => {
+    return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos;
+  });
+};
+
 //const service_types_list = ["activity", "food", "place"];
 export const fetch_results = search_query => {
   return dispatch => {
@@ -90,6 +96,7 @@ export const fetch_results = search_query => {
     let service_types = search_query.type;
 
     if (service_types.length && !service_types.includes("trip")) {
+      // service_types specified but none of them is of type trip
       let Service = Parse.Object.extend("Service");
       query = new Parse.Query(Service);
       query.containedIn("type", service_types);
@@ -100,16 +107,40 @@ export const fetch_results = search_query => {
       //query.limit(8);
       query = query.find();
     } else if (service_types.length && service_types.includes("trip")) {
-      let service_arr = [];
+      let services_query = undefined;
 
-      let Service = Parse.Object.extend("Service");
-      let service_query = new Parse.Query(Service);
-      service_query.containedIn("type", service_types);
-      if (tags.length) {
-        service_query.containedIn("tags", tags);
+      if (service_types.length === 1) {
+        // only one service of type trip
+        let Trip = Parse.Object.extend("Trip");
+        let trip_query = new Parse.Query(Trip);
+        if (tags.length) {
+          trip_query.containedIn("tags", tags);
+        } else {
+          trip_query.limit(20);
+        }
+        services_query = trip_query;
+      } else {
+        // One service of type trip + at least one service of the 3 types
+
+        let Service = Parse.Object.extend("Service");
+        let type_service_query = new Parse.Query(Service);
+        type_service_query.containedIn("type", service_types);
+
+        if (tags.length) {
+          let Service = Parse.Object.extend("Service");
+          let tags_service_query = new Parse.Query(Service);
+          tags_service_query.containedIn("tags", tags);
+          services_query = Parse.Query.or(
+            type_service_query,
+            tags_service_query
+          );
+        } else {
+          services_query = type_service_query;
+        }
       }
 
-      service_query.find().then(
+      let service_arr = [];
+      services_query.find().then(
         response => {
           const convertedResponse = normalizeParseResponseData(response);
           const responseWithPlaceholderImage = mapServiceObjects(
@@ -133,7 +164,11 @@ export const fetch_results = search_query => {
                 (acc, val) => acc.concat(val),
                 []
               );
-              dispatch(results_fetched({ results: flattened_service_arr }));
+              let uniq_services = removeDuplicates(
+                flattened_service_arr,
+                "createdAt"
+              );
+              dispatch(results_fetched({ results: uniq_services }));
               return;
             },
             error => {
@@ -147,7 +182,8 @@ export const fetch_results = search_query => {
           console.log(error);
         }
       );
-    } else if (service_types === "" && tags.length) {
+    } else if (!service_types.length && tags.length) {
+      // No service_types specified and only tags
       query = Parse.Cloud.run("fetch_services_from_tags", { tags: tags });
     }
 

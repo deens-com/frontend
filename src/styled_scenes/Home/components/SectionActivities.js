@@ -25,7 +25,7 @@ export default function HomeSectionLocations({ locations }) {
         <SectionHeader>
           <h3>Exciting Activities</h3>
           <More>
-            <Link to="/results?type=activity">All experiences</Link>
+            <Link to="/results?service_types=activity">All experiences</Link>
           </More>
         </SectionHeader>
         <SectionContent>

@@ -2,19 +2,23 @@ export const categories = [
   {
     img: "/img/categories/trips.png",
     label: "Trips",
-    href: "/results?type=trip"
+    href: "/results?service_types=trip"
   },
   {
     img: "/img/categories/places.png",
     label: "Places",
-    href: "/results?type=place"
+    href: "/results?service_types=place"
   },
   {
     img: "/img/categories/activities.png",
     label: "Activities",
-    href: "/results?type=activity"
+    href: "/results?service_types=activity"
   },
-  { img: "/img/categories/food.png", label: "Food", href: "/results?type=food" }
+  {
+    img: "/img/categories/food.png",
+    label: "Food",
+    href: "/results?service_types=food"
+  }
 ];
 
 export const tags = [

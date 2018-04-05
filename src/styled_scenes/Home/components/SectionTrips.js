@@ -25,7 +25,7 @@ export default function HomeSectionTrips({ trips }) {
         <SectionHeader>
           <h3>Amazing Trips</h3>
           <More>
-            <Link to="/results?type=trip">All trips</Link>
+            <Link to="/results?service_types=trip">All trips</Link>
           </More>
         </SectionHeader>
         <SectionContent>
