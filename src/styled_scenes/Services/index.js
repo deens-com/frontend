@@ -59,6 +59,9 @@ export default function ServicesScene(props) {
               <GoogleMapReact
                 defaultCenter={{ lat: 59.95, lng: 30.33 }}
                 defaultZoom={11}
+                bootstrapURLKeys={{
+                  key: "AIzaSyDICUW2RF412bnmELi3Y_zCCzHa-w8WnXc"
+                }}
               >
                 <MapMaker lat={59.95} lng={30.33} scale={1} color="#4fb798" />
                 <MapMaker lat={59.96} lng={30.34} scale={1} color="#4fb798" />
