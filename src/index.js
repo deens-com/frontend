@@ -7,9 +7,9 @@ import registerServiceWorker from "./registerServiceWorker";
 import Parse from "parse";
 
 Parse.initialize("myAppId");
-Parse.serverURL =
+Parse.serverURL = //"http://api.please.docker/parse";
   process.env.REACT_APP_PARSE_SERVER_URL ||
-  "http://please-api.herokuapp.com/parse"; //"http://api.please.com/parse";
+  "http://please-api.herokuapp.com/parse";
 
 ReactDOM.render(<App />, document.getElementById("root"));
 registerServiceWorker();

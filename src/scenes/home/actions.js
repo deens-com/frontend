@@ -123,6 +123,7 @@ export const fetch_trips = () => {
           trip.reviews = getRandomInt(1, 100);
           trip.image = trip.picture.url;
           trip.price = getRandomInt(500, 10000);
+          trip.location = "";
           return trip;
         });
         dispatch(trips_fetched(responseWithPlaceholderImage));
