@@ -465,10 +465,11 @@ export default class HomeSearch extends Component {
     super();
     this.state = {
       type: "voice",
+      service_type: "place",
       search: "",
       address: "",
-      latitude: 0,
-      longitude: 0
+      latitude: undefined,
+      longitude: undefined
     };
 
     this.setType = this.setType.bind(this);
@@ -478,6 +479,7 @@ export default class HomeSearch extends Component {
     this.handleStartDateChange = this.handleStartDateChange.bind(this);
     this.handleEndDateChange = this.handleEndDateChange.bind(this);
     this.handlePersonChange = this.handlePersonChange.bind(this);
+    this.handleServiceTypeChange = this.handleServiceTypeChange.bind(this);
   }
 
   componentDidUpdate() {
@@ -492,6 +494,10 @@ export default class HomeSearch extends Component {
 
   setSearch(ev) {
     this.setState({ search: ev.target.value });
+  }
+
+  handleServiceTypeChange(event) {
+    this.setState({ service_type: event.target.innerText.toLowerCase() });
   }
 
   handleLocationChange(address) {
@@ -538,17 +544,17 @@ export default class HomeSearch extends Component {
   handleSearchSubmit(ev) {
     ev.preventDefault();
     // TODO remove dummy data
-    alert("Searching for" + this.state.search);
+    console.log("Searching for" + JSON.stringify(this.state.search));
     const { startDate, endDate, person } = this.state.search;
 
     const query = queryString.stringify({
-      service_types: "trip",
+      service_types: this.state.service_type,
       start_date: startDate,
       end_date: endDate,
       person: person,
-      address: "Australia",
-      latitude: -35.473469,
-      longitude: 149.012375
+      //address: this.state.address,
+      latitude: this.state.latitude,
+      longitude: this.state.longitude
     });
     history.push(`/results?${query}`);
   }
@@ -640,10 +646,26 @@ export default class HomeSearch extends Component {
               </DateWrap>
 
               <CheckboxWrap>
-                <Checkbox label="Trip" />
-                <Checkbox label="Place" />
-                <Checkbox label="Activity" />
-                <Checkbox label="Food" />
+                <Checkbox
+                  label="Trip"
+                  value="trip"
+                  onClick={this.handleServiceTypeChange}
+                />
+                <Checkbox
+                  label="Place"
+                  value="place"
+                  onClick={this.handleServiceTypeChange}
+                />
+                <Checkbox
+                  label="Activity"
+                  value="activity"
+                  onClick={this.handleServiceTypeChange}
+                />
+                <Checkbox
+                  label="Food"
+                  value="food"
+                  onClick={this.handleServiceTypeChange}
+                />
               </CheckboxWrap>
 
               <ButtonWrap>
