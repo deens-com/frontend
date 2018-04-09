@@ -507,8 +507,8 @@ export default class HomeSearch extends Component {
         return getLatLng(results[0]);
       })
       .then(results => {
-        const { lat, long } = results;
-        this.setState({ address, latitude: lat, longitude: long });
+        const { lat, lng } = results;
+        this.setState({ address, latitude: lat, longitude: lng });
       });
   }
 
