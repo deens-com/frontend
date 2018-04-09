@@ -6,9 +6,9 @@ import queryString from "query-string";
 const Results = props => {
   let search_params = queryString.parse(props.location.search);
   let service_types =
-    (search_params.service_types && search_params.service_types.split(",")) ||
+    (search_params.service_types && search_params.service_types.split("-")) ||
     [];
-  let tags_arr = (search_params.tags && search_params.tags.split(",")) || [];
+  let tags_arr = (search_params.tags && search_params.tags.split("-")) || [];
 
   return (
     <div className="Home">

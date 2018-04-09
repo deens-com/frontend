@@ -23,17 +23,17 @@ export const toggle_tag_from_search_query = (
     let search_params = current_search_query;
     if (current_search_query.tags.length) {
       // if tags present in url
-      let selected_tags_array = current_search_query.tags.splice(",");
+      let selected_tags_array = current_search_query.tags.splice("-");
       let tags_str = "";
       if (selected_tags_array.includes(item_tag)) {
         // if tag already present, remove it
         let new_arr = selected_tags_array.filter(tag => tag !== item_tag);
         selected_tags_array = new_arr;
-        tags_str = new_arr.join(",");
+        tags_str = new_arr.join("-");
       } else {
         // if tag was not present, add it
         selected_tags_array.push(item_tag);
-        tags_str = selected_tags_array.join(",");
+        tags_str = selected_tags_array.join("-");
       }
       search_params.tags = selected_tags_array;
     } else {
@@ -53,15 +53,16 @@ export const update_path = search_params => {
     let tags = "";
     if (!search_params.type.length) {
       if (search_params.tags.length) {
-        tags = search_params.tags.join(",");
+        tags = search_params.tags.join("-");
         results_path = results_path + "?tags=" + tags;
       } else {
         console.log("no service_types and no tags");
       }
     } else {
-      results_path = results_path + "?service_types=" + search_params.type;
+      results_path =
+        results_path + "?service_types=" + search_params.type.join("-");
       if (search_params.tags.length) {
-        tags = search_params.tags.join(",");
+        tags = search_params.tags.join("-");
         results_path = results_path + "&tags=" + tags;
       } else {
         console.log("no service_types and no tags");
