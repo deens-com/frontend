@@ -14,7 +14,9 @@ class ResultsContainer extends Component {
   componentDidMount() {
     let search_query = {
       type: this.props.service_types,
-      tags: this.props.tags
+      tags: this.props.tags,
+      latitude: this.props.latitude,
+      longitude: this.props.longitude
     };
     this.props.update_search_query(search_query);
   }
@@ -23,7 +25,9 @@ class ResultsContainer extends Component {
     if (this.did_search_query_changed(this.props, nextProps)) {
       this.props.update_search_query({
         type: nextProps.service_types,
-        tags: nextProps.tags
+        tags: nextProps.tags,
+        latitude: nextProps.latitude,
+        longitude: nextProps.longitude
       });
     }
   }
@@ -31,7 +35,9 @@ class ResultsContainer extends Component {
   did_search_query_changed = (current_props, next_props) => {
     return (
       current_props.service_types !== next_props.service_types ||
-      current_props.tags !== next_props.tags
+      current_props.tags !== next_props.tags ||
+      current_props.latitude !== next_props.latitude ||
+      current_props.longitude !== next_props.longitude
     );
   };
 

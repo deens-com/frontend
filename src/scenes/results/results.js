@@ -9,6 +9,8 @@ const Results = props => {
     (search_params.service_types && search_params.service_types.split("-")) ||
     [];
   let tags_arr = (search_params.tags && search_params.tags.split("-")) || [];
+  let latitude = search_params.latitude || "";
+  let longitude = search_params.longitude || "";
 
   return (
     <div className="Home">
@@ -16,6 +18,8 @@ const Results = props => {
         {...props}
         service_types={service_types}
         tags={tags_arr}
+        latitude={latitude}
+        longitude={longitude}
       />
     </div>
   );
