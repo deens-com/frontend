@@ -179,4 +179,6 @@ export default class FormControl extends Component {
 }
 
 // Props Validation
-FormControl.propTypes = {};
+FormControl.propTypes = {
+  name: PropTypes.string
+};
