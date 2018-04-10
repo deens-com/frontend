@@ -11,6 +11,9 @@ const Results = props => {
   let tags_arr = (search_params.tags && search_params.tags.split(" ")) || [];
   let latitude = search_params.latitude || "";
   let longitude = search_params.longitude || "";
+  let person_nb = search_params.person_nb || 0;
+  let start_date = search_params.start_date || "";
+  let end_date = search_params.end_date || "";
 
   return (
     <div className="Home">
@@ -20,6 +23,9 @@ const Results = props => {
         tags={tags_arr}
         latitude={latitude}
         longitude={longitude}
+        person_nb={person_nb}
+        start_date={start_date}
+        end_date={end_date}
       />
     </div>
   );

@@ -465,11 +465,12 @@ export default class HomeSearch extends Component {
     super();
     this.state = {
       type: "voice",
-      service_type: "place",
+      service_type: undefined,
       search: "",
       address: "",
       latitude: undefined,
-      longitude: undefined
+      longitude: undefined,
+      person_nb: undefined
     };
 
     this.setType = this.setType.bind(this);
@@ -533,12 +534,13 @@ export default class HomeSearch extends Component {
   }
 
   handlePersonChange(person) {
-    this.setState({
-      search: {
-        ...this.state.search,
-        person
-      }
-    });
+    // this.setState({
+    //   search: {
+    //     ...this.state.search,
+    //     person
+    //   }
+    // });
+    this.setState({ person_nb: person });
   }
 
   handleSearchSubmit(ev) {
@@ -551,7 +553,7 @@ export default class HomeSearch extends Component {
       service_types: this.state.service_type,
       start_date: startDate,
       end_date: endDate,
-      person: person,
+      person_nb: this.state.person_nb,
       //address: this.state.address,
       latitude: this.state.latitude,
       longitude: this.state.longitude

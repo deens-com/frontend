@@ -16,18 +16,24 @@ class ResultsContainer extends Component {
       type: this.props.service_types,
       tags: this.props.tags,
       latitude: this.props.latitude,
-      longitude: this.props.longitude
+      longitude: this.props.longitude,
+      person_nb: this.props.person_nb,
+      start_date: this.props.start_date,
+      end_date: this.props.end_date
     };
     this.props.update_search_query(search_query);
   }
 
-  componentWillUpdate(nextProps) {
-    if (this.did_search_query_changed(this.props, nextProps)) {
+  componentWillUpdate(next_props) {
+    if (this.did_search_query_changed(this.props, next_props)) {
       this.props.update_search_query({
-        type: nextProps.service_types,
-        tags: nextProps.tags,
-        latitude: nextProps.latitude,
-        longitude: nextProps.longitude
+        type: next_props.service_types,
+        tags: next_props.tags,
+        latitude: next_props.latitude,
+        longitude: next_props.longitude,
+        person_nb: next_props.person_nb,
+        start_date: next_props.start_date,
+        end_date: next_props.end_date
       });
     }
   }
@@ -37,7 +43,10 @@ class ResultsContainer extends Component {
       current_props.service_types !== next_props.service_types ||
       current_props.tags !== next_props.tags ||
       current_props.latitude !== next_props.latitude ||
-      current_props.longitude !== next_props.longitude
+      current_props.longitude !== next_props.longitude ||
+      current_props.person_nb !== next_props.person_nb ||
+      current_props.start_date !== next_props.start_date ||
+      current_props.end_date !== next_props.end_date
     );
   };
 
