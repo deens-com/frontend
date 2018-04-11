@@ -465,7 +465,7 @@ export default class HomeSearch extends Component {
     super();
     this.state = {
       type: "voice",
-      service_type: undefined,
+      service_type: { trip: false, place: false, activity: false, food: false },
       search: "",
       address: "",
       latitude: undefined,
@@ -498,7 +498,10 @@ export default class HomeSearch extends Component {
   }
 
   handleServiceTypeChange(event) {
-    this.setState({ service_type: event.target.innerText.toLowerCase() });
+    const service_types = { ...this.state.service_type };
+    const type = event.target.innerText.toLowerCase();
+    service_types[type] = !this.state.service_type[type];
+    this.setState({ service_type: service_types });
   }
 
   handleLocationChange(address) {
@@ -549,8 +552,14 @@ export default class HomeSearch extends Component {
     console.log("Searching for" + JSON.stringify(this.state.search));
     const { startDate, endDate, person } = this.state.search;
 
+    const service_type_obj = this.state.service_type;
+    const service_keys = Object.keys(service_type_obj);
+    let filtered_service_type = service_keys.filter(function(key) {
+      return service_type_obj[key];
+    });
+
     const query = queryString.stringify({
-      service_types: this.state.service_type,
+      service_types: filtered_service_type.join(" "),
       start_date: startDate,
       end_date: endDate,
       person_nb: this.state.person_nb,
@@ -558,6 +567,7 @@ export default class HomeSearch extends Component {
       latitude: this.state.latitude,
       longitude: this.state.longitude
     });
+
     history.push(`/results?${query}`);
   }
 
