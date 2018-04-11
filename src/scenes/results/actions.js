@@ -1,5 +1,6 @@
 import Parse from "parse";
 import history from "./../../main/history";
+import queryString from "query-string";
 
 export const results_fetched = results => {
   return {
@@ -49,26 +50,21 @@ export const toggle_tag_from_search_query = (
 
 export const update_path = search_params => {
   return dispatch => {
-    let results_path = "/results";
-    let tags = "";
-    if (!search_params.type.length) {
-      if (search_params.tags.length) {
-        tags = search_params.tags.join("+");
-        results_path = results_path + "?tags=" + tags;
-      } else {
-        console.log("no service_types and no tags");
-      }
-    } else {
-      results_path =
-        results_path + "?service_types=" + search_params.type.join("+");
-      if (search_params.tags.length) {
-        tags = search_params.tags.join("+");
-        results_path = results_path + "&tags=" + tags;
-      } else {
-        console.log("no service_types and no tags");
-      }
-    }
-    history.push(results_path);
+    const query = queryString.stringify({
+      service_types: !search_params.type.length
+        ? undefined
+        : search_params.type.join(" "),
+      start_date: search_params.start_date || undefined,
+      end_date: search_params.end_date || undefined,
+      person_nb: search_params.person_nb || undefined,
+      //address: this.state.address,
+      latitude: search_params.latitude || undefined,
+      longitude: search_params.longitude || undefined,
+      tags: !search_params.tags.length
+        ? undefined
+        : search_params.tags.join(" ")
+    });
+    history.push("/results?" + query);
     // will trigger update_search_query from results_container
   };
 };
