@@ -19,7 +19,8 @@ class ResultsContainer extends Component {
       longitude: this.props.longitude,
       person_nb: this.props.person_nb,
       start_date: this.props.start_date,
-      end_date: this.props.end_date
+      end_date: this.props.end_date,
+      keywords: this.props.keywords
     };
     this.props.update_search_query(search_query);
   }
@@ -33,7 +34,8 @@ class ResultsContainer extends Component {
         longitude: next_props.longitude,
         person_nb: next_props.person_nb,
         start_date: next_props.start_date,
-        end_date: next_props.end_date
+        end_date: next_props.end_date,
+        keywords: next_props.keywords
       });
     }
   }
@@ -46,7 +48,8 @@ class ResultsContainer extends Component {
       current_props.longitude !== next_props.longitude ||
       current_props.person_nb !== next_props.person_nb ||
       current_props.start_date !== next_props.start_date ||
-      current_props.end_date !== next_props.end_date
+      current_props.end_date !== next_props.end_date ||
+      current_props.keywords !== next_props.keywords
     );
   };
 

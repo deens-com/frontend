@@ -80,10 +80,91 @@ export const update_search_query = search_params => {
 
 export const fetch_results = result_search_query => {
   return dispatch => {
-    Parse.Cloud.run("fetch_results_search_query", {
-      search_query: result_search_query
-    }).then(results => {
-      dispatch(results_fetched(results));
-    });
+
+    if(result_search_query.keywords){
+
+      // let db_request = {"where": {
+      //    "name": {
+      //      "$text": {
+      //       "$search": {
+      //        "description": result_search_query.keywords
+      //       }
+      //      }
+      //    }
+      //  }
+      // }
+      /* curl -X GET  -H "X-Parse-Application-Id: myAppId"   -H "X-Parse-REST-API-Key: myMasterKey"   -G   --data-urlencode 'where={"name":{"$text":{"$search":{"$term":"food"}}}}'   http://api.please.docker/parse/classes/Service */
+      /* Very useful to convert curl to fetch : https://kigiri.github.io/fetch/ */
+      /* db.stores.createIndex( { name: "text", description: "text" } ) to create indexes */
+      // first db.getCollection("Service").dropIndex("name_text")
+      // then db.getCollection("Service").createIndex({ name: "text", description: "text" })
+
+      fetch(`http://api.please.docker/parse/classes/Service?where={\"name\":{\"$text\":{\"$search\":{\"$term\":\"${result_search_query.keywords}\"}}}}`, {
+         method: 'get',
+         headers: new Headers({
+           "X-Parse-Application-Id": "myAppId",
+           "X-Parse-Master-Key": "myMasterKey"
+         })
+       }).then(response => response.json())
+       .then(json_res => {
+         let results = undefined;
+         results = mapServiceObjects( json_res.results );
+         dispatch(results_fetched({results: results}));
+       }).catch(error => console.log(error))
+
+    }else{
+
+      Parse.Cloud.run("fetch_results_search_query", {
+        search_query: result_search_query
+      }).then(results => {
+        dispatch(results_fetched(results));
+      });
+
+    }
+
   };
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const getRandomInt = (min, max) => {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+const get_service_image = mainPicture => {
+  if (!mainPicture) {
+    return "https://dummyimage.com/600x400/000/fff";
+  }
+  return mainPicture.url;
+};
+
+const mapServiceObjects = services => {
+  return services.map(service => {
+    service.excerpt = service.description;
+    service.title = service.name;
+    service.location = `${service.city} ${service.country}`;
+    service.rating = getRandomInt(1, 5);
+    service.reviews = getRandomInt(1, 100);
+    service.price = service.pricePerSession || getRandomInt(200, 800);
+    if (service.type === undefined) {
+      service.image = service.picture.url;
+    } else {
+      service.image = get_service_image(service.mainPicture);
+    }
+    return service;
+  });
 };

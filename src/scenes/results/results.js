@@ -14,6 +14,7 @@ const Results = props => {
   let person_nb = search_params.person_nb || 0;
   let start_date = search_params.start_date || "";
   let end_date = search_params.end_date || "";
+  let keywords = search_params.keywords || "";
 
   return (
     <div className="Home">
@@ -26,6 +27,7 @@ const Results = props => {
         person_nb={person_nb}
         start_date={start_date}
         end_date={end_date}
+        keywords={keywords}
       />
     </div>
   );
