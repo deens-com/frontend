@@ -3,6 +3,7 @@ export const tags = [
   { label: "Spicy", background: "#82689a", hoverBg: "#82689a" },
   { label: "Romantic", background: "#ed837f", hoverBg: "#ed837f" },
   { label: "Junk", background: "#feb677", hoverBg: "#feb677" },
+  { label: "Cosy", background: "#7bbed6", hoverBg: "#6dcccb" },
   { label: "Fusion", background: "#75c1a5", hoverBg: "#75c1a5" },
   { label: "Drinks", background: "#7ba8d6", hoverBg: "#7ba8d6" },
   { label: "Italian", background: "#6dcccb", hoverBg: "#6dcccb" },
