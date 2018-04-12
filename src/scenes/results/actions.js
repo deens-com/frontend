@@ -92,9 +92,8 @@ export const fetch_results = results_search_query => {
       const speech_query_params = results_search_query.speech_query;
       console.log(speech_query_params);
       Parse.Cloud.run("fetch_speech_query", {message:speech_query_params}).then(fetched_services => {
-        // const convertedResponse = normalizeParseResponseData(fetched_services);
-        // const formatted_services = mapServiceObjects( convertedResponse );
         dispatch(results_fetched({results: fetched_services.results}));
+        dispatch(search_query_updated({ search_query: fetched_services.search_query }));
       }, error => {
         console.log(error);
       });
@@ -106,39 +105,4 @@ export const fetch_results = results_search_query => {
       });
     }
   };
-};
-
-const normalizeParseResponseData = data => {
-  let dataInJsonString = JSON.stringify(data);
-  return JSON.parse(dataInJsonString);
-};
-
-const getRandomInt = (min, max) => {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-};
-
-const get_service_image = mainPicture => {
-  if (!mainPicture) {
-    return "https://dummyimage.com/600x400/000/fff";
-  }
-  return mainPicture.url;
-};
-
-const mapServiceObjects = services => {
-  return services.map(service => {
-    service.excerpt = service.description;
-    service.title = service.name;
-    service.location = `${service.city} ${service.country}`;
-    service.rating = getRandomInt(1, 5);
-    service.reviews = getRandomInt(1, 100);
-    service.price = service.pricePerSession || getRandomInt(200, 800);
-    if (service.type === undefined) {
-      service.image = service.picture.url;
-    } else {
-      service.image = get_service_image(service.mainPicture);
-    }
-    return service;
-  });
 };
