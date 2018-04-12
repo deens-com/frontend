@@ -86,16 +86,32 @@ export const update_search_query = search_params => {
   };
 };
 
-export const fetch_results = result_search_query => {
+export const fetch_results = results_search_query => {
   return dispatch => {
-    Parse.Cloud.run("fetch_results_search_query", {
-      search_query: result_search_query
-    }).then(results => {
-      dispatch(results_fetched(results));
-    });
+    if(results_search_query.speech_query){
+      const speech_query_params = results_search_query.speech_query;
+      console.log(speech_query_params);
+      Parse.Cloud.run("fetch_speech_query", {message:speech_query_params}).then(fetched_services => {
+        // const convertedResponse = normalizeParseResponseData(fetched_services);
+        // const formatted_services = mapServiceObjects( convertedResponse );
+        dispatch(results_fetched({results: fetched_services.results}));
+      }, error => {
+        console.log(error);
+      });
+    }else{
+      Parse.Cloud.run("fetch_results_search_query", {
+        search_query: results_search_query
+      }).then(results => {
+        dispatch(results_fetched(results));
+      });
+    }
   };
 };
 
+const normalizeParseResponseData = data => {
+  let dataInJsonString = JSON.stringify(data);
+  return JSON.parse(dataInJsonString);
+};
 
 const getRandomInt = (min, max) => {
   min = Math.ceil(min);

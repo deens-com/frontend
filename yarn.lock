@@ -107,6 +107,10 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
 
+annyang@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/annyang/-/annyang-2.6.0.tgz#790047ad1a1af1ceb1cdb2751504c34eed482413"
+
 ansi-align@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ansi-align/-/ansi-align-2.0.0.tgz#c36aeccba563b89ceb556f3690f0b1d9e3547f7f"
@@ -6772,6 +6776,10 @@ spdy@^3.4.1:
     safe-buffer "^5.0.1"
     select-hose "^2.0.0"
     spdy-transport "^2.0.18"
+
+speechkitt@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/speechkitt/-/speechkitt-1.0.0.tgz#cf9f22e3a377781ca6a924523d8a00de5c91083a"
 
 split-string@^3.0.1, split-string@^3.0.2:
   version "3.1.0"

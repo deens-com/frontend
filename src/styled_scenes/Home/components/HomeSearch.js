@@ -272,8 +272,9 @@ import styled from "styled-components";
 import { Checkbox as SemanticCheckbox } from "semantic-ui-react";
 import queryString from "query-string";
 import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
-
 import history from "./../../../main/history";
+import annyang from 'annyang';
+import { SpeechKITT } from './../../../../node_modules/speechkitt/src/speechkitt'
 
 // COMPONENTS
 import {
@@ -484,6 +485,22 @@ export default class HomeSearch extends Component {
     this.handleServiceTypeChange = this.handleServiceTypeChange.bind(this);
     this.handleKeywordsSearchSubmit = this.handleKeywordsSearchSubmit.bind(this);
     this.setKeyWords = this.setKeyWords.bind(this);
+  }
+
+ componentDidMount() {
+
+    annyang.addCallback('result', speech => {
+      SpeechKITT.abortRecognition()
+      console.log("I think the user said: ", speech[0]);
+      console.log("But then again, it could be any of the following: ", speech);
+      history.push({pathname: `/results`,search:`?speech_query=${speech[0]}`})
+    });
+
+    SpeechKITT.annyang();
+    SpeechKITT.setStylesheet('//cdnjs.cloudflare.com/ajax/libs/SpeechKITT/0.3.0/themes/flat.css');
+    SpeechKITT.vroom();
+
+    //SpeechKITT.show();
   }
 
   componentDidUpdate() {
