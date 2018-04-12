@@ -72,20 +72,6 @@ export const update_path = search_params => {
       }
     });
     let query_string = query_arr.join("&");
-    // const query = queryString.stringify({
-    //   service_types: !search_params.type.length
-    //     ? undefined
-    //     : search_params.type.join(" "),
-    //   start_date: search_params.start_date || undefined,
-    //   end_date: search_params.end_date || undefined,
-    //   person_nb: search_params.person_nb || undefined,
-    //   //address: this.state.address,
-    //   latitude: search_params.latitude || undefined,
-    //   longitude: search_params.longitude || undefined,
-    //   tags: !search_params.tags.length
-    //     ? undefined
-    //     : search_params.tags.join(" ")
-    // });
     history.push("/results?" + query_string);
     // will trigger update_search_query from results_container
   };
@@ -102,76 +88,13 @@ export const update_search_query = search_params => {
 
 export const fetch_results = result_search_query => {
   return dispatch => {
-
     Parse.Cloud.run("fetch_results_search_query", {
       search_query: result_search_query
     }).then(results => {
       dispatch(results_fetched(results));
     });
-
-    //if(result_search_query.keywords){
-
-      // let db_request = {"where": {
-      //    "name": {
-      //      "$text": {
-      //       "$search": {
-      //        "description": result_search_query.keywords
-      //       }
-      //      }
-      //    }
-      //  }
-      // }
-      /* curl -X GET  -H "X-Parse-Application-Id: myAppId"   -H "X-Parse-REST-API-Key: myMasterKey"   -G   --data-urlencode 'where={"name":{"$text":{"$search":{"$term":"food"}}}}'   http://api.please.docker/parse/classes/Service */
-      /* Very useful to convert curl to fetch : https://kigiri.github.io/fetch/ */
-      /* db.stores.createIndex( { name: "text", description: "text" } ) to create indexes */
-      // first db.getCollection("Service").dropIndex("name_text")
-      // then db.getCollection("Service").createIndex({ name: "text", description: "text" })
-
-      // fetch(`http://api.please.docker/parse/classes/Service?where={\"name\":{\"$text\":{\"$search\":{\"$term\":\"${result_search_query.keywords}\"}}}}`, {
-      //    method: 'get',
-      //    headers: new Headers({
-      //      "X-Parse-Application-Id": "myAppId",
-      //      "X-Parse-Master-Key": "myMasterKey"
-      //    })
-      //  }).then(response => response.json())
-      //  .then(json_res => {
-      //    let results = undefined;
-      //    results = mapServiceObjects( json_res.results );
-      //    dispatch(results_fetched({results: results}));
-      //  }).catch(error => console.log(error))
-
-
-    //    Parse.Cloud.run("fetch_results_search_query", {
-    //      search_query: result_search_query
-    //    }).then(results => {
-    //      dispatch(results_fetched(results));
-    //    });
-    //
-    // }else{
-    //
-    //   Parse.Cloud.run("fetch_results_search_query", {
-    //     search_query: result_search_query
-    //   }).then(results => {
-    //     dispatch(results_fetched(results));
-    //   });
-    //
-    // }
-
   };
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 const getRandomInt = (min, max) => {
