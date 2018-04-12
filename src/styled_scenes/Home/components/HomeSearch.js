@@ -470,7 +470,8 @@ export default class HomeSearch extends Component {
       address: "",
       latitude: undefined,
       longitude: undefined,
-      person_nb: undefined
+      person_nb: undefined,
+      keywords: ""
     };
 
     this.setType = this.setType.bind(this);
@@ -481,6 +482,8 @@ export default class HomeSearch extends Component {
     this.handleEndDateChange = this.handleEndDateChange.bind(this);
     this.handlePersonChange = this.handlePersonChange.bind(this);
     this.handleServiceTypeChange = this.handleServiceTypeChange.bind(this);
+    this.handleKeywordsSearchSubmit = this.handleKeywordsSearchSubmit.bind(this);
+    this.setKeyWords = this.setKeyWords.bind(this);
   }
 
   componentDidUpdate() {
@@ -495,6 +498,10 @@ export default class HomeSearch extends Component {
 
   setSearch(ev) {
     this.setState({ search: ev.target.value });
+  }
+
+  setKeyWords(ev) {
+    this.setState({keywords: ev.target.value});
   }
 
   handleServiceTypeChange(event) {
@@ -546,6 +553,12 @@ export default class HomeSearch extends Component {
     this.setState({ person_nb: person });
   }
 
+  handleKeywordsSearchSubmit(ev){
+    ev.preventDefault();
+    const query_string = "keywords=" + this.state.keywords;
+    history.push(`/results?${query_string}`);
+  }
+
   handleSearchSubmit(ev) {
     ev.preventDefault();
     // TODO remove dummy data
@@ -557,16 +570,6 @@ export default class HomeSearch extends Component {
     let filtered_service_type = service_keys.filter(function(key) {
       return service_type_obj[key];
     });
-
-    // const query = queryString.stringify({
-    //   service_types: filtered_service_type.join(" "),
-    //   start_date: startDate,
-    //   end_date: endDate,
-    //   person_nb: this.state.person_nb,
-    //   //address: this.state.address,
-    //   latitude: this.state.latitude,
-    //   longitude: this.state.longitude
-    // });
 
     const query_params = {
       service_types: filtered_service_type.join("+"),
@@ -633,15 +636,15 @@ export default class HomeSearch extends Component {
             </div>
           )}
           {this.state.type === "text" && (
-            <form style={{ width: "100%" }} onSubmit={this.handleSearchSubmit}>
+            <form style={{ width: "100%" }} onSubmit={this.handleKeywordsSearchSubmit}>
               <Input
                 type="text"
                 name="search"
                 innerRef={input => {
                   this.input = input;
                 }}
-                value={this.state.search}
-                onChange={this.setSearch}
+                value={this.state.keywords}
+                onChange={this.setKeyWords}
                 placeholder="Stary typing.."
               />
             </form>
