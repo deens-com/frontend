@@ -46,7 +46,7 @@ const ServicesWrapper = styled.div`
 export default function ServicesScene(props) {
   return (
     <Page topPush>
-      <TopBar fixed withPadding />
+      <TopBar {...props} fixed withPadding />
       <PageContent flex>
         <ServicesWrapper>
           <CarouselPicker {...props} />

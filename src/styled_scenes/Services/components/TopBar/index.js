@@ -53,8 +53,8 @@ const InnerWrap = styled.header`
 
 // MODULE
 export default class TopBar extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       showMenu: false,
       showSearch: false
@@ -102,7 +102,7 @@ export default class TopBar extends Component {
           {!noSearch && (
             <Search menuIsOpened={showMenu} toggleSearch={this.toggleSearch} />
           )}
-          <DesktopNav home={home} />
+          <DesktopNav {...this.props} home={home} />
         </InnerWrap>
         <MobileSearch
           searchIsHidden={!showSearch}

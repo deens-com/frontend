@@ -95,16 +95,18 @@ const ActionsWrap = styled.div`
 `;
 
 // MODULE
-export default function TopBarDesktopNav({ home, language, currency }) {
+export default function TopBarDesktopNav(props) {
+  let service_types = props.search_query.type;
   return (
     <Media
       query={`(min-width: ${sizes.large})`}
       render={() => (
-        <Wrap home={home}>
-          <Nav home={home}>
+        <Wrap home={props.home}>
+          <Nav home={props.home}>
             {mainNav.map(item => (
               <NavLink
                 key={item.label}
+                className={(service_types && service_types.includes(item.service_type)) ? "is-active" : ""}
                 activeClassName="is-active"
                 to={item.href}
               >
@@ -135,7 +137,7 @@ export default function TopBarDesktopNav({ home, language, currency }) {
               }}
               value="EUR"
               options={currencies}
-              theme={home ? "light" : "inherit"}
+              theme={props.home ? "light" : "inherit"}
             />
             <Button type="link" theme="white" round size="small" href="/login">
               Login

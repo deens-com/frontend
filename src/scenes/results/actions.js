@@ -102,6 +102,7 @@ export const fetch_results = results_search_query => {
         search_query: results_search_query
       }).then(results => {
         dispatch(results_fetched(results));
+        dispatch(search_query_updated({ search_query: results_search_query }));
       });
     }
   };
