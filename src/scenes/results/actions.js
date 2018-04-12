@@ -50,10 +50,10 @@ export const toggle_tag_from_search_query = (
 
 export const update_path = search_params => {
   return dispatch => {
-    const query = queryString.stringify({
+    const query_params = {
       service_types: !search_params.type.length
         ? undefined
-        : search_params.type.join(" "),
+        : search_params.type.join("+"),
       start_date: search_params.start_date || undefined,
       end_date: search_params.end_date || undefined,
       person_nb: search_params.person_nb || undefined,
@@ -62,9 +62,31 @@ export const update_path = search_params => {
       longitude: search_params.longitude || undefined,
       tags: !search_params.tags.length
         ? undefined
-        : search_params.tags.join(" ")
+        : search_params.tags.join("+")
+    };
+    let query_arr = [];
+    Object.entries(query_params).forEach(([key, value]) => {
+      if(value){
+        let to_concat = key + "=" + value;
+        query_arr = query_arr.concat(to_concat);
+      }
     });
-    history.push("/results?" + query);
+    let query_string = query_arr.join("&");
+    // const query = queryString.stringify({
+    //   service_types: !search_params.type.length
+    //     ? undefined
+    //     : search_params.type.join(" "),
+    //   start_date: search_params.start_date || undefined,
+    //   end_date: search_params.end_date || undefined,
+    //   person_nb: search_params.person_nb || undefined,
+    //   //address: this.state.address,
+    //   latitude: search_params.latitude || undefined,
+    //   longitude: search_params.longitude || undefined,
+    //   tags: !search_params.tags.length
+    //     ? undefined
+    //     : search_params.tags.join(" ")
+    // });
+    history.push("/results?" + query_string);
     // will trigger update_search_query from results_container
   };
 };

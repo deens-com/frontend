@@ -558,17 +558,35 @@ export default class HomeSearch extends Component {
       return service_type_obj[key];
     });
 
-    const query = queryString.stringify({
-      service_types: filtered_service_type.join(" "),
+    // const query = queryString.stringify({
+    //   service_types: filtered_service_type.join(" "),
+    //   start_date: startDate,
+    //   end_date: endDate,
+    //   person_nb: this.state.person_nb,
+    //   //address: this.state.address,
+    //   latitude: this.state.latitude,
+    //   longitude: this.state.longitude
+    // });
+
+    const query_params = {
+      service_types: filtered_service_type.join("+"),
       start_date: startDate,
       end_date: endDate,
       person_nb: this.state.person_nb,
       //address: this.state.address,
       latitude: this.state.latitude,
       longitude: this.state.longitude
+    };
+    let query_arr = [];
+    Object.entries(query_params).forEach(([key, value]) => {
+      if(value){
+        let to_concat = key + "=" + value;
+        query_arr = query_arr.concat(to_concat);
+      }
     });
+    let query_string = query_arr.join("&");
 
-    history.push(`/results?${query}`);
+    history.push(`/results?${query_string}`);
   }
 
   render() {

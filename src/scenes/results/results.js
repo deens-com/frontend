@@ -5,6 +5,7 @@ import queryString from "query-string";
 
 const Results = props => {
   let search_params = queryString.parse(props.location.search);
+  // does not properly parse '+'.
   let service_types =
     (search_params.service_types && search_params.service_types.split(" ")) ||
     [];
