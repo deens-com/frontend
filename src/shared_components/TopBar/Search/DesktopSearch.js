@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styled, { css } from "styled-components";
 import Media from "react-media";
+import history from './../../../main/history';
 
 // COMPONENTS
 import { ArrowIcon, MicrophoneIcon, SearchIcon } from "../../icons";
@@ -108,8 +109,8 @@ export default class DesktopSearch extends Component {
   }
   handleSubmit(ev) {
     ev.preventDefault();
-    alert(this.state.search);
-    this.setState({ search: "" });
+    const query_string = "keywords=" + this.state.search;
+    history.push(`/results?${query_string}`);
   }
   render() {
     return (
