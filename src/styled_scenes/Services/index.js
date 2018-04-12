@@ -6,7 +6,7 @@ import styled from "styled-components";
 import GoogleMapReact from "google-map-react";
 
 // COMPONENTS
-import TopBar from "./../../shared_components/TopBar";
+import TopBar from "./components/TopBar";
 import BrandFooter from "./../../shared_components/BrandFooter";
 import CarouselPicker from "./components/CarouselPicker";
 import Results from "./components/Results";
