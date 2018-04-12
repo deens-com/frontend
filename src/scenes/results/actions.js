@@ -103,7 +103,13 @@ export const update_search_query = search_params => {
 export const fetch_results = result_search_query => {
   return dispatch => {
 
-    if(result_search_query.keywords){
+    Parse.Cloud.run("fetch_results_search_query", {
+      search_query: result_search_query
+    }).then(results => {
+      dispatch(results_fetched(results));
+    });
+
+    //if(result_search_query.keywords){
 
       // let db_request = {"where": {
       //    "name": {
@@ -121,28 +127,35 @@ export const fetch_results = result_search_query => {
       // first db.getCollection("Service").dropIndex("name_text")
       // then db.getCollection("Service").createIndex({ name: "text", description: "text" })
 
-      fetch(`http://api.please.docker/parse/classes/Service?where={\"name\":{\"$text\":{\"$search\":{\"$term\":\"${result_search_query.keywords}\"}}}}`, {
-         method: 'get',
-         headers: new Headers({
-           "X-Parse-Application-Id": "myAppId",
-           "X-Parse-Master-Key": "myMasterKey"
-         })
-       }).then(response => response.json())
-       .then(json_res => {
-         let results = undefined;
-         results = mapServiceObjects( json_res.results );
-         dispatch(results_fetched({results: results}));
-       }).catch(error => console.log(error))
+      // fetch(`http://api.please.docker/parse/classes/Service?where={\"name\":{\"$text\":{\"$search\":{\"$term\":\"${result_search_query.keywords}\"}}}}`, {
+      //    method: 'get',
+      //    headers: new Headers({
+      //      "X-Parse-Application-Id": "myAppId",
+      //      "X-Parse-Master-Key": "myMasterKey"
+      //    })
+      //  }).then(response => response.json())
+      //  .then(json_res => {
+      //    let results = undefined;
+      //    results = mapServiceObjects( json_res.results );
+      //    dispatch(results_fetched({results: results}));
+      //  }).catch(error => console.log(error))
 
-    }else{
 
-      Parse.Cloud.run("fetch_results_search_query", {
-        search_query: result_search_query
-      }).then(results => {
-        dispatch(results_fetched(results));
-      });
-
-    }
+    //    Parse.Cloud.run("fetch_results_search_query", {
+    //      search_query: result_search_query
+    //    }).then(results => {
+    //      dispatch(results_fetched(results));
+    //    });
+    //
+    // }else{
+    //
+    //   Parse.Cloud.run("fetch_results_search_query", {
+    //     search_query: result_search_query
+    //   }).then(results => {
+    //     dispatch(results_fetched(results));
+    //   });
+    //
+    // }
 
   };
 };
