@@ -488,19 +488,17 @@ export default class HomeSearch extends Component {
   }
 
  componentDidMount() {
-
-    annyang.addCallback('result', speech => {
-      SpeechKITT.abortRecognition()
-      console.log("I think the user said: ", speech[0]);
-      console.log("But then again, it could be any of the following: ", speech);
-      history.push({pathname: `/results`,search:`?speech_query=${speech[0]}`})
-    });
-
-    SpeechKITT.annyang();
-    SpeechKITT.setStylesheet('//cdnjs.cloudflare.com/ajax/libs/SpeechKITT/0.3.0/themes/flat.css');
-    SpeechKITT.vroom();
-
-    //SpeechKITT.show();
+   if(annyang){
+      annyang.addCallback('result', speech => {
+        SpeechKITT.abortRecognition();
+        //console.log("I think the user said: ", speech[0]);
+        console.log("The user may have said : ", speech);
+        history.push({pathname: `/results`,search:`?speech_query=${speech[0]}`});
+      });
+      SpeechKITT.annyang();
+      SpeechKITT.setStylesheet('//cdnjs.cloudflare.com/ajax/libs/SpeechKITT/0.3.0/themes/flat.css');
+      SpeechKITT.vroom();
+    }
   }
 
   componentDidUpdate() {
