@@ -44,6 +44,9 @@ const ServicesWrapper = styled.div`
 
 // MODULE
 export default function ServicesScene(props) {
+  const geo = !props.service_data.length
+    ? {lat: 48.856614, lon: 2.3522219000000177}
+    : {lat: props.service_data[0].latitude, lon: props.service_data[0].longitude}
   return (
     <Page topPush>
       <TopBar {...props} fixed withPadding />
@@ -57,8 +60,8 @@ export default function ServicesScene(props) {
           render={() => (
             <MapWrapper>
               <GoogleMapReact
-                defaultCenter={{ lat: 45.7, lng: 4.83 }}
-                defaultZoom={11}
+                defaultCenter={{ lat: geo.lat, lng: geo.lon }}
+                defaultZoom={12}
                 bootstrapURLKeys={{
                   key: "AIzaSyDICUW2RF412bnmELi3Y_zCCzHa-w8WnXc"
                 }}
