@@ -6777,10 +6777,6 @@ spdy@^3.4.1:
     select-hose "^2.0.0"
     spdy-transport "^2.0.18"
 
-speechkitt@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/speechkitt/-/speechkitt-1.0.0.tgz#cf9f22e3a377781ca6a924523d8a00de5c91083a"
-
 split-string@^3.0.1, split-string@^3.0.2:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/split-string/-/split-string-3.1.0.tgz#7cb09dda3a86585705c64b39a6466038682e8fe2"

@@ -472,7 +472,8 @@ export default class HomeSearch extends Component {
       latitude: undefined,
       longitude: undefined,
       person_nb: undefined,
-      keywords: ""
+      keywords: "",
+      written_speech_query: "to use your voice and tell us about your dream stay"
     };
 
     this.setType = this.setType.bind(this);
@@ -485,20 +486,39 @@ export default class HomeSearch extends Component {
     this.handleServiceTypeChange = this.handleServiceTypeChange.bind(this);
     this.handleKeywordsSearchSubmit = this.handleKeywordsSearchSubmit.bind(this);
     this.setKeyWords = this.setKeyWords.bind(this);
+    this.activate_annyang = this.activate_annyang.bind(this);
   }
 
  componentDidMount() {
-   if(annyang){
-      annyang.addCallback('result', speech => {
-        SpeechKITT.abortRecognition();
-        //console.log("I think the user said: ", speech[0]);
-        console.log("The user may have said : ", speech);
-        history.push({pathname: `/results`,search:`?speech_query=${speech[0]}`});
+   // if(annyang){
+   //    annyang.addCallback('result', speech => {
+   //      SpeechKITT.abortRecognition();
+   //      //console.log("I think the user said: ", speech[0]);
+   //      console.log("The user may have said : ", speech);
+   //      history.push({pathname: `/results`,search:`?speech_query=${speech[0]}`});
+   //    });
+   //    SpeechKITT.annyang();
+   //    SpeechKITT.setStylesheet('//cdnjs.cloudflare.com/ajax/libs/SpeechKITT/0.3.0/themes/flat.css');
+   //    SpeechKITT.vroom();
+   //  }
+  }
+
+  activate_annyang(){
+    if(annyang){
+       annyang.addCallback('result', speech => {
+         annyang.abort();
+         this.setState({written_speech_query: speech[0]});
+         console.log("The user may have said : ", speech);
+         history.push({pathname: `/results`,search:`?speech_query=${speech[0]}`});
+       });
+       annyang.addCallback('soundstart', function() {
+        console.log('sound detected');
       });
-      SpeechKITT.annyang();
-      SpeechKITT.setStylesheet('//cdnjs.cloudflare.com/ajax/libs/SpeechKITT/0.3.0/themes/flat.css');
-      SpeechKITT.vroom();
-    }
+       /* To consider : https://github.com/TalAter/annyang/blob/master/docs/FAQ.md#what-can-i-do-to-make-speech-recognition-results-return-faster */
+       annyang.start({ autoRestart: true, continuous: false });
+     }else{
+       console.log("Your browser does not support speech recognition.");
+     }
   }
 
   componentDidUpdate() {
@@ -638,15 +658,13 @@ export default class HomeSearch extends Component {
           {this.state.type === "voice" && (
             <div>
               <ButtonLink
-                onClick={() => {
-                  alert("Initiating serach");
-                }}
+                onClick={this.activate_annyang}
               >
                 Click here
               </ButtonLink>
               <Span muted>
                 {" "}
-                to user your voice and tell us about your dream stay
+                {this.state.written_speech_query}
               </Span>
             </div>
           )}
