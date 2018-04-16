@@ -11,6 +11,8 @@ import { ArrowIcon, MicrophoneIcon, SearchIcon } from "../../../../../shared_com
 // ACTIONS/CONFIG
 import { media, resetButton } from "../../../../../libs/styled";
 
+import annyang from 'annyang';
+
 // STYLES
 const Wrapper = styled.div`
   align-items: center;
@@ -97,6 +99,7 @@ export default class DesktopSearch extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onFocus = this.onFocus.bind(this);
     this.onBlur = this.onBlur.bind(this);
+    this.activate_annyang = this.activate_annyang.bind(this);
   }
   onFocus() {
     this.setState({ inFocus: true });
@@ -109,15 +112,30 @@ export default class DesktopSearch extends Component {
   }
   handleSubmit(ev) {
     ev.preventDefault();
-    const query_string = "keywords=" + this.state.search;
+    const query_string = "speech_query=" + this.state.search;
+    this.props.toggleSearch();
     history.push(`/results?${query_string}`);
+  }
+  activate_annyang(){
+    if(annyang){
+       annyang.addCallback('result', speech => {
+         annyang.abort();
+         this.setState({search: speech[0]});
+         console.log("The user may have said : ", speech);
+         history.push({pathname: `/results`,search:`?speech_query=${speech[0]}`});
+       });
+       /* To consider : https://github.com/TalAter/annyang/blob/master/docs/FAQ.md#what-can-i-do-to-make-speech-recognition-results-return-faster */
+       annyang.start({ autoRestart: true, continuous: false });
+     }else{
+       console.log("Your browser does not support speech recognition.");
+     }
   }
   render() {
     return (
       <Wrapper inFocus={this.state.inFocus}>
         <Inner>
           <div>
-            <IconButton active={this.state.mode === "voice"}>
+            <IconButton onClick={this.activate_annyang} active={this.state.mode === "voice"}>
               <MicrophoneIcon />
             </IconButton>
             <IconButton active={this.state.mode === "text"}>

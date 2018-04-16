@@ -12,6 +12,9 @@ import HomeSearch from "../../../../../styled_scenes/Home/components/HomeSearch"
 // ACTIONS/CONFIG
 import { sizes, media } from "../../../../../libs/styled";
 
+
+import history from "./../../../../../main/history";
+
 // STYLES
 const Wrap = styled.div`
   background: white;
@@ -51,13 +54,13 @@ export default function MobileSearch({ searchIsHidden, toggleSearch }) {
             <span>Where</span>
             <Button
               onClick={() => {
-                alert("clearing");
+                history.push("/results?service_types=place");
               }}
               type="button"
               text="clear"
             />
           </Header>
-          <HomeSearch />
+          <HomeSearch toggleSearch={toggleSearch} />
         </Wrap>
       )}
     />

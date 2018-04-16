@@ -461,8 +461,8 @@ const searchTypes = [
 ];
 
 export default class HomeSearch extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       type: "voice",
       service_type: { trip: false, place: false, activity: false, food: false },
@@ -497,11 +497,11 @@ export default class HomeSearch extends Component {
          annyang.abort();
          this.setState({written_speech_query: speech[0]});
          console.log("The user may have said : ", speech);
+         if(this.props.toggleSearch){
+           this.props.toggleSearch();
+         }
          history.push({pathname: `/results`,search:`?speech_query=${speech[0]}`});
        });
-       annyang.addCallback('soundstart', function() {
-        console.log('sound detected');
-      });
        /* To consider : https://github.com/TalAter/annyang/blob/master/docs/FAQ.md#what-can-i-do-to-make-speech-recognition-results-return-faster */
        annyang.start({ autoRestart: true, continuous: false });
      }else{
@@ -579,6 +579,9 @@ export default class HomeSearch extends Component {
   handleKeywordsSearchSubmit(ev){
     ev.preventDefault();
     const query_string = "speech_query=" + this.state.keywords;
+    if(this.props.toggleSearch){
+      this.props.toggleSearch();
+    }
     history.push(`/results?${query_string}`);
   }
 
@@ -611,7 +614,9 @@ export default class HomeSearch extends Component {
       }
     });
     let query_string = query_arr.join("&");
-
+    if(this.props.toggleSearch){
+      this.props.toggleSearch();
+    }
     history.push(`/results?${query_string}`);
   }
 

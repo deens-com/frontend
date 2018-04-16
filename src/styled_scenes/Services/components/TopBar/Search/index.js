@@ -34,7 +34,7 @@ export default function TopBarSearch({ menuIsOpened, toggleSearch }) {
             <SearchIcon />
           </TriggerWrap>
         ) : (
-          <DesktopSearch />
+          <DesktopSearch toggleSearch={toggleSearch} />
         )
       }
     </Media>
