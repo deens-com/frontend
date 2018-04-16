@@ -570,7 +570,7 @@ export default class HomeSearch extends Component {
 
   handleKeywordsSearchSubmit(ev){
     ev.preventDefault();
-    const query_string = "keywords=" + this.state.keywords;
+    const query_string = "speech_query=" + this.state.keywords;
     history.push(`/results?${query_string}`);
   }
 
