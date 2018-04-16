@@ -274,7 +274,6 @@ import queryString from "query-string";
 import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import history from "./../../../main/history";
 import annyang from 'annyang';
-import { SpeechKITT } from './../../../../node_modules/speechkitt/src/speechkitt'
 
 // COMPONENTS
 import {
@@ -490,17 +489,6 @@ export default class HomeSearch extends Component {
   }
 
  componentDidMount() {
-   // if(annyang){
-   //    annyang.addCallback('result', speech => {
-   //      SpeechKITT.abortRecognition();
-   //      //console.log("I think the user said: ", speech[0]);
-   //      console.log("The user may have said : ", speech);
-   //      history.push({pathname: `/results`,search:`?speech_query=${speech[0]}`});
-   //    });
-   //    SpeechKITT.annyang();
-   //    SpeechKITT.setStylesheet('//cdnjs.cloudflare.com/ajax/libs/SpeechKITT/0.3.0/themes/flat.css');
-   //    SpeechKITT.vroom();
-   //  }
   }
 
   activate_annyang(){
