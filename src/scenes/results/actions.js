@@ -91,9 +91,9 @@ export const fetch_results = results_search_query => {
     if(results_search_query.speech_query){
       const speech_query_params = results_search_query.speech_query;
       console.log(speech_query_params);
-      Parse.Cloud.run("fetch_speech_query", {message:speech_query_params}).then(fetched_services => {
-        dispatch(results_fetched({results: fetched_services.results}));
-        dispatch(search_query_updated({ search_query: fetched_services.search_query }));
+      Parse.Cloud.run("fetch_speech_query", {message:speech_query_params}).then(search_query_object => {
+        let search_query = search_query_object.search_query;
+        dispatch(update_path(search_query));
       }, error => {
         console.log(error);
       });
