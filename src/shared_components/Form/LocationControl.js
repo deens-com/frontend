@@ -49,13 +49,25 @@ export default class LocationFormControl extends Component {
     super(props);
     this.state = {
       focused: false,
-      address: ""
+      address: props.address || ""
     };
     this.onFocus = this.onFocus.bind(this);
     this.onBlur = this.onBlur.bind(this);
     this.onLocationChange = this.onLocationChange.bind(this);
     this.focusElement = this.focusElement.bind(this);
   }
+
+  componentWillUpdate(next_props) {
+    if (this.did_address_props_changed(this.props, next_props)) {
+      this.setState({address: next_props.address})
+    }
+  }
+
+  did_address_props_changed = (current_props, next_props) => {
+    return (
+      current_props.address !== next_props.address
+    );
+  };
 
   focusElement() {
     this.onFocus();
