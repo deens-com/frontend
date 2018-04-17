@@ -9,6 +9,7 @@ import GoogleMapReact from "google-map-react";
 import TopBar from "./components/TopBar";
 import BrandFooter from "./../../shared_components/BrandFooter";
 import CarouselPicker from "./components/CarouselPicker";
+import SearchFilters from "./components/SearchFilters";
 import Results from "./components/Results";
 import MapMaker from "./../../shared_components/MapMarker";
 
@@ -52,6 +53,7 @@ export default function ServicesScene(props) {
       <TopBar {...props} fixed withPadding />
       <PageContent flex>
         <ServicesWrapper>
+          <SearchFilters {...props} />
           <CarouselPicker {...props} />
           <Results {...props} data={props.service_data} />
         </ServicesWrapper>
