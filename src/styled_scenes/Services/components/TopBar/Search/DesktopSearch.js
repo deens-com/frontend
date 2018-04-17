@@ -12,6 +12,9 @@ import { ArrowIcon, MicrophoneIcon, SearchIcon } from "../../../../../shared_com
 import { media, resetButton } from "../../../../../libs/styled";
 
 import annyang from 'annyang';
+import * as results_actions from "./../../../../../scenes/results/actions";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
 // STYLES
 const Wrapper = styled.div`
@@ -86,7 +89,7 @@ const SubmitButton = styled.button`
 `;
 
 // MODULE
-export default class DesktopSearch extends Component {
+class DesktopSearch extends Component {
   constructor() {
     super();
     this.state = {
@@ -112,9 +115,8 @@ export default class DesktopSearch extends Component {
   }
   handleSubmit(ev) {
     ev.preventDefault();
-    const query_string = "speech_query=" + this.state.search;
+    this.props.fetch_results({speech_query: this.state.search});
     this.props.toggleSearch();
-    history.push(`/results?${query_string}`);
   }
   activate_annyang(){
     if(annyang){
@@ -122,7 +124,7 @@ export default class DesktopSearch extends Component {
          annyang.abort();
          this.setState({search: speech[0]});
          console.log("The user may have said : ", speech);
-         history.push({pathname: `/results`,search:`?speech_query=${speech[0]}`});
+         this.props.fetch_results({speech_query: speech[0]});
        });
        /* To consider : https://github.com/TalAter/annyang/blob/master/docs/FAQ.md#what-can-i-do-to-make-speech-recognition-results-return-faster */
        annyang.start({ autoRestart: true, continuous: false });
@@ -166,6 +168,20 @@ export default class DesktopSearch extends Component {
     );
   }
 }
+
+
+const mapStateToProps = state => {
+  return {
+    results: state.ResultsReducer.results,
+    search_query: state.ResultsReducer.search_query
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(results_actions, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DesktopSearch);
 
 // Props Validation
 DesktopSearch.propTypes = {};

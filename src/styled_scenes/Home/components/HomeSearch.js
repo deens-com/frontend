@@ -275,6 +275,10 @@ import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import history from "./../../../main/history";
 import annyang from 'annyang';
 
+import * as results_actions from "./../../../scenes/results/actions";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+
 // COMPONENTS
 import {
   SearchIcon,
@@ -460,7 +464,7 @@ const searchTypes = [
   { type: "date", label: "D" }
 ];
 
-export default class HomeSearch extends Component {
+class HomeSearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -497,10 +501,10 @@ export default class HomeSearch extends Component {
          annyang.abort();
          this.setState({written_speech_query: speech[0]});
          console.log("The user may have said : ", speech);
+         this.props.fetch_results({speech_query: speech[0]});
          if(this.props.toggleSearch){
            this.props.toggleSearch();
          }
-         history.push({pathname: `/results`,search:`?speech_query=${speech[0]}`});
        });
        /* To consider : https://github.com/TalAter/annyang/blob/master/docs/FAQ.md#what-can-i-do-to-make-speech-recognition-results-return-faster */
        annyang.start({ autoRestart: true, continuous: false });
@@ -578,11 +582,10 @@ export default class HomeSearch extends Component {
 
   handleKeywordsSearchSubmit(ev){
     ev.preventDefault();
-    const query_string = "speech_query=" + this.state.keywords;
+    this.props.fetch_results({speech_query: this.state.keywords});
     if(this.props.toggleSearch){
       this.props.toggleSearch();
     }
-    history.push(`/results?${query_string}`);
   }
 
   handleSearchSubmit(ev) {
@@ -744,6 +747,21 @@ export default class HomeSearch extends Component {
     );
   }
 }
+
+
+const mapStateToProps = state => {
+  return {
+    results: state.ResultsReducer.results,
+    search_query: state.ResultsReducer.search_query
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(results_actions, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeSearch);
+
 
 // Props Validation
 HomeSearch.propTypes = {};
