@@ -12,7 +12,7 @@ const Results = props => {
   let tags_arr = (search_params.tags && search_params.tags.split(" ")) || [];
   let latitude = search_params.latitude || "";
   let longitude = search_params.longitude || "";
-  let person_nb = search_params.person_nb || 0;
+  let person_nb = search_params.person_nb || "";
   let start_date = search_params.start_date || "";
   let end_date = search_params.end_date || "";
   let keywords = search_params.keywords || "";

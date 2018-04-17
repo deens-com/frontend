@@ -10,6 +10,7 @@ import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import moment from "moment";
 import querystring from "query-string";
 import history from "./../../../main/history";
+import { Checkbox as SemanticCheckbox } from "semantic-ui-react";
 
 import * as results_actions from "./../../../scenes/results/actions";
 import { connect } from "react-redux";
@@ -19,6 +20,18 @@ import { bindActionCreators } from "redux";
 const Wrap = styled.div`
   display: flex;
   flex-direction: row;
+`;
+
+const Checkbox = styled(SemanticCheckbox)`
+  margin-left: 1%;
+  margin-right: 1%;
+`;
+
+const CheckboxWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  padding-top: 1%;
+  padding-bottom: 1%;
 `;
 
 // MODULE
@@ -33,8 +46,9 @@ class SearchFilters extends Component {
       start_date: props.search_query.start_date ? props.search_query.start_date : moment().format(),
       end_date: props.search_query.end_date ? props.search_query.end_date : moment().add(1, 'days').format(),
       person_nb: props.search_query.person_nb || undefined,
-      service_type: props.search_query.service_types || [],
-      tags: []
+      service_type: props.search_query.type || [],
+      tags: [],
+      //service_type: { trip: false, place: false, activity: false, food: false }
     }
     this.handleLocationChange = this.handleLocationChange.bind(this);
     this.handleStartDateChange = this.handleStartDateChange.bind(this);
@@ -43,6 +57,7 @@ class SearchFilters extends Component {
     this.get_query_params = this.get_query_params.bind(this);
     this.handlePersonChange = this.handlePersonChange.bind(this);
     this.reverse_geocode = this.reverse_geocode.bind(this);
+    this.handleServiceTypeChange = this.handleServiceTypeChange.bind(this);
   }
 
   componentDidMount(){
@@ -142,6 +157,19 @@ class SearchFilters extends Component {
       });
   }
 
+  handleServiceTypeChange(event) {
+    const service_types = [ ...this.props.search_query.type ];
+    let types = service_types;
+    const type = event.target.innerText.toLowerCase();
+    if(types.includes(type)){
+      types = types.filter(st => st !== type);
+    }else{
+      types = types.concat(type);
+    }
+    this.setState({ service_type: types });
+    this.refetch_results({ type: types });
+  }
+
   handlePersonChange(person) {
     this.setState({ person_nb: person });
     this.refetch_results({ person_nb: person });
@@ -151,38 +179,68 @@ class SearchFilters extends Component {
     let start_date = this.props.search_query.start_date;
     let end_date = this.props.search_query.end_date;
     let person_nb = this.props.search_query.person_nb;
+    let service_types = this.props.search_query.type;
     return(
-      <Wrap>
+      <section>
+        <Wrap>
 
-        <LocationFormControl address={this.state.address} onChange={this.handleLocationChange} />
+          <LocationFormControl address={this.state.address} onChange={this.handleLocationChange} />
 
-        <FormControl
-          type="date"
-          onChange={this.handleStartDateChange}
-          placeholder="Start date"
-          leftIcon="date"
-          value={moment(start_date).format()}
-        />
+          <FormControl
+            type="date"
+            onChange={this.handleStartDateChange}
+            placeholder="Start date"
+            leftIcon="date"
+            value={moment(start_date).format()}
+          />
 
-        <FormControl
-          type="date"
-          onChange={this.handleEndDateChange}
-          placeholder="End date"
-          leftIcon="date"
-          value={moment(end_date).format()}
-        />
+          <FormControl
+            type="date"
+            onChange={this.handleEndDateChange}
+            placeholder="End date"
+            leftIcon="date"
+            value={moment(end_date).format()}
+          />
 
-        <FormControl
-          type="number"
-          onChange={this.handlePersonChange}
-          placeholder="Nb"
-          leftIcon="person"
-          min={1}
-          max={10}
-          value={person_nb}
-        />
+          <FormControl
+            type="number"
+            onChange={this.handlePersonChange}
+            placeholder="Nb"
+            leftIcon="person"
+            min={1}
+            max={10}
+            value={person_nb}
+          />
 
-      </Wrap>
+        </Wrap>
+
+        <CheckboxWrap>
+          <Checkbox
+            label="Trip"
+            value="trip"
+            onClick={this.handleServiceTypeChange}
+            checked={service_types && service_types.includes("trip")}
+          />
+          <Checkbox
+            label="Place"
+            value="place"
+            onClick={this.handleServiceTypeChange}
+            checked={service_types && service_types.includes("place")}
+          />
+          <Checkbox
+            label="Activity"
+            value="activity"
+            onClick={this.handleServiceTypeChange}
+            checked={service_types && service_types.includes("activity")}
+          />
+          <Checkbox
+            label="Food"
+            value="food"
+            onClick={this.handleServiceTypeChange}
+            checked={service_types && service_types.includes("food")}
+          />
+        </CheckboxWrap>
+      </section>
     )
   }
 
