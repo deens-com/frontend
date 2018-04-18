@@ -177,7 +177,9 @@ class SearchFilters extends Component {
 
   render(){
     let start_date = this.props.search_query.start_date;
+    let formatted_start_date = (start_date && start_date.length) ? moment(start_date).format() : "";
     let end_date = this.props.search_query.end_date;
+    let formatted_end_date = (end_date && end_date.length) ? moment(end_date).format() : "";
     let person_nb = this.props.search_query.person_nb;
     let service_types = this.props.search_query.type;
     return(
@@ -191,7 +193,7 @@ class SearchFilters extends Component {
             onChange={this.handleStartDateChange}
             placeholder="Start date"
             leftIcon="date"
-            value={moment(start_date).format()}
+            value={formatted_start_date}
           />
 
           <FormControl
@@ -199,7 +201,7 @@ class SearchFilters extends Component {
             onChange={this.handleEndDateChange}
             placeholder="End date"
             leftIcon="date"
-            value={moment(end_date).format()}
+            value={formatted_end_date}
           />
 
           <FormControl
