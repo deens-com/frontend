@@ -80,7 +80,9 @@ class SearchFilters extends Component {
   componentWillUpdate(next_props) {
     if (this.did_search_query_changed(this.props, next_props)) {
       if(next_props.latitude && next_props.longitude){
-        this.reverse_geocode(next_props.latitude, next_props.longitude);
+        setTimeout(() => {
+          this.reverse_geocode(next_props.latitude, next_props.longitude);
+        }, 3000);
       }
     }
   }
