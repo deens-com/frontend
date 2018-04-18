@@ -10,7 +10,9 @@ import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import moment from "moment";
 import querystring from "query-string";
 import history from "./../../../main/history";
+
 import { Checkbox as SemanticCheckbox } from "semantic-ui-react";
+import { Icon } from 'semantic-ui-react';
 
 import * as results_actions from "./../../../scenes/results/actions";
 import { connect } from "react-redux";
@@ -25,6 +27,11 @@ const Wrap = styled.div`
 const Checkbox = styled(SemanticCheckbox)`
   margin-left: 1%;
   margin-right: 1%;
+`;
+
+const ClearInputIcon = styled(Icon)`
+  position: relative;
+  right: 20px;
 `;
 
 const CheckboxWrap = styled.div`
@@ -58,6 +65,10 @@ class SearchFilters extends Component {
     this.handlePersonChange = this.handlePersonChange.bind(this);
     this.reverse_geocode = this.reverse_geocode.bind(this);
     this.handleServiceTypeChange = this.handleServiceTypeChange.bind(this);
+    this.clear_address = this.clear_address.bind(this);
+    this.clear_start_date = this.clear_start_date.bind(this);
+    this.clear_end_date = this.clear_end_date.bind(this);
+    this.clear_person_nb = this.clear_person_nb.bind(this);
   }
 
   componentDidMount(){
@@ -175,6 +186,26 @@ class SearchFilters extends Component {
     this.refetch_results({ person_nb: person });
   }
 
+  clear_address(){
+    this.setState({ latitude: "", longitude: "", address: "" });
+    this.refetch_results_for_location("", "");
+  }
+
+  clear_start_date(){
+    this.setState({ start_date: "" });
+    this.refetch_results({ start_date: "" });
+  }
+
+  clear_end_date(){
+    this.setState({ end_date: "" });
+    this.refetch_results({ end_date: "" });
+  }
+
+  clear_person_nb(){
+    this.setState({ person_nb: "" });
+    this.refetch_results({ person_nb: "" });
+  }
+
   render(){
     let start_date = this.props.search_query.start_date;
     let formatted_start_date = (start_date && start_date.length) ? moment(start_date).format() : "";
@@ -187,6 +218,7 @@ class SearchFilters extends Component {
         <Wrap>
 
           <LocationFormControl address={this.state.address} onChange={this.handleLocationChange} />
+          <ClearInputIcon onClick={this.clear_address} link name='close' />
 
           <FormControl
             type="date"
@@ -195,6 +227,7 @@ class SearchFilters extends Component {
             leftIcon="date"
             value={formatted_start_date}
           />
+          <ClearInputIcon onClick={this.clear_start_date} link name='close' />
 
           <FormControl
             type="date"
@@ -203,6 +236,7 @@ class SearchFilters extends Component {
             leftIcon="date"
             value={formatted_end_date}
           />
+          <ClearInputIcon onClick={this.clear_end_date} link name='close' />
 
           <FormControl
             type="number"
@@ -213,6 +247,7 @@ class SearchFilters extends Component {
             max={10}
             value={person_nb}
           />
+          <ClearInputIcon onClick={this.clear_person_nb} link name='close' />
 
         </Wrap>
 
