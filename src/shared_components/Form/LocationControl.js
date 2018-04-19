@@ -59,11 +59,15 @@ export default class LocationFormControl extends Component {
 
   componentWillUpdate(next_props) {
     if (this.did_address_props_changed(this.props, next_props)) {
+      //this.setState({address: next_props.formatted_address})
       if(this.props.formatted_address === undefined && next_props.formatted_address.length){
-        this.setState({address: next_props.formatted_address})
+        this.setState({address: next_props.formatted_address});
       }
       if(next_props.formatted_address === ""){
-        this.setState({address: ""})
+        this.setState({address: ""});
+      }
+      if(next_props.formatted_address && next_props.formatted_address.length && next_props.formatted_address.includes("936ZER0378")){
+        this.setState({address: next_props.formatted_address.replace("936ZER0378", "")});
       }
     }
   }
@@ -95,8 +99,12 @@ export default class LocationFormControl extends Component {
   }
 
   render() {
+    let addr = this.state.address;
+    if(addr.includes("936ZER0378")){
+      addr = addr.replace("936ZER0378", "")
+    }
     const inputProps = {
-      value: this.state.address,
+      value: addr,
       onChange: this.onLocationChange,
       onBlur: this.onBlur,
       placeholder: "Location"
