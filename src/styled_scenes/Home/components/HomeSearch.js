@@ -274,6 +274,7 @@ import queryString from "query-string";
 import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import history from "./../../../main/history";
 import annyang from 'annyang';
+import waveGif from './../../../assets/wave.gif';
 
 import * as results_actions from "./../../../scenes/results/actions";
 import { connect } from "react-redux";
@@ -476,7 +477,8 @@ class HomeSearch extends Component {
       longitude: undefined,
       person_nb: undefined,
       keywords: "",
-      written_speech_query: "to use your voice and tell us about your dream stay"
+      written_speech_query: "to use your voice and tell us about your dream stay",
+      show_wave_gif: false
     };
 
     this.setType = this.setType.bind(this);
@@ -490,12 +492,15 @@ class HomeSearch extends Component {
     this.handleKeywordsSearchSubmit = this.handleKeywordsSearchSubmit.bind(this);
     this.setKeyWords = this.setKeyWords.bind(this);
     this.activate_annyang = this.activate_annyang.bind(this);
+    this.render_voice_search_form = this.render_voice_search_form.bind(this);
+    this.show_gif = this.show_gif.bind(this);
   }
 
  componentDidMount() {
   }
 
   activate_annyang(){
+    let that = this;
     if(annyang){
        annyang.addCallback('result', speech => {
          annyang.abort();
@@ -506,11 +511,18 @@ class HomeSearch extends Component {
            this.props.toggleSearch();
          }
        });
+       annyang.addCallback('soundstart', function() {
+          that.show_gif();
+       });
        /* To consider : https://github.com/TalAter/annyang/blob/master/docs/FAQ.md#what-can-i-do-to-make-speech-recognition-results-return-faster */
        annyang.start({ autoRestart: true, continuous: false });
      }else{
        console.log("Your browser does not support speech recognition.");
      }
+  }
+
+  show_gif(){
+    this.setState({show_wave_gif: true});
   }
 
   componentDidUpdate() {
@@ -623,6 +635,44 @@ class HomeSearch extends Component {
     history.push(`/results?${query_string}`);
   }
 
+  render_voice_search_form(){
+    if(this.state.show_wave_gif){
+      return(
+        <div>
+          <ButtonLink style={{"position": "relative", "bottom": "24px"}}
+            onClick={this.activate_annyang}
+          >
+            Click here
+          </ButtonLink>
+          <img src={waveGif} alt="wave" style={{"maxHeight": "65px"}} />
+          <Span muted style={{"position": "relative", "bottom": "24px"}}>
+            {" "}
+            {
+              this.state.written_speech_query === "to use your voice and tell us about your dream stay"
+              ? ""
+              : this.state.written_speech_query
+            }
+          </Span>
+        </div>
+      )
+    }else{
+      return(
+        <div>
+          <ButtonLink
+            onClick={this.activate_annyang}
+          >
+            Click here
+          </ButtonLink>
+          <Span muted>
+            {" "}
+            {this.state.written_speech_query}
+          </Span>
+        </div>
+      )
+    }
+
+  }
+
   render() {
     return (
       <Wrapper>
@@ -652,17 +702,7 @@ class HomeSearch extends Component {
             }}
           />
           {this.state.type === "voice" && (
-            <div>
-              <ButtonLink
-                onClick={this.activate_annyang}
-              >
-                Click here
-              </ButtonLink>
-              <Span muted>
-                {" "}
-                {this.state.written_speech_query}
-              </Span>
-            </div>
+            this.render_voice_search_form()
           )}
           {this.state.type === "text" && (
             <form style={{ width: "100%" }} onSubmit={this.handleKeywordsSearchSubmit}>
