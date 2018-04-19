@@ -7,7 +7,7 @@ import history from './../../../../../main/history';
 
 // COMPONENTS
 import { ArrowIcon, MicrophoneIcon, SearchIcon } from "../../../../../shared_components/icons";
-
+import waveGif from './../../../../../assets/wave.gif';
 // ACTIONS/CONFIG
 import { media, resetButton } from "../../../../../libs/styled";
 
@@ -95,7 +95,8 @@ class DesktopSearch extends Component {
     this.state = {
       search: "",
       mode: "text",
-      inFocus: false
+      inFocus: false,
+      show_wave_gif: false
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -119,18 +120,29 @@ class DesktopSearch extends Component {
     this.props.toggleSearch();
   }
   activate_annyang(){
+    let that = this;
     if(annyang){
        annyang.addCallback('result', speech => {
          annyang.abort();
+         that.hide_gif();
          this.setState({search: speech[0]});
          console.log("The user may have said : ", speech);
          this.props.fetch_results({speech_query: speech[0]});
+       });
+       annyang.addCallback('soundstart', function() {
+          that.show_gif();
        });
        /* To consider : https://github.com/TalAter/annyang/blob/master/docs/FAQ.md#what-can-i-do-to-make-speech-recognition-results-return-faster */
        annyang.start({ autoRestart: true, continuous: false });
      }else{
        console.log("Your browser does not support speech recognition.");
      }
+  }
+  show_gif(){
+    this.setState({show_wave_gif: true});
+  }
+  hide_gif(){
+    this.setState({show_wave_gif: false});
   }
   render() {
     return (
@@ -156,6 +168,11 @@ class DesktopSearch extends Component {
               type="text"
               placeholder="Tell us about your dream stay"
             />
+            {
+              this.state.show_wave_gif
+              ? <img src={waveGif} alt="wave" style={{"maxHeight": "50px", "marginRight": "15px"}} />
+              : null
+            }
             <SubmitButton type="submit">
               <span>Let's go</span>
               <ArrowWrap>
