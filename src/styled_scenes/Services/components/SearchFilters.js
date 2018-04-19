@@ -47,7 +47,7 @@ class SearchFilters extends Component {
   constructor(props){
     super(props);
     this.state = {
-      address: "",
+      address: props.search_query.address || undefined,
       latitude: props.search_query.latitude || undefined,
       longitude: props.search_query.longitude || undefined,
       start_date: props.search_query.start_date ? props.search_query.start_date : moment().format(),
@@ -63,7 +63,7 @@ class SearchFilters extends Component {
     this.refetch_results = this.refetch_results.bind(this);
     this.get_query_params = this.get_query_params.bind(this);
     this.handlePersonChange = this.handlePersonChange.bind(this);
-    this.reverse_geocode = this.reverse_geocode.bind(this);
+    //this.reverse_geocode = this.reverse_geocode.bind(this);
     this.handleServiceTypeChange = this.handleServiceTypeChange.bind(this);
     this.clear_address = this.clear_address.bind(this);
     this.clear_start_date = this.clear_start_date.bind(this);
@@ -71,54 +71,54 @@ class SearchFilters extends Component {
     this.clear_person_nb = this.clear_person_nb.bind(this);
   }
 
-  componentDidMount(){
-    if(this.props.latitude && this.props.longitude){
-      this.reverse_geocode(this.props.latitude, this.props.longitude);
-    }
-  }
+  // componentDidMount(){
+  //   if(this.props.latitude && this.props.longitude){
+  //     this.reverse_geocode(this.props.latitude, this.props.longitude);
+  //   }
+  // }
 
-  componentWillUpdate(next_props) {
-    if (this.did_search_query_changed(this.props, next_props)) {
-      if(next_props.latitude && next_props.longitude){
-        setTimeout(() => {
-          this.reverse_geocode(next_props.latitude, next_props.longitude);
-        }, 3000);
-      }
-    }
-  }
+  // componentWillUpdate(next_props) {
+  //   if (this.did_search_query_changed(this.props, next_props)) {
+  //     if(next_props.latitude && next_props.longitude){
+  //       setTimeout(() => {
+  //         this.reverse_geocode(next_props.latitude, next_props.longitude);
+  //       }, 3000);
+  //     }
+  //   }
+  // }
 
-  did_search_query_changed = (current_props, next_props) => {
-    return (
-      current_props.latitude !== next_props.latitude ||
-      current_props.longitude !== next_props.longitude
-    );
-  };
+  // did_search_query_changed = (current_props, next_props) => {
+  //   return (
+  //     current_props.latitude !== next_props.latitude ||
+  //     current_props.longitude !== next_props.longitude
+  //   );
+  // };
 
-  reverse_geocode(latitude, longitude){
-    let params = {
-      key: 'AIzaSyDICUW2RF412bnmELi3Y_zCCzHa-w8WnXc',
-      latlng: `${latitude},${longitude}`,
-    };
-    let qs = querystring.stringify(params);
-
-    fetch(
-      `https://maps.googleapis.com/maps/api/geocode/json?${qs}`)
-        .then((res) => res.json())
-        .then((json) => {
-          if (json.status !== 'OK') {
-            throw new Error(`Geocode error: ${json.status}`);
-          }
-          return json;
-        }).then(addr_array => {
-          if(addr_array.results.length){
-            let addr = addr_array.results[0];
-            this.setState({address: addr.formatted_address})
-            return addr.formatted_address;
-          }else{
-            console.log("could not reverse geocode lat/lng")
-          }
-        })
-  }
+  // reverse_geocode(latitude, longitude){
+  //   let params = {
+  //     key: 'AIzaSyDICUW2RF412bnmELi3Y_zCCzHa-w8WnXc',
+  //     latlng: `${latitude},${longitude}`,
+  //   };
+  //   let qs = querystring.stringify(params);
+  //
+  //   fetch(
+  //     `https://maps.googleapis.com/maps/api/geocode/json?${qs}`)
+  //       .then((res) => res.json())
+  //       .then((json) => {
+  //         if (json.status !== 'OK') {
+  //           throw new Error(`Geocode error: ${json.status}`);
+  //         }
+  //         return json;
+  //       }).then(addr_array => {
+  //         if(addr_array.results.length){
+  //           let addr = addr_array.results[0];
+  //           this.setState({address: addr.formatted_address})
+  //           return addr.formatted_address;
+  //         }else{
+  //           console.log("could not reverse geocode lat/lng")
+  //         }
+  //       })
+  // }
 
   get_query_params(){
     return {
@@ -128,6 +128,7 @@ class SearchFilters extends Component {
       person_nb: this.props.search_query.person_nb,
       latitude: this.props.search_query.latitude,
       longitude: this.props.search_query.longitude,
+      address: this.props.search_query.address,
       tags: this.props.search_query.tags
     };
   }
@@ -138,10 +139,11 @@ class SearchFilters extends Component {
     this.props.update_path(query_params);
   }
 
-  refetch_results_for_location(lat, lon){
+  refetch_results_for_location(lat, lon, addr){
     const query_params = this.get_query_params();
     query_params.latitude = lat;
     query_params.longitude = lon;
+    query_params.address = addr;
     this.props.update_path(query_params);
   }
 
@@ -158,15 +160,18 @@ class SearchFilters extends Component {
   }
 
   handleLocationChange(address) {
+    let addr = ""
     geocodeByAddress(address)
       .then(results => {
-        this.setState({ address });
+        //console.log(results);
+        addr = results[0].formatted_address;
+        this.setState({ address: addr });
         return getLatLng(results[0]);
       })
       .then(results => {
         const { lat, lng } = results;
         this.setState({ latitude: lat, longitude: lng });
-        this.refetch_results_for_location(lat, lng);
+        this.refetch_results_for_location(lat, lng, addr);
       });
   }
 
@@ -190,7 +195,7 @@ class SearchFilters extends Component {
 
   clear_address(){
     this.setState({ latitude: "", longitude: "", address: "" });
-    this.refetch_results_for_location("", "");
+    this.refetch_results_for_location("", "", "");
   }
 
   clear_start_date(){
@@ -215,11 +220,13 @@ class SearchFilters extends Component {
     let formatted_end_date = (end_date && end_date.length) ? moment(end_date).format() : "";
     let person_nb = this.props.search_query.person_nb;
     let service_types = this.props.search_query.type;
+    let address = this.props.search_query.address; // || this.state.address; //|| this.props.address;
+    //let address = this.state.address || this.props.address;
     return(
       <section>
         <Wrap>
 
-          <LocationFormControl address={this.state.address} onChange={this.handleLocationChange} />
+          <LocationFormControl formatted_address={address} onChange={this.handleLocationChange} />
           <ClearInputIcon onClick={this.clear_address} link name='close' />
 
           <FormControl

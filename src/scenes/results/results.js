@@ -17,6 +17,7 @@ const Results = props => {
   let end_date = search_params.end_date || "";
   let keywords = search_params.keywords || "";
   let speech_query = search_params.speech_query || "";
+  let address = search_params.address || "";
 
   return (
     <div className="Home">
@@ -31,6 +32,7 @@ const Results = props => {
         end_date={end_date}
         keywords={keywords}
         speech_query={speech_query}
+        address={address}
       />
     </div>
   );

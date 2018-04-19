@@ -53,6 +53,7 @@ export default function ServicesScene(props) {
       <TopBar {...props} fixed withPadding />
       <PageContent flex>
         <ServicesWrapper>
+          <br/>
           <SearchFilters {...props} />
           <CarouselPicker {...props} />
           <Results {...props} data={props.service_data} />

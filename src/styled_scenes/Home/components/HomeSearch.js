@@ -605,7 +605,7 @@ class HomeSearch extends Component {
       start_date: startDate,
       end_date: endDate,
       person_nb: this.state.person_nb,
-      //address: this.state.address,
+      address: this.state.address,
       latitude: this.state.latitude,
       longitude: this.state.longitude
     };

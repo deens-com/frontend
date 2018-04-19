@@ -60,6 +60,7 @@ export const update_path = search_params => {
       //address: this.state.address,
       latitude: search_params.latitude || undefined,
       longitude: search_params.longitude || undefined,
+      address: search_params.address || undefined,
       tags: !search_params.tags.length
         ? undefined
         : search_params.tags.join("+")

@@ -49,7 +49,7 @@ export default class LocationFormControl extends Component {
     super(props);
     this.state = {
       focused: false,
-      address: props.address || ""
+      address: props.formatted_address || ""
     };
     this.onFocus = this.onFocus.bind(this);
     this.onBlur = this.onBlur.bind(this);
@@ -59,13 +59,18 @@ export default class LocationFormControl extends Component {
 
   componentWillUpdate(next_props) {
     if (this.did_address_props_changed(this.props, next_props)) {
-      this.setState({address: next_props.address})
+      if(this.props.formatted_address === undefined && next_props.formatted_address.length){
+        this.setState({address: next_props.formatted_address})
+      }
+      if(next_props.formatted_address === ""){
+        this.setState({address: ""})
+      }
     }
   }
 
   did_address_props_changed = (current_props, next_props) => {
     return (
-      current_props.address !== next_props.address
+      current_props.formatted_address !== next_props.formatted_address
     );
   };
 

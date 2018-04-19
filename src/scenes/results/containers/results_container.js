@@ -21,7 +21,8 @@ class ResultsContainer extends Component {
       start_date: this.props.start_date,
       end_date: this.props.end_date,
       keywords: this.props.keywords,
-      speech_query: this.props.speech_query
+      speech_query: this.props.speech_query,
+      address: this.props.address
     };
     this.props.update_search_query(search_query);
   }
@@ -37,7 +38,8 @@ class ResultsContainer extends Component {
         start_date: next_props.start_date,
         end_date: next_props.end_date,
         keywords: next_props.keywords,
-        speech_query: next_props.speech_query
+        speech_query: next_props.speech_query,
+        address: next_props.address
       });
     }
   }
@@ -52,7 +54,8 @@ class ResultsContainer extends Component {
       current_props.start_date !== next_props.start_date ||
       current_props.end_date !== next_props.end_date ||
       current_props.keywords !== next_props.keywords ||
-      current_props.speech_query !== next_props.speech_query
+      current_props.speech_query !== next_props.speech_query ||
+      current_props.address !== next_props.address
     );
   };
 
