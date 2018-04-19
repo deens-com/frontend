@@ -131,12 +131,16 @@ class DesktopSearch extends Component {
        });
        annyang.addCallback('soundstart', function() {
           that.show_gif();
+          that.reset_search_state();
        });
        /* To consider : https://github.com/TalAter/annyang/blob/master/docs/FAQ.md#what-can-i-do-to-make-speech-recognition-results-return-faster */
        annyang.start({ autoRestart: true, continuous: false });
      }else{
        console.log("Your browser does not support speech recognition.");
      }
+  }
+  reset_search_state(){
+    this.setState({search: ""});
   }
   show_gif(){
     this.setState({show_wave_gif: true});
@@ -157,6 +161,11 @@ class DesktopSearch extends Component {
             </IconButton>
           </div>
           <Form onSubmit={this.handleSubmit}>
+          {
+            this.state.show_wave_gif
+            ? <img src={waveGif} alt="wave" style={{"maxHeight": "50px", "marginRight": "15px"}} />
+            : null
+          }
             <Input
               ref={el => {
                 this.input = el;
@@ -166,13 +175,9 @@ class DesktopSearch extends Component {
               value={this.state.search}
               onChange={this.handleInputChange}
               type="text"
-              placeholder="Tell us about your dream stay"
+              placeholder={this.state.show_wave_gif ? "" : "Tell us about your dream stay"}
             />
-            {
-              this.state.show_wave_gif
-              ? <img src={waveGif} alt="wave" style={{"maxHeight": "50px", "marginRight": "15px"}} />
-              : null
-            }
+
             <SubmitButton type="submit">
               <span>Let's go</span>
               <ArrowWrap>

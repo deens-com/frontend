@@ -504,6 +504,7 @@ class HomeSearch extends Component {
     if(annyang){
        annyang.addCallback('result', speech => {
          annyang.abort();
+         that.hide_gif();
          this.setState({written_speech_query: speech[0]});
          console.log("The user may have said : ", speech);
          this.props.fetch_results({speech_query: speech[0]});
@@ -523,6 +524,10 @@ class HomeSearch extends Component {
 
   show_gif(){
     this.setState({show_wave_gif: true});
+  }
+
+  hide_gif(){
+    this.setState({show_wave_gif: false});
   }
 
   componentDidUpdate() {
@@ -639,11 +644,6 @@ class HomeSearch extends Component {
     if(this.state.show_wave_gif){
       return(
         <div>
-          <ButtonLink style={{"position": "relative", "bottom": "24px"}}
-            onClick={this.activate_annyang}
-          >
-            Click here
-          </ButtonLink>
           <img src={waveGif} alt="wave" style={{"maxHeight": "65px"}} />
           <Span muted style={{"position": "relative", "bottom": "24px"}}>
             {" "}
@@ -658,11 +658,16 @@ class HomeSearch extends Component {
     }else{
       return(
         <div>
-          <ButtonLink
-            onClick={this.activate_annyang}
-          >
-            Click here
-          </ButtonLink>
+          {
+            this.state.written_speech_query === "to use your voice and tell us about your dream stay"
+            ? (<ButtonLink
+              onClick={this.activate_annyang}
+            >
+              Click here
+            </ButtonLink>)
+            : null
+          }
+
           <Span muted>
             {" "}
             {this.state.written_speech_query}
