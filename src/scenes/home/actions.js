@@ -171,7 +171,7 @@ const find_popular_tags = services => {
     return { label: tag.tag, background: randBg, hoverBg: randHoverBg };
   });
   // Ugly code to retrive popular tags but we might refactor tags data model in near future
-  return tags_ordered_by_popularity.slice(0, 8);
+  return tags_ordered_by_popularity;
 };
 
 const get_service_image = mainPicture => {
