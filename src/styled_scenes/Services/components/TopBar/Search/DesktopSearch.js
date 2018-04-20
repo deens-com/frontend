@@ -120,6 +120,7 @@ class DesktopSearch extends Component {
     this.props.toggleSearch();
   }
   activate_annyang(){
+    this.show_gif();
     let that = this;
     if(annyang){
        annyang.addCallback('result', speech => {
@@ -130,7 +131,6 @@ class DesktopSearch extends Component {
          this.props.fetch_results({speech_query: speech[0]});
        });
        annyang.addCallback('soundstart', function() {
-          that.show_gif();
           that.reset_search_state();
        });
        /* To consider : https://github.com/TalAter/annyang/blob/master/docs/FAQ.md#what-can-i-do-to-make-speech-recognition-results-return-faster */
