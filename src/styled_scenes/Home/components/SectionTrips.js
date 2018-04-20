@@ -29,18 +29,17 @@ export default function HomeSectionTrips({ trips }) {
           </More>
         </SectionHeader>
         <SectionContent>
-          <Carousel show="4" length={trips.length} shadowInside>
-            {trips.map(item => (
-              <LocationCart
-                item={item}
-                withShadow
-                key={item.title}
-                xsBasis="100%"
-                smBasis="50%"
-                mdBasis="25%"
-              />
-            ))}
-          </Carousel>
+        <Carousel
+          sm_slides_nb={1}
+          md_slides_nb={2}
+          lg_slides_nb={4}
+          xl_slides_nb={4}>
+          {trips.map((item, index) => (
+            <div key={item.objectId}>
+              <LocationCart item={item} index={index} />
+            </div>
+          ))}
+        </Carousel>
         </SectionContent>
       </SectionWrap>
     </PageWrapper>

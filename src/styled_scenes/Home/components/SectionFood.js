@@ -29,15 +29,16 @@ export default function HomeSectionFood({ foods }) {
           </More>
         </SectionHeader>
         <SectionContent>
-          <Carousel show="4" length={foods.length} shadowInside>
+          <Carousel
+            sm_slides_nb={1}
+            md_slides_nb={2}
+            lg_slides_nb={4}
+            xl_slides_nb={4}>
             {foods.map(item => (
               <LocationCart
                 item={item}
                 withShadow
                 key={item.title}
-                xsBasis="100%"
-                smBasis="50%"
-                mdBasis="25%"
               />
             ))}
           </Carousel>

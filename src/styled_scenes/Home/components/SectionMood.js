@@ -24,16 +24,18 @@ export default function HomeSectionMood({ tags }) {
           <h3>What is your mood?</h3>
         </SectionHeader>
         <SectionContent>
-          <Carousel show="5" length={tags.length} shadowInside>
+          <Carousel
+            sm_slides_nb={2}
+            md_slides_nb={3}
+            lg_slides_nb={4}
+            xl_slides_nb={5}
+            >
             {tags.map(item => (
               <Tag
                 key={item.label}
                 size="large"
                 item={item}
-                withShadow
-                withColumn
-                xsBasis="50%"
-                mdBasis="20%"
+
               />
             ))}
           </Carousel>
