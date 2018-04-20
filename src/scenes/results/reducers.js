@@ -3,7 +3,8 @@ const initialState = {
   search_query: {
     service_types: [],
     tags: []
-  }
+  },
+  carousel_tags: []
 };
 
 export default function ResultsReducer(state = initialState, action = {}) {
@@ -18,6 +19,11 @@ export default function ResultsReducer(state = initialState, action = {}) {
         ...state,
         search_query: action.payload.search_query
       };
+    case "CAROUSEL_TAGS_FETCHED":
+      return {
+        ...state,
+        carousel_tags: action.payload
+      }
     default:
       return state;
   }

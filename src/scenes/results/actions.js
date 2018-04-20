@@ -16,6 +16,13 @@ export const search_query_updated = search_query => {
   };
 };
 
+export const carousel_tags_fetched = services => {
+  return {
+    type: "CAROUSEL_TAGS_FETCHED",
+    payload: find_popular_tags(services)
+  };
+};
+
 export const toggle_tag_from_search_query = (
   current_search_query,
   item_tag
@@ -105,7 +112,47 @@ export const fetch_results = results_search_query => {
       }).then(results => {
         dispatch(results_fetched(results));
         dispatch(search_query_updated({ search_query: results_search_query }));
+        dispatch(carousel_tags_fetched(results))
       });
     }
   };
+};
+
+const bgColors = ["#7bbed6", "#82689a", "#75c1a5", "#ed837f", "#ffb777"];
+const hoverBgColors = ["#84c5dd", "#9379ab", "#76caac", "#eb8e8a", "#ffc089"];
+const find_popular_tags = services => {
+  let arr_services = services.results;
+  // let arr_services = services.services.places
+  //   .concat(services.services.foods)
+  //   .concat(services.services.activities);
+  let services_with_tags = arr_services.filter(
+    service => service.tags && service.tags.length
+  );
+  let tags = [];
+  services_with_tags.forEach(service => {
+    tags.push(service.tags);
+  });
+  if (!services_with_tags.length) {
+    return [];
+  }
+  let flatten_tags = tags.reduce((flatten, arr) => [...flatten, ...arr]);
+  let tag_recurrence_count_hash = new Map(
+    [...new Set(flatten_tags)].map(x => [
+      x,
+      flatten_tags.filter(y => y === x).length
+    ])
+  );
+  let tags_array = [];
+  tag_recurrence_count_hash.forEach((k, v) =>
+    tags_array.push({ tag: v, count: k })
+  );
+  let tags_ordered_by_count = tags_array.sort((a, b) => b.count - a.count);
+  let tags_ordered_by_popularity = tags_ordered_by_count.map(tag => {
+    let randBg = bgColors[Math.floor(Math.random() * bgColors.length)];
+    let randHoverBg =
+      hoverBgColors[Math.floor(Math.random() * hoverBgColors.length)];
+    return { label: tag.tag, background: randBg, hoverBg: randHoverBg };
+  });
+  // Ugly code to retrive popular tags but we might refactor tags data model in near future
+  return tags_ordered_by_popularity.slice(0, 8);
 };

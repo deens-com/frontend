@@ -27,7 +27,7 @@ export default function CarouselPicker(props) {
         withLoader
         size="small"
       >
-        {tags.map(item => (
+        {props.carousel_tags.map(item => (
           <Tag
             key={item.label}
             size="medium"

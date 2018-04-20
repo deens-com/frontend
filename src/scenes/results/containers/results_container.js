@@ -69,7 +69,8 @@ class ResultsContainer extends Component {
 const mapStateToProps = state => {
   return {
     results: state.ResultsReducer.results,
-    search_query: state.ResultsReducer.search_query
+    search_query: state.ResultsReducer.search_query,
+    carousel_tags: state.ResultsReducer.carousel_tags
   };
 };
 
