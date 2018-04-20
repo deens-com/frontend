@@ -127,7 +127,7 @@ export default function MobileNav({ menuIsOpened, language, currency }) {
               <Divider />
             </li>
             <li>
-              <FlagSelect
+              {/*<FlagSelect
                 countries={["US", "GB", "FR", "DE", "IT"]}
                 customLabels={{
                   US: "EN-US",
@@ -142,7 +142,7 @@ export default function MobileNav({ menuIsOpened, language, currency }) {
                 onSelect={countryCode => {
                   console.log(countryCode);
                 }}
-              />
+              />*/}
             </li>
             <li>
               <Select

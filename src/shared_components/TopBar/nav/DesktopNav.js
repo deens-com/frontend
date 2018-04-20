@@ -113,7 +113,7 @@ export default function TopBarDesktopNav({ home, language, currency }) {
             ))}
           </Nav>
           <ActionsWrap>
-            <FlagSelect
+            {/*<FlagSelect
               countries={["US", "GB", "FR", "DE", "IT"]}
               customLabels={{
                 US: "EN-US",
@@ -128,7 +128,7 @@ export default function TopBarDesktopNav({ home, language, currency }) {
               onSelect={countryCode => {
                 console.log(countryCode);
               }}
-            />
+            />*/}
             <Select
               onChange={val => {
                 console.log(val);
