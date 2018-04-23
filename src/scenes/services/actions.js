@@ -70,14 +70,14 @@ const get_service_image = mainPicture => {
 };
 
 const mapServiceObjects = service => {
-  service.excerpt = service.description;
-  service.title = service.name;
-  service.location = `${service.city} ${service.country}`;
-  service.rating = getRandomInt(1, 5);
-  service.reviews = [];
-  service.price = service.pricePerSession;
-  service.image = get_service_image(service.mainPicture);
-  return service;
+  const original_service = service[0];
+  let serialized_service = {...original_service};
+  serialized_service.location = `${original_service.city} ${original_service.country}`;
+  serialized_service.rating = getRandomInt(1, 5);
+  serialized_service.reviews = [];
+  serialized_service.price = original_service.pricePerSession;
+  serialized_service.image = get_service_image(original_service.mainPicture);
+  return serialized_service;
 };
 
 const getRandomInt = (min, max) => {

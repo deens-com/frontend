@@ -9,7 +9,7 @@ import GoogleMapReact from "google-map-react";
 // COMPONENTS
 import TopBar from "../../shared_components/TopBar";
 import BrandFooter from "../../shared_components/BrandFooter";
-import Tag from "../../shared_components/Tag";
+import Tag from "./components/Tag";
 import Rating from "../../shared_components/Rating";
 import { BadgeIcon } from "./icons";
 import Row from "../../shared_components/layout/Row";
