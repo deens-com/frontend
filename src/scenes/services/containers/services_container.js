@@ -10,17 +10,19 @@ class ServicesContainer extends Component {
   }
 
   componentDidMount() {
-    this.props.fetch_service();
+    const service_id = this.props.location.pathname.replace("/services/", "");
+    this.props.fetch_service(service_id);
   }
 
   render() {
-    return <ServiceComponent {...this.props} services_data={this.props.service} />;
+    return <ServiceComponent {...this.props} />;
   }
 }
 
 const mapStateToProps = state => {
   return {
-    service: state.ServicesReducer.service
+    service: state.ServicesReducer.service,
+    trips: state.ServicesReducer.trips
   };
 };
 

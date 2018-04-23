@@ -77,8 +77,8 @@ const RightArrow = styled.span`
 
 // MODULE
 export default class FoodImgSlider extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       index: 0
     };
@@ -117,8 +117,8 @@ export default class FoodImgSlider extends Component {
           <ArrowIcon />
         </RightArrow>
         <img
-          src={this.props.images[this.state.index].src}
-          alt={this.props.images[this.state.index].label}
+          src={this.props.images && this.props.images[this.state.index].src}
+          alt={this.props.images && this.props.images[this.state.index].label}
         />
       </Wrap>
     );

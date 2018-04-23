@@ -217,35 +217,35 @@ const ActionWrap = styled.div`
 `;
 
 // MODULE
-export default function FoodDetailScene({}) {
+export default function FoodDetailScene(props) {
   return (
     <Page topPush>
       <TopBar fixed withPadding />
       <PageContent flex>
         <Media
           query={`(min-width: ${sizes.large})`}
-          render={() => <ImgSlider images={restaurant.images} />}
+          render={() => <ImgSlider images={props.service.images} />}
         />
         <DetailWrapper>
           <TagWrap>
-            {restaurant.tags.map(tag => <Tag key={tag.label} item={tag} />)}
+            {props.service && props.service.tags && props.service.tags.map(tag => <Tag key={tag.label} item={tag} />)}
           </TagWrap>
           <HeaderWrap>
-            <h2>{restaurant.title}</h2>
-            <p>{restaurant.description}</p>
+            <h2>{props.service.title}</h2>
+            <p>{props.service.description}</p>
             <Link to="#">More</Link>
           </HeaderWrap>
           <DataWrap>
             <DataBlock>
               <TextLabel>Location</TextLabel>
-              <span>{restaurant.location}</span>
+              <span>{props.service.location}</span>
             </DataBlock>
             <DataBlock>
               <TextLabel>Rating</TextLabel>
               <Rating
                 marginBottom="25px"
-                rating={restaurant.rating}
-                count={restaurant.reviews.count}
+                rating={props.service.rating}
+                count={props.service.reviews && props.service.reviews.count}
               />
             </DataBlock>
             <DataBlock>
@@ -287,7 +287,7 @@ export default function FoodDetailScene({}) {
           </ActionWrap>
           <Media
             query={`(max-width: ${sizes.large})`}
-            render={() => <ImgSlider images={restaurant.images} />}
+            render={() => <ImgSlider images={props.service.images} />}
           />
           <ContactWrap>
             <MapWrap>
@@ -310,7 +310,7 @@ export default function FoodDetailScene({}) {
               <ContactBlock>
                 <div>
                   <TextLabel>Phone</TextLabel>
-                  <span>{restaurant.phone}</span>
+                  <span>{props.service.phone}</span>
                 </div>
                 <Link to="#">Call</Link>
               </ContactBlock>
@@ -318,7 +318,7 @@ export default function FoodDetailScene({}) {
               <ContactBlock>
                 <div>
                   <TextLabel>Homepage</TextLabel>
-                  <span>{restaurant.website}</span>
+                  <span>{props.service.website}</span>
                 </div>
                 <Link to="#">Browse</Link>
               </ContactBlock>
@@ -329,11 +329,11 @@ export default function FoodDetailScene({}) {
             <h3>Part of trips</h3>
             <Carousel
               show="3"
-              length={restaurant.partOf.length}
+              length={props.trips.length}
               shadowInside
               withLoader
             >
-              {restaurant.partOf.map(trip => (
+              {props.trips.map(trip => (
                 <TripCart
                   item={trip}
                   withShadow
@@ -345,7 +345,7 @@ export default function FoodDetailScene({}) {
             </Carousel>
           </TripsWrap>
           <div>
-            {restaurant.reviews.items.map(review => (
+            {props.service.reviews && props.service.reviews.length && props.service.reviews.items.map(review => (
               <Review key={review.summary} review={review} />
             ))}
           </div>
