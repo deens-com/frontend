@@ -39,6 +39,7 @@ export default function HomeSectionLocations({ locations }) {
                 item={item}
                 withShadow
                 key={item.objectId}
+                href={"/services/" + item.objectId}
               />
             ))}
           </Carousel>

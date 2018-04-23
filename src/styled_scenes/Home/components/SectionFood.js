@@ -39,6 +39,7 @@ export default function HomeSectionFood({ foods }) {
                 item={item}
                 withShadow
                 key={item.title}
+                href={"/services/" + item.objectId}
               />
             ))}
           </Carousel>
