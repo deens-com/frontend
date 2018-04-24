@@ -245,7 +245,7 @@ export default function FoodDetailScene(props) {
               <Rating
                 marginBottom="25px"
                 rating={props.service.rating}
-                count={props.service.reviews && props.service.reviews.count}
+                count={props.service.reviewCount}
               />
             </DataBlock>
             <DataBlock>

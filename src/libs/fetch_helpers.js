@@ -30,7 +30,7 @@ const mapServiceObjects = services => {
       service.longitude = service.location && service.location.longitude || 1;
       service.location = `${service.city} ${service.country}`;
       service.rating = service.rating || getRandomInt(1, 5);
-      service.reviews = service.reviewCount || getRandomInt(1, 100);
+      service.reviewCount = service.reviewCount || getRandomInt(1, 100);
       service.price = service.pricePerSession || getRandomInt(200, 800);
       if(service.tags && service.tags.length){
         const tags = service.tags.map(tag => {

@@ -92,7 +92,7 @@ export default function LocationCart({
           <Rating
             marginBottom="25px"
             rating={item.rating}
-            count={item.reviews}
+            count={item.reviewCount}
           />
           <Label>Starting from</Label>
           <PriceTag price={item.price} />
