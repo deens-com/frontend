@@ -302,7 +302,7 @@ export default function FoodDetailScene(props) {
               <ContactBlock>
                 <div>
                   <TextLabel>Working hours</TextLabel>
-                  <span>Opened now</span>
+                  <span>{props.service.openingHours}</span>
                 </div>
                 <Link to="#">Schedule</Link>
               </ContactBlock>
@@ -310,7 +310,7 @@ export default function FoodDetailScene(props) {
               <ContactBlock>
                 <div>
                   <TextLabel>Phone</TextLabel>
-                  <span>{props.service.phone}</span>
+                  <span>{props.service.phoneNumber}</span>
                 </div>
                 <Link to="#">Call</Link>
               </ContactBlock>
@@ -318,7 +318,7 @@ export default function FoodDetailScene(props) {
               <ContactBlock>
                 <div>
                   <TextLabel>Homepage</TextLabel>
-                  <span>{props.service.website}</span>
+                  <span>{props.service.websiteUrl}</span>
                 </div>
                 <Link to="#">Browse</Link>
               </ContactBlock>
