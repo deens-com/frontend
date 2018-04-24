@@ -82,6 +82,7 @@ export default function LocationCart({
           <Title>
             <Link to={href || "/"}>{item.title}</Link>
           </Title>
+          <Excerpt>{item.excerpt}</Excerpt>
           <Location>
             <PinIcon />
             {item.location}
