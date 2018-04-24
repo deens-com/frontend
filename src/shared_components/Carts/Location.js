@@ -83,10 +83,12 @@ export default function LocationCart({
             <Link to={href || "/"}>{item.title}</Link>
           </Title>
           <Excerpt>{item.excerpt}</Excerpt>
-          <Location>
-            <PinIcon />
-            {item.location}
-          </Location>
+          {item.type &&
+            <Location>
+              <PinIcon />
+              {item.location}
+            </Location>
+          }
           <Rating
             marginBottom="25px"
             rating={item.rating}
