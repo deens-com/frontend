@@ -72,10 +72,10 @@ export default function CategoryTag({ size, withShadow, item }) {
     <Wrap
       size={size}
       withShadow={withShadow}
-      hoverBg={item.hoverBg}
-      background={item.background}
+      hoverBg={item.tag.hoverBg}
+      background={item.tag.background}
     >
-      <Link to={`/results?tags=${item.label.toLowerCase()}`}>{item.label}</Link>
+      <Link to={`/results?tags=${item.tag.label.toLowerCase()}`}>{item.tag.label}</Link>
     </Wrap>
   );
 }

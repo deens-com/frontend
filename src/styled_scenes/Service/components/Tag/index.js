@@ -73,7 +73,7 @@ const Wrap = styled.div`
 
 // MODULE
 export default function CategoryTag(props) {
-  const label_name = props.item.toLowerCase();
+  const label_name = props.item.label.toLowerCase();
   return (
     <Wrap
       size={props.size}

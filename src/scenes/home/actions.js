@@ -57,18 +57,22 @@ export const fetch_services = () => {
     let services_promise = Parse.Cloud.run("fetch_homepage_services");
     services_promise.then(
       response => {
-        let convertedResponse = fetch_helpers.normalizeParseResponseData(response);
-        convertedResponse.activities = fetch_helpers.mapServiceObjects(
-          convertedResponse.activities
-        );
-        convertedResponse.places = fetch_helpers.mapServiceObjects(convertedResponse.places);
-        convertedResponse.foods = fetch_helpers.mapServiceObjects(convertedResponse.foods);
+        const convertedResponse = fetch_helpers.normalizeParseResponseData(response);
+
+        const activities = convertedResponse.activities;
+        const serialized_activities = fetch_helpers.mapServiceObjects(activities);
+
+        const places = convertedResponse.places;
+        const serialized_places = fetch_helpers.mapServiceObjects(places);
+
+        const foods = convertedResponse.foods;
+        const serialized_foods = fetch_helpers.mapServiceObjects(foods);
 
         dispatch(services_fetched({ services: convertedResponse }));
         dispatch(retrieve_popular_tags({ services: convertedResponse }));
-        dispatch(retrieve_popular_places(convertedResponse.places));
-        dispatch(retrieve_exciting_activities(convertedResponse.activities));
-        dispatch(retrieve_delicious_food(convertedResponse.foods));
+        dispatch(retrieve_popular_places(serialized_places));
+        dispatch(retrieve_exciting_activities(serialized_activities));
+        dispatch(retrieve_delicious_food(serialized_foods));
       },
       error => {
         console.log(error);
@@ -129,6 +133,7 @@ const find_popular_tags = services => {
     tags_array.push({ tag: v, count: k })
   );
   let tags_ordered_by_count = tags_array.sort((a, b) => b.count - a.count);
+  return tags_ordered_by_count
   let tags_ordered_by_popularity = tags_ordered_by_count.map(tag => {
     let randBg = bgColors[Math.floor(Math.random() * bgColors.length)];
     let randHoverBg =
