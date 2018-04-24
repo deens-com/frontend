@@ -1,15 +1,13 @@
 import Parse from "parse";
 
-export const trips_fetched = trips => {
-  return {
-    type: "TRIPS_FETCHED",
-    payload: trips
-  };
-};
+import fetch_helpers from "./../../libs/fetch_helpers";
 
-const json_response = data => {
-  let dataInJsonString = JSON.stringify(data);
-  return JSON.parse(dataInJsonString);
+
+export const trip_fetched = trip => {
+  return {
+    type: "TRIP_FETCHED",
+    payload: trip
+  };
 };
 
 export const fetch_trips = () => {
@@ -21,8 +19,9 @@ export const fetch_trips = () => {
     query.limit(10);
     query.find().then(
       response => {
-        const trips = json_response(response);
-        dispatch(trips_fetched({ trips: trips }));
+        const json_trip = fetch_helpers.normalizeParseResponseData(response);
+        const trip = fetch_helpers.mapServiceObjects(json_trip);
+        dispatch(trip_fetched({ trip: trip }));
       },
       error => {
         // TODO dispatch the error to error handler

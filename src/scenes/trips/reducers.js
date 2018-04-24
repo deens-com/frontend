@@ -1,13 +1,13 @@
 const initialState = {
-  trips: []
+  trip: {}
 };
 
 export default function TripsReducer(state = initialState, action = {}) {
   switch (action.type) {
-    case "TRIPS_FETCHED":
+    case "TRIP_FETCHED":
       return {
         ...state,
-        places: action.payload.trips
+        trip: action.payload.trip
       };
 
     default:

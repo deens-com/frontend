@@ -1,3 +1,4 @@
+import Parse from "parse";
 
 const normalizeParseResponseData = data => {
   let dataInJsonString = JSON.stringify(data);
@@ -44,13 +45,8 @@ const removeDuplicates = (myArr, prop) => {
 
 const build_query = (model) => {
   let Model = Parse.Object.extend(model);
-  query = new Parse.Query(Model);
+  let query = new Parse.Query(Model);
   return query;
 };
 
-module.exports.normalizeParseResponseData = normalizeParseResponseData;
-module.exports.getRandomInt = getRandomInt;
-module.exports.get_service_image = get_service_image;
-module.exports.mapServiceObjects = mapServiceObjects;
-module.exports.removeDuplicates = removeDuplicates;
-module.exports.build_query = build_query;
+export default {normalizeParseResponseData, getRandomInt, get_service_image, mapServiceObjects, removeDuplicates, build_query}

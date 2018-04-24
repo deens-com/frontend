@@ -39,6 +39,10 @@ const App = () => {
             path={process.env.PUBLIC_URL + "/service"}
             component={withTracker(Services)}
           />
+          <Route
+            path={process.env.PUBLIC_URL + "/trip"}
+            component={withTracker(Trips)}
+          />
         </Switch>
       </HashRouter>
     </Provider>
