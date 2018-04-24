@@ -19,7 +19,7 @@ export const fetch_trips = () => {
     query.limit(10);
     query.find().then(
       response => {
-        const json_trip = fetch_helpers.normalizeParseResponseData(response);
+        const json_trip = fetch_helpers.normalizeParseResponseData(response[0]);
         const trip = fetch_helpers.mapServiceObjects(json_trip);
         dispatch(trip_fetched({ trip: trip }));
       },

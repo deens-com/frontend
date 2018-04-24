@@ -44,7 +44,7 @@ export const fetch_service = (service_id) => {
       response => {
         const json_service = fetch_helpers.normalizeParseResponseData(response);
         const serialized_services = fetch_helpers.mapServiceObjects(json_service);
-        dispatch(service_fetched({ service: serialized_services }));
+        dispatch(service_fetched({ service: serialized_services[0] }));
       },
       error => {
         // TODO dispatch the error to error handler
