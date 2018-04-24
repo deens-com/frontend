@@ -104,9 +104,6 @@ export const fetch_trips = () => {
 
 /* Helpers Functions */
 
-const bgColors = ["#7bbed6", "#82689a", "#75c1a5", "#ed837f", "#ffb777"];
-const hoverBgColors = ["#84c5dd", "#9379ab", "#76caac", "#eb8e8a", "#ffc089"];
-
 const find_popular_tags = services => {
   let arr_services = services.services.places
     .concat(services.services.foods)
@@ -135,9 +132,9 @@ const find_popular_tags = services => {
   let tags_ordered_by_count = tags_array.sort((a, b) => b.count - a.count);
   return tags_ordered_by_count
   let tags_ordered_by_popularity = tags_ordered_by_count.map(tag => {
-    let randBg = bgColors[Math.floor(Math.random() * bgColors.length)];
+    let randBg = fetch_helpers.bgColors[Math.floor(Math.random() * fetch_helpers.bgColors.length)];
     let randHoverBg =
-      hoverBgColors[Math.floor(Math.random() * hoverBgColors.length)];
+      fetch_helpers.hoverBgColors[Math.floor(Math.random() * fetch_helpers.hoverBgColors.length)];
     return { label: tag.tag, background: randBg, hoverBg: randHoverBg };
   });
   // Ugly code to retrive popular tags but we might refactor tags data model in near future
