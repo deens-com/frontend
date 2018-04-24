@@ -40,7 +40,7 @@ export default function Results(props) {
             withTooltip
             withShadow
             item={result}
-            href={"/services/" + result.objectId}
+            href={"/service/" + result.objectId}
           />
         ))}
       </Row>

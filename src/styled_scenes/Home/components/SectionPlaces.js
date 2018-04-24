@@ -39,7 +39,7 @@ export default function HomeSectionPlaces({ trips }) {
                 item={item}
                 withShadow
                 key={item.objectId}
-                href={"/services/" + item.objectId}
+                href={"/service/" + item.objectId}
               />
             ))}
           </Carousel>

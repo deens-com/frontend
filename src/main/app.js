@@ -36,7 +36,7 @@ const App = () => {
             component={withTracker(Results)}
           />
           <Route
-            path={process.env.PUBLIC_URL + "/services"}
+            path={process.env.PUBLIC_URL + "/service"}
             component={withTracker(Services)}
           />
         </Switch>
