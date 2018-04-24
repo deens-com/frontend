@@ -81,11 +81,7 @@ export default function CategoryTag(props) {
       hoverBg={props.item.hoverBg}
       background={props.item.background}
     >
-      <ServiceCarouselButton
-        onClick={() =>
-          props.toggle_tag_from_search_query(props.search_query, label_name)
-        }
-      >
+      <ServiceCarouselButton>
         {props.item.label}
       </ServiceCarouselButton>
     </Wrap>
