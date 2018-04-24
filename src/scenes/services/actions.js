@@ -15,23 +15,30 @@ export const service_fetched = service => {
   };
 };
 
-export const fetch_trips = () => {
+export const fetch_trips = (service_id) => {
   return dispatch => {
-    let Trip = Parse.Object.extend("Trip");
-    let query = new Parse.Query(Trip);
-    query.equalTo("type", "activity");
-    query.descending("createdAt");
-    query.limit(10);
-    query.find().then(
-      response => {
-        const trips = fetch_helpers.normalizeParseResponseData(response);
-        dispatch(trips_fetched({ trips: trips }));
-      },
-      error => {
-        // TODO dispatch the error to error handler
-        console.log(error);
-      }
-    );
+    let query = fetch_helpers.build_query("TripOrganization");
+    let service_query = fetch_helpers.build_query("Service");
+    service_query.equalTo("objectId", service_id);
+    service_query.find().then(res => {
+      query.equalTo("service", res[0]);
+      query.find().then(
+        response => {
+          const trips_organization = fetch_helpers.normalizeParseResponseData(response);
+          const trips = trips_organization.map(trip_org => {
+            return trip_org.trip;
+          })
+          const normalized_trips = fetch_helpers.normalizeParseResponseData(trips);
+          const serialized_trips = fetch_helpers.mapServiceObjects(normalized_trips)
+          dispatch(trips_fetched({ trips: serialized_trips }));
+        },
+        error => {
+          // TODO dispatch the error to error handler
+          console.log(error);
+        }
+      );
+    })
+
   };
 };
 
