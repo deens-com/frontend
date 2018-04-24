@@ -51,9 +51,6 @@ export const retrieve_popular_tags = services => {
   };
 };
 
-const bgColors = ["#7bbed6", "#82689a", "#75c1a5", "#ed837f", "#ffb777"];
-const hoverBgColors = ["#84c5dd", "#9379ab", "#76caac", "#eb8e8a", "#ffc089"];
-
 
 export const fetch_services = () => {
   return dispatch => {
@@ -90,16 +87,7 @@ export const fetch_trips = () => {
     query.find().then(
       response => {
         const convertedResponse = fetch_helpers.normalizeParseResponseData(response);
-        const responseWithPlaceholderImage = convertedResponse.map(trip => {
-          trip.excerpt = trip.description;
-          // TODO replace dummy rate, reviews, and image once it's ready
-          trip.rating = trip.rating;
-          trip.reviews = fetch_helpers.getRandomInt(1, 100);
-          trip.image = trip.picture.url;
-          trip.price = fetch_helpers.getRandomInt(500, 10000);
-          trip.location = "";
-          return trip;
-        });
+        const responseWithPlaceholderImage = fetch_helpers.mapServiceObjects(convertedResponse)
         dispatch(trips_fetched(responseWithPlaceholderImage));
       },
       error => {
@@ -111,6 +99,9 @@ export const fetch_trips = () => {
 };
 
 /* Helpers Functions */
+
+const bgColors = ["#7bbed6", "#82689a", "#75c1a5", "#ed837f", "#ffb777"];
+const hoverBgColors = ["#84c5dd", "#9379ab", "#76caac", "#eb8e8a", "#ffc089"];
 
 const find_popular_tags = services => {
   let arr_services = services.services.places

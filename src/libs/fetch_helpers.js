@@ -21,7 +21,7 @@ const get_service_image = mainPicture => {
 const mapServiceObjects = services => {
   return services.map(service => {
     service.excerpt = service.description;
-    service.title = service.name;
+    service.title = service.name || service.title;
     service.latitude = service.location && service.location.latitude || 1;
     service.longitude = service.location && service.location.longitude || 1;
     service.location = `${service.city} ${service.country}`;
