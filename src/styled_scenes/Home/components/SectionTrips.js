@@ -36,7 +36,10 @@ export default function HomeSectionTrips({ trips }) {
           xl_slides_nb={4}>
           {trips.map((item, index) => (
             <div key={item.objectId}>
-              <LocationCart item={item} index={index} />
+              <LocationCart
+                item={item}
+                index={index}
+                href={"/trip/" + item.objectId} />
             </div>
           ))}
         </Carousel>
