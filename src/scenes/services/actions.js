@@ -21,6 +21,7 @@ export const fetch_trips = (service_id) => {
     let service_query = fetch_helpers.build_query("Service");
     service_query.equalTo("objectId", service_id);
     service_query.find().then(res => {
+      query.include("trip");
       query.equalTo("service", res[0]);
       query.find().then(
         response => {
@@ -28,8 +29,7 @@ export const fetch_trips = (service_id) => {
           const trips = trips_organization.map(trip_org => {
             return trip_org.trip;
           })
-          const normalized_trips = fetch_helpers.normalizeParseResponseData(trips);
-          const serialized_trips = fetch_helpers.mapServiceObjects(normalized_trips)
+          const serialized_trips = fetch_helpers.mapServiceObjects(trips);
           dispatch(trips_fetched({ trips: serialized_trips }));
         },
         error => {

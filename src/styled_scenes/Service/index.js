@@ -328,18 +328,16 @@ export default function FoodDetailScene(props) {
           <TripsWrap>
             <h3>Part of trips</h3>
             <Carousel
-              show="3"
-              length={props.trips.length}
-              shadowInside
-              withLoader
+              sm_slides_nb={1}
+              md_slides_nb={2}
+              lg_slides_nb={4}
+              xl_slides_nb={4}
             >
               {props.trips.map(trip => (
                 <TripCart
                   item={trip}
                   withShadow
                   key={trip.title}
-                  smBasis="50%"
-                  mdBasis="33.33%"
                 />
               ))}
             </Carousel>
