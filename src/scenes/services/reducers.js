@@ -1,6 +1,7 @@
 const initialState = {
   service: {},
-  trips: []
+  trips: [],
+  reviews: []
 };
 
 export default function ServicesReducer(state = initialState, action = {}) {
@@ -15,6 +16,11 @@ export default function ServicesReducer(state = initialState, action = {}) {
         ...state,
         trips: action.payload.trips
       };
+    case "REVIEWS_FETCHED":
+      return {
+        ...state,
+        reviews: action.payload.reviews
+      }
     default:
       return state;
   }

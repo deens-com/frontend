@@ -253,7 +253,7 @@ export default function FoodDetailScene(props) {
 
               {
                 props.trips.length ?
-                <div>
+                <span>
                   <DataBlock>
                     <Badge>
                       <BadgeIcon />
@@ -263,7 +263,7 @@ export default function FoodDetailScene(props) {
                     <TextLabel>PART OF THE TRIP</TextLabel>
                     <span>"{props.trips[0].description.slice(0, 40)}" and {props.trips.length} more ...</span>
                   </DataBlock>
-                </div>
+                </span>
                 : null
               }
 
@@ -358,8 +358,8 @@ export default function FoodDetailScene(props) {
             </Carousel>
           </TripsWrap>
           <div>
-            {props.service.reviews && props.service.reviews.length && props.service.reviews.items.map(review => (
-              <Review key={review.summary} review={review} />
+            {props.reviews && props.reviews.length && props.reviews.map(review => (
+              <Review key={review.objectId} review={review} />
             ))}
           </div>
         </DetailWrapper>
