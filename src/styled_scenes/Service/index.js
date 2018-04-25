@@ -338,6 +338,7 @@ export default function FoodDetailScene(props) {
                   item={trip}
                   withShadow
                   key={trip.title}
+                  href={"/trip/" + trip.objectId}
                 />
               ))}
             </Carousel>

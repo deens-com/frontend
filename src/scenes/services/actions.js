@@ -44,14 +44,26 @@ export const fetch_trips = (service_id) => {
 
 export const fetch_service = (service_id) => {
   return dispatch => {
-    let Service = Parse.Object.extend("Service");
-    let query = new Parse.Query(Service);
+    let query = fetch_helpers.build_query("Service");
     query.equalTo("objectId", service_id);
     query.find().then(
       response => {
         const json_service = fetch_helpers.normalizeParseResponseData(response);
         const serialized_services = fetch_helpers.mapServiceObjects(json_service);
-        dispatch(service_fetched({ service: serialized_services[0] }));
+
+        let pics_query = fetch_helpers.build_query("ServicePicture");
+        pics_query.equalTo("service", response[0]);
+        pics_query.find().then(service_pictures => {
+          const service_pics = fetch_helpers.normalizeParseResponseData(service_pictures);
+          const pics = service_pics.map(sp => sp.picture);
+
+          let serv = serialized_services[0];
+          serv.pictures = pics;
+
+          dispatch(service_fetched({ service: serv }));
+        });
+
+
       },
       error => {
         // TODO dispatch the error to error handler
