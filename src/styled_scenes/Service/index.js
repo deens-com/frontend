@@ -224,7 +224,7 @@ export default function FoodDetailScene(props) {
       <PageContent flex>
         <Media
           query={`(min-width: ${sizes.large})`}
-          render={() => <ImgSlider images={props.service.images} />}
+          render={() => <ImgSlider images={props.service.pictures} />}
         />
         <DetailWrapper>
           <TagWrap>
@@ -287,7 +287,7 @@ export default function FoodDetailScene(props) {
           </ActionWrap>
           <Media
             query={`(max-width: ${sizes.large})`}
-            render={() => <ImgSlider images={props.service.images} />}
+            render={() => <ImgSlider images={props.service.pictures} />}
           />
           <ContactWrap>
             <MapWrap>

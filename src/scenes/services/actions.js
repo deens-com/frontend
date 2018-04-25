@@ -53,17 +53,16 @@ export const fetch_service = (service_id) => {
 
         let pics_query = fetch_helpers.build_query("ServicePicture");
         pics_query.equalTo("service", response[0]);
+
         pics_query.find().then(service_pictures => {
           const service_pics = fetch_helpers.normalizeParseResponseData(service_pictures);
           const pics = service_pics.map(sp => sp.picture);
 
-          let serv = serialized_services[0];
-          serv.pictures = pics;
+          let service_with_pictures = serialized_services[0];
+          service_with_pictures.pictures = pics;
 
-          dispatch(service_fetched({ service: serv }));
+          dispatch(service_fetched({ service: service_with_pictures }));
         });
-
-
       },
       error => {
         // TODO dispatch the error to error handler
