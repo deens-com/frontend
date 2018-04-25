@@ -14,7 +14,7 @@ import Rating from "../../shared_components/Rating";
 import { BadgeIcon } from "./icons";
 import Row from "../../shared_components/layout/Row";
 import Col from "../../shared_components/layout/Col";
-import TripCart from "../../shared_components/Carts/Trip";
+import TripCart from "../../shared_components/Carts/Location";
 import Review from "../../shared_components/Review";
 import DetailPickers from "./components/DetailPickers";
 import Carousel from "../../shared_components/Carousel";
@@ -351,6 +351,7 @@ export default function FoodDetailScene(props) {
                   item={trip}
                   withShadow
                   key={trip.title}
+                  size="small"
                   href={"/trip/" + trip.objectId}
                 />
               ))}
