@@ -113,12 +113,14 @@ const find_popular_tags = services => {
   );
   let tags = [];
   services_with_tags.forEach(service => {
-    tags.push(service.tags);
+    service.tags.forEach(tag => {
+      tags.push(tag.label);
+    })
   });
   if (!services_with_tags.length) {
     return [];
   }
-  let flatten_tags = tags.reduce((flatten, arr) => [...flatten, ...arr]);
+  let flatten_tags = tags;//.reduce((flatten, arr) => [...flatten, ...arr]);
   let tag_recurrence_count_hash = new Map(
     [...new Set(flatten_tags)].map(x => [
       x,
@@ -130,7 +132,7 @@ const find_popular_tags = services => {
     tags_array.push({ tag: v, count: k })
   );
   let tags_ordered_by_count = tags_array.sort((a, b) => b.count - a.count);
-  return tags_ordered_by_count
+  //return tags_ordered_by_count
   let tags_ordered_by_popularity = tags_ordered_by_count.map(tag => {
     let randBg = fetch_helpers.bgColors[Math.floor(Math.random() * fetch_helpers.bgColors.length)];
     let randHoverBg =
