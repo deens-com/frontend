@@ -250,17 +250,21 @@ export default function FoodDetailScene(props) {
                 count={props.service.reviewCount}
               />
             </DataBlock>
-            <DataBlock>
-              <Badge>
-                <BadgeIcon />
-              </Badge>
-            </DataBlock>
+
               {
-                props.trips.length &&
-                <DataBlock>
-                  <TextLabel>PART OF THE TRIP</TextLabel>
-                  <span>"{props.trips[0].description.slice(0, 40)}" and {props.trips.length} more ...</span>
-                </DataBlock>
+                props.trips.length ?
+                <div>
+                  <DataBlock>
+                    <Badge>
+                      <BadgeIcon />
+                    </Badge>
+                  </DataBlock>
+                  <DataBlock>
+                    <TextLabel>PART OF THE TRIP</TextLabel>
+                    <span>"{props.trips[0].description.slice(0, 40)}" and {props.trips.length} more ...</span>
+                  </DataBlock>
+                </div>
+                : null
               }
 
           </DataWrap>
