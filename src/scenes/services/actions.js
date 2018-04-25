@@ -55,9 +55,10 @@ export const fetch_service = (service_id) => {
         pics_query.equalTo("service", response[0]);
 
         pics_query.find().then(service_pictures => {
-          const service_pics = fetch_helpers.normalizeParseResponseData(service_pictures);
-          const pics = service_pics.map(sp => sp.picture);
 
+          const service_pics = fetch_helpers.normalizeParseResponseData(service_pictures);
+          let pics = service_pics.map(sp => sp.picture);
+          pics.unshift(serialized_services[0].mainPicture);
           let service_with_pictures = serialized_services[0];
           service_with_pictures.pictures = pics;
 

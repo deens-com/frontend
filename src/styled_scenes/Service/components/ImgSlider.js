@@ -117,8 +117,8 @@ export default class FoodImgSlider extends Component {
           <ArrowIcon />
         </RightArrow>
         <img
-          src={this.props.images && this.props.images[this.state.index].url}
-          alt={this.props.images && this.props.images[this.state.index].name}
+          src={this.props.images && this.props.images.length && this.props.images[this.state.index].url}
+          alt={this.props.images && this.props.images.length && this.props.images[this.state.index].name}
         />
       </Wrap>
     );
