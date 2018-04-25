@@ -110,7 +110,7 @@ const Carousel = props => {
     // Large devices (desktops, 992px and down)
     large: 992,
     // Extra large devices (large desktops, 1200px and down)
-    extraLarge: 1450
+    extraLarge: 2880
   };
 
   const settings = {
