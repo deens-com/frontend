@@ -218,6 +218,8 @@ const ActionWrap = styled.div`
 
 // MODULE
 export default function FoodDetailScene(props) {
+  let service_latitude = parseFloat(props.service.latitude) || 1.0;
+  let service_longitude = parseFloat(props.service.longitude) || 1.0;
   return (
     <Page topPush>
       <TopBar fixed withPadding />
@@ -253,10 +255,14 @@ export default function FoodDetailScene(props) {
                 <BadgeIcon />
               </Badge>
             </DataBlock>
-            <DataBlock>
-              <TextLabel>PART OF THE TRIP</TextLabel>
-              <span>"Explore New York" and 50 more ...</span>
-            </DataBlock>
+              {
+                props.trips.length &&
+                <DataBlock>
+                  <TextLabel>PART OF THE TRIP</TextLabel>
+                  <span>"{props.trips[0].description.slice(0, 40)}" and {props.trips.length} more ...</span>
+                </DataBlock>
+              }
+
           </DataWrap>
           <ActionWrap>
             <DetailPickers />
@@ -292,10 +298,13 @@ export default function FoodDetailScene(props) {
           <ContactWrap>
             <MapWrap>
               <GoogleMapReact
-                defaultCenter={{ lat: 59.95, lng: 30.33 }}
+                defaultCenter={{ lat: service_latitude, lng: service_longitude }}
                 defaultZoom={11}
+                bootstrapURLKeys={{
+                  key: "AIzaSyDICUW2RF412bnmELi3Y_zCCzHa-w8WnXc"
+                }}
               >
-                <MapMaker lat={59.95} lng={30.33} scale={1} color="#4fb798" />
+                <MapMaker lat={service_latitude} lng={service_longitude} scale={1} color="#4fb798" />
               </GoogleMapReact>
             </MapWrap>
             <Contacts>
