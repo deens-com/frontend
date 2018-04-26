@@ -14,8 +14,8 @@ export const fetch_trip = (trip_id) => {
     query.equalTo("objectId", trip_id);
     query.find().then(
       response => {
-        let json_trip = fetch_helpers.normalizeParseResponseData(response[0]);
-        let trip = fetch_helpers.mapServiceObjects([json_trip]);
+        const json_trip = fetch_helpers.normalizeParseResponseData(response[0]);
+        const trip = fetch_helpers.mapServiceObjects([json_trip]);
         dispatch(trip_fetched({ trip: trip[0] }));
       },
       error => {
