@@ -5,6 +5,7 @@ import RegistrationsReducer from "../scenes/registrations/reducers";
 import ResultsReducer from "../scenes/results/reducers";
 import TripsReducer from "../scenes/trips/reducers";
 import ServicesReducer from "../scenes/services/reducers";
+import UsersReducer from "../scenes/users/reducers";
 
 const allReducers = combineReducers({
   HomeReducer,
@@ -12,7 +13,8 @@ const allReducers = combineReducers({
   RegistrationsReducer,
   ResultsReducer,
   TripsReducer,
-  ServicesReducer
+  ServicesReducer,
+  UsersReducer
 });
 
 export default allReducers;

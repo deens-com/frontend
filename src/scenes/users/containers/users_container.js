@@ -7,15 +7,30 @@ import { bindActionCreators } from "redux";
 class UsersContainer extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      current_path: ""
+    };
   }
 
   componentDidMount() {
-    const user_id = this.props.location.pathname.replace("/user/", "");
+    const user_id = this.props.location.pathname.split("/")[2];
+    this.setState({current_path: this.props.location.pathname.split("/")[3]});
     this.props.fetch_current_user(user_id);
   }
 
   render() {
-    return <UserComponent {...this.props} />;
+    return (
+      <div>
+        {(() => {
+          switch(this.state.current_path) {
+            case 'public':
+                return null;
+            default:
+                return null;
+          }
+        })()}
+      </div>
+    )
   }
 }
 

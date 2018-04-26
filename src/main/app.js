@@ -10,6 +10,7 @@ import Home from "./../scenes/home/home";
 import Sessions from "./../scenes/sessions/sessions";
 import Results from "./../scenes/results/results";
 import Trips from "./../scenes/trips/trips";
+import Users from "./../scenes/users/users";
 import Services from "./../scenes/services/services";
 import Registrations from "./../scenes/registrations/registrations";
 
@@ -42,6 +43,10 @@ const App = () => {
           <Route
             path={process.env.PUBLIC_URL + "/trip"}
             component={withTracker(Trips)}
+          />
+          <Route
+            path={process.env.PUBLIC_URL + "/users"}
+            component={withTracker(Users)}
           />
         </Switch>
       </HashRouter>
