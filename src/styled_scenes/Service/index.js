@@ -265,17 +265,7 @@ export default function FoodDetailScene(props) {
                   </DataBlock>
                 </span>
                 :
-                <span>
-                  <DataBlock>
-                    <Badge>
-                      <BadgeIcon />
-                    </Badge>
-                  </DataBlock>
-                  <DataBlock>
-                    <TextLabel>Not part of any trip yet</TextLabel>
-                    <span>Why not <Link to="#">add it to your trip</Link></span>
-                  </DataBlock>
-                </span>
+                null
               }
 
           </DataWrap>
@@ -349,25 +339,44 @@ export default function FoodDetailScene(props) {
               <Hr />
             </Contacts>
           </ContactWrap>
-          <TripsWrap>
-            <h3>Part of trips</h3>
-            <Carousel
-              sm_slides_nb={1}
-              md_slides_nb={2}
-              lg_slides_nb={4}
-              xl_slides_nb={4}
-            >
-              {props.trips.map(trip => (
-                <TripCart
-                  item={trip}
-                  withShadow
-                  key={trip.title}
-                  size="small"
-                  href={"/trip/" + trip.objectId}
+          {
+            props.trips.length ?
+            <TripsWrap>
+              <h3>Part of trips</h3>
+              <Carousel
+                sm_slides_nb={1}
+                md_slides_nb={2}
+                lg_slides_nb={4}
+                xl_slides_nb={4}
+              >
+                {props.trips.map(trip => (
+                  <TripCart
+                    item={trip}
+                    withShadow
+                    key={trip.title}
+                    size="small"
+                    href={"/trip/" + trip.objectId}
+                  />
+                ))}
+              </Carousel>
+            </TripsWrap>
+            :
+            <TripsWrap>
+              <h3>Not part of any trip yet</h3>
+              <span>Why not </span>
+              <Button
+                type="button"
+                round
+                size="small"
+                iconAfter="arrowDown"
+                onClick={ev => {
+                  alert("Adding to trip");
+                }}
+                theme="mainFilled"
+                text="add it to your trip"
                 />
-              ))}
-            </Carousel>
-          </TripsWrap>
+            </TripsWrap>
+          }
           <div>
             {props.reviews.map(review => (
               <Review key={review.objectId} review={review} />
