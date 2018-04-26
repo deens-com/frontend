@@ -33,7 +33,7 @@ const Wrap = styled.div`
 `;
 
 // MODULE
-export default function Results({ showDetails }) {
+export default function Results({ showDetails, tripData }) {
   // console.log(Button);
   return (
     <Wrap>

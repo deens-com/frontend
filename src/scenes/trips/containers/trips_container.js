@@ -10,17 +10,18 @@ class TripsContainer extends Component {
   }
 
   componentDidMount() {
-    this.props.fetch_trips();
+    const trip_id = this.props.location.pathname.replace("/trip/", "");
+    this.props.fetch_trip(trip_id);
   }
 
   render() {
-    return <TripsComponent {...this.props} trips_data={this.props.trips} />;
+    return <TripsComponent {...this.props} />;
   }
 }
 
 const mapStateToProps = state => {
   return {
-    trips: state.TripsReducer.trips
+    trip: state.TripsReducer.trip
   };
 };
 

@@ -1,7 +1,5 @@
 import Parse from "parse";
-
 import fetch_helpers from "./../../libs/fetch_helpers";
-
 
 export const trip_fetched = trip => {
   return {
@@ -10,18 +8,15 @@ export const trip_fetched = trip => {
   };
 };
 
-export const fetch_trips = () => {
+export const fetch_trip = (trip_id) => {
   return dispatch => {
-    let Trip = Parse.Object.extend("Trip");
-    let query = new Parse.Query(Trip);
-    query.equalTo("type", "activity");
-    query.descending("createdAt");
-    query.limit(10);
+    let query = fetch_helpers.build_query("Trip");
+    query.equalTo("objectId", trip_id);
     query.find().then(
       response => {
-        const json_trip = fetch_helpers.normalizeParseResponseData(response[0]);
-        const trip = fetch_helpers.mapServiceObjects(json_trip);
-        dispatch(trip_fetched({ trip: trip }));
+        let json_trip = fetch_helpers.normalizeParseResponseData(response[0]);
+        let trip = fetch_helpers.mapServiceObjects([json_trip]);
+        dispatch(trip_fetched({ trip: trip[0] }));
       },
       error => {
         // TODO dispatch the error to error handler

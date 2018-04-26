@@ -113,8 +113,8 @@ const TripWrapper = styled.div`
 
 // MODULE
 export default class TripsScene extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       location: "",
       startDate: "",
@@ -150,7 +150,7 @@ export default class TripsScene extends Component {
               <ShareWrap>
                 <h3>
                   <FirstLine>My trip</FirstLine>
-                  <SecondLine>to</SecondLine>New York
+                  <SecondLine>to</SecondLine>{this.props.trip.title}
                 </h3>
                 <DatesWrap>
                   <p>10 Dec 2017 - 12 Dec 2017</p>
@@ -218,7 +218,7 @@ export default class TripsScene extends Component {
                 onValueChange={this.onValueChange}
                 state={this.state}
               />
-              <Results showDetails={this.state.details} />
+              <Results showDetails={this.state.details} tripData={this.props.trip} />
               <Hr />
               <Summary data={trip} />
             </TripWrapper>
