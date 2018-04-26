@@ -264,7 +264,18 @@ export default function FoodDetailScene(props) {
                     <span>"{props.trips[0].description.slice(0, 40)}" and {props.trips.length} more ...</span>
                   </DataBlock>
                 </span>
-                : null
+                :
+                <span>
+                  <DataBlock>
+                    <Badge>
+                      <BadgeIcon />
+                    </Badge>
+                  </DataBlock>
+                  <DataBlock>
+                    <TextLabel>Not part of any trip yet</TextLabel>
+                    <span>Why not <Link to="#">add it to your trip</Link></span>
+                  </DataBlock>
+                </span>
               }
 
           </DataWrap>
@@ -358,7 +369,7 @@ export default function FoodDetailScene(props) {
             </Carousel>
           </TripsWrap>
           <div>
-            {props.reviews && props.reviews.length && props.reviews.map(review => (
+            {props.reviews.map(review => (
               <Review key={review.objectId} review={review} />
             ))}
           </div>
