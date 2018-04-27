@@ -36,7 +36,7 @@ export default function Results(props) {
       </Header>
       <Row>
         {props.data.map(result => (
-          <Link to={(result.type ? "/services/" : "/trips/") + result.objectId}>
+          <Link to={(result.type ? "/services/" : "/trips/") + result.objectId} key={result.objectId}>
             <TripCart
               key={result.label}
               withTooltip

@@ -161,8 +161,8 @@ const Carousel = props => {
 
 // Props Validation
 Carousel.propTypes = {
-  show: PropTypes.string.isRequired,
-  length: PropTypes.number.isRequired,
+  //show: PropTypes.string.isRequired,
+  //length: PropTypes.number.isRequired,
   shadowInside: PropTypes.bool,
   withLoader: PropTypes.bool,
   size: PropTypes.string,

@@ -35,7 +35,7 @@ export default function HomeSectionPlaces({ trips }) {
             lg_slides_nb={4}
             xl_slides_nb={4}>
             {trips.map(item => (
-              <Link to={"/services/" + item.objectId}>
+              <Link to={"/services/" + item.objectId} key={item.objectId}>
                 <LocationCart
                   item={item}
                   withShadow

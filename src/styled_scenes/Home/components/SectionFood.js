@@ -35,7 +35,7 @@ export default function HomeSectionFood({ foods }) {
             lg_slides_nb={4}
             xl_slides_nb={4}>
             {foods.map(item => (
-              <Link to={"/services/" + item.objectId}>
+              <Link to={"/services/" + item.objectId} key={item.objectId}>
                 <LocationCart
                   item={item}
                   withShadow
