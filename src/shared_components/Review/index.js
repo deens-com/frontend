@@ -62,8 +62,8 @@ export default function ReviewCart({ review }) {
           <img src={review.reviewer.profilePicture ? review.reviewer.profilePicture.url : "https://dummyimage.com/60x40/000/fff"} />
         </Avatar>
         <Profile>
-          <span>{review.reviewer.name}</span>
-          <span>{/*review.reviewer.location*/}</span>
+          <span>{review.reviewer.username}</span>
+          <span>{review.reviewer.city}, {review.reviewer.country}</span>
         </Profile>
       </ProfileWrap>
       <SummaryWrap>
