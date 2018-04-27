@@ -45,7 +45,7 @@ const Button = styled.button`
   top: 48%;
   transform: translateY(-50%);
   width: ${props => carouselSizes[props.size].btnSize};
-  z-index: 10;
+  z-index: 1;
   color: #50a18a;
   ${props =>
     props.position &&
