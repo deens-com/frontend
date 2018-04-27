@@ -12,37 +12,46 @@ const AttributeTitle = styled.h6`
   color: #a3a9b2;
 `;
 
+const CenteredDiv = styled.div`
+  text-align: center;
+`;
+
+const NameDiv = styled.div`
+  margin-top: 0.75em;
+  margin-bottom: 0.75em;
+  font-size: 24px;
+  font-weight: 600;
+`;
+
 const UserBasicInfo = props => {
   const { user } = props;
   if (!user) return null;
   return (
-    <Grid divided="vertically" centered>
-      <Grid.Row columns={1} centered>
-        <Grid.Column textAlign="centered">
-          <div>
-            <CircularProfilePic src="https://randomuser.me/api/portraits/men/41.jpg" size="96px" />
-            <h2>Jaydeep Solanki</h2>
-          </div>
-        </Grid.Column>
-      </Grid.Row>
+    <CenteredDiv>
+      <CenteredDiv>
+        <CircularProfilePic src="https://randomuser.me/api/portraits/men/41.jpg" size="96px" />
+        <NameDiv>Jaydeep Solanki</NameDiv>
+      </CenteredDiv>
 
-      <Grid.Row columns={2}>
-        <Grid.Column textAlign="centered">
-          <div>
-            <AttributeTitle>MEMBER SINCE</AttributeTitle>
-            <BodyText>July 2016</BodyText>
-          </div>
-        </Grid.Column>
-        <Grid.Column textAlign="centered">
-          <div>
-            <AttributeTitle>USER LEVEL</AttributeTitle>
-            <BodyText>
-              <Icon fitted name="star" style={{ color: '#4fb798' }} /> SuperHero
-            </BodyText>
-          </div>
-        </Grid.Column>
-      </Grid.Row>
-    </Grid>
+      <Grid columns={2} divided>
+        <Grid.Row>
+          <Grid.Column textAlign="centered">
+            <div>
+              <AttributeTitle>MEMBER SINCE</AttributeTitle>
+              <BodyText>July 2016</BodyText>
+            </div>
+          </Grid.Column>
+          <Grid.Column textAlign="centered">
+            <div>
+              <AttributeTitle>USER LEVEL</AttributeTitle>
+              <BodyText>
+                <Icon fitted name="star" style={{ color: '#4fb798' }} /> SuperHero
+              </BodyText>
+            </div>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+    </CenteredDiv>
   );
 };
 
