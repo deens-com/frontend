@@ -4,6 +4,7 @@ import { Switch } from "react-router";
 import { Router, Route, Layout, HashRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store";
+import withSegmentTracker from "./middlewares/with_segment_tracker";
 import Home from "./../scenes/home/home";
 import Sessions from "./../scenes/sessions/sessions";
 import Results from "./../scenes/results/results";
@@ -20,31 +21,31 @@ const App = () => {
           <Route
             exact
             path={process.env.PUBLIC_URL + "/"}
-            component={Home}
+            component={withSegmentTracker(Home)}
           />
           <Route
             path={process.env.PUBLIC_URL + "/login"}
-            component={Sessions}
+            component={withSegmentTracker(Sessions)}
           />
           <Route
             path={process.env.PUBLIC_URL + "/register"}
-            component={Registrations}
+            component={withSegmentTracker(Registrations)}
           />
           <Route
             path={process.env.PUBLIC_URL + "/results"}
-            component={Results}
+            component={withSegmentTracker(Results)}
           />
           <Route
             path={process.env.PUBLIC_URL + "/services/:id"}
-            component={Services}
+            component={withSegmentTracker(Services)}
           />
           <Route
             path={process.env.PUBLIC_URL + "/trips/:id"}
-            component={Trips}
+            component={withSegmentTracker(Trips)}
           />
           <Route
             path={process.env.PUBLIC_URL + "/users"}
-            component={Users}
+            component={withSegmentTracker(Users)}
           />
         </Switch>
       </HashRouter>
