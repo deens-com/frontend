@@ -81,9 +81,10 @@ class RegistrationsContainer extends Component {
       });
       return;
     }
+    const email = this.state.email.toLowerCase();
     this.props.postRegistration(
       this.state.username,
-      this.state.email,
+      email,
       this.state.password
     );
   };
