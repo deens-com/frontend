@@ -276,6 +276,8 @@ import history from "./../../../main/history";
 import annyang from 'annyang';
 import waveGif from './../../../assets/wave.gif';
 
+import { Message } from 'semantic-ui-react';
+
 import * as results_actions from "./../../../scenes/results/actions";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -478,7 +480,8 @@ class HomeSearch extends Component {
       person_nb: undefined,
       keywords: "",
       written_speech_query: "to use your voice and tell us about your dream stay",
-      show_wave_gif: false
+      show_wave_gif: false,
+      show_banner: false
     };
 
     this.setType = this.setType.bind(this);
@@ -500,24 +503,25 @@ class HomeSearch extends Component {
   }
 
   activate_annyang(){
-    this.show_gif();
     let that = this;
     if(annyang){
-       annyang.addCallback('result', speech => {
-         annyang.abort();
-         that.hide_gif();
-         this.setState({written_speech_query: speech[0]});
-         console.log("The user may have said : ", speech);
-         this.props.fetch_results({speech_query: speech[0]});
-         if(this.props.toggleSearch){
-           this.props.toggleSearch();
-         }
-       });
-       // annyang.addCallback('soundstart', function() {
-       // });
-       /* To consider : https://github.com/TalAter/annyang/blob/master/docs/FAQ.md#what-can-i-do-to-make-speech-recognition-results-return-faster */
-       annyang.start({ autoRestart: true, continuous: false });
+      this.show_gif();
+      annyang.addCallback('result', speech => {
+        annyang.abort();
+        that.hide_gif();
+        this.setState({written_speech_query: speech[0]});
+        console.log("The user may have said : ", speech);
+        this.props.fetch_results({speech_query: speech[0]});
+        if(this.props.toggleSearch){
+          this.props.toggleSearch();
+        }
+      });
+      // annyang.addCallback('soundstart', function() {
+      // });
+      /* To consider : https://github.com/TalAter/annyang/blob/master/docs/FAQ.md#what-can-i-do-to-make-speech-recognition-results-return-faster */
+      annyang.start({ autoRestart: true, continuous: false });
      }else{
+       this.setState({show_banner: true});
        console.log("Your browser does not support speech recognition.");
      }
   }
@@ -678,6 +682,10 @@ class HomeSearch extends Component {
 
   }
 
+  handleDismiss = () => {
+    this.setState({ show_banner: false });
+  }
+
   render() {
     return (
       <Wrapper>
@@ -788,6 +796,17 @@ class HomeSearch extends Component {
             </div>
           )}
         </SearchBg>
+        {
+          this.state.show_banner &&
+          <Message color="red" onDismiss={this.handleDismiss} style={{position: "fixed", bottom: "5px", left: "5px"}}>
+            <Message.Header>
+              Warning !
+            </Message.Header>
+            <p>
+              Your browser does not support voice recognition so we have disabled it on this website. Please use a compatible desktop browser like Chrome (<a href='https://www.google.com/chrome/'>https://www.google.com/chrome/</a>)
+            </p>
+          </Message>
+        }
       </Wrapper>
     );
   }

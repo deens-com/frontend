@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import styled, { css } from "styled-components";
 import Media from "react-media";
 import history from './../../../../../main/history';
+import { Message } from 'semantic-ui-react';
 
 // COMPONENTS
 import { ArrowIcon, MicrophoneIcon, SearchIcon } from "../../../../../shared_components/icons";
@@ -96,7 +97,8 @@ class DesktopSearch extends Component {
       search: "",
       mode: "text",
       inFocus: false,
-      show_wave_gif: false
+      show_wave_gif: false,
+      show_banner: false
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -120,9 +122,9 @@ class DesktopSearch extends Component {
     this.props.toggleSearch();
   }
   activate_annyang(){
-    this.show_gif();
     let that = this;
     if(annyang){
+       this.show_gif();
        annyang.addCallback('result', speech => {
          annyang.abort();
          that.hide_gif();
@@ -136,6 +138,7 @@ class DesktopSearch extends Component {
        /* To consider : https://github.com/TalAter/annyang/blob/master/docs/FAQ.md#what-can-i-do-to-make-speech-recognition-results-return-faster */
        annyang.start({ autoRestart: true, continuous: false });
      }else{
+       this.setState({show_banner: true});
        console.log("Your browser does not support speech recognition.");
      }
   }
@@ -147,6 +150,9 @@ class DesktopSearch extends Component {
   }
   hide_gif(){
     this.setState({show_wave_gif: false});
+  }
+  handleDismiss = () => {
+    this.setState({ show_banner: false });
   }
   render() {
     return (
@@ -186,6 +192,17 @@ class DesktopSearch extends Component {
             </SubmitButton>
           </Form>
         </Inner>
+        {
+          this.state.show_banner &&
+          <Message color="red" onDismiss={this.handleDismiss} style={{position: "fixed", bottom: "5px", left: "5px"}}>
+            <Message.Header>
+              Warning !
+            </Message.Header>
+            <p>
+              Your browser does not support voice recognition so we have disabled it on this website. Please use a compatible desktop browser like Chrome (<a href='https://www.google.com/chrome/'>https://www.google.com/chrome/</a>)
+            </p>
+          </Message>
+        }
       </Wrapper>
     );
   }
