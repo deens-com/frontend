@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import Media from "react-media";
 import GoogleMapReact from "google-map-react";
+import moment from "moment";
 
 // COMPONENTS
 import BrandFooter from "../../shared_components/BrandFooter";
@@ -13,6 +14,7 @@ import ToolBar from "./components/ToolBar";
 import Summary from "./components/Summary";
 import MapMaker from "../../shared_components/MapMarker";
 import Button from "../../shared_components/Button";
+import Stars from '../../shared_components/Rating/Stars';
 
 // ACTIONS/CONFIG
 import { media, sizes } from "../../libs/styled";
@@ -54,7 +56,7 @@ const ShareWrap = styled.div`
 
   h3 {
     text-align: center;
-    font-size: 60px;
+    font-size: 50px;
   }
 `;
 
@@ -69,6 +71,10 @@ const SecondLine = styled.span`
 `;
 
 const DatesWrap = styled.div`
+  margin: 25px 0;
+`;
+
+const PublisherWrap = styled.div`
   margin: 25px 0;
 `;
 
@@ -108,6 +114,36 @@ const TripWrapper = styled.div`
 
   ${media.minMediumPlus} {
     width: 58%;
+  }
+`;
+
+const ProfileWrap = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+`;
+
+const Avatar = styled.div`
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border-radius: 30px;
+  overflow: hidden;
+  border: 2px solid #d7dbdf;
+  margin-right: 15px;
+`;
+
+const Profile = styled.div`
+  display: inline-block;
+
+  span {
+    display: block;
+
+    &:last-child {
+      padding-top: 5px;
+      font-size: 14px;
+      color: #6e7885;
+    }
   }
 `;
 
@@ -153,8 +189,20 @@ export default class TripsScene extends Component {
                   <SecondLine>to</SecondLine>{this.props.trip.title}
                 </h3>
                 <DatesWrap>
-                  <p>10 Dec 2017 - 12 Dec 2017</p>
+                  <p>{this.props.trip && this.props.trip.beginDate && moment(this.props.trip.beginDate.iso).format("MMM Do YY")} - {this.props.trip && this.props.trip.beginDate && moment(this.props.trip.endDate.iso).format("MMM Do YY")}</p>
                 </DatesWrap>
+                <span>
+                  <ProfileWrap>
+                    <Avatar>
+                      <img src={this.props.trip && this.props.trip.owner && this.props.trip.owner.profilePicture ? this.props.trip.owner.profilePicture.url : "https://dummyimage.com/60x40/000/fff"} />
+                    </Avatar>
+                    <Profile>
+                      <span>Published by {this.props.trip && this.props.trip.owner && this.props.trip.owner.username}</span>
+                      <span>{this.props.trip && this.props.trip.owner && this.props.trip.owner.rating}</span>
+                      <span><Stars rating={this.props.trip && this.props.trip.owner && this.props.trip.owner.rating} /></span>
+                    </Profile>
+                  </ProfileWrap>
+                </span>
                 <ActionsWrap>
                   <Button
                     onClick={ev => {

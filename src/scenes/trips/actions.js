@@ -11,6 +11,7 @@ export const trip_fetched = trip => {
 export const fetch_trip = (trip_id) => {
   return dispatch => {
     let query = fetch_helpers.build_query("Trip");
+    query.include("owner");
     query.equalTo("objectId", trip_id);
     query.find().then(
       response => {
