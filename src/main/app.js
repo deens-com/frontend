@@ -37,11 +37,11 @@ const App = () => {
             component={withTracker(Results)}
           />
           <Route
-            path={process.env.PUBLIC_URL + "/service"}
+            path={process.env.PUBLIC_URL + "/services/:id"}
             component={withTracker(Services)}
           />
           <Route
-            path={process.env.PUBLIC_URL + "/trip"}
+            path={process.env.PUBLIC_URL + "/trips/:id"}
             component={withTracker(Trips)}
           />
           <Route

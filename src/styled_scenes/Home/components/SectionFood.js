@@ -35,12 +35,13 @@ export default function HomeSectionFood({ foods }) {
             lg_slides_nb={4}
             xl_slides_nb={4}>
             {foods.map(item => (
-              <LocationCart
-                item={item}
-                withShadow
-                key={item.title}
-                href={"/service/" + item.objectId}
-              />
+              <Link to={"/services/" + item.objectId}>
+                <LocationCart
+                  item={item}
+                  withShadow
+                  key={item.title}
+                />
+              </Link>
             ))}
           </Carousel>
         </SectionContent>

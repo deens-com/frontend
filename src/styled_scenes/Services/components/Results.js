@@ -2,6 +2,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 // COMPONENTS
 import Col from "../../../shared_components/layout/Col";
@@ -35,13 +36,14 @@ export default function Results(props) {
       </Header>
       <Row>
         {props.data.map(result => (
-          <TripCart
-            key={result.label}
-            withTooltip
-            withShadow
-            item={result}
-            href={(result.type ? "/service/" : "/trip/") + result.objectId}
-          />
+          <Link to={(result.type ? "/services/" : "/trips/") + result.objectId}>
+            <TripCart
+              key={result.label}
+              withTooltip
+              withShadow
+              item={result}
+            />
+          </Link>
         ))}
       </Row>
     </Wrap>

@@ -80,7 +80,7 @@ export default function LocationCart({
         <Thumb url={item.image} />
         <ContentWrap>
           <Title>
-            <Link to={href || "/"}>{item.title}</Link>
+            <h3>{item.title}</h3>
           </Title>
           <Excerpt>{item.excerpt}</Excerpt>
           {item.type &&

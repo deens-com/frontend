@@ -10,7 +10,7 @@ class TripsContainer extends Component {
   }
 
   componentDidMount() {
-    const trip_id = this.props.location.pathname.replace("/trip/", "");
+    const trip_id = this.props.match.params.id;
     this.props.fetch_trip(trip_id);
   }
 

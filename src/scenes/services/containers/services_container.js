@@ -10,7 +10,7 @@ class ServicesContainer extends Component {
   }
 
   componentDidMount() {
-    const service_id = this.props.location.pathname.replace("/service/", "");
+    const service_id = this.props.match.params.id;
     this.props.fetch_service(service_id);
   }
 
