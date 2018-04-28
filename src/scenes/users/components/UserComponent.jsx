@@ -10,9 +10,7 @@ const UserComponent = props => {
       <Page topPush>
         <TopBar fixed withPadding />
         <PageContent>
-          <div style={{ maxWidth: '450px' }}>
-            <UserScene {...props} />
-          </div>
+          <UserScene {...props} />
         </PageContent>
       </Page>
     </section>
