@@ -1,42 +1,30 @@
 import React, { Component } from "react";
-import UserComponent from "./../components/user_component";
+import UserComponent from "../components/UserComponent";
 import * as users_actions from "./../actions";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import * as selectors from '../selectors';
 
 class UsersContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      current_path: ""
-    };
   }
 
   componentDidMount() {
-    const user_id = this.props.location.pathname.split("/")[2];
-    this.setState({current_path: this.props.location.pathname.split("/")[3]});
-    this.props.fetch_current_user(user_id);
+    const { userName } = this.props.match.params; 
+    this.props.fetchUser(userName);
   }
 
   render() {
-    return (
-      <div>
-        {(() => {
-          switch(this.state.current_path) {
-            case 'public':
-                return null;
-            default:
-                return null;
-          }
-        })()}
-      </div>
-    )
+    const { userName } = this.props.match.params; 
+    const user = this.props.getUser(userName);
+    return <UserComponent user={user} />
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    user: state.UsersReducer.user,
+    getUser: selectors.getUser(state),
     trips: state.UsersReducer.trips,
     given_reviews: state.UsersReducer.given_reviews,
     received_reviews: state.UsersReducer.received_reviews

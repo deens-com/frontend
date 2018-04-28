@@ -43,7 +43,7 @@ const App = () => {
             component={Trips}
           />
           <Route
-            path={process.env.PUBLIC_URL + "/users"}
+            path={process.env.PUBLIC_URL + "/users/:userName"}
             component={Users}
           />
         </Switch>

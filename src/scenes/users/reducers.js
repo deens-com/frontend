@@ -1,5 +1,6 @@
 const initialState = {
   current_user: {},
+  users: {},  // stores all users with userName as the Key
   trips: [],
   given_reviews: [],
   received_reviews: []
@@ -7,10 +8,14 @@ const initialState = {
 
 export default function UsersReducer(state = initialState, action = {}) {
   switch (action.type) {
-    case "CURRENT_USER_FETCHED":
+    case 'USER_FETCHED':
+      const { payload: user } = action;
       return {
         ...state,
-        current_user: action.payload.current_user
+        users: {
+          ...state.users,
+          [user.get('username')]: user,
+        },
       };
     case "TRIPS_FETCHED":
       return {
