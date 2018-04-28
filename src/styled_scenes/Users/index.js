@@ -8,10 +8,10 @@ import UsersTrips from './components/UsersTrips';
 const UserScene = props => {
   return (
     <Grid centered columns={2}>
-      <Grid.Column width={4}>
+      <Grid.Column mobile={16} tablet={5} computer={4}>
         <UserBasicInfo {...props} />
       </Grid.Column>
-      <Grid.Column width={12}>
+      <Grid.Column mobile={16} tablet={11} computer={12}>
         <StatusAndBio {...props} />
         <UsersTrips />
       </Grid.Column>

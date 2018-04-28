@@ -16,6 +16,11 @@ const CenteredDiv = styled.div`
   text-align: center;
 `;
 
+const Wrapper = styled.div`
+  text-align: center;
+  margin-top: 80px;
+`;
+
 const NameDiv = styled.div`
   margin-top: 0.75em;
   margin-bottom: 0.75em;
@@ -27,7 +32,7 @@ const UserBasicInfo = props => {
   const { user } = props;
   if (!user) return null;
   return (
-    <CenteredDiv>
+    <Wrapper>
       <CenteredDiv>
         <CircularProfilePic src="https://randomuser.me/api/portraits/men/41.jpg" size="96px" />
         <NameDiv>Jaydeep Solanki</NameDiv>
@@ -51,7 +56,7 @@ const UserBasicInfo = props => {
           </Grid.Column>
         </Grid.Row>
       </Grid>
-    </CenteredDiv>
+    </Wrapper>
   );
 };
 

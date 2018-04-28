@@ -9,7 +9,7 @@ const UserComponent = props => {
     <section>
       <Page topPush>
         <TopBar fixed withPadding />
-        <PageContent>
+        <PageContent padding="24px">
           <UserScene {...props} />
         </PageContent>
       </Page>
