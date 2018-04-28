@@ -5,6 +5,7 @@
   "homepage": "https://pleasecom.github.io",
   "dependencies": {
     "annyang": "^2.6.0",
+    "date-fns": "^1.29.0",
     "gh-pages": "^1.1.0",
     "google-map-react": "^0.34.0",
     "history": "^4.7.2",

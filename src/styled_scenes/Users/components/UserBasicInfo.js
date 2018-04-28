@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Grid, Image, Icon } from 'semantic-ui-react';
 import styled, { css } from 'styled-components';
 import CircularProfilePic from './CircularProfilePic';
+import dateFormat from 'date-fns/format';
 
 const BodyText = styled.p`
   font-weight: 500;
@@ -28,12 +29,15 @@ const NameDiv = styled.div`
   font-weight: 600;
 `;
 
-const UserBasicInfo = props => {
+const formatDate = date => dateFormat(date, 'MMMM YYYY');
+
+const UserBasicInfo = ({ user = {} }) => {
+  const name = user.fullName || user.username;
   return (
     <Wrapper>
       <CenteredDiv>
         <CircularProfilePic src="https://randomuser.me/api/portraits/men/41.jpg" />
-        <NameDiv>Nick Taylor</NameDiv>
+        {name && <NameDiv>{name}</NameDiv>}
       </CenteredDiv>
 
       <Grid columns={2} divided>
@@ -41,7 +45,7 @@ const UserBasicInfo = props => {
           <Grid.Column textAlign="center">
             <div>
               <AttributeTitle>MEMBER SINCE</AttributeTitle>
-              <BodyText>July 2016</BodyText>
+              {user.createdAt && <BodyText>{formatDate(user.createdAt)}</BodyText>}
             </div>
           </Grid.Column>
           <Grid.Column textAlign="center">

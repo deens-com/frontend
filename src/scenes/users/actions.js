@@ -25,10 +25,13 @@ export const received_reviews_fetched = received_reviews => {
 export const userFetched = user => ({ type: 'USER_FETCHED', payload: user });
 
 export const fetchUser = userName => dispatch => {
-  const query = fetch_helpers.build_query('User')
-    .equalTo('username', userName);
+  const query = fetch_helpers.build_query('User').equalTo('username', userName);
   query.first().then(user => {
-    if (user) dispatch(userFetched(user));
-    else console.error(`user: ${userName} not found!`);
+    if (user) {
+      const normalizedData = fetch_helpers.normalizeParseResponseData(user);
+      dispatch(userFetched(normalizedData));
+    } else {
+      console.error(`user: ${userName} not found!`);
+    }
   });
-}
+};

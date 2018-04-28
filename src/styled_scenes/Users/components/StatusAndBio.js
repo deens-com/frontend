@@ -13,13 +13,17 @@ const SubTitle = styled.p`
   color: #a3a9b2;
 `;
 
-const StatusAndBio = props => {
+const StatusAndBio = ({ user = {} }) => {
   return (
     <SectionWrap>
-      <Title>Hey, I'm Nick from New York! 🤠</Title>
-      <SubTitle>Welcome! I enjoy meeting new people, doing sports outside and eating pizza</SubTitle>
+      {user.profileTitle && <Title>{user.profileTitle}</Title>}
+      {user.bio && <SubTitle>{user.bio}</SubTitle>}
     </SectionWrap>
   );
+};
+
+StatusAndBio.propTypes = {
+  user: PropTypes.object,
 };
 
 export default StatusAndBio;

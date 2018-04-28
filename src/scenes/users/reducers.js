@@ -14,7 +14,7 @@ export default function UsersReducer(state = initialState, action = {}) {
         ...state,
         users: {
           ...state.users,
-          [user.get('username')]: user,
+          [user.username]: user,
         },
       };
     case "TRIPS_FETCHED":
