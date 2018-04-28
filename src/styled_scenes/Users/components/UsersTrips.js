@@ -9,8 +9,11 @@ import LocationCart from '../../../shared_components/Carts/Location';
 
 const UsersTrips = props => {
   const dummyTrip = {
-    image: 'http://api.please.docker/parse/files/myAppId/0d1d3afec6926a61aac33c9f15941349_pexels-photo-945615.jpeg',
+    image: 'https://images.pexels.com/photos/386009/pexels-photo-386009.jpeg?auto=compress&cs=tinysrgb&h=350',
     title: 'Explore New York',
+    excerpt: 'New York',
+    rating: 4,
+    reviewCount: 37,
     price: '210',
   };
   return (

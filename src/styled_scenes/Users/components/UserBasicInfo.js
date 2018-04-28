@@ -29,13 +29,11 @@ const NameDiv = styled.div`
 `;
 
 const UserBasicInfo = props => {
-  const { user } = props;
-  if (!user) return null;
   return (
     <Wrapper>
       <CenteredDiv>
         <CircularProfilePic src="https://randomuser.me/api/portraits/men/41.jpg" />
-        <NameDiv>Jaydeep Solanki</NameDiv>
+        <NameDiv>Nick Taylor</NameDiv>
       </CenteredDiv>
 
       <Grid columns={2} divided>
