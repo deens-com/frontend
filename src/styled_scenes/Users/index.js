@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Grid, Image } from 'semantic-ui-react';
 import UserBasicInfo from './components/UserBasicInfo';
 import StatusAndBio from './components/StatusAndBio';
+import UsersTrips from './components/UsersTrips';
 
 const UserScene = props => {
   return (
@@ -12,6 +13,7 @@ const UserScene = props => {
       </Grid.Column>
       <Grid.Column width={12}>
         <StatusAndBio {...props} />
+        <UsersTrips />
       </Grid.Column>
     </Grid>
   );
