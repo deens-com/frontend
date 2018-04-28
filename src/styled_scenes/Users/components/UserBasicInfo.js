@@ -33,10 +33,11 @@ const formatDate = date => dateFormat(date, 'MMMM YYYY');
 
 const UserBasicInfo = ({ user = {} }) => {
   const name = user.fullName || user.username;
+  const dpUrl = (user.profilePicture && user.profilePicture.url) || 'http://emblemsbf.com/img/77148.jpg';
   return (
     <Wrapper>
       <CenteredDiv>
-        <CircularProfilePic src="https://randomuser.me/api/portraits/men/41.jpg" />
+        <CircularProfilePic src={dpUrl} />
         {name && <NameDiv>{name}</NameDiv>}
       </CenteredDiv>
 
