@@ -34,19 +34,19 @@ const UserBasicInfo = props => {
   return (
     <Wrapper>
       <CenteredDiv>
-        <CircularProfilePic src="https://randomuser.me/api/portraits/men/41.jpg" size="96px" />
+        <CircularProfilePic src="https://randomuser.me/api/portraits/men/41.jpg" />
         <NameDiv>Jaydeep Solanki</NameDiv>
       </CenteredDiv>
 
       <Grid columns={2} divided>
         <Grid.Row>
-          <Grid.Column textAlign="centered">
+          <Grid.Column textAlign="center">
             <div>
               <AttributeTitle>MEMBER SINCE</AttributeTitle>
               <BodyText>July 2016</BodyText>
             </div>
           </Grid.Column>
-          <Grid.Column textAlign="centered">
+          <Grid.Column textAlign="center">
             <div>
               <AttributeTitle>USER LEVEL</AttributeTitle>
               <BodyText>

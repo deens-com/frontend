@@ -8,7 +8,6 @@ const CircularProfilePic = props => {
 
 CircularProfilePic.propTypes = {
   src: PropTypes.string.isRequired,
-  size: PropTypes.number.isRequired,
 };
 
 export default CircularProfilePic;
