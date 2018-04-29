@@ -27,6 +27,11 @@ const Avatar = styled.div`
   overflow: hidden;
   border: 2px solid #d7dbdf;
   margin-right: 15px;
+
+  img {
+    width: 30px;
+    height: 30px;
+  }
 `;
 
 const Profile = styled.div`
