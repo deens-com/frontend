@@ -26,6 +26,11 @@ export const fullUserFetched = user => ({ type: 'FULL_USER_FETCHED', payload: us
 
 export const fetchFullUser = userName => dispatch => {
   Parse.Cloud.run('fetch_profile_data', { userName }).then(response => {
-    dispatch(fullUserFetched(response));
+    const formattedResponse = {
+      ...response,
+      servicesAvailed: fetch_helpers.mapServiceObjects(response.servicesAvailed),
+      services: fetch_helpers.mapServiceObjects(response.services),
+    };
+    dispatch(fullUserFetched(formattedResponse));
   });
 };

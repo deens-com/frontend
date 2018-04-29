@@ -33,7 +33,7 @@ const formatDate = date => dateFormat(date, 'MMMM YYYY');
 
 const UserBasicInfo = ({ user = {} }) => {
   const name = user.fullName || user.username;
-  const dpUrl = (user.profilePicture && user.profilePicture.url) || 'http://emblemsbf.com/img/77148.jpg';
+  const dpUrl = (user.profilePicture && user.profilePicture._url) || '"https://dummyimage.com/600x400/000/fff"';
   return (
     <Wrapper>
       <CenteredDiv>

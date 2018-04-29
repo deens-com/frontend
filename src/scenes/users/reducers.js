@@ -3,7 +3,7 @@ import { keyBy } from '../../libs/normalizer';
 const initialState = {
   current_user: {},
   users: {}, // stores all users with userName as the Key
-  reservations: {},
+  servicesAvailed: {},
   services: {},
   trips: [],
   given_reviews: [],
@@ -13,12 +13,13 @@ const initialState = {
 export default function UsersReducer(state = initialState, action = {}) {
   switch (action.type) {
     case 'FULL_USER_FETCHED': {
-      const { user, reservations, services } = action.payload;
+      const { user, servicesAvailed, services } = action.payload;
+      const servicesAvailedWithClientId = servicesAvailed.map(s => ({ ...s, clientId: user.objectId }));
       return {
         ...state,
         users: { ...state.users, [user.objectId]: user },
-        reservations: { ...state.reservations, ...keyBy(reservations, 'objectId') },
-        services: {...state.services, ...keyBy(services, 'objectId')}
+        servicesAvailed: { ...state.servicesAvailed, ...keyBy(servicesAvailedWithClientId, 'objectId') },
+        services: { ...state.services, ...keyBy(services, 'objectId') },
       };
     }
     case 'TRIPS_FETCHED':

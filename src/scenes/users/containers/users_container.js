@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import UserComponent from "../components/UserComponent";
-import * as users_actions from "./../actions";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import React, { Component } from 'react';
+import UserComponent from '../components/UserComponent';
+import * as users_actions from './../actions';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import * as selectors from '../selectors';
 
 class UsersContainer extends Component {
@@ -11,31 +11,31 @@ class UsersContainer extends Component {
   }
 
   componentDidMount() {
-    const { userName } = this.props.match.params; 
+    const { userName } = this.props.match.params;
     this.props.fetchFullUser(userName);
   }
 
   render() {
-    const { userName } = this.props.match.params; 
+    const { userName } = this.props.match.params;
     const childProps = {
       user: this.props.getUser(userName),
     };
     if (childProps.user) {
-      childProps.reservations = this.props.getReservations(childProps.user.objectId);
+      childProps.servicesAvailed = this.props.getServicesAvailed(childProps.user.objectId);
       childProps.services = this.props.getServices(childProps.user.objectId);
     }
-    return <UserComponent {...childProps} />
+    return <UserComponent {...childProps} />;
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     getUser: selectors.getUser(state),
-    getReservations: selectors.getReservations(state),
+    getServicesAvailed: selectors.getServicesAvailed(state),
     getServices: selectors.getServices(state),
     trips: state.UsersReducer.trips,
     given_reviews: state.UsersReducer.given_reviews,
-    received_reviews: state.UsersReducer.received_reviews
+    received_reviews: state.UsersReducer.received_reviews,
   };
 };
 
