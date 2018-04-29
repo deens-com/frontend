@@ -7,21 +7,29 @@ import Carousel from '../../../shared_components/Carousel';
 import { SectionWrap, SectionHeader } from '../../../shared_components/layout/Page';
 import LocationCart from '../../../shared_components/Carts/Location';
 
+// Left aligns the Carousel items when there are less number of items
+const CarouselWrap = styled.div`
+  .slick-track {
+    margin: 0;
+  }
+`;
 const UsersTrips = ({ title, items }) => {
   return (
     <SectionWrap>
       <SectionHeader>
         <h3>{title}</h3>
       </SectionHeader>
-      {items && (
-        <Carousel sm_slides_nb={1} md_slides_nb={2} lg_slides_nb={3} xl_slides_nb={4}>
-          {items.map((item, index) => (
-            <Link to={"/trips/" + item.objectId} key={item.objectId}>
-              <LocationCart item={item} index={index} />
-            </Link>
-          ))}
-        </Carousel>
-      )}
+      <CarouselWrap>
+        {items && (
+          <Carousel sm_slides_nb={1} md_slides_nb={2} lg_slides_nb={3} xl_slides_nb={4}>
+            {items.map((item, index) => (
+              <Link to={'/trips/' + item.objectId} key={item.objectId}>
+                <LocationCart item={item} index={index} />
+              </Link>
+            ))}
+          </Carousel>
+        )}
+      </CarouselWrap>
     </SectionWrap>
   );
 };

@@ -19,7 +19,6 @@ const CenteredDiv = styled.div`
 
 const Wrapper = styled.div`
   text-align: center;
-  margin-top: 80px;
 `;
 
 const NameDiv = styled.div`
