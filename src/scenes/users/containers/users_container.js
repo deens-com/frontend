@@ -12,19 +12,27 @@ class UsersContainer extends Component {
 
   componentDidMount() {
     const { userName } = this.props.match.params; 
-    this.props.fetchUser(userName);
+    this.props.fetchFullUser(userName);
   }
 
   render() {
     const { userName } = this.props.match.params; 
-    const user = this.props.getUser(userName);
-    return <UserComponent user={user} />
+    const childProps = {
+      user: this.props.getUser(userName),
+    };
+    if (childProps.user) {
+      childProps.reservations = this.props.getReservations(childProps.user.objectId);
+      childProps.services = this.props.getServices(childProps.user.objectId);
+    }
+    return <UserComponent {...childProps} />
   }
 }
 
 const mapStateToProps = (state) => {
   return {
     getUser: selectors.getUser(state),
+    getReservations: selectors.getReservations(state),
+    getServices: selectors.getServices(state),
     trips: state.UsersReducer.trips,
     given_reviews: state.UsersReducer.given_reviews,
     received_reviews: state.UsersReducer.received_reviews
