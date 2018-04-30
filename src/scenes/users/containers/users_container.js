@@ -22,7 +22,7 @@ class UsersContainer extends Component {
     };
     if (childProps.user) {
       childProps.servicesAvailed = this.props.getServicesAvailed(childProps.user.objectId);
-      childProps.services = this.props.getServices(childProps.user.objectId);
+      childProps.tripsAndServicesOffered = this.props.getTripsAndServicesOffered(childProps.user.objectId);
       childProps.givenReviews = this.props.getGivenReviews(childProps.user.objectId);
     }
     return <UserComponent {...childProps} />;
@@ -33,7 +33,7 @@ const mapStateToProps = state => {
   return {
     getUser: selectors.getUser(state),
     getServicesAvailed: selectors.getServicesAvailed(state),
-    getServices: selectors.getServices(state),
+    getTripsAndServicesOffered: selectors.getTripsAndServicesOffered(state),
     getGivenReviews: selectors.getGivenReviews(state),
     trips: state.UsersReducer.trips,
     given_reviews: state.UsersReducer.given_reviews,

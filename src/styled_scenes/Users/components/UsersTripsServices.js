@@ -13,7 +13,10 @@ const CarouselWrap = styled.div`
     margin: 0;
   }
 `;
-const UsersTrips = ({ title, items }) => {
+
+const getLink = item => `/${item.type}s/${item.objectId}`;
+
+const UsersTripsServices = ({ title, items }) => {
   return (
     <SectionWrap>
       <SectionHeader>
@@ -23,7 +26,7 @@ const UsersTrips = ({ title, items }) => {
         {items && (
           <Carousel sm_slides_nb={1} md_slides_nb={2} lg_slides_nb={3} xl_slides_nb={4}>
             {items.map((item, index) => (
-              <Link to={'/trips/' + item.objectId} key={item.objectId}>
+              <Link to={getLink(item)} key={item.objectId}>
                 <LocationCart item={item} index={index} />
               </Link>
             ))}
@@ -34,9 +37,9 @@ const UsersTrips = ({ title, items }) => {
   );
 };
 
-UsersTrips.propTypes = {
+UsersTripsServices.propTypes = {
   title: PropTypes.string,
   items: PropTypes.array,
 };
 
-export default UsersTrips;
+export default UsersTripsServices;

@@ -20,7 +20,7 @@ const UserComponent = props => {
 UserComponent.propTypes = {
   user: PropTypes.object,
   servicesAvailed: PropTypes.array,
-  services: PropTypes.array,
+  tripsAndServicesOffered: PropTypes.array,
 };
 
 export default UserComponent;
