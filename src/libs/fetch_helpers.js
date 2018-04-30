@@ -15,8 +15,7 @@ const get_service_image = mainPicture => {
   if (!mainPicture) {
     return "https://dummyimage.com/600x400/000/fff";
   }
-  // TODO: @dm0lz please review
-  return mainPicture._url || mainPicture.url;
+  return mainPicture.url;
 };
 
 const bgColors = ["#7bbed6", "#82689a", "#75c1a5", "#ed837f", "#ffb777"];
