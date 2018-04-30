@@ -22,22 +22,13 @@ export const received_reviews_fetched = received_reviews => {
   };
 };
 
-export const current_user_fetched = user => {
-  return {
-    type: "CURRENT_USER_FETCHED",
-    payload: user
-  };
-};
+export const userFetched = user => ({ type: 'USER_FETCHED', payload: user });
 
-
-export const fetch_current_user = (user_id) => {
-  return dispatch => {
-    let user_query = fetch_helpers.build_query("User");
-    user_query.equalTo("objectId", user_id);
-    user_query.find().then(response => {
-      const json_user = fetch_helpers.normalizeParseResponseData(response[0]);
-      const current_user = fetch_helpers.mapServiceObjects([json_user]);
-      dispatch(current_user_fetched({ current_user: current_user[0] }));
-    })
-  };
-};
+export const fetchUser = userName => dispatch => {
+  const query = fetch_helpers.build_query('User')
+    .equalTo('username', userName);
+  query.first().then(user => {
+    if (user) dispatch(userFetched(user));
+    else console.error(`user: ${userName} not found!`);
+  });
+}

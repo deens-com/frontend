@@ -44,8 +44,8 @@ const App = () => {
             component={withSegmentTracker(Trips)}
           />
           <Route
-            path={process.env.PUBLIC_URL + "/users"}
-            component={withSegmentTracker(Users)}
+            path={process.env.PUBLIC_URL + "/users/:userName"}
+            component={Users}
           />
         </Switch>
       </HashRouter>
