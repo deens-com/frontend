@@ -106,7 +106,12 @@
 
         // Load Analytics.js with your key, which will automatically
         // load the tools you've enabled for your account. Boosh!
-        analytics.load("YOUR_WRITE_KEY");
+        if("%NODE_ENV%" === "development"){
+          analytics.load("h1FCdpwginkobEFvUIbCiwPxBqnUGuO8");
+        }else{
+          analytics.load("1iiHf2CfNHZb1jWrDkGkftEx8Hkbvg0R");
+        }
+
 
         // Make the first page call to load the integrations. If
         // you'd like to manually name or tag the page, edit or
