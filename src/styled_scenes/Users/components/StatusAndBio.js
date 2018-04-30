@@ -9,9 +9,13 @@ const SubTitle = styled.p`
 
 const StatusAndBio = ({ user = {} }) => {
   return (
-    <SectionWrap>
-      {user.bio && <SubTitle>{user.bio}</SubTitle>}
-    </SectionWrap>
+    <div>
+      {user.bio && (
+        <SectionWrap>
+          <SubTitle>{user.bio}</SubTitle>
+        </SectionWrap>
+      )}
+    </div>
   );
 };
 
