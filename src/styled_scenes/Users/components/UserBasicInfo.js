@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Grid, Image, Icon } from 'semantic-ui-react';
 import styled, { css } from 'styled-components';
 import CircularProfilePic from './CircularProfilePic';
-import dateFormat from 'date-fns/format';
+import moment from "moment";
 
 const BodyText = styled.p`
   font-weight: 500;
@@ -28,7 +28,7 @@ const NameDiv = styled.div`
   font-weight: 600;
 `;
 
-const formatDate = date => dateFormat(date, 'MMMM YYYY');
+const formatDate = date => moment(date).format('MMMM YYYY');
 
 const UserBasicInfo = ({ user = {} }) => {
   const name = user.fullName || user.username;
