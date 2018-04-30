@@ -69,7 +69,8 @@ export default function ReviewCart({ title, rating, message, city, country, name
         <Profile>
           <span>{name}</span>
           <span>
-            {city}, {country}
+            {city}
+            {country && `, ${country}`}
           </span>
         </Profile>
       </ProfileWrap>
@@ -87,8 +88,13 @@ ReviewCart.propTypes = {
   title: PropTypes.string.isRequired, // review title
   rating: PropTypes.number.isRequired,
   message: PropTypes.string.isRequired,
-  city: PropTypes.string.isRequired, // place of the user, or service
-  country: PropTypes.string.isRequired,
+  city: PropTypes.string, // place of the user, or service
+  country: PropTypes.string,
   name: PropTypes.string.isRequired, // username or service name
   image: PropTypes.string, // service or user image
+};
+
+ReviewCart.defaultProps = {
+  city: '',
+  country: '',
 };

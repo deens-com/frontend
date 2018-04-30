@@ -21,7 +21,7 @@ const Reviews = ({ title, reviews }) => {
       <CarouselWrap>
         {reviews && (
           <Carousel sm_slides_nb={1} md_slides_nb={2} lg_slides_nb={3} xl_slides_nb={4}>
-            {reviews.map(r => <GenericReview key={r.summary} {...r} />)}
+            {reviews.map(r => <GenericReview key={r.objectId} {...r} />)}
           </Carousel>
         )}
       </CarouselWrap>

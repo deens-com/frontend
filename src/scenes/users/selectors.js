@@ -6,5 +6,5 @@ export const getServicesAvailed = state => userId =>
 export const getServices = state => userId =>
   Object.values(state.UsersReducer.services).filter(s => s.owner && s.owner.id === userId);
 
-export const getGivenServiceReviews = state => userId =>
-  Object.values(state.UsersReducer.givenServiceReviews).filter(r => r.reviewUserId === userId);
+export const getGivenReviews = state => userId =>
+  Object.values(state.UsersReducer.givenReviews).filter(r => r.reviewedByUserId === userId);
