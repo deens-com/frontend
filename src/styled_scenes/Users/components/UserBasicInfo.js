@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Grid, Image, Icon } from 'semantic-ui-react';
 import styled, { css } from 'styled-components';
 import CircularProfilePic from './CircularProfilePic';
+import moment from "moment";
 
 const BodyText = styled.p`
   font-weight: 500;
@@ -18,7 +19,6 @@ const CenteredDiv = styled.div`
 
 const Wrapper = styled.div`
   text-align: center;
-  margin-top: 80px;
 `;
 
 const NameDiv = styled.div`
@@ -28,12 +28,16 @@ const NameDiv = styled.div`
   font-weight: 600;
 `;
 
-const UserBasicInfo = props => {
+const formatDate = date => moment(date).format('MMMM YYYY');
+
+const UserBasicInfo = ({ user = {} }) => {
+  const name = user.fullName || user.username;
+  const dpUrl = (user.profilePicture && user.profilePicture.url) || '"https://dummyimage.com/600x400/000/fff"';
   return (
     <Wrapper>
       <CenteredDiv>
-        <CircularProfilePic src="https://randomuser.me/api/portraits/men/41.jpg" />
-        <NameDiv>Nick Taylor</NameDiv>
+        <CircularProfilePic src={dpUrl} />
+        {name && <NameDiv>{name}</NameDiv>}
       </CenteredDiv>
 
       <Grid columns={2} divided>
@@ -41,7 +45,7 @@ const UserBasicInfo = props => {
           <Grid.Column textAlign="center">
             <div>
               <AttributeTitle>MEMBER SINCE</AttributeTitle>
-              <BodyText>July 2016</BodyText>
+              {user.createdAt && <BodyText>{formatDate(user.createdAt)}</BodyText>}
             </div>
           </Grid.Column>
           <Grid.Column textAlign="center">

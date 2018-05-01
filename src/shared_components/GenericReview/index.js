@@ -59,26 +59,42 @@ const SummaryWrap = styled.div`
 `;
 
 // MODULE
-export default function ReviewCart({ review }) {
+export default function ReviewCart({ title, rating, message, city, country, name, image }) {
   return (
     <Wrap>
       <ProfileWrap>
         <Avatar>
-          <img src={review.reviewer.profilePicture ? review.reviewer.profilePicture.url : "https://dummyimage.com/60x40/000/fff"} />
+          <img src={image || 'https://dummyimage.com/60x40/000/fff'} />
         </Avatar>
         <Profile>
-          <span>{review.reviewer.username}</span>
-          <span>{review.reviewer.city}, {review.reviewer.country}</span>
+          <span>{name}</span>
+          <span>
+            {city}
+            {country && `, ${country}`}
+          </span>
         </Profile>
       </ProfileWrap>
       <SummaryWrap>
-        <span>{review.title}</span>
-        <Stars rating={review.rating} />
+        <span>{title}</span>
+        <Stars rating={rating} />
       </SummaryWrap>
-      <p>{review.message}</p>
+      <p>{message}</p>
     </Wrap>
   );
 }
 
 // Props Validation
-ReviewCart.propTypes = {};
+ReviewCart.propTypes = {
+  title: PropTypes.string.isRequired, // review title
+  rating: PropTypes.number.isRequired,
+  message: PropTypes.string.isRequired,
+  city: PropTypes.string, // place of the user, or service
+  country: PropTypes.string,
+  name: PropTypes.string.isRequired, // username or service name
+  image: PropTypes.string, // service or user image
+};
+
+ReviewCart.defaultProps = {
+  city: '',
+  country: '',
+};
