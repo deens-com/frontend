@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import store from "./store";
 import withSegmentTracker from "./middlewares/with_segment_tracker";
 import Home from "./../scenes/home/home";
+import Account from "./../scenes/account/account";
 import Sessions from "./../scenes/sessions/sessions";
 import Results from "./../scenes/results/results";
 import Trips from "./../scenes/trips/trips";
@@ -46,6 +47,10 @@ const App = () => {
           <Route
             path={process.env.PUBLIC_URL + "/users/:userName"}
             component={Users}
+          />
+          <Route
+            path={process.env.PUBLIC_URL + "/account/profile"}
+            component={Account}
           />
         </Switch>
       </HashRouter>

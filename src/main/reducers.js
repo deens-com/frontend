@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
 import HomeReducer from "../scenes/home/reducers";
+import AccountReducer from "../scenes/account/reducers";
 import SessionsReducer from "../scenes/sessions/reducers";
 import RegistrationsReducer from "../scenes/registrations/reducers";
 import ResultsReducer from "../scenes/results/reducers";
@@ -14,7 +15,8 @@ const allReducers = combineReducers({
   ResultsReducer,
   TripsReducer,
   ServicesReducer,
-  UsersReducer
+  UsersReducer,
+  AccountReducer
 });
 
 export default allReducers;
