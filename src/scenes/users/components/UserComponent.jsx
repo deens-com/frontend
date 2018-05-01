@@ -21,6 +21,8 @@ UserComponent.propTypes = {
   user: PropTypes.object,
   servicesAvailed: PropTypes.array,
   tripsAndServicesOffered: PropTypes.array,
+  givenReviews: PropTypes.array,
+  receivedReviews: PropTypes.array,
 };
 
 export default UserComponent;

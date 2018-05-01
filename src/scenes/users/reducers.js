@@ -7,13 +7,13 @@ const initialState = {
   tripsAndServicesOffered: {}, // all the trips/services the user is offering
   trips: [],
   givenReviews: {},
-  received_reviews: [],
+  receivedReviews: {},
 };
 
 export default function UsersReducer(state = initialState, action = {}) {
   switch (action.type) {
     case 'FULL_USER_FETCHED': {
-      const { user, servicesAvailed, tripsAndServicesOffered, givenReviews } = action.payload;
+      const { user, servicesAvailed, tripsAndServicesOffered, givenReviews, receivedReviews } = action.payload;
       const servicesAvailedWithClientId = servicesAvailed.map(s => ({ ...s, clientId: user.objectId }));
       return {
         ...state,
@@ -21,6 +21,7 @@ export default function UsersReducer(state = initialState, action = {}) {
         servicesAvailed: { ...state.servicesAvailed, ...keyBy(servicesAvailedWithClientId, 'objectId') },
         tripsAndServicesOffered: { ...state.tripsAndServicesOffered, ...keyBy(tripsAndServicesOffered, 'objectId') },
         givenReviews: { ...state.givenReviews, ...keyBy(givenReviews, 'objectId') },
+        receivedReviews: { ...state.receivedReviews, ...keyBy(receivedReviews, 'objectId') },
       };
     }
     case 'TRIPS_FETCHED':

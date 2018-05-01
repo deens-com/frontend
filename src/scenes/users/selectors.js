@@ -8,3 +8,6 @@ export const getTripsAndServicesOffered = state => userId =>
 
 export const getGivenReviews = state => userId =>
   Object.values(state.UsersReducer.givenReviews).filter(r => r.reviewedByUserId === userId);
+
+export const getReceivedReviews = state => userId =>
+  Object.values(state.UsersReducer.receivedReviews).filter(r => r.ownedByUserId === userId);

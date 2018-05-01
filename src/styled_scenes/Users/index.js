@@ -12,7 +12,7 @@ const Wrapper = styled.div`
   margin-top: 24px;
 `;
 
-const UserScene = ({ user = {}, servicesAvailed, tripsAndServicesOffered, givenReviews }) => {
+const UserScene = ({ user = {}, servicesAvailed, tripsAndServicesOffered, givenReviews, receivedReviews }) => {
   return (
     <Wrapper>
       <Grid centered columns={2}>
@@ -26,6 +26,7 @@ const UserScene = ({ user = {}, servicesAvailed, tripsAndServicesOffered, givenR
           <UsersTripsServices items={servicesAvailed} title="Where I have been" />
           <UsersTripsServices items={tripsAndServicesOffered} title="My trips and services" />
           <Reviews title="Reviews I have given" reviews={givenReviews} />
+          <Reviews title="Reviews I have received" reviews={receivedReviews} />
         </Grid.Column>
       </Grid>
     </Wrapper>
@@ -37,6 +38,7 @@ UserScene.propTypes = {
   servicesAvailed: PropTypes.array,
   tripsAndServicesOffered: PropTypes.array,
   givenReviews: PropTypes.array,
+  receivedReviews: PropTypes.array,
 };
 
 export default UserScene;

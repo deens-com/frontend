@@ -24,6 +24,7 @@ class UsersContainer extends Component {
       childProps.servicesAvailed = this.props.getServicesAvailed(childProps.user.objectId);
       childProps.tripsAndServicesOffered = this.props.getTripsAndServicesOffered(childProps.user.objectId);
       childProps.givenReviews = this.props.getGivenReviews(childProps.user.objectId);
+      childProps.receivedReviews = this.props.getReceivedReviews(childProps.user.objectId);
     }
     return <UserComponent {...childProps} />;
   }
@@ -35,6 +36,7 @@ const mapStateToProps = state => {
     getServicesAvailed: selectors.getServicesAvailed(state),
     getTripsAndServicesOffered: selectors.getTripsAndServicesOffered(state),
     getGivenReviews: selectors.getGivenReviews(state),
+    getReceivedReviews: selectors.getReceivedReviews(state),
     trips: state.UsersReducer.trips,
     given_reviews: state.UsersReducer.given_reviews,
     received_reviews: state.UsersReducer.received_reviews,
