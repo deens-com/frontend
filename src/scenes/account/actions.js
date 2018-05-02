@@ -11,11 +11,22 @@ export const user_profile_fetched = user_profile => {
 
 
 export const fetch_user_profile = () => dispatch => {
-  const user = Parse.User.current();
+  let user = Parse.User.current();
   if(user === null){
     history.push("/login")
   }else{
-    const json_user = fetch_helpers.normalizeParseResponseData(user);
-    dispatch(user_profile_fetched({user_profile: json_user}));
+    Parse.User.current().fetch().then(response => {
+      const json_response = fetch_helpers.normalizeParseResponseData(response);
+      user = json_response;
+      if(user === null){
+        history.push("/login")
+      }else{
+        const json_user = fetch_helpers.normalizeParseResponseData(user);
+        dispatch(user_profile_fetched({user_profile: json_user}));
+      }
+    }).catch(error => {
+      console.log(error);
+    });
   }
+
 };
