@@ -12,7 +12,13 @@ const Wrapper = styled.div`
   margin-top: 24px;
 `;
 
-const UserScene = ({ user = {}, servicesAvailed, tripsAndServicesOffered, givenReviews, receivedReviews }) => {
+const UserScene = ({
+  user = {},
+  tripsBooked = [],
+  tripsAndServicesOffered = [],
+  givenReviews = [],
+  receivedReviews = [],
+}) => {
   return (
     <Wrapper>
       <Grid centered columns={2}>
@@ -23,10 +29,12 @@ const UserScene = ({ user = {}, servicesAvailed, tripsAndServicesOffered, givenR
         </Grid.Column>
         <Grid.Column mobile={16} tablet={11} computer={12}>
           <StatusAndBio user={user} />
-          <UsersTripsServices items={servicesAvailed} title="Where I have been" />
-          <UsersTripsServices items={tripsAndServicesOffered} title="My trips and services" />
-          <Reviews title="Reviews I have given" reviews={givenReviews} />
-          <Reviews title="Reviews I have received" reviews={receivedReviews} />
+          {tripsBooked.length > 0 && <UsersTripsServices items={tripsBooked} title="Where I have been" />}
+          {tripsAndServicesOffered.length > 0 && (
+            <UsersTripsServices items={tripsAndServicesOffered} title="My trips and services" />
+          )}
+          {givenReviews.length > 0 && <Reviews title="Reviews I have given" reviews={givenReviews} />}
+          {receivedReviews.length > 0 && <Reviews title="Reviews I have received" reviews={receivedReviews} />}
         </Grid.Column>
       </Grid>
     </Wrapper>
@@ -35,7 +43,7 @@ const UserScene = ({ user = {}, servicesAvailed, tripsAndServicesOffered, givenR
 
 UserScene.propTypes = {
   user: PropTypes.object,
-  servicesAvailed: PropTypes.array,
+  tripsBooked: PropTypes.array,
   tripsAndServicesOffered: PropTypes.array,
   givenReviews: PropTypes.array,
   receivedReviews: PropTypes.array,
