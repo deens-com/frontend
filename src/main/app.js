@@ -49,7 +49,7 @@ const App = () => {
             component={Users}
           />
           <Route
-            path={process.env.PUBLIC_URL + "/account/profile"}
+            path={process.env.PUBLIC_URL + "/account"}
             component={Account}
           />
         </Switch>

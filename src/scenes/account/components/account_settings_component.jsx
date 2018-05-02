@@ -1,24 +1,24 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ProfileScene from './../../../styled_scenes/Account/Profile';
+import AccountSettingsScene from './../../../styled_scenes/Account/Settings';
 import { Page, PageContent, PageWrapper } from './../../../shared_components/layout/Page';
 import TopBar from '../../../shared_components/TopBar';
 
-const ProfileComponent = props => {
+const AccountSettingsComponent = props => {
   return (
     <section>
       <Page topPush>
         <TopBar fixed withPadding />
         <PageContent padding="24px">
-          <ProfileScene {...props} />
+          <AccountSettingsScene {...props} />
         </PageContent>
       </Page>
     </section>
   );
 };
 
-ProfileComponent.propTypes = {
+AccountSettingsComponent.propTypes = {
   user: PropTypes.object,
 };
 
-export default ProfileComponent;
+export default AccountSettingsComponent;
