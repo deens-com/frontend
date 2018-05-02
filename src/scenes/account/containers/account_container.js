@@ -6,7 +6,7 @@ import AccountSettingsComponent from "./../components/account_settings_component
 import * as account_actions from "./../actions";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Route } from "react-router-dom";
+import { Route, withRouter } from "react-router-dom";
 
 class AccountContainer extends Component {
 
@@ -27,15 +27,15 @@ class AccountContainer extends Component {
         />
         <Route
           path={process.env.PUBLIC_URL + "/account/profile"}
-          component={AccountProfileComponent}
+          render={(props)=><AccountProfileComponent {...props} user_profile={this.props.user_profile} />}
         />
         <Route
           path={process.env.PUBLIC_URL + "/account/services"}
-          component={AccountServicesComponent}
+          render={(props)=><AccountServicesComponent {...props} user_profile={this.props.user_profile} />}
         />
         <Route
           path={process.env.PUBLIC_URL + "/account/settings"}
-          component={AccountSettingsComponent}
+          render={(props)=><AccountSettingsComponent {...props} user_profile={this.props.user_profile} />}
         />
       </div>
     );
@@ -53,4 +53,4 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators(account_actions, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AccountContainer);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AccountContainer));
