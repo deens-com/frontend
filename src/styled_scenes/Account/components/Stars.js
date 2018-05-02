@@ -10,8 +10,8 @@ import Star from './../../../shared_components/Rating/Star';
 
 // STYLES
 const Stars = styled.div`
-  margin-left: 30px;
-  display: flex;
+  //margin-left: 30px;
+  //display: flex;
 `;
 
 const StarWrap = styled.div`

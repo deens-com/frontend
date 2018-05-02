@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Image } from 'semantic-ui-react';
-import { SectionWrap } from './../../../shared_components/layout/Page';
-import UserBasicInfo from './../components/UserBasicInfo';
+import { SectionWrap } from './../../../../shared_components/layout/Page';
+import UserBasicInfo from './../../components/UserBasicInfo';
+import {Link} from "react-router-dom";
 
 const AccountTripsScene = props => {
   return (
@@ -13,14 +14,12 @@ const AccountTripsScene = props => {
         </SectionWrap>
       </Grid.Column>
       <Grid.Column mobile={16} tablet={11} computer={12}>
-        <h2>Trips Scene</h2>
+        <h2>My Trips</h2>
+        <Link to="/account/trips/planned">Planned</Link>&nbsp; | &nbsp;
+        <Link to="/account/trips/completed">Completed</Link>
       </Grid.Column>
     </Grid>
   );
-};
-
-AccountTripsScene.propTypes = {
-  user: PropTypes.object,
 };
 
 export default AccountTripsScene;

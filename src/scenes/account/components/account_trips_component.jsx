@@ -1,24 +1,42 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import AccountTripsScene from './../../../styled_scenes/Account/Trips';
-import { Page, PageContent, PageWrapper } from './../../../shared_components/layout/Page';
-import TopBar from '../../../shared_components/TopBar';
+import React, { Component } from "react";
+import AccountTripsPlannedComponent from "./account_trips_planned_component";
+import AccountTripsCompletedComponent from "./account_trips_completed_component";
+import * as account_actions from "./../actions";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { Route, withRouter } from "react-router-dom";
 
-const AccountTripsComponent = props => {
-  return (
-    <section>
-      <Page topPush>
-        <TopBar fixed withPadding />
-        <PageContent padding="24px">
-          <AccountTripsScene {...props} />
-        </PageContent>
-      </Page>
-    </section>
-  );
+class AccountTripsComponent extends Component {
+
+  constructor(props){
+    super(props);
+  }
+
+  render() {
+    return (
+      <div className="AccountTripsComponent">
+        <Route
+          path={process.env.PUBLIC_URL + "/account/trips/planned"}
+          render={(props)=><AccountTripsPlannedComponent {...this.props} user_profile={this.props.user_profile} />}
+        />
+        <Route
+          path={process.env.PUBLIC_URL + "/account/trips/completed"}
+          render={(props)=><AccountTripsCompletedComponent {...this.props} user_profile={this.props.user_profile} />}
+        />
+      </div>
+    );
+  }
+
+}
+
+const mapStateToProps = state => {
+  return {
+    user_profile: state.AccountReducer.user_profile
+  };
 };
 
-AccountTripsComponent.propTypes = {
-  user: PropTypes.object,
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(account_actions, dispatch);
 };
 
-export default AccountTripsComponent;
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AccountTripsComponent));

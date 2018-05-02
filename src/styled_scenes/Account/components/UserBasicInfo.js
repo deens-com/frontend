@@ -22,7 +22,7 @@ const CenteredDiv = styled.div`
 
 const Wrapper = styled.div`
   text-align: center;
-  padding: 30px 20px 30px 20px;
+  padding: 30px 0px 30px 0px;
 `;
 
 const NameDiv = styled.div`
@@ -68,9 +68,9 @@ const UserBasicInfo = ({ user_profile: user = {}, match }) => {
         </Grid>
         <CenteredMenu>
         <br/>
-          <Menu vertical>
+          <Menu secondary vertical>
             <Menu.Item name='trips' active={activePath === 'trips'}>
-              <Link to="/account/trips">My Trips</Link>
+              <Link to="/account/trips/planned">My Trips</Link>
             </Menu.Item>
 
             <Menu.Item name='services' active={activePath === 'services'}>
@@ -89,10 +89,6 @@ const UserBasicInfo = ({ user_profile: user = {}, match }) => {
       </Wrapper>
     </Card>
   );
-};
-
-UserBasicInfo.propTypes = {
-  user: PropTypes.object,
 };
 
 export default UserBasicInfo;
