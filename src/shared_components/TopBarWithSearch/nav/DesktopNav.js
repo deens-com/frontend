@@ -105,7 +105,7 @@ export default function TopBarDesktopNav(props) {
             {mainNav.map(item => (
               <NavLink
                 key={item.label}
-                activeClassName="is-active"
+                activeclassname="is-active"
                 to={item.href}
               >
                 {item.label}

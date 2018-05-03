@@ -78,64 +78,63 @@ const UserBasicInfo = ({ user_profile: user = {}, match }) => {
             </Grid.Column>
           </Grid.Row>
         </Grid>
-        <div>
+
         <br/>
 
-          <Menu secondary fluid vertical style={{paddingLeft: "10px"}}>
+        <Menu secondary fluid vertical style={{paddingLeft: "10px"}}>
 
-            <Link to="/account/trips/planned">
-              <Menu.Item name='trips' active={activePath === 'trips'}>
-                <MenuIcon disabled name='angle right circular' />
-                <span>
-                  <MenuIcon disabled name='plane circular' />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  My Trips
-                </span>
-              </Menu.Item>
-            </Link>
+          <Link to="/account/trips/planned">
+            <Menu.Item name='trips' active={activePath === 'trips'}>
+              <MenuIcon disabled name='angle right' circular />
+              <span>
+                <MenuIcon disabled name='plane' circular />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                My Trips
+              </span>
+            </Menu.Item>
+          </Link>
 
-            <Link to="/account/services">
-              <Menu.Item name='services' active={activePath === 'services'}>
-                <MenuIcon disabled name='angle right circular green' />
-                <span>
-                  <MenuIcon disabled name='list circular green' />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  My Services
-                </span>
-              </Menu.Item>
-            </Link>
+          <Link to="/account/services">
+            <Menu.Item name='services' active={activePath === 'services'}>
+              <MenuIcon disabled name='angle right' circular />
+              <span>
+                <MenuIcon disabled name='list' circular />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                My Services
+              </span>
+            </Menu.Item>
+          </Link>
 
-            <Link to="/account/profile">
-              <Menu.Item name='profile' active={activePath === 'profile'}>
-                <MenuIcon disabled name='angle right circular green' />
-                <span>
-                  <MenuIcon disabled name='user circular green' />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  Profile
-                </span>
-              </Menu.Item>
-            </Link>
+          <Link to="/account/profile">
+            <Menu.Item name='profile' active={activePath === 'profile'}>
+              <MenuIcon disabled name='angle right' circular />
+              <span>
+                <MenuIcon disabled name='user' circular />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                Profile
+              </span>
+            </Menu.Item>
+          </Link>
 
-            <Link to="/account/settings">
-              <Menu.Item name='settings' active={activePath === 'settings'}>
-                <MenuIcon disabled name='angle right circular green' />
-                <span>
-                  <MenuIcon disabled name='cog circular green' />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  Settings
-                </span>
-              </Menu.Item>
-            </Link>
+          <Link to="/account/settings">
+            <Menu.Item name='settings' active={activePath === 'settings'}>
+              <MenuIcon disabled name='angle right' circular />
+              <span>
+                <MenuIcon disabled name='cogs' circular />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                Settings
+              </span>
+            </Menu.Item>
+          </Link>
 
-            <p style={{cursor: "pointer"}} onClick={logout}>
-              <Menu.Item name='logout' active={activePath === 'logout'}>
-                <MenuIcon disabled name='angle right circular green' />
-                <span>
-                  <MenuIcon disabled name='power off circular green' />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  Logout
-                </span>
-              </Menu.Item>
-            </p>
+          <div style={{cursor: "pointer"}} onClick={logout}>
+            <Menu.Item name='logout' active={activePath === 'logout'}>
+              <MenuIcon disabled name='angle right' circular />
+              <span>
+                <MenuIcon disabled name='power' circular />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                Logout
+              </span>
+            </Menu.Item>
+          </div>
 
-          </Menu>
+        </Menu>
 
-        </div>
       </Wrapper>
     </Card>
   );
