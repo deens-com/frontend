@@ -19,15 +19,16 @@ const AttributeTitle = styled.h6`
 `;
 
 const CenteredDiv = styled.div`
-  text-align: center;
+  //text-align: center;
 `;
 
 const Wrapper = styled.div`
-  text-align: center;
+  //text-align: center;
   padding: 30px 0px 30px 0px;
 `;
 
 const NameDiv = styled.div`
+  text-align: center;
   margin-top: 0.75em;
   margin-bottom: 0.75em;
   font-size: 24px;
@@ -38,9 +39,11 @@ const CenteredMenu = styled.div`
   display: inline-flex;
 `;
 
+const MenuIcon = styled(Icon)`
+  color: #5fb79e;
+`;
+
 const formatDate = date => moment(date).format('MMMM YYYY');
-
-
 
 const UserBasicInfo = ({ user_profile: user = {}, match }) => {
   const name = user.fullName || user.username;
@@ -75,30 +78,64 @@ const UserBasicInfo = ({ user_profile: user = {}, match }) => {
             </Grid.Column>
           </Grid.Row>
         </Grid>
-        <CenteredMenu>
+        <div>
         <br/>
-          <Menu secondary vertical>
-            <Menu.Item name='trips' active={activePath === 'trips'}>
-              <Link to="/account/trips/planned">My Trips</Link>
-            </Menu.Item>
 
-            <Menu.Item name='services' active={activePath === 'services'}>
-              <Link to="/account/services">My Services</Link>
-            </Menu.Item>
+          <Menu secondary fluid vertical style={{paddingLeft: "10px"}}>
 
-            <Menu.Item name='updates' active={activePath === 'profile'}>
-              <Link to="/account/profile">Profile</Link>
-            </Menu.Item>
+            <Link to="/account/trips/planned">
+              <Menu.Item name='trips' active={activePath === 'trips'}>
+                <MenuIcon disabled name='angle right circular' />
+                <span>
+                  <MenuIcon disabled name='plane circular' />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  My Trips
+                </span>
+              </Menu.Item>
+            </Link>
 
-            <Menu.Item name='updates' active={activePath === 'settings'}>
-              <Link to="/account/settings">Settings</Link>
-            </Menu.Item>
+            <Link to="/account/services">
+              <Menu.Item name='services' active={activePath === 'services'}>
+                <MenuIcon disabled name='angle right circular green' />
+                <span>
+                  <MenuIcon disabled name='list circular green' />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  My Services
+                </span>
+              </Menu.Item>
+            </Link>
 
-            <Menu.Item name='logout'>
-              <p onClick={logout}>Logout</p>
-            </Menu.Item>
+            <Link to="/account/profile">
+              <Menu.Item name='profile' active={activePath === 'profile'}>
+                <MenuIcon disabled name='angle right circular green' />
+                <span>
+                  <MenuIcon disabled name='user circular green' />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  Profile
+                </span>
+              </Menu.Item>
+            </Link>
+
+            <Link to="/account/settings">
+              <Menu.Item name='settings' active={activePath === 'settings'}>
+                <MenuIcon disabled name='angle right circular green' />
+                <span>
+                  <MenuIcon disabled name='cog circular green' />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  Settings
+                </span>
+              </Menu.Item>
+            </Link>
+
+            <p style={{cursor: "pointer"}} onClick={logout}>
+              <Menu.Item name='logout' active={activePath === 'logout'}>
+                <MenuIcon disabled name='angle right circular green' />
+                <span>
+                  <MenuIcon disabled name='power off circular green' />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  Logout
+                </span>
+              </Menu.Item>
+            </p>
+
           </Menu>
-        </CenteredMenu>
+
+        </div>
       </Wrapper>
     </Card>
   );
