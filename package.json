@@ -6,7 +6,7 @@
   "dependencies": {
     "annyang": "^2.6.0",
     "gh-pages": "^1.1.0",
-    "google-map-react": "^0.34.0",
+    "google-map-react": "^1.0.0",
     "history": "^4.7.2",
     "moment": "^2.22.1",
     "parse": "^1.11.1",
