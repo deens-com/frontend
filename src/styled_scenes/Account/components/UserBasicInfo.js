@@ -7,6 +7,8 @@ import moment from "moment";
 import Stars from './Stars';
 import { Link } from "react-router-dom";
 import { Input, Label, Menu, Card } from 'semantic-ui-react';
+import Parse from "parse";
+import history from "./../../../main/history";
 
 const BodyText = styled.p`
   font-weight: 500;
@@ -38,10 +40,17 @@ const CenteredMenu = styled.div`
 
 const formatDate = date => moment(date).format('MMMM YYYY');
 
+
+
 const UserBasicInfo = ({ user_profile: user = {}, match }) => {
   const name = user.fullName || user.username;
   const dpUrl = (user.profilePicture && user.profilePicture.url) || '"https://dummyimage.com/600x400/000/fff"';
   let activePath = match.path.replace("/account/", "");
+  const logout = () => {
+    Parse.User.logOut().then(() => {
+      history.push("/");
+    });
+  }
   return (
     <Card>
       <Wrapper>
@@ -74,15 +83,19 @@ const UserBasicInfo = ({ user_profile: user = {}, match }) => {
             </Menu.Item>
 
             <Menu.Item name='services' active={activePath === 'services'}>
-              <Link to="/account/services">My Listing</Link>
+              <Link to="/account/services">My Services</Link>
             </Menu.Item>
 
             <Menu.Item name='updates' active={activePath === 'profile'}>
-              <Link to="/account/profile">Public Profile</Link>
+              <Link to="/account/profile">Profile</Link>
             </Menu.Item>
 
             <Menu.Item name='updates' active={activePath === 'settings'}>
               <Link to="/account/settings">Settings</Link>
+            </Menu.Item>
+
+            <Menu.Item name='logout'>
+              <p onClick={logout}>Logout</p>
             </Menu.Item>
           </Menu>
         </CenteredMenu>
