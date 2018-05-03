@@ -3,16 +3,29 @@ import React from "react";
 import PropTypes from "prop-types";
 
 // COMPONENTS
-import TopBar, { BarRight } from "../../components/TopBar";
-import Logo from "../../components/TopBar/Logo";
-import BrandFooter from "../../components/BrandFooter";
+import TopBar from "../../shared_components/TopBarWithSearch";
+import Logo from "../../shared_components/TopBar/Logo";
+import BrandFooter from "../../shared_components/BrandFooter";
 import FooterNav from "../Home/components/FooterNav";
 
 // ACTIONS/CONFIG
 
 // STYLES
-import { Hr } from "../../components/styledComponents/misc";
-import { Page, PageWrapper, PageContent } from "../../components/layout/Page";
+import { Page, PageWrapper, PageContent } from "../../shared_components/layout/Page";
+import styled, { css } from 'styled-components';
+
+export const Hr = styled.hr`
+  background: #efeff0;
+  border: none;
+  height: 1px;
+  width: 100%;
+
+  ${props =>
+    props.withSpacing &&
+    css`
+      margin: 50px 0;
+    `};
+`;
 
 // MODULE
 export default function NotFoundScene({}) {
@@ -21,7 +34,7 @@ export default function NotFoundScene({}) {
       <PageWrapper>
         <TopBar>
           <Logo />
-          <BarRight>Links</BarRight>
+          <span>Links</span>
         </TopBar>
       </PageWrapper>
       <PageContent>

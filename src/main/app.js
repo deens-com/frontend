@@ -13,6 +13,7 @@ import Trips from "./../scenes/trips/trips";
 import Users from "./../scenes/users/users";
 import Services from "./../scenes/services/services";
 import Registrations from "./../scenes/registrations/registrations";
+import Notfound from "./../styled_scenes/NotFound";
 
 const App = () => {
   return (
@@ -52,6 +53,7 @@ const App = () => {
             path={process.env.PUBLIC_URL + "/account"}
             component={Account}
           />
+          <Route component={Notfound} />
         </Switch>
       </HashRouter>
     </Provider>
