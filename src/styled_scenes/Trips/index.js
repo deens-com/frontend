@@ -189,7 +189,7 @@ export default class TripsScene extends Component {
                   <SecondLine>to</SecondLine>{this.props.trip.title}
                 </h3>
                 <DatesWrap>
-                  <p>{this.props.trip && this.props.trip.beginDate && moment(this.props.trip.beginDate.iso).format("MMM Do YY")} - {this.props.trip && this.props.trip.beginDate && moment(this.props.trip.endDate.iso).format("MMM Do YY")}</p>
+                  <p>{this.props.trip && this.props.trip.beginDate && moment(this.props.trip.beginDate.iso).format("MMM Do YY")} - {this.props.trip && this.props.trip.endDate && moment(this.props.trip.endDate.iso).format("MMM Do YY")}</p>
                 </DatesWrap>
                 <span>
                   <ProfileWrap>
