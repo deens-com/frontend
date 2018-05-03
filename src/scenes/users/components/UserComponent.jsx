@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import UserScene from './../../../styled_scenes/Users';
 import { Page, PageContent, PageWrapper } from './../../../shared_components/layout/Page';
-import TopBar from '../../../shared_components/TopBar';
+import TopBar from '../../../shared_components/TopBarWithSearch';
 
 const UserComponent = props => {
   return (

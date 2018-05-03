@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import GoogleMapReact from "google-map-react";
 
 // COMPONENTS
-import TopBar from "./components/TopBar";
+import TopBar from "./../../shared_components/TopBarWithSearch";
 
 import BrandFooter from "../../shared_components/BrandFooter";
 import Tag from "./components/Tag";

@@ -8,7 +8,7 @@ import moment from "moment";
 
 // COMPONENTS
 import BrandFooter from "../../shared_components/BrandFooter";
-import TopBar from "./components/TopBar";
+import TopBar from "./../../shared_components/TopBarWithSearch";
 import Results from "./components/Results";
 import ToolBar from "./components/ToolBar";
 import Summary from "./components/Summary";

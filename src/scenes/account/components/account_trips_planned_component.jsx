@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import AccountTripsPlannedScene from './../../../styled_scenes/Account/Trips/Planned';
 import { Page, PageContent, PageWrapper } from './../../../shared_components/layout/Page';
-import TopBar from '../../../shared_components/TopBar';
+import TopBar from '../../../shared_components/TopBarWithSearch';
 
 const AccountTripsPlannedComponent = props => {
   return (
