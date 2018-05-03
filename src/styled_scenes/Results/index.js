@@ -47,7 +47,7 @@ const ServicesWrapper = styled.div`
 // MODULE
 export default function ResultsScene(props) {
   const geo = !props.service_data.length
-    ? {lat: 48.856614, lon: 2.3522219000000177}
+    ? {lat: (parseFloat(props.latitude) || 48.856614), lon: (parseFloat(props.longitude) || 2.3522219000000177)}
     : {lat: props.service_data[0].latitude, lon: props.service_data[0].longitude}
   return (
     <Page topPush>
