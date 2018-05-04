@@ -32,7 +32,8 @@ const formatDate = date => moment(date).format('MMMM YYYY');
 
 const UserBasicInfo = ({ user = {} }) => {
   const name = user.fullName || user.username;
-  const dpUrl = (user.profilePicture && user.profilePicture.url) || '"https://dummyimage.com/600x400/000/fff"';
+  // TODO: upload the image on our own infra
+  const dpUrl = (user.profilePicture && user.profilePicture.url) || 'https://imgur.com/download/4iTD3lS';
   const userLevel = user.userLevel || 'New user';
   return (
     <Wrapper>
