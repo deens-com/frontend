@@ -30,7 +30,11 @@ const UserScene = ({
         </Grid.Column>
         <Grid.Column mobile={16} tablet={11} computer={12}>
           <StatusAndBio user={user} />
-          {tripsBooked.length > 0 && <UsersTripsServices items={tripsBooked} title="Where I have been" />}
+          <UsersTripsServices
+            items={tripsBooked}
+            title="Where I have been"
+            emptyText={`${userName} has not traveled yet`}
+          />
           {tripsAndServicesOffered.length > 0 && (
             <UsersTripsServices items={tripsAndServicesOffered} title="My trips and services" />
           )}
