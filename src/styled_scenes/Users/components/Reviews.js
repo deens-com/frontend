@@ -12,18 +12,24 @@ const CarouselWrap = styled.div`
   }
 `;
 
-const Reviews = ({ title, reviews }) => {
+const EmptyText = styled.h4`
+  color: #a3a9b2;
+  font-style: italic;
+`;
+
+const Reviews = ({ title, reviews, emptyText }) => {
   return (
     <SectionWrap>
       <SectionHeader>
         <h3>{title}</h3>
       </SectionHeader>
       <CarouselWrap>
-        {reviews && (
+        {reviews.length > 0 && (
           <Carousel sm_slides_nb={1} md_slides_nb={2} lg_slides_nb={3} xl_slides_nb={4}>
             {reviews.map(r => <GenericReview key={r.objectId} {...r} />)}
           </Carousel>
         )}
+        {reviews.length === 0 && <EmptyText>{emptyText}</EmptyText>}
       </CarouselWrap>
     </SectionWrap>
   );
@@ -31,7 +37,12 @@ const Reviews = ({ title, reviews }) => {
 
 Reviews.propTypes = {
   title: PropTypes.string.isRequired,
+  emptyText: PropTypes.string.isRequired,
   reviews: PropTypes.array,
+};
+
+Reviews.defaultProps = {
+  reviews: [],
 };
 
 export default Reviews;

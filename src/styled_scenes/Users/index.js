@@ -19,6 +19,7 @@ const UserScene = ({
   givenReviews = [],
   receivedReviews = [],
 }) => {
+  const userName = user.username || 'User';
   return (
     <Wrapper>
       <Grid centered columns={2}>
@@ -33,8 +34,16 @@ const UserScene = ({
           {tripsAndServicesOffered.length > 0 && (
             <UsersTripsServices items={tripsAndServicesOffered} title="My trips and services" />
           )}
-          {givenReviews.length > 0 && <Reviews title="Reviews I have given" reviews={givenReviews} />}
-          {receivedReviews.length > 0 && <Reviews title="Reviews I have received" reviews={receivedReviews} />}
+          <Reviews
+            title="Reviews I have given"
+            reviews={givenReviews}
+            emptyText={`${userName} has not given any reviews yet`}
+          />
+          <Reviews
+            title="Reviews I have received"
+            reviews={receivedReviews}
+            emptyText={`${userName} has not received any reviews yet`}
+          />
         </Grid.Column>
       </Grid>
     </Wrapper>
