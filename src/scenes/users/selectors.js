@@ -1,5 +1,7 @@
 export const getUser = state => userName => Object.values(state.UsersReducer.users).find(u => u.username === userName);
 
+export const getUserFetchError = state => state.UsersReducer.userFetchError;
+
 export const getTripsBooked = state => userId =>
   Object.values(state.UsersReducer.tripsBooked).filter(r => r.clientId === userId);
 

@@ -1,6 +1,7 @@
 import { keyBy } from '../../libs/normalizer';
 
 const initialState = {
+  userFetchError: null,
   current_user: {},
   users: {}, // stores all users with userName as the Key
   tripsBooked: {},
@@ -12,6 +13,12 @@ const initialState = {
 
 export default function UsersReducer(state = initialState, action = {}) {
   switch (action.type) {
+    case 'FULL_USER_FETCH_START': {
+      return {
+        ...state,
+        userFetchError: null,
+      };
+    }
     case 'FULL_USER_FETCHED': {
       const { user, tripsBooked, tripsAndServicesOffered, givenReviews, receivedReviews } = action.payload;
       const tripsBookedWithClientId = tripsBooked.map(s => ({ ...s, clientId: user.objectId }));
@@ -22,6 +29,12 @@ export default function UsersReducer(state = initialState, action = {}) {
         tripsAndServicesOffered: { ...state.tripsAndServicesOffered, ...keyBy(tripsAndServicesOffered, 'objectId') },
         givenReviews: { ...state.givenReviews, ...keyBy(givenReviews, 'objectId') },
         receivedReviews: { ...state.receivedReviews, ...keyBy(receivedReviews, 'objectId') },
+      };
+    }
+    case 'FULL_USER_FETCH_ERROR': {
+      return {
+        ...state,
+        userFetchError: action.payload,
       };
     }
     case 'TRIPS_FETCHED':

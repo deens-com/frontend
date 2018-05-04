@@ -14,16 +14,21 @@ const CarouselWrap = styled.div`
   }
 `;
 
+const EmptyText = styled.h4`
+  color: #a3a9b2;
+  font-style: italic;
+`;
+
 const getLink = item => `/${item.type}s/${item.objectId}`;
 
-const UsersTripsServices = ({ title, items }) => {
+const UsersTripsServices = ({ title, items, emptyText }) => {
   return (
     <SectionWrap>
       <SectionHeader>
         <h3>{title}</h3>
       </SectionHeader>
       <CarouselWrap>
-        {items && (
+        {items.length > 0 && (
           <Carousel sm_slides_nb={1} md_slides_nb={2} lg_slides_nb={3} xl_slides_nb={4}>
             {items.map((item, index) => (
               <Link to={getLink(item)} key={item.objectId}>
@@ -32,14 +37,20 @@ const UsersTripsServices = ({ title, items }) => {
             ))}
           </Carousel>
         )}
+        {items.length === 0 && <EmptyText>{emptyText}</EmptyText>}
       </CarouselWrap>
     </SectionWrap>
   );
 };
 
 UsersTripsServices.propTypes = {
-  title: PropTypes.string,
+  title: PropTypes.string.isRequired,
+  emptyText: PropTypes.string,
   items: PropTypes.array,
+};
+
+UsersTripsServices.defaultProps = {
+  items: [],
 };
 
 export default UsersTripsServices;

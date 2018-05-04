@@ -4,6 +4,7 @@ import * as users_actions from './../actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as selectors from '../selectors';
+import NotFound from '../../../styled_scenes/NotFound';
 
 class UsersContainer extends Component {
   constructor(props) {
@@ -16,6 +17,10 @@ class UsersContainer extends Component {
   }
 
   render() {
+    const { userFetchError } = this.props;
+    if (userFetchError && userFetchError.code === 404) {
+      return <NotFound />;
+    }
     const { userName } = this.props.match.params;
     const childProps = {
       user: this.props.getUser(userName),
@@ -33,6 +38,7 @@ class UsersContainer extends Component {
 const mapStateToProps = state => {
   return {
     getUser: selectors.getUser(state),
+    userFetchError: selectors.getUserFetchError(state),
     getTripsBooked: selectors.getTripsBooked(state),
     getTripsAndServicesOffered: selectors.getTripsAndServicesOffered(state),
     getGivenReviews: selectors.getGivenReviews(state),
