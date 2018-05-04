@@ -22,11 +22,23 @@ export const received_reviews_fetched = received_reviews => {
   };
 };
 
+export const fullUserFetchStarted = () => ({ type: 'FULL_USER_FETCH_START' });
 export const fullUserFetched = user => ({ type: 'FULL_USER_FETCHED', payload: user });
+export const fullUserFetchError = ({ code, message }) => ({
+  type: 'FULL_USER_FETCH_ERROR',
+  payload: { code, message },
+});
 
 export const fetchFullUser = userName => dispatch => {
-  Parse.Cloud.run('fetch_profile_data', { userName }).then(response => {
-    const responseData = fetch_helpers.normalizeParseResponseData(response);
-    dispatch(fullUserFetched(responseData));
-  });
+  dispatch(fullUserFetchStarted());
+  Parse.Cloud.run('fetch_profile_data', { userName })
+    .then(response => {
+      const responseData = fetch_helpers.normalizeParseResponseData(response);
+      dispatch(fullUserFetched(responseData));
+    })
+    .catch(parseError => {
+      if (parseError.message && parseError.message.code === 404) {
+        dispatch(fullUserFetchError(parseError.message));
+      }
+    });
 };
