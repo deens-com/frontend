@@ -42,7 +42,7 @@ const Button = styled.button`
   justify-content: center;
   outline: none;
   position: absolute;
-  top: 48%;
+  top: 39%;
   transform: translateY(-50%);
   width: ${props => carouselSizes[props.size].btnSize};
   z-index: 1;
