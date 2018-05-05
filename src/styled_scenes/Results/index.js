@@ -64,7 +64,7 @@ export default function ResultsScene(props) {
           render={() => (
             <MapWrapper>
               <GoogleMapReact
-                defaultCenter={{ lat: geo.lat, lng: geo.lon }}
+                center={{ lat: geo.lat, lng: geo.lon }}
                 defaultZoom={12}
                 bootstrapURLKeys={{
                   key: "AIzaSyDICUW2RF412bnmELi3Y_zCCzHa-w8WnXc"
