@@ -63,6 +63,9 @@ const SummaryWrap = styled.div`
 export default function ReviewCart({ review }) {
   const { reviewer } = review;
   const reviewerProfileLink = `/users/${reviewer.username}`;
+  let reviewerLocation = '';
+  if (reviewer.city && reviewer.country) reviewerLocation = `${reviewer.city}, ${reviewer.country}`;
+  else if (reviewer.city || reviewer.country) reviewerLocation = `${reviewer.city} ${reviewer.country}`.trim();
   return (
     <Wrap>
       <ProfileWrap>
@@ -75,7 +78,7 @@ export default function ReviewCart({ review }) {
           <span>
             <Link to={reviewerProfileLink}>{review.reviewer.username}</Link>
           </span>
-          <span>{review.reviewer.city}, {review.reviewer.country}</span>
+          <span>{reviewerLocation}</span>
         </Profile>
       </ProfileWrap>
       <SummaryWrap>
