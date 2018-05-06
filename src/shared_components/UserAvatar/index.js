@@ -37,7 +37,7 @@ const Avatar = ({ user }) => {
             <Link to={userProfilePageUrl}>
               <WhiteText>{user.username}</WhiteText>
             </Link>
-            <Rating rating={4} />
+            <Rating rating={user.rating} />
           </TextWrapper>
         </Grid.Column>
       </Grid.Row>
