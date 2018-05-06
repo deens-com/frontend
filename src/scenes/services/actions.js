@@ -27,6 +27,7 @@ export const fetch_service = (service_id) => {
   return dispatch => {
     let query = fetch_helpers.build_query("Service");
     query.equalTo("objectId", service_id);
+    query.include('owner');
     query.find().then(
       response => {
 

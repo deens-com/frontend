@@ -194,7 +194,7 @@ export default class TripsScene extends Component {
                 </DatesWrap>
                 <span>
                   <ProfileWrap>
-                    <UserAvatar user={this.props.trip && this.props.trip.owner} />
+                    <UserAvatar user={this.props.trip && this.props.trip.owner} usernameColor="#fff" />
                   </ProfileWrap>
                 </span>
                 <ActionsWrap>

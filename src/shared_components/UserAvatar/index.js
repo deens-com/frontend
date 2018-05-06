@@ -15,10 +15,10 @@ const TextWrapper = styled.div`
 `;
 
 const WhiteText = styled.span`
-  color: #fff;
+  color: ${props => props.usernameColor};
 `;
 
-const Avatar = ({ user }) => {
+const Avatar = ({ user, usernameColor }) => {
   if (!user) return null;
   const dpUrl = (user.profilePicture && user.profilePicture.url) || 'https://imgur.com/download/4iTD3lS';
   const userProfilePageUrl = `users/${user.username}`;
@@ -35,7 +35,7 @@ const Avatar = ({ user }) => {
         <Grid.Column width={13}>
           <TextWrapper>
             <Link to={userProfilePageUrl}>
-              <WhiteText>{user.username}</WhiteText>
+              <WhiteText usernameColor={usernameColor} >{user.username}</WhiteText>
             </Link>
             <Rating rating={user.rating} />
           </TextWrapper>
@@ -47,10 +47,12 @@ const Avatar = ({ user }) => {
 
 Avatar.propTypes = {
   user: PropTypes.object,
+  usernameColor: PropTypes.string,
 };
 
 Avatar.defaultProps = {
   user: null,
+  usernameColor: '#3c434b',
 };
 
 export default Avatar;
