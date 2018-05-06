@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 // COMPONENTS
 import Stars from '../Rating/Stars';
@@ -60,14 +61,20 @@ const SummaryWrap = styled.div`
 
 // MODULE
 export default function ReviewCart({ review }) {
+  const { reviewer } = review;
+  const reviewerProfileLink = `/users/${reviewer.username}`;
   return (
     <Wrap>
       <ProfileWrap>
-        <Avatar>
-          <img src={review.reviewer.profilePicture ? review.reviewer.profilePicture.url : "https://dummyimage.com/60x40/000/fff"} />
-        </Avatar>
+        <Link to={reviewerProfileLink}>
+          <Avatar>
+            <img src={review.reviewer.profilePicture ? review.reviewer.profilePicture.url : "https://dummyimage.com/60x40/000/fff"} />
+          </Avatar>
+        </Link>
         <Profile>
-          <span>{review.reviewer.username}</span>
+          <span>
+            <Link to={reviewerProfileLink}>{review.reviewer.username}</Link>
+          </span>
           <span>{review.reviewer.city}, {review.reviewer.country}</span>
         </Profile>
       </ProfileWrap>
