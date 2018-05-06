@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 // COMPONENTS
 import Stars from '../Rating/Stars';
@@ -59,15 +60,17 @@ const SummaryWrap = styled.div`
 `;
 
 // MODULE
-export default function ReviewCart({ title, rating, message, city, country, name, image }) {
+export default function ReviewCart({ title, rating, message, city, country, name, image, link }) {
   return (
     <Wrap>
       <ProfileWrap>
+        <Link to={link}>
         <Avatar>
           <img src={image || 'https://dummyimage.com/60x40/000/fff'} />
         </Avatar>
+        </Link>
         <Profile>
-          <span>{name}</span>
+        <span><Link to={link}>{name}</Link></span>
           <span>
             {city}
             {country && `, ${country}`}
@@ -92,6 +95,7 @@ ReviewCart.propTypes = {
   country: PropTypes.string,
   name: PropTypes.string.isRequired, // username or service name
   image: PropTypes.string, // service or user image
+  link: PropTypes.string.isRequired,
 };
 
 ReviewCart.defaultProps = {
