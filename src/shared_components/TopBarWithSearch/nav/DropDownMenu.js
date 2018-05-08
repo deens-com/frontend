@@ -66,7 +66,7 @@ export default class DropDownMenu extends Component {
 
   logout = () => {
     Parse.User.logOut().then(() => {
-      this.setState({logged_in: true, current_user: {}});
+      this.setState({logged_in: false, current_user: {}});
       history.push("/");
     });
   }
