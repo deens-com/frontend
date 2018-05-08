@@ -106,7 +106,7 @@ export default function TopBarDesktopNav({ home, language, currency }) {
             {mainNav.map(item => (
               <NavLink
                 key={item.label}
-                activeClassName="is-active"
+                activeclassname="is-active"
                 to={item.href}
               >
                 {item.label}
