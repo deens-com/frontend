@@ -111,7 +111,7 @@ export default class DropDownMenu extends Component {
         <AvatarWrapper>
           <Image src={dpUrl} circular onClick={() => this.navigate_to("/account/profile")} />
         </AvatarWrapper>
-        <Dropdown direction="left" text={this.state.current_user.username}>
+        <Dropdown style={{color: "white"}} direction="left" text={this.state.current_user.username}>
           <Dropdown.Menu>
             <Dropdown.Item icon='plane' text='My Trips' onClick={() => this.navigate_to("/account/trips/planned")} />
             <Dropdown.Item icon='list' text='My Services' onClick={() => this.navigate_to("/account/services")} />

@@ -137,18 +137,6 @@ export default function TopBarDesktopNav(props) {
               options={currencies}
               theme={props.home ? "light" : "inherit"}
             />
-            {/*<Button type="link" theme="white" round size="small" href="/login">
-              Login
-            </Button>
-            <Button
-              type="link"
-              theme="mainFilled"
-              round
-              size="small"
-              href="/register"
-            >
-              Sign up
-            </Button>*/}
             <DropDownMenu />
           </ActionsWrap>
         </Wrap>
