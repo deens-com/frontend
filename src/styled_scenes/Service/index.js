@@ -22,6 +22,7 @@ import Carousel from "../../shared_components/Carousel";
 import Button from "../../shared_components/Button";
 import ImgSlider from "./components/ImgSlider";
 import MapMaker from "../../shared_components/MapMarker";
+import UserAvatar from '../../shared_components/UserAvatar';
 
 // ACTIONS/CONFIG
 import { media, sizes } from "../../libs/styled";
@@ -155,6 +156,14 @@ const ContactBlock = styled.div`
 
   & > div:first-child {
     flex-basis: 75%;
+  }
+`;
+
+const HostBlock = styled.div`
+  display: flex;
+  justify-content: space-between;
+  & > div:last-child {
+    margin-right: -36px;
   }
 `;
 
@@ -314,6 +323,15 @@ export default function FoodDetailScene(props) {
               </GoogleMapReact>
             </MapWrap>
             <Contacts>
+              <HostBlock>
+                <div>
+                  <TextLabel>Host</TextLabel>
+                </div>
+                <div>
+                  <UserAvatar user={props.service.owner} />
+                </div>
+              </HostBlock>
+              <Hr />
               <ContactBlock>
                 <div>
                   <TextLabel>Working hours</TextLabel>

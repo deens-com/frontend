@@ -15,6 +15,7 @@ import Summary from "./components/Summary";
 import MapMaker from "../../shared_components/MapMarker";
 import Button from "../../shared_components/Button";
 import Stars from '../../shared_components/Rating/Stars';
+import UserAvatar from '../../shared_components/UserAvatar';
 
 // ACTIONS/CONFIG
 import { media, sizes } from "../../libs/styled";
@@ -193,14 +194,7 @@ export default class TripsScene extends Component {
                 </DatesWrap>
                 <span>
                   <ProfileWrap>
-                    <Avatar>
-                      <img src={this.props.trip && this.props.trip.owner && this.props.trip.owner.profilePicture ? this.props.trip.owner.profilePicture.url : "https://dummyimage.com/60x40/000/fff"} />
-                    </Avatar>
-                    <Profile>
-                      <span>Published by {this.props.trip && this.props.trip.owner && this.props.trip.owner.username}</span>
-                      <span>{this.props.trip && this.props.trip.owner && this.props.trip.owner.rating}</span>
-                      <span><Stars rating={this.props.trip && this.props.trip.owner && this.props.trip.owner.rating} /></span>
-                    </Profile>
+                    <UserAvatar user={this.props.trip && this.props.trip.owner} usernameColor="#fff" />
                   </ProfileWrap>
                 </span>
                 <ActionsWrap>
