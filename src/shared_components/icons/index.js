@@ -50,7 +50,7 @@ export const DropArrow = SvgWithProps(
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 10 10"
       aria-hidden={ariaHidden}
-      focusable={focusable}
+      focusable={focusable.toString()}
       role={role}
       style={style}
     >
@@ -65,7 +65,7 @@ export const PinIcon = SvgWithProps(
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 20 20"
       aria-hidden={ariaHidden}
-      focusable={focusable}
+      focusable={focusable.toString()}
       role={role}
       style={style}
     >
@@ -110,7 +110,7 @@ export const DateIcon = SvgWithProps(
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 20 20"
       aria-hidden={ariaHidden}
-      focusable={focusable}
+      focusable={focusable.toString()}
       role={role}
       style={style}
     >
@@ -126,7 +126,7 @@ export const PersonIcon = SvgWithProps(
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 20 20"
       aria-hidden={ariaHidden}
-      focusable={focusable}
+      focusable={focusable.toString()}
       role={role}
       style={style}
     >
@@ -141,7 +141,7 @@ export const PlusIcon = SvgWithProps(
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 10 10"
       aria-hidden={ariaHidden}
-      focusable={focusable}
+      focusable={focusable.toString()}
       role={role}
       style={style}
     >
@@ -156,7 +156,7 @@ export const PencilIcon = SvgWithProps(
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 10 10"
       aria-hidden={ariaHidden}
-      focusable={focusable}
+      focusable={focusable.toString()}
       role={role}
       style={style}
     >
@@ -171,7 +171,7 @@ export const FilterIcon = SvgWithProps(
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 10 10"
       aria-hidden={ariaHidden}
-      focusable={focusable}
+      focusable={focusable.toString()}
       role={role}
       style={style}
     >
