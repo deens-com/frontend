@@ -34,7 +34,7 @@ export const ArrowIcon = SvgWithProps(
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 20 20"
       aria-hidden={ariaHidden}
-      focusable={focusable}
+      focusable={focusable.toString()}
       role={role}
       style={style}
     >
@@ -80,7 +80,7 @@ export const MicrophoneIcon = SvgWithProps(
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 20 20"
       aria-hidden={ariaHidden}
-      focusable={focusable}
+      focusable={focusable.toString()}
       role={role}
       style={style}
     >
@@ -95,7 +95,7 @@ export const SearchIcon = SvgWithProps(
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 20 20"
       aria-hidden={ariaHidden}
-      focusable={focusable}
+      focusable={focusable.toString()}
       role={role}
       style={style}
     >
@@ -184,8 +184,8 @@ export const Logo = ({ style }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 263.3 135"
-    aria-hidden={true}
-    focusable={false}
+    aria-hidden="true"
+    focusable="false"
     role="presentation"
     style={style}
   >
