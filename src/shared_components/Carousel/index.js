@@ -42,7 +42,7 @@ const Button = styled.button`
   justify-content: center;
   outline: none;
   position: absolute;
-  top: 39%;
+  top: ${props => props.topPosition || '39%'};
   transform: translateY(-50%);
   width: ${props => carouselSizes[props.size].btnSize};
   z-index: 1;
@@ -84,7 +84,7 @@ const NextButton = props => {
   const buttonStyle = style === undefined ? { fill: "#50a18a" } : style;
 
   return (
-    <ButtonRight position="right" onClick={onClick} size="medium" hideButtonsOnTouchDevice={props.hideButtonsOnTouchDevice}>
+    <ButtonRight topPosition={props.topPosition} position="right" onClick={onClick} size="medium" hideButtonsOnTouchDevice={props.hideButtonsOnTouchDevice}>
       <ArrowIcon style={buttonStyle} />
     </ButtonRight>
   );
@@ -100,7 +100,7 @@ const PrevButton = props => {
   const buttonStyle = style === undefined ? defaultStyle : style;
 
   return (
-    <ButtonLeft position="left" onClick={onClick} size="medium" hideButtonsOnTouchDevice={props.hideButtonsOnTouchDevice}>
+    <ButtonLeft topPosition={props.topPosition} position="left" onClick={onClick} size="medium" hideButtonsOnTouchDevice={props.hideButtonsOnTouchDevice}>
       <ArrowIcon style={buttonStyle} />
     </ButtonLeft>
   );
@@ -158,8 +158,8 @@ const Carousel = props => {
         }
       }
     ],
-    prevArrow: <PrevButton hideButtonsOnTouchDevice={props.hideButtonsOnTouchDevice} />,
-    nextArrow: <NextButton hideButtonsOnTouchDevice={props.hideButtonsOnTouchDevice} />
+    prevArrow: <PrevButton topPosition={props.topPosition} hideButtonsOnTouchDevice={props.hideButtonsOnTouchDevice} />,
+    nextArrow: <NextButton topPosition={props.topPosition} hideButtonsOnTouchDevice={props.hideButtonsOnTouchDevice} />
   };
 
   return <Slider {...settings}>{props.children}</Slider>;
@@ -177,6 +177,7 @@ Carousel.propTypes = {
     PropTypes.node
   ]).isRequired,
   hideButtonsOnTouchDevice: PropTypes.bool,
+  topPosition: PropTypes.string,
 };
 
 // Default props
