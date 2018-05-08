@@ -59,18 +59,8 @@ export default class DropDownMenu extends Component {
     if(user === null){
       this.setState({logged_in: false});
     }else{
-      Parse.User.current().fetch().then(response => {
-        const json_response = fetch_helpers.normalizeParseResponseData(response);
-        user = json_response;
-        if(user === null){
-          console.log("An error occured while fetching the user. You may need to clear application localstorage...");
-        }else{
-          const json_user = fetch_helpers.normalizeParseResponseData(user);
-          this.setState({logged_in: true, current_user: json_user});
-        }
-      }).catch(error => {
-        console.log(error);
-      });
+      const json_user = fetch_helpers.normalizeParseResponseData(user);
+      this.setState({logged_in: true, current_user: json_user});
     }
   }
 
