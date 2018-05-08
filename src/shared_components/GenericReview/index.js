@@ -12,6 +12,8 @@ import Stars from '../Rating/Stars';
 // STYLES
 const Wrap = styled.div`
   margin-bottom: 25px;
+  padding-left: 10px;
+  padding-right: 10px;
 `;
 
 const ProfileWrap = styled.div`

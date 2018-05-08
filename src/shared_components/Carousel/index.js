@@ -42,7 +42,7 @@ const Button = styled.button`
   justify-content: center;
   outline: none;
   position: absolute;
-  top: 48%;
+  top: 39%;
   transform: translateY(-50%);
   width: ${props => carouselSizes[props.size].btnSize};
   z-index: 1;
@@ -63,6 +63,9 @@ const ButtonLeft = Button.extend`
   svg {
     transform: rotate(180deg);
   }
+  @media (pointer: coarse) {
+    display: ${props => props.hideButtonsOnTouchDevice ? 'none' : 'flex'}
+  }
 `;
 
 const ButtonRight = Button.extend`
@@ -71,6 +74,9 @@ const ButtonRight = Button.extend`
   ${media.minLarge} {
     right: ${props => (props.size === "small" ? "-5px" : "-25px")};
   }
+  @media (pointer: coarse) {
+    display: ${props => props.hideButtonsOnTouchDevice ? 'none' : 'flex'}
+  }
 `;
 
 const NextButton = props => {
@@ -78,7 +84,7 @@ const NextButton = props => {
   const buttonStyle = style === undefined ? { fill: "#50a18a" } : style;
 
   return (
-    <ButtonRight position="right" onClick={onClick} size="medium">
+    <ButtonRight position="right" onClick={onClick} size="medium" hideButtonsOnTouchDevice={props.hideButtonsOnTouchDevice}>
       <ArrowIcon style={buttonStyle} />
     </ButtonRight>
   );
@@ -94,7 +100,7 @@ const PrevButton = props => {
   const buttonStyle = style === undefined ? defaultStyle : style;
 
   return (
-    <ButtonLeft position="left" onClick={onClick} size="medium">
+    <ButtonLeft position="left" onClick={onClick} size="medium" hideButtonsOnTouchDevice={props.hideButtonsOnTouchDevice}>
       <ArrowIcon style={buttonStyle} />
     </ButtonLeft>
   );
@@ -152,8 +158,8 @@ const Carousel = props => {
         }
       }
     ],
-    prevArrow: <PrevButton />,
-    nextArrow: <NextButton />
+    prevArrow: <PrevButton hideButtonsOnTouchDevice={props.hideButtonsOnTouchDevice} />,
+    nextArrow: <NextButton hideButtonsOnTouchDevice={props.hideButtonsOnTouchDevice} />
   };
 
   return <Slider {...settings}>{props.children}</Slider>;
@@ -169,14 +175,16 @@ Carousel.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node
-  ]).isRequired
+  ]).isRequired,
+  hideButtonsOnTouchDevice: PropTypes.bool,
 };
 
 // Default props
 Carousel.defaultProps = {
   size: "medium",
   shadowInside: false,
-  withLoader: false
+  withLoader: false,
+  hideButtonsOnTouchDevice: false,
 };
 
 export default Carousel;
