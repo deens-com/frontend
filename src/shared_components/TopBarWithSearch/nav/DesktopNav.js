@@ -9,7 +9,7 @@ import Media from "react-media";
 import Button from "../../../shared_components/Button";
 import Select from "../../../shared_components/Form/controls/Select";
 import FlagSelect from "../../../shared_components/FlagSelect";
-
+import DropDownMenu from "./DropDownMenu";
 // ACTIONS/CONFIG
 import { sizes } from "../../../libs/styled";
 import { mainNav, languages, currencies } from "../../../data/nav";
@@ -137,7 +137,7 @@ export default function TopBarDesktopNav(props) {
               options={currencies}
               theme={props.home ? "light" : "inherit"}
             />
-            <Button type="link" theme="white" round size="small" href="/login">
+            {/*<Button type="link" theme="white" round size="small" href="/login">
               Login
             </Button>
             <Button
@@ -148,7 +148,8 @@ export default function TopBarDesktopNav(props) {
               href="/register"
             >
               Sign up
-            </Button>
+            </Button>*/}
+            <DropDownMenu />
           </ActionsWrap>
         </Wrap>
       )}
