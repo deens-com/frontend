@@ -65,7 +65,7 @@ export default function TripCart({ item, withTooltip, href }) {
         />
         <ContentWrap>
           <Title>
-            <h3>{item.title}</h3>
+            {item.title}
           </Title>
           <Excerpt>{item.excerpt}</Excerpt>
           <Rating
