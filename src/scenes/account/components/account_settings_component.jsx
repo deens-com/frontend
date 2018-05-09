@@ -19,6 +19,7 @@ const AccountSettingsComponent = props => {
 
 AccountSettingsComponent.propTypes = {
   user: PropTypes.object,
+  hasMetaMask: PropTypes.func.isRequired,
 };
 
 export default AccountSettingsComponent;

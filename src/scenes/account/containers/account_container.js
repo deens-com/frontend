@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import AccountProfileComponent from "./../components/account_profile_component";
 import AccountTripsComponent from "./../components/account_trips_component";
 import AccountServicesComponent from "./../components/account_services_component";
-import AccountSettingsComponent from "./../components/account_settings_component";
+import AccountSettingsContainer from "./AccountSettingsContainer";
 import * as account_actions from "./../actions";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -35,7 +35,7 @@ class AccountContainer extends Component {
         />
         <Route
           path={process.env.PUBLIC_URL + "/account/settings"}
-          render={(props)=><AccountSettingsComponent {...props} user_profile={this.props.user_profile} />}
+          render={(props)=><AccountSettingsContainer {...props} user_profile={this.props.user_profile} />}
         />
       </div>
     );
