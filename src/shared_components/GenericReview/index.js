@@ -24,16 +24,16 @@ const ProfileWrap = styled.div`
 
 const Avatar = styled.div`
   display: inline-block;
-  width: 30px;
-  height: 30px;
-  border-radius: 30px;
+  width: 45px;
+  height: 45px;
+  border-radius: 45px;
   overflow: hidden;
   border: 2px solid #d7dbdf;
   margin-right: 15px;
 
   img {
-    width: 30px;
-    height: 30px;
+    width: 45px;
+    height: 45px;
   }
 `;
 
