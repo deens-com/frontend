@@ -47,7 +47,7 @@ export const fetch_user_profile = () => dispatch => {
 };
 
 
-export const fetch_planned_trips = (owner_id) => {
+export const fetch_user_trips = (owner_id, trip_state) => {
   return dispatch => {
     let user_query = fetch_helpers.build_query("User");
     user_query.equalTo("objectId", owner_id)
@@ -55,7 +55,11 @@ export const fetch_planned_trips = (owner_id) => {
       let trip_query = fetch_helpers.build_query("Trip");
       trip_query.equalTo("owner", user);
       const moment_now = new Date();
-      trip_query.greaterThan("beginDate", moment_now);
+      if(trip_state === "completed"){
+        trip_query.lessThan("endDate", moment_now);
+      }else{
+        trip_query.greaterThan("beginDate", moment_now);
+      }
       trip_query.find().then(
         trips_response => {
           trips_response.map(trip => {
@@ -74,7 +78,11 @@ export const fetch_planned_trips = (owner_id) => {
                   formatted_trip.services = formatted_trip.services.concat(formatted_service);
                 })
               }
-              dispatch(planned_trips_fetched({ planned_trips: formatted_trip }));
+              if(trip_state === "completed"){
+                dispatch(completed_trips_fetched({ completed_trips: formatted_trip }));
+              }else{
+                dispatch(planned_trips_fetched({ planned_trips: formatted_trip }));
+              }
             })
           })
         },

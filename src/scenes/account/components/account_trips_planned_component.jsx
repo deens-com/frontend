@@ -13,9 +13,19 @@ class AccountTripsPlannedComponent extends Component{
     super(props);
   }
 
+  componentDidMount(){
+    if(this.props.user_profile){
+      if(!this.props.planned_trips.length){
+        this.props.fetch_user_trips(this.props.user_profile.objectId, "planned");
+      }
+    }
+  }
+
   componentWillUpdate(next_props){
     if(this.did_user_props_changed(this.props, next_props)){
-      this.props.fetch_planned_trips(next_props.user_profile.objectId);
+      if(!this.props.planned_trips.length){
+        this.props.fetch_user_trips(next_props.user_profile.objectId, "planned");
+      }
     }
   }
 
@@ -31,7 +41,11 @@ class AccountTripsPlannedComponent extends Component{
         <Page topPush>
           <TopBar fixed withPadding />
           <PageContent padding="24px">
-            <AccountTripsPlannedScene {...this.props} user_profile={this.props.user_profile} planned_trips={this.props.planned_trips} />
+            <AccountTripsPlannedScene
+              {...this.props}
+              user_profile={this.props.user_profile}
+              planned_trips={this.props.planned_trips}
+              />
           </PageContent>
         </Page>
       </section>

@@ -19,7 +19,7 @@ export default function AccountReducer(state = initialState, action = {}) {
     case 'COMPLETED_TRIPS_FETCHED':
       return {
         ...state,
-        completed_trips: action.payload.completed_trips
+        completed_trips: [...state.completed_trips, action.payload.completed_trips]
       }
     default:
       return state;

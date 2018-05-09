@@ -5,6 +5,8 @@ import { SectionWrap } from './../../../../shared_components/layout/Page';
 import UserBasicInfo from './../../components/UserBasicInfo';
 import {Link} from "react-router-dom";
 
+import TripSectionComponent from "./../shared/TripSectionComponent";
+
 const AccountTripsScene = props => {
   return (
     <Grid centered columns={2}>
@@ -14,9 +16,14 @@ const AccountTripsScene = props => {
         </SectionWrap>
       </Grid.Column>
       <Grid.Column mobile={16} tablet={11} computer={12}>
-        <h2>My Trips</h2>
-        <Link to="/account/trips/planned">Planned</Link>&nbsp; | &nbsp;
+        <h1>My Trips</h1>
+        <Link to="/account/trips/planned" style={{borderBottom: "2px solid #50a189"}}>Planned</Link>&nbsp; | &nbsp;
         <Link to="/account/trips/completed">Completed</Link>
+
+        <br/><br/>
+
+        <TripSectionComponent trips={props.planned_trips} />
+
       </Grid.Column>
     </Grid>
   );
