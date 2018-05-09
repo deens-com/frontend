@@ -18,7 +18,7 @@ const TripSectionComponent = props => {
         <SectionContent key={uuid()}>
         <Divider/>
           <h2>{trip.title}</h2>
-          <p style={{color: "#b3a7a7"}}>{moment(trip.beginDate).format('L')} - {moment(trip.endDate).format('L')}</p>
+          <p style={{color: "#b3a7a7"}}>{moment(trip.beginDate.iso).format('L')} - {moment(trip.endDate.iso).format('L')}</p>
           <Label color="green">
             {trip.status}
           </Label>
