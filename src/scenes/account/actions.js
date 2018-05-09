@@ -1,6 +1,7 @@
 import Parse from "parse";
 import fetch_helpers from "./../../libs/fetch_helpers";
 import history from "./../../main/history";
+import Web3 from 'web3';
 
 export const user_profile_fetched = user_profile => {
   return {
@@ -93,4 +94,31 @@ export const fetch_user_trips = (owner_id, trip_state) => {
       );
     })
   };
+};
+
+// NOTE: for now it always signs "please"
+export const signData = () => async dispatch => {
+  const provider = Web3.givenProvider || (window.web3 && window.web3.currentProvider);
+  if (!provider) {
+    console.warn('No provider found');
+    return;
+  }
+  const data = 'please';
+  const web3Instance = new Web3(provider);
+  window.web3Instance = web3Instance;
+  const publicKey = await web3Instance.eth.getCoinbase();
+  const hexData = web3Instance.utils.utf8ToHex(data);
+  const signedData = await web3Instance.eth.personal.sign(hexData, publicKey);
+  const currentUser = await Parse.User.current().fetch();
+  // TODO: create a function that only this user should be able to call
+  // that should verify the signed data and then save the authData & publicKey
+  // currentUser.set('authData', {
+  //   blockchainauth: {
+  //     signature: signedData,
+  //     publicKey,
+  //     method: 'web3',
+  //   },
+  // });
+  // currentUser.set('publicKey', publicKey);
+  // currentUser.save();
 };

@@ -16,7 +16,7 @@ const AccountSettingsScene = props => {
       </Grid.Column>
       <Grid.Column mobile={16} tablet={11} computer={12}>
         <h2>Settings Scene</h2>
-        <Button color="orange" inverted={!isMetaMaskInstalled} disabled={!isMetaMaskInstalled}>
+        <Button color="orange" inverted={!isMetaMaskInstalled} disabled={!isMetaMaskInstalled} onClick={props.signData}>
           Login With MetaMask
         </Button>
         {!isMetaMaskInstalled && (
@@ -33,6 +33,7 @@ AccountSettingsScene.propTypes = {
   user: PropTypes.object,
   showMetaMaskLogin: PropTypes.bool,
   hasMetaMask: PropTypes.func.isRequired,
+  signData: PropTypes.func.isRequired,
 };
 
 AccountSettingsScene.defaultProps = {
