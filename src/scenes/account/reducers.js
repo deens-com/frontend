@@ -1,5 +1,7 @@
 const initialState = {
-  user_profile: {}
+  user_profile: {},
+  planned_trips: [],
+  completed_trips: []
 };
 
 export default function AccountReducer(state = initialState, action = {}) {
@@ -9,6 +11,16 @@ export default function AccountReducer(state = initialState, action = {}) {
         ...state,
         user_profile: action.payload.user_profile
       };
+    case 'PLANNED_TRIPS_FETCHED':
+      return {
+        ...state,
+        planned_trips: action.payload.planned_trips
+      }
+    case 'COMPLETED_TRIPS_FETCHED':
+      return {
+        ...state,
+        completed_trips: action.payload.completed_trips
+      }
     default:
       return state;
   }
