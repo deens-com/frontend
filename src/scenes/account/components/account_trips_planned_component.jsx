@@ -31,7 +31,7 @@ class AccountTripsPlannedComponent extends Component{
         <Page topPush>
           <TopBar fixed withPadding />
           <PageContent padding="24px">
-            <AccountTripsPlannedScene {...this.props} user_profile={this.props.user_profile} />
+            <AccountTripsPlannedScene {...this.props} user_profile={this.props.user_profile} planned_trips={this.props.planned_trips} />
           </PageContent>
         </Page>
       </section>

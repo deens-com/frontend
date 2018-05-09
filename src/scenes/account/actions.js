@@ -49,20 +49,40 @@ export const fetch_user_profile = () => dispatch => {
 
 export const fetch_planned_trips = (owner_id) => {
   return dispatch => {
-    let query = fetch_helpers.build_query("Trip");
-    query.equalTo("owner", owner_id);
-    const moment_now = new Date();
-    query.greaterThan("beginDate", moment_now);
-    query.find().then(
-      response => {
-        const json_trips = fetch_helpers.normalizeParseResponseData(response);
-        const trips = fetch_helpers.mapServiceObjects(json_trips);
-        dispatch(planned_trips_fetched({ planned_trips: trips }));
-      },
-      error => {
-        // TODO dispatch the error to error handler
-        console.log(error);
-      }
-    );
+    let user_query = fetch_helpers.build_query("User");
+    user_query.equalTo("objectId", owner_id)
+    user_query.first().then(user => {
+      let trip_query = fetch_helpers.build_query("Trip");
+      trip_query.equalTo("owner", user);
+      const moment_now = new Date();
+      trip_query.greaterThan("beginDate", moment_now);
+      trip_query.find().then(
+        trips_response => {
+          trips_response.map(trip => {
+            let trip_org_query = fetch_helpers.build_query("TripOrganization");
+            trip_org_query.include("service");
+            trip_org_query.equalTo("trip", trip);
+            const json_trip = fetch_helpers.normalizeParseResponseData([trip]);
+            const formatted_trip = fetch_helpers.mapServiceObjects(json_trip)[0];
+            formatted_trip.services = [];
+            trip_org_query.find().then(trip_org => {
+              const json_trip_org = fetch_helpers.normalizeParseResponseData(trip_org);
+              if(json_trip_org.length){
+                json_trip_org.forEach(t_o => {
+                  const t_o_service = fetch_helpers.normalizeParseResponseData(t_o.service);
+                  const formatted_service = fetch_helpers.mapServiceObjects([t_o_service])[0];
+                  formatted_trip.services = formatted_trip.services.concat(formatted_service);
+                })
+              }
+              dispatch(planned_trips_fetched({ planned_trips: formatted_trip }));
+            })
+          })
+        },
+        error => {
+          // TODO dispatch the error to error handler
+          console.log(error);
+        }
+      );
+    })
   };
 };
