@@ -14,47 +14,50 @@ import Users from "./../scenes/users/users";
 import Services from "./../scenes/services/services";
 import Registrations from "./../scenes/registrations/registrations";
 import Notfound from "./../styled_scenes/NotFound";
+import ScrollToTop from "./middlewares/ScrollToTop";
 
 const App = () => {
   return (
     <Provider store={store}>
       <HashRouter>
-        <Switch>
-          <Route
-            exact
-            path={process.env.PUBLIC_URL + "/"}
-            component={withSegmentTracker(Home)}
-          />
-          <Route
-            path={process.env.PUBLIC_URL + "/login"}
-            component={withSegmentTracker(Sessions)}
-          />
-          <Route
-            path={process.env.PUBLIC_URL + "/register"}
-            component={withSegmentTracker(Registrations)}
-          />
-          <Route
-            path={process.env.PUBLIC_URL + "/results"}
-            component={withSegmentTracker(Results)}
-          />
-          <Route
-            path={process.env.PUBLIC_URL + "/services/:id"}
-            component={withSegmentTracker(Services)}
-          />
-          <Route
-            path={process.env.PUBLIC_URL + "/trips/:id"}
-            component={withSegmentTracker(Trips)}
-          />
-          <Route
-            path={process.env.PUBLIC_URL + "/users/:userName"}
-            component={Users}
-          />
-          <Route
-            path={process.env.PUBLIC_URL + "/account"}
-            component={Account}
-          />
-          <Route component={Notfound} />
-        </Switch>
+        <ScrollToTop>
+          <Switch>
+            <Route
+              exact
+              path={process.env.PUBLIC_URL + "/"}
+              component={withSegmentTracker(Home)}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/login"}
+              component={withSegmentTracker(Sessions)}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/register"}
+              component={withSegmentTracker(Registrations)}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/results"}
+              component={withSegmentTracker(Results)}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/services/:id"}
+              component={withSegmentTracker(Services)}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/trips/:id"}
+              component={withSegmentTracker(Trips)}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/users/:userName"}
+              component={Users}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/account"}
+              component={Account}
+            />
+            <Route component={Notfound} />
+          </Switch>
+        </ScrollToTop>
       </HashRouter>
     </Provider>
   );
