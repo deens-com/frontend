@@ -226,6 +226,11 @@ const ActionWrap = styled.div`
   }
 `;
 
+const RightAlignedText = styled.span`
+  display: block;
+  text-align: right;
+`;
+
 // MODULE
 export default function FoodDetailScene(props) {
   let service_latitude = parseFloat(props.service.latitude) || 1.0;
@@ -346,7 +351,7 @@ export default function FoodDetailScene(props) {
                     <ContactBlock>
                       <div>
                         <TextLabel>Phone</TextLabel>
-                        <span>{props.service.phoneNumber}</span>
+                        <RightAlignedText>{props.service.phoneNumber}</RightAlignedText>
                       </div>
                     </ContactBlock>
                     <Hr />
@@ -361,7 +366,7 @@ export default function FoodDetailScene(props) {
                     <ContactBlock>
                       <div>
                         <TextLabel>Homepage</TextLabel>
-                        <a href={props.service.websiteUrl}><span>{props.service.websiteUrl}</span></a>
+                        <a href={props.service.websiteUrl}><RightAlignedText>{props.service.websiteUrl}</RightAlignedText></a>
                       </div>
                     </ContactBlock>
                     <Hr />
