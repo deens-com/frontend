@@ -58,8 +58,10 @@ const UserBasicInfo = ({ user_profile: user = {}, match }) => {
     <Card>
       <Wrapper>
         <CenteredDiv>
-          <CircularProfilePic src={dpUrl} />
-          {name && <NameDiv>{name}</NameDiv>}
+          <Link to={"/users/" + user.username}>
+            <CircularProfilePic src={dpUrl} />
+            {name && <NameDiv>{name}</NameDiv>}
+          </Link>
         </CenteredDiv>
 
         <Grid columns={2} divided>
