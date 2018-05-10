@@ -10,6 +10,30 @@ import LocationCart from "./../../../../shared_components/Carts/Location";
 import moment from "moment";
 import uuid from 'uuid/v1';
 import { Divider, Label } from 'semantic-ui-react';
+import styled from "styled-components";
+
+const get_label_color = (status) => {
+  switch(status){
+    case "public":
+      return "green";
+      break;
+    case "private":
+      return "orange";
+      break;
+    case "shared":
+      return "blue";
+      break;
+    default:
+      break;
+  }
+}
+
+const CarouselWrapper = styled.div`
+  .slick-track{
+    margin-left: 0px;
+  }
+`;
+
 
 const TripSectionComponent = props => {
   return (
@@ -17,26 +41,30 @@ const TripSectionComponent = props => {
       {props.trips.map((trip, index) => (
         <SectionContent key={uuid()}>
         <Divider/>
-          <h2>{trip.title}</h2>
+          <Link to={"/trips/" + trip.objectId}>
+            <h2>{trip.title}</h2>
+          </Link>
           <p style={{color: "#b3a7a7"}}>{moment(trip.beginDate.iso).format('L')} - {moment(trip.endDate.iso).format('L')}</p>
-          <Label color="green">
+          <Label color={get_label_color(trip.status)}>
             {trip.status}
           </Label>
           <br/><br/>
-          <Carousel
-            sm_slides_nb={1}
-            md_slides_nb={2}
-            lg_slides_nb={4}
-            xl_slides_nb={4}>
-            {trip.services.map((item, index) => (
-              <Link to={"/services/" + item.objectId} key={uuid()}>
-                <LocationCart
-                  item={item}
-                  index={index}
-                  />
-              </Link>
-            ))}
-          </Carousel>
+          <CarouselWrapper>
+            <Carousel
+              sm_slides_nb={1}
+              md_slides_nb={2}
+              lg_slides_nb={4}
+              xl_slides_nb={4}>
+              {trip.services.map((item, index) => (
+                <Link to={"/services/" + item.objectId} key={uuid()}>
+                  <LocationCart
+                    item={item}
+                    index={index}
+                    />
+                </Link>
+              ))}
+            </Carousel>
+          </CarouselWrapper>
           <br/>
         </SectionContent>
       ))}

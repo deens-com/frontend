@@ -38,6 +38,10 @@ class AccountTripsCompletedComponent extends Component{
   }
 
   render(){
+    let ordered_completed_trips = this.props.completed_trips;
+    ordered_completed_trips = ordered_completed_trips.sort(function(a,b){
+      return new Date(b.endDate.iso) - new Date(a.endDate.iso);
+    });
     return (
       <section>
         <Page topPush>
@@ -46,7 +50,7 @@ class AccountTripsCompletedComponent extends Component{
             <AccountTripsCompletedScene
               {...this.props}
               user_profile={this.props.user_profile}
-              completed_trips={this.props.completed_trips}
+              completed_trips={ordered_completed_trips}
               />
           </PageContent>
         </Page>

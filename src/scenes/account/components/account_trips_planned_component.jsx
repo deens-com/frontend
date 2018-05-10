@@ -36,6 +36,10 @@ class AccountTripsPlannedComponent extends Component{
   }
 
   render(){
+    let ordered_planned_trips = this.props.planned_trips;
+    ordered_planned_trips = ordered_planned_trips.sort(function(a,b){
+      return new Date(a.endDate.iso) - new Date(b.endDate.iso);
+    });
     return (
       <section>
         <Page topPush>
@@ -44,7 +48,7 @@ class AccountTripsPlannedComponent extends Component{
             <AccountTripsPlannedScene
               {...this.props}
               user_profile={this.props.user_profile}
-              planned_trips={this.props.planned_trips}
+              planned_trips={ordered_planned_trips}
               />
           </PageContent>
         </Page>
