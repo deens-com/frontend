@@ -240,12 +240,11 @@ export default function FoodDetailScene(props) {
         />
         <DetailWrapper>
           <TagWrap>
-            {props.service && props.service.tags && props.service.tags.map(tag => <Tag key={tag.label} item={tag} />)}
+            {props.service && props.service.tags && props.service.tags.map(tag => (<Link to={"/results?tags=" + tag.label}><Tag key={tag.label} item={tag} /></Link>))}
           </TagWrap>
           <HeaderWrap>
             <h2>{props.service.title}</h2>
             <p>{props.service.description}</p>
-            <Link to="#">More</Link>
           </HeaderWrap>
           <DataWrap>
             <DataBlock>
@@ -340,22 +339,36 @@ export default function FoodDetailScene(props) {
                 <Link to="#">Schedule</Link>
               </ContactBlock>
               <Hr />
-              <ContactBlock>
-                <div>
-                  <TextLabel>Phone</TextLabel>
-                  <span>{props.service.phoneNumber}</span>
-                </div>
-                <Link to="#">Call</Link>
-              </ContactBlock>
-              <Hr />
-              <ContactBlock>
-                <div>
-                  <TextLabel>Homepage</TextLabel>
-                  <span>{props.service.websiteUrl}</span>
-                </div>
-                <Link to="#">Browse</Link>
-              </ContactBlock>
-              <Hr />
+              {
+                props.service.phoneNumber
+                  &&
+                ( <div>
+                    <ContactBlock>
+                      <div>
+                        <TextLabel>Phone</TextLabel>
+                        <span>{props.service.phoneNumber}</span>
+                      </div>
+                    </ContactBlock>
+                    <Hr />
+                  </div>
+                )
+              }
+
+              {
+                props.service.websiteUrl
+                  &&
+                ( <div>
+                    <ContactBlock>
+                      <div>
+                        <TextLabel>Homepage</TextLabel>
+                        <a href={props.service.websiteUrl}><span>{props.service.websiteUrl}</span></a>
+                      </div>
+                    </ContactBlock>
+                    <Hr />
+                  </div>
+                )
+              }
+
             </Contacts>
           </ContactWrap>
           {
@@ -397,6 +410,12 @@ export default function FoodDetailScene(props) {
             </TripsWrap>
           }
           <div>
+            {props.reviews.length
+              ?
+              <h2>Reviews</h2>
+              :
+              null
+            }
             {props.reviews.map(review => (
               <Review key={review.objectId} review={review} />
             ))}
