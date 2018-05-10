@@ -74,8 +74,8 @@ const DayButtons = styled.div`
 
 // MODULE
 export default class TripDay extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       expanded: false,
       opening: false,
