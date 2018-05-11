@@ -106,10 +106,20 @@ export const signData = () => async dispatch => {
   const data = 'please';
   const web3Instance = new Web3(provider);
   window.web3Instance = web3Instance;
-  const publicKey = await web3Instance.eth.getCoinbase();
-  const hexData = web3Instance.utils.utf8ToHex(data);
-  const signedData = await web3Instance.eth.personal.sign(hexData, publicKey);
-  const currentUser = await Parse.User.current().fetch();
-  const userObj = await Parse.Cloud.run('storePublicAddress', { signature: signedData });
-  dispatch(user_profile_fetched({ user_profile: fetch_helpers.normalizeParseResponseData(userObj) }));
+  const accounts = await web3Instance.eth.getAccounts();
+  if (!accounts || !accounts.length) {
+    console.warn("No accounts found, unlock MetaMask if it's locked");
+    return;
+  }
+
+  try {
+    const publicKey = await web3Instance.eth.getCoinbase();
+    const hexData = web3Instance.utils.utf8ToHex(data);
+    const signedData = await web3Instance.eth.personal.sign(hexData, publicKey);
+    const currentUser = await Parse.User.current().fetch();
+    const userObj = await Parse.Cloud.run('storePublicAddress', { signature: signedData });
+    dispatch(user_profile_fetched({ user_profile: fetch_helpers.normalizeParseResponseData(userObj) }));
+  } catch (error) {
+    console.error(error);
+  }
 };
