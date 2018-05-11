@@ -110,17 +110,6 @@ export const signData = () => async dispatch => {
   const hexData = web3Instance.utils.utf8ToHex(data);
   const signedData = await web3Instance.eth.personal.sign(hexData, publicKey);
   const currentUser = await Parse.User.current().fetch();
-  Parse.Cloud.run('storePublicAddress', { signature: signedData }).then(console.log).catch(console.error);
-  console.log('signedData', signedData);
-  // TODO: create a function that only this user should be able to call
-  // that should verify the signed data and then save the authData & publicKey
-  // currentUser.set('authData', {
-  //   blockchainauth: {
-  //     signature: signedData,
-  //     publicKey,
-  //     method: 'web3',
-  //   },
-  // });
-  // currentUser.set('publicKey', publicKey);
-  // currentUser.save();
+  const userObj = await Parse.Cloud.run('storePublicAddress', { signature: signedData });
+  dispatch(user_profile_fetched({ user_profile: fetch_helpers.normalizeParseResponseData(userObj) }));
 };
