@@ -128,17 +128,17 @@ export default function FullCart({ data, toggleExpansion }) {
   return (
     <Wrap>
       <LeftCol>
-        <Thumb url={data.img} tripCount={data.partOf} withTooltip />
+        <Thumb url={data.mainPicture.url} tripCount={data.partOf} withTooltip />
       </LeftCol>
       <ContentCol>
         <CenterCol>
           <HeaderRow>
-            <Category category={data.category} />
+            <Category category={data.type} />
             <Description description={data.description} />
           </HeaderRow>
           <ContentRow>
-            <Detail block icon="clock" text={data.time} />
-            <Detail block icon="pin" text={data.address} />
+            <Detail block icon="clock" text={data.openingTime} />
+            <Detail block icon="pin" text={data.city + ", " + data.country} />
             <Detail block icon="phone" text={data.phone} />
           </ContentRow>
         </CenterCol>
@@ -155,7 +155,7 @@ export default function FullCart({ data, toggleExpansion }) {
               <TrashIcon />
             </Button>
           </DeleteButton>
-          <PriceTag price={data.price} currency={data.currency} isExpanded />
+          <PriceTag price={data.pricePerSession} currency={data.currency} isExpanded />
           <Button
             type="button"
             onClick={toggleExpansion}

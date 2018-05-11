@@ -65,12 +65,12 @@ export default function Exceprt({ data, toggleExpansion }) {
     <ContentWrap>
       <CartRow>
         <LeftCol>
-          <Category category={data.category} />
+          <Category category={data.type} />
           <Description description={data.description} type="inline-block" />
-          <Detail inline icon="clock" text={data.time} />
+          <Detail inline icon="clock" text={data.openingTime} />
         </LeftCol>
         <RightCol>
-          <Price price={data.price} currency={data.currency} />
+          <Price price={data.pricePerSession} currency={data.currency} />
           <Button
             type="button"
             onClick={toggleExpansion}

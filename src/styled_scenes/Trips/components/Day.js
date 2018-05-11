@@ -163,7 +163,7 @@ export default class TripDay extends Component {
           </DayButtons>
         </Header>
         <div>
-          {day.items.map(item => (
+          {day.services.map(item => (
             <div key={item.description}>
               <DetailCart
                 item={item}

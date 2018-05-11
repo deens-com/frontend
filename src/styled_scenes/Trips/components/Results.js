@@ -33,7 +33,7 @@ const Wrap = styled.div`
 `;
 
 // MODULE
-export default function Results({ showDetails, tripData }) {
+export default function Results({ showDetails, tripData = [] }) {
   // console.log(Button);
   return (
     <Wrap>
@@ -55,7 +55,7 @@ export default function Results({ showDetails, tripData }) {
         </Header>
       )}
       {showDetails ? (
-        trip.map((day, index) => <Day key={day.date} day={day} index={index} />)
+        tripData.map((day, index) => <Day key={day.day} day={day} index={index} />)
       ) : (
         <Row>
           {tripsData.map(item => (

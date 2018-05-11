@@ -17,8 +17,6 @@ export const fetch_trip = (trip_id) => {
 
       const json_trip = fetch_helpers.normalizeParseResponseData(trip);
       let formatted_trip = fetch_helpers.mapServiceObjects([json_trip])[0];
-      //formatted_trip.services = [];
-
 
       formatted_trip.organization = [];
 
@@ -32,18 +30,30 @@ export const fetch_trip = (trip_id) => {
         let trip_organization = [];
 
         json_trip_org.forEach(trip_org => {
-          //formatted_trip.services = formatted_trip.services.concat(trip_org.service);
+          let t_o_service = trip_org.service;
+          t_o_service.position = trip_org.position;
           let trip_item = {
             day: trip_org.day,
-            position: trip_org.position,
-            service: trip_org.service
+            service: t_o_service
           }
           trip_organization = trip_organization.concat(trip_item);
-          //formatted_trip.organization = formatted_trip.organization.concat(trip_item);
         })
 
-        console.log(trip_organization);
-        
+        trip_organization.sort((a,b) => a.day - b.day);
+        trip_organization = groupBy(trip_organization, (t_o) => t_o.day);
+        trip_organization = Object.values(trip_organization);
+
+        trip_organization = trip_organization.map((t_o) => {
+          const day = t_o[0].day;
+          const services = t_o.map(item => item.service);
+          return {
+            day: day,
+            services: services
+          }
+        })
+        //console.log(trip_organization);
+        formatted_trip.organization = trip_organization;
+
         dispatch(trip_fetched({ trip: formatted_trip }));
       })
 
@@ -51,3 +61,8 @@ export const fetch_trip = (trip_id) => {
 
   };
 };
+
+/* https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_groupby */
+function groupBy(xs, f) {
+  return xs.reduce((r, v, i, a, k = f(v)) => ((r[k] || (r[k] = [])).push(v), r), {});
+}

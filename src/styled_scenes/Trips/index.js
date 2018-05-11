@@ -260,7 +260,7 @@ export default class TripsScene extends Component {
                 onValueChange={this.onValueChange}
                 state={this.state}
               />
-              <Results showDetails={this.state.details} tripData={this.props.trip} />
+              <Results showDetails={this.state.details} tripData={this.props.trip.organization} />
               <Hr />
               <Summary data={trip} />
             </TripWrapper>
