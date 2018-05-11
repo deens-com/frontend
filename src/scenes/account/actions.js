@@ -97,7 +97,7 @@ export const fetch_user_trips = (owner_id, trip_state) => {
 };
 
 // NOTE: for now it always signs "please"
-export const signData = () => async dispatch => {
+export const signData = (noAccountsCallback) => async dispatch => {
   const provider = Web3.givenProvider || (window.web3 && window.web3.currentProvider);
   if (!provider) {
     console.warn('No provider found');
@@ -108,7 +108,7 @@ export const signData = () => async dispatch => {
   window.web3Instance = web3Instance;
   const accounts = await web3Instance.eth.getAccounts();
   if (!accounts || !accounts.length) {
-    console.warn("No accounts found, unlock MetaMask if it's locked");
+    if (noAccountsCallback) noAccountsCallback();
     return;
   }
 

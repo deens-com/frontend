@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Button, Message, Icon } from 'semantic-ui-react';
+import { Grid, Button, Message, Icon, Modal } from 'semantic-ui-react';
 import { SectionWrap } from './../../../shared_components/layout/Page';
 import UserBasicInfo from './../components/UserBasicInfo';
+
+const connectMetaMaskCb = (signData, noMetaMaskAccountsFoundCb) => () => {
+  signData(noMetaMaskAccountsFoundCb);
+};
 
 const AccountSettingsScene = props => {
   const isMetaMaskInstalled = props.hasMetaMask();
   const publicAddrAlreadyPresent = !!(props.user_profile && props.user_profile.publicAddress);
-  const metaMaskButtonTxt = publicAddrAlreadyPresent ? 'MetaMask Connected' : 'Login With MetaMask';
-
+  const metaMaskButtonTxt = publicAddrAlreadyPresent ? 'MetaMask Connected' : 'Connect MetaMask';
+  const onClickListener = connectMetaMaskCb(props.signData, props.noMetaMaskAccountsFoundCb);
   return (
     <Grid centered columns={2}>
       <Grid.Column mobile={16} tablet={5} computer={4}>
@@ -22,7 +26,7 @@ const AccountSettingsScene = props => {
           color="orange"
           inverted={!isMetaMaskInstalled}
           disabled={!isMetaMaskInstalled || publicAddrAlreadyPresent}
-          onClick={props.signData}
+          onClick={onClickListener}
         >
           {metaMaskButtonTxt}
         </Button>
@@ -31,6 +35,7 @@ const AccountSettingsScene = props => {
             Please install <a href="https://metamask.io/">MetaMask</a>
           </Message>
         )}
+        {props.showMetaMaskNoAccountsWarning && <Message warning>Please unlock MetaMask to connect</Message>}
       </Grid.Column>
     </Grid>
   );
@@ -41,6 +46,8 @@ AccountSettingsScene.propTypes = {
   showMetaMaskLogin: PropTypes.bool,
   hasMetaMask: PropTypes.func.isRequired,
   signData: PropTypes.func.isRequired,
+  noMetaMaskAccountsFoundCb: PropTypes.func.isRequired,
+  showMetaMaskNoAccountsWarning: PropTypes.bool.isRequired,
 };
 
 AccountSettingsScene.defaultProps = {

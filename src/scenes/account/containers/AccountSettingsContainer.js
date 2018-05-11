@@ -7,8 +7,26 @@ import { signData } from '../actions';
 const hasMetaMask = () => typeof window.web3 !== 'undefined' && !!window.web3.currentProvider;
 
 class AccountSettingsContainer extends Component {
+  state = {
+    noMetaMaskAccountsFound: false,
+  };
+
+  noMetaMaskAccountsFound = () => {
+    this.setState({ noMetaMaskAccountsFound: true });
+    setTimeout(() => {
+      this.setState({ noMetaMaskAccountsFound: false });
+    }, 3000);
+  };
+
   render() {
-    return <AccountSettingsComponent {...this.props} hasMetaMask={hasMetaMask} />;
+    return (
+      <AccountSettingsComponent
+        {...this.props}
+        hasMetaMask={hasMetaMask}
+        noMetaMaskAccountsFoundCb={this.noMetaMaskAccountsFound}
+        showMetaMaskNoAccountsWarning={this.state.noMetaMaskAccountsFound}
+      />
+    );
   }
 }
 
