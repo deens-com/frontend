@@ -6,7 +6,7 @@ import UserBasicInfo from './../components/UserBasicInfo';
 
 const AccountSettingsScene = props => {
   const isMetaMaskInstalled = props.hasMetaMask();
-  const publicAddrAlreadyPresent = props.user_profile && props.user_profile.publicAddress;
+  const publicAddrAlreadyPresent = !!(props.user_profile && props.user_profile.publicAddress);
   const metaMaskButtonTxt = publicAddrAlreadyPresent ? 'MetaMask Connected' : 'Login With MetaMask';
 
   return (
