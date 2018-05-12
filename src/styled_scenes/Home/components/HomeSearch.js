@@ -571,6 +571,13 @@ class HomeSearch extends Component {
       });
   }
 
+  onlyAllowDateRelatedInputs = (e) => {
+    window.e = e;
+    if (e.key.length > 1) e.preventDefault();
+    if (!/\d-/.test(e.key)) e.preventDefault();
+    console.log('e', e);
+  }
+
   handleStartDateChange(dateObject) {
     const startDate = dateObject.toISOString();
     this.setState({
@@ -743,6 +750,7 @@ class HomeSearch extends Component {
                   placeholder="Start date"
                   leftIcon="date"
                   dayPickerProps={{ disabledDays: { before: new Date() } }}
+                  inputProps={{ readOnly: true }}
                 />
 
                 <FormControl
@@ -751,6 +759,7 @@ class HomeSearch extends Component {
                   placeholder="End date"
                   leftIcon="date"
                   dayPickerProps={{ disabledDays: { before: startDate || new Date() } }}
+                  inputProps={{ readOnly: true }}
                 />
 
                 <FormControl
