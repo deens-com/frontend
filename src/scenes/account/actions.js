@@ -105,7 +105,6 @@ export const signData = (noAccountsCallback) => async dispatch => {
   }
   const data = 'please';
   const web3Instance = new Web3(provider);
-  window.web3Instance = web3Instance;
   const accounts = await web3Instance.eth.getAccounts();
   if (!accounts || !accounts.length) {
     if (noAccountsCallback) noAccountsCallback();

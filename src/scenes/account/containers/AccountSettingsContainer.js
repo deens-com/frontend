@@ -30,12 +30,8 @@ class AccountSettingsContainer extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {};
-};
-
 const mapDispatchToProps = dispatch => {
   return bindActionCreators({ signData }, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AccountSettingsContainer);
+export default connect(null, mapDispatchToProps)(AccountSettingsContainer);
