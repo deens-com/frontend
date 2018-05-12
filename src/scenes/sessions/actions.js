@@ -1,6 +1,6 @@
 import Parse from "parse";
 import history from "./../../main/history";
-import { signMessage } from '../../libs/web3-utils';
+import { getPublicAddress, signMessage } from '../../libs/web3-utils';
 
 export const types = {
   LOGIN_SUCCESS: "LOGIN_SUCCESS",
@@ -40,8 +40,9 @@ export const loginRequest = (email, password) => {
 
 export const loginWithMetamask = () => async dispatch => {
   try {
-    const msg = 'please';
-    const { publicAddress, signature } = await signMessage(msg);
+    const publicAddress = await getPublicAddress();
+    const response = await Parse.Cloud.run('getMetaMaskNonce', { publicAddress });
+    const { signature } = await signMessage(response.nonce);
     const authData = {
       signature,
       id: publicAddress,
@@ -49,7 +50,7 @@ export const loginWithMetamask = () => async dispatch => {
     };
     const user = await Parse.User.logInWith('blockchainauth', { authData });
     dispatch(sessionsFetched({ session: user }));
-    history.push("/");
+    history.push('/');
   } catch (error) {
     console.error(error);
     if (error.showToUser) {
@@ -57,8 +58,17 @@ export const loginWithMetamask = () => async dispatch => {
         type: types.METAMASK_ERROR,
         payload: {
           message: error.message,
-        }
-      })
+        },
+      });
+    } else if (error.code === 141) {
+      // parse function error
+      const innerError = error.message;
+      dispatch({
+        type: types.METAMASK_ERROR,
+        payload: {
+          message: innerError.message,
+        },
+      });
     }
   }
 };
@@ -66,4 +76,4 @@ export const loginWithMetamask = () => async dispatch => {
 export const clearErrors = () => dispatch => {
   dispatch({ type: types.LOGIN_ERROR, payload: {} });
   dispatch({ type: types.METAMASK_ERROR, payload: {} });
-}
+};
