@@ -81,6 +81,10 @@ class SessionsContainer extends Component {
     return Object.keys(this.props.loginError).includes("code");
   }
 
+  componentDidMount() {
+    this.props.clearErrors();
+  }
+
   render() {
     return (
       <div className="SessionsContainer">

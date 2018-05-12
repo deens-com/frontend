@@ -62,3 +62,8 @@ export const loginWithMetamask = () => async dispatch => {
     }
   }
 };
+
+export const clearErrors = () => dispatch => {
+  dispatch({ type: types.LOGIN_ERROR, payload: {} });
+  dispatch({ type: types.METAMASK_ERROR, payload: {} });
+}
