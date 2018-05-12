@@ -762,6 +762,7 @@ class HomeSearch extends Component {
                   leftIcon="person"
                   min={1}
                   max={10}
+                  onKeyPress={e => (e.charCode >= 48 && e.charCode <= 57) || e.preventDefault()}
                 />
               </DateWrap>
 

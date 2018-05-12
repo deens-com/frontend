@@ -41,6 +41,7 @@ export default class Input extends Component {
       case "text": {
         input = (
           <InputControl
+            {...this.props}
             type="text"
             innerRef={input => {
               this.input = input;
@@ -61,6 +62,7 @@ export default class Input extends Component {
       case "number": {
         input = (
           <InputControl
+            {...this.props}
             type="number"
             innerRef={input => {
               this.input = input;
