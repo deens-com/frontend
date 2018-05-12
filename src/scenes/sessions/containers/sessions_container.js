@@ -95,6 +95,7 @@ class SessionsContainer extends Component {
           isInputInvalid={this.isInputInvalid}
           isLoginError={this.isLoginError}
           loginError={this.props.loginError}
+          loginWithMetamask={this.props.loginWithMetamask}
         />
       </div>
     );

@@ -8,6 +8,7 @@ import {
   Message,
   Segment
 } from "semantic-ui-react";
+import styled from "styled-components";
 import TopBar from "./../../../shared_components/TopBar";
 import FooterNav from "./../../../styled_scenes/Home/components/FooterNav";
 import BrandFooter from "./../../../shared_components/BrandFooter";
@@ -25,6 +26,10 @@ const displayErrorMessage = (isLoginError, message) => {
     <Message error header="Can't login" content={message} />
   ) : null;
 };
+
+const WithTopMargin = styled.div`
+  margin-top: 16px;
+`;
 
 const LoginFormComponent = props => {
   return (
@@ -89,6 +94,16 @@ const LoginFormComponent = props => {
                     </Button>
                   </Segment>
                 </Form>
+                <WithTopMargin>
+                  <Button
+                    color="orange"
+                    fluid
+                    size="large"
+                    onClick={props.loginWithMetamask}
+                  >
+                  Login with MetaMask
+                  </Button>
+                </WithTopMargin>
                 <Message>
                   New to us? <Link to="/register">Sign Up</Link>
                 </Message>
@@ -113,7 +128,8 @@ LoginFormComponent.propTypes = {
   isLoginError: PropTypes.func,
   submitLogin: PropTypes.func,
   validateInput: PropTypes.func,
-  handleInputChange: PropTypes.func
+  handleInputChange: PropTypes.func,
+  loginWithMetamask: PropTypes.func.isRequired,
 };
 
 export default LoginFormComponent;

@@ -1,5 +1,6 @@
 import Parse from "parse";
 import history from "./../../main/history";
+import { signMessage } from '../../libs/web3-utils';
 
 export const types = {
   LOGIN_SUCCESS: "LOGIN_SUCCESS",
@@ -34,4 +35,25 @@ export const loginRequest = (email, password) => {
       }
     );
   };
+};
+
+export const loginWithMetamask = () => async dispatch => {
+  try {
+    const msg = 'please';
+    const { publicAddress, signature } = await signMessage(msg);
+    const authData = {
+      signature,
+      id: publicAddress,
+      method: 'web3',
+    };
+    const user = await Parse.User.logInWith('blockchainauth', { authData });
+    console.log('user', user);
+    dispatch(sessionsFetched({ session: user }));
+    history.push("/");
+  } catch (error) {
+    console.error(error);
+    if (error.showToUser) {
+      // TODO: @jaydp show some error to the user
+    }
+  }
 };
