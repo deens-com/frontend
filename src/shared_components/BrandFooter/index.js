@@ -65,6 +65,12 @@ const FLink = styled(Link)`
   padding: 3px 4px;
 `;
 
+const ALink = styled.a`
+  font-size: 14px;
+  display: inline-block;
+  padding: 3px 4px;
+`;
+
 // MODULE
 export default function Footer({ withTopBorder, withPadding }) {
   return (
@@ -80,7 +86,7 @@ export default function Footer({ withTopBorder, withPadding }) {
           <FLink to="/">Sitemap</FLink>
         </div>
         <div>
-          <FLink to="/">
+          <ALink href="https://www.facebook.com/PleaseDotCom" target="_blank">
             <Facebook
               style={{
                 height: "16px",
@@ -89,8 +95,8 @@ export default function Footer({ withTopBorder, withPadding }) {
                 fill: "rgb(118, 118, 118)"
               }}
             />
-          </FLink>
-          <FLink to="/">
+          </ALink>
+          <ALink href="https://twitter.com/PleaseDotCom" target="_blank">
             <Twitter
               style={{
                 height: "16px",
@@ -99,8 +105,8 @@ export default function Footer({ withTopBorder, withPadding }) {
                 fill: "rgb(118, 118, 118)"
               }}
             />
-          </FLink>
-          <FLink to="/">
+          </ALink>
+          <ALink href="https://www.instagram.com/PleaseDotCom/" target="_blank">
             <Instagram
               style={{
                 height: "16px",
@@ -109,7 +115,7 @@ export default function Footer({ withTopBorder, withPadding }) {
                 fill: "rgb(118, 118, 118)"
               }}
             />
-          </FLink>
+          </ALink>
         </div>
       </Nav>
     </Wrapper>
