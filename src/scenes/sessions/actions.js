@@ -5,7 +5,8 @@ import { signMessage } from '../../libs/web3-utils';
 export const types = {
   LOGIN_SUCCESS: "LOGIN_SUCCESS",
   VALIDATION_ERROR: "VALIDATION_ERROR",
-  LOGIN_ERROR: "LOGIN_ERROR"
+  LOGIN_ERROR: "LOGIN_ERROR",
+  METAMASK_ERROR: "METAMASK_ERROR",
 };
 
 export const sessionsFetched = session => {
@@ -47,13 +48,17 @@ export const loginWithMetamask = () => async dispatch => {
       method: 'web3',
     };
     const user = await Parse.User.logInWith('blockchainauth', { authData });
-    console.log('user', user);
     dispatch(sessionsFetched({ session: user }));
     history.push("/");
   } catch (error) {
     console.error(error);
     if (error.showToUser) {
-      // TODO: @jaydp show some error to the user
+      dispatch({
+        type: types.METAMASK_ERROR,
+        payload: {
+          message: error.message,
+        }
+      })
     }
   }
 };

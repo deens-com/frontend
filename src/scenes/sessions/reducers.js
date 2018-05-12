@@ -2,7 +2,8 @@ import * as sessions_actions from "./actions";
 
 const initialState = {
   session: {},
-  loginError: {}
+  loginError: {},
+  metaMaskError: {},
 };
 
 export default function SessionsReducer(state = initialState, action = {}) {
@@ -18,6 +19,11 @@ export default function SessionsReducer(state = initialState, action = {}) {
         ...state,
         loginError: action.payload
       };
+    case sessions_actions.types.METAMASK_ERROR:
+      return {
+        ...state,
+        metaMaskError: action.payload,
+      }
     default:
       return state;
   }

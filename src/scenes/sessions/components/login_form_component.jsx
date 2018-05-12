@@ -95,6 +95,10 @@ const LoginFormComponent = props => {
                   </Segment>
                 </Form>
                 <WithTopMargin>
+                  {displayErrorMessage(
+                    !!props.metaMaskError.message,
+                    props.metaMaskError.message
+                  )}
                   <Button
                     color="orange"
                     fluid
@@ -130,6 +134,7 @@ LoginFormComponent.propTypes = {
   validateInput: PropTypes.func,
   handleInputChange: PropTypes.func,
   loginWithMetamask: PropTypes.func.isRequired,
+  metaMaskError: PropTypes.object,
 };
 
 export default LoginFormComponent;
