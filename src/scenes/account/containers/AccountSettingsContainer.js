@@ -2,36 +2,26 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import AccountSettingsComponent from '../components/account_settings_component';
-import { signData } from '../actions';
+import { signData, clearMetamaskErrors } from '../actions';
 
 const hasMetaMask = () => typeof window.web3 !== 'undefined' && !!window.web3.currentProvider;
 
 class AccountSettingsContainer extends Component {
-  state = {
-    noMetaMaskAccountsFound: false,
-  };
-
-  noMetaMaskAccountsFound = () => {
-    this.setState({ noMetaMaskAccountsFound: true });
-    setTimeout(() => {
-      this.setState({ noMetaMaskAccountsFound: false });
-    }, 3000);
-  };
+  componentDidMount() {
+    this.props.clearMetamaskErrors();
+  }
 
   render() {
-    return (
-      <AccountSettingsComponent
-        {...this.props}
-        hasMetaMask={hasMetaMask}
-        noMetaMaskAccountsFoundCb={this.noMetaMaskAccountsFound}
-        showMetaMaskNoAccountsWarning={this.state.noMetaMaskAccountsFound}
-      />
-    );
+    return <AccountSettingsComponent {...this.props} hasMetaMask={hasMetaMask} />;
   }
 }
 
+const mapStateToProps = state => ({
+  metaMaskError: state.AccountReducer.metaMaskError,
+});
+
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ signData }, dispatch);
+  return bindActionCreators({ signData, clearMetamaskErrors }, dispatch);
 };
 
-export default connect(null, mapDispatchToProps)(AccountSettingsContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(AccountSettingsContainer);

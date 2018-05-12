@@ -1,7 +1,7 @@
 import Parse from "parse";
 import fetch_helpers from "./../../libs/fetch_helpers";
 import history from "./../../main/history";
-import Web3 from 'web3';
+import { signMessage } from '../../libs/web3-utils';
 
 export const user_profile_fetched = user_profile => {
   return {
@@ -96,28 +96,29 @@ export const fetch_user_trips = (owner_id, trip_state) => {
   };
 };
 
-// NOTE: for now it always signs "please"
-export const signData = (noAccountsCallback) => async dispatch => {
-  const provider = Web3.givenProvider || (window.web3 && window.web3.currentProvider);
-  if (!provider) {
-    console.warn('No provider found');
-    return;
-  }
-  const data = 'please';
-  const web3Instance = new Web3(provider);
-  const accounts = await web3Instance.eth.getAccounts();
-  if (!accounts || !accounts.length) {
-    if (noAccountsCallback) noAccountsCallback();
-    return;
-  }
+export const clearMetamaskErrors = () => dispatch => {
+  dispatch({ type: 'METAMASK_ERROR', payload: {} });
+};
 
+// NOTE: for now it always signs "please"
+export const signData = () => async dispatch => {
+  // clear metamask errors
+  dispatch({ type: 'METAMASK_ERROR', payload: {} });
+
+  const data = 'please';
   try {
-    const publicKey = await web3Instance.eth.getCoinbase();
-    const hexData = web3Instance.utils.utf8ToHex(data);
-    const signedData = await web3Instance.eth.personal.sign(hexData, publicKey);
-    const userObj = await Parse.Cloud.run('storePublicAddress', { signature: signedData });
+    const { signature } = await signMessage(data);
+    const userObj = await Parse.Cloud.run('storePublicAddress', { signature });
     dispatch(user_profile_fetched({ user_profile: fetch_helpers.normalizeParseResponseData(userObj) }));
   } catch (error) {
     console.error(error);
+    if (error.showToUser) {
+      dispatch({
+        type: 'METAMASK_ERROR',
+        payload: {
+          message: error.message,
+        },
+      });
+    }
   }
 };
