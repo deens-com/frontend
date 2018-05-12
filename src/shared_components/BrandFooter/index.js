@@ -86,7 +86,7 @@ export default function Footer({ withTopBorder, withPadding }) {
           <FLink to="/">Sitemap</FLink>
         </div>
         <div>
-          <ALink href="https://www.facebook.com/PleaseDotCom">
+          <ALink href="https://www.facebook.com/PleaseDotCom" target="_blank">
             <Facebook
               style={{
                 height: "16px",
@@ -96,7 +96,7 @@ export default function Footer({ withTopBorder, withPadding }) {
               }}
             />
           </ALink>
-          <ALink href="https://twitter.com/PleaseDotCom">
+          <ALink href="https://twitter.com/PleaseDotCom" target="_blank">
             <Twitter
               style={{
                 height: "16px",
@@ -106,7 +106,7 @@ export default function Footer({ withTopBorder, withPadding }) {
               }}
             />
           </ALink>
-          <ALink href="https://www.instagram.com/PleaseDotCom/">
+          <ALink href="https://www.instagram.com/PleaseDotCom/" target="_blank">
             <Instagram
               style={{
                 height: "16px",
