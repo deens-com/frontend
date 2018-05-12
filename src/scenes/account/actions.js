@@ -115,7 +115,6 @@ export const signData = (noAccountsCallback) => async dispatch => {
     const publicKey = await web3Instance.eth.getCoinbase();
     const hexData = web3Instance.utils.utf8ToHex(data);
     const signedData = await web3Instance.eth.personal.sign(hexData, publicKey);
-    const currentUser = await Parse.User.current().fetch();
     const userObj = await Parse.Cloud.run('storePublicAddress', { signature: signedData });
     dispatch(user_profile_fetched({ user_profile: fetch_helpers.normalizeParseResponseData(userObj) }));
   } catch (error) {

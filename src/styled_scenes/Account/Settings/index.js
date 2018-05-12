@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Button, Message, Icon, Modal } from 'semantic-ui-react';
+import { Grid, Button, Message } from 'semantic-ui-react';
 import { SectionWrap } from './../../../shared_components/layout/Page';
 import UserBasicInfo from './../components/UserBasicInfo';
 
