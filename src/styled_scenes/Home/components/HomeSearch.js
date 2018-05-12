@@ -571,13 +571,6 @@ class HomeSearch extends Component {
       });
   }
 
-  onlyAllowDateRelatedInputs = (e) => {
-    window.e = e;
-    if (e.key.length > 1) e.preventDefault();
-    if (!/\d-/.test(e.key)) e.preventDefault();
-    console.log('e', e);
-  }
-
   handleStartDateChange(dateObject) {
     const startDate = dateObject.toISOString();
     this.setState({
