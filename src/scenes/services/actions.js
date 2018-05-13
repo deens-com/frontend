@@ -104,3 +104,18 @@ export const fetchMyTrips = () => async (dispatch, getState) => {
   const normalizedTrips = fetch_helpers.normalizeParseResponseData(trips);
   dispatch(userTripsFetchFinish(normalizedTrips));
 };
+
+export const addServiceToTrip = trip => async (dispatch, getState) => {
+  const state = getState();
+  const { service } = state.ServicesReducer;
+  try {
+    await Parse.Cloud.run('addServiceToTrip', { serviceId: service.objectId, tripId: trip.objectId });
+    alert(`Service added in ${trip.title}`);
+  } catch (error) {
+    console.error(error);
+    if (error.code === 141) {
+      // parse error
+      alert(error.message.message);
+    }
+  }
+};
