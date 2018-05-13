@@ -22,6 +22,7 @@ export default function DateInput(props) {
       placeholder={props.placeholder}
       value={props.value}
       onDayChange={props.onChange}
+      {...props}
     />
   );
 }

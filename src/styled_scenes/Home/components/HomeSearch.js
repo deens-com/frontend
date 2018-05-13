@@ -687,6 +687,7 @@ class HomeSearch extends Component {
   }
 
   render() {
+    const startDate = this.state.search.startDate && new Date(this.state.search.startDate);
     return (
       <Wrapper>
         <TypeWrapper>
@@ -741,6 +742,8 @@ class HomeSearch extends Component {
                   onChange={this.handleStartDateChange}
                   placeholder="Start date"
                   leftIcon="date"
+                  dayPickerProps={{ disabledDays: { before: new Date() } }}
+                  inputProps={{ readOnly: true }}
                 />
 
                 <FormControl
@@ -748,6 +751,8 @@ class HomeSearch extends Component {
                   onChange={this.handleEndDateChange}
                   placeholder="End date"
                   leftIcon="date"
+                  dayPickerProps={{ disabledDays: { before: startDate || new Date() } }}
+                  inputProps={{ readOnly: true }}
                 />
 
                 <FormControl
@@ -757,6 +762,7 @@ class HomeSearch extends Component {
                   leftIcon="person"
                   min={1}
                   max={10}
+                  onKeyPress={e => (e.charCode >= 48 && e.charCode <= 57) || e.preventDefault()}
                 />
               </DateWrap>
 
