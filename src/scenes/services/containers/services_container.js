@@ -5,13 +5,10 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 class ServicesContainer extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     const service_id = this.props.match.params.id;
     this.props.fetch_service(service_id);
+    this.props.fetchMyTrips();
   }
 
   render() {
@@ -23,7 +20,8 @@ const mapStateToProps = state => {
   return {
     service: state.ServicesReducer.service,
     trips: state.ServicesReducer.trips,
-    reviews: state.ServicesReducer.reviews
+    reviews: state.ServicesReducer.reviews,
+    myTrips: state.ServicesReducer.userTrips.data,
   };
 };
 

@@ -23,6 +23,7 @@ import Button from "../../shared_components/Button";
 import ImgSlider from "./components/ImgSlider";
 import MapMaker from "../../shared_components/MapMarker";
 import UserAvatar from '../../shared_components/UserAvatar';
+import AddToTripButton from './components/AddToTripButton';
 
 // ACTIONS/CONFIG
 import { media, sizes } from "../../libs/styled";
@@ -301,17 +302,7 @@ export default function FoodDetailScene(props) {
                 text="Book now"
                 theme="textGreen"
               />
-              <Button
-                type="button"
-                round
-                size="small"
-                iconAfter="arrowDown"
-                onClick={ev => {
-                  alert("Adding to trip");
-                }}
-                theme="mainFilled"
-                text="Add to trip"
-              />
+              <AddToTripButton trips={props.myTrips} />
             </ButtonsWrap>
           </ActionWrap>
           <Media
@@ -437,4 +428,6 @@ export default function FoodDetailScene(props) {
 }
 
 // Props Validation
-FoodDetailScene.propTypes = {};
+FoodDetailScene.propTypes = {
+  myTrips: PropTypes.array,
+};

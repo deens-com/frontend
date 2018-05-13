@@ -22,6 +22,8 @@ export const service_fetched = service => {
   };
 };
 
+export const userTripsFetchStart = () => ({ type: 'USER_TRIPS_FETCH' });
+export const userTripsFetchFinish = trips => ({ type: 'USER_TRIPS_FETCH_FINISH', payload: trips });
 
 export const fetch_service = (service_id) => {
   return dispatch => {
@@ -91,4 +93,13 @@ export const fetch_service = (service_id) => {
       }
     );
   };
+};
+
+
+export const fetchMyTrips = () => async (dispatch, getState) => {
+  const state = getState();
+  if (state.ServicesReducer.userTrips.isLoading) return;
+  dispatch(userTripsFetchStart());
+  const trips = await Parse.Cloud.run('getMyTrips');
+  dispatch(userTripsFetchFinish(trips));
 };
