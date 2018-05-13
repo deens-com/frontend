@@ -110,6 +110,7 @@ export const addServiceToTrip = trip => async (dispatch, getState) => {
   const { service } = state.ServicesReducer;
   try {
     await Parse.Cloud.run('addServiceToTrip', { serviceId: service.objectId, tripId: trip.objectId });
+    fetch_service(service.objectId)(dispatch);
     alert(`Service added in ${trip.title}`);
   } catch (error) {
     console.error(error);
@@ -134,6 +135,7 @@ export const createNewTrip = () => async (dispatch, getState) => {
       serviceId: service.objectId,
       tripTitle: newTripTitle,
     });
+    fetch_service(service.objectId)(dispatch);
     alert(`Service added in ${newTripTitle}`);
   } catch (error) {
     console.error(error);
