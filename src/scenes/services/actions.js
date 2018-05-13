@@ -101,5 +101,6 @@ export const fetchMyTrips = () => async (dispatch, getState) => {
   if (state.ServicesReducer.userTrips.isLoading) return;
   dispatch(userTripsFetchStart());
   const trips = await Parse.Cloud.run('getMyTrips');
-  dispatch(userTripsFetchFinish(trips));
+  const normalizedTrips = fetch_helpers.normalizeParseResponseData(trips);
+  dispatch(userTripsFetchFinish(normalizedTrips));
 };
