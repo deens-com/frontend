@@ -119,3 +119,27 @@ export const addServiceToTrip = trip => async (dispatch, getState) => {
     }
   }
 };
+
+export const createNewTrip = () => async (dispatch, getState) => {
+  const state = getState();
+  const { service } = state.ServicesReducer;
+  if (!service) {
+    console.error('No service found');
+    return;
+  }
+
+  try {
+    const newTripTitle = `Trip to ${service.country}`;
+    await Parse.Cloud.run('addServiceToNewTrip', {
+      serviceId: service.objectId,
+      tripTitle: newTripTitle,
+    });
+    alert(`Service added in ${newTripTitle}`);
+  } catch (error) {
+    console.error(error);
+    if (error.code === 141) {
+      // parse error
+      alert(error.message.message);
+    }
+  }
+};

@@ -11,16 +11,12 @@ class ServicesContainer extends Component {
     this.props.fetchMyTrips();
   }
 
-  addServiceToNewTrip = () => {
-    console.log('new trip clicked');
-  };
-
   render() {
     return (
       <ServiceComponent
         {...this.props}
         onAddServiceToTrip={this.props.addServiceToTrip}
-        onAddServiceToNewTrip={this.addServiceToNewTrip}
+        onAddServiceToNewTrip={this.props.createNewTrip}
       />
     );
   }
