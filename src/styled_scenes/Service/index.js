@@ -202,6 +202,10 @@ const TripsWrap = styled.div`
     margin-bottom: 35px;
     font-size: 28px;
   }
+
+  .slick-track {
+    margin: 0;
+  }
 `;
 
 const ActionWrap = styled.div`
