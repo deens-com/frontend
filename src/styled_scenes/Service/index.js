@@ -396,7 +396,7 @@ export default function FoodDetailScene(props) {
                     withShadow
                     key={trip.title}
                     size="small"
-                    href={"/trip/" + trip.objectId}
+                    href={"/trips/" + trip.objectId}
                   />
                 ))}
               </Carousel>
