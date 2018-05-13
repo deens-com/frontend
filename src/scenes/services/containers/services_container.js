@@ -3,20 +3,40 @@ import ServiceComponent from './../components/service_component';
 import * as services_actions from './../actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { withRouter } from 'react-router';
+import Parse from 'parse';
 
 class ServicesContainer extends Component {
   componentDidMount() {
     const service_id = this.props.match.params.id;
     this.props.fetch_service(service_id);
-    this.props.fetchMyTrips();
+    if (Parse.User.current() != null) {
+      this.props.fetchMyTrips();
+    }
   }
+
+  onAddServiceToTrip = trip => {
+    if (Parse.User.current() != null) {
+      this.props.addServiceToTrip(trip);
+    } else {
+      this.props.history.push('/login');
+    }
+  };
+
+  onAddServiceToNewTrip = () => {
+    if (Parse.User.current() != null) {
+      this.props.createNewTrip();
+    } else {
+      this.props.history.push('/login');
+    }
+  };
 
   render() {
     return (
       <ServiceComponent
         {...this.props}
-        onAddServiceToTrip={this.props.addServiceToTrip}
-        onAddServiceToNewTrip={this.props.createNewTrip}
+        onAddServiceToTrip={this.onAddServiceToTrip}
+        onAddServiceToNewTrip={this.onAddServiceToNewTrip}
       />
     );
   }
@@ -35,4 +55,4 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators(services_actions, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ServicesContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ServicesContainer));
