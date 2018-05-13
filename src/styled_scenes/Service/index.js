@@ -302,7 +302,7 @@ export default function FoodDetailScene(props) {
                 text="Book now"
                 theme="textGreen"
               />
-              <AddToTripButton trips={props.myTrips} />
+              <AddToTripButton trips={props.myTrips} onTripClick={props.onAddServiceToTrip} />
             </ButtonsWrap>
           </ActionWrap>
           <Media
@@ -430,4 +430,5 @@ export default function FoodDetailScene(props) {
 // Props Validation
 FoodDetailScene.propTypes = {
   myTrips: PropTypes.array,
+  onAddServiceToTrip: PropTypes.func.isRequired,
 };

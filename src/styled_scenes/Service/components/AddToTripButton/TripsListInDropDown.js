@@ -7,29 +7,36 @@ const getTripImage = trip => {
   return 'http://via.placeholder.com/350x350';
 };
 
-const TripsListInDropDown = props => {
-  return (
-    <List selection verticalAlign="middle" divided>
-      {props.trips.map(trip => (
-        <List.Item key={trip.objectId}>
-          <Image avatar src={getTripImage(trip)} />
+class TripsListInDropDown extends React.Component {
+  onItemClick = trip => () => {
+    this.props.onTripClick(trip);
+  };
+
+  render() {
+    return (
+      <List selection verticalAlign="middle" divided>
+        {this.props.trips.map(trip => (
+          <List.Item key={trip.objectId} onClick={this.onItemClick(trip)}>
+            <Image avatar src={getTripImage(trip)} />
+            <List.Content>
+              <List.Header>{trip.title}</List.Header>
+            </List.Content>
+          </List.Item>
+        ))}
+        <List.Item>
+          <List.Icon name="add" />
           <List.Content>
-            <List.Header>{trip.title}</List.Header>
+            <List.Header>Create a new Trip</List.Header>
           </List.Content>
         </List.Item>
-      ))}
-      <List.Item>
-        <List.Icon name="add" />
-        <List.Content>
-          <List.Header>Create a new Trip</List.Header>
-        </List.Content>
-      </List.Item>
-    </List>
-  );
-};
+      </List>
+    );
+  }
+}
 
 TripsListInDropDown.propTypes = {
   trips: PropTypes.array,
+  onTripClick: PropTypes.func.isRequired,
 };
 
 TripsListInDropDown.defaultProps = {

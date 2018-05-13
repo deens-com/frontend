@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import ServiceComponent from "./../components/service_component";
-import * as services_actions from "./../actions";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import React, { Component } from 'react';
+import ServiceComponent from './../components/service_component';
+import * as services_actions from './../actions';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 class ServicesContainer extends Component {
   componentDidMount() {
@@ -11,8 +11,12 @@ class ServicesContainer extends Component {
     this.props.fetchMyTrips();
   }
 
+  addServiceToTrip = trip => {
+    console.log('clicked on trip', trip);
+  };
+
   render() {
-    return <ServiceComponent {...this.props} />;
+    return <ServiceComponent {...this.props} onAddServiceToTrip={this.addServiceToTrip} />;
   }
 }
 
