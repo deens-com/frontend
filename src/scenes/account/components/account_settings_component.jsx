@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import AccountSettingsScene from './../../../styled_scenes/Account/Settings';
-import { Page, PageContent, PageWrapper } from './../../../shared_components/layout/Page';
+import { Page, PageContent } from './../../../shared_components/layout/Page';
 import TopBar from '../../../shared_components/TopBarWithSearch';
 
 const AccountSettingsComponent = props => {
@@ -19,6 +19,11 @@ const AccountSettingsComponent = props => {
 
 AccountSettingsComponent.propTypes = {
   user: PropTypes.object,
+  noMetaMaskAccountsFoundCb: PropTypes.func.isRequired,
+  showMetaMaskNoAccountsWarning: PropTypes.bool.isRequired,
+  hasMetaMask: PropTypes.func.isRequired,
+  metaMaskError: PropTypes.object,
+  signData: PropTypes.func.isRequired,
 };
 
 export default AccountSettingsComponent;

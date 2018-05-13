@@ -1,6 +1,7 @@
 import Parse from "parse";
 import fetch_helpers from "./../../libs/fetch_helpers";
 import history from "./../../main/history";
+import { signMessage } from '../../libs/web3-utils';
 
 export const user_profile_fetched = user_profile => {
   return {
@@ -93,4 +94,31 @@ export const fetch_user_trips = (owner_id, trip_state) => {
       );
     })
   };
+};
+
+export const clearMetamaskErrors = () => dispatch => {
+  dispatch({ type: 'METAMASK_ERROR', payload: {} });
+};
+
+// NOTE: for now it always signs "please"
+export const signData = () => async dispatch => {
+  // clear metamask errors
+  dispatch({ type: 'METAMASK_ERROR', payload: {} });
+
+  const data = 'please';
+  try {
+    const { signature } = await signMessage(data);
+    const userObj = await Parse.Cloud.run('storePublicAddress', { signature });
+    dispatch(user_profile_fetched({ user_profile: fetch_helpers.normalizeParseResponseData(userObj) }));
+  } catch (error) {
+    console.error(error);
+    if (error.showToUser) {
+      dispatch({
+        type: 'METAMASK_ERROR',
+        payload: {
+          message: error.message,
+        },
+      });
+    }
+  }
 };

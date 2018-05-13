@@ -4,7 +4,8 @@ describe("sessions reducer", () => {
   it("should handle initial state", () => {
     expect(reducers(undefined, {})).toEqual({
       session: {},
-      loginError: {}
+      loginError: {},
+      metaMaskError: {},
     });
   });
 
@@ -19,7 +20,8 @@ describe("sessions reducer", () => {
       })
     ).toEqual({
       loginError: { code: 111, message: "Network error" },
-      session: {}
+      session: {},
+      metaMaskError: {},
     });
   });
 
@@ -37,7 +39,8 @@ describe("sessions reducer", () => {
       loginError: {},
       session: {
         hello: "world"
-      }
+      },
+      metaMaskError: {},
     });
   });
 
