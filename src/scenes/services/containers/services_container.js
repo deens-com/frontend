@@ -15,8 +15,18 @@ class ServicesContainer extends Component {
     console.log('clicked on trip', trip);
   };
 
+  addServiceToNewTrip = () => {
+    console.log('new trip clicked');
+  };
+
   render() {
-    return <ServiceComponent {...this.props} onAddServiceToTrip={this.addServiceToTrip} />;
+    return (
+      <ServiceComponent
+        {...this.props}
+        onAddServiceToTrip={this.addServiceToTrip}
+        onAddServiceToNewTrip={this.addServiceToNewTrip}
+      />
+    );
   }
 }
 

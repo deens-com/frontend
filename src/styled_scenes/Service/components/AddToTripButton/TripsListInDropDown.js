@@ -23,7 +23,7 @@ class TripsListInDropDown extends React.Component {
             </List.Content>
           </List.Item>
         ))}
-        <List.Item>
+        <List.Item onClick={this.props.onNewTripClick}>
           <List.Icon name="add" />
           <List.Content>
             <List.Header>Create a new Trip</List.Header>
@@ -37,6 +37,7 @@ class TripsListInDropDown extends React.Component {
 TripsListInDropDown.propTypes = {
   trips: PropTypes.array,
   onTripClick: PropTypes.func.isRequired,
+  onNewTripClick: PropTypes.func.isRequired,
 };
 
 TripsListInDropDown.defaultProps = {

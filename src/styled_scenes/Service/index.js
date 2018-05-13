@@ -302,7 +302,10 @@ export default function FoodDetailScene(props) {
                 text="Book now"
                 theme="textGreen"
               />
-              <AddToTripButton trips={props.myTrips} onTripClick={props.onAddServiceToTrip} />
+              <AddToTripButton 
+                trips={props.myTrips}
+                onTripClick={props.onAddServiceToTrip}
+                onNewTripClick={props.onAddServiceToNewTrip} />
             </ButtonsWrap>
           </ActionWrap>
           <Media
