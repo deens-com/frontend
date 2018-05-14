@@ -21,7 +21,7 @@ const WhiteText = styled.span`
 const Avatar = ({ user, usernameColor }) => {
   if (!user) return null;
   const dpUrl = (user.profilePicture && user.profilePicture.url) || 'https://imgur.com/download/4iTD3lS';
-  const userProfilePageUrl = `users/${user.username}`;
+  const userProfilePageUrl = `/users/${user.username}`;
   return (
     <Grid columns={2} padded="horizontally" verticalAlign="middle">
       <Grid.Row>
