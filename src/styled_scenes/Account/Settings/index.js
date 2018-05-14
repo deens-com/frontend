@@ -31,6 +31,12 @@ const AccountSettingsScene = props => {
           </Message>
         )}
         {props.metaMaskError.message && <Message warning>{props.metaMaskError.message}</Message>}
+        <Button
+          color="green"
+          onClick={props.ledgerSignData}
+        >
+          {metaMaskButtonTxt}
+        </Button>
       </Grid.Column>
     </Grid>
   );

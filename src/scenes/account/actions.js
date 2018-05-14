@@ -1,7 +1,7 @@
 import Parse from "parse";
 import fetch_helpers from "./../../libs/fetch_helpers";
 import history from "./../../main/history";
-import { signMessage } from '../../libs/web3-utils';
+import { signMessage, ledgerSignMessage } from '../../libs/web3-utils';
 
 export const user_profile_fetched = user_profile => {
   return {
@@ -120,5 +120,28 @@ export const signData = () => async dispatch => {
         },
       });
     }
+  }
+};
+
+
+export const ledgerSignData = () => async dispatch => {
+  //dispatch({ type: 'LEDGER_ERROR', payload: {} });
+
+  const data = 'please';
+  try {
+    const { signature } = await ledgerSignMessage(data);
+    console.log(signature);
+    //const userObj = await Parse.Cloud.run('storeLedgerPublicAddress', { signature });
+    //dispatch(user_profile_fetched({ user_profile: fetch_helpers.normalizeParseResponseData(userObj) }));
+  } catch (error) {
+    console.error(error);
+    // if (error.showToUser) {
+    //   dispatch({
+    //     type: 'LEDGER_ERROR',
+    //     payload: {
+    //       message: error.message,
+    //     },
+    //   });
+    // }
   }
 };

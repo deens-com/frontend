@@ -1,5 +1,16 @@
 import Web3 from 'web3';
 
+import TransportU2F from "@ledgerhq/hw-transport-u2f";
+import createLedgerSubprovider from "@ledgerhq/web3-subprovider";
+import ProviderEngine from "web3-provider-engine";
+import FetchSubprovider from "web3-provider-engine/subproviders/fetch";
+
+
+/* ganache-cli --networkId 1337 */
+const rpcUrl = process.env.REACT_APP_NETWORK_URL || "http://127.0.0.1:8545";
+const networkId = parseInt(process.env.REACT_APP_NETWORK_ID || "1337", 10);
+
+
 let _web3Instance;
 export async function getWeb3() {
   if (!_web3Instance) {
@@ -13,6 +24,19 @@ export async function getWeb3() {
     _web3Instance = new Web3(provider);
   }
   return _web3Instance;
+}
+
+export async function getLedgerWeb3() {
+  const engine = new ProviderEngine();
+  const getTransport = () => TransportU2F.create();
+  const ledger = createLedgerSubprovider(getTransport, {
+    networkId,
+    accountsLength: 5
+  });
+  engine.addProvider(ledger);
+  engine.addProvider(new FetchSubprovider({ rpcUrl }));
+  engine.start();
+  return new Web3(engine);
 }
 
 /**
@@ -39,6 +63,29 @@ export async function getPublicAddress() {
 export async function signMessage(msg) {
   const publicAddress = await getPublicAddress();
   const web3Instance = await getWeb3();
+  const hexData = web3Instance.utils.utf8ToHex(msg);
+  const signature = await web3Instance.eth.personal.sign(hexData, publicAddress);
+
+  return { publicAddress, signature };
+}
+
+
+
+export async function getLedgerPublicAddress() {
+  const web3Instance = await getLedgerWeb3();
+  const accounts = await web3Instance.eth.getAccounts();
+  if (!accounts || !accounts.length) {
+    const error = new Error('Please unlock Ledger');
+    error.showToUser = true;
+    throw error;
+  }
+  return web3Instance.eth.getCoinbase();
+}
+
+
+export async function ledgerSignMessage(msg) {
+  const publicAddress = await getLedgerPublicAddress();
+  const web3Instance = await getLedgerWeb3();
   const hexData = web3Instance.utils.utf8ToHex(msg);
   const signature = await web3Instance.eth.personal.sign(hexData, publicAddress);
 
