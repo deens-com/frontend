@@ -74,30 +74,32 @@ export default function LocationCart({
   xsBasis,
   mdBasis
 }) {
+  const cart = <Cart withShadow={withShadow} column>
+    <Thumb url={item.image} />
+    <ContentWrap>
+      <Title>
+        <p>{item.title}</p>
+      </Title>
+      <Excerpt>{item.excerpt}</Excerpt>
+      {item.type &&
+        <Location>
+          <PinIcon />
+          {item.location}
+        </Location>
+      }
+      <Rating
+        marginBottom="25px"
+        rating={item.rating}
+        count={item.reviewCount}
+      />
+      <Label>Starting from</Label>
+      <PriceTag price={item.price} />
+    </ContentWrap>
+  </Cart>
   return (
     <Col xsBasis={xsBasis} mdBasis={mdBasis} smBasis={smBasis}>
-      <Cart withShadow={withShadow} column>
-        <Thumb url={item.image} />
-        <ContentWrap>
-          <Title>
-            <p>{item.title}</p>
-          </Title>
-          <Excerpt>{item.excerpt}</Excerpt>
-          {item.type &&
-            <Location>
-              <PinIcon />
-              {item.location}
-            </Location>
-          }
-          <Rating
-            marginBottom="25px"
-            rating={item.rating}
-            count={item.reviewCount}
-          />
-          <Label>Starting from</Label>
-          <PriceTag price={item.price} />
-        </ContentWrap>
-      </Cart>
+      {href && <Link to={href}>{cart}</Link>}
+      {!href && cart}
     </Col>
   );
 }

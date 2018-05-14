@@ -202,6 +202,10 @@ const TripsWrap = styled.div`
     margin-bottom: 35px;
     font-size: 28px;
   }
+
+  .slick-track {
+    margin: 0;
+  }
 `;
 
 const ActionWrap = styled.div`
@@ -392,7 +396,7 @@ export default function FoodDetailScene(props) {
                     withShadow
                     key={trip.title}
                     size="small"
-                    href={"/trip/" + trip.objectId}
+                    href={"/trips/" + trip.objectId}
                   />
                 ))}
               </Carousel>
