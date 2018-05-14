@@ -112,12 +112,11 @@ export const addServiceToTrip = trip => async (dispatch, getState) => {
     await Parse.Cloud.run('addServiceToTrip', { serviceId: service.objectId, tripId: trip.objectId });
     fetch_service(service.objectId)(dispatch);
     setAddedToTripMessage(trip.title)(dispatch);
-    alert(`Service added in ${trip.title}`);
   } catch (error) {
     console.error(error);
     if (error.code === 141) {
       // parse error
-      alert(error.message.message);
+      console.error('error running parse function', error.message.message);
     }
   }
 };
@@ -138,12 +137,11 @@ export const createNewTrip = () => async (dispatch, getState) => {
     });
     fetch_service(service.objectId)(dispatch);
     setAddedToTripMessage(newTripTitle)(dispatch);
-    alert(`Service added in ${newTripTitle}`);
   } catch (error) {
     console.error(error);
     if (error.code === 141) {
       // parse error
-      alert(error.message.message);
+      console.error('error running parse function', error.message.message);
     }
   }
 };
