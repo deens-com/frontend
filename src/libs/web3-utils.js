@@ -26,17 +26,21 @@ export async function getWeb3() {
   return _web3Instance;
 }
 
+let _ledgerWeb3Instance;
 export async function getLedgerWeb3() {
-  const engine = new ProviderEngine();
-  const getTransport = () => TransportU2F.create();
-  const ledger = createLedgerSubprovider(getTransport, {
-    networkId,
-    accountsLength: 5
-  });
-  engine.addProvider(ledger);
-  engine.addProvider(new FetchSubprovider({ rpcUrl }));
-  engine.start();
-  return new Web3(engine);
+  if (!_ledgerWeb3Instance) {
+    const engine = new ProviderEngine();
+    const getTransport = () => TransportU2F.create();
+    const ledger = createLedgerSubprovider(getTransport, {
+      networkId,
+      accountsLength: 5
+    });
+    engine.addProvider(ledger);
+    engine.addProvider(new FetchSubprovider({ rpcUrl }));
+    engine.start();
+    _ledgerWeb3Instance = new Web3(engine);
+  }
+  return _ledgerWeb3Instance;
 }
 
 /**
@@ -70,18 +74,24 @@ export async function signMessage(msg) {
 }
 
 
+const promisify = (inner) =>
+  new Promise((resolve, reject) =>
+    inner((err, res) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(res);
+      }
+    })
+);
 
 export async function getLedgerPublicAddress() {
   const web3Instance = await getLedgerWeb3();
-  const accounts = await web3Instance.eth.getAccounts();
-  if (!accounts || !accounts.length) {
-    const error = new Error('Please unlock Ledger');
-    error.showToUser = true;
-    throw error;
-  }
+  const accounts = await promisify(cb => web3Instance.eth.getAccounts(cb));
+  if (accounts.length === 0) throw new Error("no accounts found");
+
   return web3Instance.eth.getCoinbase();
 }
-
 
 export async function ledgerSignMessage(msg) {
   const publicAddress = await getLedgerPublicAddress();
