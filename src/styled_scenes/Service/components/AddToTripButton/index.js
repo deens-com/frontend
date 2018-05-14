@@ -37,7 +37,15 @@ export default class AddToTripButton extends React.Component {
   render() {
     const { props } = this;
     const addToTripButton = (
-      <Button type="button" round size="small" iconAfter="arrowDown" theme="mainFilled" text="Add to trip" />
+      <Button
+        type="button"
+        round
+        size="small"
+        iconAfter="arrowDown"
+        theme="mainFilled"
+        text="Add to trip"
+        width="auto"
+      />
     );
     const listComponent = (
       <TripsListInDropDown

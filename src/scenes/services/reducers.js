@@ -6,6 +6,7 @@ const initialState = {
     data: [],
   },
   reviews: [],
+  serviceRecentlyAddedToTripName: null,
 };
 
 export default function ServicesReducer(state = initialState, action = {}) {
@@ -34,6 +35,11 @@ export default function ServicesReducer(state = initialState, action = {}) {
       return {
         ...state,
         userTrips: { isLoading: false, data: action.payload },
+      };
+    case 'SERVICE_RECENTLY_ADDED_TO_TRIP':
+      return {
+        ...state,
+        serviceRecentlyAddedToTripName: action.payload,
       };
     default:
       return state;

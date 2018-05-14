@@ -111,6 +111,7 @@ export const addServiceToTrip = trip => async (dispatch, getState) => {
   try {
     await Parse.Cloud.run('addServiceToTrip', { serviceId: service.objectId, tripId: trip.objectId });
     fetch_service(service.objectId)(dispatch);
+    setAddedToTripMessage(trip.title)(dispatch);
     alert(`Service added in ${trip.title}`);
   } catch (error) {
     console.error(error);
@@ -136,6 +137,7 @@ export const createNewTrip = () => async (dispatch, getState) => {
       tripTitle: newTripTitle,
     });
     fetch_service(service.objectId)(dispatch);
+    setAddedToTripMessage(newTripTitle)(dispatch);
     alert(`Service added in ${newTripTitle}`);
   } catch (error) {
     console.error(error);
@@ -144,4 +146,12 @@ export const createNewTrip = () => async (dispatch, getState) => {
       alert(error.message.message);
     }
   }
+};
+
+/**
+ * Shows "Service added to X trip" for 3 seconds
+ */
+export const setAddedToTripMessage = (tripName) => (dispatch) => {
+  dispatch({ type: 'SERVICE_RECENTLY_ADDED_TO_TRIP', payload: tripName });
+  setTimeout(() => dispatch({ type: 'SERVICE_RECENTLY_ADDED_TO_TRIP', payload: undefined }), 3000);
 };

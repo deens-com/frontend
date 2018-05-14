@@ -31,6 +31,7 @@ import { restaurant } from "../../data/food";
 
 // STYLES
 import { Page, PageContent } from "../../shared_components/layout/Page";
+import { Icon } from "semantic-ui-react";
 
 const DetailWrapper = styled.div`
   width: 100%;
@@ -170,6 +171,7 @@ const HostBlock = styled.div`
 
 const ButtonsWrap = styled.div`
   display: flex;
+  margin-right: 25px;
 
   & div:first-child {
     order: 1;
@@ -234,6 +236,12 @@ const ActionWrap = styled.div`
 const RightAlignedText = styled.span`
   display: block;
   text-align: right;
+`;
+
+const SuccessMessage = styled.p`
+  color: #5FB79E;
+  align-self: flex-end;
+  margin-top: 25px;
 `;
 
 // MODULE
@@ -307,6 +315,7 @@ export default function FoodDetailScene(props) {
                 onTripClick={props.onAddServiceToTrip}
                 onNewTripClick={props.onAddServiceToNewTrip} />
             </ButtonsWrap>
+            {props.serviceRecentlyAddedToTripName && <SuccessMessage>Added to <b>{props.serviceRecentlyAddedToTripName}</b> <Icon name="check circle outline" /></SuccessMessage>}
           </ActionWrap>
           <Media
             query={`(max-width: ${sizes.large})`}
@@ -434,4 +443,5 @@ export default function FoodDetailScene(props) {
 FoodDetailScene.propTypes = {
   myTrips: PropTypes.array,
   onAddServiceToTrip: PropTypes.func.isRequired,
+  serviceRecentlyAddedToTripName: PropTypes.string,
 };

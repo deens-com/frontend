@@ -7,6 +7,10 @@ import { withRouter } from 'react-router';
 import Parse from 'parse';
 
 class ServicesContainer extends Component {
+  state = {
+    recentlyAddedToTrip: undefined,
+  };
+
   componentDidMount() {
     const service_id = this.props.match.params.id;
     this.props.fetch_service(service_id);
@@ -48,6 +52,7 @@ const mapStateToProps = state => {
     trips: state.ServicesReducer.trips,
     reviews: state.ServicesReducer.reviews,
     myTrips: state.ServicesReducer.userTrips.data,
+    serviceRecentlyAddedToTripName: state.ServicesReducer.serviceRecentlyAddedToTripName,
   };
 };
 
