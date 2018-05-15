@@ -238,10 +238,14 @@ const RightAlignedText = styled.span`
   text-align: right;
 `;
 
-const SuccessMessage = styled.p`
+const SuccessMessage = styled(Link)`
   color: #5FB79E;
   align-self: flex-end;
   margin-top: 25px;
+
+  :hover {
+    color: #4ac4a1;
+  }
 `;
 
 // MODULE
@@ -315,7 +319,10 @@ export default function FoodDetailScene(props) {
                 onTripClick={props.onAddServiceToTrip}
                 onNewTripClick={props.onAddServiceToNewTrip} />
             </ButtonsWrap>
-            {props.serviceRecentlyAddedToTripName && <SuccessMessage>Added to <b>{props.serviceRecentlyAddedToTripName}</b> <Icon name="check circle outline" /></SuccessMessage>}
+            {props.serviceRecentlyAddedToTrip && <SuccessMessage to={`/trips/${props.serviceRecentlyAddedToTrip.objectId}`}>
+                Added to <b>{props.serviceRecentlyAddedToTrip.title}</b>
+                <Icon name="check circle outline" />
+              </SuccessMessage>}
           </ActionWrap>
           <Media
             query={`(max-width: ${sizes.large})`}
@@ -443,5 +450,5 @@ export default function FoodDetailScene(props) {
 FoodDetailScene.propTypes = {
   myTrips: PropTypes.array,
   onAddServiceToTrip: PropTypes.func.isRequired,
-  serviceRecentlyAddedToTripName: PropTypes.string,
+  serviceRecentlyAddedToTrip: PropTypes.string,
 };

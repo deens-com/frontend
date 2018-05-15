@@ -6,7 +6,7 @@ const initialState = {
     data: [],
   },
   reviews: [],
-  serviceRecentlyAddedToTripName: null,
+  serviceRecentlyAddedToTrip: null,
 };
 
 export default function ServicesReducer(state = initialState, action = {}) {
@@ -39,7 +39,7 @@ export default function ServicesReducer(state = initialState, action = {}) {
     case 'SERVICE_RECENTLY_ADDED_TO_TRIP':
       return {
         ...state,
-        serviceRecentlyAddedToTripName: action.payload,
+        serviceRecentlyAddedToTrip: action.payload,
       };
     default:
       return state;

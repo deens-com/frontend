@@ -52,7 +52,7 @@ const mapStateToProps = state => {
     trips: state.ServicesReducer.trips,
     reviews: state.ServicesReducer.reviews,
     myTrips: state.ServicesReducer.userTrips.data,
-    serviceRecentlyAddedToTripName: state.ServicesReducer.serviceRecentlyAddedToTripName,
+    serviceRecentlyAddedToTrip: state.ServicesReducer.serviceRecentlyAddedToTrip,
   };
 };
 
