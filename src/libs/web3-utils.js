@@ -7,6 +7,8 @@ import createLedgerSubprovider from "@ledgerhq/web3-subprovider";
 import ProviderEngine from "../node_modules/web3-provider-engine";
 import FetchSubprovider from "../node_modules/web3-provider-engine/subproviders/fetch";
 
+// import ProviderEngine from "web3-provider-engine";
+// import FetchSubprovider from "web3-provider-engine/subproviders/fetch";
 
 /* ganache-cli --networkId 1337 */
 const rpcUrl = process.env.REACT_APP_NETWORK_URL || "http://127.0.0.1:8545";
