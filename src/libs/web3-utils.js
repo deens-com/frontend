@@ -3,12 +3,8 @@ import Web3 from 'web3';
 import TransportU2F from "@ledgerhq/hw-transport-u2f";
 import createLedgerSubprovider from "@ledgerhq/web3-subprovider";
 
-/* https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#npm-run-build-fails-to-minify */
-import ProviderEngine from "../node_modules/web3-provider-engine";
-import FetchSubprovider from "../node_modules/web3-provider-engine/subproviders/fetch";
-
-// import ProviderEngine from "web3-provider-engine";
-// import FetchSubprovider from "web3-provider-engine/subproviders/fetch";
+import ProviderEngine from "web3-provider-engine/dist/es5";
+import FetchSubprovider from "web3-provider-engine/dist/es5/subproviders/fetch";
 
 /* ganache-cli --networkId 1337 */
 const rpcUrl = process.env.REACT_APP_NETWORK_URL || "http://127.0.0.1:8545";
