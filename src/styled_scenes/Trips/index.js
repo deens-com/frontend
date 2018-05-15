@@ -260,7 +260,11 @@ export default class TripsScene extends Component {
                 onValueChange={this.onValueChange}
                 state={this.state}
               />
-              <Results showDetails={this.state.details} tripData={this.props.trip.organization} />
+              <Results
+                showDetails={this.state.details}
+                scheduledServices={this.props.scheduledServices}
+                unScheduledServices={this.props.unScheduledServices}
+              />
               <Hr />
               <Summary data={trip} />
             </TripWrapper>
@@ -273,4 +277,7 @@ export default class TripsScene extends Component {
 }
 
 // Props Validation
-TripsScene.propTypes = {};
+TripsScene.propTypes = {
+  scheduledServices: PropTypes.array,
+  unScheduledServices: PropTypes.array,
+};

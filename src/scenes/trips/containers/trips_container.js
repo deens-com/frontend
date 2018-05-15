@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import TripsComponent from './../components/trips_component';
 import * as trips_actions from './../actions';
+import * as selectors from '../selectors';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -18,6 +19,8 @@ class TripsContainer extends Component {
 const mapStateToProps = state => {
   return {
     trip: state.TripsReducer.trip,
+    scheduledServices: selectors.getScheduledServices(state),
+    unScheduledServices: selectors.getUnScheduledServices(state),
   };
 };
 
