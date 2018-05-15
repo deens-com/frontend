@@ -7,7 +7,9 @@ import UserBasicInfo from './../components/UserBasicInfo';
 const AccountSettingsScene = props => {
   const isMetaMaskInstalled = props.hasMetaMask();
   const publicAddrAlreadyPresent = !!(props.user_profile && props.user_profile.publicAddress);
+  const ledgerPublicAddrAlreadyPresent = !!(props.user_profile && props.user_profile.ledgerPublicAddress);
   const metaMaskButtonTxt = publicAddrAlreadyPresent ? 'MetaMask Connected' : 'Connect MetaMask';
+  const ledgerButtonTxt = ledgerPublicAddrAlreadyPresent ? 'Ledger Connected' : 'Connect Ledger';
   return (
     <Grid centered columns={2}>
       <Grid.Column mobile={16} tablet={5} computer={4}>
@@ -35,7 +37,7 @@ const AccountSettingsScene = props => {
           color="green"
           onClick={props.ledgerSignData}
         >
-          {metaMaskButtonTxt}
+          {ledgerButtonTxt}
         </Button>
       </Grid.Column>
     </Grid>

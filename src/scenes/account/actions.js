@@ -108,7 +108,7 @@ export const signData = () => async dispatch => {
   const data = 'please';
   try {
     const { signature } = await signMessage(data);
-    const userObj = await Parse.Cloud.run('storePublicAddress', { signature });
+    const userObj = await Parse.Cloud.run('storePublicAddress', { signature: signature, type: "metamask" });
     dispatch(user_profile_fetched({ user_profile: fetch_helpers.normalizeParseResponseData(userObj) }));
   } catch (error) {
     console.error(error);
@@ -130,9 +130,8 @@ export const ledgerSignData = () => async dispatch => {
   const data = 'please';
   try {
     const { signature } = await ledgerSignMessage(data);
-    console.log(signature);
-    //const userObj = await Parse.Cloud.run('storeLedgerPublicAddress', { signature });
-    //dispatch(user_profile_fetched({ user_profile: fetch_helpers.normalizeParseResponseData(userObj) }));
+    const userObj = await Parse.Cloud.run('storePublicAddress', { signature: signature, type: "ledger" });
+    dispatch(user_profile_fetched({ user_profile: fetch_helpers.normalizeParseResponseData(userObj) }));
   } catch (error) {
     console.error(error);
     // if (error.showToUser) {
