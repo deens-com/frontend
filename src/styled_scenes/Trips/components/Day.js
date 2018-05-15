@@ -100,12 +100,13 @@ export default class TripDay extends Component {
 
   render() {
     // console.log('this.state', this.state);
-    const { day, index } = this.props;
+    const { day } = this.props;
+    const dayTitle = day.day === 'null' ? 'Unscheduled' : `Day ${day.day}`;
     return (
       <Wrap>
         <Header>
           <DayTitle>
-            <DayTag>Day {index + 1}</DayTag>
+            <DayTag>{dayTitle}</DayTag>
             <Mute>{day.date}</Mute>
           </DayTitle>
           <DayButtons>

@@ -1,17 +1,14 @@
-import React, { Component } from "react";
-import TripsComponent from "./../components/trips_component";
-import * as trips_actions from "./../actions";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import React, { Component } from 'react';
+import TripsComponent from './../components/trips_component';
+import * as trips_actions from './../actions';
+import * as selectors from '../selectors';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 class TripsContainer extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     const trip_id = this.props.match.params.id;
-    this.props.fetch_trip(trip_id);
+    this.props.fetchTrip(trip_id);
   }
 
   render() {
@@ -21,7 +18,9 @@ class TripsContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    trip: state.TripsReducer.trip
+    trip: state.TripsReducer.trip,
+    scheduledServices: selectors.getScheduledServices(state),
+    unScheduledServices: selectors.getUnScheduledServices(state),
   };
 };
 
