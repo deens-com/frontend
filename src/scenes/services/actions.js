@@ -22,6 +22,8 @@ export const service_fetched = service => {
   };
 };
 
+export const userTripsFetchStart = () => ({ type: 'USER_TRIPS_FETCH' });
+export const userTripsFetchFinish = trips => ({ type: 'USER_TRIPS_FETCH_FINISH', payload: trips });
 
 export const fetch_service = (service_id) => {
   return dispatch => {
@@ -91,4 +93,63 @@ export const fetch_service = (service_id) => {
       }
     );
   };
+};
+
+
+export const fetchMyTrips = () => async (dispatch, getState) => {
+  const state = getState();
+  if (state.ServicesReducer.userTrips.isLoading) return;
+  dispatch(userTripsFetchStart());
+  const trips = await Parse.Cloud.run('getMyTrips');
+  const normalizedTrips = fetch_helpers.normalizeParseResponseData(trips);
+  dispatch(userTripsFetchFinish(normalizedTrips));
+};
+
+export const addServiceToTrip = trip => async (dispatch, getState) => {
+  const state = getState();
+  const { service } = state.ServicesReducer;
+  try {
+    await Parse.Cloud.run('addServiceToTrip', { serviceId: service.objectId, tripId: trip.objectId });
+    fetch_service(service.objectId)(dispatch);
+    setAddedToTripMessage(trip)(dispatch);
+  } catch (error) {
+    console.error(error);
+    if (error.code === 141) {
+      // parse error
+      console.error('error running parse function', error.message.message);
+    }
+  }
+};
+
+export const createNewTrip = () => async (dispatch, getState) => {
+  const state = getState();
+  const { service } = state.ServicesReducer;
+  if (!service) {
+    console.error('No service found');
+    return;
+  }
+
+  try {
+    const newTripTitle = `Trip to ${service.country}`;
+    const { trip } = await Parse.Cloud.run('addServiceToNewTrip', {
+      serviceId: service.objectId,
+      tripTitle: newTripTitle,
+    });
+    fetch_service(service.objectId)(dispatch);
+    setAddedToTripMessage(trip)(dispatch);
+  } catch (error) {
+    console.error(error);
+    if (error.code === 141) {
+      // parse error
+      console.error('error running parse function', error.message.message);
+    }
+  }
+};
+
+/**
+ * Shows "Service added to X trip" for 3 seconds
+ */
+export const setAddedToTripMessage = trip => dispatch => {
+  dispatch({ type: 'SERVICE_RECENTLY_ADDED_TO_TRIP', payload: trip });
+  setTimeout(() => dispatch({ type: 'SERVICE_RECENTLY_ADDED_TO_TRIP', payload: undefined }), 10000); // 10 s
 };

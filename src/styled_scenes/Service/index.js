@@ -23,6 +23,7 @@ import Button from "../../shared_components/Button";
 import ImgSlider from "./components/ImgSlider";
 import MapMaker from "../../shared_components/MapMarker";
 import UserAvatar from '../../shared_components/UserAvatar';
+import AddToTripButton from './components/AddToTripButton';
 
 // ACTIONS/CONFIG
 import { media, sizes } from "../../libs/styled";
@@ -30,6 +31,7 @@ import { restaurant } from "../../data/food";
 
 // STYLES
 import { Page, PageContent } from "../../shared_components/layout/Page";
+import { Icon } from "semantic-ui-react";
 
 const DetailWrapper = styled.div`
   width: 100%;
@@ -169,6 +171,7 @@ const HostBlock = styled.div`
 
 const ButtonsWrap = styled.div`
   display: flex;
+  margin-right: 25px;
 
   & div:first-child {
     order: 1;
@@ -233,6 +236,16 @@ const ActionWrap = styled.div`
 const RightAlignedText = styled.span`
   display: block;
   text-align: right;
+`;
+
+const SuccessMessage = styled(Link)`
+  color: #5FB79E;
+  align-self: flex-end;
+  margin-top: 25px;
+
+  :hover {
+    color: #4ac4a1;
+  }
 `;
 
 // MODULE
@@ -301,18 +314,15 @@ export default function FoodDetailScene(props) {
                 text="Book now"
                 theme="textGreen"
               />
-              <Button
-                type="button"
-                round
-                size="small"
-                iconAfter="arrowDown"
-                onClick={ev => {
-                  alert("Adding to trip");
-                }}
-                theme="mainFilled"
-                text="Add to trip"
-              />
+              <AddToTripButton 
+                trips={props.myTrips}
+                onTripClick={props.onAddServiceToTrip}
+                onNewTripClick={props.onAddServiceToNewTrip} />
             </ButtonsWrap>
+            {props.serviceRecentlyAddedToTrip && <SuccessMessage to={`/trips/${props.serviceRecentlyAddedToTrip.objectId}`}>
+                Added to <b>{props.serviceRecentlyAddedToTrip.title}</b>
+                <Icon name="check circle outline" />
+              </SuccessMessage>}
           </ActionWrap>
           <Media
             query={`(max-width: ${sizes.large})`}
@@ -437,4 +447,8 @@ export default function FoodDetailScene(props) {
 }
 
 // Props Validation
-FoodDetailScene.propTypes = {};
+FoodDetailScene.propTypes = {
+  myTrips: PropTypes.array,
+  onAddServiceToTrip: PropTypes.func.isRequired,
+  serviceRecentlyAddedToTrip: PropTypes.string,
+};
