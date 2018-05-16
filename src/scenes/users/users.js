@@ -1,6 +1,5 @@
 import React from "react";
 import UsersContainer from "./containers/users_container";
-import history from "./../../main/history";
 
 const Users = props => {
   return (

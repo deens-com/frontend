@@ -1,11 +1,8 @@
 // NPM
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 
 // COMPONENTS
-import Col from "../../../shared_components/layout/Col";
-import Row from "../../../shared_components/layout/Row";
 import Button from "../../../shared_components/Button";
 import DetailCart from "../../../shared_components/Carts/DetailCart";
 import DropPicker from "../../../shared_components/DropPicker";

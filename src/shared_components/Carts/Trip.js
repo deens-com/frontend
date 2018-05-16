@@ -2,10 +2,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 
 // COMPONENTS
-import Col from "../layout/Col";
 import Rating from "../Rating";
 import PriceTag from "./components/PriceTag";
 import Thumb from "./components/Thumb";

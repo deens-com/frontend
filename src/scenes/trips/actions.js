@@ -41,5 +41,6 @@ export const fetchTrip = tripId => async dispatch => {
 
 /* https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_groupby */
 function groupBy(xs, f) {
+  // eslint-disable-next-line
   return xs.reduce((r, v, i, a, k = f(v)) => ((r[k] || (r[k] = [])).push(v), r), {});
 }

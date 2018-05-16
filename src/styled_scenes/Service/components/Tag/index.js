@@ -1,11 +1,7 @@
 // NPM
 import React from "react";
 import PropTypes from "prop-types";
-import styled, { css } from "styled-components";
-import { Link } from "react-router-dom";
-
-// COMPONENTS
-import WihtColumn from "./WithColumn";
+import styled from "styled-components";
 
 // ACTIONS/CONFIG
 import { media } from "../../../../libs/styled";
@@ -73,7 +69,6 @@ const Wrap = styled.div`
 
 // MODULE
 export default function CategoryTag(props) {
-  const label_name = props.item.label.toLowerCase();
   return (
     <Wrap
       size={props.size}
