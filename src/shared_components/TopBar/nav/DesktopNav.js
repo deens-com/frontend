@@ -6,14 +6,12 @@ import styled, { css } from "styled-components";
 import Media from "react-media";
 
 // COMPONENTS
-import Button from "../../Button";
 import Select from "../../Form/controls/Select";
-import FlagSelect from "../../FlagSelect";
 import DropDownMenu from "./DropDownMenu";
 
 // ACTIONS/CONFIG
 import { sizes } from "../../../libs/styled";
-import { mainNav, languages, currencies } from "../../../data/nav";
+import { mainNav, currencies } from "../../../data/nav";
 
 // STYLES
 const Wrap = styled.div`

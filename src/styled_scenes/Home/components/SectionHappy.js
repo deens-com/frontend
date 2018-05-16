@@ -78,7 +78,7 @@ export default function HomeSectionHappy({ categories }) {
                 <Cart withShadow>
                   <CartLink to={item.href}>
                     <CategoryThumb>
-                      <img src={process.env.PUBLIC_URL + item.img} />
+                      <img src={process.env.PUBLIC_URL + item.img} alt=""/>
                     </CategoryThumb>
                     <TagCategory>{item.label}</TagCategory>
                     <CategoryArrow>

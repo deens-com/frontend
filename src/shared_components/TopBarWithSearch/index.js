@@ -87,6 +87,7 @@ export default class TopBar extends Component {
     return (
       <div>
         <InnerWrap
+          // eslint-disable-next-line
           role="baner"
           showShadow={fixed && !showMenu}
           showMenu={showMenu}

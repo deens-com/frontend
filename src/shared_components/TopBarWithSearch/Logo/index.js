@@ -2,11 +2,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import Media from "react-media";
 
 // COMPONENTS
-import Button from "../../../shared_components/Button";
 import { Logo, DropArrow } from "../../../shared_components/icons";
 
 // ACTIONS/CONFIG

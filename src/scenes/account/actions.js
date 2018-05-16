@@ -85,6 +85,7 @@ export const fetch_user_trips = (owner_id, trip_state) => {
                 dispatch(planned_trips_fetched({ planned_trips: formatted_trip }));
               }
             })
+            return true;
           })
         },
         error => {
