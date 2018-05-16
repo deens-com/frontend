@@ -12,6 +12,11 @@ export const languages = [
 ];
 
 export const currencies = [
+  { value: "USD", label: "$" },
   { value: "EUR", label: "€" },
-  { value: "USD", label: "$" }
+  { value: "JPY", label: "¥" },
+  { value: "GBP", label: "£" },
+  { value: "BTC", label: "Ƀ" },
+  { value: "ETH", label: "Ξ" },
+  { value: "PLS", label: "PLS" }
 ];

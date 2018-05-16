@@ -7,12 +7,12 @@ import Media from "react-media";
 
 // COMPONENTS
 import Button from "../../../../../shared_components/Button";
-import Select from "../../../../../shared_components/Form/controls/Select";
 import FlagSelect from "../../../../../shared_components/FlagSelect";
+import CurrencySelector from "../../../shared_components/CurrencySelector";
 
 // ACTIONS/CONFIG
 import { sizes } from "../../../../../libs/styled";
-import { mainNav, languages, currencies } from "../../../../../data/nav";
+import { mainNav, languages } from "../../../../../data/nav";
 
 // STYLES
 const Wrap = styled.div`
@@ -115,30 +115,7 @@ export default function TopBarDesktopNav(props) {
             ))}
           </Nav>
           <ActionsWrap>
-            {/*<FlagSelect
-              countries={["US", "GB", "FR", "DE", "IT"]}
-              customLabels={{
-                US: "EN-US",
-                GB: "EN-GB",
-                FR: "FR",
-                DE: "DE",
-                IT: "IT"
-              }}
-              placeholder="Select Language"
-              showSelectedLabel={false}
-              defaultCountry="US"
-              onSelect={countryCode => {
-                console.log(countryCode);
-              }}
-            />*/}
-            <Select
-              onChange={val => {
-                console.log(val);
-              }}
-              value="EUR"
-              options={currencies}
-              theme={props.home ? "light" : "inherit"}
-            />
+            <CurrencySelector />
             <Button type="link" theme="white" round size="small" href="/login">
               Login
             </Button>
