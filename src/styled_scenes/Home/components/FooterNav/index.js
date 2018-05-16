@@ -1,11 +1,9 @@
 // NPM
 import React from "react";
-import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 // COMPONENTS
-import Row from "../../../../shared_components/layout/Row";
 import Col from "../../../../shared_components/layout/Col";
 
 // ACTIONS/CONFIG
@@ -38,6 +36,7 @@ const List = styled.ul`
 `;
 
 // MODULE
+// eslint-disable-next-line
 export default function HomeFooter({}) {
   return (
     <Wrap flex margin="0 0 50px">

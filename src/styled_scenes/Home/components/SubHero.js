@@ -1,6 +1,5 @@
 // NPM
 import React from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 
 // COMPONENTS
@@ -66,6 +65,7 @@ const SubBG = styled.div`
 `;
 
 // MODULE
+// eslint-disable-next-line
 export default function SubHero({}) {
   return (
     <Wrap>

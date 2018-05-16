@@ -1,14 +1,10 @@
 // NPM
 import React from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 
 // COMPONENTS
 import Carousel from "../../../shared_components/Carousel";
 import Tag from "./Tag";
-
-// ACTIONS/CONFIG
-import { tags } from "../../../data/food";
 
 // STYLES
 const Wrap = styled.div`

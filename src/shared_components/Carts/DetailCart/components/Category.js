@@ -1,6 +1,5 @@
 // NPM
 import React from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 
 // COMPONENTS
@@ -55,6 +54,8 @@ const getIcon = function(name) {
       return <PlaceIcon style={{ fill: "#82689a" }} />;
     case "activity":
       return <ActivityIcon style={{ fill: "#7ba8d6" }} />;
+    default:
+      return false;
   }
 };
 

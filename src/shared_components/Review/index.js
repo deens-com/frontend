@@ -1,6 +1,5 @@
 // NPM
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
@@ -71,7 +70,7 @@ export default function ReviewCart({ review }) {
       <ProfileWrap>
         <Link to={reviewerProfileLink}>
           <Avatar>
-            <img src={review.reviewer.profilePicture ? review.reviewer.profilePicture.url : "https://dummyimage.com/60x40/000/fff"} />
+            <img src={review.reviewer.profilePicture ? review.reviewer.profilePicture.url : "https://dummyimage.com/60x40/000/fff"} alt=""/>
           </Avatar>
         </Link>
         <Profile>

@@ -1,6 +1,5 @@
 // NPM
 import React from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 
 // COMPONENTS
@@ -27,6 +26,7 @@ const Wrap = styled.div`
 `;
 
 // MODULE
+// eslint-disable-next-line
 export default function MobileHero({}) {
   return <Wrap />;
 }

@@ -1,6 +1,5 @@
 // NPM
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 
 // COMPONENTS
@@ -8,9 +7,6 @@ import Button from "../../../shared_components/Button";
 import { FilterIcon } from "../../../shared_components/icons";
 import Form from "../../../shared_components/Form";
 import FormControl from "../../../shared_components/Form/FormControl";
-
-// ACTIONS/CONFIG
-import { media } from "../../../libs/styled";
 
 // STYLES
 const WrapTrigger = styled.div`
@@ -56,7 +52,6 @@ export default class MobileFilter extends Component {
   }
 
   toggleFilters() {
-    const { showFilters } = this.state;
     this.setState({ showFilters: !this.state.showFilters });
   }
 
