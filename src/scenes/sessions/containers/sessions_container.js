@@ -105,7 +105,9 @@ class SessionsContainer extends Component {
           isLoginError={this.isLoginError}
           loginError={this.props.loginError}
           loginWithMetamask={this.props.loginWithMetamask}
+          loginWithLedger={this.props.loginWithLedger}
           metaMaskError={this.props.metaMaskError}
+          ledgerError={this.props.ledgerError}
         />
       </div>
     );
@@ -117,6 +119,7 @@ const mapStateToProps = state => {
     session: state.SessionsReducer.session,
     loginError: state.SessionsReducer.loginError,
     metaMaskError: state.SessionsReducer.metaMaskError,
+    ledgerError: state.SessionsReducer.ledgerError
   };
 };
 

@@ -4,6 +4,7 @@ const initialState = {
   session: {},
   loginError: {},
   metaMaskError: {},
+  ledgerError: {}
 };
 
 export default function SessionsReducer(state = initialState, action = {}) {
@@ -23,6 +24,11 @@ export default function SessionsReducer(state = initialState, action = {}) {
       return {
         ...state,
         metaMaskError: action.payload,
+      }
+    case sessions_actions.types.LEDGER_ERROR:
+      return {
+        ...state,
+        ledgerError: action.payload,
       }
     default:
       return state;

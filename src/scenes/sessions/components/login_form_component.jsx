@@ -108,6 +108,22 @@ const LoginFormComponent = props => {
                   Login with MetaMask
                   </Button>
                 </WithTopMargin>
+
+                <WithTopMargin>
+                  {displayErrorMessage(
+                    !!props.ledgerError.message,
+                    props.ledgerError.message
+                  )}
+                  <Button
+                    color="green"
+                    fluid
+                    size="large"
+                    onClick={props.loginWithLedger}
+                  >
+                  Login with Ledger
+                  </Button>
+                </WithTopMargin>
+
                 <Message>
                   New to us? <Link to="/register">Sign Up</Link>
                 </Message>
@@ -135,6 +151,7 @@ LoginFormComponent.propTypes = {
   handleInputChange: PropTypes.func,
   loginWithMetamask: PropTypes.func.isRequired,
   metaMaskError: PropTypes.object,
+  ledgerError: PropTypes.object
 };
 
 export default LoginFormComponent;
