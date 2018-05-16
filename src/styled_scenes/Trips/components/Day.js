@@ -1,6 +1,7 @@
 // NPM
 import React, { Component } from "react";
 import styled from "styled-components";
+import { Droppable } from "react-beautiful-dnd";
 
 // COMPONENTS
 import Button from "../../../shared_components/Button";
@@ -160,17 +161,17 @@ export default class TripDay extends Component {
             /> */}
           </DayButtons>
         </Header>
-        <div>
-          {day.services.map(item => (
-            <div key={item.description}>
-              <DetailCart
-                item={item}
-                opening={this.state.opening}
-                closing={this.state.closing}
-              />
+        <Droppable droppableId={`day-${day.day}`}>
+          {(provided, snapshot) => (
+            <div ref={provided.innerRef}>
+              {day.services.map(item => (
+                <div key={item.description}>
+                  <DetailCart item={item} opening={this.state.opening} closing={this.state.closing} />
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          )}
+        </Droppable>
       </Wrap>
     );
   }

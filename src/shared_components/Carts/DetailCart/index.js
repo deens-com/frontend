@@ -1,21 +1,23 @@
 // NPM
-import React, { Component } from "react";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Draggable } from 'react-beautiful-dnd';
 
 // COMPONENTS
-import ExcerptCart from "./ExcerptCart";
-import FullCart from "./FullCart";
+import ExcerptCart from './ExcerptCart';
+import FullCart from './FullCart';
 
 // ACTIONS/CONFIG
 
 // STYLES
-import { Cart } from "../styles";
+import { Cart } from '../styles';
 
 // MODULE
 export default class DetailCart extends Component {
   constructor() {
     super();
     this.state = {
-      expanded: false
+      expanded: false,
     };
     this.toggleExpansion = this.toggleExpansion.bind(this);
   }
@@ -34,23 +36,27 @@ export default class DetailCart extends Component {
   }
 
   render() {
+    const { props } = this;
     return (
-      <Cart withShadow column>
-        {this.state.expanded ? (
-          <FullCart
-            data={this.props.item}
-            toggleExpansion={this.toggleExpansion}
-          />
-        ) : (
-          <ExcerptCart
-            data={this.props.item}
-            toggleExpansion={this.toggleExpansion}
-          />
+      <Draggable key={props.item.objectId} draggableId={props.item.objectId} index={props.index}>
+        {(provided, snapshot) => (
+          <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+            <Cart withShadow column>
+              {this.state.expanded ? (
+                <FullCart data={this.props.item} toggleExpansion={this.toggleExpansion} />
+              ) : (
+                <ExcerptCart data={this.props.item} toggleExpansion={this.toggleExpansion} />
+              )}
+            </Cart>
+          </div>
         )}
-      </Cart>
+      </Draggable>
     );
   }
 }
 
 // Props Validation
-DetailCart.propTypes = {};
+DetailCart.propTypes = {
+  index: PropTypes.number.isRequired,
+  item: PropTypes.object.isRequired,
+};

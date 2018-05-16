@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { DragDropContext } from "react-beautiful-dnd";
 
 // COMPONENTS
 import Col from '../../../shared_components/layout/Col';
@@ -29,6 +30,10 @@ const Wrap = styled.div`
     padding: 25px;
   }
 `;
+
+function onDragEnd(result) {
+  console.log('onDragEnd', result);
+}
 
 // MODULE
 export default function Results({ showDetails, scheduledServices, unScheduledServices }) {
@@ -58,7 +63,9 @@ export default function Results({ showDetails, scheduledServices, unScheduledSer
         </Header>
       )}
       {showDetails ? (
-        services
+        <DragDropContext onDragEnd={onDragEnd}>
+          {services}
+        </DragDropContext>
       ) : (
         <Row>
           {tripsData.map(item => (
