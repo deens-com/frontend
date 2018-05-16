@@ -1,10 +1,6 @@
 export default class Utils {
-  static getBaseSymbol(currency = "EUR") {
+  static getBaseSymbol(currency = "USD") {
     switch (currency) {
-      case "AUD":
-        return "$";
-      case "CAD":
-        return "C$";
       case "EUR":
         return "€";
       case "GBP":
@@ -13,6 +9,12 @@ export default class Utils {
         return "¥";
       case "USD":
         return "$";
+      case "BTC":
+        return "Ƀ";
+      case "ETH":
+        return "Ξ";
+      case "PLS":
+        return "PLS";
       default:
         return "$";
     }

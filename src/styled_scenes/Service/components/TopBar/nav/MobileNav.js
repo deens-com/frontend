@@ -6,12 +6,12 @@ import { Link } from "react-router-dom";
 import Media from "react-media";
 
 // COMPONENTS
-import Select from "../../../../../shared_components/Form/controls/Select";
 import FlagSelect from "../../../../../shared_components/FlagSelect";
+import CurrencySelector from "../../../shared_components/CurrencySelector";
 
 // ACTIONS/CONFIG
 import { sizes } from "../../../../../libs/styled";
-import { mainNav, languages, currencies } from "../../../../../data/nav";
+import { mainNav, languages } from "../../../../../data/nav";
 
 // STYLES
 const Wrap = styled.div`
@@ -127,31 +127,7 @@ export default function MobileNav({ menuIsOpened, language, currency }) {
               <Divider />
             </li>
             <li>
-              {/*<FlagSelect
-                countries={["US", "GB", "FR", "DE", "IT"]}
-                customLabels={{
-                  US: "EN-US",
-                  GB: "EN-GB",
-                  FR: "FR",
-                  DE: "DE",
-                  IT: "IT"
-                }}
-                placeholder="Select Language"
-                showSelectedLabel={false}
-                defaultCountry="US"
-                onSelect={countryCode => {
-                  console.log(countryCode);
-                }}
-              />*/}
-            </li>
-            <li>
-              <Select
-                onChange={val => {
-                  console.log(val);
-                }}
-                value="EUR"
-                options={currencies}
-              />
+              <CurrencySelector />
             </li>
             <li aria-hidden="true">
               <Divider />
