@@ -1,6 +1,5 @@
 // NPM
 import React from "react";
-import PropTypes from "prop-types";
 import Media from "react-media";
 import styled from "styled-components";
 import GoogleMapReact from "google-map-react";

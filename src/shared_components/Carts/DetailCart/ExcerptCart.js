@@ -1,13 +1,10 @@
 // NPM
 import React from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 
 // COMPONENTS
 import Price from "./components/Price";
 import Button from "../../Button";
-import Row from "../../layout/Row";
-import Col from "../../layout/Col";
 import Category from "./components/Category";
 import Description from "./components/Description";
 import Detail from "./components/Detail";

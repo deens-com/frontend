@@ -1,19 +1,15 @@
 // NPM
 import React, {Component} from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
-import Media from "react-media";
 
 import fetch_helpers from "./../../../libs/fetch_helpers";
 import Parse from "parse";
 // COMPONENTS
 import Button from "../../../shared_components/Button";
 // COMMENT: the homeSearch is just for the time being
-import HomeSearch from "../../../styled_scenes/Home/components/HomeSearch";
 import { Image } from 'semantic-ui-react';
 
 // ACTIONS/CONFIG
-import { sizes, media } from "../../../libs/styled";
 import { Dropdown } from 'semantic-ui-react';
 
 import history from "./../../../main/history";

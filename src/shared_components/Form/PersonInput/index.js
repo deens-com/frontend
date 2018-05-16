@@ -1,17 +1,9 @@
 // NPM
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 import Select from "../controls/Select";
 
-// COMPONENTS
-import { PlusIcon, MinusIcon } from "./icons";
-
 // ACTIONS/CONFIG
-
-// STYLES
-import { InputControl } from "../controls/styles";
-import { Overlay, Button, Value } from "./styles";
 
 const Wrapper = styled.div`
   position: relative;

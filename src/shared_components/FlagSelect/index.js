@@ -134,7 +134,7 @@ class FlagsSelect extends Component {
                 height: `${selectedSize}px`
               }}
             >
-              <img src={require(`./flags/${isSelected.toLowerCase()}.svg`)} />
+              <img src={require(`./flags/${isSelected.toLowerCase()}.svg`)} alt=""/>
               {this.props.showSelectedLabel && (
                 <span className="country-label">
                   {this.props.customLabels[isSelected] || countries[isSelected]}
@@ -187,6 +187,7 @@ class FlagsSelect extends Component {
                 >
                   <img
                     src={require(`./flags/${countryCode.toLowerCase()}.svg`)}
+                    alt=""
                   />
                   {this.props.showOptionLabel && (
                     <span className="country-label">

@@ -68,7 +68,7 @@ export default function ReviewCart({ title, rating, message, city, country, name
       <ProfileWrap>
         <Link to={link}>
         <Avatar>
-          <img src={image || 'https://dummyimage.com/60x40/000/fff'} />
+          <img src={image || 'https://dummyimage.com/60x40/000/fff'} alt=""/>
         </Avatar>
         </Link>
         <Profile>

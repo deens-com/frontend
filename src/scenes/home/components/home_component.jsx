@@ -1,6 +1,5 @@
 // NPM
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React from "react";
 import styled from "styled-components";
 import Media from "react-media";
 
@@ -11,7 +10,6 @@ import HomeSearch from "./../../../styled_scenes/Home/components/HomeSearch";
 import BrandFooter from "./../../../shared_components/BrandFooter";
 import FooterNav from "./../../../styled_scenes/Home/components/FooterNav";
 import MobileHero from "./../../../styled_scenes/Home/components/MobileHero";
-import Button from "./../../../shared_components/Button";
 import HeroSlider from "./../../../styled_scenes/Home/components/HeroSlider";
 import SectionActivities from "./../../../styled_scenes/Home/components/SectionActivities";
 import SectionFood from "./../../../styled_scenes/Home/components/SectionFood";
@@ -21,12 +19,7 @@ import SectionPlaces from "./../../../styled_scenes/Home/components/SectionPlace
 import SectionTrips from "./../../../styled_scenes/Home/components/SectionTrips";
 
 // ACTIONS/CONFIG
-import {
-  categories,
-  tags,
-  activitiesData,
-  foodData
-} from "./../../../data/home";
+import { categories } from "./../../../data/home";
 import { sizes, media } from "./../../../libs/styled";
 
 // STYLES

@@ -4,13 +4,7 @@ import * as results_actions from "./../actions";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
-const service_types_list = ["activity", "food", "place", "trip"];
-
 class ResultsContainer extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     let search_query = {
       type: this.props.service_types,

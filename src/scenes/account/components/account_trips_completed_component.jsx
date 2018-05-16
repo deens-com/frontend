@@ -1,17 +1,12 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import AccountTripsCompletedScene from './../../../styled_scenes/Account/Trips/Completed';
-import { Page, PageContent, PageWrapper } from './../../../shared_components/layout/Page';
+import { Page, PageContent } from './../../../shared_components/layout/Page';
 import TopBar from '../../../shared_components/TopBarWithSearch';
 import * as account_actions from "./../actions";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 class AccountTripsCompletedComponent extends Component{
-
-  constructor(props){
-    super(props);
-  }
 
   componentDidMount(){
     if(this.props.user_profile){

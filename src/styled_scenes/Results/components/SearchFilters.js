@@ -1,6 +1,5 @@
 // NPM
 import React, {Component} from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 
 import LocationFormControl from "../../../shared_components/Form/LocationControl";
@@ -8,8 +7,6 @@ import FormControl from "../../../shared_components/Form/FormControl";
 
 import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import moment from "moment";
-import querystring from "query-string";
-import history from "./../../../main/history";
 
 import { Checkbox as SemanticCheckbox } from "semantic-ui-react";
 import { Icon } from 'semantic-ui-react';

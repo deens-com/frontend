@@ -14,12 +14,10 @@ import ToolBar from "./components/ToolBar";
 import Summary from "./components/Summary";
 import MapMaker from "../../shared_components/MapMarker";
 import Button from "../../shared_components/Button";
-import Stars from '../../shared_components/Rating/Stars';
 import UserAvatar from '../../shared_components/UserAvatar';
 
 // ACTIONS/CONFIG
 import { media, sizes } from "../../libs/styled";
-import { tripsData } from "../../data/home";
 import { trip } from "../../data/trip";
 
 // STYLES
@@ -75,10 +73,6 @@ const DatesWrap = styled.div`
   margin: 25px 0;
 `;
 
-const PublisherWrap = styled.div`
-  margin: 25px 0;
-`;
-
 const ActionsWrap = styled.div`
   & > div:first-child {
     margin-right: 15px;
@@ -124,29 +118,6 @@ const ProfileWrap = styled.div`
   margin-bottom: 15px;
 `;
 
-const Avatar = styled.div`
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-  border-radius: 30px;
-  overflow: hidden;
-  border: 2px solid #d7dbdf;
-  margin-right: 15px;
-`;
-
-const Profile = styled.div`
-  display: inline-block;
-
-  span {
-    display: block;
-
-    &:last-child {
-      padding-top: 5px;
-      font-size: 14px;
-      color: #6e7885;
-    }
-  }
-`;
 
 // MODULE
 export default class TripsScene extends Component {

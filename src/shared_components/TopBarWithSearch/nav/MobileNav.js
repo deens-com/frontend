@@ -7,11 +7,10 @@ import Media from "react-media";
 
 // COMPONENTS
 import Select from "../../../shared_components/Form/controls/Select";
-import FlagSelect from "../../../shared_components/FlagSelect";
 
 // ACTIONS/CONFIG
 import { sizes } from "../../../libs/styled";
-import { mainNav, languages, currencies } from "../../../data/nav";
+import { mainNav, currencies } from "../../../data/nav";
 
 // STYLES
 const Wrap = styled.div`

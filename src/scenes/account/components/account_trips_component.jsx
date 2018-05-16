@@ -8,10 +8,6 @@ import { Route, withRouter } from "react-router-dom";
 
 class AccountTripsComponent extends Component {
 
-  constructor(props){
-    super(props);
-  }
-
   render() {
     return (
       <div className="AccountTripsComponent">

@@ -13,9 +13,6 @@ export const SvgWithProps = ComposedComponent => {
       focusable: false,
       role: "presentation"
     };
-    constructor(props) {
-      super(props);
-    }
     render() {
       const style = {
         height: "1em",

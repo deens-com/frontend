@@ -1,6 +1,5 @@
 import React from "react";
 import ResultsContainer from "./containers/results_container";
-import history from "./../../main/history";
 import queryString from "query-string";
 
 const Results = props => {

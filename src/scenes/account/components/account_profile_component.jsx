@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import AccountProfileScene from './../../../styled_scenes/Account/Profile';
-import { Page, PageContent, PageWrapper } from './../../../shared_components/layout/Page';
+import { Page, PageContent } from './../../../shared_components/layout/Page';
 import TopBar from '../../../shared_components/TopBarWithSearch';
 
 const AccountProfileComponent = props => {

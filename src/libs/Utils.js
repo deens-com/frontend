@@ -1,5 +1,3 @@
-import * as icons from "../shared_components/icons";
-
 export default class Utils {
   static getBaseSymbol(currency = "EUR") {
     switch (currency) {

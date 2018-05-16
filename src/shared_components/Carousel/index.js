@@ -1,12 +1,11 @@
 // NPM
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import styled, { css } from "styled-components";
 import Slider from "react-slick";
 
 // COMPONENTS
 import { ArrowIcon } from "../icons";
-import Row from "../layout/Row";
 
 // ACTIONS/CONFIG
 import { resetButton, media } from "../../libs/styled";

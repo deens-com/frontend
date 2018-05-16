@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Image, Icon } from 'semantic-ui-react';
-import styled, { css } from 'styled-components';
+import { Grid, Icon } from 'semantic-ui-react';
+import styled from 'styled-components';
 import CircularProfilePic from './CircularProfilePic';
 import moment from 'moment';
 

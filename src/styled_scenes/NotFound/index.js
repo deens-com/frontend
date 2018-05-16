@@ -1,6 +1,5 @@
 // NPM
 import React from "react";
-import PropTypes from "prop-types";
 
 // COMPONENTS
 import TopBar from "../../shared_components/TopBarWithSearch";
@@ -28,6 +27,7 @@ export const Hr = styled.hr`
 `;
 
 // MODULE
+// eslint-disable-next-line
 export default function NotFoundScene({}) {
   return (
     <Page>

@@ -1,6 +1,5 @@
 // NPM
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 
 // COMPONENTS
@@ -117,7 +116,9 @@ export default class FoodImgSlider extends Component {
           <ArrowIcon />
         </RightArrow>
         <img
+          // eslint-disable-next-line
           src={this.props.images && this.props.images.length && this.props.images[this.state.index] && this.props.images[this.state.index].url || "https://dummyimage.com/600x400/000/fff"}
+          // eslint-disable-next-line
           alt={this.props.images && this.props.images.length && this.props.images[this.state.index] && this.props.images[this.state.index].name || "missing mainPicture"}
         />
       </Wrap>

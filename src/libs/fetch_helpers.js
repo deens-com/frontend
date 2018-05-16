@@ -26,7 +26,9 @@ const mapServiceObjects = services => {
     try{
       service.excerpt = service.description;
       service.title = service.name || service.title;
+      // eslint-disable-next-line
       service.latitude = service.location && service.location.latitude || 1;
+      // eslint-disable-next-line
       service.longitude = service.location && service.location.longitude || 1;
       service.location = `${service.city} ${service.country}`;
       service.rating = service.rating;

@@ -1,16 +1,13 @@
 // NPM
 import React, { Component } from "react";
-import PropTypes from "prop-types";
-import styled, { css } from "styled-components";
-import Media from "react-media";
-import history from './../../../main/history';
+import styled from "styled-components";
 import { Message } from 'semantic-ui-react';
 
 // COMPONENTS
 import { ArrowIcon, MicrophoneIcon, SearchIcon } from "../../../shared_components/icons";
 import waveGif from './../../../assets/wave.gif';
 // ACTIONS/CONFIG
-import { media, resetButton } from "../../../libs/styled";
+import { resetButton } from "../../../libs/styled";
 
 import annyang from 'annyang';
 import * as results_actions from "./../../../scenes/results/actions";

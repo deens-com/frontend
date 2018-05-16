@@ -1,18 +1,11 @@
 // NPM
 import React from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 // COMPONENTS
-import Col from "../../../shared_components/layout/Col";
 import Row from "../../../shared_components/layout/Row";
 import TripCart from "../../../shared_components/Carts/Trip";
-import Button from "../../../shared_components/Button";
-
-// ACTIONS/CONFIG
-import { media } from "../../../libs/styled";
-import { trip } from "../../../data/trip";
 
 // STYLES
 const Wrap = styled.div`

@@ -17,7 +17,6 @@ import {
   PageContent,
   PageWrapper
 } from "./../../../shared_components/layout/Page";
-import { Logo } from "./../../../shared_components/icons";
 import { Link } from "react-router-dom";
 import { Hr } from "./../../../shared_components/styledComponents/misc";
 

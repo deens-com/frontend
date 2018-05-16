@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import TripCart from '../../../shared_components/Carts/Trip';
 import Carousel from '../../../shared_components/Carousel';
 import { SectionWrap, SectionHeader } from '../../../shared_components/layout/Page';
 import LocationCart from '../../../shared_components/Carts/Location';

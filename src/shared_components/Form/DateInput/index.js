@@ -1,6 +1,5 @@
 // NPM
 import React from 'react';
-import PropTypes from 'prop-types';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import './styles.css';
 

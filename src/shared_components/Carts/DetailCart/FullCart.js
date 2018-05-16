@@ -1,13 +1,10 @@
 // NPM
 import React from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 
 // COMPONENTS
 import PriceTag from "./components/Price";
 import Button from "../../Button";
-import Row from "../../layout/Row";
-import Col from "../../layout/Col";
 import Detail from "./components/Detail";
 import Category from "./components/Category";
 import Description from "./components/Description";
@@ -16,9 +13,6 @@ import { TrashIcon } from "./components/icons";
 
 // ACTIONS/CONFIG
 import { media } from "../../../libs/styled";
-
-// STYLES
-import { ContentWrap } from "../styles";
 
 const Wrap = styled.div`
   ${media.minSmall} {

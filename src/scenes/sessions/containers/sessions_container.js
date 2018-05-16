@@ -68,7 +68,7 @@ class SessionsContainer extends Component {
   validateInput = event => {
     const isValid = element => element.checkValidity();
     const { target } = event;
-    const { name, value } = target;
+    const { name } = target;
 
     if (!isValid(target)) {
       this.validateEmailInput(target);

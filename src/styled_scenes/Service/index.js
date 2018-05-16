@@ -13,8 +13,6 @@ import BrandFooter from "../../shared_components/BrandFooter";
 import Tag from "./components/Tag";
 import Rating from "../../shared_components/Rating";
 import { BadgeIcon } from "./icons";
-import Row from "../../shared_components/layout/Row";
-import Col from "../../shared_components/layout/Col";
 import TripCart from "../../shared_components/Carts/Location";
 import Review from "../../shared_components/Review";
 import DetailPickers from "./components/DetailPickers";
@@ -27,7 +25,6 @@ import AddToTripButton from './components/AddToTripButton';
 
 // ACTIONS/CONFIG
 import { media, sizes } from "../../libs/styled";
-import { restaurant } from "../../data/food";
 
 // STYLES
 import { Page, PageContent } from "../../shared_components/layout/Page";
@@ -314,7 +311,7 @@ export default function FoodDetailScene(props) {
                 text="Book now"
                 theme="textGreen"
               />
-              <AddToTripButton 
+              <AddToTripButton
                 trips={props.myTrips}
                 onTripClick={props.onAddServiceToTrip}
                 onNewTripClick={props.onAddServiceToNewTrip} />

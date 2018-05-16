@@ -1,14 +1,9 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 import PlacesAutocomplete from "react-places-autocomplete";
 
-import Input from "./controls/Input";
 import Label from "./controls/Label";
-import DateInput from "./DateInput";
-import PersonInput from "./PersonInput";
-import { DateIcon, PersonIcon, PinIcon } from "../icons";
-import TimeSelect from "./TimeSelect";
+import { PinIcon } from "../icons";
 
 const FormGroup = styled.div`
   position: relative;

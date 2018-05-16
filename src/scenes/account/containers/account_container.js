@@ -10,10 +10,6 @@ import { Route, withRouter } from "react-router-dom";
 
 class AccountContainer extends Component {
 
-  constructor(props){
-    super(props);
-  }
-
   componentDidMount() {
     this.props.fetch_user_profile();
   }

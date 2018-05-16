@@ -1,15 +1,13 @@
 // NPM
 import React, { Component } from "react";
-import PropTypes from "prop-types";
-import styled, { css } from "styled-components";
-import Media from "react-media";
+import styled from "styled-components";
 import history from './../../../main/history';
 
 // COMPONENTS
 import { ArrowIcon, MicrophoneIcon, SearchIcon } from "../../icons";
 
 // ACTIONS/CONFIG
-import { media, resetButton } from "../../../libs/styled";
+import { resetButton } from "../../../libs/styled";
 
 // STYLES
 const Wrapper = styled.div`

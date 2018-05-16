@@ -1,6 +1,5 @@
 import Parse from "parse";
 import history from "./../../main/history";
-import queryString from "query-string";
 
 export const results_fetched = results => {
   return {
@@ -32,6 +31,7 @@ export const toggle_tag_from_search_query = (
     if (current_search_query.tags.length) {
       // if tags present in url
       let selected_tags_array = current_search_query.tags.splice("+");
+      // eslint-disable-next-line
       let tags_str = "";
       if (selected_tags_array.includes(item_tag)) {
         // if tag already present, remove it
