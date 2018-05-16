@@ -19,8 +19,6 @@ const AccountSettingsComponent = props => {
 
 AccountSettingsComponent.propTypes = {
   user: PropTypes.object,
-  noMetaMaskAccountsFoundCb: PropTypes.func.isRequired,
-  showMetaMaskNoAccountsWarning: PropTypes.bool.isRequired,
   hasMetaMask: PropTypes.func.isRequired,
   metaMaskError: PropTypes.object,
   signData: PropTypes.func.isRequired,
