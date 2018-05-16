@@ -142,8 +142,6 @@ export const IconAfter = styled.span`
   top: 1px;
 `;
 
-const ButtonLink = Btn.withComponent(Link);
-
 // MODULE
 export default class Button extends Component {
   constructor() {

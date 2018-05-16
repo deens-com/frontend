@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Grid, Image } from 'semantic-ui-react';
+import React from 'react';
+import { Grid } from 'semantic-ui-react';
 import { SectionWrap } from './../../../../shared_components/layout/Page';
 import UserBasicInfo from './../../components/UserBasicInfo';
 import {Link} from "react-router-dom";

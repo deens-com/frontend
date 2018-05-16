@@ -1,8 +1,4 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Grid, Image } from 'semantic-ui-react';
-import { SectionWrap } from './../../../../shared_components/layout/Page';
-import UserBasicInfo from './../../components/UserBasicInfo';
+import React from 'react';
 import {Link} from "react-router-dom";
 import {SectionContent} from "./../../../../shared_components/layout/Page";
 import Carousel from "./../../../../shared_components/Carousel";
@@ -16,13 +12,10 @@ const get_label_color = (status) => {
   switch(status){
     case "public":
       return "green";
-      break;
     case "private":
       return "orange";
-      break;
     case "shared":
       return "blue";
-      break;
     default:
       break;
   }

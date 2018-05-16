@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import {
   Page,
   PageContent,
@@ -7,7 +7,6 @@ import {
 import TopBar from "./../../../shared_components/TopBar";
 import FooterNav from "./../../../styled_scenes/Home/components/FooterNav";
 import BrandFooter from "./../../../shared_components/BrandFooter";
-import PropTypes from "prop-types";
 import {
   Button,
   Form,
@@ -16,7 +15,6 @@ import {
   Message,
   Segment
 } from "semantic-ui-react";
-import { Logo } from "./../../../shared_components/icons";
 import { Link } from "react-router-dom";
 import { Hr } from "./../../../shared_components/styledComponents/misc";
 

@@ -1,7 +1,6 @@
-import React, { Component } from "react";
-import ReactDOM from "react-dom";
+import React from "react";
 import { Switch } from "react-router";
-import { Router, Route, Layout, HashRouter } from "react-router-dom";
+import { Route, HashRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store";
 import withSegmentTracker from "./middlewares/with_segment_tracker";

@@ -7,9 +7,6 @@ import * as selectors from '../selectors';
 import NotFound from '../../../styled_scenes/NotFound';
 
 class UsersContainer extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   componentDidMount() {
     const { userName } = this.props.match.params;

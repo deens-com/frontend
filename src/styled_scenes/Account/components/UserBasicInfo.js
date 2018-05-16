@@ -1,18 +1,13 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Grid, Image, Icon } from 'semantic-ui-react';
-import styled, { css } from 'styled-components';
+import React from 'react';
+import { Grid, Icon } from 'semantic-ui-react';
+import styled from 'styled-components';
 import CircularProfilePic from './CircularProfilePic';
-import moment from "moment";
 import Stars from './Stars';
 import { Link } from "react-router-dom";
-import { Input, Label, Menu, Card } from 'semantic-ui-react';
+import { Menu, Card } from 'semantic-ui-react';
 import Parse from "parse";
 import history from "./../../../main/history";
 
-const BodyText = styled.p`
-  font-weight: 500;
-`;
 const AttributeTitle = styled.h6`
   font-size: 9px;
   color: #a3a9b2;
@@ -35,15 +30,9 @@ const NameDiv = styled.div`
   font-weight: 600;
 `;
 
-const CenteredMenu = styled.div`
-  display: inline-flex;
-`;
-
 const MenuIcon = styled(Icon)`
   color: #5fb79e;
 `;
-
-const formatDate = date => moment(date).format('MMMM YYYY');
 
 const UserBasicInfo = ({ user_profile: user = {}, match }) => {
   const name = user.fullName || user.username;

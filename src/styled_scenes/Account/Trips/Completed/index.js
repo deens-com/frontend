@@ -1,15 +1,8 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Grid, Image } from 'semantic-ui-react';
+import React from 'react';
+import { Grid } from 'semantic-ui-react';
 import { SectionWrap } from './../../../../shared_components/layout/Page';
 import UserBasicInfo from './../../components/UserBasicInfo';
-import {Link} from "react-router-dom";
-import {SectionContent} from "./../../../../shared_components/layout/Page";
-import Carousel from "./../../../../shared_components/Carousel";
-import LocationCart from "./../../../../shared_components/Carts/Location";
-import moment from "moment";
-import uuid from 'uuid/v1';
-import { Divider, Label } from 'semantic-ui-react';
+import { Link } from "react-router-dom";
 
 import TripSectionComponent from "./../shared/TripSectionComponent";
 
