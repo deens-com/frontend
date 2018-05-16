@@ -21,6 +21,11 @@ class SessionsContainer extends Component {
 
   parseLogin = event => {
     event.preventDefault();
+    if(!this.state.email){ this.setState({ [`email-error`]: true }); }
+    if(!this.state.password){ this.setState({ [`password-error`]: true }); }
+    if(!this.state.email || !this.state.password){
+      return this.props.login_error("Empty email or password");
+    }
     this.props.loginRequest(this.state.email, this.state.password);
   };
 

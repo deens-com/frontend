@@ -16,6 +16,18 @@ export const sessionsFetched = session => {
   };
 };
 
+export const login_error = (message) => {
+  return dispatch => {
+    dispatch({
+      type: types.LOGIN_ERROR,
+      payload: {
+        code: '203',
+        message: message
+      }
+    });
+  }
+}
+
 export const loginRequest = (email, password) => {
   return dispatch => {
     Parse.User.logIn(email, password).then(
