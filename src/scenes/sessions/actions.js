@@ -89,14 +89,14 @@ export const loginWithLedger = () => async dispatch => {
 export const loginWithMetamask = () => async dispatch => {
   try {
     const publicAddress = await getPublicAddress();
-    const response = await Parse.Cloud.run('getMetaMaskNonce', { publicAddress });
+    const response = await Parse.Cloud.run('getMetaMaskNonce', { publicAddress, type: 'metamask' });
     const { signature } = await signMessage(response.nonce);
     const authData = {
       signature,
       id: publicAddress,
-      method: 'web3',
+      method: 'metamaskWeb3',
     };
-    const user = await Parse.User.logInWith('blockchainauth', { authData });
+    const user = await Parse.User.logInWith('metamaskauth', { authData });
     dispatch(sessionsFetched({ session: user }));
     history.push('/');
   } catch (error) {
