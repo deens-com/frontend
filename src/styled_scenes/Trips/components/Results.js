@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { DragDropContext } from "react-beautiful-dnd";
+import { DragDropContext } from 'react-beautiful-dnd';
 
 // COMPONENTS
 import Col from '../../../shared_components/layout/Col';
@@ -31,12 +31,8 @@ const Wrap = styled.div`
   }
 `;
 
-function onDragEnd(result) {
-  console.log('onDragEnd', result);
-}
-
 // MODULE
-export default function Results({ showDetails, scheduledServices, unScheduledServices }) {
+export default function Results({ showDetails, scheduledServices, unScheduledServices, onServiceDragEnd }) {
   const services = showDetails
     ? [
         ...unScheduledServices.map(day => <Day key={day.day} day={day} />),
@@ -63,9 +59,7 @@ export default function Results({ showDetails, scheduledServices, unScheduledSer
         </Header>
       )}
       {showDetails ? (
-        <DragDropContext onDragEnd={onDragEnd}>
-          {services}
-        </DragDropContext>
+        <DragDropContext onDragEnd={onServiceDragEnd}>{services}</DragDropContext>
       ) : (
         <Row>
           {tripsData.map(item => (
@@ -84,6 +78,7 @@ Results.propTypes = {
   showDetails: PropTypes.bool,
   scheduledTrips: PropTypes.array,
   unScheduledTrips: PropTypes.array,
+  onServiceDragEnd: PropTypes.func.isRequired,
 };
 
 Results.defaultProps = {
