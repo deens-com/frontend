@@ -35,10 +35,12 @@ const AccountSettingsScene = props => {
         {props.metaMaskError.message && <Message warning>{props.metaMaskError.message}</Message>}
         <Button
           color="green"
+          disabled={ledgerPublicAddrAlreadyPresent}
           onClick={props.ledgerSignData}
         >
           {ledgerButtonTxt}
         </Button>
+        {props.ledger_error.message && <Message warning>{props.ledger_error.message}</Message>}
       </Grid.Column>
     </Grid>
   );
@@ -49,12 +51,15 @@ AccountSettingsScene.propTypes = {
   showMetaMaskLogin: PropTypes.bool,
   hasMetaMask: PropTypes.func.isRequired,
   signData: PropTypes.func.isRequired,
+  ledgerSignData: PropTypes.func.isRequired,
   metaMaskError: PropTypes.object,
+  ledger_error: PropTypes.object,
 };
 
 AccountSettingsScene.defaultProps = {
   showMetaMaskLogin: false,
-  metaMaskError: {}
+  metaMaskError: {},
+  ledger_error: {}
 };
 
 export default AccountSettingsScene;

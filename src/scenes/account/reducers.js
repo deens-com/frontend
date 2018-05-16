@@ -3,6 +3,7 @@ const initialState = {
   planned_trips: [],
   completed_trips: [],
   metamaskError: {},
+  ledger_error: {}
 };
 
 export default function AccountReducer(state = initialState, action = {}) {
@@ -27,6 +28,11 @@ export default function AccountReducer(state = initialState, action = {}) {
         ...state,
         metaMaskError: action.payload,
       };
+    case 'LEDGER_ERROR':
+      return {
+        ...state,
+        ledger_error: action.payload
+      }
     default:
       return state;
   }

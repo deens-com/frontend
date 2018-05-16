@@ -94,9 +94,16 @@ export async function getLedgerPublicAddress() {
 }
 
 export async function ledgerSignMessage(msg) {
-  const publicAddress = await getLedgerPublicAddress();
+  let publicAddress;
+  try{
+    publicAddress = await getLedgerPublicAddress();
+  }catch(error){
+    error.showToUser = true;
+    throw error;
+  }
   const web3Instance = await getLedgerWeb3();
   const hexData = web3Instance.utils.utf8ToHex(msg);
+  window.alert("You must physically sign the message on your device before proceeding.");
   const signature = await web3Instance.eth.personal.sign(hexData, publicAddress);
 
   return { publicAddress, signature };
