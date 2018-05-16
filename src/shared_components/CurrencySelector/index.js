@@ -5,13 +5,22 @@ import { currencies } from "../../data/nav";
 
 // MODULE
 export default class CurrencySelector extends Component {
+  state = {
+    selectedOption: 'USD',
+  }
+
+  handleChange = (selectedOption) => {
+    this.setState({ selectedOption });
+    console.log(`Selected: ${selectedOption.label}`);
+  }
+
   render() {
+    const { selectedOption } = this.state;
+    
     return (
       <Select
-        onChange={val => {
-          console.log(val);
-        }}
-        value="USD"
+        onChange={this.handleChange}
+        value={selectedOption}
         options={currencies}
       />
     );
