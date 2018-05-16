@@ -57,8 +57,8 @@ export const loginWithLedger = () => async dispatch => {
     const response = await Parse.Cloud.run('getMetaMaskNonce', { publicAddress: publicAddress, type: "ledger" });
     const { signature } = await ledgerSignMessage(response.nonce);
     const authData = {
-      signature,
-      id: publicAddress,
+      signature: signature.toLowerCase(),
+      id: publicAddress.toLowerCase(),
       method: 'ledgerWeb3',
     };
     const user = await Parse.User.logInWith('ledgerauth', { authData });
