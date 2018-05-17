@@ -18,5 +18,5 @@ export const currencies = [
   { value: "GBP", label: "£" },
   { value: "BTC", label: "Ƀ" },
   { value: "ETH", label: "Ξ" },
-  { value: "PLS", label: "PLS" }
+  { value: "PLS", label: "🄿" }
 ];

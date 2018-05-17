@@ -21,14 +21,16 @@ const Unit = styled.span`
 `;
 
 // MODULE
-export default function PriceTag({ size, price, currency }) {
+export default function PriceTag({ size, price, currency, unit }) {
   return (
     <PriceWrap>
       <Price size={size}>
         {price}
-        {currency || "€"}
+        {currency || "$"}
       </Price>
-      <Unit>/ person</Unit>
+      {unit !== "hidden" &&
+       <Unit>/ person</Unit>
+      }
     </PriceWrap>
   );
 }

@@ -5,9 +5,9 @@ import { Link } from "react-router-dom";
 
 // COMPONENTS
 import Button from "../../../shared_components/Button";
+import PriceTag from "../../../shared_components/Carts/components/PriceTag";
 
 // ACTIONS/CONFIG
-import Utils from "../../../libs/Utils";
 import { media } from "../../../libs/styled";
 
 // STLYES
@@ -32,7 +32,7 @@ const Detail = styled.div`
   margin-bottom: 10px;
 `;
 
-const DetailPrice = styled.p`
+const DetailPrice = styled.div`
   font-weight: 500;
   text-align: right;
 
@@ -59,7 +59,7 @@ const TotalWrap = styled.div`
   margin-bottom: 25px;
 `;
 
-const TotalPrice = styled.p`
+const TotalPrice = styled.div`
   font-size: 28px;
   font-weight: 500;
 `;
@@ -125,8 +125,8 @@ export default class TripSummary extends Component {
                 {this.state.summary[category].items} x {category}
               </span>
               <DetailPrice>
-                {this.state.summary[category].count}{" "}
-                {Utils.getBaseSymbol("EUR")}
+                <PriceTag price={this.state.summary[category].count} unit="hidden" />
+
                 {this.state.summary[category].count < 1 && (
                   <span>You pay on spot</span>
                 )}
@@ -138,7 +138,7 @@ export default class TripSummary extends Component {
           <p>Total</p>
           <TotalWrap>
             <TotalPrice>
-              {this.state.total} {Utils.getBaseSymbol("EUR")}
+              <PriceTag price={this.state.total} unit="hidden" />
             </TotalPrice>
             <Button href="#" round size="small" theme="mainFilled" type="link">
               Book now

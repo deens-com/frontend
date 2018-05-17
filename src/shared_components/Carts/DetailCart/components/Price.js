@@ -3,9 +3,9 @@ import React from "react";
 import styled, { css } from "styled-components";
 
 // COMPONENTS
+import PriceTag from "../../components/PriceTag";
 
 // ACTIONS/CONFIG
-import Utils from "../../../../libs/Utils";
 import { media } from "../../../../libs/styled";
 
 // STYLES
@@ -55,12 +55,9 @@ export default function CartPrice({ price, currency, isExpanded }) {
   return (
     <PriceWrap isExpanded={isExpanded}>
       <Amount muted={price === "0"}>
-        {price}
-        {Utils.getBaseSymbol(currency)}
-        {!isExpanded && price !== "0" && <Unit>/person</Unit>}
+        <PriceTag price={price} />
       </Amount>
       {isExpanded && price === "0" && <Unit muted>You pay on the spot</Unit>}
-      {isExpanded && price !== "0" && <Unit>/person</Unit>}
     </PriceWrap>
   );
 }
