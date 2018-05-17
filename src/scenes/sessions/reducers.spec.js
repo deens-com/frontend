@@ -6,7 +6,8 @@ describe("sessions reducer", () => {
       session: {},
       loginError: {},
       metaMaskError: {},
-      ledgerError: {}
+      ledgerError: {},
+      baseCurrency: {label: "$", value: "USD"}
     });
   });
 
@@ -23,7 +24,8 @@ describe("sessions reducer", () => {
       loginError: { code: 111, message: "Network error" },
       session: {},
       metaMaskError: {},
-      ledgerError: {}
+      ledgerError: {},
+      baseCurrency: {label: "$", value: "USD"}
     });
   });
 
@@ -43,7 +45,8 @@ describe("sessions reducer", () => {
         hello: "world"
       },
       metaMaskError: {},
-      ledgerError: {}
+      ledgerError: {},
+      baseCurrency: {label: "$", value: "USD"}
     });
   });
 
