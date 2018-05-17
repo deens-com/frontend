@@ -5,7 +5,7 @@ const initialState = {
   loginError: {},
   metaMaskError: {},
   ledgerError: {},
-  baseCurrency: {label: "$", value: "USD"}
+  baseCurrency: {label: "$", value: "USD", rates: {}}
 };
 
 export default function SessionsReducer(state = initialState, action = {}) {
