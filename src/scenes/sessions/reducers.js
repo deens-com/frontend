@@ -4,7 +4,8 @@ const initialState = {
   session: {},
   loginError: {},
   metaMaskError: {},
-  ledgerError: {}
+  ledgerError: {},
+  baseCurrency: {label: "$", value: "USD"}
 };
 
 export default function SessionsReducer(state = initialState, action = {}) {
@@ -29,6 +30,11 @@ export default function SessionsReducer(state = initialState, action = {}) {
       return {
         ...state,
         ledgerError: action.payload,
+      }
+    case sessions_actions.types.BASE_CURRENCY_SET:
+      return {
+        ...state,
+        baseCurrency: action.payload.baseCurrency
       }
     default:
       return state;

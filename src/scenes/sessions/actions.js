@@ -7,7 +7,8 @@ export const types = {
   VALIDATION_ERROR: "VALIDATION_ERROR",
   LOGIN_ERROR: "LOGIN_ERROR",
   METAMASK_ERROR: "METAMASK_ERROR",
-  LEDGER_ERROR: "LEDGER_ERROR"
+  LEDGER_ERROR: "LEDGER_ERROR",
+  BASE_CURRENCY_SET: "BASE_CURRENCY_SET",
 };
 
 export const sessionsFetched = session => {
@@ -26,6 +27,17 @@ export const login_error = (message) => {
         message: message
       }
     });
+  }
+}
+
+export const set_base_currency = (currency) => {
+  return dispatch => {
+    dispatch({
+      type: types.BASE_CURRENCY_SET,
+      payload: {
+        baseCurrency: currency
+      }
+    })
   }
 }
 

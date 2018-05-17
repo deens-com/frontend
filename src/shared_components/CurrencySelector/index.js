@@ -2,21 +2,24 @@
 import React, { Component } from "react";
 import Select from "../Form/controls/Select";
 import { currencies } from "../../data/nav";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as sessionsActions from "../../scenes/sessions/actions";
 
 // MODULE
-export default class CurrencySelector extends Component {
+class CurrencySelector extends Component {
   state = {
-    selectedOption: 'USD',
+    selectedOption: this.props.baseCurrency
   }
 
   handleChange = (selectedOption) => {
     this.setState({ selectedOption });
-    console.log(`Selected: ${selectedOption.label}`);
+    this.props.set_base_currency(selectedOption);
   }
 
   render() {
     const { selectedOption } = this.state;
-    
+
     return (
       <Select
         onChange={this.handleChange}
@@ -26,3 +29,15 @@ export default class CurrencySelector extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return{
+    baseCurrency: state.SessionsReducer.baseCurrency
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(sessionsActions, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CurrencySelector);
