@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 // COMPONENTS
 import Rating from "../Rating";
-import PriceTag from "./components/PriceTag";
+import PriceTag from "../Currency/PriceTag";
 import Thumb from "./components/Thumb";
 
 // ACTIONS/CONFIG

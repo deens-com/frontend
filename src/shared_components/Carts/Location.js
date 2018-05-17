@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 // COMPONENTS
 import Rating from "../Rating";
-import PriceTag from "./components/PriceTag";
+import PriceTag from "../Currency/PriceTag";
 import Thumb from "./components/Thumb";
 import Col from "../layout/Col";
 import { PinIcon } from "../icons";

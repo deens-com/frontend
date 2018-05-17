@@ -1,13 +1,15 @@
 import Parse from "parse";
 import history from "./../../main/history";
 import { getPublicAddress, signMessage, getLedgerPublicAddress, ledgerSignMessage } from '../../libs/web3-utils';
+import fetch_helpers from "./../../libs/fetch_helpers";
 
 export const types = {
   LOGIN_SUCCESS: "LOGIN_SUCCESS",
   VALIDATION_ERROR: "VALIDATION_ERROR",
   LOGIN_ERROR: "LOGIN_ERROR",
   METAMASK_ERROR: "METAMASK_ERROR",
-  LEDGER_ERROR: "LEDGER_ERROR"
+  LEDGER_ERROR: "LEDGER_ERROR",
+  BASE_CURRENCY_SET: "BASE_CURRENCY_SET",
 };
 
 export const sessionsFetched = session => {
@@ -27,6 +29,22 @@ export const login_error = (message) => {
       }
     });
   }
+}
+
+export const set_base_currency = (currency) => async dispatch => {
+    let er_query = fetch_helpers.build_query("ExchangeRate");
+    er_query.descending("createdAt");
+    er_query.first().then((result) => {
+      currency.rates = fetch_helpers.normalizeParseResponseData(result);
+      // store to local storage
+      localStorage.setItem('currency', JSON.stringify(currency));
+      dispatch({
+        type: types.BASE_CURRENCY_SET,
+        payload: {
+          baseCurrency: currency
+        }
+      })
+    });
 }
 
 export const loginRequest = (email, password) => {

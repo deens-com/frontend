@@ -1,10 +1,18 @@
 import * as sessions_actions from "./actions";
 
+// set default base currency
+let defaultBaseCurrency = {label: "$", value: "USD", rates: {}}
+
+if (typeof localStorage !== "undefined" && localStorage.getItem('currency')) {
+  defaultBaseCurrency = JSON.parse(localStorage.getItem('currency'));
+}
+
 const initialState = {
   session: {},
   loginError: {},
   metaMaskError: {},
-  ledgerError: {}
+  ledgerError: {},
+  baseCurrency: defaultBaseCurrency
 };
 
 export default function SessionsReducer(state = initialState, action = {}) {
@@ -29,6 +37,11 @@ export default function SessionsReducer(state = initialState, action = {}) {
       return {
         ...state,
         ledgerError: action.payload,
+      }
+    case sessions_actions.types.BASE_CURRENCY_SET:
+      return {
+        ...state,
+        baseCurrency: action.payload.baseCurrency
       }
     default:
       return state;

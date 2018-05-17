@@ -14,7 +14,7 @@ export default class Utils {
       case "ETH":
         return "Ξ";
       case "PLS":
-        return "PLS";
+        return "🄿";
       default:
         return "$";
     }
