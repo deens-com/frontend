@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import Media from "react-media";
 
 // COMPONENTS
-import CurrencySelector from "../../../shared_components/CurrencySelector";
+import CurrencySelector from "../../../shared_components/Currency/Selector";
 
 // ACTIONS/CONFIG
 import { sizes } from "../../../libs/styled";

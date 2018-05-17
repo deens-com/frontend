@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 // COMPONENTS
 import Button from "../../../shared_components/Button";
-import PriceTag from "../../../shared_components/Carts/components/PriceTag";
+import PriceTag from "../../../shared_components/Currency/PriceTag";
 
 // ACTIONS/CONFIG
 import { media } from "../../../libs/styled";

@@ -3,7 +3,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 
 // COMPONENTS
-import PriceTag from "../../components/PriceTag";
+import PriceTag from "../../../Currency/PriceTag";
 
 // ACTIONS/CONFIG
 import { media } from "../../../../libs/styled";
