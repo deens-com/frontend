@@ -50,4 +50,6 @@ export const changeServiceDay = (tripOrganizationId, newDay) => async dispatch =
     tripOrganization.set('day', parseInt(newDay, 10));
   }
   await tripOrganization.save();
+  // re-fetch trip in case anything else has changed
+  fetchTrip(tripOrganization.get('trip').id)(dispatch);
 };
