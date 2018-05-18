@@ -44,6 +44,10 @@ export const changeServiceDay = (tripOrganizationId, newDay) => async dispatch =
   }
   dispatch(tripChangeServiceDay(tripOrganizationId, newDay));
   const tripOrganization = await fetch_helpers.build_query('TripOrganization').get(tripOrganizationId);
-  const day = newDay === 'null' ? undefined : parseInt(newDay, 10);
-  tripOrganization.save({ day });
+  if (newDay === 'null') {
+    tripOrganization.unset('day');
+  } else {
+    tripOrganization.set('day', parseInt(newDay, 10));
+  }
+  await tripOrganization.save();
 };
