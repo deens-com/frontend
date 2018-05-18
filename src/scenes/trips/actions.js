@@ -43,5 +43,7 @@ export const changeServiceDay = (tripOrganizationId, newDay) => async dispatch =
     console.error(new Error("can't update service day without tripOrganizationId"));
   }
   dispatch(tripChangeServiceDay(tripOrganizationId, newDay));
-  // TODO: update the same on server
+  const tripOrganization = await fetch_helpers.build_query('TripOrganization').get(tripOrganizationId);
+  const day = newDay === 'null' ? undefined : parseInt(newDay, 10);
+  tripOrganization.save({ day });
 };
