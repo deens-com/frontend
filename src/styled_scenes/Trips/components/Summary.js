@@ -2,7 +2,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import fetch_helpers from "./../../../libs/fetch_helpers";
 import Parse from "parse";
 
 // COMPONENTS

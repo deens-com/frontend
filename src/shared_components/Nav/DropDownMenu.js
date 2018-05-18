@@ -2,17 +2,17 @@
 import React, {Component} from "react";
 import styled from "styled-components";
 
-import fetch_helpers from "./../../../libs/fetch_helpers";
+import fetch_helpers from "./../../libs/fetch_helpers";
 import Parse from "parse";
 // COMPONENTS
-import Button from "../../../shared_components/Button";
+import Button from "../Button";
 // COMMENT: the homeSearch is just for the time being
 import { Image } from 'semantic-ui-react';
 
 // ACTIONS/CONFIG
 import { Dropdown } from 'semantic-ui-react';
 
-import history from "./../../../main/history";
+import history from "./../../main/history";
 
 // STYLES
 const Wrap = styled.div`
@@ -97,7 +97,7 @@ export default class DropDownMenu extends Component {
         <AvatarWrapper>
           <Image src={dpUrl} circular onClick={() => this.navigate_to("/account/profile")} />
         </AvatarWrapper>
-        <Dropdown style={{color: "white"}} direction="left" text={this.state.current_user.username}>
+        <Dropdown direction="left" text={this.state.current_user.username} style={this.props.theme === "light"? {color: 'white'} : {color: 'inherit'}}>
           <Dropdown.Menu>
             <Dropdown.Item icon='plane' text='My Trips' onClick={() => this.navigate_to("/account/trips/planned")} />
             <Dropdown.Item icon='list' text='My Services' onClick={() => this.navigate_to("/account/services")} />

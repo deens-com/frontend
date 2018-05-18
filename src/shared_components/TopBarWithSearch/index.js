@@ -4,11 +4,11 @@ import PropTypes from "prop-types";
 import styled, { css } from "styled-components";
 
 // COMPONENTS
+import DesktopNav from "../Nav/DesktopNav";
+import MobileNav from "../Nav/MobileNav";
 import Logo from "./Logo";
 import Search from "./Search";
-import DesktopNav from "./nav/DesktopNav";
 import MobileSearch from "./Search/MobileSearch";
-import MobileNav from "./nav/MobileNav";
 
 // ACTIONS/CONFIG
 import { media } from "../../libs/styled";

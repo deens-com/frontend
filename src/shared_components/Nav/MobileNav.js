@@ -6,11 +6,11 @@ import { Link } from "react-router-dom";
 import Media from "react-media";
 
 // COMPONENTS
-import CurrencySelector from "../../../shared_components/Currency/Selector";
+import CurrencySelector from "../Currency/Selector";
 
 // ACTIONS/CONFIG
-import { sizes } from "../../../libs/styled";
-import { mainNav } from "../../../data/nav";
+import { sizes } from "../../libs/styled";
+import { mainNav } from "../../data/nav";
 
 // STYLES
 const Wrap = styled.div`
@@ -144,6 +144,15 @@ export default function MobileNav({ menuIsOpened, language, currency }) {
   );
 }
 
+/*
+<Dropdown.Item icon='plane' text='My Trips' onClick={() => this.navigate_to("/account/trips/planned")} />
+<Dropdown.Item icon='list' text='My Services' onClick={() => this.navigate_to("/account/services")} />
+<Dropdown.Item icon='user' text='Profile' onClick={() => this.navigate_to("/account/profile")} />
+<Dropdown.Item icon='cogs' text='Settings' onClick={() => this.navigate_to("/account/settings")} />
+<Dropdown.Divider />
+<Dropdown.Item icon='power' text='Logout' onClick={this.logout} />
+*/
+
 // Props Validation
 MobileNav.propTypes = {
   menuIsOpened: PropTypes.bool.isRequired,
@@ -153,5 +162,5 @@ MobileNav.propTypes = {
 
 MobileNav.defaultProps = {
   language: "english",
-  currency: "EUR"
+  currency: "USD"
 };
