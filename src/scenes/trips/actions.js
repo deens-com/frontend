@@ -11,6 +11,11 @@ export const tripChangeServiceDay = (tripOrganizationId, newDay) => ({
   payload: { tripOrganizationId, newDay },
 });
 
+export const removeService = tripOrganizationId => ({
+  type: 'REMOVE_SERVICE_TRIP',
+  payload: tripOrganizationId,
+});
+
 export const fetchTrip = tripId => async dispatch => {
   if (!tripId) {
     console.error(new Error("can't fetch trip without TripId"));
@@ -38,18 +43,9 @@ export const fetchTrip = tripId => async dispatch => {
   dispatch(trip_fetched({ trip, tripOrganizations: tripOrganizationMappings, services }));
 };
 
-export const changeServiceDay = (tripOrganizationId, newDay) => async dispatch => {
-  if (!tripOrganizationId) {
-    console.error(new Error("can't update service day without tripOrganizationId"));
-  }
-  dispatch(tripChangeServiceDay(tripOrganizationId, newDay));
+export const removeServiceFromTrip = tripOrganizationId => async dispatch => {
+  if (!tripOrganizationId) return;
+  dispatch(removeService(tripOrganizationId));
   const tripOrganization = await fetch_helpers.build_query('TripOrganization').get(tripOrganizationId);
-  if (newDay === 'null') {
-    tripOrganization.unset('day');
-  } else {
-    tripOrganization.set('day', parseInt(newDay, 10));
-  }
-  await tripOrganization.save();
-  // re-fetch trip in case anything else has changed
-  fetchTrip(tripOrganization.get('trip').id)(dispatch);
+  tripOrganization.destroy();
 };

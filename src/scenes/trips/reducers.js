@@ -1,4 +1,5 @@
 import { keyBy } from '../../libs/normalizer';
+import { removeKey } from '../../libs/Utils';
 
 const initialState = {
   trip: {},
@@ -24,6 +25,13 @@ export default function TripsReducer(state = initialState, action = {}) {
             day: newDay === 'null' ? undefined : newDay,
           },
         },
+      };
+    }
+    case 'REMOVE_SERVICE_TRIP': {
+      const tripOrganizationId = action.payload;
+      return {
+        ...state,
+        tripOrganizations: removeKey(state.tripOrganizations, tripOrganizationId),
       };
     }
     default:

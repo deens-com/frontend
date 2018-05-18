@@ -23,8 +23,12 @@ class TripsContainer extends Component {
     this.props.changeServiceDay(tripOrganizationId, toDay);
   };
 
+  onServiceRemoveClick = tripOrganizationId => {
+    this.props.removeServiceFromTrip(tripOrganizationId);
+  }
+
   render() {
-    return <TripsComponent {...this.props} onServiceDragEnd={this.onDragReOrderChange} />;
+    return <TripsComponent {...this.props} onServiceDragEnd={this.onDragReOrderChange} onServiceRemoveClick={this.onServiceRemoveClick} />;
   }
 }
 

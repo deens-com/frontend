@@ -20,3 +20,8 @@ export default class Utils {
     }
   }
 }
+
+export const removeKey = (obj, propToDelete) => {
+  const { [propToDelete]: deleted, ...objectWithoutDeletedProp } = obj;  
+  return objectWithoutDeletedProp;
+};

@@ -1,5 +1,6 @@
 // NPM
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
 import styled from "styled-components";
 import { Droppable } from "react-beautiful-dnd";
 
@@ -166,7 +167,7 @@ export default class TripDay extends Component {
             <div ref={provided.innerRef}>
               {day.services.map((item, index) => (
                 <div key={item.description}>
-                  <DetailCart item={item} opening={this.state.opening} closing={this.state.closing} index={index} />
+                  <DetailCart item={item} opening={this.state.opening} closing={this.state.closing} index={index} onDeleteClick={this.props.onServiceRemoveClick} />
                 </div>
               ))}
             </div>
@@ -178,4 +179,6 @@ export default class TripDay extends Component {
 }
 
 // Props Validation
-TripDay.propTypes = {};
+TripDay.propTypes = {
+  onServiceRemoveClick: PropTypes.func.isRequired,
+};
