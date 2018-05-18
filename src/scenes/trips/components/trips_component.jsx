@@ -10,6 +10,7 @@ TripsComponent.propTypes = {
   trip: PropTypes.object,
   scheduledServices: PropTypes.array,
   unScheduledServices: PropTypes.array,
+  onServiceDragEnd: PropTypes.func.isRequired,
 };
 
 export default TripsComponent;

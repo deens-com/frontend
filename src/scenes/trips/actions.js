@@ -6,6 +6,11 @@ export const trip_fetched = trip => ({
   payload: trip,
 });
 
+export const tripChangeServiceDay = (tripOrganizationId, newDay) => ({
+  type: 'CHANGE_SERVICE_DAY',
+  payload: { tripOrganizationId, newDay },
+});
+
 export const fetchTrip = tripId => async dispatch => {
   if (!tripId) {
     console.error(new Error("can't fetch trip without TripId"));
@@ -23,24 +28,28 @@ export const fetchTrip = tripId => async dispatch => {
   ]);
   const trip = fetch_helpers.normalizeParseResponseData(tripRaw);
   const tripOrganizations = fetch_helpers.normalizeParseResponseData(tripOrganizationsRaw);
-  // all un-scheduled services will be grouped by null key
-  const groupedTripOrganization = groupBy(tripOrganizations, tOrg => tOrg.day || null);
-  const dayToServicesMapping = Object.keys(groupedTripOrganization).reduce(
-    (mappings, dayIndex) => [
-      ...mappings,
-      {
-        day: dayIndex,
-        services: groupedTripOrganization[dayIndex].map(tOrg => tOrg.service),
-      },
-    ],
-    [],
-  );
-  trip.organization = dayToServicesMapping;
-  dispatch(trip_fetched({ trip }));
+  const tripOrganizationMappings = tripOrganizations.map(tOrg => ({
+    objectId: tOrg.objectId,
+    tripId: tOrg.trip.objectId,
+    serviceId: tOrg.service.objectId,
+    day: tOrg.day,
+  }));
+  const services = tripOrganizations.map(tOrg => tOrg.service);
+  dispatch(trip_fetched({ trip, tripOrganizations: tripOrganizationMappings, services }));
 };
 
-/* https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_groupby */
-function groupBy(xs, f) {
-  // eslint-disable-next-line
-  return xs.reduce((r, v, i, a, k = f(v)) => ((r[k] || (r[k] = [])).push(v), r), {});
-}
+export const changeServiceDay = (tripOrganizationId, newDay) => async dispatch => {
+  if (!tripOrganizationId) {
+    console.error(new Error("can't update service day without tripOrganizationId"));
+  }
+  dispatch(tripChangeServiceDay(tripOrganizationId, newDay));
+  const tripOrganization = await fetch_helpers.build_query('TripOrganization').get(tripOrganizationId);
+  if (newDay === 'null') {
+    tripOrganization.unset('day');
+  } else {
+    tripOrganization.set('day', parseInt(newDay, 10));
+  }
+  await tripOrganization.save();
+  // re-fetch trip in case anything else has changed
+  fetchTrip(tripOrganization.get('trip').id)(dispatch);
+};

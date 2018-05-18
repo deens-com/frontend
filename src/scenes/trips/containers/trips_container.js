@@ -11,8 +11,20 @@ class TripsContainer extends Component {
     this.props.fetchTrip(trip_id);
   }
 
+  /**
+   * Called when a service is dragged and dropped
+   * could be in the same day
+   */
+  onDragReOrderChange = event => {
+    if (!event) return;
+    const { source, destination, draggableId: tripOrganizationId } = event;
+    if (!destination || !source || !tripOrganizationId) return;
+    const toDay = destination.droppableId;
+    this.props.changeServiceDay(tripOrganizationId, toDay);
+  };
+
   render() {
-    return <TripsComponent {...this.props} />;
+    return <TripsComponent {...this.props} onServiceDragEnd={this.onDragReOrderChange} />;
   }
 }
 
