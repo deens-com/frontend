@@ -123,8 +123,3 @@ export default class DropDownMenu extends Component {
     }
   }
 }
-
-// Props Validation
-// DropDownMenu.propTypes = {
-//
-// };

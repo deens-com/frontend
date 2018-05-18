@@ -1,9 +1,9 @@
 // NPM
-import React from "react";
-import PropTypes from "prop-types";
+import React, { Component } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import Media from "react-media";
+import Parse from "parse";
 
 // COMPONENTS
 import CurrencySelector from "../Currency/Selector";
@@ -11,6 +11,7 @@ import CurrencySelector from "../Currency/Selector";
 // ACTIONS/CONFIG
 import { sizes } from "../../libs/styled";
 import { mainNav } from "../../data/nav";
+import history from "./../../main/history";
 
 // STYLES
 const Wrap = styled.div`
@@ -92,6 +93,13 @@ const NavLink = styled(Link)`
   }
 `;
 
+const LogoutLink = styled.a`
+  display: block;
+  font-size: 24px;
+  margin-bottom: 15px;
+  padding: 12px 0;
+`;
+
 const Divider = styled.hr`
   border: none;
   margin: 15px 0;
@@ -100,67 +108,97 @@ const Divider = styled.hr`
 `;
 
 // MODULE
-export default function MobileNav({ menuIsOpened, language, currency }) {
-  if (!menuIsOpened) return null;
+export default class MobileNav extends Component {
 
-  return (
-    <Media
-      query={`(max-width: ${sizes.large})`}
-      render={() => (
-        <Wrap>
-          <InnerList>
-            <li aria-hidden="false">
-              <NavLink to="/">Home</NavLink>
-            </li>
-            <li aria-hidden="true">
-              <Divider />
-            </li>
-            {mainNav.map(item => (
-              <li aria-hidden="false" key={item.label}>
-                <NavLink activeClassName="is-active" to={item.href}>
-                  {item.label}
-                </NavLink>
+  componentDidMount() {
+    if(Parse.User.current() === null){
+      this.setState({ logged_in: false });
+    }else{
+      this.setState({ logged_in: true });
+    }
+  }
+
+  logout = () => {
+    Parse.User.logOut().then(() => {
+      this.setState({logged_in: false});
+      history.push("/");
+    });
+  }
+
+  loggedInDropdown() {
+    return (
+      <span>
+        <li>
+          <NavLink to="/account/trips/planned">My Trips</NavLink>
+        </li>
+        <li>
+          <NavLink to="/account/services">My Services</NavLink>
+        </li>
+        <li>
+          <NavLink to="/account/profile">Profile</NavLink>
+        </li>
+        <li>
+          <NavLink to="/account/settings">Settings</NavLink>
+        </li>
+        <li aria-hidden="true">
+          <Divider />
+        </li>
+        <li>
+          <LogoutLink onClick={this.logout}>Logout</LogoutLink>
+        </li>
+      </span>
+    )
+  }
+
+  guestDropdown() {
+    return (
+      <span>
+        <li>
+          <NavLink to="/register">Sign up</NavLink>
+        </li>
+        <li>
+          <NavLink to="/login">Login</NavLink>
+        </li>
+      </span>
+    )
+  }
+
+  render() {
+    if (!this.props.menuIsOpened) return null;
+
+    return (
+      <Media
+        query={`(max-width: ${sizes.large})`}
+        render={() => (
+          <Wrap>
+            <InnerList>
+              <li aria-hidden="false">
+                <NavLink to="/">Home</NavLink>
               </li>
-            ))}
-            <li aria-hidden="true">
-              <Divider />
-            </li>
-            <li>
-              <CurrencySelector />
-            </li>
-            <li aria-hidden="true">
-              <Divider />
-            </li>
-            <li>
-              <NavLink to="/register">Sign up</NavLink>
-            </li>
-            <li>
-              <NavLink to="/login">Log in</NavLink>
-            </li>
-          </InnerList>
-        </Wrap>
-      )}
-    />
-  );
+              <li aria-hidden="true">
+                <Divider />
+              </li>
+              {mainNav.map(item => (
+                <li aria-hidden="false" key={item.label}>
+                  <NavLink activeclassname="is-active" to={item.href}>
+                    {item.label}
+                  </NavLink>
+                </li>
+              ))}
+              <li aria-hidden="true">
+                <Divider />
+              </li>
+              <li>
+                <CurrencySelector />
+              </li>
+              <li aria-hidden="true">
+                <Divider />
+              </li>
+              {this.state.logged_in ? this.loggedInDropdown() : this.guestDropdown() }
+            </InnerList>
+          </Wrap>
+        )}
+      />
+    );
+  }
 }
-
-/*
-<Dropdown.Item icon='plane' text='My Trips' onClick={() => this.navigate_to("/account/trips/planned")} />
-<Dropdown.Item icon='list' text='My Services' onClick={() => this.navigate_to("/account/services")} />
-<Dropdown.Item icon='user' text='Profile' onClick={() => this.navigate_to("/account/profile")} />
-<Dropdown.Item icon='cogs' text='Settings' onClick={() => this.navigate_to("/account/settings")} />
-<Dropdown.Divider />
-<Dropdown.Item icon='power' text='Logout' onClick={this.logout} />
-*/
-
-// Props Validation
-MobileNav.propTypes = {
-  menuIsOpened: PropTypes.bool.isRequired,
-  language: PropTypes.string,
-  currency: PropTypes.string
-};
-
-MobileNav.defaultProps = {
-  language: "english",
-  currency: "USD"
-};
