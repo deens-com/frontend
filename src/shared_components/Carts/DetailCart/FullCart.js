@@ -1,5 +1,6 @@
 // NPM
 import React from "react";
+import PropTypes from 'prop-types';
 import styled from "styled-components";
 
 // COMPONENTS
@@ -118,7 +119,7 @@ const HeaderRow = styled.div`
 const ContentRow = styled.div``;
 
 // MODULE
-export default function FullCart({ data, toggleExpansion }) {
+export default function FullCart({ data, toggleExpansion, onDeleteClick }) {
   return (
     <Wrap>
       <LeftCol>
@@ -142,9 +143,7 @@ export default function FullCart({ data, toggleExpansion }) {
               theme="icon"
               size="text"
               type="button"
-              onClick={ev => {
-                alert("Deleting");
-              }}
+              onClick={onDeleteClick}
             >
               <TrashIcon />
             </Button>
@@ -167,4 +166,6 @@ export default function FullCart({ data, toggleExpansion }) {
 }
 
 // Props Validation
-FullCart.propTypes = {};
+FullCart.propTypes = {
+  onDeleteClick: PropTypes.func.isRequired,
+};

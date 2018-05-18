@@ -32,11 +32,11 @@ const Wrap = styled.div`
 `;
 
 // MODULE
-export default function Results({ showDetails, scheduledServices, unScheduledServices, onServiceDragEnd }) {
+export default function Results({ showDetails, scheduledServices, unScheduledServices, onServiceDragEnd, onServiceRemoveClick }) {
   const services = showDetails
     ? [
-        ...unScheduledServices.map(day => <Day key="null" day={day} />),
-        ...scheduledServices.map(day => <Day key={day.day} day={day} />),
+        ...unScheduledServices.map(day => <Day key="null" day={day} onServiceRemoveClick={onServiceRemoveClick} />),
+        ...scheduledServices.map(day => <Day key={day.day} day={day} onServiceRemoveClick={onServiceRemoveClick} />),
       ]
     : null;
   return (
@@ -79,6 +79,7 @@ Results.propTypes = {
   scheduledTrips: PropTypes.array,
   unScheduledTrips: PropTypes.array,
   onServiceDragEnd: PropTypes.func.isRequired,
+  onServiceRemoveClick: PropTypes.func.isRequired,
 };
 
 Results.defaultProps = {

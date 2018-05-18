@@ -43,7 +43,7 @@ export default class DetailCart extends Component {
           <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
             <Cart withShadow column>
               {this.state.expanded ? (
-                <FullCart data={this.props.item} toggleExpansion={this.toggleExpansion} />
+                <FullCart data={this.props.item} toggleExpansion={this.toggleExpansion} onDeleteClick={this.props.onDeleteClick} />
               ) : (
                 <ExcerptCart data={this.props.item} toggleExpansion={this.toggleExpansion} />
               )}
@@ -59,4 +59,5 @@ export default class DetailCart extends Component {
 DetailCart.propTypes = {
   index: PropTypes.number.isRequired,
   item: PropTypes.object.isRequired,
+  onDeleteClick: PropTypes.func.isRequired,
 };

@@ -236,6 +236,7 @@ export default class TripsScene extends Component {
                 scheduledServices={this.props.scheduledServices}
                 unScheduledServices={this.props.unScheduledServices}
                 onServiceDragEnd={this.props.onServiceDragEnd}
+                onServiceRemoveClick={this.props.onServiceRemoveClick}
               />
               <Hr />
               <Summary data={trip} />
@@ -253,4 +254,5 @@ TripsScene.propTypes = {
   scheduledServices: PropTypes.array,
   unScheduledServices: PropTypes.array,
   onServiceDragEnd: PropTypes.func.isRequired,
+  onServiceRemoveClick: PropTypes.func.isRequired,
 };
