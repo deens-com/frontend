@@ -93,9 +93,9 @@ export default class TripSummary extends Component {
     this.setState({ ...this.getTripSummaryCategories() });
 
     if(Parse.User.current() === null){
-      this.state.logged_in = false;
+      this.setState({ logged_in: false });
     }else{
-      this.state.logged_in = true;
+      this.setState({ logged_in: true });
     }
   }
 
