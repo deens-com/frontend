@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import Parse from "parse";
 
 // COMPONENTS
 import Button from "../../../shared_components/Button";
@@ -76,9 +77,11 @@ const TotalHint = styled.p`
 
 // MODULE
 export default class TripSummary extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
+      logged_in: false,
       summary: {},
       total: 0
     };
@@ -88,6 +91,12 @@ export default class TripSummary extends Component {
 
   componentDidMount() {
     this.setState({ ...this.getTripSummaryCategories() });
+
+    if(Parse.User.current() === null){
+      this.setState({ logged_in: false });
+    }else{
+      this.setState({ logged_in: true });
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -144,10 +153,12 @@ export default class TripSummary extends Component {
               Book now
             </Button>
           </TotalWrap>
-          <TotalHint>
-            Trip is not saved! Please <Link to="#">Sign Up</Link> or{" "}
-            <Link to="#">Login</Link> in order to save tre trip.
-          </TotalHint>
+          {!this.state.logged_in &&
+            <TotalHint>
+              Trip is not saved! Please <Link to="/register">Sign Up</Link> or{" "}
+              <Link to="/login">Login</Link> in order to save tre trip.
+            </TotalHint>
+          }
         </RightCol>
       </Wrap>
     );

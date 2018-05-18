@@ -7,11 +7,11 @@ import Media from "react-media";
 
 // COMPONENTS
 import DropDownMenu from "./DropDownMenu";
-import CurrencySelector from "../../../shared_components/Currency/Selector";
+import CurrencySelector from "../Currency/Selector";
 
 // ACTIONS/CONFIG
-import { sizes } from "../../../libs/styled";
-import { mainNav } from "../../../data/nav";
+import { sizes } from "../../libs/styled";
+import { mainNav } from "../../data/nav";
 
 // STYLES
 const Wrap = styled.div`
@@ -94,7 +94,7 @@ const ActionsWrap = styled.div`
 `;
 
 // MODULE
-export default function TopBarDesktopNav({ home, language, currency }) {
+export default function TopBarDesktopNav({ home, language, currency, theme }) {
   return (
     <Media
       query={`(min-width: ${sizes.large})`}
@@ -113,7 +113,7 @@ export default function TopBarDesktopNav({ home, language, currency }) {
           </Nav>
           <ActionsWrap>
             <CurrencySelector />
-            <DropDownMenu />
+            <DropDownMenu theme={theme}/>
           </ActionsWrap>
         </Wrap>
       )}
@@ -125,10 +125,11 @@ export default function TopBarDesktopNav({ home, language, currency }) {
 TopBarDesktopNav.propTypes = {
   home: PropTypes.bool.isRequired,
   language: PropTypes.string,
+  theme: PropTypes.string,
   currency: PropTypes.string
 };
 
 TopBarDesktopNav.defaultProps = {
   language: "english",
-  currency: "EUR"
+  currency: "USD"
 };
