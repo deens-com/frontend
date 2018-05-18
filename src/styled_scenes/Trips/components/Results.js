@@ -35,7 +35,7 @@ const Wrap = styled.div`
 export default function Results({ showDetails, scheduledServices, unScheduledServices, onServiceDragEnd }) {
   const services = showDetails
     ? [
-        ...unScheduledServices.map(day => <Day key={day.day} day={day} />),
+        ...unScheduledServices.map(day => <Day key="null" day={day} />),
         ...scheduledServices.map(day => <Day key={day.day} day={day} />),
       ]
     : null;

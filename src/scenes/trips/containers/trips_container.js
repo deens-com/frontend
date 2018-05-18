@@ -17,11 +17,10 @@ class TripsContainer extends Component {
    */
   onDragReOrderChange = event => {
     if (!event) return;
-    const { source, destination, draggableId } = event;
-    if (!destination || !source || !draggableId) return;
-    const fromDay = source.droppableId;
+    const { source, destination, draggableId: tripOrganizationId } = event;
+    if (!destination || !source || !tripOrganizationId) return;
     const toDay = destination.droppableId;
-    console.log({ fromDay, toDay, draggableId });
+    this.props.changeServiceDay(tripOrganizationId, toDay);
   };
 
   render() {

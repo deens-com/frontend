@@ -6,6 +6,11 @@ export const trip_fetched = trip => ({
   payload: trip,
 });
 
+export const tripChangeServiceDay = (tripOrganizationId, newDay) => ({
+  type: 'CHANGE_SERVICE_DAY',
+  payload: { tripOrganizationId, newDay },
+});
+
 export const fetchTrip = tripId => async dispatch => {
   if (!tripId) {
     console.error(new Error("can't fetch trip without TripId"));
@@ -31,4 +36,12 @@ export const fetchTrip = tripId => async dispatch => {
   }));
   const services = tripOrganizations.map(tOrg => tOrg.service);
   dispatch(trip_fetched({ trip, tripOrganizations: tripOrganizationMappings, services }));
+};
+
+export const changeServiceDay = (tripOrganizationId, newDay) => async dispatch => {
+  if (!tripOrganizationId) {
+    console.error(new Error("can't update service day without tripOrganizationId"));
+  }
+  dispatch(tripChangeServiceDay(tripOrganizationId, newDay));
+  // TODO: update the same on server
 };

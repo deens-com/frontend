@@ -161,7 +161,7 @@ export default class TripDay extends Component {
             /> */}
           </DayButtons>
         </Header>
-        <Droppable droppableId={day.day}>
+        <Droppable droppableId={`${day.day || 'null'}`}>
           {(provided, snapshot) => (
             <div ref={provided.innerRef}>
               {day.services.map((item, index) => (

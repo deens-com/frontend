@@ -4,7 +4,7 @@ export const getDaysWithFilter = (state, filter) => {
 
   const scheduledServices = Object.values(tripOrganizations)
     .filter(filter)
-    .map(tOrg => ({ ...services[tOrg.serviceId], day: tOrg.day }));
+    .map(tOrg => ({ ...services[tOrg.serviceId], tripOrganizationId: tOrg.objectId, day: tOrg.day }));
   const days = {};
   for (const service of scheduledServices) {
     days[service.day] = days[service.day] || { day: service.day, services: [] };

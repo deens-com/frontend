@@ -38,7 +38,7 @@ export default class DetailCart extends Component {
   render() {
     const { props } = this;
     return (
-      <Draggable key={props.item.objectId} draggableId={props.item.objectId} index={props.index}>
+      <Draggable key={props.item.tripOrganizationId} draggableId={props.item.tripOrganizationId} index={props.index}>
         {(provided, snapshot) => (
           <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
             <Cart withShadow column>
