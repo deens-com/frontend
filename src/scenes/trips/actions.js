@@ -11,6 +11,11 @@ export const tripChangeServiceDay = (tripOrganizationId, newDay) => ({
   payload: { tripOrganizationId, newDay },
 });
 
+export const removeService = tripOrganizationId => ({
+  type: 'REMOVE_SERVICE_TRIP',
+  payload: tripOrganizationId,
+});
+
 export const fetchTrip = tripId => async dispatch => {
   if (!tripId) {
     console.error(new Error("can't fetch trip without TripId"));
@@ -39,5 +44,8 @@ export const fetchTrip = tripId => async dispatch => {
 };
 
 export const removeServiceFromTrip = tripOrganizationId => async dispatch => {
-  console.log('remove triporganization', tripOrganizationId);
+  if (!tripOrganizationId) return;
+  dispatch(removeService(tripOrganizationId));
+  const tripOrganization = await fetch_helpers.build_query('TripOrganization').get(tripOrganizationId);
+  tripOrganization.destroy();
 };

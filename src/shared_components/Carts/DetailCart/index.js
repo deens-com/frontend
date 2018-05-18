@@ -35,6 +35,10 @@ export default class DetailCart extends Component {
     this.setState({ expanded: !this.state.expanded });
   }
 
+  onDeleteClick = () => {
+    this.props.onDeleteClick(this.props.item.tripOrganizationId);
+  };
+
   render() {
     const { props } = this;
     return (
@@ -43,7 +47,11 @@ export default class DetailCart extends Component {
           <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
             <Cart withShadow column>
               {this.state.expanded ? (
-                <FullCart data={this.props.item} toggleExpansion={this.toggleExpansion} onDeleteClick={this.props.onDeleteClick} />
+                <FullCart
+                  data={this.props.item}
+                  toggleExpansion={this.toggleExpansion}
+                  onDeleteClick={this.onDeleteClick}
+                />
               ) : (
                 <ExcerptCart data={this.props.item} toggleExpansion={this.toggleExpansion} />
               )}
