@@ -28,7 +28,7 @@ class TripsContainer extends Component {
   };
 
   updateTripDetails = newDetails => {
-    console.log('newDetails to update', newDetails);
+    this.props.updateTrip(newDetails);
   };
 
   render() {
