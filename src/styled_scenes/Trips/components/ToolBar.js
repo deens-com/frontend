@@ -76,6 +76,7 @@ export default function ToolBar({ state, onSubmit, onValueChange, trip }) {
                   onValueChange('startDate', value);
                 }}
                 value={state.startDate}
+                dayPickerProps={{ disabledDays: { before: new Date() } }}
                 type="date"
                 placeholder="From date"
                 leftIcon="date"
@@ -85,6 +86,7 @@ export default function ToolBar({ state, onSubmit, onValueChange, trip }) {
                   onValueChange('endDate', value);
                 }}
                 value={state.endDate}
+                dayPickerProps={{ disabledDays: { before: state.startDate || new Date() } }}
                 type="date"
                 placeholder="To date"
                 leftIcon="date"
