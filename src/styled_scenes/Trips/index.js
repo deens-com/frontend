@@ -230,6 +230,7 @@ export default class TripsScene extends Component {
                 onSubmit={this.onSubmit}
                 onValueChange={this.onValueChange}
                 state={this.state}
+                trip={this.props.trip}
               />
               <Results
                 showDetails={this.state.details}
@@ -251,6 +252,7 @@ export default class TripsScene extends Component {
 
 // Props Validation
 TripsScene.propTypes = {
+  trip: PropTypes.object,
   scheduledServices: PropTypes.array,
   unScheduledServices: PropTypes.array,
   onServiceDragEnd: PropTypes.func.isRequired,
