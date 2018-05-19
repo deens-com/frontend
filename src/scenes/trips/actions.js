@@ -49,3 +49,11 @@ export const removeServiceFromTrip = tripOrganizationId => async dispatch => {
   const tripOrganization = await fetch_helpers.build_query('TripOrganization').get(tripOrganizationId);
   tripOrganization.destroy();
 };
+
+export const updateTrip = newDetails => async (dispatch, getState) => {
+  if (!newDetails) return;
+  if (Object.keys(newDetails).length === 0) return;
+  const state = getState();
+  const tripId = state.TripsReducer.trip.objectId;
+  await Parse.Cloud.run('updateTripDetails', { tripId, ...newDetails });
+};

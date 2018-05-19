@@ -13,13 +13,17 @@ const FormStyle = styled.form`
 
 // MODULE
 export default class Form extends Component {
-  onSubmit(ev) {
+  onSubmit = ev => {
     ev.preventDefault();
     if (typeof this.props.onSubmit === 'function') this.props.onSubmit(ev);
-  }
+  };
 
   render() {
-    return <FormStyle {...this.props}>{this.props.children}</FormStyle>;
+    return (
+      <FormStyle {...this.props} onSubmit={this.onSubmit}>
+        {this.props.children}
+      </FormStyle>
+    );
   }
 }
 

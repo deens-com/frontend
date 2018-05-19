@@ -12,6 +12,7 @@ TripsComponent.propTypes = {
   unScheduledServices: PropTypes.array,
   onServiceDragEnd: PropTypes.func.isRequired,
   onServiceRemoveClick: PropTypes.func.isRequired,
+  updateTripDetails: PropTypes.func.isRequired,
 };
 
 export default TripsComponent;

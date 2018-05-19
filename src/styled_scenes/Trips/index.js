@@ -1,28 +1,28 @@
 // NPM
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import styled from "styled-components";
-import Media from "react-media";
-import GoogleMapReact from "google-map-react";
-import moment from "moment";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import Media from 'react-media';
+import GoogleMapReact from 'google-map-react';
+import moment from 'moment';
 
 // COMPONENTS
-import BrandFooter from "../../shared_components/BrandFooter";
-import TopBar from "./../../shared_components/TopBarWithSearch";
-import Results from "./components/Results";
-import ToolBar from "./components/ToolBar";
-import Summary from "./components/Summary";
-import MapMaker from "../../shared_components/MapMarker";
-import Button from "../../shared_components/Button";
+import BrandFooter from '../../shared_components/BrandFooter';
+import TopBar from './../../shared_components/TopBarWithSearch';
+import Results from './components/Results';
+import ToolBar from './components/ToolBar';
+import Summary from './components/Summary';
+import MapMaker from '../../shared_components/MapMarker';
+import Button from '../../shared_components/Button';
 import UserAvatar from '../../shared_components/UserAvatar';
 
 // ACTIONS/CONFIG
-import { media, sizes } from "../../libs/styled";
-import { trip } from "../../data/trip";
+import { media, sizes } from '../../libs/styled';
+import { trip } from '../../data/trip';
 
 // STYLES
-import { Page, PageContent } from "../../shared_components/layout/Page";
-import { Hr } from "../../shared_components/styledComponents/misc";
+import { Page, PageContent } from '../../shared_components/layout/Page';
+import { Hr } from '../../shared_components/styledComponents/misc';
 
 const Wrap = styled.div`
   ${media.minMediumPlus} {
@@ -81,7 +81,7 @@ const ActionsWrap = styled.div`
 
 const ShareBg = styled.div`
   position: absolute;
-  background: url(${props => props.url || "#"}) no-repeat;
+  background: url(${props => props.url || '#'}) no-repeat;
   background-size: cover;
   height: 100%;
   width: 100%;
@@ -118,17 +118,16 @@ const ProfileWrap = styled.div`
   margin-bottom: 15px;
 `;
 
-
 // MODULE
 export default class TripsScene extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      location: "",
-      startDate: "",
-      endDate: "",
+      location: '',
+      startDate: null,
+      endDate: null,
       person: 1,
-      details: true
+      details: true,
     };
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -137,7 +136,7 @@ export default class TripsScene extends Component {
   }
 
   onSubmit(ev) {
-    alert(JSON.stringify(this.state));
+    this.props.updateTripDetails({ beginDate: this.state.startDate, endDate: this.state.endDate });
   }
 
   onValueChange(key, value) {
@@ -148,7 +147,36 @@ export default class TripsScene extends Component {
     this.setState({ details: !this.state.details });
   }
 
+  getBeginDate = trip => {
+    if (!trip) trip = this.props.trip;
+    return trip && trip.beginDate && trip.beginDate.iso;
+  };
+
+  getEndDate = trip => {
+    if (!trip) trip = this.props.trip;
+    return trip && trip.endDate && trip.endDate.iso;
+  };
+
+  componentWillReceiveProps(nextProps) {
+    const { trip } = nextProps;
+    let beginDate, endDate;
+    if (!this.state.startDate) {
+      const isoBeginDate = this.getBeginDate(trip);
+      beginDate = isoBeginDate && moment(isoBeginDate).toDate();
+    }
+    if (!this.state.endDate) {
+      const isoEndDate = this.getEndDate(trip);
+      endDate = isoEndDate && moment(isoEndDate).toDate();
+    }
+    this.setState({
+      startDate: this.state.startDate || beginDate,
+      endDate: this.state.endDate || endDate,
+    });
+  }
+
   render() {
+    const beginDate = this.getBeginDate();
+    const endDate = this.getEndDate();
     return (
       <Page topPush>
         <TopBar fixed withPadding />
@@ -158,10 +186,14 @@ export default class TripsScene extends Component {
               <ShareWrap>
                 <h3>
                   <FirstLine>My trip</FirstLine>
-                  <SecondLine>to</SecondLine>{this.props.trip.title}
+                  <SecondLine>to</SecondLine>
+                  {this.props.trip.title}
                 </h3>
                 <DatesWrap>
-                  <p>{this.props.trip && this.props.trip.beginDate && moment(this.props.trip.beginDate.iso).format("MMM Do YY")} - {this.props.trip && this.props.trip.endDate && moment(this.props.trip.endDate.iso).format("MMM Do YY")}</p>
+                  <p>
+                    {beginDate && moment(beginDate).format('MMM Do YY')} -{' '}
+                    {endDate && moment(endDate).format('MMM Do YY')}
+                  </p>
                 </DatesWrap>
                 <span>
                   <ProfileWrap>
@@ -171,7 +203,7 @@ export default class TripsScene extends Component {
                 <ActionsWrap>
                   <Button
                     onClick={ev => {
-                      alert("adding trip");
+                      alert('adding trip');
                     }}
                     type="button"
                     text="Share the trip"
@@ -179,7 +211,7 @@ export default class TripsScene extends Component {
                   />
                   <Button
                     onClick={ev => {
-                      alert("adding trip");
+                      alert('adding trip');
                     }}
                     type="button"
                     text="Print"
@@ -192,34 +224,11 @@ export default class TripsScene extends Component {
                 query={`(min-width: ${sizes.medium})`}
                 render={() => (
                   <MapWrapper>
-                    <GoogleMapReact
-                      defaultCenter={{ lat: 59.95, lng: 30.33 }}
-                      defaultZoom={11}
-                    >
-                      <MapMaker
-                        lat={59.95}
-                        lng={30.33}
-                        scale={1}
-                        color="#4fb798"
-                      />
-                      <MapMaker
-                        lat={59.96}
-                        lng={30.34}
-                        scale={1}
-                        color="#4fb798"
-                      />
-                      <MapMaker
-                        lat={59.96}
-                        lng={30.3}
-                        scale={1}
-                        color="#4fb798"
-                      />
-                      <MapMaker
-                        lat={59.97}
-                        lng={30.31}
-                        scale={1}
-                        color="#4fb798"
-                      />
+                    <GoogleMapReact defaultCenter={{ lat: 59.95, lng: 30.33 }} defaultZoom={11}>
+                      <MapMaker lat={59.95} lng={30.33} scale={1} color="#4fb798" />
+                      <MapMaker lat={59.96} lng={30.34} scale={1} color="#4fb798" />
+                      <MapMaker lat={59.96} lng={30.3} scale={1} color="#4fb798" />
+                      <MapMaker lat={59.97} lng={30.31} scale={1} color="#4fb798" />
                     </GoogleMapReact>
                   </MapWrapper>
                 )}
@@ -230,6 +239,7 @@ export default class TripsScene extends Component {
                 onSubmit={this.onSubmit}
                 onValueChange={this.onValueChange}
                 state={this.state}
+                trip={this.props.trip}
               />
               <Results
                 showDetails={this.state.details}
@@ -251,8 +261,10 @@ export default class TripsScene extends Component {
 
 // Props Validation
 TripsScene.propTypes = {
+  trip: PropTypes.object,
   scheduledServices: PropTypes.array,
   unScheduledServices: PropTypes.array,
   onServiceDragEnd: PropTypes.func.isRequired,
   onServiceRemoveClick: PropTypes.func.isRequired,
+  updateTripDetails: PropTypes.func.isRequired,
 };
