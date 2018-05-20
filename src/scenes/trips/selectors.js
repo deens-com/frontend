@@ -9,8 +9,9 @@ export const getDaysWithFilter = (state, filter) => {
     .map(tOrg => ({ ...services[tOrg.serviceId], tripOrganizationId: tOrg.objectId, day: tOrg.day }));
   const days = {};
   for (const service of scheduledServices) {
-    days[service.day] = days[service.day] || { day: service.day, services: [] };
-    days[service.day].services.push(service);
+    const serviceDay = service.day || 'null';
+    days[serviceDay] = days[serviceDay] || { day: serviceDay, services: [] };
+    days[serviceDay].services.push(service);
   }
   return days;
 };
@@ -29,5 +30,7 @@ export const getScheduledServices = state => {
 
 export const getUnScheduledServices = state => {
   const dayObjects = getDaysWithFilter(state, tOrg => tOrg.day == null || tOrg.day === 'null');
+  const dayIndex = 'null';
+  dayObjects[dayIndex] = dayObjects[dayIndex] || { day: dayIndex, services: [] };
   return Object.values(dayObjects);
 };
