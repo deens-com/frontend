@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import Parse from 'parse';
+import NotFound from '../../../styled_scenes/NotFound';
 import TripsComponent from './../components/trips_component';
 import * as trips_actions from './../actions';
 import * as selectors from '../selectors';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 class TripsContainer extends Component {
   componentDidMount() {
@@ -32,6 +34,10 @@ class TripsContainer extends Component {
   };
 
   render() {
+    const { tripError } = this.props;
+    if (tripError && tripError.code === Parse.Error.OBJECT_NOT_FOUND) {
+      return <NotFound />;
+    }
     return (
       <TripsComponent
         {...this.props}
@@ -46,6 +52,7 @@ class TripsContainer extends Component {
 const mapStateToProps = state => {
   return {
     trip: state.TripsReducer.trip,
+    tripError: state.TripsReducer.tripError,
     scheduledServices: selectors.getScheduledServices(state),
     unScheduledServices: selectors.getUnScheduledServices(state),
   };
