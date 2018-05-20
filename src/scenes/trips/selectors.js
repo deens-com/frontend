@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export const getDaysWithFilter = (state, filter) => {
   const { tripOrganizations, services } = state.TripsReducer;
   if (!tripOrganizations) return [];
@@ -10,13 +12,22 @@ export const getDaysWithFilter = (state, filter) => {
     days[service.day] = days[service.day] || { day: service.day, services: [] };
     days[service.day].services.push(service);
   }
-  return Object.values(days);
+  return days;
 };
 
 export const getScheduledServices = state => {
-  return getDaysWithFilter(state, tOrg => tOrg.day != null && tOrg.day !== 'null');
+  const dayObjects = getDaysWithFilter(state, tOrg => tOrg.day != null && tOrg.day !== 'null');
+  const { trip } = state.TripsReducer;
+  if (trip.beginDate && trip.endDate) {
+    const diffDays = moment(trip.endDate.iso).diff(moment(trip.beginDate.iso), 'days') + 1;
+    for (let dayIndex = 1; dayIndex <= diffDays; dayIndex++) {
+      dayObjects[dayIndex] = dayObjects[dayIndex] || { day: dayIndex, services: [] };
+    }
+  }
+  return Object.values(dayObjects);
 };
 
 export const getUnScheduledServices = state => {
-  return getDaysWithFilter(state, tOrg => tOrg.day == null || tOrg.day === 'null');
+  const dayObjects = getDaysWithFilter(state, tOrg => tOrg.day == null || tOrg.day === 'null');
+  return Object.values(dayObjects);
 };
