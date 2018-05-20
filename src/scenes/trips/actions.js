@@ -43,6 +43,22 @@ export const fetchTrip = tripId => async dispatch => {
   dispatch(trip_fetched({ trip, tripOrganizations: tripOrganizationMappings, services }));
 };
 
+export const changeServiceDay = (tripOrganizationId, newDay) => async dispatch => {
+  if (!tripOrganizationId) {
+    console.error(new Error("can't update service day without tripOrganizationId"));
+  }
+  dispatch(tripChangeServiceDay(tripOrganizationId, newDay));
+  const tripOrganization = await fetch_helpers.build_query('TripOrganization').get(tripOrganizationId);
+  if (newDay === 'null') {
+    tripOrganization.unset('day');
+  } else {
+    tripOrganization.set('day', parseInt(newDay, 10));
+  }
+  await tripOrganization.save();
+  // re-fetch trip in case anything else has changed
+  fetchTrip(tripOrganization.get('trip').id)(dispatch);
+};
+
 export const removeServiceFromTrip = tripOrganizationId => async dispatch => {
   if (!tripOrganizationId) return;
   dispatch(removeService(tripOrganizationId));
