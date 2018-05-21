@@ -15,6 +15,7 @@ import Summary from './components/Summary';
 import MapMaker from '../../shared_components/MapMarker';
 import Button from '../../shared_components/Button';
 import UserAvatar from '../../shared_components/UserAvatar';
+import ShareButton from './components/ShareButton';
 
 // ACTIONS/CONFIG
 import { media, sizes } from '../../libs/styled';
@@ -201,14 +202,7 @@ export default class TripsScene extends Component {
                   </ProfileWrap>
                 </span>
                 <ActionsWrap>
-                  <Button
-                    onClick={ev => {
-                      alert('adding trip');
-                    }}
-                    type="button"
-                    text="Share the trip"
-                    iconAfter="arrowDown"
-                  />
+                  <ShareButton trip={this.props.trip} />
                   <Button
                     onClick={ev => {
                       alert('adding trip');
