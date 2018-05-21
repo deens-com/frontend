@@ -18,6 +18,8 @@ export const removeService = tripOrganizationId => ({
   payload: tripOrganizationId,
 });
 
+export const tripUpdated = value => ({ type: 'TRIP_UPDATED', payload: value });
+
 export const fetchTrip = tripId => async dispatch => {
   if (!tripId) {
     console.error(new Error("can't fetch trip without TripId"));
@@ -73,11 +75,17 @@ export const removeServiceFromTrip = tripOrganizationId => async dispatch => {
   tripOrganization.destroy();
 };
 
-export const updateTrip = newDetails => async (dispatch, getState) => {
+export const updateTrip = (newDetails, showSaved) => async (dispatch, getState) => {
   if (!newDetails) return;
   if (Object.keys(newDetails).length === 0) return;
   const state = getState();
   const tripId = state.TripsReducer.trip.objectId;
   await Parse.Cloud.run('updateTripDetails', { tripId, ...newDetails });
+  if (showSaved) {
+    dispatch(tripUpdated(true));
+    setTimeout(() => dispatch(tripUpdated(false)), 3000);
+  }
   fetchTrip(tripId)(dispatch);
 };
+
+export const setShowTripUpdated = value => dispatch => dispatch(tripUpdated(value));

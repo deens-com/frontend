@@ -13,6 +13,7 @@ TripsComponent.propTypes = {
   onServiceDragEnd: PropTypes.func.isRequired,
   onServiceRemoveClick: PropTypes.func.isRequired,
   updateTripDetails: PropTypes.func.isRequired,
+  showTripUpdated: PropTypes.bool,
 };
 
 export default TripsComponent;

@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Media from 'react-media';
-import { Button } from 'semantic-ui-react';
+import { Button, Icon } from 'semantic-ui-react';
 import Parse from 'parse';
 
 // COMPONENTS
@@ -47,7 +47,7 @@ const Wrap = styled.div`
 `;
 
 // MODULE
-export default function ToolBar({ state, onSubmit, onValueChange, trip }) {
+export default function ToolBar({ state, onSubmit, onValueChange, trip, showTripUpdated }) {
   const tripOwnerId = trip && trip.owner && trip.owner.objectId;
   const currentUser = Parse.User.current();
   const showSaveButton = tripOwnerId === (currentUser && currentUser.id);
@@ -100,7 +100,14 @@ export default function ToolBar({ state, onSubmit, onValueChange, trip }) {
                 placeholder="1"
                 leftIcon="person"
               />
-              {showSaveButton && <Button type="submit">Save</Button>}
+              {showSaveButton && showTripUpdated ? (
+                <Button icon color="green" type="submit" labelPosition="right">
+                  Saved
+                  <Icon name="check circle outline" />
+                </Button>
+              ) : (
+                <Button type="submit">Save</Button>
+              )}
             </Form>
           </Wrap>
         )
@@ -112,4 +119,5 @@ export default function ToolBar({ state, onSubmit, onValueChange, trip }) {
 // Props Validation
 ToolBar.propTypes = {
   trip: PropTypes.object,
+  showTripUpdated: PropTypes.bool,
 };
