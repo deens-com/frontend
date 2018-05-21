@@ -1,22 +1,22 @@
 // NPM
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styled from "styled-components";
-import { Droppable } from "react-beautiful-dnd";
+import styled from 'styled-components';
+import { Droppable } from 'react-beautiful-dnd';
 
 // COMPONENTS
-import Button from "../../../shared_components/Button";
-import DetailCart from "../../../shared_components/Carts/DetailCart";
-import DropPicker from "../../../shared_components/DropPicker";
-import Trigger from "../../../shared_components/DropPicker/Trigger";
-import Drop from "../../../shared_components/DropPicker/Drop";
-import DropItem from "../../../shared_components/DropPicker/DropItem";
+import Button from '../../../shared_components/Button';
+import DetailCart from '../../../shared_components/Carts/DetailCart';
+import DropPicker from '../../../shared_components/DropPicker';
+import Trigger from '../../../shared_components/DropPicker/Trigger';
+import Drop from '../../../shared_components/DropPicker/Drop';
+import DropItem from '../../../shared_components/DropPicker/DropItem';
 
 // ACTIONS/CONFIG
-import { media } from "../../../libs/styled";
+import { media } from '../../../libs/styled';
 
 // STYLES
-import { Mute } from "./styles";
+import { Mute } from './styles';
 
 const Wrap = styled.div`
   margin-bottom: 50px;
@@ -71,6 +71,20 @@ const DayButtons = styled.div`
   }
 `;
 
+const EmptyDropHere = styled.div`
+  background-color: #efeff1;
+  height: 112px;
+  width: 100%;
+  border-radius: 4px;
+  text-align: center;
+`;
+
+const EmptyDropText = styled.h3`
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+`;
+
 // MODULE
 export default class TripDay extends Component {
   constructor(props) {
@@ -78,7 +92,7 @@ export default class TripDay extends Component {
     this.state = {
       expanded: false,
       opening: false,
-      closing: false
+      closing: false,
     };
     this.toggleExpansion = this.toggleExpansion.bind(this);
   }
@@ -100,7 +114,25 @@ export default class TripDay extends Component {
   render() {
     // console.log('this.state', this.state);
     const { day } = this.props;
-    const dayTitle = day.day === 'null' ? 'Unscheduled' : `Day ${day.day}`;
+    const dayTitle = day.day === 'null' || !day.day ? 'Unscheduled' : `Day ${day.day}`;
+    const services =
+      day.services.length === 0 ? (
+        <EmptyDropHere>
+          <EmptyDropText>Drop services here</EmptyDropText>
+        </EmptyDropHere>
+      ) : (
+        day.services.map((item, index) => (
+          <div key={item.description}>
+            <DetailCart
+              item={item}
+              opening={this.state.opening}
+              closing={this.state.closing}
+              index={index}
+              onDeleteClick={this.props.onServiceRemoveClick}
+            />
+          </div>
+        ))
+      );
     return (
       <Wrap>
         <Header>
@@ -116,33 +148,28 @@ export default class TripDay extends Component {
               iconAfter="arrowDown"
               theme="textGreen"
               onClick={this.toggleExpansion}
-              text={this.state.expanded ? "Collapse all" : "Expand all"}
+              text={this.state.expanded ? 'Collapse all' : 'Expand all'}
             />
             <DropPicker>
-              <Trigger
-                iconBefore="plus"
-                size="small"
-                round={true}
-                text="Add new event"
-              />
+              <Trigger iconBefore="plus" size="small" round={true} text="Add new event" />
               <Drop>
                 <DropItem
                   onChange={ev => {
-                    console.log("onchange,place");
+                    console.log('onchange,place');
                   }}
                 >
                   Place
                 </DropItem>
                 <DropItem
                   onChange={ev => {
-                    console.log("onchange,food");
+                    console.log('onchange,food');
                   }}
                 >
                   Food
                 </DropItem>
                 <DropItem
                   onChange={ev => {
-                    console.log("onchange,activity ");
+                    console.log('onchange,activity ');
                   }}
                 >
                   Activity
@@ -163,15 +190,7 @@ export default class TripDay extends Component {
           </DayButtons>
         </Header>
         <Droppable droppableId={`${day.day || 'null'}`}>
-          {(provided, snapshot) => (
-            <div ref={provided.innerRef}>
-              {day.services.map((item, index) => (
-                <div key={item.description}>
-                  <DetailCart item={item} opening={this.state.opening} closing={this.state.closing} index={index} onDeleteClick={this.props.onServiceRemoveClick} />
-                </div>
-              ))}
-            </div>
-          )}
+          {(provided, snapshot) => <div ref={provided.innerRef}>{services}</div>}
         </Droppable>
       </Wrap>
     );

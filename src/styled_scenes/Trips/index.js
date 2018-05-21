@@ -242,6 +242,7 @@ export default class TripsScene extends Component {
                 trip={this.props.trip}
               />
               <Results
+                trip={this.props.trip}
                 showDetails={this.state.details}
                 scheduledServices={this.props.scheduledServices}
                 unScheduledServices={this.props.unScheduledServices}
