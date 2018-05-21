@@ -3,6 +3,7 @@ import { removeKey } from '../../libs/Utils';
 
 const initialState = {
   trip: {},
+  tripError: null,
 };
 
 export default function TripsReducer(state = initialState, action = {}) {
@@ -11,9 +12,16 @@ export default function TripsReducer(state = initialState, action = {}) {
       return {
         ...state,
         trip: action.payload.trip,
+        tripError: null,
         tripOrganizations: keyBy(action.payload.tripOrganizations, 'objectId'),
         services: keyBy(action.payload.services, 'objectId'),
       };
+    case 'TRIP_FETCH_ERROR': {
+      return {
+        ...state,
+        tripError: action.payload,
+      };
+    }
     case 'CHANGE_SERVICE_DAY': {
       const { tripOrganizationId, newDay } = action.payload;
       return {
