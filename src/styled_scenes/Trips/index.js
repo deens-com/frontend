@@ -202,7 +202,7 @@ export default class TripsScene extends Component {
                   </ProfileWrap>
                 </span>
                 <ActionsWrap>
-                  <ShareButton trip={this.props.trip} />
+                  <ShareButton trip={this.props.trip} updateTripDetails={this.props.updateTripDetails} />
                   <Button
                     onClick={ev => {
                       alert('adding trip');
