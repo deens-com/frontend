@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Container, Dropdown, Grid, Input } from 'semantic-ui-react';
+import { Button, Container, Dropdown, Grid, Input } from 'semantic-ui-react';
 import Media from 'react-media';
 import Parse from 'parse';
 
@@ -30,8 +30,27 @@ export default class ShareDialogContent extends Component {
     updateTripDetails: PropTypes.func.isRequired,
   };
 
+  state = {
+    copyButtonText: 'Copy',
+  };
+
+  componentDidMount() {
+    this.setState({ copyButtonText: 'Copy' });
+  }
+
+  handleRef = element => {
+    this.textInput = element;
+  };
+
   onDropDownChange = (ev, { value }) => {
     this.props.updateTripDetails({ status: value });
+  };
+
+  copyToClipboard = () => {
+    this.textInput.inputRef.select();
+    document.execCommand('copy');
+    this.setState({ copyButtonText: 'Copied' });
+    setTimeout(() => this.setState({ copyButtonText: 'Copy' }), 2000);
   };
 
   render() {
@@ -39,6 +58,9 @@ export default class ShareDialogContent extends Component {
     const tripUrl = `${window.location.origin}/#/trips/${trip.objectId}`;
     const currentUser = Parse.User.current();
     const allowChangeStatus = trip.owner.objectId === currentUser.id;
+    const copyButton = (
+      <Button color="teal" icon="copy" content={this.state.copyButtonText} onClick={this.copyToClipboard} />
+    );
     return (
       <Container>
         <Grid columns="2">
@@ -64,11 +86,7 @@ export default class ShareDialogContent extends Component {
           </Grid.Row>
           <Grid.Row>
             <Grid.Column width="16">
-              <Input
-                action={{ color: 'teal', labelPosition: 'right', icon: 'copy', content: 'Copy' }}
-                fluid
-                value={tripUrl}
-              />
+              <Input action={copyButton} fluid value={tripUrl} ref={this.handleRef} />
             </Grid.Column>
           </Grid.Row>
         </Grid>
