@@ -8,7 +8,7 @@ import Button from '../../../shared_components/Button';
 const ShareButton = ({ trip, updateTripDetails }) => {
   if (!trip) return null;
   return (
-    <Modal size="tiny" trigger={<Button type="button" text="Share the trip" iconAfter="arrowDown" />}>
+    <Modal size="tiny" trigger={<Button type="button" text="Share the trip" />}>
       <Modal.Header>Share this Trip</Modal.Header>
       <Modal.Content>
         <ShareDialogContent trip={trip} updateTripDetails={updateTripDetails} />
