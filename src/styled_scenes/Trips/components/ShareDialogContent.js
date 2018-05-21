@@ -57,7 +57,7 @@ export default class ShareDialogContent extends Component {
     const { trip } = this.props;
     const tripUrl = `${window.location.origin}/#/trips/${trip.objectId}`;
     const currentUser = Parse.User.current();
-    const allowChangeStatus = trip.owner.objectId === currentUser.id;
+    const allowChangeStatus = (trip.owner && trip.owner.objectId) === (currentUser && currentUser.id);
     const copyButton = (
       <Button color="teal" icon="copy" content={this.state.copyButtonText} onClick={this.copyToClipboard} />
     );
