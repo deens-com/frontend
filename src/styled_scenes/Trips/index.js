@@ -136,7 +136,7 @@ export default class TripsScene extends Component {
   }
 
   onSubmit(ev) {
-    this.props.updateTripDetails({ beginDate: this.state.startDate, endDate: this.state.endDate });
+    this.props.updateTripDetails({ beginDate: this.state.startDate, endDate: this.state.endDate }, true);
   }
 
   onValueChange(key, value) {
@@ -240,6 +240,7 @@ export default class TripsScene extends Component {
                 onValueChange={this.onValueChange}
                 state={this.state}
                 trip={this.props.trip}
+                showTripUpdated={this.props.showTripUpdated}
               />
               <Results
                 trip={this.props.trip}

@@ -4,6 +4,7 @@ import { removeKey } from '../../libs/Utils';
 const initialState = {
   trip: {},
   tripError: null,
+  showTripUpdated: false,
 };
 
 export default function TripsReducer(state = initialState, action = {}) {
@@ -40,6 +41,12 @@ export default function TripsReducer(state = initialState, action = {}) {
       return {
         ...state,
         tripOrganizations: removeKey(state.tripOrganizations, tripOrganizationId),
+      };
+    }
+    case 'TRIP_UPDATED': {
+      return {
+        ...state,
+        showTripUpdated: action.payload,
       };
     }
     default:

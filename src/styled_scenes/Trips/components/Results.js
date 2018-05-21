@@ -21,6 +21,10 @@ import { Header } from './Day';
 
 const Wrap = styled.div`
   padding: 45px 10px 10px;
+  
+  // required for Drag & drop to work properly
+  min-height: 112px;
+  overflow: auto;
 
   // ${media.minSMall} {
   //   padding-top: 115px;

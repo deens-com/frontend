@@ -11,6 +11,7 @@ class TripsContainer extends Component {
   componentDidMount() {
     const trip_id = this.props.match.params.id;
     this.props.fetchTrip(trip_id);
+    this.props.setShowTripUpdated(false);
   }
 
   /**
@@ -29,8 +30,8 @@ class TripsContainer extends Component {
     this.props.removeServiceFromTrip(tripOrganizationId);
   };
 
-  updateTripDetails = newDetails => {
-    this.props.updateTrip(newDetails);
+  updateTripDetails = (newDetails, showSaved) => {
+    this.props.updateTrip(newDetails, showSaved);
   };
 
   render() {
@@ -55,6 +56,7 @@ const mapStateToProps = state => {
     tripError: state.TripsReducer.tripError,
     scheduledServices: selectors.getScheduledServices(state),
     unScheduledServices: selectors.getUnScheduledServices(state),
+    showTripUpdated: state.TripsReducer.showTripUpdated,
   };
 };
 
