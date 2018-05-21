@@ -79,4 +79,5 @@ export const updateTrip = newDetails => async (dispatch, getState) => {
   const state = getState();
   const tripId = state.TripsReducer.trip.objectId;
   await Parse.Cloud.run('updateTripDetails', { tripId, ...newDetails });
+  fetchTrip(tripId)(dispatch);
 };
