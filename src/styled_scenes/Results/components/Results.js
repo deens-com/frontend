@@ -125,9 +125,9 @@ export default class Results extends Component {
         </Row>
         <Row>
           <PaginationWrap>
-            <ReactPaginate pageCount={this.state.totalItems / limit_per_page}
-                           marginPagesDisplayed={2}
-                           pageRangeDisplayed={5}
+            <ReactPaginate pageCount={Math.ceil(this.state.totalItems / limit_per_page)}
+                           marginPagesDisplayed={1}
+                           pageRangeDisplayed={2}
                            onPageChange={this.loadData} />
            </PaginationWrap>
         </Row>
