@@ -30,27 +30,33 @@ const PaginationWrap = styled.div`
 
     li {
       float: left;
-      padding: 5px 10px;
-      margin: 0 5px;
-      border: 1px solid grey;
-      border-radius: 4px;
-      cursor: pointer;
+      margin: 0;
+      padding: 0;
 
       a {
+        display: block;
+        padding: 5px 12px;
+        margin: 0 5px;
+        border: 1px solid grey;
+        border-radius: 4px;
+        cursor: pointer;
+
         &:focus {
           outline: none;
         }
       }
 
       &.selected {
-        border: 1px solid #4fb798;
         a {
+          border: 1px solid #4fb798;
           color: #4fb798;
         }
       }
 
       &.disabled {
-        visibility: hidden;
+        a {
+          visibility: hidden;
+        }
       }
     }
   }
@@ -76,10 +82,10 @@ export default class Results extends Component {
     this.setState({totalItems: this.props.data.length});
   }
 
-  loadData(item) {
+  loadData = (item) => {
     let data = [];
     let skip = 0;
-    let selected = 1;
+    let selected = 0;
 
     if (item) {
       selected = item.selected;
@@ -122,7 +128,7 @@ export default class Results extends Component {
             <ReactPaginate pageCount={this.state.totalItems / limit_per_page}
                            marginPagesDisplayed={2}
                            pageRangeDisplayed={5}
-                           onPageChange={this.loadData.bind(this)} />
+                           onPageChange={this.loadData} />
            </PaginationWrap>
         </Row>
       </Wrap>
