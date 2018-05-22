@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { DragDropContext } from 'react-beautiful-dnd';
+import Parse from 'parse';
 
 // COMPONENTS
 import Col from '../../../shared_components/layout/Col';
@@ -35,12 +36,31 @@ const Wrap = styled.div`
   }
 `;
 
+const showEmptyDayIfTripOwner = (day, isTripOwner) => {
+  if (isTripOwner) return true;
+  return day.services.length > 0;
+};
+
 // MODULE
-export default function Results({ showDetails, scheduledServices, unScheduledServices, onServiceDragEnd, onServiceRemoveClick, trip }) {
+export default function Results({
+  trip,
+  showDetails,
+  scheduledServices,
+  unScheduledServices,
+  onServiceDragEnd,
+  onServiceRemoveClick,
+}) {
+  const currentUser = Parse.User.current();
+  const isTripOwner = (trip && trip.owner && trip.owner.objectId) === (currentUser && currentUser.id);
+  const dayProps = { trip, isTripOwner, onServiceRemoveClick };
   const services = showDetails
     ? [
-        ...unScheduledServices.map(day => <Day key="null" day={day} onServiceRemoveClick={onServiceRemoveClick} trip={trip} />),
-        ...scheduledServices.map(day => <Day key={day.day} day={day} onServiceRemoveClick={onServiceRemoveClick} trip={trip} />),
+        ...unScheduledServices
+          .filter(day => showEmptyDayIfTripOwner(day, isTripOwner))
+          .map(day => <Day key="null" day={day} {...dayProps} />),
+        ...scheduledServices
+          .filter(day => showEmptyDayIfTripOwner(day, isTripOwner))
+          .map(day => <Day key={day.day} day={day} {...dayProps} />),
       ]
     : null;
   return (
@@ -79,6 +99,7 @@ export default function Results({ showDetails, scheduledServices, unScheduledSer
 
 // Props Validation
 Results.propTypes = {
+  trip: PropTypes.object,
   showDetails: PropTypes.bool,
   scheduledTrips: PropTypes.array,
   unScheduledTrips: PropTypes.array,

@@ -144,6 +144,7 @@ export default class TripDay extends Component {
               closing={this.state.closing}
               index={index}
               onDeleteClick={this.props.onServiceRemoveClick}
+              isTripOwner={this.props.isTripOwner}
             />
           </div>
         ))
@@ -216,9 +217,13 @@ export default class TripDay extends Component {
             /> */}
           </DayButtons>
         </Header>
-        <Droppable droppableId={`${day.day || 'null'}`}>
-          {(provided, snapshot) => <div ref={provided.innerRef}>{services}</div>}
-        </Droppable>
+        {this.props.isTripOwner ? (
+          <Droppable droppableId={`${day.day || 'null'}`}>
+            {(provided, snapshot) => <div ref={provided.innerRef}>{services}</div>}
+          </Droppable>
+        ) : (
+          services
+        )}
       </Wrap>
     );
   }
@@ -227,4 +232,5 @@ export default class TripDay extends Component {
 // Props Validation
 TripDay.propTypes = {
   onServiceRemoveClick: PropTypes.func.isRequired,
+  isTripOwner: PropTypes.bool,
 };

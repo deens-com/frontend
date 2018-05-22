@@ -41,21 +41,24 @@ export default class DetailCart extends Component {
 
   render() {
     const { props } = this;
+    const serviceCard = (
+      <Cart withShadow column>
+        {this.state.expanded ? (
+          <FullCart data={this.props.item} toggleExpansion={this.toggleExpansion} onDeleteClick={this.onDeleteClick} />
+        ) : (
+          <ExcerptCart data={this.props.item} toggleExpansion={this.toggleExpansion} />
+        )}
+      </Cart>
+    );
+    if (!props.isTripOwner) {
+      return serviceCard;
+    }
+
     return (
       <Draggable key={props.item.tripOrganizationId} draggableId={props.item.tripOrganizationId} index={props.index}>
         {(provided, snapshot) => (
           <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-            <Cart withShadow column>
-              {this.state.expanded ? (
-                <FullCart
-                  data={this.props.item}
-                  toggleExpansion={this.toggleExpansion}
-                  onDeleteClick={this.onDeleteClick}
-                />
-              ) : (
-                <ExcerptCart data={this.props.item} toggleExpansion={this.toggleExpansion} />
-              )}
-            </Cart>
+            {serviceCard}
           </div>
         )}
       </Draggable>
@@ -68,4 +71,5 @@ DetailCart.propTypes = {
   index: PropTypes.number.isRequired,
   item: PropTypes.object.isRequired,
   onDeleteClick: PropTypes.func.isRequired,
+  isTripOwner: PropTypes.bool,
 };
