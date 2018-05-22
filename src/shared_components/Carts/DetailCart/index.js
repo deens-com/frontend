@@ -50,7 +50,7 @@ export default class DetailCart extends Component {
         )}
       </Cart>
     );
-    if (!props.isTripOwner) {
+    if (!props.allowServiceRearrange) {
       return serviceCard;
     }
 
@@ -71,5 +71,5 @@ DetailCart.propTypes = {
   index: PropTypes.number.isRequired,
   item: PropTypes.object.isRequired,
   onDeleteClick: PropTypes.func.isRequired,
-  isTripOwner: PropTypes.bool,
+  allowServiceRearrange: PropTypes.bool,
 };

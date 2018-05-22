@@ -36,8 +36,8 @@ const Wrap = styled.div`
   }
 `;
 
-const showEmptyDayIfTripOwner = (day, isTripOwner) => {
-  if (isTripOwner) return true;
+const showEmptyDayIfRearrangeAllowed = (day, isAllowedServiceRearrange) => {
+  if (isAllowedServiceRearrange) return true;
   return day.services.length > 0;
 };
 
@@ -51,15 +51,15 @@ export default function Results({
   onServiceRemoveClick,
 }) {
   const currentUser = Parse.User.current();
-  const isTripOwner = (trip && trip.owner && trip.owner.objectId) === (currentUser && currentUser.id);
-  const dayProps = { trip, isTripOwner, onServiceRemoveClick };
+  const allowServiceRearrange = (trip && trip.owner && trip.owner.objectId) === (currentUser && currentUser.id);
+  const dayProps = { trip, allowServiceRearrange, onServiceRemoveClick };
   const services = showDetails
     ? [
         ...unScheduledServices
-          .filter(day => showEmptyDayIfTripOwner(day, isTripOwner))
+          .filter(day => showEmptyDayIfRearrangeAllowed(day, allowServiceRearrange))
           .map(day => <Day key="null" day={day} {...dayProps} />),
         ...scheduledServices
-          .filter(day => showEmptyDayIfTripOwner(day, isTripOwner))
+          .filter(day => showEmptyDayIfRearrangeAllowed(day, allowServiceRearrange))
           .map(day => <Day key={day.day} day={day} {...dayProps} />),
       ]
     : null;
