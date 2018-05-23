@@ -34,8 +34,8 @@ class AccountTripsPlannedComponent extends Component{
     let ordered_planned_trips = this.props.planned_trips;
     ordered_planned_trips = ordered_planned_trips.sort((a, b) => {
       // sorts the array while keeping all null/undefined values at the end
-      const aValue = a && a.endDate && a.endDate.iso;
-      const bValue = b && b.endDate && b.endDate.iso;
+      const aValue = a && a.beginDate && a.beginDate.iso;
+      const bValue = b && b.beginDate && b.beginDate.iso;
       if (!aValue) return 1;
       else if (!bValue) return -1;
       else if (aValue === bValue) return 0;
