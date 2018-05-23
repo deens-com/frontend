@@ -7,7 +7,8 @@ describe("sessions reducer", () => {
       loginError: {},
       metaMaskError: {},
       ledgerError: {},
-      baseCurrency: {label: "$", value: "USD", rates: {}}
+      baseCurrency: {label: "$", value: "USD", rates: {}},
+      isLedgerLoaderDisplayed: false
     });
   });
 
@@ -25,7 +26,8 @@ describe("sessions reducer", () => {
       session: {},
       metaMaskError: {},
       ledgerError: {},
-      baseCurrency: {label: "$", value: "USD", rates: {}}
+      baseCurrency: {label: "$", value: "USD", rates: {}},
+      isLedgerLoaderDisplayed: false
     });
   });
 
@@ -46,7 +48,8 @@ describe("sessions reducer", () => {
       },
       metaMaskError: {},
       ledgerError: {},
-      baseCurrency: {label: "$", value: "USD", rates: {}}
+      baseCurrency: {label: "$", value: "USD", rates: {}},
+      isLedgerLoaderDisplayed: false
     });
   });
 

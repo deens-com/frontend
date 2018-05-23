@@ -10,6 +10,7 @@ export const types = {
   METAMASK_ERROR: "METAMASK_ERROR",
   LEDGER_ERROR: "LEDGER_ERROR",
   BASE_CURRENCY_SET: "BASE_CURRENCY_SET",
+  TOGGLE_LEDGER_LOADER_DISPLAY: "TOGGLE_LEDGER_LOADER_DISPLAY"
 };
 
 export const sessionsFetched = session => {
@@ -17,6 +18,13 @@ export const sessionsFetched = session => {
     type: this.types.LOGIN_SUCCESS,
     payload: session
   };
+};
+
+export const displayLedgerLoader = boolDisplay => {
+    return {
+      type: this.types.TOGGLE_LEDGER_LOADER_DISPLAY,
+      payload: boolDisplay
+    }
 };
 
 export const login_error = (message) => {
@@ -71,9 +79,18 @@ export const loginRequest = (email, password) => {
 
 export const loginWithLedger = () => async dispatch => {
   try {
-    window.alert("Please make sure you set Browser support to yes, count up to 6 and sign the transation on your physical device.");
+    dispatch(displayLedgerLoader(true));
     const publicAddress = await getLedgerPublicAddress();
     const response = await Parse.Cloud.run('getMetaMaskNonce', { publicAddress: publicAddress, type: "ledger" });
+    console.log(response);
+    if(response.code === 404){
+      dispatch({
+        type: types.LEDGER_ERROR,
+        payload: {
+          message: response.error.message.message,
+        }
+      });
+    }
     const { signature } = await ledgerSignMessage(response.nonce);
     const authData = {
       signature: signature.toLowerCase(),
@@ -84,22 +101,21 @@ export const loginWithLedger = () => async dispatch => {
     dispatch(sessionsFetched({ session: user }));
     history.push('/');
   } catch (error) {
-    console.error(error);
-    if (error.showToUser) {
+    dispatch(displayLedgerLoader(false));
+    if(error.code === 404){
+      dispatch({
+        type: types.LEDGER_ERROR,
+        payload: {
+          message: error.message.message,
+        }
+      });
+    }else{
+      // console.error(error);
       dispatch({
         type: types.LEDGER_ERROR,
         payload: {
           message: error.message,
-        },
-      });
-    } else if (error.code === 141) {
-      // parse function error
-      const innerError = error.message;
-      dispatch({
-        type: types.LEDGER_ERROR,
-        payload: {
-          message: innerError.message,
-        },
+        }
       });
     }
   }
@@ -143,4 +159,5 @@ export const loginWithMetamask = () => async dispatch => {
 export const clearErrors = () => dispatch => {
   dispatch({ type: types.LOGIN_ERROR, payload: {} });
   dispatch({ type: types.METAMASK_ERROR, payload: {} });
+  dispatch({ type: types.LEDGER_ERROR, payload: {} });
 };
