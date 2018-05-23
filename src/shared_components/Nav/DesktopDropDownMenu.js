@@ -40,7 +40,7 @@ const AvatarWrapper = styled.div`
 `;
 
 // MODULE
-export default class DropDownMenu extends Component {
+export default class DesktopDropDownMenu extends Component {
 
   constructor(props){
     super(props);

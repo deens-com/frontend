@@ -6,11 +6,10 @@ import Media from "react-media";
 import Parse from "parse";
 
 // COMPONENTS
-import CurrencySelector from "../Currency/Selector";
 
 // ACTIONS/CONFIG
 import { sizes } from "../../libs/styled";
-import { mainNav } from "../../data/nav";
+import history from "./../../main/history";
 
 // STYLES
 const Wrap = styled.div`
@@ -19,7 +18,7 @@ const Wrap = styled.div`
   position: fixed;
   right: 0;
   top: 0;
-  z-index: 20;
+  z-index: 22;
 
   select {
     color: #6e7885;
@@ -92,6 +91,13 @@ const NavLink = styled(Link)`
   }
 `;
 
+const LogoutLink = styled.a`
+  display: block;
+  font-size: 24px;
+  margin-bottom: 15px;
+  padding: 12px 0;
+`;
+
 const Divider = styled.hr`
   border: none;
   margin: 15px 0;
@@ -100,7 +106,14 @@ const Divider = styled.hr`
 `;
 
 // MODULE
-export default class MobileNav extends Component {
+export default class MobileNavProfile extends Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      logged_in: false,
+    }
+  }
 
   componentDidMount() {
     if(Parse.User.current() === null){
@@ -110,17 +123,11 @@ export default class MobileNav extends Component {
     }
   }
 
-  guestDropdown() {
-    return (
-      <span>
-        <li>
-          <NavLink to="/register">Sign up</NavLink>
-        </li>
-        <li>
-          <NavLink to="/login">Login</NavLink>
-        </li>
-      </span>
-    )
+  logout = () => {
+    Parse.User.logOut().then(() => {
+      this.setState({logged_in: false});
+      history.go("/");
+    });
   }
 
   render() {
@@ -132,29 +139,24 @@ export default class MobileNav extends Component {
         render={() => (
           <Wrap>
             <InnerList>
-              <li aria-hidden="false">
-                <NavLink to="/">Home</NavLink>
+              <li>
+                <NavLink to="/account/trips/planned">My Trips</NavLink>
               </li>
-              <li aria-hidden="true">
-                <Divider />
+              <li>
+                <NavLink to="/account/services">My Services</NavLink>
               </li>
-              {mainNav.map(item => (
-                <li aria-hidden="false" key={item.label}>
-                  <NavLink activeclassname="is-active" to={item.href}>
-                    {item.label}
-                  </NavLink>
-                </li>
-              ))}
+              <li>
+                <NavLink to="/account/profile">Profile</NavLink>
+              </li>
+              <li>
+                <NavLink to="/account/settings">Settings</NavLink>
+              </li>
               <li aria-hidden="true">
                 <Divider />
               </li>
               <li>
-                <CurrencySelector />
+                <LogoutLink onClick={this.logout}>Logout</LogoutLink>
               </li>
-              <li aria-hidden="true">
-                <Divider />
-              </li>
-              {!this.state.logged_in && this.guestDropdown() }
             </InnerList>
           </Wrap>
         )}

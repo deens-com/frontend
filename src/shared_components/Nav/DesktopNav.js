@@ -6,7 +6,7 @@ import styled, { css } from "styled-components";
 import Media from "react-media";
 
 // COMPONENTS
-import DropDownMenu from "./DropDownMenu";
+import DesktopDropDownMenu from "./DesktopDropDownMenu";
 import CurrencySelector from "../Currency/Selector";
 
 // ACTIONS/CONFIG
@@ -113,7 +113,7 @@ export default function TopBarDesktopNav({ home, language, currency, theme }) {
           </Nav>
           <ActionsWrap>
             <CurrencySelector />
-            <DropDownMenu theme={theme}/>
+            <DesktopDropDownMenu theme={theme}/>
           </ActionsWrap>
         </Wrap>
       )}
