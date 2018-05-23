@@ -128,7 +128,7 @@ export default class MobileNavProfile extends Component {
   logout = () => {
     Parse.User.logOut().then(() => {
       this.setState({logged_in: false});
-      history.push("/");
+      history.go("/");
     });
   }
 

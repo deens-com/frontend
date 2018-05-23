@@ -23,6 +23,14 @@ const AvatarWithUsername = styled.div`
   cursor: pointer;
   z-index: 23;
 
+  &.dark {
+    color: #3c434b;
+  }
+
+  &.hidden {
+    display: none;
+  }
+
   @media all and (min-width: ${sizes.medium}) {
     top: 30px;
   }
@@ -56,19 +64,19 @@ export default class MobileDropDownMenu extends Component {
     }
   }
 
-  logout = () => {
-    Parse.User.logOut().then(() => {
-      this.setState({logged_in: false, current_user: {}});
-      history.push("/");
-    });
-  }
-
   render(){
     const dpUrl = (this.state.current_user.profilePicture && this.state.current_user.profilePicture.url) || 'https://imgur.com/download/4iTD3lS';
 
+    if (!this.state.logged_in) {
+      return null;
+    }
+
     return (
       <Media query={`(max-width: ${sizes.large})`}>
-        <AvatarWithUsername onClick={this.props.toggleProfileMenu}>
+        <AvatarWithUsername
+          onClick={this.props.toggleProfileMenu}
+          className={`${this.props.dark && "dark"} ${this.props.hide && "hidden"}`}
+          >
           <Image src={dpUrl} circular />
           {this.state.current_user.username}
         </AvatarWithUsername>

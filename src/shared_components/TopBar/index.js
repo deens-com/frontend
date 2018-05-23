@@ -125,7 +125,7 @@ export default class TopBar extends Component {
           toggleSearch={this.toggleSearch}
         />
         <MobileNav menuIsOpened={showMenu} />
-        <MobileDropdownMenu toggleProfileMenu={this.toggleProfileMenu}/>
+        <MobileDropdownMenu toggleProfileMenu={this.toggleProfileMenu} dark={showProfileMenu} hide={showMenu}/>
         <MobileNavProfile menuIsOpened={showProfileMenu} />
       </div>
     );
