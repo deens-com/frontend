@@ -9,6 +9,8 @@ import MobileNav from "../Nav/MobileNav";
 import Logo from "./Logo";
 import Search from "./Search";
 import MobileSearch from "./Search/MobileSearch";
+import MobileDropdownMenu from "../Nav/MobileDropdownMenu";
+import MobileNavProfile from "../Nav/MobileNavProfile";
 
 // ACTIONS/CONFIG
 import { media } from "../../libs/styled";
@@ -62,6 +64,7 @@ export default class TopBar extends Component {
 
     this.toggleMenu = this.toggleMenu.bind(this);
     this.toggleSearch = this.toggleSearch.bind(this);
+    this.toggleProfileMenu = this.toggleProfileMenu.bind(this);
   }
 
   toggleMenu() {
@@ -75,6 +78,17 @@ export default class TopBar extends Component {
     this.setState({ showMenu: !showMenu });
   }
 
+  toggleProfileMenu() {
+    const { showProfileMenu } = this.state;
+    const body = document.body;
+    if (showProfileMenu) {
+      body.style.overflow = "";
+    } else {
+      body.style.overflow = "hidden";
+    }
+    this.setState({ showProfileMenu: !showProfileMenu });
+  }
+
   toggleSearch() {
     const { showSearch } = this.state;
     this.setState({ showSearch: !showSearch });
@@ -82,7 +96,7 @@ export default class TopBar extends Component {
 
   render() {
     const { home, fixed, noSearch, withPadding } = this.props;
-    const { showMenu, showSearch } = this.state;
+    const { showMenu, showSearch, showProfileMenu } = this.state;
 
     return (
       <div>
@@ -104,12 +118,15 @@ export default class TopBar extends Component {
             <Search menuIsOpened={showMenu} toggleSearch={this.toggleSearch} />
           )}
           <DesktopNav {...this.props} home={home} />
+          <MobileDropdownMenu toggleProfileMenu={this.toggleProfileMenu} dark={showProfileMenu} hide={showMenu || showSearch} avatarOnly={true}/>
+          <MobileNavProfile menuIsOpened={showProfileMenu} />
         </InnerWrap>
         <MobileSearch
           searchIsHidden={!showSearch}
           toggleSearch={this.toggleSearch}
         />
         <MobileNav menuIsOpened={showMenu} />
+
       </div>
     );
   }

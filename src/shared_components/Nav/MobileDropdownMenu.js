@@ -31,6 +31,11 @@ const AvatarWithUsername = styled.div`
     display: none;
   }
 
+  &.avatar-only {
+    right: 65px;
+    top: 18px;
+  }
+
   @media all and (min-width: ${sizes.medium}) {
     top: 30px;
   }
@@ -75,10 +80,12 @@ export default class MobileDropDownMenu extends Component {
       <Media query={`(max-width: ${sizes.large})`}>
         <AvatarWithUsername
           onClick={this.props.toggleProfileMenu}
-          className={`${this.props.dark && "dark"} ${this.props.hide && "hidden"}`}
+          className={`${this.props.dark && "dark"} ${this.props.hide && "hidden"} ${this.props.avatarOnly && "avatar-only"}`}
           >
           <Image src={dpUrl} circular />
-          {this.state.current_user.username}
+          {!this.props.avatarOnly &&
+            this.state.current_user.username
+          }
         </AvatarWithUsername>
       </Media>
     )
