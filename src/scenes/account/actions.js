@@ -64,7 +64,8 @@ export const fetch_user_trips = (owner_id, trip_state) => {
           .notEqualTo('booked', true)
           .lessThan('beginDate', moment_now);
         const startDateInFuture = fetch_helpers.build_query('Trip').greaterThan('beginDate', moment_now);
-        trip_query = Parse.Query.or(pastStartDateAndNotPurchased, startDateInFuture);
+        const tripsWithoutDates = fetch_helpers.build_query('Trip').doesNotExist('beginDate');
+        trip_query = Parse.Query.or(pastStartDateAndNotPurchased, startDateInFuture, tripsWithoutDates);
       }
       trip_query.equalTo("owner", user).find().then(
         trips_response => {
