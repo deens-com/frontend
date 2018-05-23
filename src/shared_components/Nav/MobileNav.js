@@ -11,7 +11,6 @@ import CurrencySelector from "../Currency/Selector";
 // ACTIONS/CONFIG
 import { sizes } from "../../libs/styled";
 import { mainNav } from "../../data/nav";
-import history from "./../../main/history";
 
 // STYLES
 const Wrap = styled.div`
@@ -91,13 +90,6 @@ const NavLink = styled(Link)`
   &.is-active {
     color: #4fb798;
   }
-`;
-
-const LogoutLink = styled.a`
-  display: block;
-  font-size: 24px;
-  margin-bottom: 15px;
-  padding: 12px 0;
 `;
 
 const Divider = styled.hr`

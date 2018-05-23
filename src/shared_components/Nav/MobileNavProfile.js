@@ -6,11 +6,9 @@ import Media from "react-media";
 import Parse from "parse";
 
 // COMPONENTS
-import CurrencySelector from "../Currency/Selector";
 
 // ACTIONS/CONFIG
 import { sizes } from "../../libs/styled";
-import { mainNav } from "../../data/nav";
 import history from "./../../main/history";
 
 // STYLES

@@ -11,7 +11,6 @@ import { Image } from 'semantic-ui-react';
 
 // ACTIONS/CONFIG
 import { sizes } from '../../libs/styled';
-import history from "./../../main/history";
 
 // STYLES
 const AvatarWithUsername = styled.div`
