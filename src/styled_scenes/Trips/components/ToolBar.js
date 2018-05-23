@@ -3,7 +3,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Media from 'react-media';
-import { Button, Icon } from 'semantic-ui-react';
 import Parse from 'parse';
 
 // COMPONENTS
@@ -13,6 +12,7 @@ import MobileFilter from './MobileFilter';
 
 // ACTIONS/CONFIG
 import { sizes, media } from '../../../libs/styled';
+import ToolbarButton from './ToolbarButton';
 
 // STYLES
 
@@ -81,16 +81,18 @@ export default function ToolBar({ state, onSubmit, onValueChange, trip, showTrip
                 placeholder="From date"
                 leftIcon="date"
               />
-              <FormControl
-                onChange={value => {
-                  onValueChange('endDate', value);
-                }}
-                value={state.endDate}
-                dayPickerProps={{ disabledDays: { before: state.startDate || new Date() } }}
-                type="date"
-                placeholder="To date"
-                leftIcon="date"
-              />
+              {showSaveButton ? (
+                <FormControl
+                  onChange={value => {
+                    onValueChange('endDate', value);
+                  }}
+                  value={state.endDate}
+                  dayPickerProps={{ disabledDays: { before: state.startDate || new Date() } }}
+                  type="date"
+                  placeholder="To date"
+                  leftIcon="date"
+                />
+              ) : null}
               <FormControl
                 onChange={value => {
                   onValueChange('person', value);
@@ -100,14 +102,7 @@ export default function ToolBar({ state, onSubmit, onValueChange, trip, showTrip
                 placeholder="1"
                 leftIcon="person"
               />
-              {showSaveButton && showTripUpdated ? (
-                <Button icon color="green" type="submit" labelPosition="right">
-                  Saved
-                  <Icon name="check circle outline" />
-                </Button>
-              ) : (
-                <Button type="submit">Save</Button>
-              )}
+              <ToolbarButton showSaveButton={showSaveButton} showTripUpdated={showTripUpdated} />
             </Form>
           </Wrap>
         )

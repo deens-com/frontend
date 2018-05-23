@@ -11,6 +11,7 @@ import DropPicker from '../../../shared_components/DropPicker';
 import Trigger from '../../../shared_components/DropPicker/Trigger';
 import Drop from '../../../shared_components/DropPicker/Drop';
 import DropItem from '../../../shared_components/DropPicker/DropItem';
+import EmptyTripDay from './EmptyTripDay';
 
 // ACTIONS/CONFIG
 import { media } from '../../../libs/styled';
@@ -72,20 +73,6 @@ const DayButtons = styled.div`
   }
 `;
 
-const EmptyDropHere = styled.div`
-  background-color: #efeff1;
-  height: 112px;
-  width: 100%;
-  border-radius: 4px;
-  text-align: center;
-`;
-
-const EmptyDropText = styled.h3`
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
-`;
-
 // MODULE
 export default class TripDay extends Component {
   constructor(props) {
@@ -128,13 +115,11 @@ export default class TripDay extends Component {
 
   render() {
     // console.log('this.state', this.state);
-    const { day } = this.props;
+    const { day, allowServiceRearrange } = this.props;
     const dayTitle = day.day === 'null' || !day.day ? 'Unscheduled' : `Day ${day.day}`;
     const services =
       day.services.length === 0 ? (
-        <EmptyDropHere>
-          <EmptyDropText>Drop services here</EmptyDropText>
-        </EmptyDropHere>
+        <EmptyTripDay allowServiceRearrange={allowServiceRearrange} />
       ) : (
         day.services.map((item, index) => (
           <div key={item.description}>
@@ -144,6 +129,7 @@ export default class TripDay extends Component {
               closing={this.state.closing}
               index={index}
               onDeleteClick={this.props.onServiceRemoveClick}
+              allowServiceRearrange={allowServiceRearrange}
             />
           </div>
         ))
@@ -216,9 +202,13 @@ export default class TripDay extends Component {
             /> */}
           </DayButtons>
         </Header>
-        <Droppable droppableId={`${day.day || 'null'}`}>
-          {(provided, snapshot) => <div ref={provided.innerRef}>{services}</div>}
-        </Droppable>
+        {allowServiceRearrange ? (
+          <Droppable droppableId={`${day.day || 'null'}`}>
+            {(provided, snapshot) => <div ref={provided.innerRef}>{services}</div>}
+          </Droppable>
+        ) : (
+          services
+        )}
       </Wrap>
     );
   }
@@ -227,4 +217,5 @@ export default class TripDay extends Component {
 // Props Validation
 TripDay.propTypes = {
   onServiceRemoveClick: PropTypes.func.isRequired,
+  allowServiceRearrange: PropTypes.bool,
 };

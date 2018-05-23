@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { DragDropContext } from 'react-beautiful-dnd';
+import Parse from 'parse';
 
 // COMPONENTS
 import Col from '../../../shared_components/layout/Col';
@@ -36,13 +37,24 @@ const Wrap = styled.div`
 `;
 
 // MODULE
-export default function Results({ showDetails, scheduledServices, unScheduledServices, onServiceDragEnd, onServiceRemoveClick, trip }) {
-  const services = showDetails
-    ? [
-        ...unScheduledServices.map(day => <Day key="null" day={day} onServiceRemoveClick={onServiceRemoveClick} trip={trip} />),
-        ...scheduledServices.map(day => <Day key={day.day} day={day} onServiceRemoveClick={onServiceRemoveClick} trip={trip} />),
-      ]
-    : null;
+export default function Results({
+  trip,
+  showDetails,
+  scheduledServices,
+  unScheduledServices,
+  onServiceDragEnd,
+  onServiceRemoveClick,
+}) {
+  const currentUser = Parse.User.current();
+  const allowServiceRearrange = (trip && trip.owner && trip.owner.objectId) === (currentUser && currentUser.id);
+  const dayProps = { trip, allowServiceRearrange, onServiceRemoveClick };
+  const services = [];
+  if (showDetails) {
+    if (allowServiceRearrange) {
+      services.push(...unScheduledServices.map(day => <Day key="null" day={day} {...dayProps} />));
+    }
+    services.push(...scheduledServices.map(day => <Day key={day.day} day={day} {...dayProps} />));
+  }
   return (
     <Wrap>
       {!showDetails && (
@@ -79,6 +91,7 @@ export default function Results({ showDetails, scheduledServices, unScheduledSer
 
 // Props Validation
 Results.propTypes = {
+  trip: PropTypes.object,
   showDetails: PropTypes.bool,
   scheduledTrips: PropTypes.array,
   unScheduledTrips: PropTypes.array,
