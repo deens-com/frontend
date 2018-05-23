@@ -5,6 +5,7 @@ import TopBar from '../../../shared_components/TopBarWithSearch';
 import * as account_actions from "./../actions";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { comparatorWithNullValues } from '../../../libs/Utils';
 
 class AccountTripsPlannedComponent extends Component{
 
@@ -33,13 +34,9 @@ class AccountTripsPlannedComponent extends Component{
   render() {
     let ordered_planned_trips = this.props.planned_trips;
     ordered_planned_trips = ordered_planned_trips.sort((a, b) => {
-      // sorts the array while keeping all null/undefined values at the end
-      const aValue = a && a.beginDate && a.beginDate.iso;
-      const bValue = b && b.beginDate && b.beginDate.iso;
-      if (!aValue) return 1;
-      else if (!bValue) return -1;
-      else if (aValue === bValue) return 0;
-      else return new Date(aValue) - new Date(bValue);
+      const aValue = a && a.beginDate && a.beginDate.iso && new Date(a.beginDate.iso);
+      const bValue = b && b.beginDate && b.beginDate.iso && new Date(b.beginDate.iso);
+      return comparatorWithNullValues(aValue, bValue);
     });
     return (
       <section>
