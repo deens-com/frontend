@@ -37,7 +37,7 @@ export const fetchTrip = tripId => async dispatch => {
         .find(),
     ]);
     let trip = fetch_helpers.normalizeParseResponseData(tripRaw);
-    trip = fetch_helpers.mapServiceObjects([trip]);
+    trip = fetch_helpers.mapServiceObjects([trip])[0];
     const tripOrganizations = fetch_helpers.normalizeParseResponseData(tripOrganizationsRaw);
     const tripOrganizationMappings = tripOrganizations.map(tOrg => ({
       objectId: tOrg.objectId,
