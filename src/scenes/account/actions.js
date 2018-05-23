@@ -54,14 +54,20 @@ export const fetch_user_trips = (owner_id, trip_state) => {
     user_query.equalTo("objectId", owner_id)
     user_query.first().then(user => {
       let trip_query = fetch_helpers.build_query("Trip");
-      trip_query.equalTo("owner", user);
       const moment_now = new Date();
-      if(trip_state === "completed"){
+      if (trip_state === "completed") {
+        trip_query.equalTo('booked', true);
         trip_query.lessThan("endDate", moment_now);
-      }else{
-        trip_query.greaterThan("beginDate", moment_now);
+      } else {
+        const pastStartDateAndNotPurchased = fetch_helpers
+          .build_query('Trip')
+          .notEqualTo('booked', true)
+          .lessThan('beginDate', moment_now);
+        const startDateInFuture = fetch_helpers.build_query('Trip').greaterThan('beginDate', moment_now);
+        const tripsWithoutDates = fetch_helpers.build_query('Trip').doesNotExist('beginDate');
+        trip_query = Parse.Query.or(pastStartDateAndNotPurchased, startDateInFuture, tripsWithoutDates);
       }
-      trip_query.find().then(
+      trip_query.equalTo("owner", user).find().then(
         trips_response => {
           trips_response.map(trip => {
             let trip_org_query = fetch_helpers.build_query("TripOrganization");

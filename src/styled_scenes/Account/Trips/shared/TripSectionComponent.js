@@ -27,17 +27,25 @@ const CarouselWrapper = styled.div`
   }
 `;
 
+const EmptyServicesText = styled.p`
+  font-style: italic;
+  color: #a3a9b2;
+`;
+
 
 const TripSectionComponent = props => {
   return (
     <section>
       {props.trips.map((trip, index) => (
         <SectionContent key={uuid()}>
-        <Divider/>
+          <Divider/>
           <Link to={"/trips/" + trip.objectId}>
             <h2>{trip.title}</h2>
           </Link>
-          <p style={{color: "#b3a7a7"}}>{moment(trip.beginDate.iso).format('L')} - {moment(trip.endDate.iso).format('L')}</p>
+          <p style={{color: "#b3a7a7"}}>
+            {trip.beginDate && trip.beginDate.iso && moment(trip.beginDate.iso).format('L')} -{' '}
+            {trip.endDate && trip.endDate.iso && moment(trip.endDate.iso).format('L')}
+          </p>
           <Label color={get_label_color(trip.status)}>
             {trip.status}
           </Label>
@@ -58,6 +66,7 @@ const TripSectionComponent = props => {
               ))}
             </Carousel>
           </CarouselWrapper>
+          {trip.services.length ? null: <EmptyServicesText>No services in this trip</EmptyServicesText>}
           <br/>
         </SectionContent>
       ))}

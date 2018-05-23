@@ -25,3 +25,11 @@ export const removeKey = (obj, propToDelete) => {
   const { [propToDelete]: deleted, ...objectWithoutDeletedProp } = obj;  
   return objectWithoutDeletedProp;
 };
+
+// Comparator for sort function, that sorts the array while keeping all null/undefined values at the end
+export const comparatorWithNullValues = (valueA, valueB) => {
+  if (!valueA) return 1;
+  else if (!valueB) return -1;
+  else if (valueA === valueB) return 0; // because a & b both could be null/undefined
+  else return valueA - valueB;
+};
