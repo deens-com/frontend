@@ -289,7 +289,7 @@ export default function FoodDetailScene(props) {
                   </DataBlock>
                   <DataBlock>
                     <TextLabel>PART OF THE TRIP</TextLabel>
-                    <span>"{props.trips[0].description.slice(0, 40)}" and {props.trips.length} more ...</span>
+                    <span>"{props.trips.length && props.trips[0] && props.trips[0].description.slice(0, 40)}" and {props.trips.length} more ...</span>
                   </DataBlock>
                 </span>
                 :
@@ -397,7 +397,7 @@ export default function FoodDetailScene(props) {
                 lg_slides_nb={4}
                 xl_slides_nb={4}
               >
-                {props.trips.map(trip => (
+                {props.trips.filter(trip => trip !== undefined).map(trip => (
                   <TripCart
                     item={trip}
                     withShadow
