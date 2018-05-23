@@ -30,10 +30,16 @@ class AccountTripsPlannedComponent extends Component{
     )
   }
 
-  render(){
+  render() {
     let ordered_planned_trips = this.props.planned_trips;
-    ordered_planned_trips = ordered_planned_trips.sort(function(a,b){
-      return new Date(a.endDate.iso) - new Date(b.endDate.iso);
+    ordered_planned_trips = ordered_planned_trips.sort((a, b) => {
+      // sorts the array while keeping all null/undefined values at the end
+      const aValue = a && a.endDate && a.endDate.iso;
+      const bValue = b && b.endDate && b.endDate.iso;
+      if (!aValue) return 1;
+      else if (!bValue) return -1;
+      else if (aValue === bValue) return 0;
+      else return new Date(aValue) - new Date(bValue);
     });
     return (
       <section>
