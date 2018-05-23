@@ -14,6 +14,7 @@ import DropItem from '../../../shared_components/DropPicker/DropItem';
 
 // ACTIONS/CONFIG
 import { media } from '../../../libs/styled';
+import history from './../../../main/history';
 
 // STYLES
 import { Mute } from './styles';
@@ -95,6 +96,7 @@ export default class TripDay extends Component {
       closing: false,
     };
     this.toggleExpansion = this.toggleExpansion.bind(this);
+    this.generate_search_query = this.generate_search_query.bind(this);
   }
 
   toggleExpansion() {
@@ -109,6 +111,19 @@ export default class TripDay extends Component {
     if (this.state.opening || this.state.closing) {
       this.setState({ closing: false, opening: false });
     }
+  }
+
+
+  generate_search_query(search_params) {
+    let query_arr = [];
+    Object.entries(search_params).forEach(([key, value]) => {
+      if(value){
+        let to_concat = key + "=" + value;
+        query_arr = query_arr.concat(to_concat);
+      }
+    });
+    let query_string = query_arr.join("&");
+    history.push("/results?" + query_string);
   }
 
   render() {
@@ -133,6 +148,15 @@ export default class TripDay extends Component {
           </div>
         ))
       );
+    const query_params = {
+      tags: this.props.trip && this.props.trip.tags && this.props.trip.tags.length || undefined,
+      latitude: this.props.trip.latitude,
+      longitude: this.props.trip.longitude,
+      person_nb: this.props.trip.numberOfPerson,
+      start_date: this.props.trip.beginDate && this.props.trip.beginDate.iso,
+      end_date: this.props.trip.endDate && this.props.trip.endDate.iso,
+      //address: this.props.trip.location || undefined
+    }
     return (
       <Wrap>
         <Header>
@@ -151,25 +175,28 @@ export default class TripDay extends Component {
               text={this.state.expanded ? 'Collapse all' : 'Expand all'}
             />
             <DropPicker>
-              <Trigger iconBefore="plus" size="small" round={true} text="Add new event" />
+              <Trigger iconBefore="plus" size="small" round={true} text="Add new Service" />
               <Drop>
                 <DropItem
                   onChange={ev => {
-                    console.log('onchange,place');
+                    query_params.service_types = "place";
+                    this.generate_search_query(query_params);
                   }}
                 >
                   Place
                 </DropItem>
                 <DropItem
                   onChange={ev => {
-                    console.log('onchange,food');
+                    query_params.service_types = "food";
+                    this.generate_search_query(query_params);
                   }}
                 >
                   Food
                 </DropItem>
                 <DropItem
                   onChange={ev => {
-                    console.log('onchange,activity ');
+                    query_params.service_types = "activity";
+                    this.generate_search_query(query_params);
                   }}
                 >
                   Activity

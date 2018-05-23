@@ -21,7 +21,7 @@ import { Header } from './Day';
 
 const Wrap = styled.div`
   padding: 45px 10px 10px;
-  
+
   // required for Drag & drop to work properly
   min-height: 112px;
   overflow: auto;
@@ -36,11 +36,11 @@ const Wrap = styled.div`
 `;
 
 // MODULE
-export default function Results({ showDetails, scheduledServices, unScheduledServices, onServiceDragEnd, onServiceRemoveClick }) {
+export default function Results({ showDetails, scheduledServices, unScheduledServices, onServiceDragEnd, onServiceRemoveClick, trip }) {
   const services = showDetails
     ? [
-        ...unScheduledServices.map(day => <Day key="null" day={day} onServiceRemoveClick={onServiceRemoveClick} />),
-        ...scheduledServices.map(day => <Day key={day.day} day={day} onServiceRemoveClick={onServiceRemoveClick} />),
+        ...unScheduledServices.map(day => <Day key="null" day={day} onServiceRemoveClick={onServiceRemoveClick} trip={trip} />),
+        ...scheduledServices.map(day => <Day key={day.day} day={day} onServiceRemoveClick={onServiceRemoveClick} trip={trip} />),
       ]
     : null;
   return (
