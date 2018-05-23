@@ -5,12 +5,11 @@ import fetch_helpers from "./../../libs/fetch_helpers";
 import Parse from "parse";
 import Media from 'react-media';
 // COMPONENTS
-import Button from "../Button";
+
 // COMMENT: the homeSearch is just for the time being
 import { Image } from 'semantic-ui-react';
 
 // ACTIONS/CONFIG
-import { Dropdown } from 'semantic-ui-react';
 import { sizes } from '../../libs/styled';
 import history from "./../../main/history";
 
@@ -63,16 +62,12 @@ export default class MobileDropDownMenu extends Component {
     });
   }
 
-  navigate_to = (path) => {
-    history.push(path);
-  }
-
   render(){
     const dpUrl = (this.state.current_user.profilePicture && this.state.current_user.profilePicture.url) || 'https://imgur.com/download/4iTD3lS';
 
     return (
       <Media query={`(max-width: ${sizes.large})`}>
-        <AvatarWithUsername onClick={() => this.navigate_to("/account/profile")}>
+        <AvatarWithUsername onClick={this.props.toggleProfileMenu}>
           <Image src={dpUrl} circular />
           {this.state.current_user.username}
         </AvatarWithUsername>
