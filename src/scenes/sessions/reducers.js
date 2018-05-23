@@ -12,7 +12,8 @@ const initialState = {
   loginError: {},
   metaMaskError: {},
   ledgerError: {},
-  baseCurrency: defaultBaseCurrency
+  baseCurrency: defaultBaseCurrency,
+  isLedgerLoaderDisplayed: false
 };
 
 export default function SessionsReducer(state = initialState, action = {}) {
@@ -42,6 +43,11 @@ export default function SessionsReducer(state = initialState, action = {}) {
       return {
         ...state,
         baseCurrency: action.payload.baseCurrency
+      }
+    case sessions_actions.types.TOGGLE_LEDGER_LOADER_DISPLAY:
+      return {
+        ...state,
+        isLedgerLoaderDisplayed: action.payload
       }
     default:
       return state;

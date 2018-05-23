@@ -10,6 +10,7 @@ export const types = {
   METAMASK_ERROR: "METAMASK_ERROR",
   LEDGER_ERROR: "LEDGER_ERROR",
   BASE_CURRENCY_SET: "BASE_CURRENCY_SET",
+  TOGGLE_LEDGER_LOADER_DISPLAY: "TOGGLE_LEDGER_LOADER_DISPLAY"
 };
 
 export const sessionsFetched = session => {
@@ -17,6 +18,13 @@ export const sessionsFetched = session => {
     type: this.types.LOGIN_SUCCESS,
     payload: session
   };
+};
+
+export const displayLedgerLoader = boolDisplay => {
+    return {
+      type: this.types.TOGGLE_LEDGER_LOADER_DISPLAY,
+      payload: boolDisplay
+    }
 };
 
 export const login_error = (message) => {
@@ -71,8 +79,8 @@ export const loginRequest = (email, password) => {
 
 export const loginWithLedger = () => async dispatch => {
   try {
-    //dispatch(displayLedgerLoader(true));
-    window.alert("Please make sure you set Browser support to yes, count up to 6 and sign the transation on your physical device.");
+    dispatch(displayLedgerLoader(true));
+    //window.alert("Please make sure you set Browser support to yes, count up to 6 and sign the transation on your physical device.");
     const publicAddress = await getLedgerPublicAddress();
     const response = await Parse.Cloud.run('getMetaMaskNonce', { publicAddress: publicAddress, type: "ledger" });
     const { signature } = await ledgerSignMessage(response.nonce);
@@ -85,6 +93,7 @@ export const loginWithLedger = () => async dispatch => {
     dispatch(sessionsFetched({ session: user }));
     history.push('/');
   } catch (error) {
+    dispatch(displayLedgerLoader(false));
     // console.error(error);
     dispatch({
       type: types.LEDGER_ERROR,
@@ -133,4 +142,5 @@ export const loginWithMetamask = () => async dispatch => {
 export const clearErrors = () => dispatch => {
   dispatch({ type: types.LOGIN_ERROR, payload: {} });
   dispatch({ type: types.METAMASK_ERROR, payload: {} });
+  dispatch({ type: types.LEDGER_ERROR, payload: {} });
 };

@@ -8,7 +8,9 @@ import {
   Message,
   Segment,
   Image,
-  Modal
+  Modal,
+  Dimmer,
+  Loader
 } from "semantic-ui-react";
 import styled from "styled-components";
 import TopBar from "./../../../shared_components/TopBar";
@@ -37,13 +39,23 @@ export default class LoginFormComponent extends Component {
   constructor(props){
     super(props);
     this.state = {
-      isLedgerModalOpen: true
+      isLedgerModalOpen: true,
+      isLedgerLoaderDisplayed: false
     };
     this.closeLedgerErrorMessage = this.closeLedgerErrorMessage.bind(this);
+    this.isLoaderActive = this.isLoaderActive.bind(this);
+  }
+
+  toggleLedgerloaderDisplay(){
+    this.setState({isLedgerLoaderDisplayed: !!this.state.isLedgerLoaderDisplayed});
   }
 
   closeLedgerErrorMessage() {
     this.setState({isLedgerModalOpen: false});
+  }
+
+  isLoaderActive(){
+    this.state.isLedgerModalOpen ? true : false
   }
 
   render(){
@@ -142,6 +154,15 @@ export default class LoginFormComponent extends Component {
                           </Modal.Description>
                         </Modal.Content>
                       </Modal>
+                    }
+
+                    {
+                      this.props.isLedgerLoaderDisplayed &&
+                        <Segment disabled={this.isLoaderActive()}>
+                          <Dimmer active>
+                            <Loader inline='centered'>Please wait 6 seconds while we try to establish a connection with your ledger device.</Loader>
+                          </Dimmer>
+                        </Segment>
                     }
 
                     <Button
