@@ -53,16 +53,21 @@ export default function Results({
   const currentUser = Parse.User.current();
   const allowServiceRearrange = (trip && trip.owner && trip.owner.objectId) === (currentUser && currentUser.id);
   const dayProps = { trip, allowServiceRearrange, onServiceRemoveClick };
-  const services = showDetails
-    ? [
+  const services = [];
+  if (showDetails) {
+    if (allowServiceRearrange) {
+      services.push(
         ...unScheduledServices
           .filter(day => showEmptyDayIfRearrangeAllowed(day, allowServiceRearrange))
-          .map(day => <Day key="null" day={day} {...dayProps} />),
-        ...scheduledServices
-          .filter(day => showEmptyDayIfRearrangeAllowed(day, allowServiceRearrange))
-          .map(day => <Day key={day.day} day={day} {...dayProps} />),
-      ]
-    : null;
+          .map(day => <Day key="null" day={day} {...dayProps} />)
+      );
+    }
+    services.push(
+      ...scheduledServices
+        .filter(day => showEmptyDayIfRearrangeAllowed(day, allowServiceRearrange))
+        .map(day => <Day key={day.day} day={day} {...dayProps} />)
+    );
+  }
   return (
     <Wrap>
       {!showDetails && (
