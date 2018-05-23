@@ -21,6 +21,7 @@ const AvatarWithUsername = styled.div`
   color: white;
   text-align: center;
   cursor: pointer;
+  z-index: 23;
 
   @media all and (min-width: ${sizes.medium}) {
     top: 30px;

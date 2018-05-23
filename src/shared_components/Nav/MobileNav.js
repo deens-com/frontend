@@ -118,38 +118,6 @@ export default class MobileNav extends Component {
     }
   }
 
-  logout = () => {
-    Parse.User.logOut().then(() => {
-      this.setState({logged_in: false});
-      history.push("/");
-    });
-  }
-
-  loggedInDropdown() {
-    return (
-      <span>
-        <li>
-          <NavLink to="/account/trips/planned">My Trips</NavLink>
-        </li>
-        <li>
-          <NavLink to="/account/services">My Services</NavLink>
-        </li>
-        <li>
-          <NavLink to="/account/profile">Profile</NavLink>
-        </li>
-        <li>
-          <NavLink to="/account/settings">Settings</NavLink>
-        </li>
-        <li aria-hidden="true">
-          <Divider />
-        </li>
-        <li>
-          <LogoutLink onClick={this.logout}>Logout</LogoutLink>
-        </li>
-      </span>
-    )
-  }
-
   guestDropdown() {
     return (
       <span>
@@ -194,7 +162,7 @@ export default class MobileNav extends Component {
               <li aria-hidden="true">
                 <Divider />
               </li>
-              {this.state.logged_in ? this.loggedInDropdown() : this.guestDropdown() }
+              {!this.state.logged_in && this.guestDropdown() }
             </InnerList>
           </Wrap>
         )}
