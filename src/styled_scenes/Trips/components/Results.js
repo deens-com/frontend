@@ -36,11 +36,6 @@ const Wrap = styled.div`
   }
 `;
 
-const showEmptyDayIfRearrangeAllowed = (day, isAllowedServiceRearrange) => {
-  if (isAllowedServiceRearrange) return true;
-  return day.services.length > 0;
-};
-
 // MODULE
 export default function Results({
   trip,
@@ -56,17 +51,9 @@ export default function Results({
   const services = [];
   if (showDetails) {
     if (allowServiceRearrange) {
-      services.push(
-        ...unScheduledServices
-          .filter(day => showEmptyDayIfRearrangeAllowed(day, allowServiceRearrange))
-          .map(day => <Day key="null" day={day} {...dayProps} />)
-      );
+      services.push(...unScheduledServices.map(day => <Day key="null" day={day} {...dayProps} />));
     }
-    services.push(
-      ...scheduledServices
-        .filter(day => showEmptyDayIfRearrangeAllowed(day, allowServiceRearrange))
-        .map(day => <Day key={day.day} day={day} {...dayProps} />)
-    );
+    services.push(...scheduledServices.map(day => <Day key={day.day} day={day} {...dayProps} />));
   }
   return (
     <Wrap>
