@@ -27,6 +27,11 @@ const CarouselWrapper = styled.div`
   }
 `;
 
+const EmptyServicesText = styled.p`
+  font-style: italic;
+  color: #a3a9b2;
+`;
+
 
 const TripSectionComponent = props => {
   return (
@@ -61,6 +66,7 @@ const TripSectionComponent = props => {
               ))}
             </Carousel>
           </CarouselWrapper>
+          {trip.services.length ? null: <EmptyServicesText>No services in this trip</EmptyServicesText>}
           <br/>
         </SectionContent>
       ))}
