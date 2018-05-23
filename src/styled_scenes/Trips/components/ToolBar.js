@@ -81,16 +81,18 @@ export default function ToolBar({ state, onSubmit, onValueChange, trip, showTrip
                 placeholder="From date"
                 leftIcon="date"
               />
-              <FormControl
-                onChange={value => {
-                  onValueChange('endDate', value);
-                }}
-                value={state.endDate}
-                dayPickerProps={{ disabledDays: { before: state.startDate || new Date() } }}
-                type="date"
-                placeholder="To date"
-                leftIcon="date"
-              />
+              {showSaveButton ? (
+                <FormControl
+                  onChange={value => {
+                    onValueChange('endDate', value);
+                  }}
+                  value={state.endDate}
+                  dayPickerProps={{ disabledDays: { before: state.startDate || new Date() } }}
+                  type="date"
+                  placeholder="To date"
+                  leftIcon="date"
+                />
+              ) : null}
               <FormControl
                 onChange={value => {
                   onValueChange('person', value);
