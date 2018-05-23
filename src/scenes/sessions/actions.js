@@ -71,6 +71,7 @@ export const loginRequest = (email, password) => {
 
 export const loginWithLedger = () => async dispatch => {
   try {
+    //dispatch(displayLedgerLoader(true));
     window.alert("Please make sure you set Browser support to yes, count up to 6 and sign the transation on your physical device.");
     const publicAddress = await getLedgerPublicAddress();
     const response = await Parse.Cloud.run('getMetaMaskNonce', { publicAddress: publicAddress, type: "ledger" });
@@ -84,24 +85,13 @@ export const loginWithLedger = () => async dispatch => {
     dispatch(sessionsFetched({ session: user }));
     history.push('/');
   } catch (error) {
-    console.error(error);
-    if (error.showToUser) {
-      dispatch({
-        type: types.LEDGER_ERROR,
-        payload: {
-          message: error.message,
-        },
-      });
-    } else if (error.code === 141) {
-      // parse function error
-      const innerError = error.message;
-      dispatch({
-        type: types.LEDGER_ERROR,
-        payload: {
-          message: innerError.message,
-        },
-      });
-    }
+    // console.error(error);
+    dispatch({
+      type: types.LEDGER_ERROR,
+      payload: {
+        message: error.message,
+      }
+    });
   }
 };
 
