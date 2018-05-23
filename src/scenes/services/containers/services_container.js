@@ -17,6 +17,7 @@ class ServicesContainer extends Component {
     if (Parse.User.current() != null) {
       this.props.fetchMyTrips();
     }
+    this.props.setAddedToTripMessage(undefined);
   }
 
   onAddServiceToTrip = trip => {
