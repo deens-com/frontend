@@ -42,9 +42,7 @@ const mapServiceObjects = services => {
         });
         service.tags = tags;
       }
-      if (service.type === undefined || service.type === 'trip') {
-        service.latitude = service.latitude;
-        service.longitude = service.longitude;
+      if (service.type === undefined) {
         service.image = service.picture.url;
       } else {
         service.image = get_service_image(service.mainPicture);
