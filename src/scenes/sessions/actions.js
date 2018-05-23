@@ -82,6 +82,15 @@ export const loginWithLedger = () => async dispatch => {
     dispatch(displayLedgerLoader(true));
     const publicAddress = await getLedgerPublicAddress();
     const response = await Parse.Cloud.run('getMetaMaskNonce', { publicAddress: publicAddress, type: "ledger" });
+    console.log(response);
+    if(response.code === 404){
+      dispatch({
+        type: types.LEDGER_ERROR,
+        payload: {
+          message: response.error.message.message,
+        }
+      });
+    }
     const { signature } = await ledgerSignMessage(response.nonce);
     const authData = {
       signature: signature.toLowerCase(),
@@ -93,13 +102,22 @@ export const loginWithLedger = () => async dispatch => {
     history.push('/');
   } catch (error) {
     dispatch(displayLedgerLoader(false));
-    // console.error(error);
-    dispatch({
-      type: types.LEDGER_ERROR,
-      payload: {
-        message: error.message,
-      }
-    });
+    if(error.code === 404){
+      dispatch({
+        type: types.LEDGER_ERROR,
+        payload: {
+          message: error.message.message,
+        }
+      });
+    }else{
+      // console.error(error);
+      dispatch({
+        type: types.LEDGER_ERROR,
+        payload: {
+          message: error.message,
+        }
+      });
+    }
   }
 };
 
