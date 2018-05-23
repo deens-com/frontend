@@ -350,9 +350,8 @@ export default function FoodDetailScene(props) {
               <ContactBlock>
                 <div>
                   <TextLabel>Working hours</TextLabel>
-                  <span>{props.service.openingHours}</span>
                 </div>
-                <Link to="#">Schedule</Link>
+                <RightAlignedText>{props.service.openingTime} H - {props.service.closingTime} H</RightAlignedText>
               </ContactBlock>
               <Hr />
               {
