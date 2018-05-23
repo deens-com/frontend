@@ -1,15 +1,15 @@
 // NPM
-import React, { Component } from "react";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
-import Parse from "parse";
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import Parse from 'parse';
 
 // COMPONENTS
-import Button from "../../../shared_components/Button";
-import PriceTag from "../../../shared_components/Currency/PriceTag";
+import Button from '../../../shared_components/Button';
+import PriceTag from '../../../shared_components/Currency/PriceTag';
 
 // ACTIONS/CONFIG
-import { media } from "../../../libs/styled";
+import { media } from '../../../libs/styled';
 
 // STLYES
 const Wrap = styled.div`
@@ -24,24 +24,6 @@ const LeftCol = styled.div`
   ${media.minMedium} {
     width: 50%;
     padding: 50px 25px;
-  }
-`;
-
-const Detail = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-`;
-
-const DetailPrice = styled.div`
-  font-weight: 500;
-  text-align: right;
-
-  span {
-    font-weight: 300;
-    display: block;
-    font-size: 13px;
-    color: #6e7885;
   }
 `;
 
@@ -77,71 +59,46 @@ const TotalHint = styled.p`
 
 // MODULE
 export default class TripSummary extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
       logged_in: false,
-      summary: {},
-      total: 0
+      total: 0,
     };
-
-    this.getTripSummaryCategories = this.getTripSummaryCategories.bind(this);
   }
 
   componentDidMount() {
-    this.setState({ ...this.getTripSummaryCategories() });
+    this.setState({ ...this.getTripTotalPrice() });
 
-    if(Parse.User.current() === null){
+    if (Parse.User.current() === null) {
       this.setState({ logged_in: false });
-    }else{
+    } else {
       this.setState({ logged_in: true });
     }
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props !== nextProps) {
-      this.setState({ ...this.getTripSummaryCategories() });
+      this.setState({ ...this.getTripTotalPrice() });
     }
   }
 
-  getTripSummaryCategories() {
-    const summary = {};
+  getTripTotalPrice = () => {
     let total = 0;
     this.props.data.forEach(day => {
       day.items.forEach(item => {
-        if (!summary[item.category]) {
-          summary[item.category] = {
-            items: 0,
-            count: 0
-          };
-        }
-        summary[item.category].items += 1;
-        summary[item.category].count += Number(item.price);
         total += Number(item.price);
       });
     });
-    return { summary, total };
-  }
+    return { total };
+  };
 
   render() {
     return (
       <Wrap>
         <LeftCol xsBasis="100%" mdBasis="50%">
-          {Object.keys(this.state.summary).map(category => (
-            <Detail key={category}>
-              <span>
-                {this.state.summary[category].items} x {category}
-              </span>
-              <DetailPrice>
-                <PriceTag price={this.state.summary[category].count} unit="hidden" />
-
-                {this.state.summary[category].count < 1 && (
-                  <span>You pay on spot</span>
-                )}
-              </DetailPrice>
-            </Detail>
-          ))}
+          {/* kept this left block intact while removing service category counts */}
+          {/* becuase looks like it could be used for something */}
         </LeftCol>
         <RightCol xsBasis="100%" mdBasis="50%">
           <p>Total</p>
@@ -153,12 +110,12 @@ export default class TripSummary extends Component {
               Book now
             </Button>
           </TotalWrap>
-          {!this.state.logged_in &&
+          {!this.state.logged_in && (
             <TotalHint>
-              Trip is not saved! Please <Link to="/register">Sign Up</Link> or{" "}
-              <Link to="/login">Login</Link> in order to save tre trip.
+              Trip is not saved! Please <Link to="/register">Sign Up</Link> or <Link to="/login">Login</Link> in order
+              to save tre trip.
             </TotalHint>
-          }
+          )}
         </RightCol>
       </Wrap>
     );
