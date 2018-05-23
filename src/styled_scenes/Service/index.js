@@ -347,13 +347,18 @@ export default function FoodDetailScene(props) {
                 </div>
               </HostBlock>
               <Hr />
-              <ContactBlock>
-                <div>
-                  <TextLabel>Working hours</TextLabel>
-                </div>
-                <RightAlignedText>{props.service.openingTime} H - {props.service.closingTime} H</RightAlignedText>
-              </ContactBlock>
-              <Hr />
+              {
+                props.service.openingTime && props.service.closingTime
+                  &&
+                ( <div>
+                  <ContactBlock>
+                    <TextLabel>Working hours</TextLabel>
+                    <RightAlignedText>{props.service.openingTime} H - {props.service.closingTime} H</RightAlignedText>
+                  </ContactBlock>
+                  <Hr />
+                  </div>
+                )
+              }
               {
                 props.service.phoneNumber
                   &&
