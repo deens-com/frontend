@@ -9,6 +9,7 @@ import MobileNav from "../Nav/MobileNav";
 import Logo from "./Logo";
 import Search from "./Search";
 import MobileSearch from "./Search/MobileSearch";
+import MobileDropdownMenu from "../Nav/MobileDropdownMenu";
 
 // ACTIONS/CONFIG
 import { media } from "../../libs/styled";
@@ -111,6 +112,7 @@ export default class TopBar extends Component {
           toggleSearch={this.toggleSearch}
         />
         <MobileNav menuIsOpened={showMenu} />
+        <MobileDropdownMenu />
       </div>
     );
   }
