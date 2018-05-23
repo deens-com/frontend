@@ -80,7 +80,6 @@ export const loginRequest = (email, password) => {
 export const loginWithLedger = () => async dispatch => {
   try {
     dispatch(displayLedgerLoader(true));
-    //window.alert("Please make sure you set Browser support to yes, count up to 6 and sign the transation on your physical device.");
     const publicAddress = await getLedgerPublicAddress();
     const response = await Parse.Cloud.run('getMetaMaskNonce', { publicAddress: publicAddress, type: "ledger" });
     const { signature } = await ledgerSignMessage(response.nonce);
