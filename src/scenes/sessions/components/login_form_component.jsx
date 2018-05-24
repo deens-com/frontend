@@ -7,7 +7,6 @@ import {
   Header,
   Message,
   Segment,
-  Image,
   Modal,
   Dimmer,
   Loader
@@ -55,7 +54,7 @@ export default class LoginFormComponent extends Component {
   }
 
   isLoaderActive(){
-    this.state.isLedgerModalOpen ? true : false
+    return this.state.isLedgerModalOpen ? true : false
   }
 
   render(){
