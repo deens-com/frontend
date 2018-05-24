@@ -413,21 +413,7 @@ export default function FoodDetailScene(props) {
               </Carousel>
             </TripsWrap>
             :
-            <TripsWrap>
-              <h3>Not part of any trip yet</h3>
-              <span>Why not </span>
-              <Button
-                type="button"
-                round
-                size="small"
-                iconAfter="arrowDown"
-                onClick={ev => {
-                  alert("Adding to trip");
-                }}
-                theme="mainFilled"
-                text="add it to your trip"
-                />
-            </TripsWrap>
+            null
           }
           <div>
             {props.reviews.length
