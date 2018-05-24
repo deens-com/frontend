@@ -11,9 +11,7 @@ class AccountTripsPlannedComponent extends Component{
 
   componentDidMount(){
     if(this.props.user_profile){
-      if(!this.props.planned_trips.length){
-        this.props.fetch_user_trips(this.props.user_profile.objectId, "planned");
-      }
+      this.props.fetch_user_trips(this.props.user_profile.objectId, "planned");
     }
   }
 
