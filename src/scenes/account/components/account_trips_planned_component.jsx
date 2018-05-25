@@ -18,7 +18,9 @@ class AccountTripsPlannedComponent extends Component{
   componentWillUpdate(next_props){
     if(this.did_user_props_changed(this.props, next_props)){
       if(!this.props.planned_trips.length){
-        this.props.fetch_user_trips(next_props.user_profile.objectId, "planned");
+        if(next_props.user_profile){
+          this.props.fetch_user_trips(next_props.user_profile.objectId, "planned");
+        }
       }
     }
   }
