@@ -76,18 +76,10 @@ export default class TripSummary extends Component {
     }
   }
 
-  calculateTripTotalPrice = () => {
+  calculateTripTotalPrice() {
     let totalPrice = 0;
-    const currentUser = Parse.User.current();
-    const mergeUnscheduledServices = (this.props.trip && this.props.trip.owner && this.props.trip.owner.objectId) === (currentUser && currentUser.id);
-    const mergedServices = [];
 
-    if (mergeUnscheduledServices) {
-      mergedServices.push(...this.props.unScheduledServices.map((i) => { return i }));
-    }
-    mergedServices.push(...this.props.scheduledServices.map((i) => { return i }));
-
-    mergedServices.forEach((item) => {
+    this.props.scheduledServices.forEach((item) => {
       item.services.forEach((service) => {
         totalPrice += service.pricePerSession;
       });
