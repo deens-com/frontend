@@ -1,3 +1,5 @@
+import {uniqEs6} from './../../libs/Utils';
+
 const initialState = {
   user_profile: {},
   planned_trips: [],
@@ -5,12 +7,6 @@ const initialState = {
   metamaskError: {},
   ledger_error: {}
 };
-
-var uniqEs6 = (arrArg) => {
-  return arrArg.filter((elem, pos, arr) => {
-    return arr.indexOf(elem) == pos;
-  });
-}
 
 export default function AccountReducer(state = initialState, action = {}) {
   switch (action.type) {

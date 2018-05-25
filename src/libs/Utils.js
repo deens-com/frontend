@@ -22,7 +22,7 @@ export default class Utils {
 }
 
 export const removeKey = (obj, propToDelete) => {
-  const { [propToDelete]: deleted, ...objectWithoutDeletedProp } = obj;  
+  const { [propToDelete]: deleted, ...objectWithoutDeletedProp } = obj;
   return objectWithoutDeletedProp;
 };
 
@@ -33,3 +33,10 @@ export const comparatorWithNullValues = (valueA, valueB) => {
   else if (valueA === valueB) return 0; // because a & b both could be null/undefined
   else return valueA - valueB;
 };
+
+
+export const uniqEs6 = (arrArg) => {
+  return arrArg.filter((elem, pos, arr) => {
+    return arr.indexOf(elem) == pos;
+  });
+}
