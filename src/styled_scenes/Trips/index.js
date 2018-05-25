@@ -19,7 +19,6 @@ import ShareButton from './components/ShareButton';
 
 // ACTIONS/CONFIG
 import { media, sizes } from '../../libs/styled';
-import { trip } from '../../data/trip';
 
 // STYLES
 import { Page, PageContent } from '../../shared_components/layout/Page';
@@ -245,7 +244,11 @@ export default class TripsScene extends Component {
                 onServiceRemoveClick={this.props.onServiceRemoveClick}
               />
               <Hr />
-              <Summary data={trip} />
+              <Summary
+                trip={this.props.trip}
+                scheduledServices={this.props.scheduledServices}
+                unScheduledServices={this.props.unScheduledServices}
+               />
             </TripWrapper>
           </Wrap>
         </PageContent>
