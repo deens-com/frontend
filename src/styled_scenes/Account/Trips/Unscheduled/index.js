@@ -17,12 +17,12 @@ const AccountTripsScene = props => {
       <Grid.Column mobile={16} tablet={11} computer={12}>
         <h1>My Trips</h1>
         <Link to="/account/trips/planned">Planned</Link>&nbsp; | &nbsp;
-        <Link to="/account/trips/completed">Completed</Link>
+        <Link to="/account/trips/completed">Completed</Link>&nbsp; | &nbsp;
         <Link to="/account/trips/unscheduled" style={{borderBottom: "2px solid #50a189"}}>Unscheduled</Link>
 
         <br/><br/>
 
-        <TripSectionComponent trips={props.completed_trips} />
+        <TripSectionComponent trips={props.unscheduled_trips} />
 
       </Grid.Column>
     </Grid>

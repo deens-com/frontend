@@ -32,9 +32,6 @@ class AccountTripsUnscheduledComponent extends Component{
 
   render(){
     let ordered_unscheduled_trips = this.props.unscheduled_trips;
-    ordered_unscheduled_trips = ordered_unscheduled_trips.sort(function(a,b){
-      return new Date(b.endDate.iso) - new Date(a.endDate.iso);
-    });
     return (
       <section>
         <Page topPush>
