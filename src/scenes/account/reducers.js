@@ -1,3 +1,5 @@
+import {uniqEs6} from './../../libs/Utils';
+
 const initialState = {
   user_profile: {},
   planned_trips: [],
@@ -15,14 +17,18 @@ export default function AccountReducer(state = initialState, action = {}) {
         user_profile: action.payload.user_profile,
       };
     case 'PLANNED_TRIPS_FETCHED':
+      const planned_trips = [...state.planned_trips, action.payload.planned_trips];
+      const uniq_planned_trips = uniqEs6(planned_trips);
       return {
         ...state,
-        planned_trips: [...state.planned_trips, action.payload.planned_trips],
+        planned_trips: uniq_planned_trips
       };
     case 'COMPLETED_TRIPS_FETCHED':
+      const completed_trips = [...state.completed_trips, action.payload.completed_trips];
+      const uniq_completed_trips = uniqEs6(completed_trips);
       return {
         ...state,
-        completed_trips: [...state.completed_trips, action.payload.completed_trips],
+        completed_trips: uniq_completed_trips,
       };
     case 'UNSCHEDULED_TRIPS_FETCHED':
       return {

@@ -10,9 +10,7 @@ class AccountTripsCompletedComponent extends Component{
 
   componentDidMount(){
     if(this.props.user_profile){
-      if(!this.props.completed_trips.length){
-        this.props.fetch_user_trips(this.props.user_profile.objectId, "completed");
-      }
+      this.props.fetch_user_trips(this.props.user_profile.objectId, "completed");
     }
   }
 
