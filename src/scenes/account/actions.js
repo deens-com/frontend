@@ -26,6 +26,12 @@ export const completed_trips_fetched = completed_trips => {
   };
 };
 
+export const unscheduled_trips_fetched = unscheduled_trips => {
+  return {
+    type: "UNSCHEDULED_TRIPS_FETCHED",
+    payload: unscheduled_trips
+  };
+};
 
 export const fetch_user_profile = () => dispatch => {
   let user = Parse.User.current();
@@ -58,7 +64,7 @@ export const fetch_user_trips = (owner_id, trip_state) => {
       if (trip_state === "completed") {
         trip_query.equalTo('booked', true);
         trip_query.lessThan("endDate", moment_now);
-      } else {
+      } else if (trip_state === "planned") {
         const pastStartDateAndNotPurchased = fetch_helpers
           .build_query('Trip')
           .notEqualTo('booked', true)
