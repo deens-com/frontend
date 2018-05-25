@@ -64,12 +64,11 @@ export default class TripSummary extends Component {
     this.state = {
       logged_in: false,
       total: 0,
+      services: [],
     };
   }
 
   componentDidMount() {
-    this.setState({ ...this.getTripTotalPrice() });
-
     if (Parse.User.current() === null) {
       this.setState({ logged_in: false });
     } else {
@@ -77,20 +76,24 @@ export default class TripSummary extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props !== nextProps) {
-      this.setState({ ...this.getTripTotalPrice() });
-    }
-  }
+  calculateTripTotalPrice = () => {
+    let totalPrice = 0;
+    const currentUser = Parse.User.current();
+    const mergeUnscheduledServices = (this.props.trip && this.props.trip.owner && this.props.trip.owner.objectId) === (currentUser && currentUser.id);
+    const mergedServices = [];
 
-  getTripTotalPrice = () => {
-    let total = 0;
-    this.props.data.forEach(day => {
-      day.items.forEach(item => {
-        total += Number(item.price);
+    if (mergeUnscheduledServices) {
+      mergedServices.push(...this.props.unScheduledServices.map((i) => { return i }));
+    }
+    mergedServices.push(...this.props.scheduledServices.map((i) => { return i }));
+
+    mergedServices.forEach((item) => {
+      item.services.forEach((service) => {
+        totalPrice += service.pricePerSession;
       });
-    });
-    return { total };
+    })
+
+    return totalPrice;
   };
 
   render() {
@@ -104,7 +107,7 @@ export default class TripSummary extends Component {
           <p>Total</p>
           <TotalWrap>
             <TotalPrice>
-              <PriceTag price={this.state.total} unit="hidden" />
+              <PriceTag price={this.calculateTripTotalPrice()} unit="hidden" />
             </TotalPrice>
             <Button href="#" round size="small" theme="mainFilled" type="link">
               Book now
