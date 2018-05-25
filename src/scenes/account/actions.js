@@ -26,6 +26,12 @@ export const completed_trips_fetched = completed_trips => {
   };
 };
 
+export const unscheduled_trips_fetched = unscheduled_trips => {
+  return {
+    type: "UNSCHEDULED_TRIPS_FETCHED",
+    payload: unscheduled_trips
+  };
+};
 
 export const fetch_user_profile = () => dispatch => {
   let user = Parse.User.current();
@@ -58,7 +64,7 @@ export const fetch_user_trips = (owner_id, trip_state) => {
       if (trip_state === "completed") {
         trip_query.equalTo('booked', true);
         trip_query.lessThan("endDate", moment_now);
-      } else {
+      } else if (trip_state === "planned") {
         const pastStartDateAndNotPurchased = fetch_helpers
           .build_query('Trip')
           .notEqualTo('booked', true)
@@ -66,6 +72,10 @@ export const fetch_user_trips = (owner_id, trip_state) => {
         const startDateInFuture = fetch_helpers.build_query('Trip').greaterThan('beginDate', moment_now);
         const tripsWithoutDates = fetch_helpers.build_query('Trip').doesNotExist('beginDate');
         trip_query = Parse.Query.or(pastStartDateAndNotPurchased, startDateInFuture, tripsWithoutDates);
+      } else if(trip_state === "unscheduled"){
+        trip_query.doesNotExist('numberOfPerson');
+        trip_query.doesNotExist('beginDate');
+        trip_query.doesNotExist('endDate');
       }
       trip_query.equalTo("owner", user).find().then(
         trips_response => {
@@ -87,8 +97,10 @@ export const fetch_user_trips = (owner_id, trip_state) => {
               }
               if(trip_state === "completed"){
                 dispatch(completed_trips_fetched({ completed_trips: formatted_trip }));
-              }else{
+              }else if(trip_state === "planned"){
                 dispatch(planned_trips_fetched({ planned_trips: formatted_trip }));
+              }else if(trip_state === "unscheduled"){
+                dispatch(unscheduled_trips_fetched({ unscheduled_trips: formatted_trip }));
               }
             })
             return true;

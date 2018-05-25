@@ -1,9 +1,10 @@
-import {uniqEs6} from './../../libs/Utils';
+import fetch_helpers from './../../libs/fetch_helpers';
 
 const initialState = {
   user_profile: {},
   planned_trips: [],
   completed_trips: [],
+  unscheduled_trips: [],
   metamaskError: {},
   ledger_error: {}
 };
@@ -17,18 +18,25 @@ export default function AccountReducer(state = initialState, action = {}) {
       };
     case 'PLANNED_TRIPS_FETCHED':
       const planned_trips = [...state.planned_trips, action.payload.planned_trips];
-      const uniq_planned_trips = uniqEs6(planned_trips);
+      const uniq_planned_trips = fetch_helpers.removeDuplicates(planned_trips);
       return {
         ...state,
         planned_trips: uniq_planned_trips
       };
     case 'COMPLETED_TRIPS_FETCHED':
       const completed_trips = [...state.completed_trips, action.payload.completed_trips];
-      const uniq_completed_trips = uniqEs6(completed_trips);
+      const uniq_completed_trips = fetch_helpers.removeDuplicates(completed_trips);
       return {
         ...state,
         completed_trips: uniq_completed_trips,
       };
+    case 'UNSCHEDULED_TRIPS_FETCHED':
+      const unscheduled_trips = [...state.unscheduled_trips, action.payload.unscheduled_trips];
+      const uniq_unscheduled_trips = fetch_helpers.removeDuplicates(unscheduled_trips);
+      return {
+        ...state,
+        unscheduled_trips: uniq_unscheduled_trips
+      }
     case 'METAMASK_ERROR':
       return {
         ...state,

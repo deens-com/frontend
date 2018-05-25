@@ -34,9 +34,9 @@ export const comparatorWithNullValues = (valueA, valueB) => {
   else return valueA - valueB;
 };
 
-
+/* Does not work as expected */
 export const uniqEs6 = (arrArg) => {
   return arrArg.filter((elem, pos, arr) => {
-    return arr.indexOf(elem) == pos;
+    return arr.indexOf(elem) === pos;
   });
 }
