@@ -14,6 +14,7 @@ import Services from "./../scenes/services/services";
 import Registrations from "./../scenes/registrations/registrations";
 import Notfound from "./../styled_scenes/NotFound";
 import ScrollToTop from "./middlewares/ScrollToTop";
+import NewService from '../scenes/new-service';
 
 const App = () => {
   return (
@@ -37,6 +38,10 @@ const App = () => {
             <Route
               path={process.env.PUBLIC_URL + "/results"}
               component={withSegmentTracker(Results)}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/services/new"}
+              component={withSegmentTracker(NewService)}
             />
             <Route
               path={process.env.PUBLIC_URL + "/services/:id"}
