@@ -14,11 +14,13 @@ import { TrashIcon } from "./components/icons";
 
 // ACTIONS/CONFIG
 import { media } from "../../../libs/styled";
+import Tag from "./components/Tag";
 
 const Wrap = styled.div`
   ${media.minSmall} {
     display: flex;
   }
+  position: relative;
 `;
 
 const DeleteButton = styled.div`
@@ -161,6 +163,7 @@ export default function FullCart({ data, toggleExpansion, onDeleteClick }) {
           />
         </RightCol>
       </ContentCol>
+      <Tag text="Unavailable" />
     </Wrap>
   );
 }
