@@ -14,11 +14,16 @@ import { media } from "../../../libs/styled";
 
 // STYLES
 import { ContentWrap } from "../styles";
+import Tag from "./components/Tag";
 
 const CartRow = styled.div`
   ${media.minSmall} {
     display: flex;
   }
+`;
+
+const CartContentWrap = styled(ContentWrap)`
+  position: relative;
 `;
 
 const LeftCol = styled.div`
@@ -59,7 +64,7 @@ const RightCol = styled.div`
 // MODULE
 export default function Exceprt({ data, toggleExpansion }) {
   return (
-    <ContentWrap>
+    <CartContentWrap>
       <CartRow>
         <LeftCol>
           <Category category={data.type} />
@@ -78,7 +83,8 @@ export default function Exceprt({ data, toggleExpansion }) {
           />
         </RightCol>
       </CartRow>
-    </ContentWrap>
+      <Tag text="Unavailable" />
+    </CartContentWrap>
   );
 }
 
