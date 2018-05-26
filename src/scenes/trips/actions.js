@@ -49,7 +49,7 @@ export const fetchTrip = tripId => async (dispatch, getState) => {
     }));
     const services = tripOrganizations.map(tOrg => tOrg.service);
     dispatch(trip_fetched({ trip, tripOrganizations: tripOrganizationMappings, services }));
-    checkAvailibility(new Date())(dispatch, getState);
+    checkAvailability(tripRaw.get('beginDate'))(dispatch, getState);
   } catch (error) {
     console.error(error);
     if (error.code === Parse.Error.OBJECT_NOT_FOUND) dispatch(tripFetchError(error));
@@ -92,11 +92,11 @@ export const updateTrip = (newDetails, showSaved) => async (dispatch, getState) 
   fetchTrip(tripId)(dispatch);
 };
 
-export const checkAvailibility = startDate => async (dispatch, getState) => {
-  if (!startDate) return;
+export const checkAvailability = beginDate => async (dispatch, getState) => {
+  if (!beginDate) return;
   const state = getState();
   const tripId = state.TripsReducer.trip.objectId;
-  const result = await Parse.Cloud.run('checkAvailibilityByTrip', { tripId, startDate });
+  const result = await Parse.Cloud.run('checkAvailabilityByTrip', { tripId, beginDate });
   dispatch(serviceAvailabilities(result));
 };
 
