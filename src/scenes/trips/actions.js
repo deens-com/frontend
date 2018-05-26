@@ -20,7 +20,7 @@ export const removeService = tripOrganizationId => ({
 
 export const tripUpdated = value => ({ type: 'TRIP_UPDATED', payload: value });
 
-export const fetchTrip = tripId => async dispatch => {
+export const fetchTrip = tripId => async (dispatch, getState) => {
   if (!tripId) {
     console.error(new Error("can't fetch trip without TripId"));
     return;
@@ -47,13 +47,14 @@ export const fetchTrip = tripId => async dispatch => {
     }));
     const services = tripOrganizations.map(tOrg => tOrg.service);
     dispatch(trip_fetched({ trip, tripOrganizations: tripOrganizationMappings, services }));
+    checkAvailibility(new Date())(dispatch, getState);
   } catch (error) {
     console.error(error);
     if (error.code === Parse.Error.OBJECT_NOT_FOUND) dispatch(tripFetchError(error));
   }
 };
 
-export const changeServiceDay = (tripOrganizationId, newDay) => async dispatch => {
+export const changeServiceDay = (tripOrganizationId, newDay) => async (dispatch, getState) => {
   if (!tripOrganizationId) {
     console.error(new Error("can't update service day without tripOrganizationId"));
   }
@@ -66,7 +67,7 @@ export const changeServiceDay = (tripOrganizationId, newDay) => async dispatch =
   }
   await tripOrganization.save();
   // re-fetch trip in case anything else has changed
-  fetchTrip(tripOrganization.get('trip').id)(dispatch);
+  fetchTrip(tripOrganization.get('trip').id)(dispatch, getState);
 };
 
 export const removeServiceFromTrip = tripOrganizationId => async dispatch => {
@@ -87,6 +88,14 @@ export const updateTrip = (newDetails, showSaved) => async (dispatch, getState) 
     setTimeout(() => dispatch(tripUpdated(false)), 3000);
   }
   fetchTrip(tripId)(dispatch);
+};
+
+export const checkAvailibility = startDate => async (dispatch, getState) => {
+  if (!startDate) return;
+  const state = getState();
+  const tripId = state.TripsReducer.trip.objectId;
+  const result = await Parse.Cloud.run('checkAvailibilityByTrip', { tripId, startDate });
+  console.log('result', result);
 };
 
 export const setShowTripUpdated = value => dispatch => dispatch(tripUpdated(value));
