@@ -163,7 +163,7 @@ export default function FullCart({ data, toggleExpansion, onDeleteClick }) {
           />
         </RightCol>
       </ContentCol>
-      <Tag text="Unavailable" />
+      {data.availability === false ? <Tag text="Unavailable" /> : null}
     </Wrap>
   );
 }

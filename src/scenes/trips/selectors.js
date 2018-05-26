@@ -1,7 +1,7 @@
 import moment from 'moment';
 
 export const getDaysWithFilter = (state, filter) => {
-  const { tripOrganizations, services } = state.TripsReducer;
+  const { tripOrganizations, services, serviceAvailabilities } = state.TripsReducer;
   if (!tripOrganizations) return [];
 
   const scheduledServices = Object.values(tripOrganizations)
@@ -10,6 +10,7 @@ export const getDaysWithFilter = (state, filter) => {
   const days = {};
   for (const service of scheduledServices) {
     const serviceDay = service.day || 'null';
+    service.availability = serviceAvailabilities[service.objectId];
     days[serviceDay] = days[serviceDay] || { day: serviceDay, services: [] };
     days[serviceDay].services.push(service);
   }

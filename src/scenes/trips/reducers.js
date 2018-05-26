@@ -5,6 +5,7 @@ const initialState = {
   trip: {},
   tripError: null,
   showTripUpdated: false,
+  serviceAvailabilities: {},
 };
 
 export default function TripsReducer(state = initialState, action = {}) {
@@ -47,6 +48,12 @@ export default function TripsReducer(state = initialState, action = {}) {
       return {
         ...state,
         showTripUpdated: action.payload,
+      };
+    }
+    case 'SERVICE_AVAILIBILITIES': {
+      return {
+        ...state,
+        serviceAvailabilities: action.payload,
       };
     }
     default:

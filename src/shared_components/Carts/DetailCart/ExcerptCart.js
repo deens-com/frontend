@@ -83,7 +83,7 @@ export default function Exceprt({ data, toggleExpansion }) {
           />
         </RightCol>
       </CartRow>
-      <Tag text="Unavailable" />
+      {data.availability === false ? <Tag text="Unavailable" /> : null}
     </CartContentWrap>
   );
 }
