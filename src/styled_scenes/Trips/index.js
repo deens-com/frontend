@@ -139,7 +139,7 @@ export default class TripsScene extends Component {
     this.props.updateTripDetails({ beginDate: this.state.startDate, endDate: this.state.endDate }, true);
   }
 
-  checkAvailability = () => this.props.checkAvailability(this.state.startDate);
+  checkAvailability = () => this.props.checkAvailability(this.state.startDate, parseInt(this.state.person.label, 10));
 
   onValueChange(key, value) {
     this.setState({ [key]: value });
