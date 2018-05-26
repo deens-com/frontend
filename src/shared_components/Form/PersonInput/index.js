@@ -52,8 +52,7 @@ export default class PersonInput extends Component {
       <Wrapper>
         <Select
           name="person"
-          value=""
-          placeholder={this.props.placeholder}
+          {...this.props}
           autoBlur={true}
           onChange={this.onChange}
           onBlur={this.onBlur}
