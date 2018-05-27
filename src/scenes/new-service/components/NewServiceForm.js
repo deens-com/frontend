@@ -17,6 +17,7 @@ const ErrorMsg = styled.div`
 class NewServiceForm extends Component {
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
+    submitInFlight: PropTypes.bool.isRequired,
   };
 
   state = {
@@ -61,14 +62,14 @@ class NewServiceForm extends Component {
         <Form.Field required>
           <label>Service type</label>
           <Dropdown
-            name="serviceType"
+            name="type"
             placeholder="Service Type"
             selection
             options={serviceTypeDropdownOptions}
             onChange={this.onDropDownChange}
-            error={!!(touched.serviceType && errors.serviceType)}
+            error={!!(touched.type && errors.type)}
           />
-          {touched.serviceType && errors.serviceType && <ErrorMsg>{errors.serviceType}</ErrorMsg>}
+          {touched.type && errors.type && <ErrorMsg>{errors.type}</ErrorMsg>}
         </Form.Field>
 
         {/* Name */}
@@ -98,14 +99,18 @@ class NewServiceForm extends Component {
         {/* Price */}
         <Form.Field required>
           <label>Price Per Day/Night</label>
-          <Form.Input name="price" error={!!(touched.price && errors.price)} {...defaultProps} />
-          {touched.price && errors.price && <ErrorMsg>{errors.price}</ErrorMsg>}
+          <Form.Input
+            name="pricePerSession"
+            error={!!(touched.pricePerSession && errors.pricePerSession)}
+            {...defaultProps}
+          />
+          {touched.pricePerSession && errors.pricePerSession && <ErrorMsg>{errors.pricePerSession}</ErrorMsg>}
         </Form.Field>
 
         {/* Accept Ethereum */}
         <Form.Field>
           <label>Accept Ethereum</label>
-          <Form.Checkbox id="acceptEthereum" name="acceptEthereum" {...defaultProps} />
+          <Form.Checkbox id="acceptETH" name="acceptETH" {...defaultProps} />
         </Form.Field>
 
         {/* Available Days */}
@@ -191,7 +196,7 @@ class NewServiceForm extends Component {
           <Input type="file" name="picture" />
         </Form.Field>
 
-        <Form.Button disabled={isSubmitting}>Submit</Form.Button>
+        <Form.Button disabled={this.props.submitInFlight}>Submit</Form.Button>
       </Form>
     );
   }
@@ -199,10 +204,10 @@ class NewServiceForm extends Component {
 
 function validate(values) {
   const requiredFields = [
-    'serviceType',
+    'type',
     'name',
     'description',
-    'price',
+    'pricePerSession',
     'availableDays',
     'latitude',
     'longitude',
@@ -210,7 +215,7 @@ function validate(values) {
     'closingTime',
   ];
   const errors = checkRequiredFields(values, requiredFields);
-  const numericFields = ['price', 'latitude', 'longitude'];
+  const numericFields = ['pricePerSession', 'latitude', 'longitude'];
   for (const field of numericFields) {
     if (!errors[field] && isNaN(values[field])) {
       errors[field] = 'Invalid number';
@@ -236,10 +241,10 @@ function checkRequiredFields(values, requiredFields) {
 
 export default withFormik({
   mapPropsToValues: () => ({
-    serviceType: null,
+    type: null,
     name: null,
     description: null,
-    price: null,
+    pricePerSession: null,
     availableDays: new Set(),
     openingTime: null,
     closingTime: null,
