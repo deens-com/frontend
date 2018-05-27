@@ -98,7 +98,7 @@ class NewServiceForm extends Component {
         {/* Price */}
         <Form.Field required>
           <label>Price Per Day/Night</label>
-          <Form.Input name="price" type="number" error={!!(touched.price && errors.price)} {...defaultProps} />
+          <Form.Input name="price" error={!!(touched.price && errors.price)} {...defaultProps} />
           {touched.price && errors.price && <ErrorMsg>{errors.price}</ErrorMsg>}
         </Form.Field>
 
@@ -210,7 +210,19 @@ function validate(values) {
     'closingTime',
   ];
   const errors = checkRequiredFields(values, requiredFields);
-  // errors.serviceType = validateServiceType(values.serviceType);
+  const numericFields = ['price', 'latitude', 'longitude'];
+  for (const field of numericFields) {
+    if (!errors[field] && isNaN(values[field])) {
+      errors[field] = 'Invalid number';
+    }
+  }
+  const hourFields = ['openingTime', 'closingTime'];
+  for (const field of hourFields) {
+    if (!errors[field] && (values[field] < 0 || values[field] > 23)) {
+      errors[field] = 'Invalid hour';
+    }
+  }
+
   return errors;
 }
 
