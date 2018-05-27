@@ -66,6 +66,7 @@ class NewServiceForm extends Component {
             selection
             options={serviceTypeDropdownOptions}
             onChange={this.onDropDownChange}
+            error={!!(touched.serviceType && errors.serviceType)}
           />
           {touched.serviceType && errors.serviceType && <ErrorMsg>{errors.serviceType}</ErrorMsg>}
         </Form.Field>
@@ -125,28 +126,46 @@ class NewServiceForm extends Component {
 
         {/* Lat/Lng */}
         <Form.Group widths="equal">
-          <Form.Input name="latitude" label="Latitude" {...defaultProps} />
-          <Form.Input name="longitude" label="Longitude" {...defaultProps} />
+          <Form.Field required>
+            <label>Latitude</label>
+            <Form.Input name="latitude" error={!!(touched.latitude && errors.latitude)} {...defaultProps} />
+            {touched.latitude && errors.latitude && <ErrorMsg>{errors.latitude}</ErrorMsg>}
+          </Form.Field>
+          <Form.Field required>
+            <label>Longitude</label>
+            <Form.Input name="longitude" error={!!(touched.longitude && errors.longitude)} {...defaultProps} />
+            {touched.longitude && errors.longitude && <ErrorMsg>{errors.longitude}</ErrorMsg>}
+          </Form.Field>
         </Form.Group>
 
         {/* Timings */}
         <Form.Group widths="equal">
-          <Form.Dropdown
-            name="openingTime"
-            label="Opening time"
-            placeholder="Select opening time"
-            selection
-            options={hoursDropdownOptions}
-            onChange={this.onDropDownChange}
-          />
-          <Form.Dropdown
-            name="closingTime"
-            label="Closing time"
-            placeholder="Select closing time"
-            selection
-            options={hoursDropdownOptions}
-            onChange={this.onDropDownChange}
-          />
+          <Form.Field>
+            <Form.Dropdown
+              name="openingTime"
+              label="Opening time"
+              placeholder="Select opening time"
+              selection
+              required
+              options={hoursDropdownOptions}
+              onChange={this.onDropDownChange}
+              error={!!(touched.openingTime && errors.openingTime)}
+            />
+            {touched.openingTime && errors.openingTime && <ErrorMsg>{errors.openingTime}</ErrorMsg>}
+          </Form.Field>
+          <Form.Field>
+            <Form.Dropdown
+              name="closingTime"
+              label="Closing time"
+              placeholder="Select closing time"
+              selection
+              required
+              options={hoursDropdownOptions}
+              onChange={this.onDropDownChange}
+              error={!!(touched.closingTime && errors.closingTime)}
+            />
+            {touched.closingTime && errors.closingTime && <ErrorMsg>{errors.closingTime}</ErrorMsg>}
+          </Form.Field>
         </Form.Group>
 
         {/* Tags */}
@@ -179,7 +198,17 @@ class NewServiceForm extends Component {
 }
 
 function validate(values) {
-  const requiredFields = ['serviceType', 'name', 'description', 'price', 'availableDays'];
+  const requiredFields = [
+    'serviceType',
+    'name',
+    'description',
+    'price',
+    'availableDays',
+    'latitude',
+    'longitude',
+    'openingTime',
+    'closingTime',
+  ];
   const errors = checkRequiredFields(values, requiredFields);
   // errors.serviceType = validateServiceType(values.serviceType);
   return errors;
@@ -188,15 +217,23 @@ function validate(values) {
 function checkRequiredFields(values, requiredFields) {
   return requiredFields.reduce((errors, fieldName) => {
     const fieldValue = values[fieldName];
-    if (!fieldValue || fieldValue.length === 0 || fieldValue.size === 0) errors[fieldName] = 'Required';
+    if (fieldValue == null || fieldValue.length === 0 || fieldValue.size === 0) errors[fieldName] = 'Required';
     return errors;
   }, {});
 }
 
 export default withFormik({
   mapPropsToValues: () => ({
-    tags: [],
+    serviceType: null,
+    name: null,
+    description: null,
+    price: null,
     availableDays: new Set(),
+    openingTime: null,
+    closingTime: null,
+    latitude: null,
+    longitude: null,
+    tags: [],
   }),
   validate,
   handleSubmit: (values, { props }) => {
