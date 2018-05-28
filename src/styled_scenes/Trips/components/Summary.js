@@ -87,7 +87,7 @@ export default class TripSummary extends Component {
           {/* becuase looks like it could be used for something */}
         </LeftCol>
         <RightCol xsBasis="100%" mdBasis="50%">
-          <Grid >
+          <Grid>
             <Grid.Row columns={2}>
               <Grid.Column stretched>Price per person</Grid.Column>
               <Grid.Column textAlign="right">
@@ -97,7 +97,7 @@ export default class TripSummary extends Component {
             <Grid.Row columns={2}>
               <Grid.Column stretched>Total Price</Grid.Column>
               <Grid.Column textAlign="right">
-                <PriceTag price={this.calculateTripTotalPrice()} unit="hidden" />
+                <PriceTag price={this.calculateTripTotalPrice() * this.props.peopleCount} unit="hidden" />
               </Grid.Column>
             </Grid.Row>
             <Grid.Row columns={1}>
