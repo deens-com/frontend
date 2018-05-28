@@ -46,6 +46,7 @@ const PriceWrap = styled.div`
   }
 
   ${media.minMedium} {
+    margin-top: 10px;
     margin-bottom: 15px;
   }
 `;

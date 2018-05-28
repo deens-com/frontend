@@ -139,6 +139,8 @@ export default class TripsScene extends Component {
     this.props.updateTripDetails({ beginDate: this.state.startDate, endDate: this.state.endDate }, true);
   }
 
+  checkAvailability = () => this.props.checkAvailability(this.state.startDate, parseInt(this.state.person.label, 10));
+
   onValueChange(key, value) {
     this.setState({ [key]: value });
   }
@@ -234,6 +236,7 @@ export default class TripsScene extends Component {
                 state={this.state}
                 trip={this.props.trip}
                 showTripUpdated={this.props.showTripUpdated}
+                onCheckAvailabilityClick={this.checkAvailability}
               />
               <Results
                 trip={this.props.trip}
@@ -248,7 +251,7 @@ export default class TripsScene extends Component {
                 trip={this.props.trip}
                 scheduledServices={this.props.scheduledServices}
                 unScheduledServices={this.props.unScheduledServices}
-               />
+              />
             </TripWrapper>
           </Wrap>
         </PageContent>
