@@ -14,7 +14,11 @@ export const registerService = (values, history) => async (dispatch, getState) =
   try {
     const { mainPicture } = values;
     const parseFile = await new Parse.File(mainPicture.name, mainPicture).save();
-    const result = await Parse.Cloud.run('createService', { ...values, parseFile });
+    const result = await Parse.Cloud.run('createService', {
+      ...values,
+      parseFile,
+      availableDays: [...values.availableDays],
+    });
     dispatch({ type: types.SERVICE_CREATE_SUCCESS, payload: result });
     history.push(`/services/${result.id}`);
   } catch (error) {
