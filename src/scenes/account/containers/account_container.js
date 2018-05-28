@@ -23,7 +23,7 @@ class AccountContainer extends Component {
         />
         <Route
           path={process.env.PUBLIC_URL + "/account/profile"}
-          render={(props)=><AccountProfileComponent {...props} user_profile={this.props.user_profile} />}
+          render={(props)=><AccountProfileComponent {...props} user_profile={this.props.user_profile} update_user_profile={this.props.update_user_profile}/>}
         />
         <Route
           path={process.env.PUBLIC_URL + "/account/services"}
