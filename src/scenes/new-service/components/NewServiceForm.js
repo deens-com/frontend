@@ -59,13 +59,13 @@ class NewServiceForm extends Component {
   };
 
   render() {
-    const { values, errors, touched, handleChange, handleBlur, handleSubmit } = this.props;
+    const { values, errors, touched, handleChange, handleBlur, handleSubmit, submitInFlight } = this.props;
     const defaultProps = {
       onChange: handleChange,
       onBlur: handleBlur,
     };
     return (
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} loading={submitInFlight}>
         {/* Service Type */}
         <Form.Field required>
           <label>Service type</label>
@@ -204,7 +204,7 @@ class NewServiceForm extends Component {
           <Input type="file" name="mainPicture" onChange={this.onFileSelect} />
         </Form.Field>
 
-        <Form.Button disabled={this.props.submitInFlight}>Submit</Form.Button>
+        <Form.Button disabled={submitInFlight}>Submit</Form.Button>
       </Form>
     );
   }
