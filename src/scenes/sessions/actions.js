@@ -60,7 +60,7 @@ export const loginRequest = (email, password) => {
     Parse.User.logIn(email, password).then(
       user => {
         dispatch(sessionsFetched({ session: user }));
-        history.push("/");
+        history.goBack();
       },
       error => {
         if (error.code === 101) {
@@ -99,7 +99,7 @@ export const loginWithLedger = () => async dispatch => {
     };
     const user = await Parse.User.logInWith('ledgerauth', { authData });
     dispatch(sessionsFetched({ session: user }));
-    history.push('/');
+    history.goBack();
   } catch (error) {
     dispatch(displayLedgerLoader(false));
     if(error.code === 404){
@@ -133,7 +133,7 @@ export const loginWithMetamask = () => async dispatch => {
     };
     const user = await Parse.User.logInWith('metamaskauth', { authData });
     dispatch(sessionsFetched({ session: user }));
-    history.push('/');
+    history.goBack();
   } catch (error) {
     console.error(error);
     if (error.showToUser) {

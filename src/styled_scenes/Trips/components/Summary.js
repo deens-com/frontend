@@ -101,7 +101,7 @@ export default class TripSummary extends Component {
             <TotalPrice>
               <PriceTag price={this.calculateTripTotalPrice()} unit="hidden" />
             </TotalPrice>
-            <Button href="#" round size="small" theme="mainFilled" type="link">
+            <Button href="/login" round size="small" theme="mainFilled" type="link">
               Book now
             </Button>
           </TotalWrap>
