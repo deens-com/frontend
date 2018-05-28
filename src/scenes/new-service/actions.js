@@ -6,7 +6,7 @@ export const types = {
   SERVICE_CREATE_ERROR: 'SERVICE_CREATE_ERROR',
 };
 
-export const registerService = values => async (dispatch, getState) => {
+export const registerService = (values, history) => async (dispatch, getState) => {
   const state = getState();
   const { isSubmitting } = state.NewService;
   if (isSubmitting) return;
@@ -14,6 +14,7 @@ export const registerService = values => async (dispatch, getState) => {
   try {
     const result = await Parse.Cloud.run('createService', values);
     dispatch({ type: types.SERVICE_CREATE_SUCCESS, payload: result });
+    history.push(`/services/${result.id}`);
   } catch (error) {
     if (error.errors) {
       dispatch({ type: types.SERVICE_CREATE_ERROR, payload: error.errors });
