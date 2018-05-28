@@ -236,6 +236,13 @@ function validate(values) {
     }
   }
 
+  if (!errors.latitude && (values.latitude < -90 || values.latitude > 90)) {
+    errors.latitude = 'Invalid Latitude';
+  }
+  if (!errors.longitude && (values.longitude < -180 || values.longitude > 180)) {
+    errors.longitude = 'Invalid Longitude';
+  }
+
   return errors;
 }
 
