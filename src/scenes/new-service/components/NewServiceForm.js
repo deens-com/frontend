@@ -50,8 +50,16 @@ class NewServiceForm extends Component {
     setFieldTouched('availableDays', true, false);
   };
 
+  onFileSelect = e => {
+    const { setFieldValue, setFieldTouched } = this.props;
+    const file = e.currentTarget.files[0];
+    if (!file) return;
+    setFieldValue('mainPicture', file);
+    setFieldTouched('mainPicture', true, false);
+  };
+
   render() {
-    const { values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting } = this.props;
+    const { values, errors, touched, handleChange, handleBlur, handleSubmit } = this.props;
     const defaultProps = {
       onChange: handleChange,
       onBlur: handleBlur,
@@ -193,7 +201,7 @@ class NewServiceForm extends Component {
 
         <Form.Field>
           <label>Service Picture</label>
-          <Input type="file" name="picture" />
+          <Input type="file" name="mainPicture" onChange={this.onFileSelect} />
         </Form.Field>
 
         <Form.Button disabled={this.props.submitInFlight}>Submit</Form.Button>

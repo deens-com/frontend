@@ -12,7 +12,9 @@ export const registerService = (values, history) => async (dispatch, getState) =
   if (isSubmitting) return;
   dispatch({ type: types.SERVICE_CREATE_STARTED });
   try {
-    const result = await Parse.Cloud.run('createService', values);
+    const { mainPicture } = values;
+    const parseFile = await new Parse.File(mainPicture.name, mainPicture).save();
+    const result = await Parse.Cloud.run('createService', { ...values, parseFile });
     dispatch({ type: types.SERVICE_CREATE_SUCCESS, payload: result });
     history.push(`/services/${result.id}`);
   } catch (error) {
