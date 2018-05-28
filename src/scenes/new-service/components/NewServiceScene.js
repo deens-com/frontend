@@ -1,4 +1,5 @@
 import React from 'react';
+import { Container } from 'semantic-ui-react';
 
 import { Page, PageContent } from './../../../shared_components/layout/Page';
 import TopBar from '../../../shared_components/TopBarWithSearch';
@@ -9,8 +10,10 @@ const NewServiceScene = props => {
     <Page topPush>
       <TopBar fixed withPadding />
       <PageContent padding="24px">
-        New Service Container
-        <NewServiceFormContainer />
+        <Container text>
+          <h2>Create a new Service</h2>
+          <NewServiceFormContainer />
+        </Container>
       </PageContent>
     </Page>
   );
