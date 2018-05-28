@@ -181,6 +181,19 @@ class NewServiceForm extends Component {
           </Form.Field>
         </Form.Group>
 
+        {/* Slots in a Day */}
+        <Form.Field required>
+          <label>Slots in a Day</label>
+          <Form.Input
+            name="slots"
+            type="number"
+            min="0"
+            error={!!(touched.slots && errors.slots)}
+            {...defaultProps}
+          />
+          {touched.slots && errors.slots && <ErrorMsg>{errors.slots}</ErrorMsg>}
+        </Form.Field>
+
         {/* Tags */}
         <Form.Field>
           <label>Tags</label>
@@ -221,9 +234,10 @@ function validate(values) {
     'longitude',
     'openingTime',
     'closingTime',
+    'slots',
   ];
   const errors = checkRequiredFields(values, requiredFields);
-  const numericFields = ['pricePerSession', 'latitude', 'longitude'];
+  const numericFields = ['pricePerSession', 'latitude', 'longitude', 'slots'];
   for (const field of numericFields) {
     if (!errors[field] && isNaN(values[field])) {
       errors[field] = 'Invalid number';
@@ -263,6 +277,7 @@ export default withFormik({
     availableDays: new Set(),
     openingTime: null,
     closingTime: null,
+    slots: null,
     latitude: null,
     longitude: null,
     tags: [],
