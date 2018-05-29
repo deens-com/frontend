@@ -3,12 +3,15 @@ import PropTypes from 'prop-types';
 import { Dropdown, Input, Form } from 'semantic-ui-react';
 import { withFormik } from 'formik';
 import styled from 'styled-components';
+import serviceTags from '../service-tags';
 
 const serviceTypes = ['Place', 'Activity', 'Food'];
 const serviceTypeDropdownOptions = serviceTypes.map(text => ({ value: text.toLowerCase(), text }));
 const hours = Array.from({ length: 24 }, (v, k) => k);
 const hoursDropdownOptions = hours.map(h => ({ value: h, text: h.toString().padStart(2, '0') + ':00' }));
 const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+const tagsDropdownOptions = serviceTags.map(value => ({ text: value, value }));
 
 const ErrorMsg = styled.div`
   color: red;
@@ -184,13 +187,7 @@ class NewServiceForm extends Component {
         {/* Slots in a Day */}
         <Form.Field required>
           <label>Slots in a Day</label>
-          <Form.Input
-            name="slots"
-            type="number"
-            min="0"
-            error={!!(touched.slots && errors.slots)}
-            {...defaultProps}
-          />
+          <Form.Input name="slots" type="number" min="0" error={!!(touched.slots && errors.slots)} {...defaultProps} />
           {touched.slots && errors.slots && <ErrorMsg>{errors.slots}</ErrorMsg>}
         </Form.Field>
 
@@ -199,15 +196,13 @@ class NewServiceForm extends Component {
           <label>Tags</label>
           <Dropdown
             name="tags"
-            options={this.state.tagOptions}
+            options={tagsDropdownOptions}
             placeholder="Add tags"
             search
             selection
             fluid
             multiple
-            allowAdditions
             value={values.tags}
-            onAddItem={this.onTagAddition}
             onChange={this.onDropDownChange}
           />
         </Form.Field>
