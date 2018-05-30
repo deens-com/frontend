@@ -22,6 +22,13 @@ export const service_fetched = service => {
   };
 };
 
+export const set_service_unavailability_modal = bool => {
+  return {
+    type: "SERVICE_UNAVAILABILITY_MODAL_SET",
+    payload: bool
+  };
+};
+
 export const userTripsFetchStart = () => ({ type: 'USER_TRIPS_FETCH' });
 export const userTripsFetchFinish = trips => ({ type: 'USER_TRIPS_FETCH_FINISH', payload: trips });
 
@@ -152,4 +159,26 @@ export const createNewTrip = () => async (dispatch, getState) => {
 export const setAddedToTripMessage = trip => dispatch => {
   dispatch({ type: 'SERVICE_RECENTLY_ADDED_TO_TRIP', payload: trip });
   setTimeout(() => dispatch({ type: 'SERVICE_RECENTLY_ADDED_TO_TRIP', payload: undefined }), 10000); // 10 s
+};
+
+export const toggleServiceAvailabilitymodal = (bool) => {
+  return dispatch => {
+    dispatch(set_service_unavailability_modal(false));
+  }
+};
+
+export const checkAvailability = (serviceId, slotsNb) => {
+  return dispatch => {
+    let service_availability_query = fetch_helpers.build_query('Service').get(serviceId);
+    service_availability_query.then(response => {
+      const json_service = fetch_helpers.normalizeParseResponseData(response);
+      const serialized_service = fetch_helpers.mapServiceObjects([json_service])[0];
+      const service_slots = serialized_service.slots;
+      if(service_slots < slotsNb){
+        dispatch(set_service_unavailability_modal(true));
+      }else{
+        dispatch(set_service_unavailability_modal(false));
+      }
+    })
+  }
 };

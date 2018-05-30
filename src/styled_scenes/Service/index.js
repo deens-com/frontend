@@ -29,7 +29,7 @@ import { media, sizes } from "../../libs/styled";
 
 // STYLES
 import { Page, PageContent } from "../../shared_components/layout/Page";
-import { Icon } from "semantic-ui-react";
+import { Icon, Modal, Header } from "semantic-ui-react";
 
 const DetailWrapper = styled.div`
   width: 100%;
@@ -311,8 +311,25 @@ class FoodDetailScene extends Component {
       service_longitude: parseFloat(props.service.longitude) || 1.0,
       date: null,
       time: null,
-      person: null
-    }
+      personNb: null
+    };
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.checkServiceAvailability = this.checkServiceAvailability.bind(this);
+    this.closeServiceUnavailabilityModal = this.closeServiceUnavailabilityModal.bind(this);
+  }
+
+  handleInputChange = (event) => {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  }
+
+  checkServiceAvailability = (serviceId) => {
+    this.props.checkAvailability(serviceId, this.state.personNb);
+  }
+
+  closeServiceUnavailabilityModal = () => {
+    this.props.toggleServiceAvailabilitymodal(false);
   }
 
   render(){
@@ -385,20 +402,36 @@ class FoodDetailScene extends Component {
                   placeholder="Pick the time"
                   leftIcon="date"
                 />
-                <FormControl
-                  onChange={value => {
-                    console.log(value);
-                  }}
+                {/*<FormControl
+                  onChange={this.handleInputChange}
                   value={this.state.person}
                   type="person"
+                  name="person"
                   placeholder="Person"
                   leftIcon="person"
-                />
+                />*/}
+
+                <select name="personNb" value={this.state.personNb} onChange={this.handleInputChange}>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                </select>
+
+                <Modal closeIcon open={this.props.isServiceUnavailableModalOpen} onClose={this.closeServiceUnavailabilityModal}>
+                  <Modal.Header>We're Sorry</Modal.Header>
+                  <Modal.Content>
+                    <Modal.Description>
+                      <Header>Default Profile Image</Header>
+                      <p>Select Is unavailable for selected slots</p>
+                    </Modal.Description>
+                  </Modal.Content>
+                </Modal>
+
               </Wrap>
-
-
-
-
 
               <ButtonsWrap>
                 <Button
@@ -406,7 +439,7 @@ class FoodDetailScene extends Component {
                   round
                   size="small"
                   onClick={ev => {
-                    this.props.checkAvailability(this.props.service.objectId, 1);
+                    this.checkServiceAvailability(this.props.service.objectId);
                   }}
                   iconAfter="arrow"
                   text="Book now"

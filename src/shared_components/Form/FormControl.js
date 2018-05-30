@@ -165,6 +165,7 @@ export default class FormControl extends Component {
             focused={this.state.focused}
             onFocus={this.onFocus}
             onBlur={this.onBlur}
+            value={this.props.value}
           />
         );
         break;
