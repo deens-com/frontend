@@ -7,6 +7,7 @@ const initialState = {
   },
   reviews: [],
   serviceRecentlyAddedToTrip: null,
+  isServiceAvailable: true
 };
 
 export default function ServicesReducer(state = initialState, action = {}) {
@@ -41,6 +42,11 @@ export default function ServicesReducer(state = initialState, action = {}) {
         ...state,
         serviceRecentlyAddedToTrip: action.payload,
       };
+    case 'SERVICE_AVAILABILITY_CHECKED':
+      return {
+        ...state,
+        isServiceAvailable: action.payload.isServiceAvailable
+      }
     default:
       return state;
   }
