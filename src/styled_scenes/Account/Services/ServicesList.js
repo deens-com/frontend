@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 import uuid from 'uuid/v1';
-import { Divider, Label } from 'semantic-ui-react';
+import { Divider, Label, Button, Icon } from 'semantic-ui-react';
 import styled from "styled-components";
 import Rating from "../../../shared_components/Rating";
 import PriceTag from "../../../shared_components/Currency/PriceTag";
@@ -33,6 +33,14 @@ const Wrap = styled.div`
   padding: 10px;
 `;
 
+const PriceTitle = styled.span`
+  color: #6e7885;
+  display: block;
+  font-size: 12px;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+`;
+
 const ServiceItem = (item) => {
   return (
     <Link to={ "/services/" + item.objectId} key={item.objectId}>
@@ -54,7 +62,13 @@ const ServiceItem = (item) => {
 
           <Label>{item.type}</Label>
           <br /><br />
+          <PriceTitle>Starting from</PriceTitle>
           <PriceTag price={item.pricePerSession} />
+          <br />
+          <Button icon color="teal" labelPosition='right'>
+            <Icon name='pencil' />
+            Edit
+          </Button>
         </ContentWrap>
       </Cart>
     </Link>
