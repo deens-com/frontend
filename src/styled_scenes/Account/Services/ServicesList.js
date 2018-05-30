@@ -76,9 +76,9 @@ const ServiceItem = (item) => {
         <br />
         <center>
           {isActivated ?
-            <Button color="red" onClick={ ()=> item.update_user_service_status(item.objectId, "disabled") }>Disable Service</Button>
+            <Button color="red" onClick={item.update_user_service_status} data-status="disabled" data-object-id={item.objectId}>Disable Service</Button>
           :
-            <Button color="green" onClick={ ()=> item.update_user_service_status(item.objectId, "activated") }>Activate Service</Button>
+            <Button color="green" onClick={item.update_user_service_status} data-status="activated" data-object-id={item.objectId}>Activate Service</Button>
           }
         </center>
       </ContentWrap>

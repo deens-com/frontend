@@ -59,11 +59,14 @@ export const fetch_user_profile = () => dispatch => {
   }
 };
 
-export const update_user_service_status = (serviceId, status) => async dispatch => {
-  if (!serviceId) {
-    console.error(new Error("can't update service status without serviceId"));
-  }
+export const update_user_service_status = (e) => async dispatch => {
+  let status = e.target.dataset.status;
+  let serviceId = e.target.dataset.objectId;
 
+  if (!serviceId || !status) {
+    console.error(new Error("can't update service status without serviceId and status"));
+  }
+  
   const serviceObject = await fetch_helpers.build_query('Service').get(serviceId);
   serviceObject.set('serviceStatus', status);
   await serviceObject.save();
