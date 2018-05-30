@@ -33,6 +33,7 @@ const mapServiceObjects = services => {
       service.location = `${service.city} ${service.country}`;
       service.rating = service.rating;
       service.reviewCount = service.reviewCount;
+      service.slots = service.slots;
       service.price = service.pricePerSession || getRandomInt(200, 800);
       if(service.tags && service.tags.length){
         const tags = service.tags.map(tag => {
