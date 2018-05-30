@@ -22,6 +22,7 @@ import ImgSlider from "./components/ImgSlider";
 import MapMaker from "../../shared_components/MapMarker";
 import UserAvatar from '../../shared_components/UserAvatar';
 import AddToTripButton from './components/AddToTripButton';
+import FormControl from "./../../shared_components/Form/FormControl";
 
 // ACTIONS/CONFIG
 import { media, sizes } from "../../libs/styled";
@@ -245,6 +246,61 @@ const SuccessMessage = styled(Link)`
   }
 `;
 
+
+const Wrap = styled.div`
+  background: white;
+  box-shadow: 0 8px 25px 0 rgba(141, 141, 141, 0.22);
+  padding: 10px;
+  margin-bottom: 50px;
+
+  ${media.minSmall} {
+    display: flex;
+  }
+
+  ${media.minMedium} {
+    margin-bottom: 0;
+    margin-right: 25px;
+  }
+
+  ${media.minLarge} {
+    margin-bottom: 25px;
+  }
+
+  ${media.minLargePlus} {
+    margin-bottom: 0;
+  }
+
+  & > div {
+    border: none;
+    flex: 1;
+    min-width: 143px;
+    display: flex;
+    align-items: center;
+
+    & > div {
+      width: 100%;
+    }
+
+    ${media.minMedium} {
+      &:after {
+        content: "";
+        width: 1px;
+        height: 60%;
+        background: #eef1f4;
+        position: absolute;
+        right: 10px;
+        top: 20%;
+      }
+
+      &:last-child {
+        &:after {
+          display: none;
+        }
+      }
+    }
+  }
+`;
+
 // MODULE
 class FoodDetailScene extends Component {
 
@@ -252,7 +308,10 @@ class FoodDetailScene extends Component {
     super(props);
     this.state = {
       service_latitude: parseFloat(props.service.latitude) || 1.0,
-      service_longitude: parseFloat(props.service.longitude) || 1.0
+      service_longitude: parseFloat(props.service.longitude) || 1.0,
+      date: null,
+      time: null,
+      person: null
     }
   }
 
@@ -306,7 +365,41 @@ class FoodDetailScene extends Component {
 
             </DataWrap>
             <ActionWrap>
-              <DetailPickers />
+              {/*<DetailPickers />*/}
+              <Wrap>
+                <FormControl
+                  onChange={value => {
+                    console.log(value);
+                  }}
+                  value={this.state.date}
+                  type="date"
+                  placeholder="Pick the date"
+                  leftIcon="date"
+                />
+                <FormControl
+                  onChange={value => {
+                    console.log(value);
+                  }}
+                  value={this.state.time}
+                  type="time"
+                  placeholder="Pick the time"
+                  leftIcon="date"
+                />
+                <FormControl
+                  onChange={value => {
+                    console.log(value);
+                  }}
+                  value={this.state.person}
+                  type="person"
+                  placeholder="Person"
+                  leftIcon="person"
+                />
+              </Wrap>
+
+
+
+
+
               <ButtonsWrap>
                 <Button
                   type="button"
