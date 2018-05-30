@@ -42,14 +42,17 @@ const PriceTitle = styled.span`
 `;
 
 const ServiceItem = (item) => {
+  let isActivated = (item.serviceStatus !== "disabled");
   return (
-    <Link to={ "/services/" + item.objectId} key={item.objectId}>
-      <Cart column>
+    <Cart column>
+      <Link to={ "/services/" + item.objectId} key={item.objectId}>
         <Thumb
           url={item.mainPicture.url}
         />
+      </Link>
 
-        <ContentWrap>
+      <ContentWrap>
+        <Link to={ "/services/" + item.objectId} key={item.objectId}>
           <Title>
             {item.name}
           </Title>
@@ -65,13 +68,20 @@ const ServiceItem = (item) => {
           <PriceTitle>Starting from</PriceTitle>
           <PriceTag price={item.pricePerSession} />
           <br />
-          <Button icon color="teal" labelPosition='right'>
-            <Icon name='pencil' />
-            Edit
-          </Button>
-        </ContentWrap>
-      </Cart>
-    </Link>
+        </Link>
+        <Button icon color="teal" labelPosition='right'>
+          <Icon name='pencil' />
+          Edit
+        </Button>
+        <br />
+        <br />
+        {isActivated ?
+          <Button color="red" onClick={item.update_user_service_status} data-status="disabled" data-object-id={item.objectId}>Disable Service</Button>
+        :
+          <Button color="green" onClick={item.update_user_service_status} data-status="activated" data-object-id={item.objectId}>Activate Service</Button>
+        }
+      </ContentWrap>
+    </Cart>
   )
 };
 
@@ -82,7 +92,7 @@ const ServicesList = props => {
       <Divider/>
       {props.user_services.map((item, index) => (
         <Wrap key={uuid()}>
-            <ServiceItem {...item}/>
+            <ServiceItem {...item} {...props}/>
         </Wrap>
       ))}
       {props.user_services.length === 0 &&

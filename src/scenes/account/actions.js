@@ -10,14 +10,12 @@ export const user_profile_fetched = user_profile => {
   };
 };
 
-
 export const user_services_fetched = user_services => {
   return {
     type: "USER_SERVICES_FETCHED",
     payload: user_services
   };
 };
-
 
 export const planned_trips_fetched = planned_trips => {
   return {
@@ -61,6 +59,20 @@ export const fetch_user_profile = () => dispatch => {
   }
 };
 
+export const update_user_service_status = (e) => async dispatch => {
+  let status = e.target.dataset.status;
+  let serviceId = e.target.dataset.objectId;
+
+  if (!serviceId || !status) {
+    console.error(new Error("can't update service status without serviceId and status"));
+  }
+  
+  const serviceObject = await fetch_helpers.build_query('Service').get(serviceId);
+  serviceObject.set('serviceStatus', status);
+  await serviceObject.save();
+
+  dispatch(fetch_user_services());
+};
 
 export const update_user_profile = (user_id, field_type, value) => {
   return dispatch => {
@@ -87,7 +99,6 @@ export const fetch_user_services = () => dispatch => {
     dispatch({ type: 'USER_SERVICES_FETCHED', payload: { user_services: fetch_helpers.normalizeParseResponseData(services) }});
   });
 };
-
 
 export const fetch_user_trips = (owner_id, trip_state) => {
   return dispatch => {
@@ -187,7 +198,6 @@ export const ledgerSignData = () => async dispatch => {
     const userObj = await Parse.Cloud.run('storePublicAddress', { signature: signature, type: "ledger" });
     dispatch(user_profile_fetched({ user_profile: fetch_helpers.normalizeParseResponseData(userObj) }));
   } catch (error) {
-    //console.error(error);
     if (error.showToUser) {
       dispatch({
         type: 'LEDGER_ERROR',
