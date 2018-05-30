@@ -62,6 +62,23 @@ export const fetch_user_profile = () => dispatch => {
 };
 
 
+export const update_user_profile = (user_id, field_type, value) => {
+  return dispatch => {
+    let user = Parse.User.current();
+    user.set(field_type, value);
+    user.save(null, {
+        success: function (update) {
+          // could trigger some sort of notification on the frontend
+          // console.log("Updated!");
+        },
+        error: function (error) {
+          console.log(error);
+        }
+    });
+  }
+
+};
+
 export const fetch_user_services = () => dispatch => {
   let services_query = fetch_helpers.build_query("Service");
   services_query.equalTo("owner", Parse.User.current());
