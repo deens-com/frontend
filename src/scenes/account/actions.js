@@ -11,6 +11,14 @@ export const user_profile_fetched = user_profile => {
 };
 
 
+export const user_services_fetched = user_services => {
+  return {
+    type: "USER_SERVICES_FETCHED",
+    payload: user_services
+  };
+};
+
+
 export const planned_trips_fetched = planned_trips => {
   return {
     type: "PLANNED_TRIPS_FETCHED",
@@ -70,6 +78,16 @@ export const update_user_profile = (user_id, field_type, value) => {
   }
 
 };
+
+export const fetch_user_services = () => dispatch => {
+  let services_query = fetch_helpers.build_query("Service");
+  services_query.equalTo("owner", Parse.User.current());
+
+  services_query.find().then(services => {
+    dispatch({ type: 'USER_SERVICES_FETCHED', payload: { user_services: fetch_helpers.normalizeParseResponseData(services) }});
+  });
+};
+
 
 export const fetch_user_trips = (owner_id, trip_state) => {
   return dispatch => {

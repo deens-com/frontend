@@ -16,10 +16,10 @@ const Wrapper = styled.div`
 
 // MODULE
 const personOptions = [
-  { value: "one", label: "1" },
-  { value: "two", label: "2" },
-  { value: "three", label: "3" },
-  { value: "four", label: "4" }
+  { value: "1", label: "1" },
+  { value: "2", label: "2" },
+  { value: "3", label: "3" },
+  { value: "4", label: "4" }
 ];
 export default class PersonInput extends Component {
   constructor() {
@@ -52,8 +52,7 @@ export default class PersonInput extends Component {
       <Wrapper>
         <Select
           name="person"
-          value=""
-          placeholder={this.props.placeholder}
+          {...this.props}
           autoBlur={true}
           onChange={this.onChange}
           onBlur={this.onBlur}

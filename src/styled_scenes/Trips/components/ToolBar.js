@@ -47,7 +47,7 @@ const Wrap = styled.div`
 `;
 
 // MODULE
-export default function ToolBar({ state, onSubmit, onValueChange, trip, showTripUpdated }) {
+export default function ToolBar({ state, onSubmit, onValueChange, trip, showTripUpdated, onCheckAvailabilityClick }) {
   const tripOwnerId = trip && trip.owner && trip.owner.objectId;
   const currentUser = Parse.User.current();
   const showSaveButton = tripOwnerId === (currentUser && currentUser.id);
@@ -102,7 +102,11 @@ export default function ToolBar({ state, onSubmit, onValueChange, trip, showTrip
                 placeholder="1"
                 leftIcon="person"
               />
-              <ToolbarButton showSaveButton={showSaveButton} showTripUpdated={showTripUpdated} />
+              <ToolbarButton
+                showSaveButton={showSaveButton}
+                showTripUpdated={showTripUpdated}
+                onCheckAvailibilityClick={onCheckAvailabilityClick}
+              />
             </Form>
           </Wrap>
         )
@@ -115,4 +119,5 @@ export default function ToolBar({ state, onSubmit, onValueChange, trip, showTrip
 ToolBar.propTypes = {
   trip: PropTypes.object,
   showTripUpdated: PropTypes.bool,
+  onCheckAvailabilityClick: PropTypes.func.isRequired,
 };
