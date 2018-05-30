@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import { Grid, Divider, Icon, Input, Button } from 'semantic-ui-react';
 import styled from "styled-components";
 import { SectionWrap } from './../../../shared_components/layout/Page';
