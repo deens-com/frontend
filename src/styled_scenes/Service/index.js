@@ -425,8 +425,8 @@ class FoodDetailScene extends Component {
                   <Modal.Header>We're Sorry</Modal.Header>
                   <Modal.Content>
                     <Modal.Description>
-                      <Header>Default Profile Image</Header>
-                      <p>Select Is unavailable for selected slots</p>
+                      {/*<Header>Default Profile Image</Header>*/}
+                      <p>Service Is unavailable for selected slots</p>
                     </Modal.Description>
                   </Modal.Content>
                 </Modal>
