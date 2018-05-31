@@ -126,7 +126,7 @@ export default class TripsScene extends Component {
       location: '',
       startDate: null,
       endDate: null,
-      person: 1,
+      person: { label: '1', value: '1' },
       details: true,
     };
 
@@ -248,6 +248,7 @@ export default class TripsScene extends Component {
               />
               <Hr />
               <Summary
+                peopleCount={this.state.person.value}
                 trip={this.props.trip}
                 scheduledServices={this.props.scheduledServices}
                 unScheduledServices={this.props.unScheduledServices}

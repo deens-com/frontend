@@ -1,7 +1,9 @@
 // NPM
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { Grid } from 'semantic-ui-react';
 import Parse from 'parse';
 
 // COMPONENTS
@@ -36,17 +38,6 @@ const RightCol = styled.div`
   }
 `;
 
-const TotalWrap = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 25px;
-`;
-
-const TotalPrice = styled.div`
-  font-size: 28px;
-  font-weight: 500;
-`;
-
 const TotalHint = styled.p`
   color: #6e7885;
   font-size: 13px;
@@ -79,14 +70,14 @@ export default class TripSummary extends Component {
   calculateTripTotalPrice() {
     let totalPrice = 0;
 
-    this.props.scheduledServices.forEach((item) => {
-      item.services.forEach((service) => {
+    this.props.scheduledServices.forEach(item => {
+      item.services.forEach(service => {
         totalPrice += service.pricePerSession;
       });
-    })
+    });
 
     return totalPrice;
-  };
+  }
 
   render() {
     return (
@@ -96,15 +87,27 @@ export default class TripSummary extends Component {
           {/* becuase looks like it could be used for something */}
         </LeftCol>
         <RightCol xsBasis="100%" mdBasis="50%">
-          <p>Total</p>
-          <TotalWrap>
-            <TotalPrice>
-              <PriceTag price={this.calculateTripTotalPrice()} unit="hidden" />
-            </TotalPrice>
-            <Button href="/login" round size="small" theme="mainFilled" type="link">
-              Book now
-            </Button>
-          </TotalWrap>
+          <Grid>
+            <Grid.Row columns={2}>
+              <Grid.Column stretched>Price per person</Grid.Column>
+              <Grid.Column textAlign="right">
+                <PriceTag price={this.calculateTripTotalPrice()} unit="hidden" />
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row columns={2}>
+              <Grid.Column stretched>Total Price</Grid.Column>
+              <Grid.Column textAlign="right">
+                <PriceTag price={this.calculateTripTotalPrice() * this.props.peopleCount} unit="hidden" />
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row columns={1}>
+              <Grid.Column textAlign="right">
+                <Button href="/login" round size="small" theme="mainFilled" type="link">
+                  Book now
+                </Button>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
           {!this.state.logged_in && (
             <TotalHint>
               Trip is not saved! Please <Link to="/register">Sign Up</Link> or <Link to="/login">Login</Link> in order
@@ -118,4 +121,6 @@ export default class TripSummary extends Component {
 }
 
 // Props Validation
-TripSummary.propTypes = {};
+TripSummary.propTypes = {
+  peopleCount: PropTypes.number.isRequired,
+};
