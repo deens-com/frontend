@@ -69,7 +69,7 @@ const ServiceItem = (item) => {
           <PriceTag price={item.pricePerSession} />
           <br />
         </Link>
-        <Button icon color="teal" labelPosition='right'>
+        <Button type="link" href={ "#/services/edit/" + item.objectId} icon color="teal" labelPosition='right'>
           <Icon name='pencil' />
           Edit
         </Button>
