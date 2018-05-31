@@ -15,7 +15,7 @@ import Registrations from "./../scenes/registrations/registrations";
 import Notfound from "./../styled_scenes/NotFound";
 import ScrollToTop from "./middlewares/ScrollToTop";
 import NewService from '../scenes/new-service';
-import EditService from '../scenes/new-service';
+import EditService from '../scenes/edit-service';
 
 const App = () => {
   return (
