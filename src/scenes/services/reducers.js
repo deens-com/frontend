@@ -7,6 +7,7 @@ const initialState = {
   },
   reviews: [],
   serviceRecentlyAddedToTrip: null,
+  isServiceUnavailableModalOpen: false
 };
 
 export default function ServicesReducer(state = initialState, action = {}) {
@@ -41,6 +42,11 @@ export default function ServicesReducer(state = initialState, action = {}) {
         ...state,
         serviceRecentlyAddedToTrip: action.payload,
       };
+    case 'SERVICE_UNAVAILABILITY_MODAL_SET':
+      return {
+        ...state,
+        isServiceUnavailableModalOpen: action.payload
+      }
     default:
       return state;
   }

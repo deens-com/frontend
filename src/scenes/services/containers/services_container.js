@@ -54,6 +54,7 @@ const mapStateToProps = state => {
     reviews: state.ServicesReducer.reviews,
     myTrips: state.ServicesReducer.userTrips.data,
     serviceRecentlyAddedToTrip: state.ServicesReducer.serviceRecentlyAddedToTrip,
+    isServiceUnavailableModalOpen: state.ServicesReducer.isServiceUnavailableModalOpen
   };
 };
 

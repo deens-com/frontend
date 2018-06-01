@@ -1,5 +1,5 @@
 // NPM
-import React from "react";
+import React, {Component} from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Media from "react-media";
@@ -22,13 +22,14 @@ import ImgSlider from "./components/ImgSlider";
 import MapMaker from "../../shared_components/MapMarker";
 import UserAvatar from '../../shared_components/UserAvatar';
 import AddToTripButton from './components/AddToTripButton';
+import FormControl from "./../../shared_components/Form/FormControl";
 
 // ACTIONS/CONFIG
 import { media, sizes } from "../../libs/styled";
 
 // STYLES
 import { Page, PageContent } from "../../shared_components/layout/Page";
-import { Icon } from "semantic-ui-react";
+import { Icon, Modal, Header } from "semantic-ui-react";
 
 const DetailWrapper = styled.div`
   width: 100%;
@@ -245,192 +246,326 @@ const SuccessMessage = styled(Link)`
   }
 `;
 
+
+const Wrap = styled.div`
+  background: white;
+  box-shadow: 0 8px 25px 0 rgba(141, 141, 141, 0.22);
+  padding: 10px;
+  margin-bottom: 50px;
+
+  ${media.minSmall} {
+    display: flex;
+  }
+
+  ${media.minMedium} {
+    margin-bottom: 0;
+    margin-right: 25px;
+  }
+
+  ${media.minLarge} {
+    margin-bottom: 25px;
+  }
+
+  ${media.minLargePlus} {
+    margin-bottom: 0;
+  }
+
+  & > div {
+    border: none;
+    flex: 1;
+    min-width: 143px;
+    display: flex;
+    align-items: center;
+
+    & > div {
+      width: 100%;
+    }
+
+    ${media.minMedium} {
+      &:after {
+        content: "";
+        width: 1px;
+        height: 60%;
+        background: #eef1f4;
+        position: absolute;
+        right: 10px;
+        top: 20%;
+      }
+
+      &:last-child {
+        &:after {
+          display: none;
+        }
+      }
+    }
+  }
+`;
+
 // MODULE
-export default function FoodDetailScene(props) {
-  let service_latitude = parseFloat(props.service.latitude) || 1.0;
-  let service_longitude = parseFloat(props.service.longitude) || 1.0;
-  return (
-    <Page topPush>
-      <TopBar fixed withPadding />
-      <PageContent flex>
-        <Media
-          query={`(min-width: ${sizes.large})`}
-          render={() => <ImgSlider images={props.service.pictures} />}
-        />
-        <DetailWrapper>
-          <TagWrap>
-            {props.service && props.service.tags && props.service.tags.map(tag => (<Link to={"/results?tags=" + tag.label}><Tag key={tag.label} item={tag} /></Link>))}
-          </TagWrap>
-          <HeaderWrap>
-            <h2>{props.service.title}</h2>
-            <p>{props.service.description}</p>
-          </HeaderWrap>
-          <DataWrap>
-            <DataBlock>
-              <TextLabel>Location</TextLabel>
-              <span>{props.service.location}</span>
-            </DataBlock>
-            <DataBlock>
-              <TextLabel>Rating</TextLabel>
-              <Rating
-                marginBottom="25px"
-                rating={props.service.rating}
-                count={props.service.reviewCount}
-              />
-            </DataBlock>
+class FoodDetailScene extends Component {
 
-              {
-                props.trips.length ?
-                <span>
-                  <DataBlock>
-                    <Badge>
-                      <BadgeIcon />
-                    </Badge>
-                  </DataBlock>
-                  <DataBlock>
-                    <TextLabel>PART OF THE TRIP</TextLabel>
-                    <span>"{props.trips.length && props.trips[0] && props.trips[0].description.slice(0, 40)}" and {props.trips.length} more ...</span>
-                  </DataBlock>
-                </span>
-                :
-                null
-              }
+  constructor(props){
+    super(props);
+    this.state = {
+      service_latitude: parseFloat(props.service.latitude) || 1.0,
+      service_longitude: parseFloat(props.service.longitude) || 1.0,
+      date: null,
+      time: null,
+      personNb: null
+    };
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.checkServiceAvailability = this.checkServiceAvailability.bind(this);
+    this.closeServiceUnavailabilityModal = this.closeServiceUnavailabilityModal.bind(this);
+  }
 
-          </DataWrap>
-          <ActionWrap>
-            <DetailPickers />
-            <ButtonsWrap>
-              <Button
-                type="button"
-                round
-                size="small"
-                onClick={ev => {
-                  alert("Book now.");
-                }}
-                iconAfter="arrow"
-                text="Book now"
-                theme="textGreen"
-              />
-              <AddToTripButton
-                trips={props.myTrips}
-                onTripClick={props.onAddServiceToTrip}
-                onNewTripClick={props.onAddServiceToNewTrip} />
-            </ButtonsWrap>
-            {props.serviceRecentlyAddedToTrip && <SuccessMessage to={`/trips/${props.serviceRecentlyAddedToTrip.objectId}`}>
-                Added to <b>{props.serviceRecentlyAddedToTrip.title}</b>
-                <Icon name="check circle outline" />
-              </SuccessMessage>}
-          </ActionWrap>
+  handleInputChange = (event) => {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  }
+
+  checkServiceAvailability = (serviceId) => {
+    this.props.checkAvailability(serviceId, this.state.personNb);
+  }
+
+  closeServiceUnavailabilityModal = () => {
+    this.props.toggleServiceAvailabilitymodal(false);
+  }
+
+  render(){
+    return (
+      <Page topPush>
+        <TopBar fixed withPadding />
+        <PageContent flex>
           <Media
-            query={`(max-width: ${sizes.large})`}
-            render={() => <ImgSlider images={props.service.pictures} />}
+            query={`(min-width: ${sizes.large})`}
+            render={() => <ImgSlider images={this.props.service.pictures} />}
           />
-          <ContactWrap>
-            <MapWrap>
-              <GoogleMapReact
-                defaultCenter={{ lat: service_latitude, lng: service_longitude }}
-                defaultZoom={11}
-                bootstrapURLKeys={{
-                  key: "AIzaSyDICUW2RF412bnmELi3Y_zCCzHa-w8WnXc"
-                }}
-              >
-                <MapMaker lat={service_latitude} lng={service_longitude} scale={1} color="#4fb798" />
-              </GoogleMapReact>
-            </MapWrap>
-            <Contacts>
-              <HostBlock>
-                <div>
-                  <TextLabel>Host</TextLabel>
-                </div>
-                <div>
-                  <UserAvatar user={props.service.owner} />
-                </div>
-              </HostBlock>
-              <Hr />
-              {
-                props.service.openingTime && props.service.closingTime
-                  &&
-                ( <div>
-                  <ContactBlock>
-                    <TextLabel>Working hours</TextLabel>
-                    <RightAlignedText>{props.service.openingTime} H - {props.service.closingTime} H</RightAlignedText>
-                  </ContactBlock>
-                  <Hr />
+          <DetailWrapper>
+            <TagWrap>
+              {this.props.service && this.props.service.tags && this.props.service.tags.map(tag => (<Link to={"/results?tags=" + tag.label}><Tag key={tag.label} item={tag} /></Link>))}
+            </TagWrap>
+            <HeaderWrap>
+              <h2>{this.props.service.title}</h2>
+              <p>{this.props.service.description}</p>
+            </HeaderWrap>
+            <DataWrap>
+              <DataBlock>
+                <TextLabel>Location</TextLabel>
+                <span>{this.props.service.location}</span>
+              </DataBlock>
+              <DataBlock>
+                <TextLabel>Rating</TextLabel>
+                <Rating
+                  marginBottom="25px"
+                  rating={this.props.service.rating}
+                  count={this.props.service.reviewCount}
+                />
+              </DataBlock>
+
+                {
+                  this.props.trips.length ?
+                  <span>
+                    <DataBlock>
+                      <Badge>
+                        <BadgeIcon />
+                      </Badge>
+                    </DataBlock>
+                    <DataBlock>
+                      <TextLabel>PART OF THE TRIP</TextLabel>
+                      <span>"{this.props.trips.length && this.props.trips[0] && this.props.trips[0].description.slice(0, 40)}" and {this.props.trips.length} more ...</span>
+                    </DataBlock>
+                  </span>
+                  :
+                  null
+                }
+
+            </DataWrap>
+            <ActionWrap>
+              {/*<DetailPickers />*/}
+              <Wrap>
+                <FormControl
+                  onChange={value => {
+                    console.log(value);
+                  }}
+                  value={this.state.date}
+                  type="date"
+                  placeholder="Pick the date"
+                  leftIcon="date"
+                />
+                <FormControl
+                  onChange={value => {
+                    console.log(value);
+                  }}
+                  value={this.state.time}
+                  type="time"
+                  placeholder="Pick the time"
+                  leftIcon="date"
+                />
+                {/*<FormControl
+                  onChange={this.handleInputChange}
+                  value={this.state.person}
+                  type="person"
+                  name="person"
+                  placeholder="Person"
+                  leftIcon="person"
+                />*/}
+
+                <select style={{backgroundColor: "white", borderColor: "#eef1f4"}} name="personNb" value={this.state.personNb} onChange={this.handleInputChange}>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                </select>
+
+                <Modal closeIcon open={this.props.isServiceUnavailableModalOpen} onClose={this.closeServiceUnavailabilityModal}>
+                  <Modal.Header>We're Sorry</Modal.Header>
+                  <Modal.Content>
+                    <Modal.Description>
+                      {/*<Header>Default Profile Image</Header>*/}
+                      <p>Service Is unavailable for selected slots</p>
+                    </Modal.Description>
+                  </Modal.Content>
+                </Modal>
+
+              </Wrap>
+
+              <ButtonsWrap>
+                <Button
+                  type="button"
+                  round
+                  size="small"
+                  onClick={ev => {
+                    this.checkServiceAvailability(this.props.service.objectId);
+                  }}
+                  iconAfter="arrow"
+                  text="Book now"
+                  theme="textGreen"
+                />
+                <AddToTripButton
+                  trips={this.props.myTrips}
+                  onTripClick={this.props.onAddServiceToTrip}
+                  onNewTripClick={this.props.onAddServiceToNewTrip} />
+              </ButtonsWrap>
+              {this.props.serviceRecentlyAddedToTrip && <SuccessMessage to={`/trips/${this.props.serviceRecentlyAddedToTrip.objectId}`}>
+                  Added to <b>{this.props.serviceRecentlyAddedToTrip.title}</b>
+                  <Icon name="check circle outline" />
+                </SuccessMessage>}
+            </ActionWrap>
+            <Media
+              query={`(max-width: ${sizes.large})`}
+              render={() => <ImgSlider images={this.props.service.pictures} />}
+            />
+            <ContactWrap>
+              <MapWrap>
+                <GoogleMapReact
+                  defaultCenter={{ lat: this.state.service_latitude, lng: this.state.service_longitude }}
+                  defaultZoom={11}
+                  bootstrapURLKeys={{
+                    key: "AIzaSyDICUW2RF412bnmELi3Y_zCCzHa-w8WnXc"
+                  }}
+                >
+                  <MapMaker lat={this.state.service_latitude} lng={this.state.service_longitude} scale={1} color="#4fb798" />
+                </GoogleMapReact>
+              </MapWrap>
+              <Contacts>
+                <HostBlock>
+                  <div>
+                    <TextLabel>Host</TextLabel>
                   </div>
-                )
-              }
-              {
-                props.service.phoneNumber
-                  &&
-                ( <div>
+                  <div>
+                    <UserAvatar user={this.props.service.owner} />
+                  </div>
+                </HostBlock>
+                <Hr />
+                {
+                  this.props.service.openingTime && this.props.service.closingTime
+                    &&
+                  ( <div>
                     <ContactBlock>
-                      <div>
-                        <TextLabel>Phone</TextLabel>
-                        <RightAlignedText>{props.service.phoneNumber}</RightAlignedText>
-                      </div>
+                      <TextLabel>Working hours</TextLabel>
+                      <RightAlignedText>{this.props.service.openingTime} H - {this.props.service.closingTime} H</RightAlignedText>
                     </ContactBlock>
                     <Hr />
-                  </div>
-                )
-              }
+                    </div>
+                  )
+                }
+                {
+                  this.props.service.phoneNumber
+                    &&
+                  ( <div>
+                      <ContactBlock>
+                        <div>
+                          <TextLabel>Phone</TextLabel>
+                          <RightAlignedText>{this.props.service.phoneNumber}</RightAlignedText>
+                        </div>
+                      </ContactBlock>
+                      <Hr />
+                    </div>
+                  )
+                }
 
-              {
-                props.service.websiteUrl
-                  &&
-                ( <div>
-                    <ContactBlock>
-                      <div>
-                        <TextLabel>Homepage</TextLabel>
-                        <a href={props.service.websiteUrl}><RightAlignedText>{props.service.websiteUrl}</RightAlignedText></a>
-                      </div>
-                    </ContactBlock>
-                    <Hr />
-                  </div>
-                )
-              }
+                {
+                  this.props.service.websiteUrl
+                    &&
+                  ( <div>
+                      <ContactBlock>
+                        <div>
+                          <TextLabel>Homepage</TextLabel>
+                          <a href={this.props.service.websiteUrl}><RightAlignedText>{this.props.service.websiteUrl}</RightAlignedText></a>
+                        </div>
+                      </ContactBlock>
+                      <Hr />
+                    </div>
+                  )
+                }
 
-            </Contacts>
-          </ContactWrap>
-          {
-            props.trips.length ?
-            <TripsWrap>
-              <h3>Part of trips</h3>
-              <Carousel
-                sm_slides_nb={1}
-                md_slides_nb={2}
-                lg_slides_nb={4}
-                xl_slides_nb={4}
-              >
-                {props.trips.filter(trip => trip !== undefined).map(trip => (
-                  <TripCart
-                    item={trip}
-                    withShadow
-                    key={trip.title}
-                    size="small"
-                    href={"/trips/" + trip.objectId}
-                  />
-                ))}
-              </Carousel>
-            </TripsWrap>
-            :
-            null
-          }
-          <div>
-            {props.reviews.length
-              ?
-              <h2>Reviews</h2>
+              </Contacts>
+            </ContactWrap>
+            {
+              this.props.trips.length ?
+              <TripsWrap>
+                <h3>Part of trips</h3>
+                <Carousel
+                  sm_slides_nb={1}
+                  md_slides_nb={2}
+                  lg_slides_nb={4}
+                  xl_slides_nb={4}
+                >
+                  {this.props.trips.filter(trip => trip !== undefined).map(trip => (
+                    <TripCart
+                      item={trip}
+                      withShadow
+                      key={trip.title}
+                      size="small"
+                      href={"/trips/" + trip.objectId}
+                    />
+                  ))}
+                </Carousel>
+              </TripsWrap>
               :
               null
             }
-            {props.reviews.map(review => (
-              <Review key={review.objectId} review={review} />
-            ))}
-          </div>
-        </DetailWrapper>
-      </PageContent>
-      <BrandFooter withTopBorder withPadding />
-    </Page>
-  );
+            <div>
+              {this.props.reviews.length
+                ?
+                <h2>Reviews</h2>
+                :
+                null
+              }
+              {this.props.reviews.map(review => (
+                <Review key={review.objectId} review={review} />
+              ))}
+            </div>
+          </DetailWrapper>
+        </PageContent>
+        <BrandFooter withTopBorder withPadding />
+      </Page>
+    );
+  }
 }
 
 // Props Validation
@@ -439,3 +574,5 @@ FoodDetailScene.propTypes = {
   onAddServiceToTrip: PropTypes.func.isRequired,
   serviceRecentlyAddedToTrip: PropTypes.string,
 };
+
+export default FoodDetailScene;
