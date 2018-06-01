@@ -45,11 +45,14 @@ const ServiceItem = (item) => {
   let isActivated = (item.serviceStatus !== "disabled");
   return (
     <Cart column>
-      <Link to={ "/services/" + item.objectId} key={item.objectId}>
-        <Thumb
-          url={item.mainPicture.url}
-        />
-      </Link>
+
+      {item.mainPicture &&
+        <Link to={ "/services/" + item.objectId} key={item.objectId}>
+          <Thumb
+            url={item.mainPicture.url}
+          />
+        </Link>
+      }
 
       <ContentWrap>
         <Link to={ "/services/" + item.objectId} key={item.objectId}>
