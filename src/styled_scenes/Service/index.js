@@ -411,7 +411,7 @@ class FoodDetailScene extends Component {
                   leftIcon="person"
                 />*/}
 
-                <select name="personNb" value={this.state.personNb} onChange={this.handleInputChange}>
+                <select style={{backgroundColor: "white", borderColor: "#eef1f4"}} name="personNb" value={this.state.personNb} onChange={this.handleInputChange}>
                   <option value="1">1</option>
                   <option value="2">2</option>
                   <option value="3">3</option>
