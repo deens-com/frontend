@@ -141,16 +141,24 @@ export const fetch_user_trips = (owner_id, trip_state) => {
       let trip_query = fetch_helpers.build_query("Trip");
       const moment_now = new Date();
       if (trip_state === "completed") {
+        // Trips which are booked and with an endDate in the past
         trip_query.equalTo('booked', true);
         trip_query.lessThan("endDate", moment_now);
       } else if (trip_state === "planned") {
+        // Trips which are not yet booked and with beginDate in the future
         const pastStartDateAndNotPurchased = fetch_helpers
           .build_query('Trip')
           .notEqualTo('booked', true)
-          .lessThan('beginDate', moment_now);
-        const startDateInFuture = fetch_helpers.build_query('Trip').greaterThan('beginDate', moment_now);
-        const tripsWithoutDates = fetch_helpers.build_query('Trip').doesNotExist('beginDate');
-        trip_query = Parse.Query.or(pastStartDateAndNotPurchased, startDateInFuture, tripsWithoutDates);
+          .greaterThan('beginDate', moment_now);
+          //.lessThan('beginDate', moment_now);
+        //const startDateInFuture = fetch_helpers.build_query('Trip').greaterThan('beginDate', moment_now);
+        //const tripsWithoutDates = fetch_helpers.build_query('Trip').doesNotExist('beginDate');
+        // trip_query = Parse.Query.or(
+        //   pastStartDateAndNotPurchased,
+        //   startDateInFuture,
+        //   //tripsWithoutDates
+        // );
+        trip_query = pastStartDateAndNotPurchased;
       } else if(trip_state === "unscheduled"){
         trip_query.doesNotExist('numberOfPerson');
         trip_query.doesNotExist('beginDate');
