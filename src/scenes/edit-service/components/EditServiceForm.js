@@ -15,9 +15,23 @@ const ErrorMsg = styled.div`
 `;
 
 class EditServiceForm extends Component {
-  componentDidMount() {
-    this.props.fetch_service(this.props.match.params.id);
-  }
+
+  constructor() {
+    super();
+
+    this.state = {
+      service: {
+        type: '',
+        name: '',
+        description: '',
+        pricePerSession: '',
+        availableDays: new Set(),
+        openingTime: '',
+        closingTime: '',
+        slots: '',
+      }
+    };
+  };
 
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
@@ -52,12 +66,17 @@ class EditServiceForm extends Component {
     setFieldTouched('mainPicture', true, false);
   };
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({service: nextProps.service});
+  };
+
   render() {
     const { values, errors, touched, handleChange, handleBlur, handleSubmit, submitInFlight } = this.props;
     const defaultProps = {
       onChange: handleChange,
       onBlur: handleBlur,
     };
+    
     return (
       <Form onSubmit={handleSubmit} loading={submitInFlight}>
         {/* Service Type */}
@@ -66,6 +85,7 @@ class EditServiceForm extends Component {
           <Dropdown
             name="type"
             placeholder="Service Type"
+            value={this.state.service.type}
             selection
             options={serviceTypeDropdownOptions}
             onChange={this.onDropDownChange}
@@ -80,6 +100,7 @@ class EditServiceForm extends Component {
           <Form.Input
             name="name"
             placeholder="Service name"
+            value={this.state.service.name}
             error={!!(touched.name && errors.name)}
             {...defaultProps}
           />
@@ -92,6 +113,7 @@ class EditServiceForm extends Component {
           <Form.TextArea
             name="description"
             placeholder="Tell us more..."
+            value={this.state.service.description}
             error={!!(touched.description && errors.description)}
             {...defaultProps}
           />
@@ -103,6 +125,7 @@ class EditServiceForm extends Component {
           <label>Price Per Day/Night</label>
           <Form.Input
             name="pricePerSession"
+            value={this.state.service.pricePerSession}
             error={!!(touched.pricePerSession && errors.pricePerSession)}
             {...defaultProps}
           />

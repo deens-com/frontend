@@ -7,6 +7,10 @@ import * as actions from '../../services/actions';
 import EditServiceForm from '../components/EditServiceForm';
 
 class EditServiceFormContainer extends Component {
+  componentDidMount() {
+    this.props.fetch_service(this.props.match.params.id);
+  }
+
   onSubmit = values => {
     this.props.registerService(values, this.props.history);
   };
@@ -18,6 +22,7 @@ class EditServiceFormContainer extends Component {
 
 const mapStateToProps = state => ({
   isSubmitting: state.NewService.isSubmitting,
+  service: state.ServicesReducer.service,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
