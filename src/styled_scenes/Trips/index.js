@@ -126,7 +126,7 @@ export default class TripsScene extends Component {
       location: '',
       startDate: null,
       endDate: null,
-      person: 1,
+      person: { label: '1', value: '1' },
       details: true,
     };
 
@@ -138,6 +138,8 @@ export default class TripsScene extends Component {
   onSubmit(ev) {
     this.props.updateTripDetails({ beginDate: this.state.startDate, endDate: this.state.endDate }, true);
   }
+
+  checkAvailability = () => this.props.checkAvailability(this.state.startDate, parseInt(this.state.person.label, 10));
 
   onValueChange(key, value) {
     this.setState({ [key]: value });
@@ -234,6 +236,7 @@ export default class TripsScene extends Component {
                 state={this.state}
                 trip={this.props.trip}
                 showTripUpdated={this.props.showTripUpdated}
+                onCheckAvailabilityClick={this.checkAvailability}
               />
               <Results
                 trip={this.props.trip}
@@ -245,10 +248,11 @@ export default class TripsScene extends Component {
               />
               <Hr />
               <Summary
+                peopleCount={this.state.person.value}
                 trip={this.props.trip}
                 scheduledServices={this.props.scheduledServices}
                 unScheduledServices={this.props.unScheduledServices}
-               />
+              />
             </TripWrapper>
           </Wrap>
         </PageContent>

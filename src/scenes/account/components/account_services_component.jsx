@@ -1,24 +1,42 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import AccountServicesScene from './../../../styled_scenes/Account/Services';
 import { Page, PageContent } from './../../../shared_components/layout/Page';
 import TopBar from '../../../shared_components/TopBarWithSearch';
+import * as account_actions from "./../actions";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
-const AccountServicesComponent = props => {
-  return (
-    <section>
-      <Page topPush>
-        <TopBar fixed withPadding />
-        <PageContent padding="24px">
-          <AccountServicesScene {...props} />
-        </PageContent>
-      </Page>
-    </section>
-  );
+
+class AccountServicesComponent extends Component {
+
+  componentDidMount(){
+    if(this.props.user_profile){
+      this.props.fetch_user_services(this.props.user_profile.objectId);
+    }
+  }
+
+  render() {
+    return (
+      <section>
+        <Page topPush>
+          <TopBar fixed withPadding />
+          <PageContent padding="24px">
+            <AccountServicesScene {...this.props} />
+          </PageContent>
+        </Page>
+      </section>
+    );
+  }
 };
 
-AccountServicesComponent.propTypes = {
-  user: PropTypes.object,
+const mapStateToProps = state => {
+  return {
+    user_services: state.AccountReducer.user_services
+  };
 };
 
-export default AccountServicesComponent;
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(account_actions, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AccountServicesComponent);

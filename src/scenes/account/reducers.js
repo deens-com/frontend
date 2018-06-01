@@ -5,6 +5,7 @@ const initialState = {
   planned_trips: [],
   completed_trips: [],
   unscheduled_trips: [],
+  user_services: [],
   metamaskError: {},
   ledger_error: {}
 };
@@ -15,6 +16,11 @@ export default function AccountReducer(state = initialState, action = {}) {
       return {
         ...state,
         user_profile: action.payload.user_profile,
+      };
+    case 'USER_SERVICES_FETCHED':
+      return {
+        ...state,
+        user_services: action.payload.user_services,
       };
     case 'PLANNED_TRIPS_FETCHED':
       const planned_trips = [...state.planned_trips, action.payload.planned_trips];
