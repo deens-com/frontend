@@ -7,7 +7,8 @@ const initialState = {
   unscheduled_trips: [],
   user_services: [],
   metamaskError: {},
-  ledger_error: {}
+  ledger_error: {},
+  editUserError: {}
 };
 
 export default function AccountReducer(state = initialState, action = {}) {
@@ -52,6 +53,11 @@ export default function AccountReducer(state = initialState, action = {}) {
       return {
         ...state,
         ledger_error: action.payload
+      }
+    case 'EDIT_USER_ERROR_SET':
+      return {
+        ...state,
+        editUserError: action.payload
       }
     default:
       return state;
