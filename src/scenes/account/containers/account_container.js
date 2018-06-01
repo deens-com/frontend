@@ -23,7 +23,7 @@ class AccountContainer extends Component {
         />
         <Route
           path={process.env.PUBLIC_URL + "/account/profile"}
-          render={(props)=><AccountProfileComponent {...props} user_profile={this.props.user_profile} update_user_profile={this.props.update_user_profile}/>}
+          render={(props)=><AccountProfileComponent {...props} user_profile={this.props.user_profile} update_user_profile={this.props.update_user_profile} editUserError={this.props.editUserError}/>}
         />
         <Route
           path={process.env.PUBLIC_URL + "/account/services"}
@@ -41,7 +41,8 @@ class AccountContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    user_profile: state.AccountReducer.user_profile
+    user_profile: state.AccountReducer.user_profile,
+    editUserError: state.AccountReducer.editUserError
   };
 };
 

@@ -2,6 +2,7 @@ import Parse from "parse";
 import fetch_helpers from "./../../libs/fetch_helpers";
 import history from "./../../main/history";
 import { signMessage, ledgerSignMessage } from '../../libs/web3-utils';
+import validator from 'validator';
 
 export const user_profile_fetched = user_profile => {
   return {
@@ -24,6 +25,12 @@ export const planned_trips_fetched = planned_trips => {
   };
 };
 
+export const edit_user_error_raised = error => {
+  return {
+    type: "EDIT_USER_ERROR_SET",
+    payload: error
+  };
+};
 
 export const completed_trips_fetched = completed_trips => {
   return {
@@ -66,7 +73,7 @@ export const update_user_service_status = (e) => async dispatch => {
   if (!serviceId || !status) {
     console.error(new Error("can't update service status without serviceId and status"));
   }
-  
+
   const serviceObject = await fetch_helpers.build_query('Service').get(serviceId);
   serviceObject.set('serviceStatus', status);
   await serviceObject.save();
@@ -74,17 +81,43 @@ export const update_user_service_status = (e) => async dispatch => {
   dispatch(fetch_user_services());
 };
 
+//const locales = ['ar', 'ar-AE', 'ar-BH', 'ar-DZ', 'ar-EG', 'ar-IQ', 'ar-JO', 'ar-KW', 'ar-LB', 'ar-LY', 'ar-MA', 'ar-QA', 'ar-QM', 'ar-SA', 'ar-SD', 'ar-SY', 'ar-TN', 'ar-YE', 'bg-BG', 'cs-CZ', 'da-DK', 'de-DE', 'el-GR', 'en-AU', 'en-GB', 'en-HK', 'en-IN', 'en-NZ', 'en-US', 'en-ZA', 'en-ZM', 'es-ES', 'fr-FR', 'hu-HU', 'it-IT', 'nb-NO', 'nl-NL', 'nn-NO', 'pl-PL', 'pt-BR', 'pt-PT', 'ru-RU', 'sk-SK', 'sr-RS', 'sr-RS@latin', 'sv-SE', 'tr-TR', 'uk-UA'];
 export const update_user_profile = (user_id, field_type, value) => {
   return dispatch => {
     let user = Parse.User.current();
+    let isUsernameValid = false;
+    let isEmailValid = false;
+    if(field_type === "username"){
+      isUsernameValid = validator.isAlphanumeric(value, 'en-US');
+      if(!isUsernameValid){
+        dispatch(edit_user_error_raised({"code":203,"error":"Username should be alphanumeric."}));
+        let json_user = user.toJSON();
+        dispatch(user_profile_fetched({user_profile: json_user}));
+        return;
+      };
+    }
+    if(field_type === "email"){
+      isEmailValid = validator.isEmail(value);
+      if(!isEmailValid){
+        dispatch(edit_user_error_raised({"code":203,"error":"Please, enter a valid email address."}));
+        let json_user = user.toJSON();
+        dispatch(user_profile_fetched({user_profile: json_user}));
+        return;
+      };
+    }
     user.set(field_type, value);
     user.save(null, {
         success: function (update) {
-          // could trigger some sort of notification on the frontend
           // console.log("Updated!");
+          let json_user = user.toJSON();
+          dispatch(user_profile_fetched({user_profile: json_user}));
+          dispatch(edit_user_error_raised({}));
         },
         error: function (error) {
-          console.log(error);
+          //console.log(error);
+          dispatch(edit_user_error_raised({"code":202,"error":"Account already exists for this username or email."}));
+          let json_user = user.toJSON();
+          dispatch(user_profile_fetched({user_profile: json_user}));
         }
     });
   }

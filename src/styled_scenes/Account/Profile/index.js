@@ -28,13 +28,13 @@ class AccountProfileScene extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    if(this.state.biography === ''){
+    if((this.state.biography === '') || (nextProps.user_profile.biography !== this.state.biography)){
       this.setState({biography: nextProps.user_profile.biography})
     }
-    if(this.state.email === ''){
+    if((this.state.email === '') || (nextProps.user_profile.email !== this.state.email)){
       this.setState({email: nextProps.user_profile.email})
     }
-    if(this.state.username === ''){
+    if((this.state.username === '') || (nextProps.user_profile.username !== this.state.username)){
       this.setState({username: nextProps.user_profile.username})
     }
   }
@@ -83,6 +83,13 @@ class AccountProfileScene extends Component {
         </Grid.Column>
         <Grid.Column mobile={16} tablet={11} computer={12}>
           <h2>Profile Scene</h2>
+          {
+            this.props.editUserError
+              ?
+              <h6 style={{color: "red"}}>{this.props.editUserError.error}</h6>
+              :
+              null
+          }
           <Divider />
           <HorizontalSpan>
             <BoldH4>Bio :</BoldH4>
