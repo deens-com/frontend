@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Dropdown, Input, Form } from 'semantic-ui-react';
+import { Dropdown, Form } from 'semantic-ui-react';
 import { withFormik } from 'formik';
 import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete';
 import styled from 'styled-components';
@@ -170,7 +170,6 @@ class NewServiceForm extends Component {
           {touched.latlong && errors.latlong && <ErrorMsg>{errors.latlong}</ErrorMsg>}
         </Form.Field>
 
-
         {/* Timings */}
         <Form.Group widths="equal">
           <Form.Field>
@@ -226,7 +225,7 @@ class NewServiceForm extends Component {
 
         <Form.Field>
           <label>Service Picture</label>
-          <Input type="file" name="mainPicture" onChange={this.onFileSelect} />
+          <input type="file" name="mainPicture" accept=".jpg, .jpeg, .png" onChange={this.onFileSelect} />
         </Form.Field>
 
         <Form.Button disabled={submitInFlight}>Submit</Form.Button>
