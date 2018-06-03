@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Dropdown, Input, Form } from 'semantic-ui-react';
 import { withFormik } from 'formik';
+import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete';
 import styled from 'styled-components';
 import serviceTags from '../service-tags';
+import LocationFormControl from '../../../shared_components/Form/LocationControl';
 
 const serviceTypes = ['Place', 'Activity', 'Food'];
 const serviceTypeDropdownOptions = serviceTypes.map(text => ({ value: text.toLowerCase(), text }));
@@ -59,6 +61,27 @@ class NewServiceForm extends Component {
     if (!file) return;
     setFieldValue('mainPicture', file);
     setFieldTouched('mainPicture', true, false);
+  };
+
+  onLocationChange = address => {
+    const { setFieldValue, setFieldTouched } = this.props;
+    setFieldValue('latlong', null);
+    setFieldTouched('latlong', true, false);
+  };
+
+  onLocationSelect = (address, placeId) => {
+    const { setFieldValue, setFieldTouched } = this.props;
+    setFieldTouched('latlong', true, false);
+    geocodeByPlaceId(placeId)
+      .then(results => {
+        return getLatLng(results[0]);
+      })
+      .catch(err => {
+        setFieldValue('latlong', null);
+      })
+      .then(value => {
+        setFieldValue('latlong', value);
+      });
   };
 
   render() {
@@ -139,6 +162,12 @@ class NewServiceForm extends Component {
           ))}
           {touched.availableDays && errors.availableDays && <ErrorMsg>{errors.availableDays}</ErrorMsg>}
         </Form.Group>
+
+        <Form.Field required>
+          <label>Location</label>
+          <LocationFormControl onChange={this.onLocationChange} onSelect={this.onLocationSelect} />
+          {touched.latlong && errors.latlong && <ErrorMsg>{errors.latlong}</ErrorMsg>}
+        </Form.Field>
 
         {/* Lat/Lng */}
         <Form.Group widths="equal">
@@ -230,6 +259,7 @@ function validate(values) {
     'openingTime',
     'closingTime',
     'slots',
+    'latlong',
   ];
   const errors = checkRequiredFields(values, requiredFields);
   const numericFields = ['pricePerSession', 'latitude', 'longitude', 'slots'];
