@@ -4,8 +4,8 @@ import { Dropdown, Form } from 'semantic-ui-react';
 import { withFormik } from 'formik';
 import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete';
 import styled from 'styled-components';
-import serviceTags from '../service-tags';
-import LocationFormControl from '../../../shared_components/Form/LocationControl';
+import serviceTags from './service-tags';
+import LocationFormControl from '../Form/LocationControl';
 
 const serviceTypes = ['Place', 'Activity', 'Food'];
 const serviceTypeDropdownOptions = serviceTypes.map(text => ({ value: text.toLowerCase(), text }));
@@ -19,7 +19,7 @@ const ErrorMsg = styled.div`
   color: red;
 `;
 
-class NewServiceForm extends Component {
+class ServiceForm extends Component {
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
     submitInFlight: PropTypes.bool.isRequired,
@@ -288,4 +288,4 @@ export default withFormik({
   handleSubmit: (values, { props }) => {
     props.onSubmit(values);
   },
-})(NewServiceForm);
+})(ServiceForm);
