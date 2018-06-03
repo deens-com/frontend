@@ -163,25 +163,13 @@ class NewServiceForm extends Component {
           {touched.availableDays && errors.availableDays && <ErrorMsg>{errors.availableDays}</ErrorMsg>}
         </Form.Group>
 
+        {/* Location search */}
         <Form.Field required>
           <label>Location</label>
           <LocationFormControl onChange={this.onLocationChange} onSelect={this.onLocationSelect} />
           {touched.latlong && errors.latlong && <ErrorMsg>{errors.latlong}</ErrorMsg>}
         </Form.Field>
 
-        {/* Lat/Lng */}
-        <Form.Group widths="equal">
-          <Form.Field required>
-            <label>Latitude</label>
-            <Form.Input name="latitude" error={!!(touched.latitude && errors.latitude)} {...defaultProps} />
-            {touched.latitude && errors.latitude && <ErrorMsg>{errors.latitude}</ErrorMsg>}
-          </Form.Field>
-          <Form.Field required>
-            <label>Longitude</label>
-            <Form.Input name="longitude" error={!!(touched.longitude && errors.longitude)} {...defaultProps} />
-            {touched.longitude && errors.longitude && <ErrorMsg>{errors.longitude}</ErrorMsg>}
-          </Form.Field>
-        </Form.Group>
 
         {/* Timings */}
         <Form.Group widths="equal">
@@ -254,15 +242,13 @@ function validate(values) {
     'description',
     'pricePerSession',
     'availableDays',
-    'latitude',
-    'longitude',
     'openingTime',
     'closingTime',
     'slots',
     'latlong',
   ];
   const errors = checkRequiredFields(values, requiredFields);
-  const numericFields = ['pricePerSession', 'latitude', 'longitude', 'slots'];
+  const numericFields = ['pricePerSession', 'slots'];
   for (const field of numericFields) {
     if (!errors[field] && isNaN(values[field])) {
       errors[field] = 'Invalid number';
@@ -273,13 +259,6 @@ function validate(values) {
     if (!errors[field] && (values[field] < 0 || values[field] > 23)) {
       errors[field] = 'Invalid hour';
     }
-  }
-
-  if (!errors.latitude && (values.latitude < -90 || values.latitude > 90)) {
-    errors.latitude = 'Invalid Latitude';
-  }
-  if (!errors.longitude && (values.longitude < -180 || values.longitude > 180)) {
-    errors.longitude = 'Invalid Longitude';
   }
 
   return errors;
@@ -303,8 +282,7 @@ export default withFormik({
     openingTime: null,
     closingTime: null,
     slots: null,
-    latitude: null,
-    longitude: null,
+    latlong: null,
     tags: [],
   }),
   validate,
