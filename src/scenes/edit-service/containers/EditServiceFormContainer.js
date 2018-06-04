@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { withRouter } from 'react-router';
+import { withRouter, Link } from 'react-router-dom';
 
 import * as actions from '../actions';
 import ServiceForm from '../../../shared_components/ServiceForm';
@@ -20,13 +20,12 @@ class EditServiceFormContainer extends Component {
 
   render() {
     // TODO: show a 404 if edit service id is not found
+    const { service, isLoading } = this.props;
     return (
-      <ServiceForm
-        onSubmit={this.onSubmit}
-        submitInFlight={this.props.isLoading}
-        submitButtonText="Save"
-        {...this.props}
-      />
+      <React.Fragment>
+        <h2> Editing Service {service && <Link to={`/services/${service.objectId}`}>{service.name}</Link>} </h2>
+        <ServiceForm onSubmit={this.onSubmit} submitInFlight={isLoading} submitButtonText="Save" {...this.props} />
+      </React.Fragment>
     );
   }
 }

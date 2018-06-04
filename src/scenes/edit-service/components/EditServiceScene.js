@@ -11,7 +11,6 @@ const EditServiceScene = props => {
       <TopBar fixed withPadding />
       <PageContent padding="24px">
         <Container text>
-          <h2>Editing Service #{props.id}</h2>
           <EditServiceFormContainer />
         </Container>
       </PageContent>
