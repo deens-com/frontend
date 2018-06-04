@@ -1,16 +1,17 @@
 // NPM
-import React from "react";
+import React from 'react';
+import PropTypes from 'prop-types';
 
 // COMPONENTS
-import TopBar from "../../shared_components/TopBarWithSearch";
-import Logo from "../../shared_components/TopBar/Logo";
-import BrandFooter from "../../shared_components/BrandFooter";
-import FooterNav from "../Home/components/FooterNav";
+import TopBar from '../../shared_components/TopBarWithSearch';
+import Logo from '../../shared_components/TopBar/Logo';
+import BrandFooter from '../../shared_components/BrandFooter';
+import FooterNav from '../Home/components/FooterNav';
 
 // ACTIONS/CONFIG
 
 // STYLES
-import { Page, PageWrapper, PageContent } from "../../shared_components/layout/Page";
+import { Page, PageWrapper, PageContent } from '../../shared_components/layout/Page';
 import styled, { css } from 'styled-components';
 
 export const Hr = styled.hr`
@@ -28,7 +29,28 @@ export const Hr = styled.hr`
 
 // MODULE
 // eslint-disable-next-line
-export default function NotFoundScene({}) {
+export default function NotFoundScene({ showScene }) {
+  const innerElements = (
+    <React.Fragment>
+      <h1
+        style={{
+          textAlign: 'center',
+          marginTop: '100px',
+          marginBottom: '15px',
+        }}
+      >
+        404. Not found!
+      </h1>
+      <p style={{ textAlign: 'center', marginBottom: '150px' }}>
+        We are sorry but we could not find the page you are looking for.
+      </p>
+      <Hr withSpacing />
+      <FooterNav />
+      <Hr />
+      <BrandFooter />
+    </React.Fragment>
+  );
+  if (!showScene) return innerElements;
   return (
     <Page>
       <PageWrapper>
@@ -38,28 +60,17 @@ export default function NotFoundScene({}) {
         </TopBar>
       </PageWrapper>
       <PageContent>
-        <PageWrapper>
-          <h1
-            style={{
-              textAlign: "center",
-              marginTop: "100px",
-              marginBottom: "15px"
-            }}
-          >
-            404. Not found!
-          </h1>
-          <p style={{ textAlign: "center", marginBottom: "150px" }}>
-            We are sorry but we could not find the page you are looking for.
-          </p>
-          <Hr withSpacing />
-          <FooterNav />
-          <Hr />
-          <BrandFooter />
-        </PageWrapper>
+        <PageWrapper>{innerElements}</PageWrapper>
       </PageContent>
     </Page>
   );
 }
 
 // Props Validation
-NotFoundScene.propTypes = {};
+NotFoundScene.propTypes = {
+  showScene: PropTypes.bool,
+};
+
+NotFoundScene.defaultProps = {
+  showScene: true,
+};
