@@ -300,23 +300,20 @@ function checkRequiredFields(values, requiredFields) {
 }
 
 export default withFormik({
-  mapPropsToValues: props => {
-    const values = {
-      type: (props.service && props.service.type) || null,
-      name: (props.service && props.service.name) || '',
-      description: (props.service && props.service.description) || '',
-      pricePerSession: (props.service && props.service.pricePerSession) || '',
-      acceptETH: (props.service && props.service.acceptETH) || false,
-      availableDays: (props.service && props.service.DayList && new Set(props.service.DayList)) || new Set(),
-      openingTime: (props.service && props.service.openingTime) || null,
-      closingTime: (props.service && props.service.closingTime) || null,
-      slots: (props.service && props.service.slots) || '',
-      latlong: (props.service && props.service.latlong) || null,
-      tags: (props.service && props.service.tags) || [],
-      formattedAddress: (props.service && props.service.formattedAddress) || '',
-    };
-    return values;
-  },
+  mapPropsToValues: ({ service }) => ({
+    type: (service && service.type) || null,
+    name: (service && service.name) || '',
+    description: (service && service.description) || '',
+    pricePerSession: (service && service.pricePerSession) || '',
+    acceptETH: (service && service.acceptETH) || false,
+    availableDays: (service && service.DayList && new Set(service.DayList)) || new Set(),
+    openingTime: (service && service.openingTime) || null,
+    closingTime: (service && service.closingTime) || null,
+    slots: (service && service.slots) || '',
+    latlong: (service && { lat: service.latitude, lng: service.longitude }) || null,
+    tags: (service && service.tags) || [],
+    formattedAddress: (service && service.formattedAddress) || '',
+  }),
   validate,
   handleSubmit: (values, { props }) => {
     props.onSubmit(values);
