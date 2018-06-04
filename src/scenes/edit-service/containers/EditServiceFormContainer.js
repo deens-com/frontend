@@ -7,12 +7,15 @@ import * as actions from '../actions';
 import ServiceForm from '../../../shared_components/ServiceForm';
 
 class EditServiceFormContainer extends Component {
+  getServiceId = () => this.props.match.params.id;
+
   componentDidMount() {
-    this.props.fetchService(this.props.match.params.id);
+    this.props.fetchService(this.getServiceId());
   }
 
   onSubmit = values => {
     console.log('on submit', values);
+    this.props.saveServiceChanges(this.getServiceId(), values, this.props.history);
   };
 
   render() {
@@ -21,6 +24,7 @@ class EditServiceFormContainer extends Component {
       <ServiceForm
         onSubmit={this.onSubmit}
         submitInFlight={this.props.isLoading}
+        submitButtonText="Save"
         {...this.props}
       />
     );

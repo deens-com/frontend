@@ -23,6 +23,11 @@ class ServiceForm extends Component {
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
     submitInFlight: PropTypes.bool.isRequired,
+    submitButtonText: PropTypes.string,
+  };
+
+  static defaultProps = {
+    submitButtonText: 'Submit',
   };
 
   state = {
@@ -241,7 +246,7 @@ class ServiceForm extends Component {
           <input type="file" name="mainPicture" accept=".jpg, .jpeg, .png" onChange={this.onFileSelect} />
         </Form.Field>
 
-        <Form.Button disabled={submitInFlight}>Submit</Form.Button>
+        <Form.Button disabled={submitInFlight}>{this.props.submitButtonText}</Form.Button>
       </Form>
     );
   }
@@ -293,7 +298,7 @@ export default withFormik({
       pricePerSession: (props.service && props.service.pricePerSession) || '',
       acceptETH: (props.service && props.service.acceptETH) || false,
       availableDays:
-        (props.service && props.service.availableDays && new Set(props.service.availableDays)) || new Set(),
+        (props.service && props.service.DayList && new Set(props.service.DayList)) || new Set(),
       openingTime: (props.service && props.service.openingTime) || null,
       closingTime: (props.service && props.service.closingTime) || null,
       slots: (props.service && props.service.slots) || '',
