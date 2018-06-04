@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter, Link } from 'react-router-dom';
+import Parse from 'parse';
 
 import * as actions from '../actions';
 import ServiceForm from '../../../shared_components/ServiceForm';
+import NotFound from '../../../styled_scenes/NotFound';
 
 class EditServiceFormContainer extends Component {
   getServiceId = () => this.props.match.params.id;
@@ -19,8 +21,10 @@ class EditServiceFormContainer extends Component {
   };
 
   render() {
-    // TODO: show a 404 if edit service id is not found
-    const { service, isLoading } = this.props;
+    const { service, isLoading, fetchError } = this.props;
+    if (fetchError && fetchError.code === Parse.Error.OBJECT_NOT_FOUND) {
+      return <NotFound showScene={false} />;
+    }
     return (
       <React.Fragment>
         <h2> Editing Service {service && <Link to={`/services/${service.objectId}`}>{service.name}</Link>} </h2>
@@ -33,6 +37,7 @@ class EditServiceFormContainer extends Component {
 const mapStateToProps = state => ({
   isLoading: state.EditService.isLoading,
   service: state.EditService.service,
+  fetchError: state.EditService.error,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
