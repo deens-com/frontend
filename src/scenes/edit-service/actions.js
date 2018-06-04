@@ -1,29 +1,22 @@
-import Parse from 'parse';
+import fetch_helpers from '../../libs/fetch_helpers';
 
 export const types = {
-  SERVICE_CREATE_STARTED: 'SERVICE_CREATE_STARTED',
-  SERVICE_CREATE_SUCCESS: 'SERVICE_CREATE_SUCCESS',
-  SERVICE_CREATE_ERROR: 'SERVICE_CREATE_ERROR',
+  SERVICE_FETCH_STARTED: 'EDIT/SERVICE_FETCH_STARTED',
+  SERVICE_FETCH_SUCCESS: 'EDIT/SERVICE_FETCH_SUCCESS',
+  SERVICE_FETCH_ERROR: 'EDIT/SERVICE_FETCH_ERROR',
 };
 
-export const registerService = (values, history) => async (dispatch, getState) => {
+export const fetchService = serviceId => async (dispatch, getState) => {
+  if (!serviceId) return;
   const state = getState();
-  const { isSubmitting } = state.NewService;
-  if (isSubmitting) return;
-  dispatch({ type: types.SERVICE_CREATE_STARTED });
+  const { isLoading } = state.EditService;
+  if (isLoading) return;
+  dispatch({ type: types.SERVICE_FETCH_STARTED });
   try {
-    const { mainPicture } = values;
-    const parseFile = await new Parse.File(mainPicture.name, mainPicture).save();
-    const result = await Parse.Cloud.run('createService', {
-      ...values,
-      parseFile,
-      availableDays: [...values.availableDays],
-    });
-    dispatch({ type: types.SERVICE_CREATE_SUCCESS, payload: result });
-    history.push(`/services/${result.id}`);
+    const result = await fetch_helpers.build_query('Service').get(serviceId);
+    const service = fetch_helpers.normalizeParseResponseData(result);
+    dispatch({ type: types.SERVICE_FETCH_SUCCESS, payload: service });
   } catch (error) {
-    if (error.errors) {
-      dispatch({ type: types.SERVICE_CREATE_ERROR, payload: error.errors });
-    }
+    dispatch({ type: types.SERVICE_FETCH_ERROR, payload: error });
   }
 };

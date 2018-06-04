@@ -1,27 +1,28 @@
 import { types as actionTypes } from './actions';
 
 const initialState = {
-  isSubmitting: false,
+  isLoading: false,
+  service: null,
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.SERVICE_CREATE_STARTED:
+    case actionTypes.SERVICE_FETCH_STARTED:
       return {
         ...state,
-        isSubmitting: true,
+        isLoading: true,
       };
-    case actionTypes.SERVICE_CREATE_SUCCESS:
+    case actionTypes.SERVICE_FETCH_SUCCESS:
       return {
         ...state,
-        isSubmitting: false,
+        isLoading: false,
         service: action.payload,
       };
-    case actionTypes.SERVICE_CREATE_ERROR:
+    case actionTypes.SERVICE_FETCH_ERROR:
       return {
         ...state,
         error: action.payload,
-        isSubmitting: false,
+        isLoading: false,
       };
     default:
       return state;

@@ -8,6 +8,7 @@ import TripsReducer from '../scenes/trips/reducers';
 import ServicesReducer from '../scenes/services/reducers';
 import UsersReducer from '../scenes/users/reducers';
 import NewService from '../scenes/new-service/reducers';
+import EditService from '../scenes/edit-service/reducers';
 
 const allReducers = combineReducers({
   HomeReducer,
@@ -19,6 +20,7 @@ const allReducers = combineReducers({
   UsersReducer,
   AccountReducer,
   NewService,
+  EditService,
 });
 
 export default allReducers;

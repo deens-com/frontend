@@ -3,26 +3,33 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router';
 
-import * as actions from '../../services/actions';
-import EditServiceForm from '../components/EditServiceForm';
+import * as actions from '../actions';
+import ServiceForm from '../../../shared_components/ServiceForm';
 
 class EditServiceFormContainer extends Component {
   componentDidMount() {
-    this.props.fetch_service(this.props.match.params.id);
+    this.props.fetchService(this.props.match.params.id);
   }
 
   onSubmit = values => {
-    this.props.registerService(values, this.props.history);
+    console.log('on submit', values);
   };
 
   render() {
-    return <EditServiceForm onSubmit={this.onSubmit} submitInFlight={this.props.isSubmitting} {...this.props}/>;
+    // TODO: show a 404 if edit service id is not found
+    return (
+      <ServiceForm
+        onSubmit={this.onSubmit}
+        submitInFlight={this.props.isLoading}
+        {...this.props}
+      />
+    );
   }
 }
 
 const mapStateToProps = state => ({
-  isSubmitting: state.NewService.isSubmitting,
-  service: state.ServicesReducer.service,
+  isLoading: state.EditService.isLoading,
+  service: state.EditService.service,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
