@@ -75,6 +75,7 @@ class ServiceForm extends Component {
       .then(results => {
         const currentResult = results[0];
         const latlngPromise = getLatLng(currentResult);
+        setFieldValue('formattedAddress', currentResult.formatted_address);
         const { address_components: addressComponents } = currentResult;
         const localities = addressComponents.filter(c => c.types.includes('locality'));
         const countries = addressComponents.filter(c => c.types.includes('country'));
@@ -180,7 +181,11 @@ class ServiceForm extends Component {
         {/* Location search */}
         <Form.Field required>
           <label>Location</label>
-          <LocationFormControl onChange={this.onLocationChange} onSelect={this.onLocationSelect} />
+          <LocationFormControl
+            formatted_address={values.formattedAddress}
+            onChange={this.onLocationChange}
+            onSelect={this.onLocationSelect}
+          />
           {touched.latlong && errors.latlong && <ErrorMsg>{errors.latlong}</ErrorMsg>}
         </Form.Field>
 
@@ -308,6 +313,7 @@ export default withFormik({
       slots: (props.service && props.service.slots) || '',
       latlong: (props.service && props.service.latlong) || null,
       tags: (props.service && props.service.tags) || [],
+      formattedAddress: (props.service && props.service.formattedAddress) || '',
     };
     return values;
   },
