@@ -74,8 +74,17 @@ class ServiceForm extends Component {
     geocodeByPlaceId(placeId)
       .then(results => {
         const currentResult = results[0];
-        const latlng = getLatLng(currentResult);
-        return latlng;
+        const latlngPromise = getLatLng(currentResult);
+        const { address_components: addressComponents } = currentResult;
+        const localities = addressComponents.filter(c => c.types.includes('locality'));
+        const countries = addressComponents.filter(c => c.types.includes('country'));
+        if (countries[0] && countries[0].long_name) {
+          setFieldValue('country', countries[0].long_name);
+        }
+        if (localities[0] && localities[0].long_name) {
+          setFieldValue('city', localities[0].long_name);
+        }
+        return latlngPromise;
       })
       .catch(err => {
         setFieldValue('latlong', null);
