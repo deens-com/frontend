@@ -17,7 +17,7 @@ class NewServiceFormContainer extends Component {
 }
 
 const mapStateToProps = state => ({
-  isSubmitting: state.NewService.isSubmitting,
+  isSubmitting: state.ServiceUpsert.isSubmitting,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);

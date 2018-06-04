@@ -35,9 +35,9 @@ class EditServiceFormContainer extends Component {
 }
 
 const mapStateToProps = state => ({
-  isLoading: state.EditService.isLoading,
-  service: state.EditService.service,
-  fetchError: state.EditService.error,
+  isLoading: state.ServiceUpsert.isLoading,
+  service: state.ServiceUpsert.service,
+  fetchError: state.ServiceUpsert.error,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
