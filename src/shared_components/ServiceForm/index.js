@@ -99,6 +99,7 @@ class ServiceForm extends Component {
             name="type"
             placeholder="Service Type"
             selection
+            value={values.type}
             options={serviceTypeDropdownOptions}
             onChange={this.onDropDownChange}
             error={!!(touched.type && errors.type)}
@@ -112,6 +113,7 @@ class ServiceForm extends Component {
           <Form.Input
             name="name"
             placeholder="Service name"
+            value={values.name}
             error={!!(touched.name && errors.name)}
             {...defaultProps}
           />
@@ -124,6 +126,7 @@ class ServiceForm extends Component {
           <Form.TextArea
             name="description"
             placeholder="Tell us more..."
+            value={values.description}
             error={!!(touched.description && errors.description)}
             {...defaultProps}
           />
@@ -135,6 +138,7 @@ class ServiceForm extends Component {
           <label>Price Per Day/Night</label>
           <Form.Input
             name="pricePerSession"
+            value={values.pricePerSession}
             error={!!(touched.pricePerSession && errors.pricePerSession)}
             {...defaultProps}
           />
@@ -144,7 +148,7 @@ class ServiceForm extends Component {
         {/* Accept Ethereum */}
         <Form.Field>
           <label>Accept Ethereum</label>
-          <Form.Checkbox id="acceptETH" name="acceptETH" {...defaultProps} />
+          <Form.Checkbox id="acceptETH" name="acceptETH" checked={values.acceptETH} {...defaultProps} />
         </Form.Field>
 
         {/* Available Days */}
@@ -179,6 +183,7 @@ class ServiceForm extends Component {
               placeholder="Select opening time"
               selection
               required
+              value={values.openingTime}
               options={hoursDropdownOptions}
               onChange={this.onDropDownChange}
               error={!!(touched.openingTime && errors.openingTime)}
@@ -192,6 +197,7 @@ class ServiceForm extends Component {
               placeholder="Select closing time"
               selection
               required
+              value={values.closingTime}
               options={hoursDropdownOptions}
               onChange={this.onDropDownChange}
               error={!!(touched.closingTime && errors.closingTime)}
@@ -203,7 +209,14 @@ class ServiceForm extends Component {
         {/* Slots in a Day */}
         <Form.Field required>
           <label>Slots in a Day</label>
-          <Form.Input name="slots" type="number" min="0" error={!!(touched.slots && errors.slots)} {...defaultProps} />
+          <Form.Input
+            name="slots"
+            type="number"
+            min="0"
+            value={values.slots}
+            error={!!(touched.slots && errors.slots)}
+            {...defaultProps}
+          />
           {touched.slots && errors.slots && <ErrorMsg>{errors.slots}</ErrorMsg>}
         </Form.Field>
 
@@ -272,20 +285,26 @@ function checkRequiredFields(values, requiredFields) {
 }
 
 export default withFormik({
-  mapPropsToValues: () => ({
-    type: null,
-    name: null,
-    description: null,
-    pricePerSession: null,
-    availableDays: new Set(),
-    openingTime: null,
-    closingTime: null,
-    slots: null,
-    latlong: null,
-    tags: [],
-  }),
+  mapPropsToValues: props => {
+    const values = {
+      type: (props.service && props.service.type) || null,
+      name: (props.service && props.service.name) || '',
+      description: (props.service && props.service.description) || '',
+      pricePerSession: (props.service && props.service.pricePerSession) || '',
+      acceptETH: (props.service && props.service.acceptETH) || false,
+      availableDays:
+        (props.service && props.service.availableDays && new Set(props.service.availableDays)) || new Set(),
+      openingTime: (props.service && props.service.openingTime) || null,
+      closingTime: (props.service && props.service.closingTime) || null,
+      slots: (props.service && props.service.slots) || '',
+      latlong: (props.service && props.service.latlong) || null,
+      tags: (props.service && props.service.tags) || [],
+    };
+    return values;
+  },
   validate,
   handleSubmit: (values, { props }) => {
     props.onSubmit(values);
   },
+  enableReinitialize: true,
 })(ServiceForm);
