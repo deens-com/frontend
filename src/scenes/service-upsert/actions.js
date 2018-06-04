@@ -23,7 +23,10 @@ export const registerService = (values, history) => async (dispatch, getState) =
   dispatch({ type: types.SERVICE_CREATE_STARTED });
   try {
     const { mainPicture, acceptETH } = values;
-    const parseFile = await new Parse.File(mainPicture.name, mainPicture).save();
+    let parseFile;
+    if (mainPicture) {
+      parseFile = await new Parse.File(mainPicture.name, mainPicture).save();
+    }
     const result = await Parse.Cloud.run('createOrUpdateService', {
       ...values,
       parseFile,
