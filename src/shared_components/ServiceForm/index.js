@@ -34,12 +34,6 @@ class ServiceForm extends Component {
     tagOptions: [],
   };
 
-  onTagAddition = (e, { value }) => {
-    this.setState(prevState => ({
-      tagOptions: [{ text: value, value }, ...prevState.tagOptions],
-    }));
-  };
-
   onDropDownChange = (e, { name, value }) => {
     const { setFieldValue, setFieldTouched } = this.props;
     setFieldValue(name, value);
@@ -79,7 +73,9 @@ class ServiceForm extends Component {
     setFieldTouched('latlong', true, false);
     geocodeByPlaceId(placeId)
       .then(results => {
-        return getLatLng(results[0]);
+        const currentResult = results[0];
+        const latlng = getLatLng(currentResult);
+        return latlng;
       })
       .catch(err => {
         setFieldValue('latlong', null);
@@ -297,8 +293,7 @@ export default withFormik({
       description: (props.service && props.service.description) || '',
       pricePerSession: (props.service && props.service.pricePerSession) || '',
       acceptETH: (props.service && props.service.acceptETH) || false,
-      availableDays:
-        (props.service && props.service.DayList && new Set(props.service.DayList)) || new Set(),
+      availableDays: (props.service && props.service.DayList && new Set(props.service.DayList)) || new Set(),
       openingTime: (props.service && props.service.openingTime) || null,
       closingTime: (props.service && props.service.closingTime) || null,
       slots: (props.service && props.service.slots) || '',

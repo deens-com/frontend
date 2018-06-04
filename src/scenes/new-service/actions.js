@@ -15,7 +15,7 @@ export const registerService = (values, history) => async (dispatch, getState) =
   try {
     const { mainPicture, acceptETH } = values;
     const parseFile = await new Parse.File(mainPicture.name, mainPicture).save();
-    const result = await Parse.Cloud.run('createService', {
+    const result = await Parse.Cloud.run('createOrUpdateService', {
       ...values,
       parseFile,
       availableDays: [...values.availableDays],
