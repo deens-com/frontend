@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router';
 
 import * as actions from '../actions';
-import NewServiceForm from '../components/NewServiceForm';
+import ServiceForm from '../../../shared_components/ServiceForm';
 
 class NewServiceFormContainer extends Component {
   onSubmit = values => {
@@ -12,12 +12,12 @@ class NewServiceFormContainer extends Component {
   };
 
   render() {
-    return <NewServiceForm onSubmit={this.onSubmit} submitInFlight={this.props.isSubmitting} />;
+    return <ServiceForm onSubmit={this.onSubmit} submitInFlight={this.props.isSubmitting} />;
   }
 }
 
 const mapStateToProps = state => ({
-  isSubmitting: state.NewService.isSubmitting,
+  isSubmitting: state.ServiceUpsert.isSubmitting,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);

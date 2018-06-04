@@ -14,8 +14,7 @@ import Services from "./../scenes/services/services";
 import Registrations from "./../scenes/registrations/registrations";
 import Notfound from "./../styled_scenes/NotFound";
 import ScrollToTop from "./middlewares/ScrollToTop";
-import NewService from '../scenes/new-service';
-import EditService from '../scenes/edit-service';
+import ServiceUpsert from '../scenes/service-upsert';
 
 const App = () => {
   return (
@@ -42,11 +41,11 @@ const App = () => {
             />
             <Route
               path={process.env.PUBLIC_URL + "/services/new"}
-              component={withSegmentTracker(NewService)}
+              component={withSegmentTracker(ServiceUpsert)}
             />
             <Route
               path={process.env.PUBLIC_URL + "/services/edit/:id"}
-              component={withSegmentTracker(EditService)}
+              component={withSegmentTracker(ServiceUpsert)}
             />
             <Route
               path={process.env.PUBLIC_URL + "/services/:id"}

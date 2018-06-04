@@ -7,7 +7,7 @@ import ResultsReducer from '../scenes/results/reducers';
 import TripsReducer from '../scenes/trips/reducers';
 import ServicesReducer from '../scenes/services/reducers';
 import UsersReducer from '../scenes/users/reducers';
-import NewService from '../scenes/new-service/reducers';
+import ServiceUpsert from '../scenes/service-upsert/reducers';
 
 const allReducers = combineReducers({
   HomeReducer,
@@ -18,7 +18,7 @@ const allReducers = combineReducers({
   ServicesReducer,
   UsersReducer,
   AccountReducer,
-  NewService,
+  ServiceUpsert,
 });
 
 export default allReducers;

@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Dropdown, Input, Form } from 'semantic-ui-react';
+import { Dropdown, Form } from 'semantic-ui-react';
 import { withFormik } from 'formik';
+import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete';
 import styled from 'styled-components';
+import serviceTags from './service-tags';
+import LocationFormControl from '../Form/LocationControl';
 
 const serviceTypes = ['Place', 'Activity', 'Food'];
 const serviceTypeDropdownOptions = serviceTypes.map(text => ({ value: text.toLowerCase(), text }));
@@ -10,32 +13,25 @@ const hours = Array.from({ length: 24 }, (v, k) => k);
 const hoursDropdownOptions = hours.map(h => ({ value: h, text: h.toString().padStart(2, '0') + ':00' }));
 const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
+const tagsDropdownOptions = serviceTags.map(value => ({ text: value, value }));
+
 const ErrorMsg = styled.div`
   color: red;
 `;
 
-class EditServiceForm extends Component {
-
-  constructor() {
-    super();
-
-    this.state = {
-      service: {
-        type: '',
-        name: '',
-        description: '',
-        pricePerSession: '',
-        availableDays: new Set(),
-        openingTime: '',
-        closingTime: '',
-        slots: '',
-      }
-    };
-  };
-
+class ServiceForm extends Component {
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
     submitInFlight: PropTypes.bool.isRequired,
+    submitButtonText: PropTypes.string,
+  };
+
+  static defaultProps = {
+    submitButtonText: 'Submit',
+  };
+
+  state = {
+    tagOptions: [],
   };
 
   onDropDownChange = (e, { name, value }) => {
@@ -66,8 +62,37 @@ class EditServiceForm extends Component {
     setFieldTouched('mainPicture', true, false);
   };
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({service: nextProps.service});
+  onLocationChange = address => {
+    const { setFieldValue, setFieldTouched } = this.props;
+    setFieldValue('latlong', null);
+    setFieldTouched('latlong', true, false);
+  };
+
+  onLocationSelect = (address, placeId) => {
+    const { setFieldValue, setFieldTouched } = this.props;
+    setFieldTouched('latlong', true, false);
+    geocodeByPlaceId(placeId)
+      .then(results => {
+        const currentResult = results[0];
+        const latlngPromise = getLatLng(currentResult);
+        setFieldValue('formattedAddress', currentResult.formatted_address);
+        const { address_components: addressComponents } = currentResult;
+        const localities = addressComponents.filter(c => c.types.includes('locality'));
+        const countries = addressComponents.filter(c => c.types.includes('country'));
+        if (countries[0] && countries[0].long_name) {
+          setFieldValue('country', countries[0].long_name);
+        }
+        if (localities[0] && localities[0].long_name) {
+          setFieldValue('city', localities[0].long_name);
+        }
+        return latlngPromise;
+      })
+      .catch(err => {
+        setFieldValue('latlong', null);
+      })
+      .then(value => {
+        setFieldValue('latlong', value);
+      });
   };
 
   render() {
@@ -76,7 +101,6 @@ class EditServiceForm extends Component {
       onChange: handleChange,
       onBlur: handleBlur,
     };
-    
     return (
       <Form onSubmit={handleSubmit} loading={submitInFlight}>
         {/* Service Type */}
@@ -85,8 +109,8 @@ class EditServiceForm extends Component {
           <Dropdown
             name="type"
             placeholder="Service Type"
-            value={this.state.service.type}
             selection
+            value={values.type}
             options={serviceTypeDropdownOptions}
             onChange={this.onDropDownChange}
             error={!!(touched.type && errors.type)}
@@ -100,7 +124,7 @@ class EditServiceForm extends Component {
           <Form.Input
             name="name"
             placeholder="Service name"
-            value={this.state.service.name}
+            value={values.name}
             error={!!(touched.name && errors.name)}
             {...defaultProps}
           />
@@ -113,7 +137,7 @@ class EditServiceForm extends Component {
           <Form.TextArea
             name="description"
             placeholder="Tell us more..."
-            value={this.state.service.description}
+            value={values.description}
             error={!!(touched.description && errors.description)}
             {...defaultProps}
           />
@@ -125,7 +149,7 @@ class EditServiceForm extends Component {
           <label>Price Per Day/Night</label>
           <Form.Input
             name="pricePerSession"
-            value={this.state.service.pricePerSession}
+            value={values.pricePerSession}
             error={!!(touched.pricePerSession && errors.pricePerSession)}
             {...defaultProps}
           />
@@ -135,7 +159,7 @@ class EditServiceForm extends Component {
         {/* Accept Ethereum */}
         <Form.Field>
           <label>Accept Ethereum</label>
-          <Form.Checkbox id="acceptETH" name="acceptETH" {...defaultProps} />
+          <Form.Checkbox id="acceptETH" name="acceptETH" checked={values.acceptETH} {...defaultProps} />
         </Form.Field>
 
         {/* Available Days */}
@@ -154,6 +178,17 @@ class EditServiceForm extends Component {
           {touched.availableDays && errors.availableDays && <ErrorMsg>{errors.availableDays}</ErrorMsg>}
         </Form.Group>
 
+        {/* Location search */}
+        <Form.Field required>
+          <label>Location</label>
+          <LocationFormControl
+            formatted_address={values.formattedAddress}
+            onChange={this.onLocationChange}
+            onSelect={this.onLocationSelect}
+          />
+          {touched.latlong && errors.latlong && <ErrorMsg>{errors.latlong}</ErrorMsg>}
+        </Form.Field>
+
         {/* Timings */}
         <Form.Group widths="equal">
           <Form.Field>
@@ -163,6 +198,7 @@ class EditServiceForm extends Component {
               placeholder="Select opening time"
               selection
               required
+              value={values.openingTime}
               options={hoursDropdownOptions}
               onChange={this.onDropDownChange}
               error={!!(touched.openingTime && errors.openingTime)}
@@ -176,6 +212,7 @@ class EditServiceForm extends Component {
               placeholder="Select closing time"
               selection
               required
+              value={values.closingTime}
               options={hoursDropdownOptions}
               onChange={this.onDropDownChange}
               error={!!(touched.closingTime && errors.closingTime)}
@@ -191,18 +228,35 @@ class EditServiceForm extends Component {
             name="slots"
             type="number"
             min="0"
+            value={values.slots}
             error={!!(touched.slots && errors.slots)}
             {...defaultProps}
           />
           {touched.slots && errors.slots && <ErrorMsg>{errors.slots}</ErrorMsg>}
         </Form.Field>
 
+        {/* Tags */}
         <Form.Field>
-          <label>Service Picture</label>
-          <Input type="file" name="mainPicture" onChange={this.onFileSelect} />
+          <label>Tags</label>
+          <Dropdown
+            name="tags"
+            options={tagsDropdownOptions}
+            placeholder="Add tags"
+            search
+            selection
+            fluid
+            multiple
+            value={values.tags}
+            onChange={this.onDropDownChange}
+          />
         </Form.Field>
 
-        <Form.Button disabled={submitInFlight}>Save</Form.Button>
+        <Form.Field>
+          <label>Service Picture</label>
+          <input type="file" name="mainPicture" accept=".jpg, .jpeg, .png" onChange={this.onFileSelect} />
+        </Form.Field>
+
+        <Form.Button disabled={submitInFlight}>{this.props.submitButtonText}</Form.Button>
       </Form>
     );
   }
@@ -218,6 +272,7 @@ function validate(values) {
     'openingTime',
     'closingTime',
     'slots',
+    'latlong',
   ];
   const errors = checkRequiredFields(values, requiredFields);
   const numericFields = ['pricePerSession', 'slots'];
@@ -245,18 +300,23 @@ function checkRequiredFields(values, requiredFields) {
 }
 
 export default withFormik({
-  mapPropsToValues: () => ({
-    type: null,
-    name: null,
-    description: null,
-    pricePerSession: null,
-    availableDays: new Set(),
-    openingTime: null,
-    closingTime: null,
-    slots: null,
+  mapPropsToValues: ({ service }) => ({
+    type: (service && service.type) || null,
+    name: (service && service.name) || '',
+    description: (service && service.description) || '',
+    pricePerSession: (service && service.pricePerSession) || '',
+    acceptETH: (service && service.acceptETH) || false,
+    availableDays: (service && service.DayList && new Set(service.DayList)) || new Set(),
+    openingTime: (service && service.openingTime) || null,
+    closingTime: (service && service.closingTime) || null,
+    slots: (service && service.slots) || '',
+    latlong: (service && { lat: service.latitude, lng: service.longitude }) || null,
+    tags: (service && service.tags) || [],
+    formattedAddress: (service && service.formattedAddress) || '',
   }),
   validate,
   handleSubmit: (values, { props }) => {
     props.onSubmit(values);
   },
-})(EditServiceForm);
+  enableReinitialize: true,
+})(ServiceForm);
