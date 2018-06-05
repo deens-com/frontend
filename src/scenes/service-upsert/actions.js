@@ -88,73 +88,77 @@ export const saveServiceChanges = (serviceId, values, history) => async (dispatc
 };
 
 export const deployContract = (service, values, history) => async (dispatch, getState) => {
-  const { pricePerSession, slots } = values;
+  try {
+    const { pricePerSession, slots } = values;
 
-  // retrieve most recent contract ID
-  let ipfsContract = Parse.Object.extend('ipfsContract');
-  let query = new Parse.Query(ipfsContract);
-  query.descending('createdAt');
-  let ipfsContractObject = await query.first();
+    // retrieve most recent contract ID
+    let ipfsContract = Parse.Object.extend('ipfsContract');
+    let query = new Parse.Query(ipfsContract);
+    query.descending('createdAt');
+    let ipfsContractObject = await query.first();
 
-  // automatically assign the contract version to service
-  service.set('contractVersion', { __type: 'Pointer', className: 'ipfsContract', objectId: ipfsContractObject.id });
-  await service.save();
+    // automatically assign the contract version to service
+    service.set('contractVersion', { __type: 'Pointer', className: 'ipfsContract', objectId: ipfsContractObject.id });
+    await service.save();
 
-  // retrieve contract details from ipfsAPI end point (abi and bytecode)
+    // retrieve contract details from ipfsAPI end point (abi and bytecode)
 
-  let lastContract = await Parse.Cloud.run('getLastContract');
+    let lastContract = await Parse.Cloud.run('getLastContract');
 
-  // start deploying contract to network
+    // start deploying contract to network
 
-  var bytecode = lastContract.bytecode;
-  var abi = JSON.stringify(lastContract.abi);
-  var params = {};
-  params.start = [0, 0, 0, 0, 0, 0, 0];
-  params.end = [20, 20, 20, 20, 20, 20, 20];
-  params.price = pricePerSession;
-  params.ipfs = 'efjisajefojseoifjwdjfoisjdfgjspdgfjoisdjgiosdjiofjsdiofjsiodhfgoishhj';
-  params.maxAvailableSpots = slots;
+    var bytecode = lastContract.bytecode;
+    var abi = JSON.stringify(lastContract.abi);
+    var params = {};
+    params.start = [0, 0, 0, 0, 0, 0, 0];
+    params.end = [20, 20, 20, 20, 20, 20, 20];
+    params.price = pricePerSession;
+    params.ipfs = 'efjisajefojseoifjwdjfoisjdfgjspdgfjoisdjgiosdjiofjsdiofjsiodhfgoishhj';
+    params.maxAvailableSpots = slots;
 
-  var network = ethers.providers.networks.ropsten;
-  var provider = new ethers.providers.InfuraProvider(network);
-  let wallet = new ethers.providers.Web3Provider(window.web3.currentProvider, network).getSigner();
-  let deployTransaction = ethers.Contract.getDeployTransaction(
-    bytecode,
-    abi,
-    1,
-    params.start,
-    params.end,
-    params.ipfs,
-    params.price,
-    params.maxAvailableSpots,
-    [10, 15],
-    [50, 70],
-    ipfsContractObject.get('ratingsContractAddress'),
-    ipfsContractObject.get('tokenRateAddress'),
-    ipfsContractObject.get('delegateResolverAddress'),
-    ipfsContractObject.get('bookingTimeUtilsAddress'),
-    ipfsContractObject.get('eventHubAddress')
-  );
-  let estimate = await provider.estimateGas(deployTransaction);
+    var network = ethers.providers.networks.ropsten;
+    var provider = new ethers.providers.InfuraProvider(network);
+    let wallet = new ethers.providers.Web3Provider(window.web3.currentProvider, network).getSigner();
+    let deployTransaction = ethers.Contract.getDeployTransaction(
+      bytecode,
+      abi,
+      1,
+      params.start,
+      params.end,
+      params.ipfs,
+      params.price,
+      params.maxAvailableSpots,
+      [10, 15],
+      [50, 70],
+      ipfsContractObject.get('ratingsContractAddress'),
+      ipfsContractObject.get('tokenRateAddress'),
+      ipfsContractObject.get('delegateResolverAddress'),
+      ipfsContractObject.get('bookingTimeUtilsAddress'),
+      ipfsContractObject.get('eventHubAddress')
+    );
 
-  // send transaction
-  let transaction = {
-    gasLimit:
-      Math.round(parseInt(estimate, 10) + parseInt(estimate, 10) / 100 * 1) > 4512058
-        ? 4512058
-        : Math.round(parseInt(estimate, 10) + parseInt(estimate, 10) / 100 * 1),
-    data: deployTransaction.data,
-  };
+    // we will use this later, hence I'll keep this line commented
+    // let estimate = await provider.estimateGas(deployTransaction);
 
-  let transactionResponse = await wallet.sendTransaction(transaction);
+    // send transaction
+    let transaction = {
+      gasPrice: 20000000000,
+      gasLimit: 4512058,
+      data: deployTransaction.data,
+    };
 
-  // update contract address
+    let transactionResponse = await wallet.sendTransaction(transaction);
 
-  let newContractAddress = ethers.utils.getContractAddress(transactionResponse);
-  service.set('contractAddress', newContractAddress);
+    // update contract address
 
-  await service.save();
+    let newContractAddress = ethers.utils.getContractAddress(transactionResponse);
+    service.set('contractAddress', newContractAddress);
 
-  dispatch({ type: types.SERVICE_CREATE_SUCCESS, payload: service });
-  history.push(`/services/${service.id}`);
+    await service.save();
+
+    dispatch({ type: types.SERVICE_CREATE_SUCCESS, payload: service });
+    history.push(`/services/${service.id}`);
+  } catch (e) {
+    dispatch({ type: types.SERVICE_CREATE_ERROR, payload: "We could not deploy the smart contract. Please check if your ledger device or meta mask are connected properly." });
+  }
 };

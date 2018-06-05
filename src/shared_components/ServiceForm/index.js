@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Dropdown, Form } from 'semantic-ui-react';
+import { Dropdown, Form, Modal } from 'semantic-ui-react';
 import { withFormik } from 'formik';
 import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete';
 import styled from 'styled-components';
@@ -23,6 +23,7 @@ class ServiceForm extends Component {
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
     submitInFlight: PropTypes.bool.isRequired,
+    error: PropTypes.string,
     submitButtonText: PropTypes.string,
   };
 
@@ -96,13 +97,24 @@ class ServiceForm extends Component {
   };
 
   render() {
-    const { values, errors, touched, handleChange, handleBlur, handleSubmit, submitInFlight } = this.props;
+    const { values, errors, globalError, touched, handleChange, handleBlur, handleSubmit, submitInFlight } = this.props;
     const defaultProps = {
       onChange: handleChange,
       onBlur: handleBlur,
     };
+
+    let showGlobalError = (typeof globalError !== 'undefined' && globalError !== null) || false;
+
     return (
       <Form onSubmit={handleSubmit} loading={submitInFlight}>
+
+        <Modal size="tiny" open={showGlobalError}>
+          <Modal.Header>There was an issue with creating your service</Modal.Header>
+          <Modal.Content>
+            {globalError}
+          </Modal.Content>
+        </Modal>
+
         {/* Service Type */}
         <Form.Field required>
           <label>Service type</label>

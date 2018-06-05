@@ -12,12 +12,13 @@ class NewServiceFormContainer extends Component {
   };
 
   render() {
-    return <ServiceForm onSubmit={this.onSubmit} submitInFlight={this.props.isSubmitting} />;
+    return <ServiceForm onSubmit={this.onSubmit} submitInFlight={this.props.isSubmitting} globalError={this.props.error}/>;
   }
 }
 
 const mapStateToProps = state => ({
   isSubmitting: state.ServiceUpsert.isSubmitting,
+  error: state.ServiceUpsert.error,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
