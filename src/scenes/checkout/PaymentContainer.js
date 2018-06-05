@@ -1,12 +1,22 @@
 import React from 'react';
-import PaymentButtons from './components/PaymentButtons';
+import { connect } from 'react-redux';
 
-export default class PaymentContainer extends React.Component {
+import PaymentSection from './components/PaymentSection';
+import * as tripSelectors from '../trips/selectors';
+
+class PaymentContainer extends React.Component {
   render() {
+    const { price } = this.props;
     return (
       <div>
-        <PaymentButtons />
+        <PaymentSection price={price} />
       </div>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  price: tripSelectors.getTripTotalPrice(state),
+});
+
+export default connect(mapStateToProps, null)(PaymentContainer);
