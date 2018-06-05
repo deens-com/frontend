@@ -15,7 +15,6 @@ import Rating from "../../shared_components/Rating";
 import { BadgeIcon } from "./icons";
 import TripCart from "../../shared_components/Carts/Location";
 import Review from "../../shared_components/Review";
-import DetailPickers from "./components/DetailPickers";
 import Carousel from "../../shared_components/Carousel";
 import Button from "../../shared_components/Button";
 import ImgSlider from "./components/ImgSlider";
@@ -29,7 +28,7 @@ import { media, sizes } from "../../libs/styled";
 
 // STYLES
 import { Page, PageContent } from "../../shared_components/layout/Page";
-import { Icon, Modal, Header } from "semantic-ui-react";
+import { Icon, Modal } from "semantic-ui-react";
 
 const DetailWrapper = styled.div`
   width: 100%;
