@@ -23,7 +23,7 @@ class ServiceForm extends Component {
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
     submitInFlight: PropTypes.bool.isRequired,
-    error: PropTypes.string,
+    globalError: PropTypes.string,
     submitButtonText: PropTypes.string,
   };
 
@@ -103,7 +103,7 @@ class ServiceForm extends Component {
       onBlur: handleBlur,
     };
 
-    let showGlobalError = (typeof globalError !== 'undefined' && globalError !== null) || false;
+    const showGlobalError = (typeof globalError !== 'undefined' && globalError !== null) || false;
 
     return (
       <Form onSubmit={handleSubmit} loading={submitInFlight}>
