@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Dropdown, Form, Modal } from 'semantic-ui-react';
+import { Dropdown, Form, Modal, Message } from 'semantic-ui-react';
 import { withFormik } from 'formik';
 import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete';
 import styled from 'styled-components';
 import serviceTags from './service-tags';
 import LocationFormControl from '../Form/LocationControl';
+import { Link } from 'react-router-dom';
+import Parse from 'parse';
 
 const serviceTypes = ['Place', 'Activity', 'Food'];
 const serviceTypeDropdownOptions = serviceTypes.map(text => ({ value: text.toLowerCase(), text }));
@@ -105,6 +107,8 @@ class ServiceForm extends Component {
 
     const showGlobalError = (typeof globalError !== 'undefined' && globalError !== null) || false;
 
+    const userHasConnectedWallet = Parse.User.current() && (Parse.User.current().attributes.ledgerPublicAddress || Parse.User.current().attributes.metamaskPublicAddress);
+
     return (
       <Form onSubmit={handleSubmit} loading={submitInFlight}>
 
@@ -169,10 +173,26 @@ class ServiceForm extends Component {
         </Form.Field>
 
         {/* Accept Ethereum */}
-        <Form.Field>
-          <label>Accept Ethereum</label>
-          <Form.Checkbox id="acceptETH" name="acceptETH" checked={values.acceptETH} {...defaultProps} />
-        </Form.Field>
+        {userHasConnectedWallet ?
+          (<Message info>
+            <Message.Header>Publish smart contract and accept payments in Ethereum</Message.Header>
+            <Message.Content>
+              <br />
+              <Form.Field>
+                <Form.Checkbox id="acceptETH" name="acceptETH" checked={values.acceptETH} {...defaultProps} label="Yes, I'd like to publish a smart contract for this service."/>
+              </Form.Field>
+            </Message.Content>
+          </Message>)
+          :
+          (<Message info>
+            <Message.Header>Publish smart contract and accept payments in Ethereum</Message.Header>
+            <br />
+            <Message.Content>
+              If you want to publish a smart contract and accept payments in Ethereum, you should connect your account with Ledger or MetaMask. <br /><br />
+              <strong><Link to="/account/settings">Click here</Link></strong> to continue to your settings page where you can connect your preferred wallet.
+            </Message.Content>
+          </Message>)
+        }
 
         {/* Available Days */}
         <Form.Group grouped>
