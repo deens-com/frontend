@@ -1,20 +1,21 @@
 // NPM
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
 // COMPONENTS
-import Price from "./components/Price";
-import Button from "../../Button";
-import Category from "./components/Category";
-import Description from "./components/Description";
-import Detail from "./components/Detail";
+import Price from './components/Price';
+import Button from '../../Button';
+import Category from './components/Category';
+import Description from './components/Description';
+import Detail from './components/Detail';
 
 // ACTIONS/CONFIG
-import { media } from "../../../libs/styled";
+import { media } from '../../../libs/styled';
 
 // STYLES
-import { ContentWrap } from "../styles";
-import Tag from "./components/Tag";
+import { ContentWrap } from '../styles';
+import Tag from './components/Tag';
 
 const CartRow = styled.div`
   ${media.minSmall} {
@@ -62,7 +63,7 @@ const RightCol = styled.div`
 `;
 
 // MODULE
-export default function Exceprt({ data, toggleExpansion }) {
+export default function ExcerptCart({ data, toggleExpansion, hideMoreInfo }) {
   return (
     <CartContentWrap>
       <CartRow>
@@ -73,14 +74,16 @@ export default function Exceprt({ data, toggleExpansion }) {
         </LeftCol>
         <RightCol>
           <Price price={data.pricePerSession} currency={data.currency} />
-          <Button
-            type="button"
-            onClick={toggleExpansion}
-            text="More info"
-            size="text"
-            iconAfter="arrowDown"
-            theme="textGreen"
-          />
+          {!hideMoreInfo && (
+            <Button
+              type="button"
+              onClick={toggleExpansion}
+              text="More info"
+              size="text"
+              iconAfter="arrowDown"
+              theme="textGreen"
+            />
+          )}
         </RightCol>
       </CartRow>
       {data.availability === false ? <Tag text="Unavailable" /> : null}
@@ -89,4 +92,10 @@ export default function Exceprt({ data, toggleExpansion }) {
 }
 
 // Props Validation
-Exceprt.propTypes = {};
+ExcerptCart.propTypes = {
+  hideMoreInfo: PropTypes.bool,
+};
+
+ExcerptCart.defaultProps = {
+  hideMoreInfo: false,
+};
