@@ -1,23 +1,11 @@
-import { types, tripBookingStatuses } from './actions';
+import { types } from './actions';
 
 export default (state, action = {}) => {
   switch (action.type) {
-    case types.MARK_TRIP_BOOKED_STARTED: {
+    case types.MARK_TRIP_BOOKED_STATUS: {
       return {
         ...state,
-        bookingStatus: tripBookingStatuses.STARTED,
-      };
-    }
-    case types.MARK_TRIP_BOOKED_SUCCESS: {
-      return {
-        ...state,
-        bookingStatus: tripBookingStatuses.SUCCESS,
-      };
-    }
-    case types.MARK_TRIP_BOOKED_ERROR: {
-      return {
-        ...state,
-        bookingStatus: tripBookingStatuses.ERROR,
+        bookingStatus: action.payload,
       };
     }
     default:
