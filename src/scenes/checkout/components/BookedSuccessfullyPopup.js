@@ -1,10 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Icon, Modal } from 'semantic-ui-react';
+import { Button, Icon, Modal } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 import { tripBookingStatuses } from '../actions';
+import { CenterAlign } from '../../../libs/styled';
+
+const ThankYouMsg = styled.h2`
+  margin-top: 30px;
+`;
 
 class BookedSuccessfullyPopup extends React.Component {
   onClose = () => {
@@ -15,14 +20,27 @@ class BookedSuccessfullyPopup extends React.Component {
     const { bookingStatus } = this.props;
     const show = bookingStatus === tripBookingStatuses.SUCCESS;
     return (
-      <Modal centered={false} open={show} onClose={this.onClose}>
-        <Modal.Header>Booked Successifully</Modal.Header>
+      <Modal centered={false} open={show} onClose={this.onClose} size="tiny">
+        <Modal.Header>Payment Successful</Modal.Header>
         <Modal.Content>
           <Modal.Description>
-            <Icon name="check circle outline" />
-            <h2>Thanks for booking</h2>
+            <CenterAlign>
+              <Icon name="check circle outline" size="massive" color="green" />
+              <ThankYouMsg>
+                Thanks for booking with <Link to="/">Please.com</Link>
+              </ThankYouMsg>
+            </CenterAlign>
           </Modal.Description>
         </Modal.Content>
+        <Modal.Actions>
+          <Button
+            positive
+            labelPosition="right"
+            icon="chevron right"
+            content="My Planned Trips"
+            onClick={this.onClose}
+          />
+        </Modal.Actions>
       </Modal>
     );
   }
