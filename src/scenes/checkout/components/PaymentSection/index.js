@@ -1,10 +1,14 @@
 import React from 'react';
-import { Button, Container, Icon, Label, Grid } from 'semantic-ui-react';
+import { Button, Label } from 'semantic-ui-react';
 import styled from 'styled-components';
+
 import PriceTag from '../../../../shared_components/Currency/PriceTag';
+import { media } from '../../../../libs/styled';
 
 const Wrap = styled.div`
-  margin-top: 50px;
+  ${media.minSmall} {
+    margin-top: 50px;
+  }
   display: flex;
   justify-content: center;
 `;
