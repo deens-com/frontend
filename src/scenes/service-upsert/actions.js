@@ -117,7 +117,7 @@ export const deployContract = (service, values, history) => async (dispatch, get
     params.maxAvailableSpots = slots;
 
     var network = ethers.providers.networks.ropsten;
-    var provider = new ethers.providers.InfuraProvider(network);
+
     let wallet = new ethers.providers.Web3Provider(window.web3.currentProvider, network).getSigner();
     let deployTransaction = ethers.Contract.getDeployTransaction(
       bytecode,
@@ -137,7 +137,8 @@ export const deployContract = (service, values, history) => async (dispatch, get
       ipfsContractObject.get('eventHubAddress')
     );
 
-    // we will use this later, hence I'll keep this line commented
+    // we will use this later, hence I'll keep these lines commented
+    // var provider = new ethers.providers.InfuraProvider(network);
     // let estimate = await provider.estimateGas(deployTransaction);
 
     // send transaction
