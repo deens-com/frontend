@@ -5,12 +5,12 @@ export const SvgWithProps = ComposedComponent => {
   return class SvgProps extends Component {
     static propTypes = {
       ariaHidden: PropTypes.bool,
-      focusable: PropTypes.bool,
+      focusable: PropTypes.string,
       role: PropTypes.string
     };
     static defaultProps = {
       ariaHidden: true,
-      focusable: false,
+      focusable: "false",
       role: "presentation"
     };
     render() {
