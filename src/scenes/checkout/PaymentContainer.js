@@ -1,7 +1,12 @@
 import React from 'react';
+import PaymentButtons from './components/PaymentButtons';
 
 export default class PaymentContainer extends React.Component {
   render() {
-    return <h2>Payment Controller</h2>;
+    return (
+      <div>
+        <PaymentButtons />
+      </div>
+    );
   }
 }

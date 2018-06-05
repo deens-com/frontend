@@ -13,7 +13,7 @@ const CheckoutScene = props => {
   return (
     <Page topPush>
       <TopBar fixed withPadding />
-      <PageContent padding="24px">
+      <PageContent padding="32px">
         <Grid>
           <Grid.Column width={8}>
             <CheckoutTripContainer />

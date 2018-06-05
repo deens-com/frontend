@@ -2,21 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import * as tripSelectors from '../trips/selectors';
-import TripDay from './components/TripDay';
+import CheckoutTrip from './components/CheckoutTrip';
 
 class CheckoutTripContainer extends Component {
   render() {
-    // TODO: convert to functional component
     const { trip, scheduledServices } = this.props;
-    const tripDays = scheduledServices.map(({ day, services }) => (
-      <TripDay key={day} dayIndex={day} services={services} />
-    ));
-    return (
-      <div>
-        <h2>{trip && trip.title}</h2>
-        {tripDays}
-      </div>
-    );
+    if (!trip) return null;
+    return <CheckoutTrip trip={trip} scheduledServices={scheduledServices} />;
   }
 }
 
