@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Label } from 'semantic-ui-react';
+import { Button, Label, Grid } from 'semantic-ui-react';
 import styled from 'styled-components';
 
 import PriceTag from '../../../../shared_components/Currency/PriceTag';
@@ -13,17 +13,33 @@ const Wrap = styled.div`
   justify-content: center;
 `;
 
-const PaymentButton = ({ price }) => (
+const PaymentSection = ({ pricePerPerson, totalPrice }) => (
   <Wrap>
-    <div>
-      <Button as="div" labelPosition="right">
-        <Button color="green">Pay</Button>
-        <Label as="a" basic color="green" pointing="left">
-          <PriceTag price={price} unit="hidden" />
-        </Label>
-      </Button>
-    </div>
+    <Grid>
+      <Grid.Row columns={2}>
+        <Grid.Column stretched>Price per person</Grid.Column>
+        <Grid.Column textAlign="right">
+          <PriceTag price={pricePerPerson} unit="hidden" />
+        </Grid.Column>
+      </Grid.Row>
+      <Grid.Row columns={2}>
+        <Grid.Column stretched>Total Price</Grid.Column>
+        <Grid.Column textAlign="right">
+          <PriceTag price={totalPrice} unit="hidden" />
+        </Grid.Column>
+      </Grid.Row>
+      <Grid.Row columns={1} textAlign="right">
+        <Grid.Column>
+          <Button as="div" labelPosition="right">
+            <Button color="green">Pay</Button>
+            <Label as="a" basic color="green" pointing="left">
+              <PriceTag price={totalPrice} unit="hidden" />
+            </Label>
+          </Button>
+        </Grid.Column>
+      </Grid.Row>
+    </Grid>
   </Wrap>
 );
 
-export default PaymentButton;
+export default PaymentSection;

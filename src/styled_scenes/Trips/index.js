@@ -255,7 +255,6 @@ export default class TripsScene extends Component {
               />
               <Hr />
               <Summary
-                peopleCount={this.state.person.value}
                 trip={this.props.trip}
                 scheduledServices={this.props.scheduledServices}
                 unScheduledServices={this.props.unScheduledServices}
