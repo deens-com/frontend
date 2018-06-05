@@ -1,9 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Button, Label, Grid } from 'semantic-ui-react';
 import styled from 'styled-components';
 
 import PriceTag from '../../../../shared_components/Currency/PriceTag';
 import { media } from '../../../../libs/styled';
+import BookedSuccessfullyPopup from '../BookedSuccessfullyPopup';
 
 const Wrap = styled.div`
   ${media.minSmall} {
@@ -13,7 +15,7 @@ const Wrap = styled.div`
   justify-content: center;
 `;
 
-const PaymentSection = ({ pricePerPerson, totalPrice }) => (
+const PaymentSection = ({ pricePerPerson, totalPrice, onPaymentClick }) => (
   <Wrap>
     <Grid>
       <Grid.Row columns={2}>
@@ -30,7 +32,7 @@ const PaymentSection = ({ pricePerPerson, totalPrice }) => (
       </Grid.Row>
       <Grid.Row columns={1} textAlign="right">
         <Grid.Column>
-          <Button as="div" labelPosition="right">
+          <Button as="div" labelPosition="right" onClick={onPaymentClick}>
             <Button color="green">Pay</Button>
             <Label as="a" basic color="green" pointing="left">
               <PriceTag price={totalPrice} unit="hidden" />
@@ -39,7 +41,14 @@ const PaymentSection = ({ pricePerPerson, totalPrice }) => (
         </Grid.Column>
       </Grid.Row>
     </Grid>
+    <BookedSuccessfullyPopup />
   </Wrap>
 );
+
+PaymentSection.propTypes = {
+  pricePerPerson: PropTypes.number.isRequired,
+  totalPrice: PropTypes.number.isRequired,
+  onPaymentClick: PropTypes.func.isRequired,
+};
 
 export default PaymentSection;
