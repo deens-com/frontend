@@ -188,7 +188,7 @@ class ServiceForm extends Component {
             <Message.Header>Publish smart contract and accept payments in Ethereum</Message.Header>
             <br />
             <Message.Content>
-              If you want to publish a smart contract and accept payments in Ethereum, <strong><Link to="/login">you should log in</Link></strong> to your account with Ledger or MetaMask. <br /><br />
+              If you want to publish a smart contract and accept payments in Ethereum, you should connect your account with Ledger or MetaMask. <br /><br />
               <strong><Link to="/account/settings">Click here</Link></strong> to continue to your settings page where you can connect your preferred wallet.
             </Message.Content>
           </Message>)
