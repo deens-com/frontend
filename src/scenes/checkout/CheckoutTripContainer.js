@@ -1,22 +1,31 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-import Results from '../../styled_scenes/Trips/components/Results';
+import * as tripSelectors from '../trips/selectors';
+import TripDay from './components/TripDay';
 
-export default class CheckoutTripContainer extends Component {
-  componentDidMount() {}
-
+class CheckoutTripContainer extends Component {
   render() {
+    // TODO: convert to functional component
+    const { trip, scheduledServices } = this.props;
+    const tripDays = scheduledServices.map(({ day, services }) => (
+      <TripDay key={day} dayIndex={day} services={services} />
+    ));
     return (
-      <h3>Checkout Trip Container</h3>
-      // <Results
-      //   trip={this.props.trip}
-      //   showDetails={this.state.details}
-      //   scheduledServices={this.props.scheduledServices}
-      //   unScheduledServices={this.props.unScheduledServices}
-      //   onServiceDragEnd={this.props.onServiceDragEnd}
-      //   onServiceRemoveClick={this.props.onServiceRemoveClick}
-      // />
+      <div>
+        <h2>{trip && trip.title}</h2>
+        {tripDays}
+      </div>
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    trip: state.TripsReducer.trip,
+    tripError: state.TripsReducer.tripError,
+    scheduledServices: tripSelectors.getScheduledServices(state),
+  };
+};
+
+export default connect(mapStateToProps, null)(CheckoutTripContainer);
