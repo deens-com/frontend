@@ -15,6 +15,7 @@ import Registrations from "./../scenes/registrations/registrations";
 import Notfound from "./../styled_scenes/NotFound";
 import ScrollToTop from "./middlewares/ScrollToTop";
 import ServiceUpsert from '../scenes/service-upsert';
+import Checkout from '../scenes/checkout';
 
 const App = () => {
   return (
@@ -54,6 +55,10 @@ const App = () => {
             <Route
               path={process.env.PUBLIC_URL + "/trips/:id"}
               component={withSegmentTracker(Trips)}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/checkout/:id"}
+              component={withSegmentTracker(Checkout)}
             />
             <Route
               path={process.env.PUBLIC_URL + "/users/:userName"}
