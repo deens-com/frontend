@@ -89,7 +89,7 @@ export const updateTrip = (newDetails, showSaved) => async (dispatch, getState) 
     dispatch(tripUpdated(true));
     setTimeout(() => dispatch(tripUpdated(false)), 3000);
   }
-  fetchTrip(tripId)(dispatch);
+  fetchTrip(tripId)(dispatch, getState);
 };
 
 export const checkAvailability = (beginDate, peopleCount) => async (dispatch, getState) => {
