@@ -143,7 +143,7 @@ export const deployContract = (service, values, history) => async (dispatch, get
 
     // send transaction
     let transaction = {
-      gasPrice: 20000000000,
+      gasPrice: 25000000000,
       gasLimit: 4512058,
       data: deployTransaction.data,
     };
