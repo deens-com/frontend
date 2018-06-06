@@ -7,7 +7,6 @@ import styled from 'styled-components';
 import serviceTags from './service-tags';
 import LocationFormControl from '../Form/LocationControl';
 import { Link } from 'react-router-dom';
-import Parse from 'parse';
 
 const serviceTypes = ['Place', 'Activity', 'Food'];
 const serviceTypeDropdownOptions = serviceTypes.map(text => ({ value: text.toLowerCase(), text }));
@@ -26,6 +25,7 @@ class ServiceForm extends Component {
     onSubmit: PropTypes.func.isRequired,
     submitInFlight: PropTypes.bool.isRequired,
     globalError: PropTypes.string,
+    userProfile: PropTypes.object,
     submitButtonText: PropTypes.string,
   };
 
@@ -99,7 +99,7 @@ class ServiceForm extends Component {
   };
 
   render() {
-    const { values, errors, globalError, touched, handleChange, handleBlur, handleSubmit, submitInFlight } = this.props;
+    const { values, errors, globalError, touched, handleChange, handleBlur, handleSubmit, submitInFlight, userProfile } = this.props;
     const defaultProps = {
       onChange: handleChange,
       onBlur: handleBlur,
@@ -107,7 +107,7 @@ class ServiceForm extends Component {
 
     const showGlobalError = (typeof globalError !== 'undefined' && globalError !== null) || false;
 
-    const userHasConnectedWallet = Parse.User.current() && (Parse.User.current().attributes.ledgerPublicAddress || Parse.User.current().attributes.metamaskPublicAddress);
+    const userHasConnectedWallet = userProfile && (userProfile.ledgerPublicAddress || userProfile.metamaskPublicAddress);
 
     return (
       <Form onSubmit={handleSubmit} loading={submitInFlight}>

@@ -21,7 +21,6 @@ import { categories } from "./../../../data/home";
 import { sizes, media } from "./../../../libs/styled";
 
 // STYLES
-import { Hr } from "./../../../shared_components/styledComponents/misc";
 import {
   Page,
   PageWrapper,
