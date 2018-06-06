@@ -118,3 +118,7 @@ export const cloneTrip = (beginDate, peopleCount, history) => async (dispatch, g
     dispatch(setTripCloningStatus(fetch_helpers.statuses.ERROR));
   }
 };
+
+export const removePreBookingResults = () => dispatch => {
+  dispatch({ type: 'TRIP_CLONNED', payload: null });
+};
