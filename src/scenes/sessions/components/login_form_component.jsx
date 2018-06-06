@@ -13,7 +13,6 @@ import {
 } from "semantic-ui-react";
 import styled from "styled-components";
 import TopBar from "./../../../shared_components/TopBar";
-import FooterNav from "./../../../styled_scenes/Home/components/FooterNav";
 import BrandFooter from "./../../../shared_components/BrandFooter";
 import {
   Page,
@@ -183,7 +182,6 @@ export default class LoginFormComponent extends Component {
 
             <PageWrapper>
               <Hr withSpacing />
-              <FooterNav />
               <Hr />
               <BrandFooter />
             </PageWrapper>

@@ -5,7 +5,6 @@ import {
   PageWrapper
 } from "./../../../shared_components/layout/Page";
 import TopBar from "./../../../shared_components/TopBar";
-import FooterNav from "./../../../styled_scenes/Home/components/FooterNav";
 import BrandFooter from "./../../../shared_components/BrandFooter";
 import {
   Button,
@@ -120,7 +119,6 @@ const RegistrationsComponent = props => {
 
           <PageWrapper>
             <Hr withSpacing />
-            <FooterNav />
             <Hr />
             <BrandFooter />
           </PageWrapper>

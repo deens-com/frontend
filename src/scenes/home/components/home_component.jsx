@@ -7,7 +7,6 @@ import Media from "react-media";
 import TopBar from "./../../../shared_components/TopBar";
 import HomeSearch from "./../../../styled_scenes/Home/components/HomeSearch";
 import BrandFooter from "./../../../shared_components/BrandFooter";
-import FooterNav from "./../../../styled_scenes/Home/components/FooterNav";
 import MobileHero from "./../../../styled_scenes/Home/components/MobileHero";
 import HeroSlider from "./../../../styled_scenes/Home/components/HeroSlider";
 import SectionActivities from "./../../../styled_scenes/Home/components/SectionActivities";
@@ -105,9 +104,6 @@ const HomeComponent = props => {
         <SectionActivities locations={props.exciting_activities} />
         <SectionFood foods={props.delicious_foods} />
         <PageWrapper>
-          <Hr withSpacing />
-          <FooterNav />
-          <Hr />
           <BrandFooter />
         </PageWrapper>
       </PageContent>

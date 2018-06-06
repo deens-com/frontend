@@ -8,7 +8,6 @@ import Media from "react-media";
 // COMPONENTS
 import BrandFooter from "../../components/BrandFooter";
 import Button from "../../components/Button";
-import FooterNav from "./components/FooterNav";
 import hands from "./components/HeroSlider/img/hands.jpg";
 import HeroSlider from "./components/HeroSlider";
 import HomeSearch from "./components/HomeSearch";
@@ -115,7 +114,6 @@ export default class HomeScene extends Component {
           <SectionFood foods={foodData} />
           <PageWrapper>
             <Hr withSpacing />
-            <FooterNav />
             <Hr />
             <BrandFooter />
           </PageWrapper>
