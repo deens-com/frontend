@@ -7,12 +7,6 @@
 .input-valid {
   border: 2px dashed green;
 } */
-@font-face {
-  font-family: "HaydonBrush";
-  src: url("./fonts/HaydonBrush.ttf");
-  font-weight: normal;
-  font-style: normal;
-}
 
 * {
   padding: 0;

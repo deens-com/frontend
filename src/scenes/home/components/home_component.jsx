@@ -56,7 +56,6 @@ const HomeTagLine = styled.h1`
   }
 
   span {
-    font-family: "HaydonBrush", Georgia, serif;
     font-size: 36px;
     left: 26px;
     letter-spacing: 0;
