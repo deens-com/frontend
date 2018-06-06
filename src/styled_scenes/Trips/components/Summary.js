@@ -3,11 +3,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Grid } from 'semantic-ui-react';
+import { Grid, Button } from 'semantic-ui-react';
 import Parse from 'parse';
 
 // COMPONENTS
-import Button from '../../../shared_components/Button';
 import PriceTag from '../../../shared_components/Currency/PriceTag';
 
 // ACTIONS/CONFIG
@@ -45,6 +44,19 @@ const TotalHint = styled.p`
 
   a {
     color: #5fb79e;
+  }
+`;
+
+const BookButton = styled(Button)`
+  && {
+    color: #fff;
+    background-color: #5eb89e;
+    border: 1px solid #5FB79E;
+    :hover,:focus {
+      color: #fff;
+      background: #4ac4a1;
+      border: 1px solid #5FB79E;
+    }
   }
 `;
 
@@ -102,9 +114,9 @@ export default class TripSummary extends Component {
             </Grid.Row>
             <Grid.Row columns={1}>
               <Grid.Column textAlign="right">
-                <Button href="/login" round size="small" theme="mainFilled" type="link">
+                <BookButton size="small" circular onClick={this.props.onBookClick}>
                   Book now
-                </Button>
+                </BookButton>
               </Grid.Column>
             </Grid.Row>
           </Grid>
@@ -123,4 +135,5 @@ export default class TripSummary extends Component {
 // Props Validation
 TripSummary.propTypes = {
   peopleCount: PropTypes.number.isRequired,
+  onBookClick: PropTypes.func.isRequired,
 };
