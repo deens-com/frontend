@@ -19,7 +19,6 @@ import SectionHappy from "./components/SectionHappy";
 import SectionMood from "./components/SectionMood";
 import SectionPlaces from "./components/SectionPlaces";
 import SectionTrips from "./components/SectionTrips";
-import SubHero from "./components/SubHero";
 import TopBar from "../../components/TopBar";
 
 // ACTIONS/CONFIG
@@ -113,7 +112,6 @@ export default class HomeScene extends Component {
           <SectionTrips trips={tripsData} />
           <SectionPlaces trips={placesData} />
           <SectionActivities locations={activitiesData} />
-          <SubHero />
           <SectionFood foods={foodData} />
           <PageWrapper>
             <Hr withSpacing />

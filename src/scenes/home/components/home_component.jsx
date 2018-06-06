@@ -5,7 +5,6 @@ import Media from "react-media";
 
 // COMPONENTS
 import TopBar from "./../../../shared_components/TopBar";
-import SubHero from "./../../../styled_scenes/Home/components/SubHero";
 import HomeSearch from "./../../../styled_scenes/Home/components/HomeSearch";
 import BrandFooter from "./../../../shared_components/BrandFooter";
 import FooterNav from "./../../../styled_scenes/Home/components/FooterNav";
@@ -104,7 +103,6 @@ const HomeComponent = props => {
         <SectionTrips trips={props.trips} />
         <SectionPlaces trips={props.popularPlaces} />
         <SectionActivities locations={props.exciting_activities} />
-        <SubHero />
         <SectionFood foods={props.delicious_foods} />
         <PageWrapper>
           <Hr withSpacing />
