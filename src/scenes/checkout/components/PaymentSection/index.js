@@ -15,7 +15,7 @@ const Wrap = styled.div`
   justify-content: center;
 `;
 
-const PaymentSection = ({ pricePerPerson, totalPrice, onPaymentClick }) => (
+const PaymentSection = ({ pricePerPerson, totalPrice, onPaymentClick, isLoading }) => (
   <Wrap>
     <Grid>
       <Grid.Row columns={2}>
@@ -33,7 +33,9 @@ const PaymentSection = ({ pricePerPerson, totalPrice, onPaymentClick }) => (
       <Grid.Row columns={1} textAlign="right">
         <Grid.Column>
           <Button as="div" labelPosition="right" onClick={onPaymentClick}>
-            <Button color="green">Pay</Button>
+            <Button color="green" loading={isLoading}>
+              Pay
+            </Button>
             <Label as="a" basic color="green" pointing="left">
               <PriceTag price={totalPrice} unit="hidden" />
             </Label>
@@ -46,6 +48,7 @@ const PaymentSection = ({ pricePerPerson, totalPrice, onPaymentClick }) => (
 );
 
 PaymentSection.propTypes = {
+  isLoading: PropTypes.bool.isRequired,
   pricePerPerson: PropTypes.number.isRequired,
   totalPrice: PropTypes.number.isRequired,
   onPaymentClick: PropTypes.func.isRequired,

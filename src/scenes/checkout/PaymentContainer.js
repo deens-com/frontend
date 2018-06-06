@@ -12,11 +12,16 @@ class PaymentContainer extends React.Component {
   }
 
   render() {
-    const { price, trip, markTripBooked } = this.props;
+    const { price, trip, markTripBooked, isLoading } = this.props;
     const totalPrice = price * (trip.numberOfPerson || 1);
     return (
       <div>
-        <PaymentSection pricePerPerson={price} totalPrice={totalPrice} onPaymentClick={markTripBooked} />
+        <PaymentSection
+          pricePerPerson={price}
+          totalPrice={totalPrice}
+          onPaymentClick={markTripBooked}
+          isLoading={isLoading}
+        />
       </div>
     );
   }
@@ -25,6 +30,7 @@ class PaymentContainer extends React.Component {
 const mapStateToProps = state => ({
   trip: state.TripsReducer.trip,
   price: tripSelectors.getTripTotalPrice(state),
+  isLoading: state.TripsReducer.bookingStatus === actions.tripBookingStatuses.STARTED,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
