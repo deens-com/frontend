@@ -6,6 +6,7 @@ import NotFound from '../../../styled_scenes/NotFound';
 import TripsComponent from './../components/trips_component';
 import * as trips_actions from './../actions';
 import * as selectors from '../selectors';
+import { statuses } from '../../../libs/fetch_helpers';
 
 class TripsContainer extends Component {
   componentDidMount() {
@@ -34,6 +35,11 @@ class TripsContainer extends Component {
     this.props.updateTrip(newDetails, showSaved);
   };
 
+  onBookClick = (startDate, peopleCount) => {
+    console.log({ startDate, peopleCount });
+    this.props.cloneTrip(startDate, peopleCount);
+  };
+
   render() {
     const { tripError } = this.props;
     if (tripError && tripError.code === Parse.Error.OBJECT_NOT_FOUND) {
@@ -45,6 +51,7 @@ class TripsContainer extends Component {
         onServiceDragEnd={this.onDragReOrderChange}
         onServiceRemoveClick={this.onServiceRemoveClick}
         updateTripDetails={this.updateTripDetails}
+        onBookClick={this.onBookClick}
       />
     );
   }
@@ -57,6 +64,7 @@ const mapStateToProps = state => {
     scheduledServices: selectors.getScheduledServices(state),
     unScheduledServices: selectors.getUnScheduledServices(state),
     showTripUpdated: state.TripsReducer.showTripUpdated,
+    isCloningInProcess: state.TripsReducer.cloningStatus === statuses.STARTED,
   };
 };
 
@@ -64,4 +72,7 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators(trips_actions, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TripsContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TripsContainer);

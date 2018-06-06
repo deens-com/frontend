@@ -14,6 +14,8 @@ TripsComponent.propTypes = {
   onServiceRemoveClick: PropTypes.func.isRequired,
   updateTripDetails: PropTypes.func.isRequired,
   showTripUpdated: PropTypes.bool,
+  onBookClick: PropTypes.func.isRequired,
+  isCloningInProcess: PropTypes.bool.isRequired,
 };
 
 export default TripsComponent;

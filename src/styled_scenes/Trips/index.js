@@ -258,6 +258,10 @@ export default class TripsScene extends Component {
                 trip={this.props.trip}
                 scheduledServices={this.props.scheduledServices}
                 unScheduledServices={this.props.unScheduledServices}
+                onBookClick={this.props.onBookClick}
+                isCloningInProcess={this.props.isCloningInProcess}
+                startDate={this.state.startDate}
+                peopleCount={this.state.person.label}
               />
             </TripWrapper>
           </Wrap>
@@ -276,4 +280,6 @@ TripsScene.propTypes = {
   onServiceDragEnd: PropTypes.func.isRequired,
   onServiceRemoveClick: PropTypes.func.isRequired,
   updateTripDetails: PropTypes.func.isRequired,
+  onBookClick: PropTypes.func.isRequired,
+  isCloningInProcess: PropTypes.bool.isRequired,
 };

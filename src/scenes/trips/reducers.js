@@ -1,11 +1,13 @@
 import { keyBy } from '../../libs/normalizer';
 import { removeKey } from '../../libs/Utils';
+import { statuses } from '../../libs/fetch_helpers';
 
 const initialState = {
   trip: {},
   tripError: null,
   showTripUpdated: false,
   serviceAvailabilities: {},
+  cloningStatus: null,
 };
 
 export default function TripsReducer(state = initialState, action = {}) {
@@ -54,6 +56,18 @@ export default function TripsReducer(state = initialState, action = {}) {
       return {
         ...state,
         serviceAvailabilities: action.payload,
+      };
+    }
+    case 'CLONING_STATUS': {
+      return {
+        ...state,
+        cloningStatus: action.payload,
+      };
+    }
+    case 'TRIP_CLONNED': {
+      return {
+        ...state,
+        cloningStatus: statuses.SUCCESS,
       };
     }
     default:

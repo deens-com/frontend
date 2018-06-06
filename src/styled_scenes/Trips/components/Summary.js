@@ -51,11 +51,12 @@ const BookButton = styled(Button)`
   && {
     color: #fff;
     background-color: #5eb89e;
-    border: 1px solid #5FB79E;
-    :hover,:focus {
+    border: 1px solid #5fb79e;
+    :hover,
+    :focus {
       color: #fff;
       background: #4ac4a1;
-      border: 1px solid #5FB79E;
+      border: 1px solid #5fb79e;
     }
   }
 `;
@@ -91,6 +92,10 @@ export default class TripSummary extends Component {
     return totalPrice;
   }
 
+  onBookClickWithDates = () => {
+    this.props.onBookClick(this.props.startDate, this.props.peopleCount);
+  };
+
   render() {
     return (
       <Wrap>
@@ -114,7 +119,12 @@ export default class TripSummary extends Component {
             </Grid.Row>
             <Grid.Row columns={1}>
               <Grid.Column textAlign="right">
-                <BookButton size="small" circular onClick={this.props.onBookClick}>
+                <BookButton
+                  size="small"
+                  circular
+                  onClick={this.onBookClickWithDates}
+                  loading={this.props.isCloningInProcess}
+                >
                   Book now
                 </BookButton>
               </Grid.Column>
@@ -134,6 +144,8 @@ export default class TripSummary extends Component {
 
 // Props Validation
 TripSummary.propTypes = {
-  peopleCount: PropTypes.number.isRequired,
   onBookClick: PropTypes.func.isRequired,
+  isCloningInProcess: PropTypes.bool.isRequired,
+  startDate: PropTypes.string.isRequired,
+  peopleCount: PropTypes.string.isRequired,
 };
