@@ -20,6 +20,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+yarn.lock
+
 # ignore the generated semantic-ui component files
 src/vendor/components/
 .vscode

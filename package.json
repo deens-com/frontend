@@ -16,6 +16,7 @@
     "parse": "^1.11.1",
     "prop-types": "^15.6.1",
     "query-string": "^5.0.0",
+    "raven-js": "^3.25.2",
     "react": "^16.2.0",
     "react-beautiful-dnd": "7.1.2",
     "react-day-picker": "^7.1.4",
