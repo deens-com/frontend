@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter, Link } from 'react-router-dom';
 import Parse from 'parse';
+import history from "../../../main/history";
 
 import * as actions from '../actions';
 import ServiceForm from '../../../shared_components/ServiceForm';
@@ -12,7 +13,16 @@ class EditServiceFormContainer extends Component {
   getServiceId = () => this.props.match.params.id;
 
   componentDidMount() {
+    this.props.fetchUserProfile();
     this.props.fetchService(this.getServiceId());
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { service, userProfile } = nextProps;
+
+    if(service && userProfile && service.owner.objectId !== userProfile.objectId) {
+      history.push("/account/services");
+    }
   }
 
   onSubmit = values => {
@@ -28,7 +38,7 @@ class EditServiceFormContainer extends Component {
     return (
       <React.Fragment>
         <h2> Editing Service {service && <Link to={`/services/${service.objectId}`}>{service.name}</Link>} </h2>
-        <ServiceForm onSubmit={this.onSubmit} submitInFlight={isLoading} submitButtonText="Save" {...this.props} />
+        <ServiceForm onSubmit={this.onSubmit} submitInFlight={isLoading} submitButtonText="Save" userProfile="lslsls" {...this.props} />
       </React.Fragment>
     );
   }
@@ -38,6 +48,7 @@ const mapStateToProps = state => ({
   isLoading: state.ServiceUpsert.isLoading,
   service: state.ServiceUpsert.service,
   fetchError: state.ServiceUpsert.error,
+  userProfile: state.ServiceUpsert.userProfile,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);

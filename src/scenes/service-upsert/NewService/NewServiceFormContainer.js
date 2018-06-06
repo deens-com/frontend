@@ -11,6 +11,10 @@ class NewServiceFormContainer extends Component {
     this.props.registerService(values, this.props.history);
   };
 
+  componentDidMount() {
+    this.props.fetchUserProfile();
+  }
+
   render() {
     return <ServiceForm onSubmit={this.onSubmit} submitInFlight={this.props.isSubmitting} globalError={this.props.error}/>;
   }

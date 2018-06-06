@@ -50,6 +50,11 @@ export default (state = initialState, action) => {
         error: action.payload,
         isLoading: false,
       };
+    case 'USER_PROFILE_FETCHED':
+      return {
+        ...state,
+        userProfile: action.payload.userProfile,
+      };
     default:
       return state;
   }
