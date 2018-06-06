@@ -103,13 +103,17 @@ export const checkAvailability = (beginDate, peopleCount) => async (dispatch, ge
 
 export const setShowTripUpdated = value => dispatch => dispatch(tripUpdated(value));
 
-export const cloneTrip = (beginDate, peopleCount) => async (dispatch, getState) => {
+export const cloneTrip = (beginDate, peopleCount, history) => async (dispatch, getState) => {
   const state = getState();
   const tripId = state.TripsReducer.trip.objectId;
   dispatch(setTripCloningStatus(fetch_helpers.statuses.STARTED));
   try {
     const result = await Parse.Cloud.run('preBookingStep', { tripId, beginDate, peopleCount });
     dispatch({ type: 'TRIP_CLONNED', payload: result });
+    if (result.allAvailable) {
+      // if all the services are available take the user to Checkout Page
+      history.push(`/checkout/${result.newTripId}`);
+    }
   } catch (error) {
     dispatch(setTripCloningStatus(fetch_helpers.statuses.ERROR));
   }

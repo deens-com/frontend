@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { withRouter } from 'react-router-dom';
 import Parse from 'parse';
 import NotFound from '../../../styled_scenes/NotFound';
 import TripsComponent from './../components/trips_component';
@@ -37,7 +38,7 @@ class TripsContainer extends Component {
 
   onBookClick = (startDate, peopleCount) => {
     console.log({ startDate, peopleCount });
-    this.props.cloneTrip(startDate, peopleCount);
+    this.props.cloneTrip(startDate, peopleCount, this.props.history);
   };
 
   render() {
@@ -75,4 +76,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(TripsContainer);
+)(withRouter(TripsContainer));

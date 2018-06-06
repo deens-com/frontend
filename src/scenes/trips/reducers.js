@@ -8,6 +8,7 @@ const initialState = {
   showTripUpdated: false,
   serviceAvailabilities: {},
   cloningStatus: null,
+  preBookingStepResult: null,
 };
 
 export default function TripsReducer(state = initialState, action = {}) {
@@ -68,6 +69,7 @@ export default function TripsReducer(state = initialState, action = {}) {
       return {
         ...state,
         cloningStatus: statuses.SUCCESS,
+        preBookingStepResult: action.payload,
       };
     }
     default:
