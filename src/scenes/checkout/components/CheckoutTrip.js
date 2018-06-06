@@ -4,7 +4,7 @@ import TripDay from './TripDay';
 
 const CheckoutTrip = ({ trip, scheduledServices }) => {
   const tripDays = scheduledServices.map(({ day, services }) => (
-    <TripDay key={day} dayIndex={day} services={services} />
+    <TripDay key={day} tripBeginDate={trip.beginDate} dayIndex={day} services={services} />
   ));
   return (
     <div>

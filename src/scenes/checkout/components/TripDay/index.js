@@ -1,18 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 
 import ExcerptCart from '../../../../shared_components/Carts/DetailCart/ExcerptCart';
 import { Wrap, Header, DayTitle, DayTag, Mute } from './styles';
 import { Cart as ServiceCard } from '../../../../shared_components/Carts/styles';
 import EmptyTripDay from '../../../../styled_scenes/Trips/components/EmptyTripDay';
 
-const TripDay = ({ dayIndex, services }) => {
+const TripDay = ({ dayIndex, services, tripBeginDate }) => {
   return (
     <Wrap>
       <Header>
         <DayTitle>
           <DayTag>Day {dayIndex}</DayTag>
-          <Mute>2018-06-06</Mute>
+          <Mute>
+            {moment(tripBeginDate)
+              .add(dayIndex - 1, 'days')
+              .format('Do MMM YYYY')}
+          </Mute>
         </DayTitle>
       </Header>
       {services.map(service => (
@@ -26,6 +31,7 @@ const TripDay = ({ dayIndex, services }) => {
 };
 
 TripDay.propTypes = {
+  tripBeginDate: PropTypes.string.isRequired,
   dayIndex: PropTypes.number.isRequired,
   services: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
