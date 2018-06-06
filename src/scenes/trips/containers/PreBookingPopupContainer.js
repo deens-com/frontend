@@ -7,6 +7,10 @@ import PreBookingPopup from '../components/PreBookingPopup';
 import * as actions from '../actions';
 
 class PreBookingPopupContainer extends React.Component {
+  componentDidMount() {
+    this.props.removePreBookingResults();
+  }
+
   removeUnAvailableServices = () => {
     console.log('remove unvailable services and go ahead');
   };
