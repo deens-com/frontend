@@ -20,6 +20,10 @@ const ErrorMsg = styled.div`
   color: red;
 `;
 
+const Flex = styled.div`
+  display: flex;
+`;
+
 class ServiceForm extends Component {
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
@@ -309,7 +313,12 @@ class ServiceForm extends Component {
 
         <Form.Field>
           <label>Service Picture</label>
-          <input type="file" name="mainPicture" accept=".jpg, .jpeg, .png" onChange={this.onFileSelect} />
+          <Flex>
+            {!values.mainPicture &&
+              service &&
+              service.mainPicture && <img src={service.mainPicture.url} alt="service" height="43px" />}
+            <input type="file" name="mainPicture" accept=".jpg, .jpeg, .png" onChange={this.onFileSelect} />
+          </Flex>
         </Form.Field>
 
         <Form.Button disabled={submitInFlight}>{this.props.submitButtonText}</Form.Button>
