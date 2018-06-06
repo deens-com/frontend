@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import PaymentSection from './components/PaymentSection';
 import * as tripSelectors from '../trips/selectors';
 import * as actions from './actions';
+import { statuses } from '../../libs/fetch_helpers';
 
 class PaymentContainer extends React.Component {
   componentDidMount() {
@@ -30,7 +31,7 @@ class PaymentContainer extends React.Component {
 const mapStateToProps = state => ({
   trip: state.TripsReducer.trip,
   price: tripSelectors.getTripTotalPrice(state),
-  isLoading: state.TripsReducer.bookingStatus === actions.tripBookingStatuses.STARTED,
+  isLoading: state.TripsReducer.bookingStatus === statuses.STARTED,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { tripBookingStatuses } from '../actions';
+import { statuses } from '../../../libs/fetch_helpers';
 import { CenterAlign } from '../../../libs/styled';
 
 const ThankYouMsg = styled.h2`
@@ -18,7 +18,7 @@ class BookedSuccessfullyPopup extends React.Component {
 
   render() {
     const { bookingStatus } = this.props;
-    const show = bookingStatus === tripBookingStatuses.SUCCESS;
+    const show = bookingStatus === statuses.SUCCESS;
     return (
       <Modal centered={false} open={show} onClose={this.onClose} size="tiny">
         <Modal.Header>Payment Successful</Modal.Header>

@@ -4,23 +4,19 @@ export const types = {
   MARK_TRIP_BOOKED_STATUS: 'MARK_TRIP_BOOKED_STATUS',
 };
 
-export const tripBookingStatuses = {
-  STARTED: 'started',
-  SUCCESS: 'success',
-  ERROR: 'error',
-};
+const { statuses } = fetch_helpers;
 
 export const markTripBooked = () => async (dispatch, getState) => {
   const state = getState();
   const { bookingStatus, trip } = state.TripsReducer;
   const tripId = trip.objectId;
   if (!tripId) return;
-  if (bookingStatus === tripBookingStatuses.STARTED) return;
-  dispatch({ type: types.MARK_TRIP_BOOKED_STATUS, payload: tripBookingStatuses.STARTED });
+  if (bookingStatus === statuses.STARTED) return;
+  dispatch({ type: types.MARK_TRIP_BOOKED_STATUS, payload: statuses.STARTED });
   try {
     const trip = await fetch_helpers.build_query('Trip').get(tripId);
     await trip.save({ booked: true });
-    dispatch({ type: types.MARK_TRIP_BOOKED_STATUS, payload: tripBookingStatuses.SUCCESS });
+    dispatch({ type: types.MARK_TRIP_BOOKED_STATUS, payload: statuses.SUCCESS });
   } catch (error) {
     dispatch({ type: types.MARK_TRIP_BOOKED_STATUS, payload: error });
   }
