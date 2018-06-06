@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import TopBar from '../../shared_components/TopBarWithSearch';
 import Logo from '../../shared_components/TopBar/Logo';
 import BrandFooter from '../../shared_components/BrandFooter';
-import FooterNav from '../Home/components/FooterNav';
 
 // ACTIONS/CONFIG
 
@@ -45,7 +44,6 @@ export default function NotFoundScene({ showScene }) {
         We are sorry but we could not find the page you are looking for.
       </p>
       <Hr withSpacing />
-      <FooterNav />
       <Hr />
       <BrandFooter />
     </React.Fragment>

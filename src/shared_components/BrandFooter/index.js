@@ -76,13 +76,12 @@ export default function Footer({ withTopBorder, withPadding }) {
     <Wrapper withTopBorder={withTopBorder} withPadding={withPadding}>
       <Company>
         <Logo />
-        <span>© Please Inc.</span>
+        <span>© Please SEZC.</span>
       </Company>
       <Nav>
         <div>
           <FLink to="/">Terms</FLink>
           <FLink to="/">Privacy</FLink>
-          <FLink to="/">Sitemap</FLink>
         </div>
         <div>
           <ALink href="https://www.facebook.com/PleaseDotCom" target="_blank">

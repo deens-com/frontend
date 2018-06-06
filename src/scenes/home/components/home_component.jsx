@@ -5,10 +5,8 @@ import Media from "react-media";
 
 // COMPONENTS
 import TopBar from "./../../../shared_components/TopBar";
-import SubHero from "./../../../styled_scenes/Home/components/SubHero";
 import HomeSearch from "./../../../styled_scenes/Home/components/HomeSearch";
 import BrandFooter from "./../../../shared_components/BrandFooter";
-import FooterNav from "./../../../styled_scenes/Home/components/FooterNav";
 import MobileHero from "./../../../styled_scenes/Home/components/MobileHero";
 import HeroSlider from "./../../../styled_scenes/Home/components/HeroSlider";
 import SectionActivities from "./../../../styled_scenes/Home/components/SectionActivities";
@@ -58,7 +56,6 @@ const HomeTagLine = styled.h1`
   }
 
   span {
-    font-family: "HaydonBrush", Georgia, serif;
     font-size: 36px;
     left: 26px;
     letter-spacing: 0;
@@ -104,12 +101,8 @@ const HomeComponent = props => {
         <SectionTrips trips={props.trips} />
         <SectionPlaces trips={props.popularPlaces} />
         <SectionActivities locations={props.exciting_activities} />
-        <SubHero />
         <SectionFood foods={props.delicious_foods} />
         <PageWrapper>
-          <Hr withSpacing />
-          <FooterNav />
-          <Hr />
           <BrandFooter />
         </PageWrapper>
       </PageContent>

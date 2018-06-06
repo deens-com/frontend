@@ -8,7 +8,6 @@ import Media from "react-media";
 // COMPONENTS
 import BrandFooter from "../../components/BrandFooter";
 import Button from "../../components/Button";
-import FooterNav from "./components/FooterNav";
 import hands from "./components/HeroSlider/img/hands.jpg";
 import HeroSlider from "./components/HeroSlider";
 import HomeSearch from "./components/HomeSearch";
@@ -19,7 +18,6 @@ import SectionHappy from "./components/SectionHappy";
 import SectionMood from "./components/SectionMood";
 import SectionPlaces from "./components/SectionPlaces";
 import SectionTrips from "./components/SectionTrips";
-import SubHero from "./components/SubHero";
 import TopBar from "../../components/TopBar";
 
 // ACTIONS/CONFIG
@@ -65,7 +63,6 @@ const HomeTagLine = styled.h1`
   }
 
   span {
-    font-family: "HaydonBrush", Georgia, serif;
     font-size: 36px;
     left: 26px;
     letter-spacing: 0;
@@ -113,11 +110,9 @@ export default class HomeScene extends Component {
           <SectionTrips trips={tripsData} />
           <SectionPlaces trips={placesData} />
           <SectionActivities locations={activitiesData} />
-          <SubHero />
           <SectionFood foods={foodData} />
           <PageWrapper>
             <Hr withSpacing />
-            <FooterNav />
             <Hr />
             <BrandFooter />
           </PageWrapper>
