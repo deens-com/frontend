@@ -21,8 +21,12 @@ class PreBookingPopup extends React.Component {
         <Header icon="warning sign" content="Some services are unavailable" />
         <Modal.Content>
           <Modal.Description>
-            <p>Some of the services are not available on your booking dates</p>
-            <p>Change dates, move around services and change people count</p>
+            {/* TODO: replace the below YYYY-MM-DD & X with proper variables */}
+            <p>Some of the services of your trip are unavailable on YYYY-MM-DD for X people.</p>
+            <p>
+              You may continue booking the remaining available services by clicking on Book Now or you can change your
+              search criteria
+            </p>
           </Modal.Description>
         </Modal.Content>
         <Modal.Actions>
