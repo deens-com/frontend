@@ -126,7 +126,7 @@ export default class TripsScene extends Component {
       location: '',
       startDate: null,
       endDate: null,
-      person: { label: '1', value: '1' },
+      person: {},
       details: true,
     };
 
@@ -136,7 +136,10 @@ export default class TripsScene extends Component {
   }
 
   onSubmit(ev) {
-    this.props.updateTripDetails({ beginDate: this.state.startDate, endDate: this.state.endDate }, true);
+    this.props.updateTripDetails(
+      { beginDate: this.state.startDate, endDate: this.state.endDate, numberOfPerson: this.state.person.value },
+      true
+    );
   }
 
   checkAvailability = () => this.props.checkAvailability(this.state.startDate, parseInt(this.state.person.label, 10));
@@ -161,7 +164,7 @@ export default class TripsScene extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { trip } = nextProps;
-    let beginDate, endDate;
+    let beginDate, endDate, person = this.state.person;
     if (!this.state.startDate) {
       const isoBeginDate = this.getBeginDate(trip);
       beginDate = isoBeginDate && moment(isoBeginDate).toDate();
@@ -170,9 +173,13 @@ export default class TripsScene extends Component {
       const isoEndDate = this.getEndDate(trip);
       endDate = isoEndDate && moment(isoEndDate).toDate();
     }
+    if (!this.state.person || !this.state.person.value) {
+      person = { label: trip.numberOfPerson, value: trip.numberOfPerson };
+    }
     this.setState({
       startDate: this.state.startDate || beginDate,
       endDate: this.state.endDate || endDate,
+      person,
     });
   }
 
