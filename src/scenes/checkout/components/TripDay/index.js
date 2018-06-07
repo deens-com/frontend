@@ -31,7 +31,7 @@ const TripDay = ({ dayIndex, services, tripBeginDate }) => {
 };
 
 TripDay.propTypes = {
-  tripBeginDate: PropTypes.string.isRequired,
+  tripBeginDate: PropTypes.oneOfType([PropTypes.string, PropTypes.shape({ iso: PropTypes.string })]).isRequired,
   dayIndex: PropTypes.number.isRequired,
   services: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

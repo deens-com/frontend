@@ -124,8 +124,8 @@ export default class TripsScene extends Component {
     super(props);
     this.state = {
       location: '',
-      startDate: null,
-      endDate: null,
+      startDate: '',
+      endDate: '',
       person: {},
       details: true,
     };

@@ -146,6 +146,6 @@ export default class TripSummary extends Component {
 TripSummary.propTypes = {
   onBookClick: PropTypes.func.isRequired,
   isCloningInProcess: PropTypes.bool.isRequired,
-  startDate: PropTypes.string.isRequired,
-  peopleCount: PropTypes.string.isRequired,
+  startDate: PropTypes.oneOfType([PropTypes.instanceOf(Date), PropTypes.string]),
+  peopleCount: PropTypes.string,
 };
