@@ -164,7 +164,7 @@ export default class TripsScene extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { trip } = nextProps;
-    let beginDate, endDate, person;
+    let beginDate, endDate, person = this.state.person;
     if (!this.state.startDate) {
       const isoBeginDate = this.getBeginDate(trip);
       beginDate = isoBeginDate && moment(isoBeginDate).toDate();
@@ -179,7 +179,7 @@ export default class TripsScene extends Component {
     this.setState({
       startDate: this.state.startDate || beginDate,
       endDate: this.state.endDate || endDate,
-      person: person ? person : this.state.person,
+      person,
     });
   }
 
