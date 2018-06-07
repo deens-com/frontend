@@ -99,7 +99,18 @@ class ServiceForm extends Component {
   };
 
   render() {
-    const { values, errors, globalError, touched, handleChange, handleBlur, handleSubmit, submitInFlight, userProfile } = this.props;
+    const {
+      values,
+      errors,
+      globalError,
+      touched,
+      handleChange,
+      handleBlur,
+      handleSubmit,
+      submitInFlight,
+      userProfile,
+      service,
+    } = this.props;
     const defaultProps = {
       onChange: handleChange,
       onBlur: handleBlur,
@@ -107,16 +118,14 @@ class ServiceForm extends Component {
 
     const showGlobalError = (typeof globalError !== 'undefined' && globalError !== null) || false;
 
-    const userHasConnectedWallet = userProfile && (userProfile.ledgerPublicAddress || userProfile.metamaskPublicAddress);
+    const userHasConnectedWallet =
+      userProfile && (userProfile.ledgerPublicAddress || userProfile.metamaskPublicAddress);
 
     return (
       <Form onSubmit={handleSubmit} loading={submitInFlight}>
-
         <Modal size="tiny" open={showGlobalError}>
           <Modal.Header>There was an issue with creating your service</Modal.Header>
-          <Modal.Content>
-            {globalError}
-          </Modal.Content>
+          <Modal.Content>{globalError}</Modal.Content>
         </Modal>
 
         {/* Service Type */}
@@ -173,26 +182,41 @@ class ServiceForm extends Component {
         </Form.Field>
 
         {/* Accept Ethereum */}
-        {userHasConnectedWallet ?
-          (<Message info>
+        {userHasConnectedWallet ? (
+          <Message info>
             <Message.Header>Publish smart contract and accept payments in Ethereum</Message.Header>
             <Message.Content>
               <br />
               <Form.Field>
-                <Form.Checkbox id="acceptETH" name="acceptETH" checked={values.acceptETH} {...defaultProps} label="Yes, I'd like to publish a smart contract for this service."/>
+                <Form.Checkbox
+                  id="acceptETH"
+                  name="acceptETH"
+                  checked={values.acceptETH}
+                  {...defaultProps}
+                  label="Yes, I'd like to publish a smart contract for this service."
+                  disabled={!!service}
+                />
+                <span>*Can't update this once service is created</span>
               </Form.Field>
             </Message.Content>
-          </Message>)
-          :
-          (<Message info>
-            <Message.Header>Publish smart contract and accept payments in Ethereum</Message.Header>
-            <br />
-            <Message.Content>
-              If you want to publish a smart contract and accept payments in Ethereum, you should connect your account with Ledger or MetaMask. <br /><br />
-              <strong><Link to="/account/settings">Click here</Link></strong> to continue to your settings page where you can connect your preferred wallet.
-            </Message.Content>
-          </Message>)
-        }
+          </Message>
+        ) : (
+          !service && (
+            <Message info>
+              <Message.Header>Publish smart contract and accept payments in Ethereum</Message.Header>
+              <br />
+              <Message.Content>
+                If you want to publish a smart contract and accept payments in Ethereum, you should connect your account
+                with Ledger or MetaMask. <br />
+                <br />
+                <strong>
+                  <Link to="/account/settings">Click here</Link>
+                </strong>{' '}
+                to continue to your settings page where you can connect your preferred wallet.
+              </Message.Content>
+            </Message>
+          )
+        )}
 
         {/* Available Days */}
         <Form.Group grouped>
