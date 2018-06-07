@@ -38,7 +38,7 @@ class EditServiceFormContainer extends Component {
     return (
       <React.Fragment>
         <h2> Editing Service {service && <Link to={`/services/${service.objectId}`}>{service.name}</Link>} </h2>
-        <ServiceForm onSubmit={this.onSubmit} submitInFlight={isLoading} submitButtonText="Save" userProfile="lslsls" {...this.props} />
+        <ServiceForm onSubmit={this.onSubmit} submitInFlight={isLoading} submitButtonText="Save" {...this.props} />
       </React.Fragment>
     );
   }
