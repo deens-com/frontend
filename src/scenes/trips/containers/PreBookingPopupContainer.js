@@ -18,14 +18,13 @@ class PreBookingPopupContainer extends React.Component {
   };
 
   render() {
-    const { preBookingStepResult, removePreBookingResults } = this.props;
+    const { preBookingStepResult } = this.props;
     if (!preBookingStepResult) {
       return null;
     }
     return (
       <PreBookingPopup
-        preBookingStepResult={preBookingStepResult}
-        removePreBookingResults={removePreBookingResults}
+        {...this.props}
         redirectToOwnedTrip={this.redirectToOwnedTrip}
       />
     );
@@ -34,6 +33,7 @@ class PreBookingPopupContainer extends React.Component {
 
 const mapStateToProps = state => ({
   preBookingStepResult: state.TripsReducer.preBookingStepResult,
+  query: state.TripsReducer.query,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
