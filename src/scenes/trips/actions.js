@@ -50,7 +50,7 @@ export const fetchTrip = tripId => async (dispatch, getState) => {
     }));
     const services = tripOrganizations.map(tOrg => tOrg.service);
     dispatch(trip_fetched({ trip, tripOrganizations: tripOrganizationMappings, services }));
-    checkAvailability(tripRaw.get('beginDate'), 1)(dispatch, getState);
+    checkAvailability(tripRaw.get('beginDate'), tripRaw.get('numberOfPerson'))(dispatch, getState);
   } catch (error) {
     console.error(error);
     if (error.code === Parse.Error.OBJECT_NOT_FOUND) dispatch(tripFetchError(error));
