@@ -34,6 +34,20 @@ export const comparatorWithNullValues = (valueA, valueB) => {
   else return valueA - valueB;
 };
 
+/**
+ * This is a one-way diff, 
+ * meaning that it will return keys/values from object2 that are not identical to their counterparts in object1
+ */
+export const oneWayDiff = (object1, object2) => {
+  return Object.keys(object2).reduce((diff, key) => {
+    if (object1[key] === object2[key]) return diff;
+    return {
+      ...diff,
+      [key]: object2[key],
+    };
+  }, {});
+};
+
 /* Does not work as expected */
 export const uniqEs6 = (arrArg) => {
   return arrArg.filter((elem, pos, arr) => {

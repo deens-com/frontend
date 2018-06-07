@@ -66,6 +66,7 @@ const mapStateToProps = state => {
     unScheduledServices: selectors.getUnScheduledServices(state),
     showTripUpdated: state.TripsReducer.showTripUpdated,
     isCloningInProcess: state.TripsReducer.cloningStatus === statuses.STARTED,
+    query: state.TripsReducer.query,
   };
 };
 

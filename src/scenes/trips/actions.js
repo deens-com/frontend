@@ -122,3 +122,11 @@ export const cloneTrip = (beginDate, peopleCount, history) => async (dispatch, g
 export const removePreBookingResults = () => dispatch => {
   dispatch({ type: 'TRIP_CLONNED', payload: null });
 };
+
+/**
+ * Updates the startDate, endDate, person count in the ToolBar
+ */
+export const updateTripQuery = values => dispatch => {
+  if (!values) return;
+  dispatch({ type: 'TRIP_QUERY_UPDATE', payload: values });
+};

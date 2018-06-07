@@ -9,6 +9,11 @@ const initialState = {
   serviceAvailabilities: {},
   cloningStatus: null,
   preBookingStepResult: null,
+  query: {
+    startDate: '',
+    endDate: '',
+    person: { label: '1', value: '1' },
+  },
 };
 
 export default function TripsReducer(state = initialState, action = {}) {
@@ -70,6 +75,15 @@ export default function TripsReducer(state = initialState, action = {}) {
         ...state,
         cloningStatus: statuses.SUCCESS,
         preBookingStepResult: action.payload,
+      };
+    }
+    case 'TRIP_QUERY_UPDATE': {
+      return {
+        ...state,
+        query: {
+          ...state.query,
+          ...action.payload,
+        },
       };
     }
     default:
