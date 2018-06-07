@@ -20,6 +20,10 @@ const ErrorMsg = styled.div`
   color: red;
 `;
 
+const Flex = styled.div`
+  display: flex;
+`;
+
 class ServiceForm extends Component {
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
@@ -309,7 +313,12 @@ class ServiceForm extends Component {
 
         <Form.Field>
           <label>Service Picture</label>
-          <input type="file" name="mainPicture" accept=".jpg, .jpeg, .png" onChange={this.onFileSelect} />
+          <Flex>
+            {!values.mainPicture &&
+              service &&
+              service.mainPicture && <img src={service.mainPicture.url} alt="service" height="43px" />}
+            <input type="file" name="mainPicture" accept=".jpg, .jpeg, .png" onChange={this.onFileSelect} />
+          </Flex>
         </Form.Field>
 
         <Form.Button disabled={submitInFlight}>{this.props.submitButtonText}</Form.Button>
@@ -360,12 +369,12 @@ export default withFormik({
     type: (service && service.type) || null,
     name: (service && service.name) || '',
     description: (service && service.description) || '',
-    pricePerSession: (service && service.pricePerSession) || '',
+    pricePerSession: service && service.pricePerSession != null ? service.pricePerSession : '',
     acceptETH: (service && service.acceptETH) || false,
     availableDays: (service && service.DayList && new Set(service.DayList)) || new Set(),
-    openingTime: (service && service.openingTime) || null,
-    closingTime: (service && service.closingTime) || null,
-    slots: (service && service.slots) || '',
+    openingTime: service && service.openingTime != null ? service.openingTime : null,
+    closingTime: service && service.closingTime != null ? service.closingTime : null,
+    slots: service && service.slots != null ? service.slots : '',
     latlong: (service && { lat: service.latitude, lng: service.longitude }) || null,
     tags: (service && service.tags) || [],
     formattedAddress: (service && service.formattedAddress) || '',
