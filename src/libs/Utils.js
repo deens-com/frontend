@@ -61,6 +61,7 @@ export const uniqEs6 = (arrArg) => {
  * Thus this function
  */
 export const getISODateString = date => {
+  if (!date) return date;
   if (date.__type === 'Date') {
     return date.iso;
   } else if (date instanceof Date) {

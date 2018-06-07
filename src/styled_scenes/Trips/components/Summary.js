@@ -11,6 +11,7 @@ import PriceTag from '../../../shared_components/Currency/PriceTag';
 
 // ACTIONS/CONFIG
 import { media } from '../../../libs/styled';
+import { getISODateString } from '../../../libs/Utils';
 
 // STLYES
 const Wrap = styled.div`
@@ -61,16 +62,18 @@ const BookButton = styled(Button)`
   }
 `;
 
+const ErrorMsg = styled.div`
+  color: red;
+`;
+
 // MODULE
 export default class TripSummary extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      logged_in: false,
-      total: 0,
-      services: [],
-    };
-  }
+  state = {
+    logged_in: false,
+    total: 0,
+    services: [],
+    tripDirty: false,
+  };
 
   componentDidMount() {
     if (Parse.User.current() === null) {
@@ -93,8 +96,27 @@ export default class TripSummary extends Component {
   }
 
   onBookClickWithDates = () => {
-    this.props.onBookClick(this.props.startDate, this.props.peopleCount);
+    const { query, onBookClick } = this.props;
+    onBookClick(query.startDate, query.person.value);
   };
+
+  componentWillReceiveProps(nextProps) {
+    const { trip, query } = nextProps;
+    if (!trip || !trip.objectId) return;
+    const currentUser = Parse.User.current();
+    if (!currentUser) return;
+    if (currentUser.id !== trip.owner.objectId) {
+      if (this.state.tripDirty) this.setState({ tripDirty: false });
+      return;
+    }
+    const isStartDateDirty = getISODateString(query.startDate) !== getISODateString(trip.beginDate);
+    const isEndDateDirty = getISODateString(query.endDate) !== getISODateString(trip.endDate);
+    const isPeopleCountDirty = parseInt(query.person.value, 10) !== trip.numberOfPerson;
+    const isTripDirty = isStartDateDirty || isEndDateDirty || isPeopleCountDirty;
+    if (this.state.tripDirty !== isTripDirty) {
+      this.setState({ tripDirty: isTripDirty });
+    }
+  }
 
   render() {
     return (
@@ -114,16 +136,18 @@ export default class TripSummary extends Component {
             <Grid.Row columns={2}>
               <Grid.Column stretched>Total Price</Grid.Column>
               <Grid.Column textAlign="right">
-                <PriceTag price={this.calculateTripTotalPrice() * this.props.peopleCount} unit="hidden" />
+                <PriceTag price={this.calculateTripTotalPrice() * this.props.query.person.value} unit="hidden" />
               </Grid.Column>
             </Grid.Row>
             <Grid.Row columns={1}>
               <Grid.Column textAlign="right">
+                {this.state.tripDirty && <ErrorMsg>Save the trip before booking</ErrorMsg>}
                 <BookButton
                   size="small"
                   circular
                   onClick={this.onBookClickWithDates}
                   loading={this.props.isCloningInProcess}
+                  disabled={this.state.tripDirty}
                 >
                   Book now
                 </BookButton>
@@ -144,8 +168,10 @@ export default class TripSummary extends Component {
 
 // Props Validation
 TripSummary.propTypes = {
+  trip: PropTypes.object,
+  scheduledServices: PropTypes.arrayOf(PropTypes.object),
+  unScheduledServices: PropTypes.arrayOf(PropTypes.object),
   onBookClick: PropTypes.func.isRequired,
   isCloningInProcess: PropTypes.bool.isRequired,
-  startDate: PropTypes.oneOfType([PropTypes.instanceOf(Date), PropTypes.string]),
-  peopleCount: PropTypes.string,
+  query: PropTypes.object,
 };
