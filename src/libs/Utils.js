@@ -54,3 +54,18 @@ export const uniqEs6 = (arrArg) => {
     return arr.indexOf(elem) === pos;
   });
 }
+
+/**
+ * A lot of times it's difficult to get the ISO date
+ * out of the various date types we have
+ * Thus this function
+ */
+export const getISODateString = date => {
+  if (date.__type === 'Date') {
+    return date.iso;
+  } else if (date instanceof Date) {
+    return date.toISOString();
+  } else {
+    return date;
+  }
+};

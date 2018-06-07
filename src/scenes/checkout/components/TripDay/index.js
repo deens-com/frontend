@@ -6,6 +6,7 @@ import ExcerptCart from '../../../../shared_components/Carts/DetailCart/ExcerptC
 import { Wrap, Header, DayTitle, DayTag, Mute } from './styles';
 import { Cart as ServiceCard } from '../../../../shared_components/Carts/styles';
 import EmptyTripDay from '../../../../styled_scenes/Trips/components/EmptyTripDay';
+import { getISODateString } from '../../../../libs/Utils';
 
 const TripDay = ({ dayIndex, services, tripBeginDate }) => {
   return (
@@ -14,7 +15,7 @@ const TripDay = ({ dayIndex, services, tripBeginDate }) => {
         <DayTitle>
           <DayTag>Day {dayIndex}</DayTag>
           <Mute>
-            {moment(tripBeginDate)
+            {moment(getISODateString(tripBeginDate))
               .add(dayIndex - 1, 'days')
               .format('Do MMM YYYY')}
           </Mute>
