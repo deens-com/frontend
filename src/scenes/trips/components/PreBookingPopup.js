@@ -22,7 +22,7 @@ class PreBookingPopup extends React.Component {
         <Modal.Content>
           <Modal.Description>
             <p>Some of the services are not available on your booking dates</p>
-            <p>On the next page you can change dates, move around services and change people count</p>
+            <p>Change dates, move around services and change people count</p>
           </Modal.Description>
         </Modal.Content>
         <Modal.Actions>
