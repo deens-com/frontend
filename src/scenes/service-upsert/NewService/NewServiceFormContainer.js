@@ -16,15 +16,26 @@ class NewServiceFormContainer extends Component {
   }
 
   render() {
-    return <ServiceForm onSubmit={this.onSubmit} submitInFlight={this.props.isSubmitting} globalError={this.props.error}/>;
+    return (
+      <ServiceForm
+        onSubmit={this.onSubmit}
+        submitInFlight={this.props.isSubmitting}
+        globalError={this.props.error}
+        {...this.props}
+      />
+    );
   }
 }
 
 const mapStateToProps = state => ({
   isSubmitting: state.ServiceUpsert.isSubmitting,
   error: state.ServiceUpsert.error,
+  userProfile: state.ServiceUpsert.userProfile,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(NewServiceFormContainer));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(NewServiceFormContainer));

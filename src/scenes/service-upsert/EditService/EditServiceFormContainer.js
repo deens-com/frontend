@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter, Link } from 'react-router-dom';
 import Parse from 'parse';
-import history from "../../../main/history";
+import history from '../../../main/history';
 
 import * as actions from '../actions';
 import ServiceForm from '../../../shared_components/ServiceForm';
@@ -20,8 +20,8 @@ class EditServiceFormContainer extends Component {
   componentWillReceiveProps(nextProps) {
     const { service, userProfile } = nextProps;
 
-    if(service && userProfile && service.owner.objectId !== userProfile.objectId) {
-      history.push("/account/services");
+    if (service && userProfile && service.owner.objectId !== userProfile.objectId) {
+      history.push('/account/services');
     }
   }
 
@@ -53,4 +53,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(EditServiceFormContainer));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(EditServiceFormContainer));
