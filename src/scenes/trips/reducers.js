@@ -12,7 +12,7 @@ const initialState = {
   query: {
     startDate: '',
     endDate: '',
-    person: { label: '1', value: '1' },
+    person: {},
   },
 };
 

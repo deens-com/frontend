@@ -171,7 +171,7 @@ export default class TripsScene extends Component {
       const isoEndDate = this.getEndDate(trip);
       endDate = isoEndDate && moment(isoEndDate).toDate();
     }
-    if (!query.person || !query.person.value) {
+    if ((!query.person || !query.person.value) && trip.numberOfPerson) {
       person = { label: trip.numberOfPerson, value: trip.numberOfPerson };
     }
     const diff = oneWayDiff(query, {
@@ -263,8 +263,7 @@ export default class TripsScene extends Component {
                 unScheduledServices={this.props.unScheduledServices}
                 onBookClick={this.props.onBookClick}
                 isCloningInProcess={this.props.isCloningInProcess}
-                startDate={query.startDate}
-                peopleCount={query.person.label}
+                query={query}
               />
             </TripWrapper>
           </Wrap>
