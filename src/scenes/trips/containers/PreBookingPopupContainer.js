@@ -11,8 +11,10 @@ class PreBookingPopupContainer extends React.Component {
     this.props.removePreBookingResults();
   }
 
-  removeUnAvailableServices = () => {
-    console.log('remove unvailable services and go ahead');
+  redirectToOwnedTrip = () => {
+    const { preBookingStepResult, history } = this.props;
+    history.push(`/trips/${preBookingStepResult.newTripId}`);
+    this.props.removePreBookingResults();
   };
 
   render() {
@@ -24,7 +26,7 @@ class PreBookingPopupContainer extends React.Component {
       <PreBookingPopup
         preBookingStepResult={preBookingStepResult}
         removePreBookingResults={removePreBookingResults}
-        removeUnAvailableServices={this.removeUnAvailableServices}
+        redirectToOwnedTrip={this.redirectToOwnedTrip}
       />
     );
   }
