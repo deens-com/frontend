@@ -164,12 +164,15 @@ export default class TripsScene extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { trip } = nextProps;
-    let beginDate, endDate, person = this.state.person;
-    if (!this.state.startDate) {
+    let beginDate,
+      endDate,
+      person = this.state.person;
+    const isDifferentTrip = (this.props.trip && this.props.trip.objectId) !== (trip && trip.objectId);
+    if (!this.state.startDate || isDifferentTrip) {
       const isoBeginDate = this.getBeginDate(trip);
       beginDate = isoBeginDate && moment(isoBeginDate).toDate();
     }
-    if (!this.state.endDate) {
+    if (!this.state.endDate || isDifferentTrip) {
       const isoEndDate = this.getEndDate(trip);
       endDate = isoEndDate && moment(isoEndDate).toDate();
     }
@@ -177,8 +180,8 @@ export default class TripsScene extends Component {
       person = { label: trip.numberOfPerson, value: trip.numberOfPerson };
     }
     this.setState({
-      startDate: this.state.startDate || beginDate,
-      endDate: this.state.endDate || endDate,
+      startDate: beginDate || this.state.startDate,
+      endDate: endDate || this.state.endDate,
       person,
     });
   }
