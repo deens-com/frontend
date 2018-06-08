@@ -5,7 +5,7 @@ export const Wrapper = (props) => {
   if (props.status === "verified"){
     return (
       <div>
-      <Label color='green' className="status" size={props.size}>
+      <Label color='olive' className="status" size={props.size}>
         {Status.verified}
      </Label>
      </div>
@@ -13,7 +13,7 @@ export const Wrapper = (props) => {
   } else if (props.status === "rejected"){
     return (
       <div>
-      <Label color='red' className="status" size={props.size}>
+      <Label color='brown' className="status" size={props.size}>
        {Status.rejected}
      </Label>
      </div>
