@@ -41,10 +41,12 @@ export const fetchTrip = tripId => async (dispatch, getState) => {
     ]);
     let trip = fetch_helpers.normalizeParseResponseData(tripRaw);
     trip = fetch_helpers.mapServiceObjects([trip])[0];
-    const tripOrganizations = fetch_helpers.normalizeParseResponseData(tripOrganizationsRaw);
+    const tripOrganizations = fetch_helpers
+      .normalizeParseResponseData(tripOrganizationsRaw)
+      .filter(tOrg => !!tOrg.service);
     const tripOrganizationMappings = tripOrganizations.map(tOrg => ({
       objectId: tOrg.objectId,
-      tripId: tOrg.trip.objectId,
+      tripId: trip.objectId,
       serviceId: tOrg.service.objectId,
       day: tOrg.day,
     }));
