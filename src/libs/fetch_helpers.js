@@ -67,6 +67,12 @@ const build_query = (model) => {
   return query;
 };
 
+export const statuses = {
+  STARTED: 'started',
+  SUCCESS: 'success',
+  ERROR: 'error',
+};
+
 export default {
   normalizeParseResponseData,
   getRandomInt,
@@ -75,5 +81,6 @@ export default {
   removeDuplicates,
   build_query,
   bgColors,
-  hoverBgColors
+  hoverBgColors,
+  statuses
 }

@@ -1,4 +1,4 @@
-// import { css } from 'styled-components'
+import styled from 'styled-components'
 
 // const sizes = {
 //   giant: 1170,
@@ -74,3 +74,10 @@ export const resetButton = opt => {
     width: 100%;
   `;
 };
+
+export const CenterAlign = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+`;

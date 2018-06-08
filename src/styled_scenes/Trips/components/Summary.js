@@ -3,15 +3,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Grid } from 'semantic-ui-react';
+import { Grid, Button } from 'semantic-ui-react';
 import Parse from 'parse';
 
 // COMPONENTS
-import Button from '../../../shared_components/Button';
 import PriceTag from '../../../shared_components/Currency/PriceTag';
 
 // ACTIONS/CONFIG
 import { media } from '../../../libs/styled';
+import { getISODateString } from '../../../libs/Utils';
 
 // STLYES
 const Wrap = styled.div`
@@ -48,16 +48,32 @@ const TotalHint = styled.p`
   }
 `;
 
+const BookButton = styled(Button)`
+  && {
+    color: #fff;
+    background-color: #5eb89e;
+    border: 1px solid #5fb79e;
+    :hover,
+    :focus {
+      color: #fff;
+      background: #4ac4a1;
+      border: 1px solid #5fb79e;
+    }
+  }
+`;
+
+const ErrorMsg = styled.div`
+  color: red;
+`;
+
 // MODULE
 export default class TripSummary extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      logged_in: false,
-      total: 0,
-      services: [],
-    };
-  }
+  state = {
+    logged_in: false,
+    total: 0,
+    services: [],
+    tripDirty: false,
+  };
 
   componentDidMount() {
     if (Parse.User.current() === null) {
@@ -79,6 +95,29 @@ export default class TripSummary extends Component {
     return totalPrice;
   }
 
+  onBookClickWithDates = () => {
+    const { query, onBookClick } = this.props;
+    onBookClick(query.startDate, query.person.value);
+  };
+
+  componentWillReceiveProps(nextProps) {
+    const { trip, query } = nextProps;
+    if (!trip || !trip.objectId) return;
+    const currentUser = Parse.User.current();
+    if (!currentUser) return;
+    if (currentUser.id !== trip.owner.objectId) {
+      if (this.state.tripDirty) this.setState({ tripDirty: false });
+      return;
+    }
+    const isStartDateDirty = getISODateString(query.startDate) !== getISODateString(trip.beginDate);
+    const isEndDateDirty = getISODateString(query.endDate) !== getISODateString(trip.endDate);
+    const isPeopleCountDirty = parseInt(query.person.value, 10) !== trip.numberOfPerson;
+    const isTripDirty = isStartDateDirty || isEndDateDirty || isPeopleCountDirty;
+    if (this.state.tripDirty !== isTripDirty) {
+      this.setState({ tripDirty: isTripDirty });
+    }
+  }
+
   render() {
     return (
       <Wrap>
@@ -97,14 +136,21 @@ export default class TripSummary extends Component {
             <Grid.Row columns={2}>
               <Grid.Column stretched>Total Price</Grid.Column>
               <Grid.Column textAlign="right">
-                <PriceTag price={this.calculateTripTotalPrice() * this.props.peopleCount} unit="hidden" />
+                <PriceTag price={this.calculateTripTotalPrice() * this.props.query.person.value} unit="hidden" />
               </Grid.Column>
             </Grid.Row>
             <Grid.Row columns={1}>
               <Grid.Column textAlign="right">
-                <Button href="/login" round size="small" theme="mainFilled" type="link">
+                {this.state.tripDirty && <ErrorMsg>Save the trip before booking</ErrorMsg>}
+                <BookButton
+                  size="small"
+                  circular
+                  onClick={this.onBookClickWithDates}
+                  loading={this.props.isCloningInProcess}
+                  disabled={this.state.tripDirty}
+                >
                   Book now
-                </Button>
+                </BookButton>
               </Grid.Column>
             </Grid.Row>
           </Grid>
@@ -122,5 +168,10 @@ export default class TripSummary extends Component {
 
 // Props Validation
 TripSummary.propTypes = {
-  peopleCount: PropTypes.number.isRequired,
+  trip: PropTypes.object,
+  scheduledServices: PropTypes.arrayOf(PropTypes.object),
+  unScheduledServices: PropTypes.arrayOf(PropTypes.object),
+  onBookClick: PropTypes.func.isRequired,
+  isCloningInProcess: PropTypes.bool.isRequired,
+  query: PropTypes.object,
 };

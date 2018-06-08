@@ -21,6 +21,7 @@ export const removeService = tripOrganizationId => ({
 export const tripUpdated = value => ({ type: 'TRIP_UPDATED', payload: value });
 
 export const serviceAvailabilities = obj => ({ type: 'SERVICE_AVAILIBILITIES', payload: obj });
+export const setTripCloningStatus = status => ({ type: 'CLONING_STATUS', payload: status });
 
 export const fetchTrip = tripId => async (dispatch, getState) => {
   if (!tripId) {
@@ -40,16 +41,18 @@ export const fetchTrip = tripId => async (dispatch, getState) => {
     ]);
     let trip = fetch_helpers.normalizeParseResponseData(tripRaw);
     trip = fetch_helpers.mapServiceObjects([trip])[0];
-    const tripOrganizations = fetch_helpers.normalizeParseResponseData(tripOrganizationsRaw);
+    const tripOrganizations = fetch_helpers
+      .normalizeParseResponseData(tripOrganizationsRaw)
+      .filter(tOrg => !!tOrg.service);
     const tripOrganizationMappings = tripOrganizations.map(tOrg => ({
       objectId: tOrg.objectId,
-      tripId: tOrg.trip.objectId,
+      tripId: trip.objectId,
       serviceId: tOrg.service.objectId,
       day: tOrg.day,
     }));
     const services = tripOrganizations.map(tOrg => tOrg.service);
     dispatch(trip_fetched({ trip, tripOrganizations: tripOrganizationMappings, services }));
-    checkAvailability(tripRaw.get('beginDate'), trip.numberOfPerson || 1)(dispatch, getState);
+    checkAvailability(tripRaw.get('beginDate'), tripRaw.get('numberOfPerson'))(dispatch, getState);
   } catch (error) {
     console.error(error);
     if (error.code === Parse.Error.OBJECT_NOT_FOUND) dispatch(tripFetchError(error));
@@ -101,3 +104,31 @@ export const checkAvailability = (beginDate, peopleCount) => async (dispatch, ge
 };
 
 export const setShowTripUpdated = value => dispatch => dispatch(tripUpdated(value));
+
+export const cloneTrip = (beginDate, peopleCount, history) => async (dispatch, getState) => {
+  const state = getState();
+  const tripId = state.TripsReducer.trip.objectId;
+  dispatch(setTripCloningStatus(fetch_helpers.statuses.STARTED));
+  try {
+    const result = await Parse.Cloud.run('preBookingStep', { tripId, beginDate, peopleCount });
+    dispatch({ type: 'TRIP_CLONNED', payload: result });
+    if (result.allAvailable) {
+      // if all the services are available take the user to Checkout Page
+      history.push(`/checkout/${result.newTripId}`);
+    }
+  } catch (error) {
+    dispatch(setTripCloningStatus(fetch_helpers.statuses.ERROR));
+  }
+};
+
+export const removePreBookingResults = () => dispatch => {
+  dispatch({ type: 'TRIP_CLONNED', payload: null });
+};
+
+/**
+ * Updates the startDate, endDate, person count in the ToolBar
+ */
+export const updateTripQuery = values => dispatch => {
+  if (!values) return;
+  dispatch({ type: 'TRIP_QUERY_UPDATE', payload: values });
+};

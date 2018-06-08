@@ -23,6 +23,7 @@ import { media, sizes } from '../../libs/styled';
 // STYLES
 import { Page, PageContent } from '../../shared_components/layout/Page';
 import { Hr } from '../../shared_components/styledComponents/misc';
+import { oneWayDiff } from '../../libs/Utils';
 
 const Wrap = styled.div`
   ${media.minMediumPlus} {
@@ -120,37 +121,30 @@ const ProfileWrap = styled.div`
 
 // MODULE
 export default class TripsScene extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      location: '',
-      startDate: null,
-      endDate: null,
-      person: {},
-      details: true,
-    };
+  state = {
+    details: true,
+  };
 
-    this.onSubmit = this.onSubmit.bind(this);
-    this.onValueChange = this.onValueChange.bind(this);
-    this.toggleDetails = this.toggleDetails.bind(this);
-  }
-
-  onSubmit(ev) {
+  onSubmit = ev => {
+    const { query } = this.props;
     this.props.updateTripDetails(
-      { beginDate: this.state.startDate, endDate: this.state.endDate, numberOfPerson: this.state.person.value },
+      { beginDate: query.startDate, endDate: query.endDate, numberOfPerson: query.person.value },
       true
     );
-  }
+  };
 
-  checkAvailability = () => this.props.checkAvailability(this.state.startDate, parseInt(this.state.person.label, 10));
+  checkAvailability = () => {
+    const { query } = this.props;
+    this.props.checkAvailability(query.startDate, parseInt(query.person.label, 10));
+  };
 
-  onValueChange(key, value) {
-    this.setState({ [key]: value });
-  }
+  onValueChange = (key, value) => {
+    this.props.updateTripQuery({ [key]: value });
+  };
 
-  toggleDetails() {
+  toggleDetails = () => {
     this.setState({ details: !this.state.details });
-  }
+  };
 
   getBeginDate = trip => {
     if (!trip) trip = this.props.trip;
@@ -163,29 +157,38 @@ export default class TripsScene extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
+    const { query, updateTripQuery } = this.props;
     const { trip } = nextProps;
-    let beginDate, endDate, person = this.state.person;
-    if (!this.state.startDate) {
+    let beginDate,
+      endDate,
+      person = query.person;
+    const isDifferentTrip = (this.props.trip && this.props.trip.objectId) !== (trip && trip.objectId);
+    if (!query.startDate || isDifferentTrip) {
       const isoBeginDate = this.getBeginDate(trip);
       beginDate = isoBeginDate && moment(isoBeginDate).toDate();
     }
-    if (!this.state.endDate) {
+    if (!query.endDate || isDifferentTrip) {
       const isoEndDate = this.getEndDate(trip);
       endDate = isoEndDate && moment(isoEndDate).toDate();
     }
-    if (!this.state.person || !this.state.person.value) {
+    if ((!query.person || !query.person.value) && trip.numberOfPerson) {
       person = { label: trip.numberOfPerson, value: trip.numberOfPerson };
     }
-    this.setState({
-      startDate: this.state.startDate || beginDate,
-      endDate: this.state.endDate || endDate,
+    const diff = oneWayDiff(query, {
+      startDate: beginDate || query.startDate,
+      endDate: endDate || query.endDate,
       person,
     });
+    if (Object.keys(diff).length) {
+      // dispatch update only if there's an update
+      updateTripQuery(diff);
+    }
   }
 
   render() {
     const beginDate = this.getBeginDate();
     const endDate = this.getEndDate();
+    const { query } = this.props;
     return (
       <Page topPush>
         <TopBar fixed withPadding />
@@ -240,7 +243,7 @@ export default class TripsScene extends Component {
               <ToolBar
                 onSubmit={this.onSubmit}
                 onValueChange={this.onValueChange}
-                state={this.state}
+                state={query}
                 trip={this.props.trip}
                 showTripUpdated={this.props.showTripUpdated}
                 onCheckAvailabilityClick={this.checkAvailability}
@@ -255,10 +258,12 @@ export default class TripsScene extends Component {
               />
               <Hr />
               <Summary
-                peopleCount={this.state.person.value}
                 trip={this.props.trip}
                 scheduledServices={this.props.scheduledServices}
                 unScheduledServices={this.props.unScheduledServices}
+                onBookClick={this.props.onBookClick}
+                isCloningInProcess={this.props.isCloningInProcess}
+                query={query}
               />
             </TripWrapper>
           </Wrap>
@@ -277,4 +282,6 @@ TripsScene.propTypes = {
   onServiceDragEnd: PropTypes.func.isRequired,
   onServiceRemoveClick: PropTypes.func.isRequired,
   updateTripDetails: PropTypes.func.isRequired,
+  onBookClick: PropTypes.func.isRequired,
+  isCloningInProcess: PropTypes.bool.isRequired,
 };

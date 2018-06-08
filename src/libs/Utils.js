@@ -34,9 +34,39 @@ export const comparatorWithNullValues = (valueA, valueB) => {
   else return valueA - valueB;
 };
 
+/**
+ * This is a one-way diff, 
+ * meaning that it will return keys/values from object2 that are not identical to their counterparts in object1
+ */
+export const oneWayDiff = (object1, object2) => {
+  return Object.keys(object2).reduce((diff, key) => {
+    if (object1[key] === object2[key]) return diff;
+    return {
+      ...diff,
+      [key]: object2[key],
+    };
+  }, {});
+};
+
 /* Does not work as expected */
 export const uniqEs6 = (arrArg) => {
   return arrArg.filter((elem, pos, arr) => {
     return arr.indexOf(elem) === pos;
   });
 }
+
+/**
+ * A lot of times it's difficult to get the ISO date
+ * out of the various date types we have
+ * Thus this function
+ */
+export const getISODateString = date => {
+  if (!date) return date;
+  if (date.__type === 'Date') {
+    return date.iso;
+  } else if (date instanceof Date) {
+    return date.toISOString();
+  } else {
+    return date;
+  }
+};

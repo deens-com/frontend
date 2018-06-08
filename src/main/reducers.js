@@ -8,13 +8,17 @@ import TripsReducer from '../scenes/trips/reducers';
 import ServicesReducer from '../scenes/services/reducers';
 import UsersReducer from '../scenes/users/reducers';
 import ServiceUpsert from '../scenes/service-upsert/reducers';
+import CheckoutReducer from '../scenes/checkout/reducers';
+
+const combineFlat = reducers => (state, action) =>
+  reducers.reduce((newState, reducer) => reducer(newState, action), state);
 
 const allReducers = combineReducers({
   HomeReducer,
   SessionsReducer,
   RegistrationsReducer,
   ResultsReducer,
-  TripsReducer,
+  TripsReducer: combineFlat([TripsReducer, CheckoutReducer]),
   ServicesReducer,
   UsersReducer,
   AccountReducer,

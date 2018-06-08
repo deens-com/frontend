@@ -15,6 +15,13 @@ import Registrations from "./../scenes/registrations/registrations";
 import Notfound from "./../styled_scenes/NotFound";
 import ScrollToTop from "./middlewares/ScrollToTop";
 import ServiceUpsert from '../scenes/service-upsert';
+import Checkout from '../scenes/checkout';
+
+const TripsWithSegment = withSegmentTracker(Trips);
+// when the url param changes React Router doesn't unmount & remount the component
+// instead it just changes the props
+// by applying a key, React will unmount and remount the component on key change
+const renderTrips = props => <TripsWithSegment {...props} key={props.location.pathname}/>
 
 const App = () => {
   return (
@@ -53,7 +60,11 @@ const App = () => {
             />
             <Route
               path={process.env.PUBLIC_URL + "/trips/:id"}
-              component={withSegmentTracker(Trips)}
+              render={renderTrips}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/checkout/:id"}
+              component={withSegmentTracker(Checkout)}
             />
             <Route
               path={process.env.PUBLIC_URL + "/users/:userName"}
