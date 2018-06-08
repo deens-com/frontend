@@ -57,7 +57,7 @@ const ServiceItem = (item) => {
   return (
     <Cart column>
       {showContractStatus &&
-        <SmartContractStatus.Wrapper status={item.contractStatus}/>
+        <SmartContractStatus.Wrapper status={item.contractStatus} hash={item.hash}/>
       }
       {item.mainPicture &&
         <Link to={ "/services/" + item.objectId} key={item.objectId}>

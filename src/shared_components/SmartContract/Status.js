@@ -22,7 +22,7 @@ export const Wrapper = (props) => {
 
   return (
     <div>
-    <Label as="a" color='teal' className="status" size={props.size}>
+    <Label as="a" href={"https://ropsten.etherscan.io/tx/"+props.hash} target="_blank" color='teal' className="status" size={props.size}>
      <Icon name='external' />{Status.pending}
    </Label>
    </div>

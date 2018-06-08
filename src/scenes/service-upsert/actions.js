@@ -182,6 +182,7 @@ export const deployContract = (service, values, history) => async (dispatch, get
 
     let newContractAddress = ethers.utils.getContractAddress(transactionResponse);
     service.set('contractAddress', newContractAddress);
+    service.set('hash', transactionResponse.hash);
 
     await service.save();
 

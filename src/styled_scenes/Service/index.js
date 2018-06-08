@@ -344,7 +344,7 @@ class FoodDetailScene extends Component {
           />
           <DetailWrapper>
             {showContractStatus &&
-              <SmartContractStatus.Wrapper size="big" status={this.props.service.contractStatus}/>
+              <SmartContractStatus.Wrapper size="big" status={this.props.service.contractStatus} hash={this.props.service.hash}/>
             }
             <br />
             <TagWrap>
