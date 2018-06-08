@@ -200,7 +200,7 @@ class ServiceForm extends Component {
                   label="Yes, I'd like to publish a smart contract for this service."
                   disabled={!!service}
                 />
-                <span>*Can't update this once service is created</span>
+                {service && <span>*Can't update this once service is created</span>}
               </Form.Field>
             </Message.Content>
           </Message>
