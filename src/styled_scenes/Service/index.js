@@ -8,7 +8,7 @@ import GoogleMapReact from "google-map-react";
 
 // COMPONENTS
 import TopBar from "./../../shared_components/TopBarWithSearch";
-
+import * as SmartContractStatus from "shared_components/SmartContract/Status";
 import BrandFooter from "../../shared_components/BrandFooter";
 import Tag from "./components/Tag";
 import Rating from "../../shared_components/Rating";
@@ -332,6 +332,8 @@ class FoodDetailScene extends Component {
   }
 
   render(){
+    const showContractStatus = this.props.service.contractAddress != null;
+
     return (
       <Page topPush>
         <TopBar fixed withPadding />
@@ -341,6 +343,10 @@ class FoodDetailScene extends Component {
             render={() => <ImgSlider images={this.props.service.pictures} />}
           />
           <DetailWrapper>
+            {showContractStatus &&
+              <SmartContractStatus.Wrapper size="big" status={this.props.service.contractStatus} hash={this.props.service.hash}/>
+            }
+            <br />
             <TagWrap>
               {this.props.service && this.props.service.tags && this.props.service.tags.map(tag => (<Link to={"/results?tags=" + tag.label}><Tag key={tag.label} item={tag} /></Link>))}
             </TagWrap>

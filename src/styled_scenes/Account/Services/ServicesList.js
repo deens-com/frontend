@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import uuid from 'uuid/v1';
 import { Divider, Label, Button, Icon } from 'semantic-ui-react';
 import styled from "styled-components";
-import Rating from "../../../shared_components/Rating";
+import Rating from "shared_components/Rating";
+import * as SmartContractStatus from "shared_components/SmartContract/Status";
 import PriceTag from "../../../shared_components/Currency/PriceTag";
 import Thumb from "../../../shared_components/Carts/components/Thumb";
 import { Cart, ContentWrap } from "../../../shared_components/Carts/styles";
@@ -31,6 +32,13 @@ const Wrap = styled.div`
   display: inline-block;
   width: 240px;
   padding: 10px;
+  position: relative;
+
+  .status {
+    position: absolute !important
+    top: 0;
+    right: 0;
+  }
 `;
 
 const PriceTitle = styled.span`
@@ -42,10 +50,15 @@ const PriceTitle = styled.span`
 `;
 
 const ServiceItem = (item) => {
-  let isActivated = (item.serviceStatus !== "disabled");
+  const isActivated = item.serviceStatus !== "disabled";
+
+  const showContractStatus = item.contractAddress != null;
+
   return (
     <Cart column>
-
+      {showContractStatus &&
+        <SmartContractStatus.Wrapper status={item.contractStatus} hash={item.hash}/>
+      }
       {item.mainPicture &&
         <Link to={ "/services/" + item.objectId} key={item.objectId}>
           <Thumb
@@ -67,6 +80,7 @@ const ServiceItem = (item) => {
           />
 
           <Label>{item.type}</Label>
+
           <br /><br />
           <PriceTitle>Starting from</PriceTitle>
           <PriceTag price={item.pricePerSession} />
