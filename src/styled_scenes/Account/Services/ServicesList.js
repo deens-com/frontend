@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import uuid from 'uuid/v1';
 import { Divider, Label, Button, Icon } from 'semantic-ui-react';
 import styled from "styled-components";
-import Rating from "../../../shared_components/Rating";
+import Rating from "shared_components/Rating";
 import PriceTag from "../../../shared_components/Currency/PriceTag";
 import Thumb from "../../../shared_components/Carts/components/Thumb";
 import { Cart, ContentWrap } from "../../../shared_components/Carts/styles";
@@ -31,6 +31,13 @@ const Wrap = styled.div`
   display: inline-block;
   width: 240px;
   padding: 10px;
+  position: relative;
+
+  .status {
+    position: absolute !important
+    top: 0;
+    right: 0;
+  }
 `;
 
 const PriceTitle = styled.span`
@@ -41,11 +48,50 @@ const PriceTitle = styled.span`
   text-transform: uppercase;
 `;
 
+const contractStatusLabel = {
+  pending: "Pending Verification",
+  rejected: "Smart Contract Rejected",
+  verified: "Smart Contract Verified"
+}
+
+const ContractStatusWrapper = (props) => {
+  if (props.status === "verified"){
+    return (
+      <div>
+      <Label color='green' className="status">
+        {contractStatusLabel.verified}
+     </Label>
+     </div>
+    )
+  } else if (props.status === "rejected"){
+    return (
+      <div>
+      <Label color='red' className="status">
+       {contractStatusLabel.rejected}
+     </Label>
+     </div>
+    )
+  }
+
+  return (
+    <div>
+    <Label as="a" color='teal' className="status">
+     <Icon name='external' />{contractStatusLabel.pending}
+   </Label>
+   </div>
+  )
+}
+
 const ServiceItem = (item) => {
-  let isActivated = (item.serviceStatus !== "disabled");
+  const isActivated = item.serviceStatus !== "disabled";
+
+  const showContractStatus = item.contractAddress != null;
+
   return (
     <Cart column>
-
+      {showContractStatus &&
+        <ContractStatusWrapper status={item.contractStatus}/>
+      }
       {item.mainPicture &&
         <Link to={ "/services/" + item.objectId} key={item.objectId}>
           <Thumb
@@ -67,6 +113,7 @@ const ServiceItem = (item) => {
           />
 
           <Label>{item.type}</Label>
+
           <br /><br />
           <PriceTitle>Starting from</PriceTitle>
           <PriceTag price={item.pricePerSession} />
