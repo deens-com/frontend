@@ -33,11 +33,13 @@ const Wrap = styled.div`
   width: 240px;
   padding: 10px;
   position: relative;
+  float: left;
 
   .status {
     position: absolute !important
     top: 0;
     right: 0;
+    z-index: 1;
   }
 `;
 
