@@ -148,7 +148,7 @@ export const fetch_user_trips = (owner_id, trip_state) => {
         // Trips which are not yet booked and with beginDate in the future
         const pastStartDateAndNotPurchased = fetch_helpers
           .build_query('Trip')
-          .notEqualTo('booked', true)
+          .equalTo('booked', true)
           .greaterThan('beginDate', moment_now);
           //.lessThan('beginDate', moment_now);
         //const startDateInFuture = fetch_helpers.build_query('Trip').greaterThan('beginDate', moment_now);
