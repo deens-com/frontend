@@ -58,10 +58,17 @@ export default function TripsReducer(state = initialState, action = {}) {
         showTripUpdated: action.payload,
       };
     }
-    case 'SERVICE_AVAILIBILITIES': {
+    case 'SERVICE_AVAILIBILITIES_START': {
+      return {
+        ...state,
+        serviceAvailabilityCheckStatus: statuses.STARTED,
+      };
+    }
+    case 'SERVICE_AVAILIBILITIES_SUCCESS': {
       return {
         ...state,
         serviceAvailabilities: action.payload,
+        serviceAvailabilityCheckStatus: statuses.SUCCESS,
       };
     }
     case 'CLONING_STATUS': {

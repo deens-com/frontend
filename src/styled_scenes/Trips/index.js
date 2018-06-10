@@ -247,6 +247,7 @@ export default class TripsScene extends Component {
                 trip={this.props.trip}
                 showTripUpdated={this.props.showTripUpdated}
                 onCheckAvailabilityClick={this.checkAvailability}
+                serviceAvailabilityCheckInProgress={this.props.serviceAvailabilityCheckInProgress}
               />
               <Results
                 trip={this.props.trip}
@@ -284,4 +285,5 @@ TripsScene.propTypes = {
   updateTripDetails: PropTypes.func.isRequired,
   onBookClick: PropTypes.func.isRequired,
   isCloningInProcess: PropTypes.bool.isRequired,
+  serviceAvailabilityCheckInProgress: PropTypes.bool.isRequired,
 };

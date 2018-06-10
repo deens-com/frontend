@@ -67,6 +67,7 @@ const mapStateToProps = state => {
     showTripUpdated: state.TripsReducer.showTripUpdated,
     isCloningInProcess: state.TripsReducer.cloningStatus === statuses.STARTED,
     query: state.TripsReducer.query,
+    serviceAvailabilityCheckInProgress: state.TripsReducer.serviceAvailabilityCheckStatus === statuses.STARTED,
   };
 };
 

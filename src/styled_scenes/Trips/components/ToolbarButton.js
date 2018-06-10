@@ -12,11 +12,16 @@ const SaveButton = ({ showTripUpdated }) =>
     <Button type="submit">Save</Button>
   );
 
-const ToolbarButton = ({ showSaveButton, showTripUpdated, onCheckAvailibilityClick }) =>
+const ToolbarButton = ({
+  showSaveButton,
+  showTripUpdated,
+  onCheckAvailibilityClick,
+  serviceAvailabilityCheckInProgress,
+}) =>
   showSaveButton ? (
     <SaveButton showTripUpdated={showTripUpdated} />
   ) : (
-    <Button type="button" onClick={onCheckAvailibilityClick}>
+    <Button type="button" onClick={onCheckAvailibilityClick} loading={serviceAvailabilityCheckInProgress}>
       Check Availability
     </Button>
   );
@@ -25,6 +30,7 @@ ToolbarButton.propTypes = {
   showSaveButton: PropTypes.bool,
   showTripUpdated: PropTypes.bool,
   onCheckAvailibilityClick: PropTypes.func.isRequired,
+  serviceAvailabilityCheckInProgress: PropTypes.bool.isRequired,
 };
 
 export default ToolbarButton;
