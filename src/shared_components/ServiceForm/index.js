@@ -200,7 +200,7 @@ class ServiceForm extends Component {
                   label="Yes, I'd like to publish a smart contract for this service."
                   disabled={!!service}
                 />
-                <span>*Can't update this once service is created</span>
+                {service && <span>*Can't update this once service is created</span>}
               </Form.Field>
             </Message.Content>
           </Message>
@@ -375,7 +375,8 @@ export default withFormik({
     openingTime: service && service.openingTime != null ? service.openingTime : null,
     closingTime: service && service.closingTime != null ? service.closingTime : null,
     slots: service && service.slots != null ? service.slots : '',
-    latlong: (service && { lat: service.latitude, lng: service.longitude }) || null,
+    latlong:
+      (service && service.latitude && service.longitude && { lat: service.latitude, lng: service.longitude }) || null,
     tags: (service && service.tags) || [],
     formattedAddress: (service && service.formattedAddress) || '',
   }),

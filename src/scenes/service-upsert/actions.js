@@ -1,7 +1,7 @@
 import Parse from 'parse';
 import ethers from 'ethers';
 import fetch_helpers from '../../libs/fetch_helpers';
-import history from "../../main/history";
+import history from '../../main/history';
 
 export const types = {
   SERVICE_CREATE_STARTED: 'SERVICE_CREATE_STARTED',
@@ -14,13 +14,13 @@ export const types = {
 
   SERVICE_SAVE_STARTED: 'EDIT/SERVICE_SAVE_STARTED',
   SERVICE_SAVE_SUCCCESS: 'EDIT/SERVICE_SAVE_SUCCCESS',
-  SERVICE_SAVE_ERROR: 'EDIT/SERVICE_SAVE_ERROR'
+  SERVICE_SAVE_ERROR: 'EDIT/SERVICE_SAVE_ERROR',
 };
 
 export const user_profile_fetched = userProfile => {
   return {
-    type: "USER_PROFILE_FETCHED",
-    payload: userProfile
+    type: 'USER_PROFILE_FETCHED',
+    payload: userProfile,
   };
 };
 
@@ -76,13 +76,22 @@ export const saveServiceChanges = (serviceId, values, history) => async (dispatc
   if (isLoading) return;
   dispatch({ type: types.SERVICE_SAVE_STARTED });
   try {
-    const rawService = await fetch_helpers.build_query('Service').get(serviceId);
+    const { mainPicture } = values;
+    let parseFilePromise;
+    if (mainPicture) {
+      parseFilePromise = new Parse.File(mainPicture.name, mainPicture).save();
+    }
+    const [rawService, parseFile] = await Promise.all([
+      fetch_helpers.build_query('Service').get(serviceId),
+      parseFilePromise,
+    ]);
     const service = fetch_helpers.normalizeParseResponseData(rawService);
     const input = {
       id: serviceId,
       ...service,
       ...values,
       availableDays: [...values.availableDays],
+      parseFile,
     };
     const result = await Parse.Cloud.run('createOrUpdateService', input);
     dispatch({ type: types.SERVICE_SAVE_SUCCCESS, payload: result });
@@ -97,21 +106,24 @@ export const saveServiceChanges = (serviceId, values, history) => async (dispatc
 
 export const fetchUserProfile = () => dispatch => {
   let user = Parse.User.current();
-  if(user === null){
-    history.push("/login")
-  }else{
-    Parse.User.current().fetch().then(response => {
-      const json_response = fetch_helpers.normalizeParseResponseData(response);
-      user = json_response;
-      if(user === null){
-        history.push("/login")
-      }else{
-        const json_user = fetch_helpers.normalizeParseResponseData(user);
-        dispatch(user_profile_fetched({userProfile: json_user}));
-      }
-    }).catch(error => {
-      console.log(error);
-    });
+  if (user === null) {
+    history.push('/login');
+  } else {
+    Parse.User.current()
+      .fetch()
+      .then(response => {
+        const json_response = fetch_helpers.normalizeParseResponseData(response);
+        user = json_response;
+        if (user === null) {
+          history.push('/login');
+        } else {
+          const json_user = fetch_helpers.normalizeParseResponseData(user);
+          dispatch(user_profile_fetched({ userProfile: json_user }));
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 };
 
@@ -189,6 +201,10 @@ export const deployContract = (service, values, history) => async (dispatch, get
     dispatch({ type: types.SERVICE_CREATE_SUCCESS, payload: service });
     history.push(`/services/${service.id}`);
   } catch (e) {
-    dispatch({ type: types.SERVICE_CREATE_ERROR, payload: "We could not deploy the smart contract. Please check if your ledger device or meta mask are connected properly." });
+    dispatch({
+      type: types.SERVICE_CREATE_ERROR,
+      payload:
+        'We could not deploy the smart contract. Please check if your ledger device or meta mask are connected properly.',
+    });
   }
 };
