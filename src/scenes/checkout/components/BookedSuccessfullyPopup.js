@@ -26,9 +26,10 @@ class BookedSuccessfullyPopup extends React.Component {
           <Modal.Description>
             <CenterAlign>
               <Icon name="check circle outline" size="massive" color="green" />
-              <ThankYouMsg>
-                Thanks for booking with <Link to="/">Please.com</Link>
-              </ThankYouMsg>
+              <ThankYouMsg>Your booking has been created successfully.</ThankYouMsg>
+              <h3>
+                Thank you for using <Link to="/">Please.com</Link>
+              </h3>
             </CenterAlign>
           </Modal.Description>
         </Modal.Content>
