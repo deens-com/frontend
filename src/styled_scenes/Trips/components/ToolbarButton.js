@@ -17,7 +17,7 @@ const ToolbarButton = ({ showSaveButton, showTripUpdated, onCheckAvailibilityCli
     <SaveButton showTripUpdated={showTripUpdated} />
   ) : (
     <Button type="button" onClick={onCheckAvailibilityClick}>
-      Check Availibility
+      Check Availability
     </Button>
   );
 
