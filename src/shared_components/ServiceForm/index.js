@@ -188,7 +188,7 @@ class ServiceForm extends Component {
         {/* Accept Ethereum */}
         {userHasConnectedWallet ? (
           <Message info>
-            <Message.Header>Publish smart contract and accept payments in Ethereum</Message.Header>
+            <Message.Header>Deploy smart contract and accept payments in Ethereum</Message.Header>
             <Message.Content>
               <br />
               <Form.Field>
@@ -197,7 +197,7 @@ class ServiceForm extends Component {
                   name="acceptETH"
                   checked={values.acceptETH}
                   {...defaultProps}
-                  label="Yes, I'd like to publish a smart contract for this service."
+                  label="Yes, deploy service as a smart contract"
                   disabled={!!service}
                 />
                 {service && <span>*Can't update this once service is created</span>}
@@ -207,10 +207,10 @@ class ServiceForm extends Component {
         ) : (
           !service && (
             <Message info>
-              <Message.Header>Publish smart contract and accept payments in Ethereum</Message.Header>
+              <Message.Header>Deploy smart contract and accept payments in Ethereum</Message.Header>
               <br />
               <Message.Content>
-                If you want to publish a smart contract and accept payments in Ethereum, you should connect your account
+                If you want to deploy a smart contract and accept payments in Ethereum, you should connect your account
                 with Ledger or MetaMask. <br />
                 <br />
                 <strong>
