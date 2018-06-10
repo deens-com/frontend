@@ -22,7 +22,7 @@ const ToolbarButton = ({
     <SaveButton showTripUpdated={showTripUpdated} />
   ) : (
     <Button type="button" onClick={onCheckAvailibilityClick} loading={serviceAvailabilityCheckInProgress}>
-      Check Availability
+      Check availability
     </Button>
   );
 
