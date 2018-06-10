@@ -1,20 +1,20 @@
 // NPM
-import React from "react";
+import React from 'react';
 import PropTypes from 'prop-types';
-import styled from "styled-components";
+import styled from 'styled-components';
 
 // COMPONENTS
-import PriceTag from "./components/Price";
-import Button from "../../Button";
-import Detail from "./components/Detail";
-import Category from "./components/Category";
-import Description from "./components/Description";
-import Thumb from "../components/Thumb";
-import { TrashIcon } from "./components/icons";
+import PriceTag from './components/Price';
+import Button from '../../Button';
+import Detail from './components/Detail';
+import Category from './components/Category';
+import Description from './components/Description';
+import Thumb from '../components/Thumb';
+import { TrashIcon } from './components/icons';
 
 // ACTIONS/CONFIG
-import { media } from "../../../libs/styled";
-import Tag from "./components/Tag";
+import { media } from '../../../libs/styled';
+import Tag from './components/Tag';
 
 const Wrap = styled.div`
   ${media.minSmall} {
@@ -135,18 +135,13 @@ export default function FullCart({ data, toggleExpansion, onDeleteClick }) {
           </HeaderRow>
           <ContentRow>
             <Detail block icon="clock" text={data.openingTime} />
-            <Detail block icon="pin" text={data.city + ", " + data.country} />
+            <Detail block icon="pin" text={data.city + ', ' + data.country} />
             <Detail block icon="phone" text={data.phone} />
           </ContentRow>
         </CenterCol>
         <RightCol>
           <DeleteButton>
-            <Button
-              theme="icon"
-              size="text"
-              type="button"
-              onClick={onDeleteClick}
-            >
+            <Button theme="icon" size="text" type="button" onClick={onDeleteClick}>
               <TrashIcon />
             </Button>
           </DeleteButton>
@@ -163,7 +158,8 @@ export default function FullCart({ data, toggleExpansion, onDeleteClick }) {
           />
         </RightCol>
       </ContentCol>
-      {data.availability === false ? <Tag text="Unavailable" /> : null}
+      {data.availability === true ? <Tag text="Available" backgroundColor="#4CAF50" /> : null}
+      {data.availability === false ? <Tag text="Unavailable" backgroundColor="#f44336" /> : null}
     </Wrap>
   );
 }

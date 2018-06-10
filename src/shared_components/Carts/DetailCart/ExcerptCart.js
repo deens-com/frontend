@@ -86,7 +86,8 @@ export default function ExcerptCart({ data, toggleExpansion, hideMoreInfo }) {
           )}
         </RightCol>
       </CartRow>
-      {data.availability === false ? <Tag text="Unavailable" /> : null}
+      {data.availability === true ? <Tag text="Available" backgroundColor="#4CAF50" /> : null}
+      {data.availability === false ? <Tag text="Unavailable" backgroundColor="#f44336" /> : null}
     </CartContentWrap>
   );
 }
