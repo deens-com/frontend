@@ -103,14 +103,15 @@ export default class TripSummary extends Component {
   componentWillReceiveProps(nextProps) {
     const { trip, query } = nextProps;
     if (!trip || !trip.objectId) return;
+    const currentTripId = this.props.trip && this.props.trip.objectId;
     const currentUser = Parse.User.current();
     if (!currentUser) return;
-    if (currentUser.id !== trip.owner.objectId) {
+    if (currentUser.id !== trip.owner.objectId || currentTripId !== trip.objectId) {
       if (this.state.tripDirty) this.setState({ tripDirty: false });
       return;
     }
-    const isStartDateDirty = getISODateString(query.startDate) !== getISODateString(trip.beginDate);
-    const isEndDateDirty = getISODateString(query.endDate) !== getISODateString(trip.endDate);
+    const isStartDateDirty = getISODateString(query.startDate) !== getISODateString(trip.beginDate || '');
+    const isEndDateDirty = getISODateString(query.endDate) !== getISODateString(trip.endDate || '');
     const isPeopleCountDirty = parseInt(query.person.value, 10) !== trip.numberOfPerson;
     const isTripDirty = isStartDateDirty || isEndDateDirty || isPeopleCountDirty;
     if (this.state.tripDirty !== isTripDirty) {
@@ -119,6 +120,8 @@ export default class TripSummary extends Component {
   }
 
   render() {
+    const { query } = this.props;
+    const isDatesFormComplete = query.startDate && query.endDate && query.person.value;
     return (
       <Wrap>
         <LeftCol xsBasis="100%" mdBasis="50%">
@@ -147,7 +150,7 @@ export default class TripSummary extends Component {
                   circular
                   onClick={this.onBookClickWithDates}
                   loading={this.props.isCloningInProcess}
-                  disabled={this.state.tripDirty}
+                  disabled={this.state.tripDirty || !isDatesFormComplete}
                 >
                   Book now
                 </BookButton>
