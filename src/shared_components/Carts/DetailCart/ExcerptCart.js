@@ -64,7 +64,7 @@ const RightCol = styled.div`
 `;
 
 // MODULE
-export default function ExcerptCart({ data, toggleExpansion, hideMoreInfo }) {
+export default function ExcerptCart({ data, toggleExpansion, hideMoreInfo, isOwner }) {
   return (
     <CartContentWrap>
       <CartRow>
@@ -73,7 +73,7 @@ export default function ExcerptCart({ data, toggleExpansion, hideMoreInfo }) {
           <Link to={`/services/${data.objectId}`}>
             <Description description={data.description} type="inline-block" />
           </Link>
-          <Detail inline icon="clock" text={data.openingTime} />
+          <Detail inline icon="clock" text={data.openingTime} showEdit={isOwner} />
         </LeftCol>
         <RightCol>
           <Price price={data.pricePerSession} currency={data.currency} />
@@ -98,6 +98,7 @@ export default function ExcerptCart({ data, toggleExpansion, hideMoreInfo }) {
 // Props Validation
 ExcerptCart.propTypes = {
   hideMoreInfo: PropTypes.bool,
+  isOwner: PropTypes.bool.isRequired,
 };
 
 ExcerptCart.defaultProps = {

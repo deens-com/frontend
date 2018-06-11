@@ -41,12 +41,17 @@ export default class DetailCart extends Component {
 
   render() {
     const { props } = this;
+    const serviceCardProps = {
+      data: props.item,
+      toggleExpansion: this.toggleExpansion,
+      isOwner: props.allowServiceRearrange,
+    };
     const serviceCard = (
       <Cart withShadow column>
         {this.state.expanded ? (
-          <FullCart data={this.props.item} toggleExpansion={this.toggleExpansion} onDeleteClick={this.onDeleteClick} />
+          <FullCart {...serviceCardProps} onDeleteClick={this.onDeleteClick} />
         ) : (
-          <ExcerptCart data={this.props.item} toggleExpansion={this.toggleExpansion} />
+          <ExcerptCart {...serviceCardProps} />
         )}
       </Cart>
     );

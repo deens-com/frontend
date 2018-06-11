@@ -1,5 +1,6 @@
 // NPM
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
 import styled from "styled-components";
 import Media from "react-media";
 
@@ -94,14 +95,12 @@ export default class CartDetail extends Component {
     return (
       <Detail
         block={this.props.block}
-        onMouseEnter={this.toggleEdit}
-        onMouseLeave={this.toggleEdit}
       >
         {this.props.icon && (
           <LeftIcon>{this.getIcon(this.props.icon)}</LeftIcon>
         )}
         <Text>{this.props.text}</Text>
-        {this.state.showEdit && (
+        {this.props.showEdit && this.state.showEdit && (
           <Media
             query={`(min-width: ${sizes.large})`}
             render={() => (
@@ -126,4 +125,6 @@ export default class CartDetail extends Component {
 }
 
 // Props Validation
-CartDetail.propTypes = {};
+CartDetail.propTypes = {
+  showEdit: PropTypes.bool.isRequired,
+};

@@ -122,7 +122,7 @@ const HeaderRow = styled.div`
 const ContentRow = styled.div``;
 
 // MODULE
-export default function FullCart({ data, toggleExpansion, onDeleteClick }) {
+export default function FullCart({ data, toggleExpansion, onDeleteClick, isOwner }) {
   return (
     <Wrap>
       <LeftCol>
@@ -137,17 +137,19 @@ export default function FullCart({ data, toggleExpansion, onDeleteClick }) {
             </Link>
           </HeaderRow>
           <ContentRow>
-            <Detail block icon="clock" text={data.openingTime} />
-            <Detail block icon="pin" text={data.city + ', ' + data.country} />
-            <Detail block icon="phone" text={data.phone} />
+            <Detail block icon="clock" text={data.openingTime} showEdit={isOwner} />
+            <Detail block icon="pin" text={data.city + ', ' + data.country} showEdit={isOwner} />
+            <Detail block icon="phone" text={data.phone} showEdit={isOwner} />
           </ContentRow>
         </CenterCol>
         <RightCol>
-          <DeleteButton>
-            <Button theme="icon" size="text" type="button" onClick={onDeleteClick}>
-              <TrashIcon />
-            </Button>
-          </DeleteButton>
+          {isOwner && (
+            <DeleteButton>
+              <Button theme="icon" size="text" type="button" onClick={onDeleteClick}>
+                <TrashIcon />
+              </Button>
+            </DeleteButton>
+          )}
           <PriceTag price={data.pricePerSession} currency={data.currency} isExpanded />
           <Button
             type="button"
@@ -170,4 +172,9 @@ export default function FullCart({ data, toggleExpansion, onDeleteClick }) {
 // Props Validation
 FullCart.propTypes = {
   onDeleteClick: PropTypes.func.isRequired,
+  isOwner: PropTypes.bool.isRequired,
+};
+
+FullCart.defaultProps = {
+  isOwner: false,
 };

@@ -23,7 +23,7 @@ const TripDay = ({ dayIndex, services, tripBeginDate }) => {
       </Header>
       {services.map(service => (
         <ServiceCard withShadow column key={service.objectId}>
-          <ExcerptCart data={service} hideMoreInfo />
+          <ExcerptCart data={service} hideMoreInfo isOwner={false} />
         </ServiceCard>
       ))}
       {services.length !== 0 ? null : <EmptyTripDay allowServiceRearrange={false} />}
