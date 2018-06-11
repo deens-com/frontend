@@ -46,10 +46,8 @@ const TripSectionComponent = props => {
             {trip.beginDate && trip.beginDate.iso && moment(trip.beginDate.iso).format('L')} -{' '}
             {trip.endDate && trip.endDate.iso && moment(trip.endDate.iso).format('L')}
           </p>
-          <Label color={get_label_color(trip.status)}>
-            {trip.status}
-          </Label>
-          <br/><br/>
+          <Label color={get_label_color(trip.status)}>Trip visibility: {trip.status}</Label>
+          <br /><br />
           <CarouselWrapper>
             <Carousel
               sm_slides_nb={1}
