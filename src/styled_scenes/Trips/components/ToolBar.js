@@ -84,7 +84,9 @@ export default function ToolBar({
                   onValueChange('startDate', value);
                 }}
                 value={state.startDate}
-                dayPickerProps={{ disabledDays: { before: new Date(), after: state.endDate } }}
+                dayPickerProps={{
+                  disabledDays: { before: new Date(), after: showSaveButton ? state.endDate : undefined }, // if it's the owner of the trip then make sure he selects a startDate less than the endDate, else remove validation
+                }}
                 type="date"
                 placeholder="From date"
                 leftIcon="date"
