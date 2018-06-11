@@ -144,7 +144,7 @@ export default class TripSummary extends Component {
             </Grid.Row>
             <Grid.Row columns={1}>
               <Grid.Column textAlign="right">
-                {this.state.tripDirty && <ErrorMsg>Save the trip before booking</ErrorMsg>}
+                {this.state.tripDirty && isDatesFormComplete && <ErrorMsg>Save the trip before booking</ErrorMsg>}
                 <BookButton
                   size="small"
                   circular
