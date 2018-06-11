@@ -9,12 +9,13 @@ import { Divider, Label } from 'semantic-ui-react';
 import styled from "styled-components";
 
 const get_label_color = (status) => {
-  switch(status){
+  switch (status) {
     case "public":
       return "green";
     case "private":
       return "orange";
     case "shared":
+    case "unlisted":
       return "blue";
     default:
       break;
