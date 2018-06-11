@@ -14,7 +14,7 @@ const CheckoutScene = props => {
     <Page topPush>
       <TopBar fixed withPadding />
       <PageContent padding="32px">
-        <Grid stackable>
+        <Grid stackable celled>
           <Grid.Column width={8}>
             <CheckoutTripContainer />
           </Grid.Column>
