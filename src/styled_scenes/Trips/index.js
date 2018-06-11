@@ -13,7 +13,6 @@ import Results from './components/Results';
 import ToolBar from './components/ToolBar';
 import Summary from './components/Summary';
 import MapMaker from '../../shared_components/MapMarker';
-import Button from '../../shared_components/Button';
 import UserAvatar from '../../shared_components/UserAvatar';
 import ShareButton from './components/ShareButton';
 

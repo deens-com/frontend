@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 // COMPONENTS
 import Price from './components/Price';
@@ -69,7 +70,9 @@ export default function ExcerptCart({ data, toggleExpansion, hideMoreInfo }) {
       <CartRow>
         <LeftCol>
           <Category category={data.type} />
-          <Description description={data.description} type="inline-block" />
+          <Link to={`/services/${data.objectId}`}>
+            <Description description={data.description} type="inline-block" />
+          </Link>
           <Detail inline icon="clock" text={data.openingTime} />
         </LeftCol>
         <RightCol>

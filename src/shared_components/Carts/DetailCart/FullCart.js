@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 // COMPONENTS
 import PriceTag from './components/Price';
@@ -131,7 +132,9 @@ export default function FullCart({ data, toggleExpansion, onDeleteClick }) {
         <CenterCol>
           <HeaderRow>
             <Category category={data.type} />
-            <Description description={data.description} />
+            <Link to={`/services/${data.objectId}`}>
+              <Description description={data.description} />
+            </Link>
           </HeaderRow>
           <ContentRow>
             <Detail block icon="clock" text={data.openingTime} />
