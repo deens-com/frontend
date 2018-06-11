@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Image, List } from 'semantic-ui-react';
-import moment from "moment";
+import moment from 'moment';
+window.moment = moment;
 
 const getTripImage = trip => {
   if (trip.picture && trip.picture.url) return trip.picture.url;
@@ -9,26 +10,29 @@ const getTripImage = trip => {
 };
 
 class TripsListInDropDown extends React.Component {
-
   onItemClick = trip => () => {
     this.props.onTripClick(trip);
   };
 
-  getStartTripDate = (trip) => {
-    if(trip.beginDate){
-      return "- " + moment(trip.beginDate).format("DD-MM-YYYY") + ", ";
-    }else{
+  getStartTripDate = trip => {
+    if (trip.beginDate) {
+      return '- ' + moment(trip.beginDate).format('DD-MM-YYYY') + ', ';
+    } else {
       return undefined;
     }
-  }
+  };
 
-  getTripDuration = (trip) => {
-    if(trip.beginDate && trip.endDate){
-      return moment.duration(moment(trip.endDate).diff(moment(trip.beginDate))).asDays() + " Days";
-    }else{
+  getTripDuration = trip => {
+    if (trip.beginDate && trip.endDate) {
+      const beginMoment = moment(trip.beginDate);
+      const endMoment = moment(trip.endDate);
+      const diff = endMoment.diff(beginMoment, 'days') + 1;
+      if (diff === 1) return `${diff} day`;
+      return `${diff} days`;
+    } else {
       return undefined;
     }
-  }
+  };
 
   render() {
     return (
