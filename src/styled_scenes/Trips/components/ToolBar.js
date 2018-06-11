@@ -84,7 +84,7 @@ export default function ToolBar({
                   onValueChange('startDate', value);
                 }}
                 value={state.startDate}
-                dayPickerProps={{ disabledDays: { before: new Date() } }}
+                dayPickerProps={{ disabledDays: { before: new Date(), after: state.endDate } }}
                 type="date"
                 placeholder="From date"
                 leftIcon="date"
