@@ -202,14 +202,6 @@ export default class TripsScene extends Component {
                 </span>
                 <ActionsWrap>
                   <ShareButton trip={this.props.trip} updateTripDetails={this.props.updateTripDetails} />
-                  <Button
-                    onClick={ev => {
-                      alert('adding trip');
-                    }}
-                    type="button"
-                    text="Print"
-                    theme="whiteTransparent"
-                  />
                 </ActionsWrap>
                 <ShareBg url="/img/food/mamamia.jpg" />
               </ShareWrap>
