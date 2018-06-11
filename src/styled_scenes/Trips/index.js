@@ -60,16 +60,6 @@ const ShareWrap = styled.div`
   }
 `;
 
-const FirstLine = styled.span`
-  font-size: 40px;
-  display: block;
-`;
-
-const SecondLine = styled.span`
-  font-size: 20px;
-  display: block;
-`;
-
 const DatesWrap = styled.div`
   margin: 25px 0;
 `;
@@ -197,8 +187,6 @@ export default class TripsScene extends Component {
             <LeftWrap>
               <ShareWrap>
                 <h3>
-                  <FirstLine>My trip</FirstLine>
-                  <SecondLine>to</SecondLine>
                   {this.props.trip.title}
                 </h3>
                 <DatesWrap>
