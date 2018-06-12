@@ -39,8 +39,8 @@ const RightCol = styled.div`
 
 const TotalHint = styled.p`
   color: #6e7885;
-  font-size: 13px;
-  max-width: 240px;
+  font-size: 15px;
+  max-width: 360px;
 
   a {
     color: #5fb79e;
@@ -72,15 +72,16 @@ const StickyWrap = styled.div`
   bottom: 0px;
   right: 0px;
   background-color: white;
-  height: 50px;
+  height: 60px;
   width: inherit;
 `;
 
 const PricesWrap = styled.span`
   display: flex;
   position: relative;
-  top: 14px;
+  top: 18px;
   margin-right: 20px;
+  font-size: 22px;
 `;
 
 // MODULE
