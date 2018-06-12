@@ -13,7 +13,6 @@ import Results from './components/Results';
 import ToolBar from './components/ToolBar';
 import Summary from './components/Summary';
 import MapMaker from '../../shared_components/MapMarker';
-import Button from '../../shared_components/Button';
 import UserAvatar from '../../shared_components/UserAvatar';
 import ShareButton from './components/ShareButton';
 
@@ -58,16 +57,6 @@ const ShareWrap = styled.div`
     text-align: center;
     font-size: 50px;
   }
-`;
-
-const FirstLine = styled.span`
-  font-size: 40px;
-  display: block;
-`;
-
-const SecondLine = styled.span`
-  font-size: 20px;
-  display: block;
 `;
 
 const DatesWrap = styled.div`
@@ -197,8 +186,6 @@ export default class TripsScene extends Component {
             <LeftWrap>
               <ShareWrap>
                 <h3>
-                  <FirstLine>My trip</FirstLine>
-                  <SecondLine>to</SecondLine>
                   {this.props.trip.title}
                 </h3>
                 <DatesWrap>
@@ -214,14 +201,6 @@ export default class TripsScene extends Component {
                 </span>
                 <ActionsWrap>
                   <ShareButton trip={this.props.trip} updateTripDetails={this.props.updateTripDetails} />
-                  <Button
-                    onClick={ev => {
-                      alert('adding trip');
-                    }}
-                    type="button"
-                    text="Print"
-                    theme="whiteTransparent"
-                  />
                 </ActionsWrap>
                 <ShareBg url="/img/food/mamamia.jpg" />
               </ShareWrap>

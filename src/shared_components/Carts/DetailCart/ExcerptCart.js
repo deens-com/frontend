@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 // COMPONENTS
 import Price from './components/Price';
@@ -63,14 +64,16 @@ const RightCol = styled.div`
 `;
 
 // MODULE
-export default function ExcerptCart({ data, toggleExpansion, hideMoreInfo }) {
+export default function ExcerptCart({ data, toggleExpansion, hideMoreInfo, isOwner }) {
   return (
     <CartContentWrap>
       <CartRow>
         <LeftCol>
           <Category category={data.type} />
-          <Description description={data.description} type="inline-block" />
-          <Detail inline icon="clock" text={data.openingTime} />
+          <Link to={`/services/${data.objectId}`}>
+            <Description description={data.description} type="inline-block" />
+          </Link>
+          <Detail inline icon="clock" text={data.openingTime} showEdit={isOwner} />
         </LeftCol>
         <RightCol>
           <Price price={data.pricePerSession} currency={data.currency} />
@@ -95,6 +98,7 @@ export default function ExcerptCart({ data, toggleExpansion, hideMoreInfo }) {
 // Props Validation
 ExcerptCart.propTypes = {
   hideMoreInfo: PropTypes.bool,
+  isOwner: PropTypes.bool.isRequired,
 };
 
 ExcerptCart.defaultProps = {
