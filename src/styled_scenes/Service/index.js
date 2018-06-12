@@ -1,34 +1,34 @@
 // NPM
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import styled from "styled-components";
-import Media from "react-media";
-import { Link } from "react-router-dom";
-import GoogleMapReact from "google-map-react";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import Media from 'react-media';
+import { Link } from 'react-router-dom';
+import GoogleMapReact from 'google-map-react';
 
 // COMPONENTS
-import TopBar from "./../../shared_components/TopBarWithSearch";
-import * as SmartContractStatus from "shared_components/SmartContract/Status";
-import BrandFooter from "../../shared_components/BrandFooter";
-import Tag from "./components/Tag";
-import Rating from "../../shared_components/Rating";
-import { BadgeIcon } from "./icons";
-import TripCart from "../../shared_components/Carts/Location";
-import Review from "../../shared_components/Review";
-import Carousel from "../../shared_components/Carousel";
-import Button from "../../shared_components/Button";
-import ImgSlider from "./components/ImgSlider";
-import MapMaker from "../../shared_components/MapMarker";
+import TopBar from './../../shared_components/TopBarWithSearch';
+import * as SmartContractStatus from 'shared_components/SmartContract/Status';
+import BrandFooter from '../../shared_components/BrandFooter';
+import Tag from './components/Tag';
+import Rating from '../../shared_components/Rating';
+import { BadgeIcon } from './icons';
+import TripCart from '../../shared_components/Carts/Location';
+import Review from '../../shared_components/Review';
+import Carousel from '../../shared_components/Carousel';
+import Button from '../../shared_components/Button';
+import ImgSlider from './components/ImgSlider';
+import MapMaker from '../../shared_components/MapMarker';
 import UserAvatar from '../../shared_components/UserAvatar';
 import AddToTripButton from './components/AddToTripButton';
-import FormControl from "./../../shared_components/Form/FormControl";
+import FormControl from './../../shared_components/Form/FormControl';
 
 // ACTIONS/CONFIG
-import { media, sizes } from "../../libs/styled";
+import { media, sizes } from '../../libs/styled';
 
 // STYLES
-import { Page, PageContent } from "../../shared_components/layout/Page";
-import { Icon, Modal } from "semantic-ui-react";
+import { Page, PageContent } from '../../shared_components/layout/Page';
+import { Icon, Modal } from 'semantic-ui-react';
 
 const DetailWrapper = styled.div`
   width: 100%;
@@ -236,7 +236,7 @@ const RightAlignedText = styled.span`
 `;
 
 const SuccessMessage = styled(Link)`
-  color: #5FB79E;
+  color: #5fb79e;
   align-self: flex-end;
   margin-top: 25px;
 
@@ -244,7 +244,6 @@ const SuccessMessage = styled(Link)`
     color: #4ac4a1;
   }
 `;
-
 
 const Wrap = styled.div`
   background: white;
@@ -282,7 +281,7 @@ const Wrap = styled.div`
 
     ${media.minMedium} {
       &:after {
-        content: "";
+        content: '';
         width: 1px;
         height: 60%;
         background: #eef1f4;
@@ -302,34 +301,33 @@ const Wrap = styled.div`
 
 // MODULE
 class FoodDetailScene extends Component {
-
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       date: null,
       time: null,
-      personNb: null
+      personNb: null,
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.checkServiceAvailability = this.checkServiceAvailability.bind(this);
     this.closeServiceUnavailabilityModal = this.closeServiceUnavailabilityModal.bind(this);
   }
 
-  handleInputChange = (event) => {
+  handleInputChange = event => {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
-  }
+  };
 
-  checkServiceAvailability = (serviceId) => {
+  checkServiceAvailability = serviceId => {
     this.props.checkAvailability(serviceId, this.state.personNb);
-  }
+  };
 
   closeServiceUnavailabilityModal = () => {
     this.props.toggleServiceAvailabilitymodal(false);
-  }
+  };
 
-  render(){
+  render() {
     const showContractStatus = this.props.service.contractAddress != null;
 
     return (
@@ -341,12 +339,22 @@ class FoodDetailScene extends Component {
             render={() => <ImgSlider images={this.props.service.pictures} />}
           />
           <DetailWrapper>
-            {showContractStatus &&
-              <SmartContractStatus.Wrapper size="big" status={this.props.service.contractStatus} hash={this.props.service.hash}/>
-            }
+            {showContractStatus && (
+              <SmartContractStatus.Wrapper
+                size="big"
+                status={this.props.service.contractStatus}
+                hash={this.props.service.hash}
+              />
+            )}
             <br />
             <TagWrap>
-              {this.props.service && this.props.service.tags && this.props.service.tags.map(tag => (<Link to={"/results?tags=" + tag.label}><Tag key={tag.label} item={tag} /></Link>))}
+              {this.props.service &&
+                this.props.service.tags &&
+                this.props.service.tags.map(tag => (
+                  <Link to={'/results?tags=' + tag.label}>
+                    <Tag key={tag.label} item={tag} />
+                  </Link>
+                ))}
             </TagWrap>
             <HeaderWrap>
               <h2>{this.props.service.title}</h2>
@@ -359,30 +367,25 @@ class FoodDetailScene extends Component {
               </DataBlock>
               <DataBlock>
                 <TextLabel>Rating</TextLabel>
-                <Rating
-                  marginBottom="25px"
-                  rating={this.props.service.rating}
-                  count={this.props.service.reviewCount}
-                />
+                <Rating marginBottom="25px" rating={this.props.service.rating} count={this.props.service.reviewCount} />
               </DataBlock>
 
-                {
-                  this.props.trips.length ?
-                  <span>
-                    <DataBlock>
-                      <Badge>
-                        <BadgeIcon />
-                      </Badge>
-                    </DataBlock>
-                    <DataBlock>
-                      <TextLabel>PART OF THE TRIP</TextLabel>
-                      <span>"{this.props.trips.length && this.props.trips[0] && this.props.trips[0].description.slice(0, 40)}" and {this.props.trips.length} more ...</span>
-                    </DataBlock>
-                  </span>
-                  :
-                  null
-                }
-
+              {this.props.trips.length ? (
+                <span>
+                  <DataBlock>
+                    <Badge>
+                      <BadgeIcon />
+                    </Badge>
+                  </DataBlock>
+                  <DataBlock>
+                    <TextLabel>PART OF THE TRIP</TextLabel>
+                    <span>
+                      "{this.props.trips.length && this.props.trips[0] && this.props.trips[0].description.slice(0, 40)}"
+                      and {this.props.trips.length} more ...
+                    </span>
+                  </DataBlock>
+                </span>
+              ) : null}
             </DataWrap>
             <ActionWrap>
               {/*<DetailPickers />*/}
@@ -414,7 +417,12 @@ class FoodDetailScene extends Component {
                   leftIcon="person"
                 />*/}
 
-                <select style={{backgroundColor: "white", borderColor: "#eef1f4"}} name="personNb" value={this.state.personNb} onChange={this.handleInputChange}>
+                <select
+                  style={{ backgroundColor: 'white', borderColor: '#eef1f4' }}
+                  name="personNb"
+                  value={this.state.personNb}
+                  onChange={this.handleInputChange}
+                >
                   <option value="1">1</option>
                   <option value="2">2</option>
                   <option value="3">3</option>
@@ -424,7 +432,11 @@ class FoodDetailScene extends Component {
                   <option value="7">7</option>
                 </select>
 
-                <Modal closeIcon open={this.props.isServiceUnavailableModalOpen} onClose={this.closeServiceUnavailabilityModal}>
+                <Modal
+                  closeIcon
+                  open={this.props.isServiceUnavailableModalOpen}
+                  onClose={this.closeServiceUnavailabilityModal}
+                >
                   <Modal.Header>We're Sorry</Modal.Header>
                   <Modal.Content>
                     <Modal.Description>
@@ -433,7 +445,6 @@ class FoodDetailScene extends Component {
                     </Modal.Description>
                   </Modal.Content>
                 </Modal>
-
               </Wrap>
 
               <ButtonsWrap>
@@ -451,12 +462,15 @@ class FoodDetailScene extends Component {
                 <AddToTripButton
                   trips={this.props.myTrips}
                   onTripClick={this.props.onAddServiceToTrip}
-                  onNewTripClick={this.props.onAddServiceToNewTrip} />
+                  onNewTripClick={this.props.onAddServiceToNewTrip}
+                />
               </ButtonsWrap>
-              {this.props.serviceRecentlyAddedToTrip && <SuccessMessage to={`/trips/${this.props.serviceRecentlyAddedToTrip.objectId}`}>
+              {this.props.serviceRecentlyAddedToTrip && (
+                <SuccessMessage to={`/trips/${this.props.serviceRecentlyAddedToTrip.objectId}`}>
                   Added to <b>{this.props.serviceRecentlyAddedToTrip.title}</b>
                   <Icon name="check circle outline" />
-                </SuccessMessage>}
+                </SuccessMessage>
+              )}
             </ActionWrap>
             <Media
               query={`(max-width: ${sizes.large})`}
@@ -468,10 +482,15 @@ class FoodDetailScene extends Component {
                   center={{ lat: this.props.service.latitude || 0, lng: this.props.service.longitude || 0 }}
                   defaultZoom={11}
                   bootstrapURLKeys={{
-                    key: "AIzaSyDICUW2RF412bnmELi3Y_zCCzHa-w8WnXc"
+                    key: 'AIzaSyDICUW2RF412bnmELi3Y_zCCzHa-w8WnXc',
                   }}
                 >
-                  <MapMaker lat={this.props.service.latitude || 0} lng={this.props.service.longitude || 0} scale={1} color="#4fb798" />
+                  <MapMaker
+                    lat={this.props.service.latitude || 0}
+                    lng={this.props.service.longitude || 0}
+                    scale={1}
+                    color="#4fb798"
+                  />
                 </GoogleMapReact>
               </MapWrap>
               <Contacts>
@@ -484,84 +503,60 @@ class FoodDetailScene extends Component {
                   </div>
                 </HostBlock>
                 <Hr />
-                {
-                  this.props.service.openingTime && this.props.service.closingTime
-                    &&
-                  ( <div>
+                {this.props.service.openingTime &&
+                  this.props.service.closingTime && (
+                    <div>
+                      <ContactBlock>
+                        <TextLabel>Working hours</TextLabel>
+                        <RightAlignedText>
+                          {this.props.service.openingTime} H - {this.props.service.closingTime} H
+                        </RightAlignedText>
+                      </ContactBlock>
+                      <Hr />
+                    </div>
+                  )}
+                {this.props.service.phoneNumber && (
+                  <div>
                     <ContactBlock>
-                      <TextLabel>Working hours</TextLabel>
-                      <RightAlignedText>{this.props.service.openingTime} H - {this.props.service.closingTime} H</RightAlignedText>
+                      <div>
+                        <TextLabel>Phone</TextLabel>
+                        <RightAlignedText>{this.props.service.phoneNumber}</RightAlignedText>
+                      </div>
                     </ContactBlock>
                     <Hr />
-                    </div>
-                  )
-                }
-                {
-                  this.props.service.phoneNumber
-                    &&
-                  ( <div>
-                      <ContactBlock>
-                        <div>
-                          <TextLabel>Phone</TextLabel>
-                          <RightAlignedText>{this.props.service.phoneNumber}</RightAlignedText>
-                        </div>
-                      </ContactBlock>
-                      <Hr />
-                    </div>
-                  )
-                }
+                  </div>
+                )}
 
-                {
-                  this.props.service.websiteUrl
-                    &&
-                  ( <div>
-                      <ContactBlock>
-                        <div>
-                          <TextLabel>Homepage</TextLabel>
-                          <a href={this.props.service.websiteUrl}><RightAlignedText>{this.props.service.websiteUrl}</RightAlignedText></a>
-                        </div>
-                      </ContactBlock>
-                      <Hr />
-                    </div>
-                  )
-                }
-
+                {this.props.service.websiteUrl && (
+                  <div>
+                    <ContactBlock>
+                      <div>
+                        <TextLabel>Homepage</TextLabel>
+                        <a href={this.props.service.websiteUrl}>
+                          <RightAlignedText>{this.props.service.websiteUrl}</RightAlignedText>
+                        </a>
+                      </div>
+                    </ContactBlock>
+                    <Hr />
+                  </div>
+                )}
               </Contacts>
             </ContactWrap>
-            {
-              this.props.trips.length ?
+            {this.props.trips.length ? (
               <TripsWrap>
                 <h3>Part of trips</h3>
-                <Carousel
-                  sm_slides_nb={1}
-                  md_slides_nb={2}
-                  lg_slides_nb={4}
-                  xl_slides_nb={4}
-                >
-                  {this.props.trips.filter(trip => trip !== undefined).map(trip => (
-                    <TripCart
-                      item={trip}
-                      withShadow
-                      key={trip.title}
-                      size="small"
-                      href={"/trips/" + trip.objectId}
-                    />
-                  ))}
+                <Carousel sm_slides_nb={1} md_slides_nb={2} lg_slides_nb={4} xl_slides_nb={4}>
+                  {this.props.trips
+                    .filter(trip => trip !== undefined)
+                    .map(trip => (
+                      <TripCart item={trip} withShadow key={trip.title} size="small" href={'/trips/' + trip.objectId} />
+                    ))}
                 </Carousel>
               </TripsWrap>
-              :
-              null
-            }
+            ) : null}
             <div>
-              {this.props.reviews.length
-                ?
-                <h2>Reviews</h2>
-                :
-                null
-              }
-              {this.props.reviews.map(review => (
-                <Review key={review.objectId} review={review} />
-              ))}
+              {this.props.reviews.length ? <h2>Reviews</h2> : null}
+              {this.props.reviews.map(review => <Review key={review.objectId} review={review} />)}
             </div>
           </DetailWrapper>
         </PageContent>
