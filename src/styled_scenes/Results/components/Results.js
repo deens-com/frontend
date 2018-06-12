@@ -123,7 +123,7 @@ export default class Results extends Component {
             <ResultItem>
               <Link to={(result.type ? "/services/" : "/trips/") + result.objectId} key={result.objectId}>
                 {result.contractAddress &&
-                  <Badge>Smart</Badge>
+                  <Badge>Decentralized</Badge>
                 }
                 <TripCart
                   key={result.label}
