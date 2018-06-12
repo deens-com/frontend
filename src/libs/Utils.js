@@ -70,3 +70,13 @@ export const getISODateString = date => {
     return date;
   }
 };
+
+/**
+ * @param {string} str The string to pad
+ * @param {number} length what should be the final length of the string after padding
+ * @param {string} padChar The string to fill in the padding area
+ * @return {string}
+ */
+export const padStart = (str, length, padChar = '0') => {
+  return (padChar.repeat(length) + str).slice(-length);
+};
