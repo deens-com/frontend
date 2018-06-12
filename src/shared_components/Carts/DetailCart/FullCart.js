@@ -16,6 +16,7 @@ import { TrashIcon } from './components/icons';
 // ACTIONS/CONFIG
 import { media } from '../../../libs/styled';
 import Tag from './components/Tag';
+import { padStart } from '../../../libs/Utils';
 
 const Wrap = styled.div`
   ${media.minSmall} {
@@ -137,9 +138,8 @@ export default function FullCart({ data, toggleExpansion, onDeleteClick, isOwner
             </Link>
           </HeaderRow>
           <ContentRow>
-            <Detail block icon="clock" text={data.openingTime} showEdit={isOwner} />
+            <Detail block icon="clock" text={`${padStart(data.openingTime, 2)}:00 - ${padStart(data.closingTime, 2)}:00`} showEdit={isOwner} />
             <Detail block icon="pin" text={data.city + ', ' + data.country} showEdit={isOwner} />
-            <Detail block icon="phone" text={data.phone} showEdit={isOwner} />
           </ContentRow>
         </CenterCol>
         <RightCol>
