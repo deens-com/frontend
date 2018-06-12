@@ -13,14 +13,6 @@ const Wrap = styled.div`
   padding: 25px;
 `;
 
-const Header = styled.div`
-  margin-bottom: 25px;
-
-  h4 {
-    font-size: 24px;
-  }
-`;
-
 const PaginationWrap = styled.div`
   text-align: center;
 
@@ -60,6 +52,24 @@ const PaginationWrap = styled.div`
       }
     }
   }
+`;
+
+const ResultItem = styled.div`
+  position: relative;
+  display: inline-block;
+`;
+
+const Badge = styled.div`
+  position: absolute;
+  z-index: 10;
+  font-size: 10px;
+  font-weight: bold;
+  top: 20px;
+  right: 20px;
+  background: #4183c4;
+  color: white;
+  padding: 0 5px;
+  border-radius: 4px;
 `;
 
 
@@ -108,19 +118,21 @@ export default class Results extends Component {
   render() {
     return (
       <Wrap>
-        <Header>
-          <h4>{this.props.service_type} for you</h4>
-        </Header>
         <Row>
           {this.state.filteredData.map((result, i) => (
-            <Link to={(result.type ? "/services/" : "/trips/") + result.objectId} key={result.objectId}>
-              <TripCart
-                key={result.label}
-                withTooltip
-                withShadow
-                item={result}
-              />
-            </Link>
+            <ResultItem>
+              <Link to={(result.type ? "/services/" : "/trips/") + result.objectId} key={result.objectId}>
+                {result.contractAddress &&
+                  <Badge>Decentralized</Badge>
+                }
+                <TripCart
+                  key={result.label}
+                  withTooltip
+                  withShadow
+                  item={result}
+                />
+              </Link>
+            </ResultItem>
           ))}
         </Row>
         <Row>
