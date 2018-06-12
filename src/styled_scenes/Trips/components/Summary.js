@@ -15,9 +15,8 @@ import { getISODateString } from '../../../libs/Utils';
 
 // STLYES
 const Wrap = styled.div`
-  ${media.minMedium} {
-    display: flex;
-  }
+  display: flex;
+  flex-direction: row-reverse;
 `;
 
 const LeftCol = styled.div`
@@ -51,6 +50,8 @@ const TotalHint = styled.p`
 const BookButton = styled(Button)`
   && {
     color: #fff;
+    position: relative;
+    top: 7px;
     background-color: #5eb89e;
     border: 1px solid #5fb79e;
     :hover,
@@ -68,15 +69,17 @@ const ErrorMsg = styled.div`
 
 const StickyWrap = styled.div`
   position: fixed;
-  bottom: 5px;
-  right: 5px;
+  bottom: 0px;
+  right: 0px;
   background-color: white;
+  height: 50px;
+  width: inherit;
 `;
 
 const PricesWrap = styled.span`
   display: flex;
   position: relative;
-  top: 8px;
+  top: 14px;
   margin-right: 20px;
 `;
 
