@@ -10,10 +10,15 @@ import * as selectors from '../selectors';
 import { statuses } from '../../../libs/fetch_helpers';
 
 class TripsContainer extends Component {
+  state = {
+    isLoggedIn: false,
+  };
+
   componentDidMount() {
     const trip_id = this.props.match.params.id;
     this.props.fetchTrip(trip_id);
     this.props.setShowTripUpdated(false);
+    this.setState({ isLoggedIn: Parse.User.current() != null });
   }
 
   /**
@@ -37,8 +42,11 @@ class TripsContainer extends Component {
   };
 
   onBookClick = (startDate, peopleCount) => {
-    console.log({ startDate, peopleCount });
-    this.props.cloneTrip(startDate, peopleCount, this.props.history);
+    if (this.state.isLoggedIn) {
+      this.props.cloneTrip(startDate, peopleCount, this.props.history);
+    } else {
+      this.props.history.push('/login');
+    }
   };
 
   render() {
