@@ -29,7 +29,6 @@ export const fetchTrip = tripId => async (dispatch, getState) => {
     console.error(new Error("can't fetch trip without TripId"));
     return;
   }
-
   const Trip = Parse.Object.extend('Trip');
   try {
     const [tripRaw, tripOrganizationsRaw] = await Promise.all([
@@ -53,7 +52,9 @@ export const fetchTrip = tripId => async (dispatch, getState) => {
     }));
     const services = tripOrganizations.map(tOrg => tOrg.service);
     dispatch(trip_fetched({ trip, tripOrganizations: tripOrganizationMappings, services }));
-    checkAvailability(tripRaw.get('beginDate'), tripRaw.get('numberOfPerson'))(dispatch, getState);
+    const peopleCount = tripRaw.get('numberOfPerson');
+    updateTripQuery({ person: { label: peopleCount, value: peopleCount } })(dispatch, getState);
+    checkAvailability(tripRaw.get('beginDate'), peopleCount)(dispatch, getState);
   } catch (error) {
     console.error(error);
     if (error.code === Parse.Error.OBJECT_NOT_FOUND) dispatch(tripFetchError(error));
