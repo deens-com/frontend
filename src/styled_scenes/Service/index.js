@@ -158,6 +158,11 @@ const ContactBlock = styled.div`
   }
 `;
 
+const WorkingHoursBlock = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+`;
+
 const HostBlock = styled.div`
   display: flex;
   justify-content: space-between;
@@ -380,8 +385,10 @@ class FoodDetailScene extends Component {
                   <DataBlock>
                     <TextLabel>PART OF THE TRIP</TextLabel>
                     <span>
-                      "{this.props.trips.length && this.props.trips[0] && this.props.trips[0].description.slice(0, 40)}"
-                      and {this.props.trips.length} more ...
+                      <Link to={'/trips/' + this.props.trips[0].objectId}>
+                        "{this.props.trips.length && this.props.trips[0] && this.props.trips[0].description.slice(0, 40)}"
+                        and {this.props.trips.length} more ...
+                      </Link>
                     </span>
                   </DataBlock>
                 </span>
@@ -399,7 +406,7 @@ class FoodDetailScene extends Component {
                   placeholder="Pick the date"
                   leftIcon="date"
                 />
-                <FormControl
+                {/*<FormControl
                   onChange={value => {
                     console.log(value);
                   }}
@@ -407,7 +414,7 @@ class FoodDetailScene extends Component {
                   type="time"
                   placeholder="Pick the time"
                   leftIcon="date"
-                />
+                />*/}
                 {/*<FormControl
                   onChange={this.handleInputChange}
                   value={this.state.person}
@@ -430,6 +437,9 @@ class FoodDetailScene extends Component {
                   <option value="5">5</option>
                   <option value="6">6</option>
                   <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
                 </select>
 
                 <Modal
@@ -448,7 +458,7 @@ class FoodDetailScene extends Component {
               </Wrap>
 
               <ButtonsWrap>
-                <Button
+                {/*<Button
                   type="button"
                   round
                   size="small"
@@ -458,7 +468,7 @@ class FoodDetailScene extends Component {
                   iconAfter="arrow"
                   text="Book now"
                   theme="textGreen"
-                />
+                />*/}
                 <AddToTripButton
                   trips={this.props.myTrips}
                   onTripClick={this.props.onAddServiceToTrip}
@@ -508,9 +518,9 @@ class FoodDetailScene extends Component {
                     <div>
                       <ContactBlock>
                         <TextLabel>Working hours</TextLabel>
-                        <RightAlignedText>
+                        <WorkingHoursBlock>
                           {this.props.service.openingTime} H - {this.props.service.closingTime} H
-                        </RightAlignedText>
+                        </WorkingHoursBlock>
                       </ContactBlock>
                       <Hr />
                     </div>

@@ -109,12 +109,16 @@ export default class FoodImgSlider extends Component {
   render() {
     return (
       <Wrap>
-        <LeftArrow onClick={this.goToPrevious}>
-          <ArrowIcon />
-        </LeftArrow>
-        <RightArrow onClick={this.goToNext}>
-          <ArrowIcon />
-        </RightArrow>
+        { (this.props.images && this.props.images.length && this.props.images.length !== 1) &&
+          <span>
+            <LeftArrow onClick={this.goToPrevious}>
+              <ArrowIcon />
+            </LeftArrow>
+            <RightArrow onClick={this.goToNext}>
+              <ArrowIcon />
+            </RightArrow>
+          </span>
+        }
         <img
           // eslint-disable-next-line
           src={this.props.images && this.props.images.length && this.props.images[this.state.index] && this.props.images[this.state.index].url || "https://dummyimage.com/600x400/000/fff"}
