@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import Price from './components/Price';
 import Button from '../../Button';
 import Category from './components/Category';
-import Description from './components/Description';
+import CardDescription from './components/Description';
 import Detail from './components/Detail';
 
 // ACTIONS/CONFIG
@@ -71,7 +71,7 @@ export default function ExcerptCart({ data, toggleExpansion, hideMoreInfo, isOwn
         <LeftCol>
           <Category category={data.type} />
           <Link to={`/services/${data.objectId}`}>
-            <Description description={data.description} type="inline-block" />
+            <CardDescription description={data.name} type="inline-block" />
           </Link>
           <Detail inline icon="clock" text={data.openingTime} showEdit={isOwner} />
         </LeftCol>

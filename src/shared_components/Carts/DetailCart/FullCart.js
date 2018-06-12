@@ -9,7 +9,7 @@ import PriceTag from './components/Price';
 import Button from '../../Button';
 import Detail from './components/Detail';
 import Category from './components/Category';
-import Description from './components/Description';
+import CardDescription from './components/Description';
 import Thumb from '../components/Thumb';
 import { TrashIcon } from './components/icons';
 
@@ -133,7 +133,7 @@ export default function FullCart({ data, toggleExpansion, onDeleteClick, isOwner
           <HeaderRow>
             <Category category={data.type} />
             <Link to={`/services/${data.objectId}`}>
-              <Description description={data.description} />
+              <CardDescription description={data.name} />
             </Link>
           </HeaderRow>
           <ContentRow>
