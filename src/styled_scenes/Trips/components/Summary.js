@@ -15,9 +15,8 @@ import { getISODateString } from '../../../libs/Utils';
 
 // STLYES
 const Wrap = styled.div`
-  ${media.minMedium} {
-    display: flex;
-  }
+  display: flex;
+  flex-direction: row-reverse;
 `;
 
 const LeftCol = styled.div`
@@ -51,6 +50,8 @@ const TotalHint = styled.p`
 const BookButton = styled(Button)`
   && {
     color: #fff;
+    position: relative;
+    top: 7px;
     background-color: #5eb89e;
     border: 1px solid #5fb79e;
     :hover,
@@ -64,6 +65,22 @@ const BookButton = styled(Button)`
 
 const ErrorMsg = styled.div`
   color: red;
+`;
+
+const StickyWrap = styled.div`
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  background-color: white;
+  height: 50px;
+  width: inherit;
+`;
+
+const PricesWrap = styled.span`
+  display: flex;
+  position: relative;
+  top: 14px;
+  margin-right: 20px;
 `;
 
 // MODULE
@@ -123,48 +140,35 @@ export default class TripSummary extends Component {
     const { query } = this.props;
     const isDatesFormComplete = query.startDate && query.endDate && query.person.value;
     return (
-      <Wrap>
-        <LeftCol xsBasis="100%" mdBasis="50%">
-          {/* kept this left block intact while removing service category counts */}
-          {/* becuase looks like it could be used for something */}
-        </LeftCol>
-        <RightCol xsBasis="100%" mdBasis="50%">
-          <Grid>
-            <Grid.Row columns={2}>
-              <Grid.Column stretched>Price per person</Grid.Column>
-              <Grid.Column textAlign="right">
-                <PriceTag price={this.calculateTripTotalPrice()} unit="hidden" />
-              </Grid.Column>
-            </Grid.Row>
-            <Grid.Row columns={2}>
-              <Grid.Column stretched>Total Price</Grid.Column>
-              <Grid.Column textAlign="right">
-                <PriceTag price={this.calculateTripTotalPrice() * this.props.query.person.value} unit="hidden" />
-              </Grid.Column>
-            </Grid.Row>
-            <Grid.Row columns={1}>
-              <Grid.Column textAlign="right">
-                {this.state.tripDirty && isDatesFormComplete && <ErrorMsg>Save the trip before booking</ErrorMsg>}
-                <BookButton
-                  size="small"
-                  circular
-                  onClick={this.onBookClickWithDates}
-                  loading={this.props.isCloningInProcess}
-                  disabled={this.state.tripDirty || !isDatesFormComplete}
-                >
-                  Book now
-                </BookButton>
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
+      <StickyWrap>
+        <Wrap>
+          <PricesWrap>
+            &nbsp;&nbsp;
+            <h6>Price per person : &nbsp;</h6>
+            <PriceTag price={this.calculateTripTotalPrice()} unit="hidden" />
+            &nbsp;&nbsp;
+            <h6>Total Price : &nbsp;</h6>
+            <PriceTag price={this.calculateTripTotalPrice() * this.props.query.person.value} unit="hidden" />
+            &nbsp;&nbsp;
+            {this.state.tripDirty && isDatesFormComplete && <ErrorMsg>Save the trip before booking</ErrorMsg>}
+          </PricesWrap>
+          <BookButton
+          size="small"
+          circular
+          onClick={this.onBookClickWithDates}
+          loading={this.props.isCloningInProcess}
+          disabled={this.state.tripDirty || !isDatesFormComplete}
+          >
+          Book now
+          </BookButton>
           {!this.state.logged_in && (
             <TotalHint>
-              Trip is not saved! Please <Link to="/register">Sign Up</Link> or <Link to="/login">Login</Link> in order
-              to save tre trip.
+            Trip is not saved! Please <Link to="/register">Sign Up</Link> or <Link to="/login">Login</Link> in order
+            to save tre trip.
             </TotalHint>
           )}
-        </RightCol>
-      </Wrap>
+        </Wrap>
+      </StickyWrap>
     );
   }
 }
