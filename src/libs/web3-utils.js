@@ -8,7 +8,7 @@ import FetchSubprovider from "web3-provider-engine/dist/es5/subproviders/fetch";
 
 /* ganache-cli --networkId 1337 */
 const rpcUrl = process.env.REACT_APP_NETWORK_URL || "https://ropsten.infura.io/ncVw7Yywaql0109ntVNK";
-const networkId = parseInt(process.env.REACT_APP_NETWORK_ID || "1337", 10);
+const networkId = parseInt(process.env.REACT_APP_NETWORK_ID || "3", 10);
 
 
 let _web3Instance;

@@ -148,7 +148,7 @@ export default class LoginFormComponent extends Component {
                           <Modal.Description>
                             <Header>An unexpected error occured</Header>
                             <p style={{color: "red"}}>{this.props.ledgerError.message && this.props.ledgerError.message.message}</p>
-                            <p>Please make sure to allow browser support on your connected device.</p>
+                            <p>Please make sure to set "Browser support" and "Contract data" to YES on your connected Ledger device.</p>
                           </Modal.Description>
                         </Modal.Content>
                       </Modal>

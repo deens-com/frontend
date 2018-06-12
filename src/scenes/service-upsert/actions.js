@@ -2,6 +2,7 @@ import Parse from 'parse';
 import ethers from 'ethers';
 import fetch_helpers from '../../libs/fetch_helpers';
 import history from '../../main/history';
+import { getWeb3, getLedgerWeb3 } from 'libs/web3-utils';
 
 export const types = {
   SERVICE_CREATE_STARTED: 'SERVICE_CREATE_STARTED',
@@ -157,8 +158,16 @@ export const deployContract = (service, values, history) => async (dispatch, get
     params.maxAvailableSpots = slots;
 
     var network = ethers.providers.networks.ropsten;
+    let preferredWeb3;
 
-    let wallet = new ethers.providers.Web3Provider(window.web3.currentProvider, network).getSigner();
+    try {
+      preferredWeb3 = await getWeb3();
+    } catch (e) {
+      preferredWeb3 = await getLedgerWeb3();
+    }
+
+    let wallet = new ethers.providers.Web3Provider(preferredWeb3.currentProvider, network).getSigner();
+
     let deployTransaction = ethers.Contract.getDeployTransaction(
       bytecode,
       abi,
@@ -204,7 +213,7 @@ export const deployContract = (service, values, history) => async (dispatch, get
     dispatch({
       type: types.SERVICE_CREATE_ERROR,
       payload:
-        'We could not deploy the smart contract. Please check if your ledger device or meta mask are connected properly.',
+        'We could not deploy the smart contract. Please check if your ledger device or meta mask are connected properly. ' + e.toString(),
     });
   }
 };
