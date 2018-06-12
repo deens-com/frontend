@@ -3,38 +3,20 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Grid, Button } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
 import Parse from 'parse';
 
 // COMPONENTS
 import PriceTag from '../../../shared_components/Currency/PriceTag';
 
 // ACTIONS/CONFIG
-import { media } from '../../../libs/styled';
+//import { media } from '../../../libs/styled';
 import { getISODateString } from '../../../libs/Utils';
 
 // STLYES
 const Wrap = styled.div`
   display: flex;
   flex-direction: row-reverse;
-`;
-
-const LeftCol = styled.div`
-  padding: 25px;
-
-  ${media.minMedium} {
-    width: 50%;
-    padding: 50px 25px;
-  }
-`;
-
-const RightCol = styled.div`
-  padding: 0 25px 50px 25px;
-
-  ${media.minMedium} {
-    width: 50%;
-    padding: 50px 25px;
-  }
 `;
 
 const TotalHint = styled.p`

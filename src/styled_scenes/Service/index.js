@@ -16,7 +16,7 @@ import { BadgeIcon } from './icons';
 import TripCart from '../../shared_components/Carts/Location';
 import Review from '../../shared_components/Review';
 import Carousel from '../../shared_components/Carousel';
-import Button from '../../shared_components/Button';
+//import Button from '../../shared_components/Button';
 import ImgSlider from './components/ImgSlider';
 import MapMaker from '../../shared_components/MapMarker';
 import UserAvatar from '../../shared_components/UserAvatar';
