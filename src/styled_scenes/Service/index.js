@@ -306,8 +306,6 @@ class FoodDetailScene extends Component {
   constructor(props){
     super(props);
     this.state = {
-      service_latitude: parseFloat(props.service.latitude) || 1.0,
-      service_longitude: parseFloat(props.service.longitude) || 1.0,
       date: null,
       time: null,
       personNb: null
@@ -467,13 +465,13 @@ class FoodDetailScene extends Component {
             <ContactWrap>
               <MapWrap>
                 <GoogleMapReact
-                  defaultCenter={{ lat: this.state.service_latitude, lng: this.state.service_longitude }}
+                  center={{ lat: this.props.service.latitude || 0, lng: this.props.service.longitude || 0 }}
                   defaultZoom={11}
                   bootstrapURLKeys={{
                     key: "AIzaSyDICUW2RF412bnmELi3Y_zCCzHa-w8WnXc"
                   }}
                 >
-                  <MapMaker lat={this.state.service_latitude} lng={this.state.service_longitude} scale={1} color="#4fb798" />
+                  <MapMaker lat={this.props.service.latitude || 0} lng={this.props.service.longitude || 0} scale={1} color="#4fb798" />
                 </GoogleMapReact>
               </MapWrap>
               <Contacts>
