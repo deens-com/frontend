@@ -35,6 +35,12 @@ const VisibilityToggle = styled.div`
   display: ${props => (props.visible ? 'flex' : 'none')};
 `;
 
+const statusUpdateMessages = {
+  public: 'Trip has been marked as public. It will be listed on the trip search',
+  unlisted: 'Trip has been marked as unlisted. With this URL your trip can be seen by other people',
+  private: 'Trip has been marked as private',
+};
+
 export default class ShareDialogContent extends Component {
   static propTypes = {
     trip: PropTypes.object.isRequired,
@@ -42,7 +48,12 @@ export default class ShareDialogContent extends Component {
     showTripStatusChanged: PropTypes.bool.isRequired,
   };
 
+  state = {
+    newStatus: null,
+  };
+
   onDropDownChange = (ev, { value }) => {
+    this.setState({ newStatus: value });
     this.props.updateTripDetails({ status: value });
   };
 
