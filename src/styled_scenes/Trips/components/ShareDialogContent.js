@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Container, Dropdown, Grid, Segment, Label } from 'semantic-ui-react';
+import { Container, Dropdown, Grid, Segment, Label, Icon } from 'semantic-ui-react';
 import Media from 'react-media';
 import Parse from 'parse';
 import styled from 'styled-components';
@@ -31,10 +31,15 @@ const LinkText = styled.div`
   text-align: center;
 `;
 
+const VisibilityToggle = styled.div`
+  visibility: ${props => (props.visible ? 'visible' : 'hidden')};
+`;
+
 export default class ShareDialogContent extends Component {
   static propTypes = {
     trip: PropTypes.object.isRequired,
     updateTripDetails: PropTypes.func.isRequired,
+    showTripStatusChanged: PropTypes.bool.isRequired,
   };
 
   onDropDownChange = (ev, { value }) => {
@@ -42,7 +47,7 @@ export default class ShareDialogContent extends Component {
   };
 
   render() {
-    const { trip } = this.props;
+    const { trip, showTripStatusChanged } = this.props;
     const currentUser = Parse.User.current();
     const allowChangeStatus = (trip.owner && trip.owner.objectId) === (currentUser && currentUser.id);
     const tripUrl = window.location.toString();
@@ -67,6 +72,9 @@ export default class ShareDialogContent extends Component {
                   />
                 )}
               </Media>
+              <VisibilityToggle visible={showTripStatusChanged}>
+                <Icon name="check circle outline" color="green" /> Trip has been marked as private
+              </VisibilityToggle>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>

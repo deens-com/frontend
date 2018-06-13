@@ -19,6 +19,7 @@ class TripsContainer extends Component {
     this.props.fetchTrip(trip_id);
     this.props.setShowTripUpdated(false);
     this.setState({ isLoggedIn: Parse.User.current() != null });
+    this.props.setShowTripStatusChanged(false);
   }
 
   /**
@@ -38,6 +39,9 @@ class TripsContainer extends Component {
   };
 
   updateTripDetails = (newDetails, showSaved) => {
+    if (newDetails.status !== this.props.trip.status) {
+      this.props.setShowTripStatusChanged(true);
+    }
     this.props.updateTrip(newDetails, showSaved);
   };
 
@@ -47,6 +51,10 @@ class TripsContainer extends Component {
     } else {
       this.props.history.push('/login');
     }
+  };
+
+  onShareModalClose = () => {
+    this.props.setShowTripStatusChanged(false);
   };
 
   render() {
@@ -61,6 +69,7 @@ class TripsContainer extends Component {
         onServiceRemoveClick={this.onServiceRemoveClick}
         updateTripDetails={this.updateTripDetails}
         onBookClick={this.onBookClick}
+        onShareModalClose={this.onShareModalClose}
       />
     );
   }
@@ -76,6 +85,7 @@ const mapStateToProps = state => {
     isCloningInProcess: state.TripsReducer.cloningStatus === statuses.STARTED,
     query: state.TripsReducer.query,
     serviceAvailabilityCheckInProgress: state.TripsReducer.serviceAvailabilityCheckStatus === statuses.STARTED,
+    showTripStatusChanged: state.TripsReducer.showTripStatusChanged,
   };
 };
 

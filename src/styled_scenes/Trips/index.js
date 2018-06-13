@@ -185,9 +185,7 @@ export default class TripsScene extends Component {
           <Wrap>
             <LeftWrap>
               <ShareWrap>
-                <h3>
-                  {this.props.trip.title}
-                </h3>
+                <h3>{this.props.trip.title}</h3>
                 <DatesWrap>
                   <p>
                     {beginDate && moment(beginDate).format('MMM Do YY')} -{' '}
@@ -200,7 +198,12 @@ export default class TripsScene extends Component {
                   </ProfileWrap>
                 </span>
                 <ActionsWrap>
-                  <ShareButton trip={this.props.trip} updateTripDetails={this.props.updateTripDetails} />
+                  <ShareButton
+                    trip={this.props.trip}
+                    updateTripDetails={this.props.updateTripDetails}
+                    showTripStatusChanged={this.props.showTripStatusChanged}
+                    onShareModalClose={this.props.onShareModalClose}
+                  />
                 </ActionsWrap>
                 <ShareBg url="/img/food/mamamia.jpg" />
               </ShareWrap>
@@ -265,4 +268,5 @@ TripsScene.propTypes = {
   onBookClick: PropTypes.func.isRequired,
   isCloningInProcess: PropTypes.bool.isRequired,
   serviceAvailabilityCheckInProgress: PropTypes.bool.isRequired,
+  onShareModalClose: PropTypes.func.isRequired,
 };

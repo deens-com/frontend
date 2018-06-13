@@ -14,6 +14,7 @@ const initialState = {
     endDate: '',
     person: {},
   },
+  showTripStatusChanged: false,
 };
 
 export default function TripsReducer(state = initialState, action = {}) {
@@ -91,6 +92,12 @@ export default function TripsReducer(state = initialState, action = {}) {
           ...state.query,
           ...action.payload,
         },
+      };
+    }
+    case 'SHOW_TRIP_STATUS_CHANGED': {
+      return {
+        ...state,
+        showTripStatusChanged: action.payload,
       };
     }
     default:

@@ -16,6 +16,7 @@ TripsComponent.propTypes = {
   showTripUpdated: PropTypes.bool,
   onBookClick: PropTypes.func.isRequired,
   isCloningInProcess: PropTypes.bool.isRequired,
+  onShareModalClose: PropTypes.func.isRequired,
 };
 
 export default TripsComponent;
