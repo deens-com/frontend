@@ -44,6 +44,14 @@ const UserBasicInfo = ({ user_profile: user = {}, match }) => {
       history.push("/");
     });
   }
+  const scrollDownMobileOnly = () => {
+    const currentWidth = window.innerWidth;
+    if(currentWidth <= 750){
+      setTimeout(() => {
+        window.scrollBy(0, 520);
+      }, 20)
+    }
+  }
   return (
     <Card>
       <Wrapper>
@@ -75,7 +83,7 @@ const UserBasicInfo = ({ user_profile: user = {}, match }) => {
 
         <Menu secondary fluid vertical style={{paddingLeft: "10px"}}>
 
-          <Link to="/account/trips/planned">
+          <Link to="/account/trips/planned" onClick={scrollDownMobileOnly}>
             <Menu.Item name='trips' active={activePath === 'trips'}>
               <MenuIcon disabled name='angle right' circular />
               <span>
@@ -85,7 +93,7 @@ const UserBasicInfo = ({ user_profile: user = {}, match }) => {
             </Menu.Item>
           </Link>
 
-          <Link to="/account/services">
+          <Link to="/account/services" onClick={scrollDownMobileOnly}>
             <Menu.Item name='services' active={activePath === 'services'}>
               <MenuIcon disabled name='angle right' circular />
               <span>
@@ -95,7 +103,7 @@ const UserBasicInfo = ({ user_profile: user = {}, match }) => {
             </Menu.Item>
           </Link>
 
-          <Link to="/account/profile">
+          <Link to="/account/profile" onClick={scrollDownMobileOnly}>
             <Menu.Item name='profile' active={activePath === 'profile'}>
               <MenuIcon disabled name='angle right' circular />
               <span>
@@ -105,7 +113,7 @@ const UserBasicInfo = ({ user_profile: user = {}, match }) => {
             </Menu.Item>
           </Link>
 
-          <Link to="/account/settings">
+          <Link to="/account/settings" onClick={scrollDownMobileOnly}>
             <Menu.Item name='settings' active={activePath === 'settings'}>
               <MenuIcon disabled name='angle right' circular />
               <span>
