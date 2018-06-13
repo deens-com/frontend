@@ -3,6 +3,15 @@ import PropTypes from 'prop-types';
 import { Grid, Button, Message } from 'semantic-ui-react';
 import { SectionWrap } from './../../../shared_components/layout/Page';
 import UserBasicInfo from './../components/UserBasicInfo';
+import styled from "styled-components";
+import { media } from '../../../libs/styled';
+
+const MetamaskButton = styled(Button)`
+  display: none !important;
+  ${media.mobileMinSmall} {
+    display: inline-block !important;
+  }
+`;
 
 const AccountSettingsScene = props => {
   const isMetaMaskInstalled = props.hasMetaMask();
@@ -19,27 +28,27 @@ const AccountSettingsScene = props => {
       </Grid.Column>
       <Grid.Column mobile={16} tablet={11} computer={12}>
         <h2>Settings Scene</h2>
-        <Button
+        <MetamaskButton
           color="orange"
           inverted={!isMetaMaskInstalled}
           disabled={!isMetaMaskInstalled || publicAddrAlreadyPresent}
           onClick={props.signData}
         >
           {metaMaskButtonTxt}
-        </Button>
+        </MetamaskButton>
         {!isMetaMaskInstalled && (
           <Message warning>
             Please install <a href="https://metamask.io/">MetaMask</a>
           </Message>
         )}
         {props.metaMaskError.message && <Message warning>{props.metaMaskError.message}</Message>}
-        <Button
+        <MetamaskButton
           color="green"
           disabled={ledgerPublicAddrAlreadyPresent}
           onClick={props.ledgerSignData}
         >
           {ledgerButtonTxt}
-        </Button>
+        </MetamaskButton>
         {props.ledger_error.message && <Message warning>{props.ledger_error.message}</Message>}
       </Grid.Column>
     </Grid>
