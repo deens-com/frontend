@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { Menu, Card } from 'semantic-ui-react';
 import Parse from "parse";
 import history from "./../../../main/history";
+import ImgurAvatar from "./../../../assets/imgur-avatar.png";
 
 const AttributeTitle = styled.h6`
   font-size: 9px;
@@ -36,12 +37,20 @@ const MenuIcon = styled(Icon)`
 
 const UserBasicInfo = ({ user_profile: user = {}, match }) => {
   const name = user.fullName || user.username;
-  const dpUrl = (user.profilePicture && user.profilePicture.url) || "https://s3.amazonaws.com/prod.tracker2/resource/89015825/anonymous.png?response-content-disposition=inline&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJJBSFJ4TCVKKGAIA%2F20180503%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20180503T101317Z&X-Amz-Expires=1800&X-Amz-SignedHeaders=host&X-Amz-Signature=f735a25f3940c2226e125d464316bd95ce3225eed0702c408b465bd074cbcef6";
+  const dpUrl = (user.profilePicture && user.profilePicture.url) || ImgurAvatar;
   let activePath = match.path.replace("/account/", "");
   const logout = () => {
     Parse.User.logOut().then(() => {
       history.push("/");
     });
+  }
+  const scrollDownMobileOnly = () => {
+    const currentWidth = window.innerWidth;
+    if(currentWidth <= 750){
+      setTimeout(() => {
+        window.scrollBy(0, 520);
+      }, 20)
+    }
   }
   return (
     <Card>
@@ -74,7 +83,7 @@ const UserBasicInfo = ({ user_profile: user = {}, match }) => {
 
         <Menu secondary fluid vertical style={{paddingLeft: "10px"}}>
 
-          <Link to="/account/trips/planned">
+          <Link to="/account/trips/planned" onClick={scrollDownMobileOnly}>
             <Menu.Item name='trips' active={activePath === 'trips'}>
               <MenuIcon disabled name='angle right' circular />
               <span>
@@ -84,7 +93,7 @@ const UserBasicInfo = ({ user_profile: user = {}, match }) => {
             </Menu.Item>
           </Link>
 
-          <Link to="/account/services">
+          <Link to="/account/services" onClick={scrollDownMobileOnly}>
             <Menu.Item name='services' active={activePath === 'services'}>
               <MenuIcon disabled name='angle right' circular />
               <span>
@@ -94,7 +103,7 @@ const UserBasicInfo = ({ user_profile: user = {}, match }) => {
             </Menu.Item>
           </Link>
 
-          <Link to="/account/profile">
+          <Link to="/account/profile" onClick={scrollDownMobileOnly}>
             <Menu.Item name='profile' active={activePath === 'profile'}>
               <MenuIcon disabled name='angle right' circular />
               <span>
@@ -104,7 +113,7 @@ const UserBasicInfo = ({ user_profile: user = {}, match }) => {
             </Menu.Item>
           </Link>
 
-          <Link to="/account/settings">
+          <Link to="/account/settings" onClick={scrollDownMobileOnly}>
             <Menu.Item name='settings' active={activePath === 'settings'}>
               <MenuIcon disabled name='angle right' circular />
               <span>

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Grid, Image } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import Rating from '../../shared_components/Rating';
+import ImgurAvatar from "./../../assets/imgur-avatar.png";
 
 const AvatarWrapper = styled.div`
   height: 30px;
@@ -20,7 +21,7 @@ const WhiteText = styled.span`
 
 const Avatar = ({ user, usernameColor }) => {
   if (!user) return null;
-  const dpUrl = (user.profilePicture && user.profilePicture.url) || 'https://imgur.com/download/4iTD3lS';
+  const dpUrl = (user.profilePicture && user.profilePicture.url) || ImgurAvatar;
   const userProfilePageUrl = `/users/${user.username}`;
   return (
     <Grid columns={2} padded="horizontally" verticalAlign="middle">

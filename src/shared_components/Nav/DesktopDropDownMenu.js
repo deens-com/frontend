@@ -13,6 +13,7 @@ import { Image } from 'semantic-ui-react';
 import { Dropdown } from 'semantic-ui-react';
 
 import history from "./../../main/history";
+import ImgurAvatar from "./../../assets/imgur-avatar.png";
 
 // STYLES
 const Wrap = styled.div`
@@ -91,7 +92,7 @@ export default class DesktopDropDownMenu extends Component {
   }
 
   logged_in() {
-    const dpUrl = (this.state.current_user.profilePicture && this.state.current_user.profilePicture.url) || 'https://imgur.com/download/4iTD3lS';
+    const dpUrl = (this.state.current_user.profilePicture && this.state.current_user.profilePicture.url) || ImgurAvatar;
     return(
       <Wrap>
         <AvatarWrapper>

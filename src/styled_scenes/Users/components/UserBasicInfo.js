@@ -4,6 +4,7 @@ import { Grid, Icon } from 'semantic-ui-react';
 import styled from 'styled-components';
 import CircularProfilePic from './CircularProfilePic';
 import moment from 'moment';
+import ImgurAvatar from "./../../../assets/imgur-avatar.png";
 
 const BodyText = styled.p`
   font-weight: 500;
@@ -33,7 +34,7 @@ const formatDate = date => moment(date).format('MMMM YYYY');
 const UserBasicInfo = ({ user = {} }) => {
   const name = user.fullName || user.username;
   // TODO: upload the image on our own infra
-  const dpUrl = (user.profilePicture && user.profilePicture.url) || 'https://imgur.com/download/4iTD3lS';
+  const dpUrl = (user.profilePicture && user.profilePicture.url) || ImgurAvatar;
   const userLevel = user.userLevel || 'New user';
   return (
     <Wrapper>

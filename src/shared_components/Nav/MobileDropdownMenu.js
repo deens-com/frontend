@@ -11,6 +11,7 @@ import { Image } from 'semantic-ui-react';
 
 // ACTIONS/CONFIG
 import { sizes } from '../../libs/styled';
+import ImgurAvatar from "./../../assets/imgur-avatar.png";
 
 // STYLES
 const AvatarWithUsername = styled.div`
@@ -69,7 +70,7 @@ export default class MobileDropDownMenu extends Component {
   }
 
   render(){
-    const dpUrl = (this.state.current_user.profilePicture && this.state.current_user.profilePicture.url) || 'https://imgur.com/download/4iTD3lS';
+    const dpUrl = (this.state.current_user.profilePicture && this.state.current_user.profilePicture.url) || ImgurAvatar;
 
     if (!this.state.logged_in) {
       return null;

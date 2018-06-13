@@ -21,6 +21,7 @@ import {
 } from "./../../../shared_components/layout/Page";
 import { Link } from "react-router-dom";
 import { Hr } from "./../../../shared_components/styledComponents/misc";
+import { media } from '../../../libs/styled';
 
 const displayErrorMessage = (isLoginError, message) => {
   return isLoginError ? (
@@ -30,6 +31,13 @@ const displayErrorMessage = (isLoginError, message) => {
 
 const WithTopMargin = styled.div`
   margin-top: 16px;
+`;
+
+const MetamaskButton = styled(Button)`
+  display: none !important;
+  ${media.mobileMinSmall} {
+    display: block !important;
+  }
 `;
 
 export default class LoginFormComponent extends Component {
@@ -124,14 +132,14 @@ export default class LoginFormComponent extends Component {
                       !!this.props.metaMaskError.message,
                       this.props.metaMaskError.message
                     )}
-                    <Button
+                    <MetamaskButton
                       color="orange"
                       fluid
                       size="large"
                       onClick={this.props.loginWithMetamask}
                     >
                     Login with MetaMask
-                    </Button>
+                    </MetamaskButton>
                   </WithTopMargin>
 
                   <WithTopMargin>
@@ -163,14 +171,14 @@ export default class LoginFormComponent extends Component {
                         </Segment>
                     }
 
-                    <Button
+                    <MetamaskButton
                       color="green"
                       fluid
                       size="large"
                       onClick={this.props.loginWithLedger}
                     >
                     Login with Ledger
-                    </Button>
+                    </MetamaskButton>
                   </WithTopMargin>
 
                   <Message>
