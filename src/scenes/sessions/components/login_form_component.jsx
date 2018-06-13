@@ -35,7 +35,7 @@ const WithTopMargin = styled.div`
 
 const MetamaskButton = styled(Button)`
   display: none !important;
-  ${media.minSmall} {
+  ${media.mobileMinSmall} {
     display: block !important;
   }
 `;

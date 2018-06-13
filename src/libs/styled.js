@@ -29,6 +29,7 @@ export const sizes = {
 };
 
 export const media = {
+  mobileMinSmall: `@media only screen and (min-width: ${sizes.medium})`, //Here we set sizes.medium to take into consideration landscape mode..
   minSmall: `@media only screen and (min-width: ${sizes.small})`,
   minMedium: `@media only screen and (min-width: ${sizes.medium})`,
   minMediumPlus: `@media only screen and (min-width: ${sizes.mediumPlus})`,
