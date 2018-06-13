@@ -32,7 +32,7 @@ const LinkText = styled.div`
 `;
 
 const VisibilityToggle = styled.div`
-  visibility: ${props => (props.visible ? 'visible' : 'hidden')};
+  display: ${props => (props.visible ? 'flex' : 'none')};
 `;
 
 export default class ShareDialogContent extends Component {
@@ -54,6 +54,9 @@ export default class ShareDialogContent extends Component {
     return (
       <Container>
         <Grid columns="2">
+          <VisibilityToggle visible={showTripStatusChanged}>
+            <Icon name="check circle outline" color="green" /> {statusUpdateMessages[this.state.newStatus]}
+          </VisibilityToggle>
           <Grid.Row>
             <Grid.Column verticalAlign="middle">
               <h3>Visibility</h3>
@@ -72,9 +75,6 @@ export default class ShareDialogContent extends Component {
                   />
                 )}
               </Media>
-              <VisibilityToggle visible={showTripStatusChanged}>
-                <Icon name="check circle outline" color="green" /> Trip has been marked as private
-              </VisibilityToggle>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
