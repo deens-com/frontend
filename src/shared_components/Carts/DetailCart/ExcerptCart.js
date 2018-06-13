@@ -11,6 +11,8 @@ import Category from './components/Category';
 import CardDescription from './components/Description';
 import Detail from './components/Detail';
 
+import { padStart } from '../../../libs/Utils';
+
 // ACTIONS/CONFIG
 import { media } from '../../../libs/styled';
 
@@ -73,7 +75,12 @@ export default function ExcerptCart({ data, toggleExpansion, hideMoreInfo, isOwn
           <Link to={`/services/${data.objectId}`}>
             <CardDescription description={data.name} type="inline-block" />
           </Link>
-          <Detail inline icon="clock" text={data.openingTime} showEdit={isOwner} />
+          <Detail
+            inline
+            icon="clock"
+            text={`${padStart(data.openingTime, 2)}:00 - ${padStart(data.closingTime, 2)}:00`}
+            showEdit={isOwner}
+          />
         </LeftCol>
         <RightCol>
           <Price price={data.pricePerSession} currency={data.currency} />
