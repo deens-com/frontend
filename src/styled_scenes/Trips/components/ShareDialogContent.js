@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Container, Dropdown, Grid, Input } from 'semantic-ui-react';
+import { Container, Dropdown, Grid, Segment, Label } from 'semantic-ui-react';
 import Media from 'react-media';
 import Parse from 'parse';
+import styled from 'styled-components';
 
 import { sizes } from '../../../libs/styled';
 
@@ -24,43 +25,27 @@ const dropDownOptions = [
   },
 ];
 
+const LinkText = styled.div`
+  font-size: 18px;
+  font-weight: 300;
+  text-align: center;
+`;
+
 export default class ShareDialogContent extends Component {
   static propTypes = {
     trip: PropTypes.object.isRequired,
     updateTripDetails: PropTypes.func.isRequired,
   };
 
-  state = {
-    copyButtonText: 'Copy',
-  };
-
-  componentDidMount() {
-    this.setState({ copyButtonText: 'Copy' });
-  }
-
-  handleRef = element => {
-    this.textInput = element;
-  };
-
   onDropDownChange = (ev, { value }) => {
     this.props.updateTripDetails({ status: value });
   };
 
-  copyToClipboard = () => {
-    this.textInput.inputRef.select();
-    document.execCommand('copy');
-    this.setState({ copyButtonText: 'Copied' });
-    setTimeout(() => this.setState({ copyButtonText: 'Copy' }), 2000);
-  };
-
   render() {
     const { trip } = this.props;
-    const tripUrl = `${window.location.origin}/#/trips/${trip.objectId}`;
     const currentUser = Parse.User.current();
     const allowChangeStatus = (trip.owner && trip.owner.objectId) === (currentUser && currentUser.id);
-    const copyButton = (
-      <Button color="teal" icon="copy" content={this.state.copyButtonText} onClick={this.copyToClipboard} />
-    );
+    const tripUrl = window.location.toString();
     return (
       <Container>
         <Grid columns="2">
@@ -86,7 +71,14 @@ export default class ShareDialogContent extends Component {
           </Grid.Row>
           <Grid.Row>
             <Grid.Column width="16">
-              <Input action={copyButton} fluid value={tripUrl} ref={this.handleRef} />
+              <Segment padded>
+                <Label attached="top">Link</Label>
+                <LinkText>
+                  <a href={tripUrl} target="_blank">
+                    {tripUrl}
+                  </a>
+                </LinkText>
+              </Segment>
             </Grid.Column>
           </Grid.Row>
         </Grid>
