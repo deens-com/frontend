@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import Row from "../../../shared_components/layout/Row";
 import TripCart from "../../../shared_components/Carts/Trip";
 import ReactPaginate from 'react-paginate';
+import { media } from '../../../libs/styled';
 
 // STYLES
 const Wrap = styled.div`
@@ -57,6 +58,10 @@ const PaginationWrap = styled.div`
 const ResultItem = styled.div`
   position: relative;
   display: inline-block;
+  margin-left: 12%;
+  ${media.minSmall}{
+    margin-left: 0px;
+  }
 `;
 
 const Badge = styled.div`

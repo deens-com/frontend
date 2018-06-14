@@ -4,12 +4,17 @@ import styled from "styled-components";
 
 import LocationFormControl from "../../../shared_components/Form/LocationControl";
 import FormControl from "../../../shared_components/Form/FormControl";
+import Button from "../../../shared_components/Button";
+import CarouselPicker from "./CarouselPicker";
 
 import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import moment from "moment";
 
 import { Checkbox as SemanticCheckbox } from "semantic-ui-react";
 import { Icon } from 'semantic-ui-react';
+import Media from 'react-media';
+import { sizes, media } from '../../../libs/styled';
+import { FilterIcon } from "../../../shared_components/icons";
 
 import * as results_actions from "./../../../scenes/results/actions";
 import { connect } from "react-redux";
@@ -19,6 +24,11 @@ import { bindActionCreators } from "redux";
 const Wrap = styled.div`
   display: flex;
   flex-direction: row;
+`;
+
+const MobileWrap = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 const Checkbox = styled(SemanticCheckbox)`
@@ -31,11 +41,38 @@ const ClearInputIcon = styled(Icon)`
   right: 20px;
 `;
 
+const MobileClearInputIcon = styled(Icon)`
+  position: relative;
+  bottom: 45px;
+  left: 95%;
+`;
+
 const CheckboxWrap = styled.div`
   display: flex;
   justify-content: center;
   padding-top: 1%;
   padding-bottom: 1%;
+`;
+
+
+const WrapTrigger = styled.div`
+  button {
+    //padding: 12px 10px;
+
+    & > span {
+      display: flex;
+      align-items: center;
+    }
+
+    svg {
+      font-size: 20px;
+    }
+  }
+
+  svg {
+    //display: inline-block !important;
+    margin-right: 15px;
+  }
 `;
 
 // MODULE
@@ -52,6 +89,7 @@ class SearchFilters extends Component {
       person_nb: props.search_query.person_nb || undefined,
       service_type: props.search_query.type || [],
       tags: [],
+      showFilters: false
       //service_type: { trip: false, place: false, activity: false, food: false }
     }
     this.handleLocationChange = this.handleLocationChange.bind(this);
@@ -66,6 +104,7 @@ class SearchFilters extends Component {
     this.clear_start_date = this.clear_start_date.bind(this);
     this.clear_end_date = this.clear_end_date.bind(this);
     this.clear_person_nb = this.clear_person_nb.bind(this);
+    this.toggleFilters = this.toggleFilters.bind(this);
   }
 
   // componentDidMount(){
@@ -210,6 +249,10 @@ class SearchFilters extends Component {
     this.refetch_results({ person_nb: "" });
   }
 
+  toggleFilters() {
+    this.setState({ showFilters: !this.state.showFilters });
+  }
+
   render(){
     let start_date = this.props.search_query.start_date;
     let formatted_start_date = (start_date && start_date.length) ? moment(start_date).format("YYYY-M-D") : "";
@@ -220,6 +263,102 @@ class SearchFilters extends Component {
     let address = this.props.search_query.address; // || this.state.address; //|| this.props.address;
     //let address = this.state.address || this.props.address;
     return(
+      <Media query={`(max-width: ${sizes.small})`}>
+        {matches =>
+          matches ? (
+
+            <section>
+
+            <WrapTrigger>
+              <Button
+                size="medium"
+                type="button"
+                onClick={this.toggleFilters}
+                theme="textGreen"
+              >
+                <FilterIcon />
+                {this.state.showFilters ? "Hide" : "Show"} filters
+              </Button>
+            </WrapTrigger>
+
+            {
+              this.state.showFilters && (
+                <section>
+
+                  <MobileWrap>
+
+                    <CarouselPicker {...this.props} />
+
+                    <LocationFormControl formatted_address={address} onChange={this.handleLocationChange} />
+                    <MobileClearInputIcon onClick={this.clear_address} link name='close' />
+
+                    <FormControl
+                      type="date"
+                      onChange={this.handleStartDateChange}
+                      placeholder="Start date"
+                      leftIcon="date"
+                      value={formatted_start_date}
+                    />
+                    <MobileClearInputIcon onClick={this.clear_start_date} link name='close' />
+
+                    <FormControl
+                      type="date"
+                      onChange={this.handleEndDateChange}
+                      placeholder="End date"
+                      leftIcon="date"
+                      value={formatted_end_date}
+                    />
+                    <MobileClearInputIcon onClick={this.clear_end_date} link name='close' />
+
+                    <FormControl
+                      type="number"
+                      onChange={this.handlePersonChange}
+                      placeholder="Nb"
+                      leftIcon="person"
+                      min={1}
+                      max={10}
+                      value={person_nb}
+                    />
+                    <MobileClearInputIcon onClick={this.clear_person_nb} link name='close' />
+
+                  </MobileWrap>
+
+                  <CheckboxWrap>
+                    <Checkbox
+                      label="Trip"
+                      value="trip"
+                      onClick={this.handleServiceTypeChange}
+                      checked={service_types && service_types.includes("trip")}
+                    />
+                    <Checkbox
+                      label="Place"
+                      value="place"
+                      onClick={this.handleServiceTypeChange}
+                      checked={service_types && service_types.includes("place")}
+                    />
+                    <Checkbox
+                      label="Activity"
+                      value="activity"
+                      onClick={this.handleServiceTypeChange}
+                      checked={service_types && service_types.includes("activity")}
+                    />
+                    <Checkbox
+                      label="Food"
+                      value="food"
+                      onClick={this.handleServiceTypeChange}
+                      checked={service_types && service_types.includes("food")}
+                    />
+                  </CheckboxWrap>
+
+                  </section>
+              )
+            }
+
+            </section>
+
+
+    ) :
+    (
       <section>
         <Wrap>
 
@@ -283,8 +422,13 @@ class SearchFilters extends Component {
             checked={service_types && service_types.includes("food")}
           />
         </CheckboxWrap>
+        <CarouselPicker {...this.props} />
       </section>
     )
+  }
+  </Media>
+    )
+
   }
 
 
