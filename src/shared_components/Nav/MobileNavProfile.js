@@ -130,6 +130,15 @@ export default class MobileNavProfile extends Component {
     });
   }
 
+  scrollDownMobileOnly = () => {
+    const currentWidth = window.innerWidth;
+    if(currentWidth <= 750){
+      setTimeout(() => {
+        window.scrollBy(0, 520);
+      }, 20)
+    }
+  }
+
   render() {
     if (!this.props.menuIsOpened) return null;
 
@@ -140,16 +149,16 @@ export default class MobileNavProfile extends Component {
           <Wrap>
             <InnerList>
               <li>
-                <NavLink to="/account/trips/planned">My Trips</NavLink>
+                <NavLink to="/account/trips/planned" onClick={this.scrollDownMobileOnly}>My Trips</NavLink>
               </li>
               <li>
-                <NavLink to="/account/services">My Services</NavLink>
+                <NavLink to="/account/services" onClick={this.scrollDownMobileOnly}>My Services</NavLink>
               </li>
               <li>
-                <NavLink to="/account/profile">Profile</NavLink>
+                <NavLink to="/account/profile" onClick={this.scrollDownMobileOnly}>Profile</NavLink>
               </li>
               <li>
-                <NavLink to="/account/settings">Settings</NavLink>
+                <NavLink to="/account/settings" onClick={this.scrollDownMobileOnly}>Settings</NavLink>
               </li>
               <li aria-hidden="true">
                 <Divider />
