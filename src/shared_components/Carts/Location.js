@@ -1,19 +1,21 @@
 // NPM
-import React from "react";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
+import React from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { Label as SemanticLabel } from 'semantic-ui-react';
 
 // COMPONENTS
-import Rating from "../Rating";
-import PriceTag from "../Currency/PriceTag";
-import Thumb from "./components/Thumb";
-import Col from "../layout/Col";
-import { PinIcon } from "../icons";
+import Rating from '../Rating';
+import PriceTag from '../Currency/PriceTag';
+import Thumb from './components/Thumb';
+import Col from '../layout/Col';
+import { PinIcon } from '../icons';
 
 // ACTIONS/CONFIG
 
 // STYLES
-import { Cart } from "./styles";
+import { Cart } from './styles';
 
 const ContentWrap = styled.div`
   padding: 20px;
@@ -64,44 +66,52 @@ const Location = styled.span`
   }
 `;
 
+const SemanticLabelFixed = styled(SemanticLabel)`
+  position: absolute;
+  top: 10px;
+  z-index: 10;
+  right: 4px;
+`;
+
 // MODULE
-export default function LocationCart({
-  item,
-  href,
-  withShadow,
-  smBasis,
-  xsBasis,
-  mdBasis
-}) {
-  const cart = <Cart withShadow={withShadow} column>
-    <Thumb url={item.image} />
-    <ContentWrap>
-      <Title>
-        <p>{item.title}</p>
-      </Title>
-      <Excerpt>{item.excerpt}</Excerpt>
-      {item.type &&
-        <Location>
-          <PinIcon />
-          {item.location}
-        </Location>
-      }
-      <Rating
-        marginBottom="25px"
-        rating={item.rating}
-        count={item.reviewCount}
-      />
-      <Label>Starting from</Label>
-      <PriceTag price={item.price} />
-    </ContentWrap>
-  </Cart>
+export default function LocationCart({ item, href, withShadow, smBasis, xsBasis, mdBasis, isUnconfirmed }) {
+  const cart = (
+    <Cart withShadow={withShadow} column>
+      {isUnconfirmed && <SemanticLabelFixed color="red">Unconfirmed</SemanticLabelFixed>}
+      <Thumb url={item.image} />
+      <ContentWrap>
+        <Title>
+          <p>{item.title}</p>
+        </Title>
+        <Excerpt>{item.excerpt}</Excerpt>
+
+        {item.type && (
+          <Location>
+            <PinIcon />
+            {item.location}
+          </Location>
+        )}
+        <Rating marginBottom="25px" rating={item.rating} count={item.reviewCount} />
+        <Label>Starting from</Label>
+        <PriceTag price={item.price} />
+      </ContentWrap>
+    </Cart>
+  );
   return (
     <Col xsBasis={xsBasis} mdBasis={mdBasis} smBasis={smBasis}>
-      {href && <Link to={href}>{cart}</Link>}
-      {!href && cart}
+      <div>
+        {href && <Link to={href}>{cart}</Link>}
+        {!href && cart}
+      </div>
     </Col>
   );
 }
 
 // Props Validation
-LocationCart.propTypes = {};
+LocationCart.propTypes = {
+  isUnconfirmed: PropTypes.bool,
+};
+
+LocationCart.defaultProps = {
+  isUnconfirmed: false,
+};
