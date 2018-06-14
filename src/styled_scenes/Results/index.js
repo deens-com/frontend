@@ -55,7 +55,7 @@ export default function ResultsScene(props) {
         <ServicesWrapper>
           <br/>
           <SearchFilters {...props} />
-          <CarouselPicker {...props} />
+          {/*<CarouselPicker {...props} />*/}
           <Results {...props} data={props.service_data} />
         </ServicesWrapper>
         <Media

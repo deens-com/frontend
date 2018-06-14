@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 
 // COMPONENTS
-import Carousel from "../../../shared_components/Carousel";
+import Carousel from "./Carousel";
 import Tag from "./Tag";
 
 // STYLES
