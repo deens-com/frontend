@@ -164,6 +164,7 @@ export const fetch_user_trips = (owner_id, trip_state) => {
         trip_query.doesNotExist('beginDate');
         trip_query.doesNotExist('endDate');
       }
+
       trip_query.equalTo("owner", user).find().then(
         trips_response => {
           trips_response.map(trip => {
@@ -198,6 +199,16 @@ export const fetch_user_trips = (owner_id, trip_state) => {
           console.log(error);
         }
       );
+
+      fetch_helpers
+        .build_query('Reservation')
+        .equalTo('client', user)
+        .equalTo('transactionStatus', 0)
+        .find()
+        .then(fetch_helpers.normalizeParseResponseData)
+        .then(failedReservations => {
+          dispatch({ type: 'USER_FAILED_RESERVATIONS', payload: failedReservations });
+        });
     })
   };
 };
