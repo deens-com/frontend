@@ -56,8 +56,8 @@ const Button = styled.button`
 const ButtonLeft = Button.extend`
   left: 0px;
   cursor: pointer;
-  display: none;
-  ${media.mobileMinSmall}{
+  z-index: 1;
+  ${media.minSmall}{
     z-index: 1;
     display: flex;
   }
@@ -70,13 +70,13 @@ const ButtonLeft = Button.extend`
   @media (pointer: coarse) {
     display: ${props => props.hideButtonsOnTouchDevice ? 'none' : 'flex'}
   }
+  display: none;
 `;
 
 const ButtonRight = Button.extend`
   right: 0px;
   cursor: pointer;
-  display: none;
-  ${media.mobileMinSmall}{
+  ${media.minSmall}{
     z-index: 1;
     display: flex;
   }
@@ -86,6 +86,7 @@ const ButtonRight = Button.extend`
   @media (pointer: coarse) {
     display: ${props => props.hideButtonsOnTouchDevice ? 'none' : 'flex'}
   }
+  display: none;
 `;
 
 const NextButton = props => {

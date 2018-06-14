@@ -287,6 +287,8 @@ class SearchFilters extends Component {
 
                   <MobileWrap>
 
+                    <CarouselPicker {...this.props} />
+
                     <LocationFormControl formatted_address={address} onChange={this.handleLocationChange} />
                     <MobileClearInputIcon onClick={this.clear_address} link name='close' />
 
@@ -347,7 +349,7 @@ class SearchFilters extends Component {
                       checked={service_types && service_types.includes("food")}
                     />
                   </CheckboxWrap>
-                  <CarouselPicker {...this.props} />
+
                   </section>
               )
             }
