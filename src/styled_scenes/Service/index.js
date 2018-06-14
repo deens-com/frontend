@@ -385,7 +385,7 @@ class FoodDetailScene extends Component {
                   <DataBlock>
                     <TextLabel>PART OF THE TRIP</TextLabel>
                     <span>
-                      <Link to={'/trips/' + this.props.trips[0].objectId}>
+                      <Link to={'/trips/' + (this.props.trips[0] && this.props.trips[0].objectId)}>
                         "{this.props.trips.length && this.props.trips[0] && this.props.trips[0].description.slice(0, 40)}"
                         and {this.props.trips.length} more ...
                       </Link>
