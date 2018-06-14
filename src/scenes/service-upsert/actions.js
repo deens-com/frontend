@@ -131,6 +131,7 @@ export const fetchUserProfile = () => dispatch => {
 export const deployContract = (service, values, history) => async (dispatch, getState) => {
   try {
     const { pricePerSession, slots } = values;
+    const user = getState().ServiceUpsert.userProfile;
 
     // retrieve most recent contract ID
     let ipfsContract = Parse.Object.extend('ipfsContract');
@@ -160,9 +161,13 @@ export const deployContract = (service, values, history) => async (dispatch, get
     var network = ethers.providers.networks.ropsten;
     let preferredWeb3;
 
-    try {
-      preferredWeb3 = await getWeb3();
-    } catch (e) {
+    if (user.metamaskPublicAddress) {
+      try {
+          preferredWeb3 = await getWeb3();
+      } catch (e) {
+        preferredWeb3 = await getLedgerWeb3();
+      }
+    } else {
       preferredWeb3 = await getLedgerWeb3();
     }
 
