@@ -39,6 +39,7 @@ class ServiceForm extends Component {
 
   state = {
     tagOptions: [],
+    showGlobalError: false
   };
 
   onDropDownChange = (e, { name, value }) => {
@@ -102,14 +103,25 @@ class ServiceForm extends Component {
       });
   };
 
+  componentWillReceiveProps(nextProps) {
+    const { globalError } = nextProps;
+
+    if (globalError != null) {
+      this.setState({ showGlobalError: true })
+    }
+
+  };
+
+  handleModalClose = () => this.setState({ showGlobalError: false })
+
   render() {
     const {
       values,
       errors,
-      globalError,
       touched,
       handleChange,
       handleBlur,
+      globalError,
       handleSubmit,
       submitInFlight,
       userProfile,
@@ -120,14 +132,12 @@ class ServiceForm extends Component {
       onBlur: handleBlur,
     };
 
-    const showGlobalError = (typeof globalError !== 'undefined' && globalError !== null) || false;
-
     const userHasConnectedWallet =
       userProfile && (userProfile.ledgerPublicAddress || userProfile.metamaskPublicAddress);
 
     return (
       <Form onSubmit={handleSubmit} loading={submitInFlight}>
-        <Modal size="tiny" open={showGlobalError}>
+        <Modal size="tiny" open={this.state.showGlobalError} onClose={this.handleModalClose}>
           <Modal.Header>There was an issue with creating your service</Modal.Header>
           <Modal.Content>{globalError}</Modal.Content>
         </Modal>
