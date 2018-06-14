@@ -75,7 +75,7 @@ export default function Footer({ withTopBorder, withPadding }) {
   return (
     <Wrapper withTopBorder={withTopBorder} withPadding={withPadding}>
       <Company>
-        <Logo style={{width: "120px", "margin-right": "10px"}} />
+        <Logo style={{width: "120px", marginRight: "10px"}} />
         <span>© Please SEZC.</span>
       </Company>
       <Nav>
