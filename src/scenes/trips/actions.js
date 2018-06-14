@@ -135,3 +135,11 @@ export const updateTripQuery = values => dispatch => {
   if (!values) return;
   dispatch({ type: 'TRIP_QUERY_UPDATE', payload: values });
 };
+
+/**
+ * This sets the value in redux that's responsible for showing the saved feedback to the user
+ * when the trip status changes
+ */
+export const setShowTripStatusChanged = showStatusChanged => dispatch => {
+  dispatch({ type: 'SHOW_TRIP_STATUS_CHANGED', payload: showStatusChanged });
+};

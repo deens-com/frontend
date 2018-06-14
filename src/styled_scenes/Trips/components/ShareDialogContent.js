@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Container, Dropdown, Grid, Segment, Label } from 'semantic-ui-react';
+import { Container, Dropdown, Grid, Segment, Label, Icon } from 'semantic-ui-react';
 import Media from 'react-media';
 import Parse from 'parse';
 import styled from 'styled-components';
@@ -31,24 +31,43 @@ const LinkText = styled.div`
   text-align: center;
 `;
 
+const VisibilityToggle = styled.div`
+  display: ${props => (props.visible ? 'flex' : 'none')};
+`;
+
+const statusUpdateMessages = {
+  public: 'Trip has been marked as public. It will be listed on the trip search',
+  unlisted: 'Trip has been marked as unlisted. With this URL your trip can be seen by other people',
+  private: 'Trip has been marked as private',
+};
+
 export default class ShareDialogContent extends Component {
   static propTypes = {
     trip: PropTypes.object.isRequired,
     updateTripDetails: PropTypes.func.isRequired,
+    showTripStatusChanged: PropTypes.bool.isRequired,
+  };
+
+  state = {
+    newStatus: null,
   };
 
   onDropDownChange = (ev, { value }) => {
+    this.setState({ newStatus: value });
     this.props.updateTripDetails({ status: value });
   };
 
   render() {
-    const { trip } = this.props;
+    const { trip, showTripStatusChanged } = this.props;
     const currentUser = Parse.User.current();
     const allowChangeStatus = (trip.owner && trip.owner.objectId) === (currentUser && currentUser.id);
     const tripUrl = window.location.toString();
     return (
       <Container>
         <Grid columns="2">
+          <VisibilityToggle visible={showTripStatusChanged}>
+            <Icon name="check circle outline" color="green" /> {statusUpdateMessages[this.state.newStatus]}
+          </VisibilityToggle>
           <Grid.Row>
             <Grid.Column verticalAlign="middle">
               <h3>Visibility</h3>
