@@ -29,7 +29,7 @@ export const postRegistration = (username, email, password) => {
     user.signUp(null, {
       success: (user) => {
         dispatch(registrationSuccess({session: user}))
-        history.push('/login')
+        history.push('/')
       },
       error: (user, error) => {
         dispatch(registrationFailed({user: user, error: error}))
