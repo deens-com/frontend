@@ -18,6 +18,11 @@ class RegistrationsContainer extends Component {
     this.isInputInvalid = this.isInputInvalid.bind(this);
   }
 
+  componentDidMount() {
+    // clear registration errors
+    this.props.registrationFailed({});
+  }
+
   validateEmailInput(target) {
     const { name, value } = target;
     if (name === "email" && value.length > 0 && value.includes("@") === false) {
