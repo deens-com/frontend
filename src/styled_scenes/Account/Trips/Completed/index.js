@@ -7,6 +7,14 @@ import { Link } from 'react-router-dom';
 import TripSectionComponent from './../shared/TripSectionComponent';
 
 const AccountTripsScene = props => {
+  const scrollDownMobileOnly = () => {
+    const currentWidth = window.innerWidth;
+    if(currentWidth <= 750){
+      setTimeout(() => {
+        window.scrollBy(0, 520);
+      }, 20)
+    }
+  }
   return (
     <Grid centered columns={2}>
       <Grid.Column mobile={16} tablet={5} computer={4}>
@@ -16,11 +24,11 @@ const AccountTripsScene = props => {
       </Grid.Column>
       <Grid.Column mobile={16} tablet={11} computer={12}>
         <h1>My Trips</h1>
-        <Link to="/account/trips/planned">Planned</Link>&nbsp; | &nbsp;
-        <Link to="/account/trips/completed" style={{ borderBottom: '2px solid #50a189' }}>
+        <Link to="/account/trips/planned" onClick={scrollDownMobileOnly}>Planned</Link>&nbsp; | &nbsp;
+        <Link to="/account/trips/completed" onClick={scrollDownMobileOnly} style={{ borderBottom: '2px solid #50a189' }}>
           Completed
         </Link>&nbsp; | &nbsp;
-        <Link to="/account/trips/unscheduled">Unscheduled</Link>
+        <Link to="/account/trips/unscheduled" onClick={scrollDownMobileOnly}>Unscheduled</Link>
         <br />
         <br />
         <TripSectionComponent trips={props.completed_trips} isServiceUnConfirmed={props.isServiceUnConfirmed} />
