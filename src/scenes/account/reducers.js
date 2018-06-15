@@ -8,7 +8,8 @@ const initialState = {
   user_services: [],
   metamaskError: {},
   ledger_error: {},
-  editUserError: {}
+  editUserError: {},
+  failedReservations: [],
 };
 
 export default function AccountReducer(state = initialState, action = {}) {
@@ -58,7 +59,12 @@ export default function AccountReducer(state = initialState, action = {}) {
       return {
         ...state,
         editUserError: action.payload
-      }
+      };
+    case 'USER_FAILED_RESERVATIONS':
+      return {
+        ...state,
+        failedReservations: action.payload,
+      };
     default:
       return state;
   }
