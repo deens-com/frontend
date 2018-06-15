@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { SectionContent } from './../../../../shared_components/layout/Page';
-import Carousel from './../../../../shared_components/Carousel';
+import Carousel from './Carousel';
 import LocationCart from './../../../../shared_components/Carts/Location';
 import moment from 'moment';
 import uuid from 'uuid/v1';
