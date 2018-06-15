@@ -5,16 +5,9 @@ import UserBasicInfo from './../../components/UserBasicInfo';
 import { Link } from 'react-router-dom';
 
 import TripSectionComponent from './../shared/TripSectionComponent';
+import {scrollDownMobileOnly} from './../shared/scrollDownMobileOnly';
 
 const AccountTripsScene = props => {
-  const scrollDownMobileOnly = () => {
-    const currentWidth = window.innerWidth;
-    if(currentWidth <= 750){
-      setTimeout(() => {
-        window.scrollBy(0, 520);
-      }, 20)
-    }
-  }
   return (
     <Grid centered columns={2}>
       <Grid.Column mobile={16} tablet={5} x computer={4}>
