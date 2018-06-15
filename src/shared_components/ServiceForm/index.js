@@ -388,7 +388,7 @@ export default withFormik({
     latlong:
       (service && service.latitude && service.longitude && { lat: service.latitude, lng: service.longitude }) || null,
     tags: (service && service.tags) || [],
-    formattedAddress: (service && service.formattedAddress) || '',
+    formattedAddress: (service && service.formattedAddress) || undefined,
   }),
   validate,
   handleSubmit: (values, { props }) => {
