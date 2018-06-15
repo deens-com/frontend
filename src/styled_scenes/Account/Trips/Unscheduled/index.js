@@ -2,9 +2,9 @@ import React from 'react';
 import { Grid } from 'semantic-ui-react';
 import { SectionWrap } from './../../../../shared_components/layout/Page';
 import UserBasicInfo from './../../components/UserBasicInfo';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
-import TripSectionComponent from "./../shared/TripSectionComponent";
+import TripSectionComponent from './../shared/TripSectionComponent';
 
 const AccountTripsScene = props => {
   return (
@@ -18,12 +18,12 @@ const AccountTripsScene = props => {
         <h1>My Trips</h1>
         <Link to="/account/trips/planned">Planned</Link>&nbsp; | &nbsp;
         <Link to="/account/trips/completed">Completed</Link>&nbsp; | &nbsp;
-        <Link to="/account/trips/unscheduled" style={{borderBottom: "2px solid #50a189"}}>Unscheduled</Link>
-
-        <br/><br/>
-
-        <TripSectionComponent trips={props.unscheduled_trips} />
-
+        <Link to="/account/trips/unscheduled" style={{ borderBottom: '2px solid #50a189' }}>
+          Unscheduled
+        </Link>
+        <br />
+        <br />
+        <TripSectionComponent trips={props.unscheduled_trips} isServiceUnConfirmed={props.isServiceUnConfirmed} />
       </Grid.Column>
     </Grid>
   );

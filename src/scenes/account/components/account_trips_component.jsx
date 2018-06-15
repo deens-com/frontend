@@ -1,38 +1,38 @@
-import React, { Component } from "react";
-import AccountTripsPlannedComponent from "./account_trips_planned_component";
-import AccountTripsCompletedComponent from "./account_trips_completed_component";
-import AccountTripsUnscheduledComponent from "./account_trips_unscheduled_component";
-import * as account_actions from "./../actions";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { Route, withRouter } from "react-router-dom";
+import React, { Component } from 'react';
+import AccountTripsPlannedComponent from './account_trips_planned_component';
+import AccountTripsCompletedComponent from './account_trips_completed_component';
+import AccountTripsUnscheduledComponent from './account_trips_unscheduled_component';
+import * as account_actions from './../actions';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { Route, withRouter } from 'react-router-dom';
+import * as selectors from '../selectors';
 
 class AccountTripsComponent extends Component {
-
   render() {
     return (
       <div className="AccountTripsComponent">
         <Route
-          path={process.env.PUBLIC_URL + "/account/trips/planned"}
-          render={(props)=><AccountTripsPlannedComponent {...this.props} user_profile={this.props.user_profile} />}
+          path={process.env.PUBLIC_URL + '/account/trips/planned'}
+          render={props => <AccountTripsPlannedComponent {...this.props} user_profile={this.props.user_profile} />}
         />
         <Route
-          path={process.env.PUBLIC_URL + "/account/trips/completed"}
-          render={(props)=><AccountTripsCompletedComponent {...this.props} user_profile={this.props.user_profile} />}
+          path={process.env.PUBLIC_URL + '/account/trips/completed'}
+          render={props => <AccountTripsCompletedComponent {...this.props} user_profile={this.props.user_profile} />}
         />
         <Route
-          path={process.env.PUBLIC_URL + "/account/trips/unscheduled"}
-          render={(props)=><AccountTripsUnscheduledComponent {...this.props} user_profile={this.props.user_profile} />}
+          path={process.env.PUBLIC_URL + '/account/trips/unscheduled'}
+          render={props => <AccountTripsUnscheduledComponent {...this.props} user_profile={this.props.user_profile} />}
         />
       </div>
     );
   }
-
 }
 
 const mapStateToProps = state => {
   return {
-    user_profile: state.AccountReducer.user_profile
+    user_profile: state.AccountReducer.user_profile,
+    isServiceUnConfirmed: selectors.isServiceUnConfirmed(state),
   };
 };
 
@@ -40,4 +40,9 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators(account_actions, dispatch);
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AccountTripsComponent));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(AccountTripsComponent)
+);
