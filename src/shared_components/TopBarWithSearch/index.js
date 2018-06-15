@@ -78,6 +78,11 @@ export default class TopBar extends Component {
     this.setState({ showMenu: !showMenu });
   }
 
+  componentWillUnmount() {
+    const body = document.body;
+    body.style.overflow = "";
+  }
+
   toggleProfileMenu() {
     const { showProfileMenu } = this.state;
     const body = document.body;
