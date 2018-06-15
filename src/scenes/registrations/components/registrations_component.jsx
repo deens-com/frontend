@@ -111,7 +111,7 @@ const RegistrationsComponent = props => {
                   </Segment>
                 </Form>
                 <Message>
-                  Already have an account ? <Link to="/login">Sign In</Link>
+                  Already have an account ? <Link to="/login" replace>Sign In</Link>
                 </Message>
               </Grid.Column>
             </Grid>
