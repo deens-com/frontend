@@ -144,12 +144,12 @@ export default class TripSummary extends Component {
           >
           Book now
           </BookButton>
-          {!this.state.logged_in && (
+          {/*!this.state.logged_in && (
             <TotalHint>
             Trip is not saved! Please <Link to="/register">Sign Up</Link> or <Link to="/login">Login</Link> in order
             to save tre trip.
             </TotalHint>
-          )}
+          )*/}
         </Wrap>
       </StickyWrap>
     );
