@@ -91,7 +91,7 @@ export default class LocationFormControl extends Component {
   componentWillUpdate(next_props) {
     if (this.did_address_props_changed(this.props, next_props)) {
       //this.setState({address: next_props.formatted_address})
-      if (this.props.formatted_address != null && next_props.formatted_address.length) {
+      if (this.props.formatted_address === undefined && next_props.formatted_address.length) {
         this.setState({ address: next_props.formatted_address });
       }
       if (next_props.formatted_address === '') {
