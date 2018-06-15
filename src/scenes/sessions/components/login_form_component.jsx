@@ -182,7 +182,7 @@ export default class LoginFormComponent extends Component {
                   </WithTopMargin>
 
                   <Message>
-                    New to us? <Link to="/register">Sign Up</Link>
+                    New to us? <Link to="/register" replace>Sign Up</Link>
                   </Message>
                 </Grid.Column>
               </Grid>
