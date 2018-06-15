@@ -13,6 +13,13 @@ const MetamaskButton = styled(Button)`
   }
 `;
 
+const MetaMaskErrorMessage = styled(Message)`
+  display: none;
+  ${media.mobileMinSmall} {
+    display: block !important;
+  }
+`;
+
 const AccountSettingsScene = props => {
   const isMetaMaskInstalled = props.hasMetaMask();
   const publicAddrAlreadyPresent = !!(props.user_profile && props.user_profile.metamaskPublicAddress);
@@ -37,9 +44,9 @@ const AccountSettingsScene = props => {
           {metaMaskButtonTxt}
         </MetamaskButton>
         {!isMetaMaskInstalled && (
-          <Message warning>
+          <MetaMaskErrorMessage warning>
             Please install <a href="https://metamask.io/">MetaMask</a>
-          </Message>
+          </MetaMaskErrorMessage>
         )}
         {props.metaMaskError.message && <Message warning>{props.metaMaskError.message}</Message>}
         <MetamaskButton
