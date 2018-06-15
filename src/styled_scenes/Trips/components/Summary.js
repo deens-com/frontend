@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import { Button } from 'semantic-ui-react';
 import Parse from 'parse';
 
@@ -19,15 +18,15 @@ const Wrap = styled.div`
   flex-direction: row-reverse;
 `;
 
-const TotalHint = styled.p`
-  color: #6e7885;
-  font-size: 15px;
-  max-width: 360px;
-
-  a {
-    color: #5fb79e;
-  }
-`;
+// const TotalHint = styled.p`
+//   color: #6e7885;
+//   font-size: 15px;
+//   max-width: 360px;
+//
+//   a {
+//     color: #5fb79e;
+//   }
+// `;
 
 const BookButton = styled(Button)`
   && {

@@ -13,7 +13,7 @@ import moment from "moment";
 import { Checkbox as SemanticCheckbox } from "semantic-ui-react";
 import { Icon } from 'semantic-ui-react';
 import Media from 'react-media';
-import { sizes, media } from '../../../libs/styled';
+import { sizes } from '../../../libs/styled';
 import { FilterIcon } from "../../../shared_components/icons";
 
 import * as results_actions from "./../../../scenes/results/actions";

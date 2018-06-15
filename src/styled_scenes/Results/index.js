@@ -8,7 +8,6 @@ import GoogleMapReact from "google-map-react";
 import TopBar from "./../../shared_components/TopBarWithSearch";
 
 import BrandFooter from "./../../shared_components/BrandFooter";
-import CarouselPicker from "./components/CarouselPicker";
 import SearchFilters from "./components/SearchFilters";
 import Results from "./components/Results";
 import MapMaker from "./../../shared_components/MapMarker";
