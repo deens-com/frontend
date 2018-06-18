@@ -212,10 +212,21 @@ export default class TripsScene extends Component {
                 render={() => (
                   <MapWrapper>
                     <GoogleMapReact defaultCenter={{ lat: 59.95, lng: 30.33 }} defaultZoom={11}>
-                      <MapMaker lat={59.95} lng={30.33} scale={1} color="#4fb798" />
-                      <MapMaker lat={59.96} lng={30.34} scale={1} color="#4fb798" />
-                      <MapMaker lat={59.96} lng={30.3} scale={1} color="#4fb798" />
-                      <MapMaker lat={59.97} lng={30.31} scale={1} color="#4fb798" />
+                      {this.props.scheduledServices.reduce(
+                        (markers, { services }) => [
+                          ...markers,
+                          ...services.map(service => (
+                            <MapMaker
+                              key={service.objectId}
+                              lat={service.latitude}
+                              lng={service.longitude}
+                              scale={1}
+                              color="#4fb798"
+                            />
+                          )),
+                        ],
+                        []
+                      )}
                     </GoogleMapReact>
                   </MapWrapper>
                 )}
