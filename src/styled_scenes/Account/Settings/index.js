@@ -20,12 +20,25 @@ const MetaMaskErrorMessage = styled(Message)`
   }
 `;
 
+const InlineSpan = styled.span`
+  display: inline-flex;
+`;
+
+const HeightenedButton = styled(Button)`
+  position: relative;
+  bottom: 7px;
+`;
+
 class AccountSettingsScene extends Component {
   constructor(props){
     super(props);
     this.state = {
       metamaskEthBalance: 0,
-      ledgerEthBalance: 0
+      ledgerEthBalance: 0,
+      metamaskFaucetTransaction: undefined,
+      metamaskFaucetRequested: false,
+      ledgerFaucetRequested: false,
+      faucetRequestError: ''
     };
   }
   componentDidMount(){
@@ -58,6 +71,38 @@ class AccountSettingsScene extends Component {
 
     }
   }
+  handleFetchErrors = (response) => {
+    if(!response.ok){
+      this.setState({faucetRequestError: "We're sorry but something went wrong with your faucet request. Please try again later."})
+    }
+  }
+  requestFaucetEther = (address, type) => {
+    console.log(address)
+    if(type === 'ledger'){
+      this.setState({ledgerFaucetRequested: true})
+    }
+    if(type === 'metamask'){
+      this.setState({metamaskFaucetRequested: true})
+    }
+    fetch('https://faucet.metamask.io', {
+     method: 'post',
+     headers: {'Content-Type':'application/rawdata'},
+     body: address
+   }).then(this.handleFetchErrors).then(res => {
+     console.log(res.text());
+     return res.text();
+   }).then(json_res => {
+     console.log(json_res)
+     if(type === 'metamask'){
+       this.setState({metamaskFaucetTransaction: json_res});
+     }
+     if(type === 'ledger'){
+       this.setState({ledgerFaucetTransaction: json_res});
+     }
+   }).catch(error => {
+     console.log(error);
+   });
+  }
   render(){
     const isMetaMaskInstalled = this.props.hasMetaMask();
     const publicAddrAlreadyPresent = !!(this.props.user_profile && this.props.user_profile.metamaskPublicAddress);
@@ -72,6 +117,7 @@ class AccountSettingsScene extends Component {
           </SectionWrap>
         </Grid.Column>
         <Grid.Column mobile={16} tablet={11} computer={12}>
+          {this.state.faucetRequestError && <Message error>{this.state.faucetRequestError}</Message>}
           <h2>Settings</h2>
           <MetamaskButton
             color="orange"
@@ -102,17 +148,24 @@ class AccountSettingsScene extends Component {
               <h4>Metamask ETH Address</h4>
               <p><a target="_blank" href={`https://etherscan.io/address/` + this.props.user_profile.metamaskPublicAddress}>{this.props.user_profile.metamaskPublicAddress}</a></p>
               <h4>Metamask ETH Balance</h4>
-              <p>{this.state.metamaskEthBalance} ETH</p>
+              <InlineSpan>
+                <p>{this.state.metamaskEthBalance} ETH</p>&nbsp;&nbsp;
+                <HeightenedButton disabled={this.state.metamaskFaucetRequested} onClick={() => this.requestFaucetEther(this.props.user_profile.metamaskPublicAddress, 'metamask')}>Request Ether</HeightenedButton>
+                <p>{this.state.metamaskFaucetTransaction}</p>
+              </InlineSpan>
             </section>
           }
           {
             this.props.user_profile && this.props.user_profile.ledgerPublicAddress &&
             <section>
               <br/>
-              <h4>Metamask ETH Address</h4>
+              <h4>Ledger ETH Address</h4>
               <p><a target="_blank" href={`https://etherscan.io/address/` + this.props.user_profile.ledgerPublicAddress}>{this.props.user_profile.ledgerPublicAddress}</a></p>
               <h4>Ledger ETH Balance</h4>
-              <p>{this.state.ledgerEthBalance} ETH</p>
+              <InlineSpan>
+                <p>{this.state.ledgerEthBalance} ETH</p>&nbsp;&nbsp;
+                <HeightenedButton disabled={this.state.ledgerFaucetRequested} onClick={() => this.requestFaucetEther(this.props.user_profile.ledgerPublicAddress, 'ledger')}>Request Ether</HeightenedButton>
+              </InlineSpan>
             </section>
           }
         </Grid.Column>
