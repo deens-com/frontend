@@ -119,7 +119,7 @@ const Carousel = props => {
   };
 
   const settings = {
-    infinite: true,
+    infinite: false,
     speed: 500,
     dots: true,
     lazyLoad: 'ondemand',
