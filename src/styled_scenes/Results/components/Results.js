@@ -124,6 +124,13 @@ export default class Results extends Component {
     return (
       <Wrap>
         <Row>
+          {
+            this.state.filteredData.length === 0 &&
+            <section>
+              <h5 style={{textAlign: 'center', color: 'grey'}}>There are no search results for given search criterias.</h5>
+              <br/>
+            </section>
+          }
           {this.state.filteredData.map((result, i) => (
             <ResultItem>
               <Link to={(result.type ? "/services/" : "/trips/") + result.objectId} key={result.objectId}>
