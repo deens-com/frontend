@@ -71,13 +71,47 @@ const SemanticLabelFixed = styled(SemanticLabel)`
   top: 10px;
   z-index: 10;
   right: 4px;
+
+  a {
+    opacity: 1 !important;
+  }
 `;
 
+const RelativeCard = styled(Cart)`
+  position: relative;
+`;
+
+function wrapInRopstenLink(text, reservation) {
+  return (
+    <a href={`https://ropsten.etherscan.io/tx/${reservation.transactionHash}`} target="_blank">
+      {text}
+    </a>
+  );
+}
+
+function getSmartContractBookingStatus(reservation) {
+  if (!reservation) return null;
+  const { transactionHash, transactionStatus } = reservation;
+  if (transactionHash != null && transactionStatus != null) {
+    if (transactionStatus === 1) {
+      return <SemanticLabelFixed color="green">{wrapInRopstenLink('Confirmed', reservation)}</SemanticLabelFixed>;
+    }
+    if (transactionStatus === 0) {
+      return <SemanticLabelFixed color="red">{wrapInRopstenLink('Unconfirmed', reservation)}</SemanticLabelFixed>;
+    }
+    if (!transactionStatus) {
+      return <SemanticLabelFixed color="blue">{wrapInRopstenLink('Processing', reservation)}</SemanticLabelFixed>;
+    }
+  }
+  return null;
+}
+
 // MODULE
-export default function LocationCart({ item, href, withShadow, smBasis, xsBasis, mdBasis, isUnconfirmed }) {
+export default function LocationCart({ item, href, withShadow, smBasis, xsBasis, mdBasis }) {
+  const smartContractBookingStatus = getSmartContractBookingStatus(item.reservation);
   const cart = (
-    <Cart withShadow={withShadow} column>
-      {isUnconfirmed && <SemanticLabelFixed color="red">Unconfirmed</SemanticLabelFixed>}
+    <RelativeCard withShadow={withShadow} column>
+      {smartContractBookingStatus && smartContractBookingStatus}
       <Thumb url={item.image} />
       <ContentWrap>
         <Title>
@@ -95,7 +129,7 @@ export default function LocationCart({ item, href, withShadow, smBasis, xsBasis,
         <Label>Starting from</Label>
         <PriceTag price={item.price} />
       </ContentWrap>
-    </Cart>
+    </RelativeCard>
   );
   return (
     <Col xsBasis={xsBasis} mdBasis={mdBasis} smBasis={smBasis}>
@@ -109,9 +143,5 @@ export default function LocationCart({ item, href, withShadow, smBasis, xsBasis,
 
 // Props Validation
 LocationCart.propTypes = {
-  isUnconfirmed: PropTypes.bool,
-};
-
-LocationCart.defaultProps = {
-  isUnconfirmed: false,
+  item: PropTypes.object,
 };
