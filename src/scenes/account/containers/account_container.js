@@ -8,6 +8,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Route, withRouter } from 'react-router-dom';
 import BrandFooter from '../../../shared_components/BrandFooter';
+import styled from 'styled-components';
+
+const StaticFooter = styled.footer`
+  position: fixed;
+  bottom: 0px;
+`;
 
 class AccountContainer extends Component {
   componentDidMount() {
@@ -40,7 +46,9 @@ class AccountContainer extends Component {
           path={process.env.PUBLIC_URL + '/account/settings'}
           render={props => <AccountSettingsContainer {...props} user_profile={this.props.user_profile} />}
         />
-        <BrandFooter withTopBorder withPadding />
+        <StaticFooter>
+          <BrandFooter withTopBorder withPadding />
+        </StaticFooter>
       </div>
     );
   }
