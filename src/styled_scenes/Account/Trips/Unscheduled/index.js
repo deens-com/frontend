@@ -24,7 +24,7 @@ const AccountTripsScene = props => {
         </Link>
         <br />
         <br />
-        <TripSectionComponent trips={props.unscheduled_trips} isServiceUnConfirmed={props.isServiceUnConfirmed} />
+        <TripSectionComponent trips={props.unscheduled_trips} />
       </Grid.Column>
     </Grid>
   );

@@ -24,7 +24,7 @@ const AccountTripsScene = props => {
         <Link onClick={scrollDownMobileOnly} to="/account/trips/unscheduled">Unscheduled</Link>
         <br />
         <br />
-        <TripSectionComponent trips={props.planned_trips} isServiceUnConfirmed={props.isServiceUnConfirmed} />
+        <TripSectionComponent trips={props.planned_trips} />
       </Grid.Column>
     </Grid>
   );

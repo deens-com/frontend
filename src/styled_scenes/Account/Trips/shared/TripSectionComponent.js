@@ -55,7 +55,6 @@ const TripSectionComponent = props => {
                   <LocationCart
                     item={item}
                     index={index}
-                    isUnconfirmed={props.isServiceUnConfirmed(trip.objectId, item.objectId)}
                   />
                 </Link>
               ))}

@@ -6,7 +6,6 @@ import * as account_actions from './../actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Route, withRouter } from 'react-router-dom';
-import * as selectors from '../selectors';
 
 class AccountTripsComponent extends Component {
   render() {
@@ -32,7 +31,6 @@ class AccountTripsComponent extends Component {
 const mapStateToProps = state => {
   return {
     user_profile: state.AccountReducer.user_profile,
-    isServiceUnConfirmed: selectors.isServiceUnConfirmed(state),
   };
 };
 
