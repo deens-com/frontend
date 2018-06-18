@@ -95,37 +95,25 @@ class AccountSettingsScene extends Component {
             {ledgerButtonTxt}
           </MetamaskButton>
           {this.props.ledger_error.message && <Message warning>{this.props.ledger_error.message}</Message>}
-          <h4>Metamask ETH Address</h4>
           {
-            this.props.user_profile && this.props.user_profile.metamaskPublicAddress
-              ?
-            <p><a target="_blank" href={`https://etherscan.io/address/` + this.props.user_profile.metamaskPublicAddress}>{this.props.user_profile.metamaskPublicAddress}</a></p>
-              :
-            <p>Unknown</p>
+            this.props.user_profile && this.props.user_profile.metamaskPublicAddress &&
+            <section>
+              <br/>
+              <h4>Metamask ETH Address</h4>
+              <p><a target="_blank" href={`https://etherscan.io/address/` + this.props.user_profile.metamaskPublicAddress}>{this.props.user_profile.metamaskPublicAddress}</a></p>
+              <h4>Metamask ETH Balance</h4>
+              <p>{this.state.metamaskEthBalance} ETH</p>
+            </section>
           }
-          <h4>Metamask ETH Balance</h4>
           {
-            this.props.user_profile && this.props.user_profile.metamaskPublicAddress
-              ?
-            <p>{this.state.metamaskEthBalance} ETH</p>
-              :
-            <p>Unknown</p>
-          }
-          <h4>Ledger ETH Address</h4>
-          {
-            this.props.user_profile && this.props.user_profile.ledgerPublicAddress
-              ?
-            <p><a target="_blank" href={`https://etherscan.io/address/` + this.props.user_profile.ledgerPublicAddress}>{this.props.user_profile.ledgerPublicAddress}</a></p>
-              :
-            <p>Unknown</p>
-          }
-          <h4>Ledger ETH Balance</h4>
-          {
-            this.props.user_profile && this.props.user_profile.ledgerPublicAddress
-              ?
-            <p>{this.state.ledgerEthBalance} ETH</p>
-              :
-            <p>Unknown</p>
+            this.props.user_profile && this.props.user_profile.ledgerPublicAddress &&
+            <section>
+              <br/>
+              <h4>Metamask ETH Address</h4>
+              <p><a target="_blank" href={`https://etherscan.io/address/` + this.props.user_profile.ledgerPublicAddress}>{this.props.user_profile.ledgerPublicAddress}</a></p>
+              <h4>Ledger ETH Balance</h4>
+              <p>{this.state.ledgerEthBalance} ETH</p>
+            </section>
           }
         </Grid.Column>
       </Grid>
