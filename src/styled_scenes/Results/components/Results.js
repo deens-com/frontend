@@ -127,7 +127,7 @@ export default class Results extends Component {
           {
             this.state.filteredData.length === 0 &&
             <section>
-              <h5 style={{textAlign: 'center', color: 'grey'}}>There are no search results for given search criterias.</h5>
+              <h4 style={{textAlign: 'center', color: 'grey'}}>There are no search results for given search criteria.</h4>
               <br/>
             </section>
           }
@@ -149,11 +149,17 @@ export default class Results extends Component {
         </Row>
         <Row>
           <PaginationWrap>
-            <ReactPaginate pageCount={Math.ceil(this.state.totalItems / limit_per_page)}
-                           marginPagesDisplayed={1}
-                           pageRangeDisplayed={2}
-                           onPageChange={this.loadData} />
-           </PaginationWrap>
+            {
+              this.state.filteredData.length
+                ?
+              <ReactPaginate pageCount={Math.ceil(this.state.totalItems / limit_per_page)}
+              marginPagesDisplayed={1}
+              pageRangeDisplayed={2}
+              onPageChange={this.loadData} />
+                :
+              null
+            }
+          </PaginationWrap>
         </Row>
       </Wrap>
     );
