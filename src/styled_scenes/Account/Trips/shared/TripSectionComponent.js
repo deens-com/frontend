@@ -4,7 +4,6 @@ import { SectionContent } from './../../../../shared_components/layout/Page';
 import Carousel from './Carousel';
 import LocationCart from './../../../../shared_components/Carts/Location';
 import moment from 'moment';
-import uuid from 'uuid/v1';
 import { Divider, Label } from 'semantic-ui-react';
 import styled from 'styled-components';
 
@@ -37,7 +36,7 @@ const TripSectionComponent = props => {
   return (
     <section>
       {props.trips.map((trip, index) => (
-        <SectionContent key={uuid()}>
+        <SectionContent key={trip.objectId}>
           <Divider />
           <Link to={'/trips/' + trip.objectId}>
             <h2>{trip.title}</h2>
@@ -53,7 +52,7 @@ const TripSectionComponent = props => {
           <CarouselWrapper>
             <Carousel sm_slides_nb={1} md_slides_nb={2} lg_slides_nb={4} xl_slides_nb={4}>
               {trip.services.map((item, index) => (
-                <Link to={'/services/' + item.objectId} key={uuid()}>
+                <Link to={'/services/' + item.objectId} key={item ? item.objectId : index}>
                   <LocationCart
                     item={item}
                     index={index}
