@@ -28,9 +28,6 @@ class AccountSettingsScene extends Component {
       ledgerEthBalance: 0
     };
   }
-  componentDidMount(){
-    console.log(this.props.user_profile);
-  }
   componentWillReceiveProps(nextProps){
     if(this.props.user_profile !== nextProps.user_profile){
       if(nextProps.user_profile.metamaskPublicAddress){
