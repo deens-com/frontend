@@ -36,6 +36,7 @@ class AccountSettingsScene extends Component {
       metamaskEthBalance: 0,
       ledgerEthBalance: 0,
       metamaskFaucetTransaction: undefined,
+      ledgerFaucetTransaction: undefined,
       metamaskFaucetRequested: false,
       ledgerFaucetRequested: false,
       faucetRequestError: ''
