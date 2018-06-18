@@ -18,12 +18,8 @@ export const user_services_fetched = user_services => {
   };
 };
 
-export const planned_trips_fetched = planned_trips => {
-  return {
-    type: "PLANNED_TRIPS_FETCHED",
-    payload: planned_trips
-  };
-};
+
+export const categorizedTripsFetched = trips => ({ type: 'ACCOUNT/CATEGORIZED_TRIPS_FETCHED', payload: trips });
 
 export const edit_user_error_raised = error => {
   return {
@@ -32,19 +28,6 @@ export const edit_user_error_raised = error => {
   };
 };
 
-export const completed_trips_fetched = completed_trips => {
-  return {
-    type: "COMPLETED_TRIPS_FETCHED",
-    payload: completed_trips
-  };
-};
-
-export const unscheduled_trips_fetched = unscheduled_trips => {
-  return {
-    type: "UNSCHEDULED_TRIPS_FETCHED",
-    payload: unscheduled_trips
-  };
-};
 
 export const fetch_user_profile = () => dispatch => {
   let user = Parse.User.current();
@@ -133,84 +116,20 @@ export const fetch_user_services = () => dispatch => {
   });
 };
 
-export const fetch_user_trips = (owner_id, trip_state) => {
-  return dispatch => {
-    let user_query = fetch_helpers.build_query("User");
-    user_query.equalTo("objectId", owner_id)
-    user_query.first().then(user => {
-      let trip_query = fetch_helpers.build_query("Trip");
-      const moment_now = new Date();
-      if (trip_state === "completed") {
-        // Trips which are booked and with an endDate in the past
-        trip_query.equalTo('booked', true);
-        trip_query.lessThan("endDate", moment_now);
-      } else if (trip_state === "planned") {
-        // Trips which are not yet booked and with beginDate in the future
-        const pastStartDateAndNotPurchased = fetch_helpers
-          .build_query('Trip')
-          .equalTo('booked', true)
-          .greaterThan('beginDate', moment_now);
-          //.lessThan('beginDate', moment_now);
-        //const startDateInFuture = fetch_helpers.build_query('Trip').greaterThan('beginDate', moment_now);
-        //const tripsWithoutDates = fetch_helpers.build_query('Trip').doesNotExist('beginDate');
-        // trip_query = Parse.Query.or(
-        //   pastStartDateAndNotPurchased,
-        //   startDateInFuture,
-        //   //tripsWithoutDates
-        // );
-        trip_query = pastStartDateAndNotPurchased;
-      } else if(trip_state === "unscheduled"){
-        trip_query.doesNotExist('numberOfPerson');
-        trip_query.doesNotExist('beginDate');
-        trip_query.doesNotExist('endDate');
-      }
-
-      trip_query.equalTo("owner", user).find().then(
-        trips_response => {
-          trips_response.map(trip => {
-            let trip_org_query = fetch_helpers.build_query("TripOrganization");
-            trip_org_query.include("service");
-            trip_org_query.equalTo("trip", trip);
-            const json_trip = fetch_helpers.normalizeParseResponseData([trip]);
-            const formatted_trip = fetch_helpers.mapServiceObjects(json_trip)[0];
-            formatted_trip.services = [];
-            trip_org_query.find().then(trip_org => {
-              const json_trip_org = fetch_helpers.normalizeParseResponseData(trip_org);
-              if(json_trip_org.length){
-                json_trip_org.forEach(t_o => {
-                  const t_o_service = fetch_helpers.normalizeParseResponseData(t_o.service);
-                  const formatted_service = fetch_helpers.mapServiceObjects([t_o_service])[0];
-                  formatted_trip.services = formatted_trip.services.concat(formatted_service);
-                })
-              }
-              if(trip_state === "completed"){
-                dispatch(completed_trips_fetched({ completed_trips: formatted_trip }));
-              }else if(trip_state === "planned"){
-                dispatch(planned_trips_fetched({ planned_trips: formatted_trip }));
-              }else if(trip_state === "unscheduled"){
-                dispatch(unscheduled_trips_fetched({ unscheduled_trips: formatted_trip }));
-              }
-            })
-            return true;
-          })
-        },
-        error => {
-          // TODO dispatch the error to error handler
-          console.log(error);
-        }
-      );
-
-      fetch_helpers
-        .build_query('Reservation')
-        .equalTo('client', user)
-        .equalTo('transactionStatus', 0)
-        .find()
-        .then(fetch_helpers.normalizeParseResponseData)
-        .then(failedReservations => {
-          dispatch({ type: 'USER_FAILED_RESERVATIONS', payload: failedReservations });
-        });
-    })
-  };
+export const fetch_user_trips = (owner_id, trip_state) => dispatch => {
+  if (trip_state === 'planned') {
+    Parse.Cloud.run('myPlannedTrips')
+      .then(fetch_helpers.normalizeParseResponseData)
+      .then(result => dispatch(categorizedTripsFetched({ planned_trips: result })));
+  } else if (trip_state === 'completed') {
+    Parse.Cloud.run('myCompletedTrips')
+      .then(fetch_helpers.normalizeParseResponseData)
+      .then(result => dispatch(categorizedTripsFetched({ completed_trips: result })));
+  } else if (trip_state === 'unscheduled') {
+    Parse.Cloud.run('myUnscheduledTrips')
+      .then(fetch_helpers.normalizeParseResponseData)
+      .then(result => dispatch(categorizedTripsFetched({ unscheduled_trips: result })));
+  }
 };
 
 export const clearMetamaskErrors = () => dispatch => {
