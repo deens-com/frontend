@@ -45,7 +45,6 @@ class AccountSettingsScene extends Component {
     if(this.props.user_profile !== nextProps.user_profile){
       if(nextProps.user_profile.metamaskPublicAddress){
         const url = "https://api-ropsten.etherscan.io/api?module=account&action=balance&address=" + nextProps.user_profile.metamaskPublicAddress + "&tag=latest&apikey=RUTM2Q3ZP65U8UJQUD9GUZU2GZHQ363FYC";
-        //console.log(url);
         fetch(url).then(res => {
           return res.json();
         }).then(json_res => {
@@ -56,7 +55,6 @@ class AccountSettingsScene extends Component {
       }
       if(nextProps.user_profile.ledgerPublicAddress){
         const url = "https://api-ropsten.etherscan.io/api?module=account&action=balance&address=" + nextProps.user_profile.ledgerPublicAddress + "&tag=latest&apikey=RUTM2Q3ZP65U8UJQUD9GUZU2GZHQ363FYC";
-        //console.log(url);
         fetch(url).then(res => {
           return res.json();
         }).then(json_res => {
@@ -74,7 +72,6 @@ class AccountSettingsScene extends Component {
     }
   }
   requestFaucetEther = (address, type) => {
-    console.log(address)
     if(type === 'ledger'){
       this.setState({ledgerFaucetRequested: true})
     }
@@ -143,12 +140,12 @@ class AccountSettingsScene extends Component {
             <section>
               <br/>
               <h4>Metamask ETH Address</h4>
-              <p><a target="_blank" href={`https://etherscan.io/address/` + this.props.user_profile.metamaskPublicAddress}>{this.props.user_profile.metamaskPublicAddress}</a></p>
+              <p><a target="_blank" href={'https://ropsten.etherscan.io/address/' + this.props.user_profile.metamaskPublicAddress}>{this.props.user_profile.metamaskPublicAddress}</a></p>
               <h4>Metamask ETH Balance</h4>
               <InlineSpan>
                 <p>{this.state.metamaskEthBalance} ETH</p>&nbsp;&nbsp;
                 <HeightenedButton disabled={this.state.metamaskFaucetRequested} onClick={() => this.requestFaucetEther(this.props.user_profile.metamaskPublicAddress, 'metamask')}>Request Ether</HeightenedButton>
-                <p>{this.state.metamaskFaucetTransaction}</p>
+                <a target="_blank" href={'https://ropsten.etherscan.io/tx/' + this.state.metamaskFaucetTransaction}>{this.state.metamaskFaucetTransaction}</a>
               </InlineSpan>
             </section>
           }
@@ -157,11 +154,12 @@ class AccountSettingsScene extends Component {
             <section>
               <br/>
               <h4>Ledger ETH Address</h4>
-              <p><a target="_blank" href={`https://etherscan.io/address/` + this.props.user_profile.ledgerPublicAddress}>{this.props.user_profile.ledgerPublicAddress}</a></p>
+              <p><a target="_blank" href={`https://ropsten.etherscan.io/address/` + this.props.user_profile.ledgerPublicAddress}>{this.props.user_profile.ledgerPublicAddress}</a></p>
               <h4>Ledger ETH Balance</h4>
               <InlineSpan>
                 <p>{this.state.ledgerEthBalance} ETH</p>&nbsp;&nbsp;
                 <HeightenedButton disabled={this.state.ledgerFaucetRequested} onClick={() => this.requestFaucetEther(this.props.user_profile.ledgerPublicAddress, 'ledger')}>Request Ether</HeightenedButton>
+                <a target="_blank" href={'https://ropsten.etherscan.io/tx/' + this.state.ledgerFaucetTransaction}>{this.state.ledgerFaucetTransaction}</a>
               </InlineSpan>
             </section>
           }
