@@ -127,7 +127,7 @@ export default class Results extends Component {
           {
             this.state.filteredData.length === 0 &&
             <section>
-              <h4 style={{textAlign: 'center', color: 'grey'}}>There are no search results for given search criterias.</h4>
+              <h4 style={{textAlign: 'center', color: 'grey'}}>There are no search results for given search criteria.</h4>
               <br/>
             </section>
           }
