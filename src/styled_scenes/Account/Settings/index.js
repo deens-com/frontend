@@ -41,9 +41,6 @@ class AccountSettingsScene extends Component {
       faucetRequestError: ''
     };
   }
-  componentDidMount(){
-    console.log(this.props.user_profile);
-  }
   componentWillReceiveProps(nextProps){
     if(this.props.user_profile !== nextProps.user_profile){
       if(nextProps.user_profile.metamaskPublicAddress){
