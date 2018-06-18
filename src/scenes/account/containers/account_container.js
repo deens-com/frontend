@@ -7,6 +7,7 @@ import * as account_actions from './../actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Route, withRouter } from 'react-router-dom';
+import BrandFooter from '../../../shared_components/BrandFooter';
 
 class AccountContainer extends Component {
   componentDidMount() {
@@ -39,6 +40,7 @@ class AccountContainer extends Component {
           path={process.env.PUBLIC_URL + '/account/settings'}
           render={props => <AccountSettingsContainer {...props} user_profile={this.props.user_profile} />}
         />
+        <BrandFooter withTopBorder withPadding />
       </div>
     );
   }
