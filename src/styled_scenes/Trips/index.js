@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Media from 'react-media';
 import GoogleMapReact from 'google-map-react';
+import { fitBounds } from 'google-map-react/utils';
 import moment from 'moment';
 
 // COMPONENTS
@@ -112,6 +113,8 @@ const ProfileWrap = styled.div`
 export default class TripsScene extends Component {
   state = {
     details: true,
+    center: { lat: 59.95, lng: 30.33 },
+    zoom: 11,
   };
 
   onSubmit = ev => {
@@ -172,7 +175,38 @@ export default class TripsScene extends Component {
       // dispatch update only if there's an update
       updateTripQuery(diff);
     }
+    const currentMarkers = this.getMarkerLatLngs(this.props);
+    const newMarkers = this.getMarkerLatLngs(nextProps);
+    if (currentMarkers.length !== newMarkers.length) {
+      this.getCenterAndZoom(newMarkers);
+    }
   }
+
+  getMarkerLatLngs = props => {
+    return props.scheduledServices.reduce(
+      (markers, { services }) => [...markers, ...services.map(({ latitude, longitude }) => ({ latitude, longitude }))],
+      []
+    );
+  };
+
+  getCenterAndZoom = markers => {
+    if (!markers.length) return;
+    if (markers.length === 1) {
+      const center = { lat: markers[0].latitude, lng: markers[0].longitude };
+      return this.setState({ center, zoom: 11 });
+    }
+    const bounds = new window.google.maps.LatLngBounds();
+    for (const marker of markers) {
+      bounds.extend(new window.google.maps.LatLng(marker.latitude, marker.longitude));
+    }
+    const newBounds = {
+      ne: { lat: bounds.getNorthEast().lat(), lng: bounds.getNorthEast().lng() },
+      sw: { lat: bounds.getSouthWest().lat(), lng: bounds.getSouthWest().lng() },
+    };
+    const size = { width: 800, height: 450 };
+    const { center, zoom } = fitBounds(newBounds, size);
+    this.setState({ center, zoom });
+  };
 
   render() {
     const beginDate = this.getBeginDate();
@@ -211,11 +245,19 @@ export default class TripsScene extends Component {
                 query={`(min-width: ${sizes.medium})`}
                 render={() => (
                   <MapWrapper>
-                    <GoogleMapReact defaultCenter={{ lat: 59.95, lng: 30.33 }} defaultZoom={11}>
-                      <MapMaker lat={59.95} lng={30.33} scale={1} color="#4fb798" />
-                      <MapMaker lat={59.96} lng={30.34} scale={1} color="#4fb798" />
-                      <MapMaker lat={59.96} lng={30.3} scale={1} color="#4fb798" />
-                      <MapMaker lat={59.97} lng={30.31} scale={1} color="#4fb798" />
+                    <GoogleMapReact
+                      center={this.state.center}
+                      zoom={this.state.zoom}
+                    >
+                      {this.getMarkerLatLngs(this.props).map(({ latitude, longitude }) => (
+                        <MapMaker
+                          key={`${latitude}-${longitude}`}
+                          lat={latitude}
+                          lng={longitude}
+                          scale={1}
+                          color="#4fb798"
+                        />
+                      ))}
                     </GoogleMapReact>
                   </MapWrapper>
                 )}
