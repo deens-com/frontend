@@ -69,7 +69,7 @@ const Wrapper = styled.div`
 const TypeIcon = styled.div`
   align-items: center;
   background: ${props =>
-    props.active ? "linear-gradient(50deg, #89c8a3, #4fb798)" : "transparent"};
+    props.active ? "#4eb798" : "#d3e9db"};
   border-radius: 50%;
   color: white;
   cursor: pointer;
