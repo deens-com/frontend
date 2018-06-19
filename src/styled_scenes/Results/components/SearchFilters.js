@@ -313,7 +313,7 @@ class SearchFilters extends Component {
                     <FormControl
                       type="number"
                       onChange={this.handlePersonChange}
-                      placeholder="Nb"
+                      placeholder="1"
                       leftIcon="person"
                       min={1}
                       max={10}
@@ -386,7 +386,7 @@ class SearchFilters extends Component {
           <FormControl
             type="number"
             onChange={this.handlePersonChange}
-            placeholder="Nb"
+            placeholder="1"
             leftIcon="person"
             min={1}
             max={10}
