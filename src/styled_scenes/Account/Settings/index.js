@@ -88,7 +88,6 @@ class AccountSettingsScene extends Component {
    }).then(this.handleFetchErrors).then(res => {
      return res.text();
    }).then(txt_res => {
-     console.log(txt_res)
      if(type === 'metamask'){
        this.setState({metamaskFaucetTransaction: txt_res});
      }
