@@ -165,7 +165,8 @@ class SearchFilters extends Component {
       latitude: this.props.search_query.latitude,
       longitude: this.props.search_query.longitude,
       address: this.props.search_query.address,
-      tags: this.props.search_query.tags
+      tags: this.props.search_query.tags,
+      onlySmartContracts: this.props.search_query.onlySmartContracts,
     };
   }
 
@@ -223,6 +224,15 @@ class SearchFilters extends Component {
     this.setState({ service_type: types });
     this.refetch_results({ type: types });
   }
+  
+  handleOnlySmartContracts = () => {
+    this.setState(
+      prevState => ({ ...prevState, onlySmartContracts: !prevState.onlySmartContracts }),
+      () => {
+        this.refetch_results({ onlySmartContracts: this.state.onlySmartContracts });
+      }
+    );
+  };
 
   handlePersonChange(person) {
     this.setState({ person_nb: person });
@@ -260,6 +270,7 @@ class SearchFilters extends Component {
     let formatted_end_date = (end_date && end_date.length) ? moment(end_date).format("YYYY-M-D") : "";
     let person_nb = this.props.search_query.person_nb;
     let service_types = this.props.search_query.type;
+    const onlySmartContracts = this.props.search_query.onlySmartContracts;
     let address = this.props.search_query.address; // || this.state.address; //|| this.props.address;
     //let address = this.state.address || this.props.address;
     return(
@@ -348,6 +359,12 @@ class SearchFilters extends Component {
                       onClick={this.handleServiceTypeChange}
                       checked={service_types && service_types.includes("food")}
                     />
+                    <Checkbox
+                      label="Smart Contracts Only"
+                      value="smart"
+                      onClick={this.handleOnlySmartContracts}
+                      checked={onlySmartContracts}
+                    />
                   </CheckboxWrap>
 
                   </section>
@@ -420,6 +437,12 @@ class SearchFilters extends Component {
             value="food"
             onClick={this.handleServiceTypeChange}
             checked={service_types && service_types.includes("food")}
+          />
+          <Checkbox
+            label="Smart Contracts Only"
+            value="smart"
+            onClick={this.handleOnlySmartContracts}
+            checked={onlySmartContracts}
           />
         </CheckboxWrap>
         <CarouselPicker {...this.props} />

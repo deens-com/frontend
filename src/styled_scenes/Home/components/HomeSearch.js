@@ -284,6 +284,10 @@ class HomeSearch extends Component {
     this.setState({ service_type: service_types });
   }
 
+  handleOnlySmartContracts = () => {
+    this.setState(prevState => ({ ...prevState, onlySmartContracts: !prevState.onlySmartContracts }));
+  };
+  
   handleLocationChange(address) {
     geocodeByAddress(address)
       .then(results => {
@@ -345,7 +349,8 @@ class HomeSearch extends Component {
       person_nb: this.state.person_nb,
       address: this.state.address ? this.state.address + "936ZER0378" : "",
       latitude: this.state.latitude,
-      longitude: this.state.longitude
+      longitude: this.state.longitude,
+      onlySmartContracts: this.state.onlySmartContracts,
     };
     let query_arr = [];
     Object.entries(query_params).forEach(([key, value]) => {
@@ -503,6 +508,11 @@ class HomeSearch extends Component {
                   label="Food"
                   value="food"
                   onClick={this.handleServiceTypeChange}
+                />
+                <Checkbox
+                  label="Smart Contracts Only"
+                  value="smart"
+                  onClick={this.handleOnlySmartContracts}
                 />
               </CheckboxWrap>
 
