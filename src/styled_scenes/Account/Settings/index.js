@@ -70,6 +70,8 @@ class AccountSettingsScene extends Component {
   handleFetchErrors = (response) => {
     if(!response.ok){
       this.setState({faucetRequestError: "We're sorry but something went wrong with your faucet request. Please try again later."})
+    }else{
+      return response;
     }
   }
   requestFaucetEther = (address, type) => {
@@ -84,15 +86,14 @@ class AccountSettingsScene extends Component {
      headers: {'Content-Type':'application/rawdata'},
      body: address
    }).then(this.handleFetchErrors).then(res => {
-     console.log(res.text());
      return res.text();
-   }).then(json_res => {
-     console.log(json_res)
+   }).then(txt_res => {
+     console.log(txt_res)
      if(type === 'metamask'){
-       this.setState({metamaskFaucetTransaction: json_res});
+       this.setState({metamaskFaucetTransaction: txt_res});
      }
      if(type === 'ledger'){
-       this.setState({ledgerFaucetTransaction: json_res});
+       this.setState({ledgerFaucetTransaction: txt_res});
      }
    }).catch(error => {
      console.log(error);
