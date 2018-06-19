@@ -196,18 +196,20 @@ class ServiceForm extends Component {
 
         {/* Available Days */}
         <Form.Group grouped>
-          <label>Available Days</label>
-          {weekDays.map(weekDay => (
-            <Form.Checkbox
-              id={weekDay}
-              label={weekDay}
-              key={weekDay}
-              name={weekDay}
-              checked={values.availableDays.has(weekDay)}
-              onChange={this.onAvailableDaysChange}
-            />
-          ))}
-          {touched.availableDays && errors.availableDays && <ErrorMsg>{errors.availableDays}</ErrorMsg>}
+          <Form.Field required>
+            <label>Available Days</label>
+            {weekDays.map(weekDay => (
+              <Form.Checkbox
+                id={weekDay}
+                label={weekDay}
+                key={weekDay}
+                name={weekDay}
+                checked={values.availableDays.has(weekDay)}
+                onChange={this.onAvailableDaysChange}
+              />
+            ))}
+            {touched.availableDays && errors.availableDays && <ErrorMsg>{errors.availableDays}</ErrorMsg>}
+          </Form.Field>
         </Form.Group>
 
         {/* Location search */}
