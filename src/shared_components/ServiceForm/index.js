@@ -195,43 +195,6 @@ class ServiceForm extends Component {
           {touched.pricePerSession && errors.pricePerSession && <ErrorMsg>{errors.pricePerSession}</ErrorMsg>}
         </Form.Field>
 
-        {/* Accept Ethereum */}
-        {userHasConnectedWallet ? (
-          <Message info>
-            <Message.Header>Deploy smart contract and accept payments in Ethereum</Message.Header>
-            <Message.Content>
-              <br />
-              <Form.Field>
-                <Form.Checkbox
-                  id="acceptETH"
-                  name="acceptETH"
-                  checked={values.acceptETH}
-                  {...defaultProps}
-                  label="Yes, deploy service as a smart contract"
-                  disabled={!!service}
-                />
-                {service && <span>*Can't update this once service is created</span>}
-              </Form.Field>
-            </Message.Content>
-          </Message>
-        ) : (
-          !service && (
-            <Message info>
-              <Message.Header>Deploy smart contract and accept payments in Ethereum</Message.Header>
-              <br />
-              <Message.Content>
-                If you want to deploy a smart contract and accept payments in Ethereum, you should connect your account
-                with Ledger or MetaMask. <br />
-                <br />
-                <strong>
-                  <Link to="/account/settings">Click here</Link>
-                </strong>{' '}
-                to continue to your settings page where you can connect your preferred wallet.
-              </Message.Content>
-            </Message>
-          )
-        )}
-
         {/* Available Days */}
         <Form.Group grouped>
           <label>Available Days</label>
@@ -330,6 +293,43 @@ class ServiceForm extends Component {
             <input type="file" name="mainPicture" accept=".jpg, .jpeg, .png" onChange={this.onFileSelect} />
           </Flex>
         </Form.Field>
+
+        {/* Accept Ethereum */}
+        {userHasConnectedWallet ? (
+          <Message info>
+            <Message.Header>Deploy smart contract and accept payments in Ethereum</Message.Header>
+            <Message.Content>
+              <br />
+              <Form.Field>
+                <Form.Checkbox
+                  id="acceptETH"
+                  name="acceptETH"
+                  checked={values.acceptETH}
+                  {...defaultProps}
+                  label="Yes, deploy service as a smart contract"
+                  disabled={!!service}
+                />
+                {service && <span>*Can't update this once service is created</span>}
+              </Form.Field>
+            </Message.Content>
+          </Message>
+        ) : (
+          !service && (
+            <Message info>
+              <Message.Header>Deploy smart contract and accept payments in Ethereum</Message.Header>
+              <br />
+              <Message.Content>
+                If you want to deploy a smart contract and accept payments in Ethereum, you should connect your account
+                with Ledger or MetaMask. <br />
+                <br />
+                <strong>
+                  <Link to="/account/settings">Click here</Link>
+                </strong>{' '}
+                to continue to your settings page where you can connect your preferred wallet.
+              </Message.Content>
+            </Message>
+          )
+        )}
 
         <Form.Button disabled={submitInFlight}>{this.props.submitButtonText}</Form.Button>
       </Form>
