@@ -309,12 +309,13 @@ class ServiceForm extends Component {
                   disabled={!!service}
                 />
                 {service && <span>*Can't update this once service is created</span>}
-                {!service && (
-                  <p>
-                    Before clicking submit, make sure you are connected on the Ethereum app in your Ledger and that it's
-                    not on standby mode
-                  </p>
-                )}
+                {!service &&
+                  userProfile.ledgerPublicAddress && (
+                    <p>
+                      Before clicking submit, make sure you are connected on the Ethereum app in your Ledger and that
+                      it's not on standby mode
+                    </p>
+                  )}
               </Form.Field>
             </Message.Content>
           </Message>
