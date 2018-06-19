@@ -39,7 +39,7 @@ class ServiceForm extends Component {
 
   state = {
     tagOptions: [],
-    showGlobalError: false
+    showGlobalError: false,
   };
 
   onDropDownChange = (e, { name, value }) => {
@@ -107,12 +107,11 @@ class ServiceForm extends Component {
     const { globalError } = nextProps;
 
     if (globalError != null) {
-      this.setState({ showGlobalError: true })
+      this.setState({ showGlobalError: true });
     }
+  }
 
-  };
-
-  handleModalClose = () => this.setState({ showGlobalError: false })
+  handleModalClose = () => this.setState({ showGlobalError: false });
 
   render() {
     const {
@@ -256,7 +255,7 @@ class ServiceForm extends Component {
 
         {/* Slots in a Day */}
         <Form.Field required>
-          <label>Slots in a Day</label>
+          <label>Number of slots available per Day/Night</label>
           <Form.Input
             name="slots"
             type="number"
@@ -310,6 +309,12 @@ class ServiceForm extends Component {
                   disabled={!!service}
                 />
                 {service && <span>*Can't update this once service is created</span>}
+                {!service && (
+                  <p>
+                    Before clicking submit, make sure you are connected on the Ethereum app in your Ledger and that it's
+                    not on standby mode
+                  </p>
+                )}
               </Form.Field>
             </Message.Content>
           </Message>
