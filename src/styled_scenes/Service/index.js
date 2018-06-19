@@ -304,6 +304,10 @@ const Wrap = styled.div`
   }
 `;
 
+const PreserveWhiteSpace = styled.p`
+  white-space: pre-wrap;
+`;
+
 // MODULE
 class FoodDetailScene extends Component {
   constructor(props) {
@@ -363,7 +367,7 @@ class FoodDetailScene extends Component {
             </TagWrap>
             <HeaderWrap>
               <h2>{this.props.service.title}</h2>
-              <p>{this.props.service.description}</p>
+              <PreserveWhiteSpace>{this.props.service.description}</PreserveWhiteSpace>
             </HeaderWrap>
             <DataWrap>
               <DataBlock>
@@ -386,8 +390,9 @@ class FoodDetailScene extends Component {
                     <TextLabel>PART OF THE TRIP</TextLabel>
                     <span>
                       <Link to={'/trips/' + (this.props.trips[0] && this.props.trips[0].objectId)}>
-                        "{this.props.trips.length && this.props.trips[0] && this.props.trips[0].description.slice(0, 40)}"
-                        and {this.props.trips.length} more ...
+                        "{this.props.trips.length &&
+                          this.props.trips[0] &&
+                          this.props.trips[0].description.slice(0, 40)}" and {this.props.trips.length} more ...
                       </Link>
                     </span>
                   </DataBlock>
