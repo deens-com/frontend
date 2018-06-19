@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Label as SemanticLabel } from 'semantic-ui-react';
+import { Label as SemanticLabel, Icon } from 'semantic-ui-react';
 
 // COMPONENTS
 import Rating from '../Rating';
@@ -81,26 +81,45 @@ const RelativeCard = styled(Cart)`
   position: relative;
 `;
 
-function wrapInRopstenLink(text, reservation) {
-  return (
-    <a href={`https://ropsten.etherscan.io/tx/${reservation.transactionHash}`} target="_blank">
-      {text}
-    </a>
-  );
-}
+const stopEventPropogation = e => e.stopPropagation();
+
+const wrapInRopstenLink = (text, reservation) => (
+  <a
+    href={`https://ropsten.etherscan.io/tx/${reservation.transactionHash}`}
+    target="_blank"
+    onClick={stopEventPropogation}
+  >
+    {text}
+  </a>
+);
 
 function getSmartContractBookingStatus(reservation) {
   if (!reservation) return null;
   const { transactionHash, transactionStatus } = reservation;
   if (transactionHash != null && transactionStatus != null) {
     if (transactionStatus === 1) {
-      return <SemanticLabelFixed color="green">{wrapInRopstenLink('Confirmed', reservation)}</SemanticLabelFixed>;
+      return wrapInRopstenLink(
+        <SemanticLabelFixed color="green">
+          Confirmed <Icon name="external" />
+        </SemanticLabelFixed>,
+        reservation
+      );
     }
     if (transactionStatus === 0) {
-      return <SemanticLabelFixed color="red">{wrapInRopstenLink('Unconfirmed', reservation)}</SemanticLabelFixed>;
+      return wrapInRopstenLink(
+        <SemanticLabelFixed color="red">
+          Unconfirmed <Icon name="external" />
+        </SemanticLabelFixed>,
+        reservation
+      );
     }
     if (!transactionStatus) {
-      return <SemanticLabelFixed color="blue">{wrapInRopstenLink('Processing', reservation)}</SemanticLabelFixed>;
+      return wrapInRopstenLink(
+        <SemanticLabelFixed color="blue">
+          Processing <Icon name="external" />
+        </SemanticLabelFixed>,
+        reservation
+      );
     }
   }
   return <SemanticLabelFixed color="green">Confirmed</SemanticLabelFixed>;
