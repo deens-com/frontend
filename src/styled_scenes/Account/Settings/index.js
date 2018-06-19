@@ -147,8 +147,14 @@ class AccountSettingsScene extends Component {
               <InlineSpan>
                 <p>{this.state.metamaskEthBalance} ETH</p>&nbsp;&nbsp;
                 <HeightenedButton disabled={this.state.metamaskFaucetRequested} onClick={() => this.requestFaucetEther(this.props.user_profile.metamaskPublicAddress, 'metamask')}>Request Ether</HeightenedButton>
-                <a target="_blank" href={'https://ropsten.etherscan.io/tx/' + this.state.metamaskFaucetTransaction}>{this.state.metamaskFaucetTransaction}</a>
               </InlineSpan>
+              {
+                this.state.metamaskFaucetTransaction &&
+                <div>
+                  Faucet request was successful : &nbsp;
+                  <a target="_blank" href={'https://ropsten.etherscan.io/tx/' + this.state.metamaskFaucetTransaction}>{this.state.metamaskFaucetTransaction}</a>
+                </div>
+              }
             </section>
           }
           {
@@ -161,8 +167,14 @@ class AccountSettingsScene extends Component {
               <InlineSpan>
                 <p>{this.state.ledgerEthBalance} ETH</p>&nbsp;&nbsp;
                 <HeightenedButton disabled={this.state.ledgerFaucetRequested} onClick={() => this.requestFaucetEther(this.props.user_profile.ledgerPublicAddress, 'ledger')}>Request Ether</HeightenedButton>
-                <a target="_blank" href={'https://ropsten.etherscan.io/tx/' + this.state.ledgerFaucetTransaction}>{this.state.ledgerFaucetTransaction}</a>
               </InlineSpan>
+              {
+                this.state.ledgerFaucetTransaction &&
+                <div>
+                  Faucet request was successful : &nbsp;
+                  <a target="_blank" href={'https://ropsten.etherscan.io/tx/' + this.state.ledgerFaucetTransaction}>{this.state.ledgerFaucetTransaction}</a>
+                </div>
+              }
             </section>
           }
         </Grid.Column>
