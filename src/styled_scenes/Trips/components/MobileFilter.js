@@ -105,7 +105,7 @@ export default class MobileFilter extends Component {
               }}
               value={state.person}
               type="person"
-              placeholder="1"
+              placeholder="2"
               leftIcon="person"
             />
           </Form>

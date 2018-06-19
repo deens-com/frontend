@@ -109,7 +109,7 @@ export default function ToolBar({
                 }}
                 value={state.person}
                 type="person"
-                placeholder="1"
+                placeholder="2"
                 leftIcon="person"
               />
               <ToolbarButton
