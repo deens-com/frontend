@@ -126,7 +126,7 @@ export default class TripSummary extends Component {
         <Wrap>
           <PricesWrap>
             &nbsp;&nbsp;
-            <h6>Price per person : &nbsp;</h6>
+            <h6>Total price per person : &nbsp;</h6>
             <PriceTag price={this.calculateTripTotalPrice()} unit="hidden" />
             &nbsp;&nbsp;
             <h6>Total Price : &nbsp;</h6>

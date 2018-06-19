@@ -19,7 +19,7 @@ const PaymentSection = ({ pricePerPerson, totalPrice, onPaymentClick, isLoading 
   <Wrap>
     <Grid>
       <Grid.Row columns={2}>
-        <Grid.Column stretched>Price per person</Grid.Column>
+        <Grid.Column stretched>Total price per person</Grid.Column>
         <Grid.Column textAlign="right">
           <PriceTag price={pricePerPerson} unit="hidden" />
         </Grid.Column>
