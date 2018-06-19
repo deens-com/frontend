@@ -103,7 +103,7 @@ function getSmartContractBookingStatus(reservation) {
       return <SemanticLabelFixed color="blue">{wrapInRopstenLink('Processing', reservation)}</SemanticLabelFixed>;
     }
   }
-  return null;
+  return <SemanticLabelFixed color="green">Confirmed</SemanticLabelFixed>;
 }
 
 // MODULE
