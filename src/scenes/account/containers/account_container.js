@@ -11,7 +11,7 @@ import BrandFooter from '../../../shared_components/BrandFooter';
 import styled from 'styled-components';
 
 const StaticFooter = styled.footer`
-  position: fixed;
+  position: static;
   bottom: 0px;
 `;
 
