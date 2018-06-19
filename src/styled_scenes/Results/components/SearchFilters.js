@@ -165,7 +165,8 @@ class SearchFilters extends Component {
       latitude: this.props.search_query.latitude,
       longitude: this.props.search_query.longitude,
       address: this.props.search_query.address,
-      tags: this.props.search_query.tags
+      tags: this.props.search_query.tags,
+      onlySmartContracts: this.props.search_query.onlySmartContracts,
     };
   }
 
