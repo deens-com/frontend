@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Label as SemanticLabel } from 'semantic-ui-react';
+import { Label as SemanticLabel, Icon } from 'semantic-ui-react';
 
 // COMPONENTS
 import Rating from '../Rating';
@@ -71,13 +71,66 @@ const SemanticLabelFixed = styled(SemanticLabel)`
   top: 10px;
   z-index: 10;
   right: 4px;
+
+  a {
+    opacity: 1 !important;
+  }
 `;
 
+const RelativeCard = styled(Cart)`
+  position: relative;
+`;
+
+const stopEventPropogation = e => e.stopPropagation();
+
+const wrapInRopstenLink = (text, reservation) => (
+  <a
+    href={`https://ropsten.etherscan.io/tx/${reservation.transactionHash}`}
+    target="_blank"
+    onClick={stopEventPropogation}
+  >
+    {text}
+  </a>
+);
+
+function getSmartContractBookingStatus(reservation) {
+  if (!reservation) return null;
+  const { transactionHash, transactionStatus } = reservation;
+  if (transactionHash != null && transactionStatus != null) {
+    if (transactionStatus === 1) {
+      return wrapInRopstenLink(
+        <SemanticLabelFixed color="green">
+          Confirmed <Icon name="external" />
+        </SemanticLabelFixed>,
+        reservation
+      );
+    }
+    if (transactionStatus === 0) {
+      return wrapInRopstenLink(
+        <SemanticLabelFixed color="red">
+          Unconfirmed <Icon name="external" />
+        </SemanticLabelFixed>,
+        reservation
+      );
+    }
+    if (!transactionStatus) {
+      return wrapInRopstenLink(
+        <SemanticLabelFixed color="blue">
+          Processing <Icon name="external" />
+        </SemanticLabelFixed>,
+        reservation
+      );
+    }
+  }
+  return <SemanticLabelFixed color="green">Confirmed</SemanticLabelFixed>;
+}
+
 // MODULE
-export default function LocationCart({ item, href, withShadow, smBasis, xsBasis, mdBasis, isUnconfirmed }) {
+export default function LocationCart({ item, href, withShadow, smBasis, xsBasis, mdBasis }) {
+  const smartContractBookingStatus = getSmartContractBookingStatus(item.reservation);
   const cart = (
-    <Cart withShadow={withShadow} column>
-      {isUnconfirmed && <SemanticLabelFixed color="red">Unconfirmed</SemanticLabelFixed>}
+    <RelativeCard withShadow={withShadow} column>
+      {smartContractBookingStatus && smartContractBookingStatus}
       <Thumb url={item.image} />
       <ContentWrap>
         <Title>
@@ -95,7 +148,7 @@ export default function LocationCart({ item, href, withShadow, smBasis, xsBasis,
         <Label>Starting from</Label>
         <PriceTag price={item.price} />
       </ContentWrap>
-    </Cart>
+    </RelativeCard>
   );
   return (
     <Col xsBasis={xsBasis} mdBasis={mdBasis} smBasis={smBasis}>
@@ -109,9 +162,5 @@ export default function LocationCart({ item, href, withShadow, smBasis, xsBasis,
 
 // Props Validation
 LocationCart.propTypes = {
-  isUnconfirmed: PropTypes.bool,
-};
-
-LocationCart.defaultProps = {
-  isUnconfirmed: false,
+  item: PropTypes.object,
 };

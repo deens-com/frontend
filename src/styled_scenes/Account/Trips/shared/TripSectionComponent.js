@@ -42,8 +42,7 @@ const TripSectionComponent = props => {
             <h2>{trip.title}</h2>
           </Link>
           <p style={{ color: '#b3a7a7' }}>
-            {trip.beginDate && trip.beginDate.iso && moment(trip.beginDate.iso).format('L')} -{' '}
-            {trip.endDate && trip.endDate.iso && moment(trip.endDate.iso).format('L')}
+            {trip.beginDate && moment(trip.beginDate).format('L')} - {trip.endDate && moment(trip.endDate).format('L')}
           </p>
           <Label color={get_label_color(trip.status)}>Trip visibility: {trip.status}</Label>
           {trip.booked ? <Label color="olive">purchased</Label> : null}
@@ -56,7 +55,6 @@ const TripSectionComponent = props => {
                   <LocationCart
                     item={item}
                     index={index}
-                    isUnconfirmed={props.isServiceUnConfirmed(trip.objectId, item.objectId)}
                   />
                 </Link>
               ))}
