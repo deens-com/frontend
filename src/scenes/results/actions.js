@@ -70,7 +70,8 @@ export const update_path = search_params => {
       address: search_params.address || undefined,
       tags: !search_params.tags.length
         ? undefined
-        : search_params.tags.join("+")
+        : search_params.tags.join("+"),
+      onlySmartContracts: search_params.onlySmartContracts || undefined,
     };
     let query_arr = [];
     Object.entries(query_params).forEach(([key, value]) => {
