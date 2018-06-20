@@ -128,6 +128,23 @@ export const fetchUserProfile = () => dispatch => {
   }
 };
 
+export const resetErrors = () => dispatch => {
+  dispatch({
+    type: types.SERVICE_CREATE_ERROR,
+    payload: {}
+  });
+};
+
+
+export const redeployContract = (values, serviceId, history) => async (dispatch, getState) => {
+  try{
+    let service = await fetch_helpers.build_query('Service').get(serviceId);
+    dispatch(deployContract(service, values, history));
+  }catch(error){
+    console.log(error);
+  }
+};
+
 export const deployContract = (service, values, history) => async (dispatch, getState) => {
   try {
     const { pricePerSession, slots } = values;
@@ -217,8 +234,10 @@ export const deployContract = (service, values, history) => async (dispatch, get
   } catch (e) {
     dispatch({
       type: types.SERVICE_CREATE_ERROR,
-      payload:
-        'We could not deploy the smart contract. Please check if your ledger device or meta mask are connected properly. ' + e.toString(),
+      payload: {
+        message: 'We could not deploy the smart contract. Please check if your ledger device or meta mask are connected properly. ' + e.toString(),
+        serviceId: service.id
+      }
     });
   }
 };

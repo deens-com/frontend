@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Dropdown, Form, Modal, Message } from 'semantic-ui-react';
+import { Dropdown, Form, Modal, Message, Button } from 'semantic-ui-react';
 import { withFormik } from 'formik';
 import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete';
 import styled from 'styled-components';
 import serviceTags from './service-tags';
 import LocationFormControl from '../Form/LocationControl';
 import { Link } from 'react-router-dom';
-
+import history from './../../main/history';
 const serviceTypes = ['Place', 'Activity', 'Food'];
 const serviceTypeDropdownOptions = serviceTypes.map(text => ({ value: text.toLowerCase(), text }));
 const hours = Array.from({ length: 24 }, (v, k) => k);
@@ -25,10 +25,18 @@ const Flex = styled.div`
 `;
 
 class ServiceForm extends Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      serviceId: null
+    }
+  }
+
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
     submitInFlight: PropTypes.bool.isRequired,
-    globalError: PropTypes.string,
+    globalError: PropTypes.object,
     userProfile: PropTypes.object,
     submitButtonText: PropTypes.string,
   };
@@ -106,8 +114,9 @@ class ServiceForm extends Component {
   componentWillReceiveProps(nextProps) {
     const { globalError } = nextProps;
 
-    if (globalError != null) {
+    if (globalError.message !== undefined) {
       this.setState({ showGlobalError: true });
+      this.setState({ serviceId: globalError.serviceId });
     }
   }
 
@@ -136,9 +145,13 @@ class ServiceForm extends Component {
 
     return (
       <Form onSubmit={handleSubmit} loading={submitInFlight}>
-        <Modal size="tiny" open={this.state.showGlobalError} onClose={this.handleModalClose}>
+        <Modal closeOnDimmerClick={false} size="tiny" open={this.state.showGlobalError} onClose={this.handleModalClose}>
           <Modal.Header>There was an issue with creating your service</Modal.Header>
-          <Modal.Content>{globalError}</Modal.Content>
+          <Modal.Content>{globalError.message}</Modal.Content>
+          <Modal.Actions>
+          <Button color='green' onClick={() => this.props.onRedeployContract(this.props.values, this.state.serviceId)}>Re-deploy</Button>
+          <Button color='red' onClick={() => history.push('/services/' + this.state.serviceId)}>Cancel</Button>
+          </Modal.Actions>
         </Modal>
 
         {/* Service Type */}
