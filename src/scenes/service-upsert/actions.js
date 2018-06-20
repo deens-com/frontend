@@ -128,6 +128,15 @@ export const fetchUserProfile = () => dispatch => {
   }
 };
 
+export const redeployContract = (values, history) => async (dispatch, getState) => {
+  try{
+    console.log(values);
+    // retrieve associated service
+  }catch(error){
+    console.log(error);
+  }
+};
+
 export const deployContract = (service, values, history) => async (dispatch, getState) => {
   try {
     const { pricePerSession, slots } = values;

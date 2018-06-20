@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Dropdown, Form, Modal, Message } from 'semantic-ui-react';
+import { Dropdown, Form, Modal, Message, Button } from 'semantic-ui-react';
 import { withFormik } from 'formik';
 import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete';
 import styled from 'styled-components';
@@ -25,6 +25,14 @@ const Flex = styled.div`
 `;
 
 class ServiceForm extends Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      formValues: {}
+    }
+  }
+
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
     submitInFlight: PropTypes.bool.isRequired,
@@ -113,6 +121,10 @@ class ServiceForm extends Component {
 
   handleModalClose = () => this.setState({ showGlobalError: false });
 
+  redeployContract = (values) => {
+    this.props.redeployContract(values);
+  }
+
   render() {
     const {
       values,
@@ -139,6 +151,9 @@ class ServiceForm extends Component {
         <Modal size="tiny" open={this.state.showGlobalError} onClose={this.handleModalClose}>
           <Modal.Header>There was an issue with creating your service</Modal.Header>
           <Modal.Content>{globalError}</Modal.Content>
+          <Modal.Actions>
+            <Button onClick={() => this.redeployContract(this.props.values)}>Re-deploy</Button>
+          </Modal.Actions>
         </Modal>
 
         {/* Service Type */}
