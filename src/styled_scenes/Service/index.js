@@ -369,7 +369,7 @@ class FoodDetailScene extends Component {
             <HeaderWrap>
               <h2>{this.props.service.title}</h2>
               <PreserveWhiteSpace>{this.props.service.description}</PreserveWhiteSpace>
-              <SmartContractDetails address="0xe79d2818b0039052a77b0065948f0d94496bc775" abi="asdf" />
+              <SmartContractDetails address={this.props.service.contractAddress} abi={this.props.abi} />
             </HeaderWrap>
             <DataWrap>
               <DataBlock>
