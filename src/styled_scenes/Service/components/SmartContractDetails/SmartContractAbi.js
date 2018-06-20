@@ -18,14 +18,27 @@ export default class SmartContractAbi extends Component {
     abi: PropTypes.string.isRequired,
   };
 
+  state = { showCopied: false };
+
+  componentDidMount() {
+    this.setState({ showCopied: false });
+  }
+
   copyAbi = () => {
     copy(this.props.abi)
-      .then(() => console.log('copied'))
-      .catch(err => console.error('failed', err));
+      .then(() => {
+        this.setState({ showCopied: true, copiedContent: 'Copied!' });
+        setTimeout(() => this.setState({ showCopied: false }), 3000);
+      })
+      .catch(err => {
+        this.setState({ showCopied: true, copiedContent: 'Sorry! There was an error while copying the ABI' });
+        setTimeout(() => this.setState({ showCopied: false }), 3000);
+      });
   };
 
   modalTrigger(showAbiButton, abi) {
     const { address } = this.props;
+    const { showCopied, copiedContent } = this.state;
     return (
       <Modal trigger={showAbiButton} centered="false" size="fullscreen" closeIcon>
         <Modal.Header>Smart Contract ABI</Modal.Header>
@@ -39,7 +52,7 @@ export default class SmartContractAbi extends Component {
         <Modal.Actions>
           <Button icon labelPosition="left" onClick={this.copyAbi}>
             <Icon name="copy" />
-            Copy
+            {showCopied ? copiedContent : 'Copy'}
           </Button>
           <Button
             as="a"
