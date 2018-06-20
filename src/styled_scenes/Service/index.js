@@ -29,6 +29,7 @@ import { media, sizes } from '../../libs/styled';
 // STYLES
 import { Page, PageContent } from '../../shared_components/layout/Page';
 import { Icon, Modal } from 'semantic-ui-react';
+import SmartContractDetails from './components/SmartContractDetails';
 
 const DetailWrapper = styled.div`
   width: 100%;
@@ -65,7 +66,7 @@ const HeaderWrap = styled.div`
     }
   }
 
-  a {
+  & > a {
     margin-top: 15px;
     display: inline-block;
     color: #4fb798;
@@ -368,6 +369,7 @@ class FoodDetailScene extends Component {
             <HeaderWrap>
               <h2>{this.props.service.title}</h2>
               <PreserveWhiteSpace>{this.props.service.description}</PreserveWhiteSpace>
+              <SmartContractDetails address={this.props.service.contractAddress} abi={this.props.abi} />
             </HeaderWrap>
             <DataWrap>
               <DataBlock>

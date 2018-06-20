@@ -182,3 +182,8 @@ export const checkAvailability = (serviceId, slotsNb) => {
     })
   }
 };
+
+export const fetchServiceContractABI = () => async dispatch => {
+  const result = await Parse.Cloud.run('getLastContract');
+  dispatch({ type: 'SERVICE_CONTRACT_ABI', payload: result });
+};

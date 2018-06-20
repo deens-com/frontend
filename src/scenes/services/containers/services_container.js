@@ -18,6 +18,7 @@ class ServicesContainer extends Component {
       this.props.fetchMyTrips();
     }
     this.props.setAddedToTripMessage(undefined);
+    this.props.fetchServiceContractABI();
   }
 
   onAddServiceToTrip = trip => {
@@ -54,7 +55,8 @@ const mapStateToProps = state => {
     reviews: state.ServicesReducer.reviews,
     myTrips: state.ServicesReducer.userTrips.data,
     serviceRecentlyAddedToTrip: state.ServicesReducer.serviceRecentlyAddedToTrip,
-    isServiceUnavailableModalOpen: state.ServicesReducer.isServiceUnavailableModalOpen
+    isServiceUnavailableModalOpen: state.ServicesReducer.isServiceUnavailableModalOpen,
+    abi: state.ServicesReducer.abi,
   };
 };
 
