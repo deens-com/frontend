@@ -11,13 +11,13 @@ class NewServiceFormContainer extends Component {
     this.props.registerService(values, this.props.history);
   };
 
-  redeployFailedContract = (values) => {
-    console.log("redeploy contract");
-    this.props.redeployContract(values, this.props.history);
+  redeployFailedContract = (values, serviceId) => {
+    this.props.redeployContract(values, serviceId, this.props.history);
   }
 
   componentDidMount() {
     this.props.fetchUserProfile();
+    this.props.resetErrors();
   }
 
   render() {
@@ -26,7 +26,7 @@ class NewServiceFormContainer extends Component {
         onSubmit={this.onSubmit}
         submitInFlight={this.props.isSubmitting}
         globalError={this.props.error}
-        redeployContract={this.redeployFailedContract}
+        onRedeployContract={this.redeployFailedContract}
         {...this.props}
       />
     );
