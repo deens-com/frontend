@@ -66,7 +66,7 @@ const HeaderWrap = styled.div`
     }
   }
 
-  a {
+  & > a {
     margin-top: 15px;
     display: inline-block;
     color: #4fb798;
