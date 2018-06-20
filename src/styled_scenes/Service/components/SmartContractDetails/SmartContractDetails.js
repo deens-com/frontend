@@ -18,7 +18,7 @@ const SmartContractDetails = ({ address, abi }) => {
   return (
     <Container>
       <SmartContractAddress address={address} />
-      <SmartContractAbi abi={abi} />
+      <SmartContractAbi address={address} abi={abi} />
     </Container>
   );
 };
