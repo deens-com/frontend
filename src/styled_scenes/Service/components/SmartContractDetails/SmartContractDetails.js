@@ -15,6 +15,7 @@ const Container = styled.div`
 `;
 
 const SmartContractDetails = ({ address, abi }) => {
+  if (!address) return null;
   return (
     <Container>
       <SmartContractAddress address={address} />
