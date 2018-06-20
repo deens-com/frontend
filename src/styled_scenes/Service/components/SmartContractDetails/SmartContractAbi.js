@@ -8,7 +8,7 @@ const SmartContractAbi = ({ abi }) => {
   return (
     <CellContainer>
       <Header>
-        <Icon name="code" />Smart Contract ABI
+        <Icon name="code" /> Smart Contract ABI
       </Header>
       <Body>
         <Button color="grey" size="mini">
