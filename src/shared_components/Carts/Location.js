@@ -96,7 +96,7 @@ const wrapInRopstenLink = (text, reservation) => (
 function getSmartContractBookingStatus(reservation) {
   if (!reservation) return null;
   const { transactionHash, transactionStatus } = reservation;
-  if (transactionHash != null && transactionStatus != null) {
+  if (transactionHash != null) {
     if (transactionStatus === 1) {
       return wrapInRopstenLink(
         <SemanticLabelFixed color="green">
