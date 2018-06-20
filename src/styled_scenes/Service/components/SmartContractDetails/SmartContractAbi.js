@@ -9,6 +9,10 @@ import { CellContainer, Header, Body } from './styles';
 const CodeStyle = styled.div`
   code {
     word-break: break-all;
+    font-size: 87.5%;
+    background-color: rgba(0, 0, 0, 0.04);
+    border-radius: 3px;
+    display: inline-block;
   }
 `;
 
