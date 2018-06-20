@@ -7,12 +7,14 @@ import copy from 'clipboard-copy';
 import { CellContainer, Header, Body } from './styles';
 
 const CodeStyle = styled.div`
-  code {
-    word-break: break-all;
+  textarea {
+    font-family: monospace, monospace;
     font-size: 87.5%;
+    width: 100%;
+    resize: none;
+    border: none;
     background-color: rgba(0, 0, 0, 0.04);
-    border-radius: 3px;
-    display: inline-block;
+    padding: 0.5833em 0.833em;
   }
 `;
 
@@ -44,12 +46,14 @@ export default class SmartContractAbi extends Component {
     const { address, abi } = this.props;
     const { showCopied, copiedContent } = this.state;
     return (
-      <Modal trigger={showAbiButton} centered="false" size="fullscreen" closeIcon>
+      <Modal trigger={showAbiButton} centered="false" size="large" closeIcon>
         <Modal.Header>Smart Contract ABI</Modal.Header>
-        <Modal.Content scrolling>
+        <Modal.Content>
           <Modal.Description>
             <CodeStyle>
-              <code>{abi}</code>
+              <textarea rows="6" disabled>
+                {abi}
+              </textarea>
             </CodeStyle>
           </Modal.Description>
         </Modal.Content>
