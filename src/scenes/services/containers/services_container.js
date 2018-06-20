@@ -18,7 +18,7 @@ class ServicesContainer extends Component {
       this.props.fetchMyTrips();
     }
     this.props.setAddedToTripMessage(undefined);
-    this.props.fetchServiceContractABI();
+    if (!this.props.abi) this.props.fetchServiceContractABI();
   }
 
   onAddServiceToTrip = trip => {
