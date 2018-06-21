@@ -10,7 +10,6 @@ import GoogleMapReact from 'google-map-react';
 import TopBar from './../../shared_components/TopBarWithSearch';
 import * as SmartContractStatus from 'shared_components/SmartContract/Status';
 import BrandFooter from '../../shared_components/BrandFooter';
-import Tag from './components/Tag';
 import Rating from '../../shared_components/Rating';
 import { BadgeIcon } from './icons';
 import TripCart from '../../shared_components/Carts/Location';
@@ -30,6 +29,7 @@ import { media, sizes } from '../../libs/styled';
 import { Page, PageContent } from '../../shared_components/layout/Page';
 import { Icon, Modal } from 'semantic-ui-react';
 import SmartContractDetails from './components/SmartContractDetails';
+import ServiceTags from './components/ServiceTags';
 
 const DetailWrapper = styled.div`
   width: 100%;
@@ -41,16 +41,6 @@ const DetailWrapper = styled.div`
 
   ${media.minLarge} {
     width: 58%;
-  }
-`;
-
-const TagWrap = styled.div`
-  & > div {
-    margin-right: 10px;
-
-    &:last-child {
-      margin-right: 0;
-    }
   }
 `;
 
@@ -357,17 +347,9 @@ class FoodDetailScene extends Component {
               />
             )}
             <br />
-            <TagWrap>
-              {this.props.service &&
-                this.props.service.tags &&
-                this.props.service.tags.map(tag => (
-                  <Link to={'/results?tags=' + tag.label}>
-                    <Tag key={tag.label} item={tag} />
-                  </Link>
-                ))}
-            </TagWrap>
             <HeaderWrap>
               <h2>{this.props.service.title}</h2>
+              <ServiceTags tags={this.props.service && this.props.service.tags} />
               <PreserveWhiteSpace>{this.props.service.description}</PreserveWhiteSpace>
               <SmartContractDetails address={this.props.service.contractAddress} abi={this.props.abi} />
             </HeaderWrap>
