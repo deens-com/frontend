@@ -341,7 +341,6 @@ class FoodDetailScene extends Component {
               <h2>{this.props.service.title}</h2>
               <ServiceTags service={this.props.service} />
               <PreserveWhiteSpace>{this.props.service.description}</PreserveWhiteSpace>
-              <SmartContractDetails address={this.props.service.contractAddress} abi={this.props.abi} />
             </HeaderWrap>
             <DataWrap>
               <DataBlock>
@@ -547,6 +546,7 @@ class FoodDetailScene extends Component {
               {this.props.reviews.length ? <h2>Reviews</h2> : null}
               {this.props.reviews.map(review => <Review key={review.objectId} review={review} />)}
             </div>
+            <SmartContractDetails address={this.props.service.contractAddress} abi={this.props.abi} />
           </DetailWrapper>
         </PageContent>
         <BrandFooter withTopBorder withPadding />

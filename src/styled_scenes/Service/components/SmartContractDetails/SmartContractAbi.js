@@ -81,7 +81,7 @@ export default class SmartContractAbi extends Component {
     return (
       <CellContainer>
         <Header>
-          <Icon name="code" /> Smart Contract ABI
+          <Icon name="code" /> ABI
         </Header>
         <Body>
           {this.modalTrigger(
