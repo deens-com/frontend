@@ -34,7 +34,7 @@ const mapServiceObjects = services => {
       service.rating = service.rating;
       service.reviewCount = service.reviewCount;
       service.slots = service.slots;
-      service.price = service.pricePerSession || getRandomInt(200, 800);
+      service.price = service.price || service.pricePerSession;
       if(service.tags && service.tags.length){
         const tags = service.tags.map(tag => {
           const randBg = bgColors[Math.floor(Math.random() * bgColors.length)];
