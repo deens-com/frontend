@@ -141,9 +141,9 @@ export const signData = () => async dispatch => {
   // clear metamask errors
   dispatch({ type: 'METAMASK_ERROR', payload: {} });
 
-  const data = 'please';
   try {
-    const { signature } = await signMessage(data);
+    const { nonce } = await Parse.Cloud.run('getNonceForUser');
+    const { signature } = await signMessage(nonce);
     const userObj = await Parse.Cloud.run('storePublicAddress', { signature: signature, type: "metamask" });
     dispatch(fetch_user_profile());
     dispatch(user_profile_fetched({ user_profile: fetch_helpers.normalizeParseResponseData(userObj) }));
@@ -164,9 +164,9 @@ export const signData = () => async dispatch => {
 export const ledgerSignData = () => async dispatch => {
   dispatch({ type: 'LEDGER_ERROR', payload: {} });
 
-  const data = 'please';
   try {
-    const { signature } = await ledgerSignMessage(data);
+    const { nonce } = await Parse.Cloud.run('getNonceForUser');
+    const { signature } = await ledgerSignMessage(nonce);
     const userObj = await Parse.Cloud.run('storePublicAddress', { signature: signature, type: "ledger" });
     dispatch(fetch_user_profile());
     dispatch(user_profile_fetched({ user_profile: fetch_helpers.normalizeParseResponseData(userObj) }));
