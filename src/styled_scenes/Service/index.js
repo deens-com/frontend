@@ -564,7 +564,6 @@ class FoodDetailScene extends Component {
                 <h3>Part of trips</h3>
                 <Carousel sm_slides_nb={1} md_slides_nb={2} lg_slides_nb={4} xl_slides_nb={4}>
                   {this.props.trips
-                    .filter(trip => trip !== undefined)
                     .map(trip => (
                       <TripCart item={trip} withShadow key={trip.title} size="small" href={'/trips/' + trip.objectId} />
                     ))}

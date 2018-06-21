@@ -51,7 +51,7 @@ class ServicesContainer extends Component {
 const mapStateToProps = state => {
   return {
     service: state.ServicesReducer.service,
-    trips: state.ServicesReducer.trips,
+    trips: state.ServicesReducer.trips.filter(trip => trip !== undefined),
     reviews: state.ServicesReducer.reviews,
     myTrips: state.ServicesReducer.userTrips.data,
     serviceRecentlyAddedToTrip: state.ServicesReducer.serviceRecentlyAddedToTrip,
