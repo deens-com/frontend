@@ -132,8 +132,8 @@ export default class Results extends Component {
             </section>
           }
           {this.state.filteredData.map((result, i) => (
-            <ResultItem>
-              <Link to={(result.type ? "/services/" : "/trips/") + result.objectId} key={result.objectId}>
+            <ResultItem key={result.objectId}>
+              <Link to={(result.type ? '/services/' : '/trips/') + result.objectId}>
                 {result.contractAddress &&
                   <Badge>Decentralized</Badge>
                 }
