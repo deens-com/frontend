@@ -16,7 +16,7 @@ const SmartContractAddress = ({ address }) => {
   return (
     <Container>
       <Header>
-        <Icon name="address card outline" /> Smart Contract Address
+        <Icon name="address card outline" /> Address
       </Header>
       <Body>
         <code>{address}</code>&nbsp;

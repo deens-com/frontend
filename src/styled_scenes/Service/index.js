@@ -8,9 +8,7 @@ import GoogleMapReact from 'google-map-react';
 
 // COMPONENTS
 import TopBar from './../../shared_components/TopBarWithSearch';
-import * as SmartContractStatus from 'shared_components/SmartContract/Status';
 import BrandFooter from '../../shared_components/BrandFooter';
-import Tag from './components/Tag';
 import Rating from '../../shared_components/Rating';
 import { BadgeIcon } from './icons';
 import TripCart from '../../shared_components/Carts/Location';
@@ -30,6 +28,7 @@ import { media, sizes } from '../../libs/styled';
 import { Page, PageContent } from '../../shared_components/layout/Page';
 import { Icon, Modal } from 'semantic-ui-react';
 import SmartContractDetails from './components/SmartContractDetails';
+import ServiceTags from './components/ServiceTags';
 
 const DetailWrapper = styled.div`
   width: 100%;
@@ -41,16 +40,6 @@ const DetailWrapper = styled.div`
 
   ${media.minLarge} {
     width: 58%;
-  }
-`;
-
-const TagWrap = styled.div`
-  & > div {
-    margin-right: 10px;
-
-    &:last-child {
-      margin-right: 0;
-    }
   }
 `;
 
@@ -338,8 +327,6 @@ class FoodDetailScene extends Component {
   };
 
   render() {
-    const showContractStatus = this.props.service.contractAddress != null;
-
     return (
       <Page topPush>
         <TopBar fixed withPadding />
@@ -349,27 +336,11 @@ class FoodDetailScene extends Component {
             render={() => <ImgSlider images={this.props.service.pictures} />}
           />
           <DetailWrapper>
-            {showContractStatus && (
-              <SmartContractStatus.Wrapper
-                size="big"
-                status={this.props.service.contractStatus}
-                hash={this.props.service.hash}
-              />
-            )}
             <br />
-            <TagWrap>
-              {this.props.service &&
-                this.props.service.tags &&
-                this.props.service.tags.map(tag => (
-                  <Link to={'/results?tags=' + tag.label}>
-                    <Tag key={tag.label} item={tag} />
-                  </Link>
-                ))}
-            </TagWrap>
             <HeaderWrap>
               <h2>{this.props.service.title}</h2>
+              <ServiceTags service={this.props.service} />
               <PreserveWhiteSpace>{this.props.service.description}</PreserveWhiteSpace>
-              <SmartContractDetails address={this.props.service.contractAddress} abi={this.props.abi} />
             </HeaderWrap>
             <DataWrap>
               <DataBlock>
@@ -574,6 +545,7 @@ class FoodDetailScene extends Component {
               {this.props.reviews.length ? <h2>Reviews</h2> : null}
               {this.props.reviews.map(review => <Review key={review.objectId} review={review} />)}
             </div>
+            <SmartContractDetails address={this.props.service.contractAddress} abi={this.props.abi} />
           </DetailWrapper>
         </PageContent>
         <BrandFooter withTopBorder withPadding />
