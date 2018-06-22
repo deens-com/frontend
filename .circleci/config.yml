@@ -44,5 +44,5 @@ jobs:
       - deploy:
           command: |
             if [ "${CIRCLE_BRANCH}" == "staging" ];
-              then /home/circleci/repo/node_modules/.bin/now --team please -t 7aLYymAG7pbLhq8IynjnwQ3w
+              then npm run build && cd build && /home/circleci/repo/node_modules/.bin/now --team please -t 7aLYymAG7pbLhq8IynjnwQ3w
             fi
