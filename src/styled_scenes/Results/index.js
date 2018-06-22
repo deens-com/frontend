@@ -80,7 +80,7 @@ export default class ResultsScene extends Component {
       sw: { lat: bounds.getSouthWest().lat(), lng: bounds.getSouthWest().lng() },
     };
     // TODO: @jaydp dynamically calculate this width and height
-    const size = { width: 1200, height: 1920 };
+    const size = { width: 400, height: 800 };
     const { center, zoom } = fitBounds(newBounds, size);
     // if we zoom more than 14, it's too much zoomed into a really small location
     return { center, zoom: Math.min(zoom, 14) };
