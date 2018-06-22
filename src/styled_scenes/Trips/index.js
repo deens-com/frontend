@@ -120,7 +120,14 @@ export default class TripsScene extends Component {
   onSubmit = ev => {
     const { query } = this.props;
     this.props.updateTripDetails(
-      { beginDate: query.startDate, endDate: query.endDate, numberOfPerson: query.person.value },
+      {
+        beginDate: query.startDate,
+        endDate: query.endDate,
+        numberOfPerson: query.person.value,
+        formattedAddress: query.formattedAddress,
+        latitude: query.latlng.lat,
+        longitude: query.latlng.lng,
+      },
       true
     );
   };
@@ -245,10 +252,7 @@ export default class TripsScene extends Component {
                 query={`(min-width: ${sizes.medium})`}
                 render={() => (
                   <MapWrapper>
-                    <GoogleMapReact
-                      center={this.state.center}
-                      zoom={this.state.zoom}
-                    >
+                    <GoogleMapReact center={this.state.center} zoom={this.state.zoom}>
                       {this.getMarkerLatLngs(this.props).map(({ latitude, longitude }) => (
                         <MapMaker
                           key={`${latitude}-${longitude}`}

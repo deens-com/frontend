@@ -4,11 +4,13 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Media from 'react-media';
 import Parse from 'parse';
+import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete';
 
 // COMPONENTS
 import Form from '../../../shared_components/Form';
 import FormControl from '../../../shared_components/Form/FormControl';
 import MobileFilter from './MobileFilter';
+import LocationControl from 'shared_components/Form/LocationControl';
 
 // ACTIONS/CONFIG
 import { sizes, media } from '../../../libs/styled';
@@ -70,14 +72,15 @@ export default function ToolBar({
         ) : (
           <Wrap>
             <Form display="flex" onSubmit={onSubmit}>
-              <FormControl
-                onChange={value => {
-                  onValueChange('location', value);
+              <LocationControl
+                formatted_address={state.formattedAddress}
+                onSelect={(address, placeId) => {
+                  onValueChange('formattedAddress', address);
+                  geocodeByPlaceId(placeId)
+                    .then(results => getLatLng(results[0]))
+                    .then(latlng => onValueChange('latlng', latlng))
+                    .catch(console.error);
                 }}
-                value={state.location}
-                type="text"
-                placeholder="Location"
-                leftIcon="pin"
               />
               <FormControl
                 onChange={value => {
