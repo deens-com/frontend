@@ -67,15 +67,17 @@ export default function ResultsScene(props) {
                   key: 'AIzaSyDICUW2RF412bnmELi3Y_zCCzHa-w8WnXc',
                 }}
               >
-                {props.service_data.map(service => (
-                  <MapMaker
-                    key={service.objectId}
-                    lat={parseFloat(service.latitude)}
-                    lng={parseFloat(service.longitude)}
-                    scale={1}
-                    color="#4fb798"
-                  />
-                ))}
+                {props.service_data
+                  .filter(({ latitude, longitude }) => latitude && longitude)
+                  .map(service => (
+                    <MapMaker
+                      key={service.objectId}
+                      lat={parseFloat(service.latitude)}
+                      lng={parseFloat(service.longitude)}
+                      scale={1}
+                      color="#4fb798"
+                    />
+                  ))}
               </GoogleMapReact>
             </MapWrapper>
           )}
