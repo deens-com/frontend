@@ -128,7 +128,7 @@ export default class LocationFormControl extends Component {
 
   onLocationChange(address) {
     this.setState({ address });
-    this.props.onChange(address);
+    if (this.props.onChange) this.props.onChange(address);
   }
 
   onSelect = (address, placeId) => {
@@ -159,7 +159,7 @@ export default class LocationFormControl extends Component {
 }
 
 LocationFormControl.propTypes = {
-  onChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
   onSelect: PropTypes.func.isRequired,
   formatted_address: PropTypes.string,
 };
