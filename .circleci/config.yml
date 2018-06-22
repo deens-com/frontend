@@ -26,7 +26,6 @@ jobs:
           - v1-dependencies-
 
       - run: yarn install
-      - run: yarn global add now
 
       - save_cache:
           paths:
@@ -46,5 +45,5 @@ jobs:
           working_directory: build
           command: |
             if [ "${CIRCLE_BRANCH}" == "staging" ];
-              then /home/circleci/node_modules/now/download/dist/now -t 7aLYymAG7pbLhq8IynjnwQ3w
+              then yarn global add now && /home/circleci/node_modules/now/download/dist/now -t 7aLYymAG7pbLhq8IynjnwQ3w
             fi
