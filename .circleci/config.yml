@@ -26,6 +26,7 @@ jobs:
           - v1-dependencies-
 
       - run: yarn install
+      - run: yarn global add now
 
       - save_cache:
           paths:
@@ -40,6 +41,10 @@ jobs:
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ];
               then CI=false yarn deploy;
-            elif [ "${CIRCLE_BRANCH}" == "staging" ];
+            fi
+      - deploy:
+          working_directory: build
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "staging" ];
               then now -t 7aLYymAG7pbLhq8IynjnwQ3w
             fi
