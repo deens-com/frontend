@@ -45,5 +45,5 @@ jobs:
           working_directory: build
           command: |
             if [ "${CIRCLE_BRANCH}" == "staging" ];
-              then yarn global add now && now -t 7aLYymAG7pbLhq8IynjnwQ3w
+              then yarn global add now && yarn run link && now -t 7aLYymAG7pbLhq8IynjnwQ3w
             fi
