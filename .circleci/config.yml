@@ -44,5 +44,8 @@ jobs:
       - deploy:
           command: |
             if [ "${CIRCLE_BRANCH}" == "staging" ];
-              then npm run build:staging && cd build && /home/circleci/repo/node_modules/.bin/now --team please -t $NOW_SH_TOKEN && /home/circleci/repo/node_modules/.bin/now --team please -t $NOW_SH_TOKEN alias please-staging
+              then npm run build:staging && \
+                   cd build && \
+                   $NOW_CLI_PATH --team please -t $NOW_SH_TOKEN && \
+                   $NOW_CLI_PATH --team please -t $NOW_SH_TOKEN alias please-staging
             fi
