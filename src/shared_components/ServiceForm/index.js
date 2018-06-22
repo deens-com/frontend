@@ -43,6 +43,7 @@ class ServiceForm extends Component {
 
   static defaultProps = {
     submitButtonText: 'Submit',
+    globalError: {},
   };
 
   state = {
