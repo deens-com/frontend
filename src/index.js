@@ -13,7 +13,7 @@ Parse.initialize('myAppId');
 
 if (process.env.REACT_APP_NODE_ENV === 'production') {
   Raven.config('https://fd51482cf40f43fca379bc14417b6f2b@sentry.io/1220761').install();
-  Parse.serverURL = process.env.REACT_APP_PARSE_SERVER_URL || 'https://please-api.herokuapp.com/parse';
+  Parse.serverURL = process.env.REACT_APP_PARSE_SERVER_URL || 'https://internal-api.please.com/parse';
 }else if (process.env.REACT_APP_NODE_ENV === 'staging') {
   Raven.config('https://fd51482cf40f43fca379bc14417b6f2b@sentry.io/1220761').install();
   Parse.serverURL = process.env.REACT_APP_PARSE_SERVER_URL || 'https://please-api.herokuapp.com/parse';
