@@ -42,8 +42,7 @@ jobs:
               then CI=false yarn deploy;
             fi
       - deploy:
-          working_directory: build
           command: |
             if [ "${CIRCLE_BRANCH}" == "staging" ];
-              then yarn global add now && yarn run link && now -t 7aLYymAG7pbLhq8IynjnwQ3w
+              then yarn global add now && /home/circleci/repo/node_modules/.bin/now -t 7aLYymAG7pbLhq8IynjnwQ3w
             fi
