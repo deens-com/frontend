@@ -44,5 +44,5 @@ jobs:
       - deploy:
           command: |
             if [ "${CIRCLE_BRANCH}" == "staging" ];
-              then yarn global add now && /home/circleci/repo/node_modules/.bin/now -t 7aLYymAG7pbLhq8IynjnwQ3w
+              then /home/circleci/repo/node_modules/.bin/now switch please -t 7aLYymAG7pbLhq8IynjnwQ3w
             fi
