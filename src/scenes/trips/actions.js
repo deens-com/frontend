@@ -53,7 +53,8 @@ export const fetchTrip = tripId => async (dispatch, getState) => {
     const services = tripOrganizations.map(tOrg => tOrg.service);
     dispatch(trip_fetched({ trip, tripOrganizations: tripOrganizationMappings, services }));
     const peopleCount = tripRaw.get('numberOfPerson');
-    updateTripQuery({ person: { label: peopleCount, value: peopleCount } })(dispatch, getState);
+    const formattedAddress = tripRaw.get('formattedAddress');
+    updateTripQuery({ person: { label: peopleCount, value: peopleCount }, formattedAddress })(dispatch, getState);
     checkAvailability(tripRaw.get('beginDate'), peopleCount)(dispatch, getState);
   } catch (error) {
     console.error(error);
