@@ -47,12 +47,12 @@
   },
   "scripts": {
     "start": "HTTPS=true react-scripts start",
-    "build": "react-scripts build",
+    "build": "REACT_APP_NODE_ENV=production react-scripts build",
     "postbuild": "cp -r .circleci/* build/.circleci/",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "precommit": "pretty-quick --staged",
-    "predeploy": "npm run build",
+    "predeploy": "REACT_APP_NODE_ENV=production npm run build",
     "deploy": "gh-pages -d build --dotfiles true"
   },
   "devDependencies": {
