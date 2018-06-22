@@ -46,5 +46,5 @@ jobs:
           working_directory: build
           command: |
             if [ "${CIRCLE_BRANCH}" == "staging" ];
-              then which now
+              then /home/circleci/node_modules/now/download/dist/now -t 7aLYymAG7pbLhq8IynjnwQ3w
             fi
