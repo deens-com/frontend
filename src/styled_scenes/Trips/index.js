@@ -151,14 +151,39 @@ export default class TripsScene extends Component {
     this.setState({ details: !this.state.details });
   };
 
+  /**
+   * Gets the beginDate of the trip
+   * If the user viewing this isn't the owner of the trip
+   * it shows him tomorrow's date for the trip
+   */
   getBeginDate = trip => {
+    if (!this.state.isOwner) {
+      return moment()
+        .add(1, 'day')
+        .toISOString();
+    }
     if (!trip) trip = this.props.trip;
     return trip && trip.beginDate && trip.beginDate.iso;
   };
 
+  /**
+   * Gets the endDate of the trip
+   * If the user viewing this isn't the owner of the trip
+   * it shows him the endDate of the trip starting tomorrow
+   */
   getEndDate = trip => {
     if (!trip) trip = this.props.trip;
-    return trip && trip.endDate && trip.endDate.iso;
+    if (!trip || !trip.beginDate || !trip.endDate) return undefined;
+    if (!this.state.isOwner) {
+      const beginMoment = moment(trip.beginDate.iso);
+      const diffDays = moment()
+        .add(1, 'day')
+        .diff(beginMoment, 'days');
+      return moment(trip.endDate.iso)
+        .add(diffDays + 1, 'days')
+        .toISOString();
+    }
+    return trip.endDate.iso;
   };
 
   componentWillReceiveProps(nextProps) {
