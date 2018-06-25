@@ -25,12 +25,11 @@ const Flex = styled.div`
 `;
 
 class ServiceForm extends Component {
-
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      serviceId: null
-    }
+      serviceId: null,
+    };
   }
 
   static propTypes = {
@@ -150,8 +149,15 @@ class ServiceForm extends Component {
           <Modal.Header>There was an issue with creating your service</Modal.Header>
           <Modal.Content>{globalError.message}</Modal.Content>
           <Modal.Actions>
-          <Button color='green' onClick={() => this.props.onRedeployContract(this.props.values, this.state.serviceId)}>Re-deploy</Button>
-          <Button color='red' onClick={() => history.push('/services/' + this.state.serviceId)}>Cancel</Button>
+            <Button
+              color="green"
+              onClick={() => this.props.onRedeployContract(this.props.values, this.state.serviceId)}
+            >
+              Re-deploy
+            </Button>
+            <Button color="red" onClick={() => history.push('/services/' + this.state.serviceId)}>
+              Cancel
+            </Button>
           </Modal.Actions>
         </Modal>
 
