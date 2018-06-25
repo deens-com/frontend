@@ -1,8 +1,8 @@
 // NPM
-import React, { Component } from "react";
-import styled from "styled-components";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 // COMPONENTS
 
@@ -14,7 +14,7 @@ const PriceWrap = styled.div`
 `;
 
 const Price = styled.span`
-  font-size: ${props => (props.size === "big" ? "24px" : "18px")};
+  font-size: ${props => (props.size === 'big' ? '24px' : '18px')};
   font-weight: 500;
 `;
 
@@ -26,15 +26,14 @@ const Unit = styled.span`
 
 class PriceTag extends Component {
   calculatePrice() {
-    let priceInBitcoin = (1 / this.props.baseCurrency.rates.USD) * this.props.price;
-
+    const priceInBitcoin = (1 / this.props.baseCurrency.rates.USD) * this.props.price;
     switch (this.props.baseCurrency.value) {
       case 'USD':
         return this.props.price;
       case 'BTC':
-        return priceInBitcoin.toFixed(8)
+        return priceInBitcoin.toFixed(8);
       case 'ETH':
-        return (priceInBitcoin * this.props.baseCurrency.rates[this.props.baseCurrency.value]).toFixed(4)
+        return (priceInBitcoin * this.props.baseCurrency.rates[this.props.baseCurrency.value]).toFixed(4);
       default:
         return (priceInBitcoin * this.props.baseCurrency.rates[this.props.baseCurrency.value]).toFixed(2);
     }
@@ -47,23 +46,19 @@ class PriceTag extends Component {
           {this.calculatePrice()}
           {this.props.baseCurrency.label}
         </Price>
-        {this.props.unit !== "hidden" &&
-         <Unit> / person</Unit>
-        }
+        {this.props.unit !== 'hidden' && <Unit> / person</Unit>}
       </PriceWrap>
     );
   }
 }
 
+const mapStateToProps = state => ({
+  baseCurrency: state.SessionsReducer.baseCurrency,
+});
 
-const mapStateToProps = state => {
-  return{
-    baseCurrency: state.SessionsReducer.baseCurrency
-  };
-};
+const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
 
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators({}, dispatch);
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(PriceTag);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PriceTag);
