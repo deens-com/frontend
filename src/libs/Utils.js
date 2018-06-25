@@ -80,3 +80,5 @@ export const getISODateString = date => {
 export const padStart = (str, length, padChar = '0') => {
   return (padChar.repeat(length) + str).slice(-length);
 };
+
+export const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);

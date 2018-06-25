@@ -8,6 +8,7 @@ import serviceTags from './service-tags';
 import LocationFormControl from '../Form/LocationControl';
 import { Link } from 'react-router-dom';
 import history from './../../main/history';
+import { isMobile } from 'libs/Utils';
 const serviceTypes = ['Place', 'Activity', 'Food'];
 const serviceTypeDropdownOptions = serviceTypes.map(text => ({ value: text.toLowerCase(), text }));
 const hours = Array.from({ length: 24 }, (v, k) => k);
@@ -316,7 +317,7 @@ class ServiceForm extends Component {
         </Form.Field>
 
         {/* Accept Ethereum */}
-        {userHasConnectedWallet ? (
+        {isMobile ? null : userHasConnectedWallet ? (
           <Message info>
             <Message.Header>Deploy smart contract and accept payments in Ethereum</Message.Header>
             <Message.Content>
