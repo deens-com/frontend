@@ -135,9 +135,9 @@ export const resetErrors = () => dispatch => {
   });
 };
 
-
 export const redeployContract = (values, serviceId, history) => async (dispatch, getState) => {
   try{
+    // Redeploy from styled_scenes/Account/Trips/shared/Carts/Location Or Redeploy from service creation form
     let service = await fetch_helpers.build_query('Service').get(serviceId);
     dispatch(deployContract(service, values, history));
   }catch(error){

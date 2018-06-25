@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { SectionContent } from './../../../../shared_components/layout/Page';
 import Carousel from './Carousel';
-import LocationCart from './../../../../shared_components/Carts/Location';
+import LocationCart from './Carts/Location';
 import moment from 'moment';
 import { Divider, Label } from 'semantic-ui-react';
 import styled from 'styled-components';
