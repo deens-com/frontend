@@ -8,6 +8,7 @@ import Tag from './Tag';
 
 const TagWrap = styled.div`
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
   & > div {
     margin-right: 10px;
