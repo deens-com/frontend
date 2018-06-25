@@ -25,6 +25,9 @@ const Unit = styled.span`
 // MODULE
 
 class PriceTag extends Component {
+  // exposing the Price style so others can use this same style as the default render
+  static PriceStyle = Price;
+  
   calculatePrice() {
     const priceInBitcoin = (1 / this.props.baseCurrency.rates.USD) * this.props.price;
     switch (this.props.baseCurrency.value) {
@@ -40,15 +43,22 @@ class PriceTag extends Component {
   }
 
   render() {
-    return (
-      <PriceWrap>
-        <Price size={this.props.size}>
-          {this.calculatePrice()}
-          {this.props.baseCurrency.label}
-        </Price>
-        {this.props.unit !== 'hidden' && <Unit> / person</Unit>}
-      </PriceWrap>
-    );
+    const convertedPrice = this.calculatePrice();
+    const symbol = this.props.baseCurrency.label;
+    if (typeof this.props.children !== 'function') {
+      // if a render prop isn't passed use the default one
+      return (
+        <PriceWrap>
+          <Price size={this.props.size}>
+            {convertedPrice}
+            {symbol}
+          </Price>
+          {this.props.unit !== 'hidden' && <Unit> / person</Unit>}
+        </PriceWrap>
+      );
+    }
+    // else call the render prop
+    return this.props.children({ convertedPrice, symbol });
   }
 }
 
