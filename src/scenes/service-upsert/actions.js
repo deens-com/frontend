@@ -137,16 +137,9 @@ export const resetErrors = () => dispatch => {
 
 export const redeployContract = (values, serviceId, history) => async (dispatch, getState) => {
   try{
-    if(Object.keys(values).length === 2){
-      // Redeploy from styled_scenes/Account/Trips/shared/Carts/Location
-      let service = await fetch_helpers.build_query('Service').equalTo("objectId", serviceId.objectId).first();
-      service = fetch_helpers.normalizeParseResponseData(service);
-      dispatch(deployContract(service, values, history));
-    }else{
-      // Redeploy from service creation form
-      let service = await fetch_helpers.build_query('Service').get(serviceId);
-      dispatch(deployContract(service, values, history));
-    }
+    // Redeploy from styled_scenes/Account/Trips/shared/Carts/Location Or Redeploy from service creation form
+    let service = await fetch_helpers.build_query('Service').get(serviceId);
+    dispatch(deployContract(service, values, history));
   }catch(error){
     console.log(error);
   }
