@@ -6,6 +6,7 @@ import Media from 'react-media';
 import GoogleMapReact from 'google-map-react';
 import { fitBounds } from 'google-map-react/utils';
 import moment from 'moment';
+import Parse from 'parse';
 
 // COMPONENTS
 import BrandFooter from '../../shared_components/BrandFooter';
@@ -115,7 +116,12 @@ export default class TripsScene extends Component {
     details: true,
     center: { lat: 59.95, lng: 30.33 },
     zoom: 11,
+    isOwner: false,
   };
+
+  componentDidMount() {
+    this.setState({ isOwner: false });
+  }
 
   onSubmit = ev => {
     const { query } = this.props;
@@ -145,14 +151,39 @@ export default class TripsScene extends Component {
     this.setState({ details: !this.state.details });
   };
 
+  /**
+   * Gets the beginDate of the trip
+   * If the user viewing this isn't the owner of the trip
+   * it shows him tomorrow's date for the trip
+   */
   getBeginDate = trip => {
+    if (!this.state.isOwner) {
+      return moment()
+        .add(1, 'day')
+        .toISOString();
+    }
     if (!trip) trip = this.props.trip;
     return trip && trip.beginDate && trip.beginDate.iso;
   };
 
+  /**
+   * Gets the endDate of the trip
+   * If the user viewing this isn't the owner of the trip
+   * it shows him the endDate of the trip starting tomorrow
+   */
   getEndDate = trip => {
     if (!trip) trip = this.props.trip;
-    return trip && trip.endDate && trip.endDate.iso;
+    if (!trip || !trip.beginDate || !trip.endDate) return undefined;
+    if (!this.state.isOwner) {
+      const beginMoment = moment(trip.beginDate.iso);
+      const diffDays = moment()
+        .add(1, 'day')
+        .diff(beginMoment, 'days');
+      return moment(trip.endDate.iso)
+        .add(diffDays + 1, 'days')
+        .toISOString();
+    }
+    return trip.endDate.iso;
   };
 
   componentWillReceiveProps(nextProps) {
@@ -182,11 +213,17 @@ export default class TripsScene extends Component {
       // dispatch update only if there's an update
       updateTripQuery(diff);
     }
+    const tripOwnerId = trip && trip.owner && trip.owner.objectId;
+    const currentUser = Parse.User.current();
+    const isOwner = tripOwnerId === (currentUser && currentUser.id);
+
     const currentMarkers = this.getMarkerLatLngs(this.props);
     const newMarkers = this.getMarkerLatLngs(nextProps);
+    let centerZoomResult = {};
     if (currentMarkers.length !== newMarkers.length) {
-      this.getCenterAndZoom(newMarkers);
+      centerZoomResult = this.getCenterAndZoom(newMarkers);
     }
+    this.setState({ isOwner, ...centerZoomResult });
   }
 
   getMarkerLatLngs = props => {
@@ -200,7 +237,7 @@ export default class TripsScene extends Component {
     if (!markers.length) return;
     if (markers.length === 1) {
       const center = { lat: markers[0].latitude, lng: markers[0].longitude };
-      return this.setState({ center, zoom: 11 });
+      return { center, zoom: 11 };
     }
     const bounds = new window.google.maps.LatLngBounds();
     for (const marker of markers) {
@@ -212,7 +249,7 @@ export default class TripsScene extends Component {
     };
     const size = { width: 800, height: 450 };
     const { center, zoom } = fitBounds(newBounds, size);
-    this.setState({ center, zoom });
+    return { center, zoom };
   };
 
   render() {
@@ -275,6 +312,7 @@ export default class TripsScene extends Component {
                 trip={this.props.trip}
                 showTripUpdated={this.props.showTripUpdated}
                 onCheckAvailabilityClick={this.checkAvailability}
+                isOwner={this.state.isOwner}
                 serviceAvailabilityCheckInProgress={this.props.serviceAvailabilityCheckInProgress}
               />
               <Results

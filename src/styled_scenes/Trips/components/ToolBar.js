@@ -3,7 +3,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Media from 'react-media';
-import Parse from 'parse';
 import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete';
 
 // COMPONENTS
@@ -53,15 +52,11 @@ export default function ToolBar({
   state,
   onSubmit,
   onValueChange,
-  trip,
   showTripUpdated,
   onCheckAvailabilityClick,
   serviceAvailabilityCheckInProgress,
+  isOwner,
 }) {
-  const tripOwnerId = trip && trip.owner && trip.owner.objectId;
-  const currentUser = Parse.User.current();
-  const showSaveButton = tripOwnerId === (currentUser && currentUser.id);
-
   return (
     <Media query={`(max-width: ${sizes.small})`}>
       {matches =>
@@ -88,13 +83,13 @@ export default function ToolBar({
                 }}
                 value={state.startDate}
                 dayPickerProps={{
-                  disabledDays: { before: new Date(), after: showSaveButton ? state.endDate : undefined }, // if it's the owner of the trip then make sure he selects a startDate less than the endDate, else remove validation
+                  disabledDays: { before: new Date(), after: isOwner ? state.endDate : undefined }, // if it's the owner of the trip then make sure he selects a startDate less than the endDate, else remove validation
                 }}
                 type="date"
                 placeholder="From date"
                 leftIcon="date"
               />
-              {showSaveButton ? (
+              {isOwner ? (
                 <FormControl
                   onChange={value => {
                     onValueChange('endDate', value);
@@ -116,7 +111,7 @@ export default function ToolBar({
                 leftIcon="person"
               />
               <ToolbarButton
-                showSaveButton={showSaveButton}
+                showSaveButton={isOwner}
                 showTripUpdated={showTripUpdated}
                 onCheckAvailibilityClick={onCheckAvailabilityClick}
                 serviceAvailabilityCheckInProgress={serviceAvailabilityCheckInProgress}
@@ -135,4 +130,5 @@ ToolBar.propTypes = {
   showTripUpdated: PropTypes.bool,
   onCheckAvailabilityClick: PropTypes.func.isRequired,
   serviceAvailabilityCheckInProgress: PropTypes.bool.isRequired,
+  isOwner: PropTypes.bool.isRequired,
 };
