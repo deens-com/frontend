@@ -13,8 +13,8 @@ class CurrencySelector extends Component {
   }
 
   handleChange = (selectedOption) => {
-    let formattedSelectedOption = {value: selectedOption.value, label: selectedOption.label[0]};
-    this.setState(selectedOption: formattedSelectedOption);
+    const formattedSelectedOption = {value: selectedOption.value, label: selectedOption.label[0]};
+    this.setState({selectedOption: formattedSelectedOption});
     this.props.set_base_currency(formattedSelectedOption);
   }
 
