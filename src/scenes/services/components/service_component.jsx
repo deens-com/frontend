@@ -12,6 +12,7 @@ ServiceComponent.propTypes = {
   onAddServiceToNewTrip: PropTypes.func.isRequired,
   serviceRecentlyAddedToTrip: PropTypes.object,
   serviceAlreadyAddedToTrip: PropTypes.object,
+  myUnpurchasedTrips: PropTypes.array,
 };
 
 export default ServiceComponent;
