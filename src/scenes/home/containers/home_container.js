@@ -30,7 +30,7 @@ const mapStateToProps = state => {
   return {
     services: state.HomeReducer.services,
     tags: state.HomeReducer.tags,
-    trips: state.HomeReducer.trips,
+    trips: state.HomeReducer.trips.filter(item => !!item),
     popularPlaces: state.HomeReducer.popularPlaces,
     exciting_activities: state.HomeReducer.exciting_activities,
     delicious_foods: state.HomeReducer.delicious_foods
