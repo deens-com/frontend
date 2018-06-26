@@ -32,14 +32,26 @@ const PaymentSection = ({ pricePerPerson, totalPrice, onPaymentClick, isLoading 
       </Grid.Row>
       <Grid.Row columns={1} textAlign="right">
         <Grid.Column>
-          <Button as="div" labelPosition="right" onClick={onPaymentClick}>
-            <Button color="green" loading={isLoading}>
-              Pay
-            </Button>
-            <Label as="a" basic color="green" pointing="left">
-              <PriceTag price={totalPrice} unit="hidden" />
-            </Label>
-          </Button>
+          <PriceTag price={totalPrice}>
+            {({ convertedPrice, symbol }) => (
+              <Button
+                as="div"
+                labelPosition="right"
+                onClick={onPaymentClick}
+                disabled={parseFloat(convertedPrice) === 0}
+              >
+                <Button color="green" loading={isLoading}>
+                  Pay
+                </Button>
+                <Label as="a" basic color="green" pointing="left">
+                  <PriceTag.PriceStyle>
+                    {convertedPrice}
+                    {symbol}
+                  </PriceTag.PriceStyle>
+                </Label>
+              </Button>
+            )}
+          </PriceTag>
         </Grid.Column>
       </Grid.Row>
     </Grid>

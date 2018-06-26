@@ -1,8 +1,8 @@
 // NPM
-import React, { Component } from "react";
-import styled from "styled-components";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 // COMPONENTS
 
@@ -14,7 +14,7 @@ const PriceWrap = styled.div`
 `;
 
 const Price = styled.span`
-  font-size: ${props => (props.size === "big" ? "24px" : "18px")};
+  font-size: ${props => (props.size === 'big' ? '24px' : '18px')};
   font-weight: 500;
 `;
 
@@ -25,45 +25,50 @@ const Unit = styled.span`
 // MODULE
 
 class PriceTag extends Component {
+  // exposing the Price style so others can use this same style as the default render
+  static PriceStyle = Price;
+  
   calculatePrice() {
-    let priceInBitcoin = (1 / this.props.baseCurrency.rates.USD) * this.props.price;
-
+    const priceInBitcoin = (1 / this.props.baseCurrency.rates.USD) * this.props.price;
     switch (this.props.baseCurrency.value) {
       case 'USD':
         return this.props.price;
       case 'BTC':
-        return priceInBitcoin.toFixed(8)
+        return priceInBitcoin.toFixed(8);
       case 'ETH':
-        return (priceInBitcoin * this.props.baseCurrency.rates[this.props.baseCurrency.value]).toFixed(4)
+        return (priceInBitcoin * this.props.baseCurrency.rates[this.props.baseCurrency.value]).toFixed(4);
       default:
         return (priceInBitcoin * this.props.baseCurrency.rates[this.props.baseCurrency.value]).toFixed(2);
     }
   }
 
   render() {
-    return (
-      <PriceWrap>
-        <Price size={this.props.size}>
-          {this.calculatePrice()}
-          {this.props.baseCurrency.label}
-        </Price>
-        {this.props.unit !== "hidden" &&
-         <Unit> / person</Unit>
-        }
-      </PriceWrap>
-    );
+    const convertedPrice = this.calculatePrice();
+    const symbol = this.props.baseCurrency.label;
+    if (typeof this.props.children !== 'function') {
+      // if a render prop isn't passed use the default one
+      return (
+        <PriceWrap>
+          <Price size={this.props.size}>
+            {convertedPrice}
+            {symbol}
+          </Price>
+          {this.props.unit !== 'hidden' && <Unit> / person</Unit>}
+        </PriceWrap>
+      );
+    }
+    // else call the render prop
+    return this.props.children({ convertedPrice, symbol });
   }
 }
 
+const mapStateToProps = state => ({
+  baseCurrency: state.SessionsReducer.baseCurrency,
+});
 
-const mapStateToProps = state => {
-  return{
-    baseCurrency: state.SessionsReducer.baseCurrency
-  };
-};
+const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
 
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators({}, dispatch);
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(PriceTag);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PriceTag);
