@@ -8,9 +8,7 @@ import { bindActionCreators } from 'redux';
 
 class AccountServicesComponent extends Component {
   componentDidMount() {
-    if (this.props.user_profile) {
-      this.props.fetch_user_services(this.props.user_profile.objectId);
-    }
+    this.props.fetch_user_services();
   }
 
   render() {
