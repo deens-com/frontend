@@ -32,7 +32,7 @@ export const fetchTrip = tripId => async (dispatch, getState) => {
   const Trip = Parse.Object.extend('Trip');
   try {
     const [tripRaw, tripOrganizationsRaw] = await Promise.all([
-      fetch_helpers.build_query('Trip').get(tripId),
+      fetch_helpers.build_query('Trip').include('owner').get(tripId),
       fetch_helpers
         .build_query('TripOrganization')
         .equalTo('trip', new Trip({ id: tripId }))

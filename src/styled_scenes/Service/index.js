@@ -17,7 +17,6 @@ import Carousel from '../../shared_components/Carousel';
 //import Button from '../../shared_components/Button';
 import ImgSlider from './components/ImgSlider';
 import MapMaker from '../../shared_components/MapMarker';
-import UserAvatar from '../../shared_components/UserAvatar';
 import AddToTripButton from './components/AddToTripButton';
 import FormControl from './../../shared_components/Form/FormControl';
 
@@ -29,6 +28,7 @@ import { Page, PageContent } from '../../shared_components/layout/Page';
 import { Icon, Modal } from 'semantic-ui-react';
 import SmartContractDetails from './components/SmartContractDetails';
 import ServiceTags from './components/ServiceTags';
+import ServiceInformation from './components/ServiceInformation';
 
 const DetailWrapper = styled.div`
   width: 100%;
@@ -135,32 +135,6 @@ const Contacts = styled.div`
   }
 `;
 
-const ContactBlock = styled.div`
-  display: flex;
-  align-items: center;
-
-  & > div {
-    flex: 1;
-  }
-
-  & > div:first-child {
-    flex-basis: 75%;
-  }
-`;
-
-const WorkingHoursBlock = styled.div`
-  display: flex;
-  flex-direction: row-reverse;
-`;
-
-const HostBlock = styled.div`
-  display: flex;
-  justify-content: space-between;
-  & > div:last-child {
-    margin-right: -36px;
-  }
-`;
-
 const ButtonsWrap = styled.div`
   display: flex;
   margin-right: 25px;
@@ -176,17 +150,6 @@ const ButtonsWrap = styled.div`
       order: 0;
       margin-bottom: 10px;
     }
-  }
-`;
-
-const Hr = styled.hr`
-  height: 0;
-  border: none;
-  border-bottom: 1px solid #eef1f4;
-  margin: 15px 0;
-
-  ${media.minSmall} {
-    margin: 25px 0;
   }
 `;
 
@@ -223,11 +186,6 @@ const ActionWrap = styled.div`
     align-items: center;
     justify-content: left;
   }
-`;
-
-const RightAlignedText = styled.span`
-  display: block;
-  text-align: right;
 `;
 
 const SuccessMessage = styled(Link)`
@@ -497,52 +455,7 @@ class FoodDetailScene extends Component {
                 </GoogleMapReact>
               </MapWrap>
               <Contacts>
-                <HostBlock>
-                  <div>
-                    <TextLabel>Host</TextLabel>
-                  </div>
-                  <div>
-                    <UserAvatar user={this.props.service.owner} />
-                  </div>
-                </HostBlock>
-                <Hr />
-                {this.props.service.openingTime &&
-                  this.props.service.closingTime && (
-                    <div>
-                      <ContactBlock>
-                        <TextLabel>Working hours</TextLabel>
-                        <WorkingHoursBlock>
-                          {this.props.service.openingTime} H - {this.props.service.closingTime} H
-                        </WorkingHoursBlock>
-                      </ContactBlock>
-                      <Hr />
-                    </div>
-                  )}
-                {this.props.service.phoneNumber && (
-                  <div>
-                    <ContactBlock>
-                      <div>
-                        <TextLabel>Phone</TextLabel>
-                        <RightAlignedText>{this.props.service.phoneNumber}</RightAlignedText>
-                      </div>
-                    </ContactBlock>
-                    <Hr />
-                  </div>
-                )}
-
-                {this.props.service.websiteUrl && (
-                  <div>
-                    <ContactBlock>
-                      <div>
-                        <TextLabel>Homepage</TextLabel>
-                        <a href={this.props.service.websiteUrl}>
-                          <RightAlignedText>{this.props.service.websiteUrl}</RightAlignedText>
-                        </a>
-                      </div>
-                    </ContactBlock>
-                    <Hr />
-                  </div>
-                )}
+                <ServiceInformation service={this.props.service} />
               </Contacts>
             </ContactWrap>
             {this.props.trips.length ? (
