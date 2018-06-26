@@ -67,7 +67,7 @@ const UserBasicInfo = ({ user_profile: user = {}, match }) => {
             <Grid.Column textAlign="center">
               <div>
                 <AttributeTitle>PLS Balance</AttributeTitle>
-                {user.plsBalance}
+                {user.plsBalance || 0}
               </div>
             </Grid.Column>
             <Grid.Column textAlign="center">

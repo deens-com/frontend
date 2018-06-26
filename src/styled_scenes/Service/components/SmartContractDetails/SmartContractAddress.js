@@ -20,7 +20,7 @@ const SmartContractAddress = ({ address }) => {
       </Header>
       <Body>
         <code>{address}</code>&nbsp;
-        <a href={`https://ropsten.etherscan.io/address/${address}`}>
+        <a target="_blank" href={`https://ropsten.etherscan.io/address/${address}`}>
           <Icon name="external" />
         </a>
       </Body>

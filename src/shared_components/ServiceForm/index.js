@@ -6,7 +6,6 @@ import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete';
 import styled from 'styled-components';
 import serviceTags from './service-tags';
 import LocationFormControl from '../Form/LocationControl';
-import { Link } from 'react-router-dom';
 import history from './../../main/history';
 import { isMobile } from 'libs/Utils';
 const serviceTypes = ['Place', 'Activity', 'Food'];
@@ -342,7 +341,9 @@ class ServiceForm extends Component {
               </Form.Field>
             </Message.Content>
           </Message>
-        ) : (
+        ) :
+          null
+        /*(
           !service && (
             <Message info>
               <Message.Header>Deploy smart contract and accept payments in Ethereum</Message.Header>
@@ -358,7 +359,8 @@ class ServiceForm extends Component {
               </Message.Content>
             </Message>
           )
-        )}
+        )*/
+      }
 
         <Form.Button disabled={submitInFlight}>{this.props.submitButtonText}</Form.Button>
       </Form>
