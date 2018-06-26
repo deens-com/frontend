@@ -6,7 +6,6 @@ import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete';
 import styled from 'styled-components';
 import serviceTags from './service-tags';
 import LocationFormControl from '../Form/LocationControl';
-import { Link } from 'react-router-dom';
 import history from './../../main/history';
 import { isMobile } from 'libs/Utils';
 const serviceTypes = ['Place', 'Activity', 'Food'];
