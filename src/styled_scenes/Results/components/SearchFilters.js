@@ -226,7 +226,7 @@ class SearchFilters extends Component {
     this.setState({ service_type: types });
     this.refetch_results({ type: types });
   }
-  
+
   handleOnlySmartContracts = () => {
     this.setState(
       prevState => ({ ...prevState, onlySmartContracts: !prevState.onlySmartContracts }),
@@ -362,7 +362,7 @@ class SearchFilters extends Component {
                       checked={service_types && service_types.includes("food")}
                     />
                     <Checkbox
-                      label="Smart Contracts Only"
+                      label="Decentralized"
                       value="smart"
                       onClick={this.handleOnlySmartContracts}
                       checked={onlySmartContracts}
@@ -441,7 +441,7 @@ class SearchFilters extends Component {
             checked={service_types && service_types.includes("food")}
           />
           <Checkbox
-            label="Smart Contracts Only"
+            label="Decentralized"
             value="smart"
             onClick={this.handleOnlySmartContracts}
             checked={onlySmartContracts}

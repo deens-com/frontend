@@ -289,7 +289,7 @@ class HomeSearch extends Component {
   handleOnlySmartContracts = () => {
     this.setState(prevState => ({ ...prevState, onlySmartContracts: !prevState.onlySmartContracts }));
   };
-  
+
   handleLocationChange(address) {
     geocodeByAddress(address)
       .then(results => {
@@ -512,7 +512,7 @@ class HomeSearch extends Component {
                   onClick={this.handleServiceTypeChange}
                 />
                 <Checkbox
-                  label="Smart Contracts Only"
+                  label="Decentralized"
                   value="smart"
                   onClick={this.handleOnlySmartContracts}
                 />
