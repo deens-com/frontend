@@ -458,7 +458,7 @@ class FoodDetailScene extends Component {
                   theme="textGreen"
                 />*/}
                 <AddToTripButton
-                  trips={this.props.myTrips}
+                  myUnpurchasedTrips={this.props.myUnpurchasedTrips}
                   onTripClick={this.props.onAddServiceToTrip}
                   onNewTripClick={this.props.onAddServiceToNewTrip}
                 />
@@ -570,7 +570,7 @@ class FoodDetailScene extends Component {
 
 // Props Validation
 FoodDetailScene.propTypes = {
-  myTrips: PropTypes.array,
+  myUnpurchasedTrips: PropTypes.array,
   onAddServiceToTrip: PropTypes.func.isRequired,
   serviceRecentlyAddedToTrip: PropTypes.object,
   serviceAlreadyAddedToTrip: PropTypes.object,

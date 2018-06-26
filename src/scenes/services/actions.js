@@ -29,8 +29,8 @@ export const set_service_unavailability_modal = bool => {
   };
 };
 
-export const userTripsFetchStart = () => ({ type: 'USER_TRIPS_FETCH' });
-export const userTripsFetchFinish = trips => ({ type: 'USER_TRIPS_FETCH_FINISH', payload: trips });
+export const userUnpurchasedTripsFetchStart = () => ({ type: 'USER_UNPURCHASED_TRIPS_FETCH' });
+export const userUnpurchasedTripsFetchFinish = trips => ({ type: 'USER_UNPURCHASED_TRIPS_FETCH_FINISH', payload: trips });
 
 export const fetch_service = (service_id) => {
   return dispatch => {
@@ -105,11 +105,11 @@ export const fetch_service = (service_id) => {
 
 export const fetchMyTrips = () => async (dispatch, getState) => {
   const state = getState();
-  if (state.ServicesReducer.userTrips.isLoading) return;
-  dispatch(userTripsFetchStart());
-  const trips = await Parse.Cloud.run('getMyTrips');
+  if (state.ServicesReducer.userUnpurchasedTrips.isLoading) return;
+  dispatch(userUnpurchasedTripsFetchStart());
+  const trips = await Parse.Cloud.run('getMyNonPurchasedTrips');
   const normalizedTrips = fetch_helpers.normalizeParseResponseData(trips);
-  dispatch(userTripsFetchFinish(normalizedTrips));
+  dispatch(userUnpurchasedTripsFetchFinish(normalizedTrips));
 };
 
 export const addServiceToTrip = trip => async (dispatch, getState) => {

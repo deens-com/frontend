@@ -53,7 +53,7 @@ const mapStateToProps = state => {
     service: state.ServicesReducer.service,
     trips: state.ServicesReducer.trips.filter(trip => trip !== undefined),
     reviews: state.ServicesReducer.reviews,
-    myTrips: state.ServicesReducer.userTrips.data,
+    myUnpurchasedTrips: state.ServicesReducer.userUnpurchasedTrips.data,
     serviceRecentlyAddedToTrip: state.ServicesReducer.serviceRecentlyAddedToTrip,
     serviceAlreadyAddedToTrip: state.ServicesReducer.serviceAlreadyAddedToTrip,
     isServiceUnavailableModalOpen: state.ServicesReducer.isServiceUnavailableModalOpen,

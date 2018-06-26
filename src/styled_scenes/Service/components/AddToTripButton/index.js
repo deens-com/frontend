@@ -7,7 +7,7 @@ import TripsListInDropDown from './TripsListInDropDown';
 
 export default class AddToTripButton extends React.Component {
   static propTypes = {
-    trips: PropTypes.array,
+    myUnpurchasedTrips: PropTypes.array,
     onTripClick: PropTypes.func.isRequired,
     onNewTripClick: PropTypes.func.isRequired,
   };
@@ -49,7 +49,7 @@ export default class AddToTripButton extends React.Component {
     );
     const listComponent = (
       <TripsListInDropDown
-        trips={props.trips}
+        trips={props.myUnpurchasedTrips}
         onTripClick={this.onTripClickOverride}
         onNewTripClick={this.onNewTripClickOverride}
       />
