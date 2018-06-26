@@ -35,13 +35,3 @@ export const getUnScheduledServices = state => {
   dayObjects[dayIndex] = dayObjects[dayIndex] || { day: dayIndex, services: [] };
   return Object.values(dayObjects);
 };
-
-/**
- * Sums up the total price of a trip, by iterating over all the scheduled services
- */
-export const getTripTotalPrice = state => {
-  const scheduledServices = getScheduledServices(state);
-  return scheduledServices
-    .reduce((services, tripOrg) => [...services, ...tripOrg.services], [])
-    .reduce((sum, service) => sum + service.pricePerSession, 0);
-};
