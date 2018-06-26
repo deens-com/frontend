@@ -10,7 +10,8 @@ const ServiceComponent = props => {
 ServiceComponent.propTypes = {
   onAddServiceToTrip: PropTypes.func.isRequired,
   onAddServiceToNewTrip: PropTypes.func.isRequired,
-  serviceRecentlyAddedToTrip: PropTypes.string,
+  serviceRecentlyAddedToTrip: PropTypes.object,
+  serviceAlreadyAddedToTrip: PropTypes.object,
 };
 
 export default ServiceComponent;

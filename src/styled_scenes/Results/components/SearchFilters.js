@@ -34,6 +34,7 @@ const MobileWrap = styled.div`
 const Checkbox = styled(SemanticCheckbox)`
   margin-left: 1%;
   margin-right: 1%;
+  margin-bottom: 10px;
 `;
 
 const ClearInputIcon = styled(Icon)`
@@ -49,6 +50,7 @@ const MobileClearInputIcon = styled(Icon)`
 
 const CheckboxWrap = styled.div`
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   padding-top: 1%;
   padding-bottom: 1%;

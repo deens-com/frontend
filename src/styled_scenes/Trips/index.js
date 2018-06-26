@@ -125,8 +125,8 @@ export default class TripsScene extends Component {
         endDate: query.endDate,
         numberOfPerson: query.person.value,
         formattedAddress: query.formattedAddress,
-        latitude: query.latlng.lat,
-        longitude: query.latlng.lng,
+        latitude: query.latlng && query.latlng.lat,
+        longitude: query.latlng && query.latlng.lng,
       },
       true
     );

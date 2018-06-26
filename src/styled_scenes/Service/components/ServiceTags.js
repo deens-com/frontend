@@ -8,6 +8,7 @@ import Tag from './Tag';
 
 const TagWrap = styled.div`
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
   & > div {
     margin-right: 10px;
@@ -31,13 +32,9 @@ const ServiceTags = ({ service }) => {
   return (
     <TagWrap>
       {contractAddress && (
-        <SmartContractStatus.Wrapper
-          size="large"
-          status={service.contractStatus}
-          hash={service.hash}
-        />
+        <SmartContractStatus.Wrapper size="large" status={service.contractStatus} hash={service.hash} />
       )}
-      <Divider />
+      {contractAddress && tags.length > 0 && <Divider />}
       {tags.map(tag => (
         <Link to={`/results?tags=${tag.label}`}>
           <Tag key={tag.label} item={tag} />

@@ -240,6 +240,16 @@ const SuccessMessage = styled(Link)`
   }
 `;
 
+const WarningMessage = styled(Link)`
+  color: #f57c00;
+  align-self: flex-end;
+  margin-top: 25px;
+
+  :hover {
+    color: #ff9800;
+  }
+`;
+
 const Wrap = styled.div`
   background: white;
   box-shadow: 0 8px 25px 0 rgba(141, 141, 141, 0.22);
@@ -459,6 +469,11 @@ class FoodDetailScene extends Component {
                   <Icon name="check circle outline" />
                 </SuccessMessage>
               )}
+              {this.props.serviceAlreadyAddedToTrip && (
+                <WarningMessage to={`/trips/${this.props.serviceAlreadyAddedToTrip.objectId}`}>
+                  Already added to <b>{this.props.serviceAlreadyAddedToTrip.title}</b>
+                </WarningMessage>
+              )}
             </ActionWrap>
             <Media
               query={`(max-width: ${sizes.large})`}
@@ -534,10 +549,9 @@ class FoodDetailScene extends Component {
               <TripsWrap>
                 <h3>Part of trips</h3>
                 <Carousel sm_slides_nb={1} md_slides_nb={2} lg_slides_nb={4} xl_slides_nb={4}>
-                  {this.props.trips
-                    .map(trip => (
-                      <TripCart item={trip} withShadow key={trip.title} size="small" href={'/trips/' + trip.objectId} />
-                    ))}
+                  {this.props.trips.map(trip => (
+                    <TripCart item={trip} withShadow key={trip.title} size="small" href={'/trips/' + trip.objectId} />
+                  ))}
                 </Carousel>
               </TripsWrap>
             ) : null}
@@ -558,7 +572,8 @@ class FoodDetailScene extends Component {
 FoodDetailScene.propTypes = {
   myTrips: PropTypes.array,
   onAddServiceToTrip: PropTypes.func.isRequired,
-  serviceRecentlyAddedToTrip: PropTypes.string,
+  serviceRecentlyAddedToTrip: PropTypes.object,
+  serviceAlreadyAddedToTrip: PropTypes.object,
 };
 
 export default FoodDetailScene;

@@ -8,6 +8,7 @@ import serviceTags from './service-tags';
 import LocationFormControl from '../Form/LocationControl';
 import { Link } from 'react-router-dom';
 import history from './../../main/history';
+import { isMobile } from 'libs/Utils';
 const serviceTypes = ['Place', 'Activity', 'Food'];
 const serviceTypeDropdownOptions = serviceTypes.map(text => ({ value: text.toLowerCase(), text }));
 const hours = Array.from({ length: 24 }, (v, k) => k);
@@ -25,12 +26,11 @@ const Flex = styled.div`
 `;
 
 class ServiceForm extends Component {
-
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      serviceId: null
-    }
+      serviceId: null,
+    };
   }
 
   static propTypes = {
@@ -150,8 +150,15 @@ class ServiceForm extends Component {
           <Modal.Header>There was an issue with creating your service</Modal.Header>
           <Modal.Content>{globalError.message}</Modal.Content>
           <Modal.Actions>
-          <Button color='green' onClick={() => this.props.onRedeployContract(this.props.values, this.state.serviceId)}>Re-deploy</Button>
-          <Button color='red' onClick={() => history.push('/services/' + this.state.serviceId)}>Cancel</Button>
+            <Button
+              color="green"
+              onClick={() => this.props.onRedeployContract(this.props.values, this.state.serviceId)}
+            >
+              Re-deploy
+            </Button>
+            <Button color="red" onClick={() => history.push('/services/' + this.state.serviceId)}>
+              Cancel
+            </Button>
           </Modal.Actions>
         </Modal>
 
@@ -310,7 +317,7 @@ class ServiceForm extends Component {
         </Form.Field>
 
         {/* Accept Ethereum */}
-        {userHasConnectedWallet ? (
+        {isMobile ? null : userHasConnectedWallet ? (
           <Message info>
             <Message.Header>Deploy smart contract and accept payments in Ethereum</Message.Header>
             <Message.Content>

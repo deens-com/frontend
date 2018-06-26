@@ -124,6 +124,9 @@ export const addServiceToTrip = trip => async (dispatch, getState) => {
     if (error.code === 141) {
       // parse error
       console.error('error running parse function', error.message.message);
+      if (error.message && error.message.message.includes('already added')) {
+        setAlreadyAddedToTrip(trip)(dispatch);
+      }
     }
   }
 };
@@ -159,6 +162,11 @@ export const createNewTrip = () => async (dispatch, getState) => {
 export const setAddedToTripMessage = trip => dispatch => {
   dispatch({ type: 'SERVICE_RECENTLY_ADDED_TO_TRIP', payload: trip });
   setTimeout(() => dispatch({ type: 'SERVICE_RECENTLY_ADDED_TO_TRIP', payload: undefined }), 10000); // 10 s
+};
+
+export const setAlreadyAddedToTrip = trip => dispatch => {
+  dispatch({ type: 'SERVICE_ALREADY_ADDED_TO_TRIP', payload: trip });
+  setTimeout(() => dispatch({ type: 'SERVICE_ALREADY_ADDED_TO_TRIP', payload: undefined }), 10000); // 10 s
 };
 
 export const toggleServiceAvailabilitymodal = (bool) => {
