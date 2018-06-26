@@ -34,12 +34,10 @@ export default function HomeSectionTrips({ trips }) {
           md_slides_nb={2}
           lg_slides_nb={4}
           xl_slides_nb={4}>
-          {trips.map((item, index) => (
+          {trips.map((item) => (
+            item.objectId &&
             <Link to={"/trips/" + item.objectId} key={item.objectId}>
-              <LocationCart
-                item={item}
-                index={index}
-                />
+              <LocationCart item={item} />
             </Link>
           ))}
         </Carousel>
