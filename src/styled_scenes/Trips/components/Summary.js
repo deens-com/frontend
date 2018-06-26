@@ -75,11 +75,7 @@ export default class TripSummary extends Component {
   };
 
   componentDidMount() {
-    if (Parse.User.current() === null) {
-      this.setState({ logged_in: false });
-    } else {
-      this.setState({ logged_in: true });
-    }
+    this.setState({ tripDirty: false, logged_in: !!Parse.User.current() });
   }
 
   calculateTripTotalPrice() {
