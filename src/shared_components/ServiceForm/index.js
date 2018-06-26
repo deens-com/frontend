@@ -335,7 +335,9 @@ class ServiceForm extends Component {
               </Form.Field>
             </Message.Content>
           </Message>
-        ) : (
+        ) :
+          null
+        /*(
           !service && (
             <Message info>
               <Message.Header>Deploy smart contract and accept payments in Ethereum</Message.Header>
@@ -351,7 +353,8 @@ class ServiceForm extends Component {
               </Message.Content>
             </Message>
           )
-        )}
+        )*/
+      }
 
         <Form.Button disabled={submitInFlight}>{this.props.submitButtonText}</Form.Button>
       </Form>
