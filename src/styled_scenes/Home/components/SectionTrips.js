@@ -35,7 +35,6 @@ export default function HomeSectionTrips({ trips }) {
           lg_slides_nb={4}
           xl_slides_nb={4}>
           {trips.map((item) => (
-            item.objectId &&
             <Link to={"/trips/" + item.objectId} key={item.objectId}>
               <LocationCart item={item} />
             </Link>
