@@ -135,13 +135,13 @@ export default class TripSummary extends Component {
             {this.state.tripDirty && isDatesFormComplete && <ErrorMsg>Save the trip before booking</ErrorMsg>}
           </PricesWrap>
           <BookButton
-          size="small"
-          circular
-          onClick={this.onBookClickWithDates}
-          loading={this.props.isCloningInProcess}
-          disabled={this.state.tripDirty || !isDatesFormComplete}
+            size="small"
+            circular
+            onClick={this.onBookClickWithDates}
+            loading={this.props.isCloningInProcess}
+            disabled={this.state.tripDirty || !isDatesFormComplete}
           >
-          Book now
+            Book now
           </BookButton>
           {/*!this.state.logged_in && (
             <TotalHint>
