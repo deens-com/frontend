@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Media from 'react-media';
 import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete';
+import { Input } from 'semantic-ui-react';
 
 // COMPONENTS
 import Form from '../../../shared_components/Form';
@@ -47,8 +48,84 @@ const Wrap = styled.div`
   }
 `;
 
+const GridFormContainer = styled(Form)`
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  width: 100%;
+`;
+
+const TitleDiv = styled.div`
+  grid-column: span 2;
+`;
+const LocationDiv = styled.div`
+  grid-column: span 3;
+`;
+const StartDateDiv = styled.div``;
+const EndDateDiv = styled.div`
+  grid-column: span 2;
+`;
+
 // MODULE
 export default function ToolBar({
+  state,
+  trip,
+  onSubmit,
+  onValueChange,
+  showTripUpdated,
+  onCheckAvailabilityClick,
+  serviceAvailabilityCheckInProgress,
+  isOwner,
+}) {
+  return (
+    <Wrap>
+      <GridFormContainer display="grid" onSubmit={onSubmit}>
+        <TitleDiv>
+          <Input type="text" placeholder="Name of the Trip" value={trip.title} fluid />
+        </TitleDiv>
+        <LocationDiv>
+          <LocationControl
+            formatted_address={state.formattedAddress}
+            onSelect={(address, placeId) => {
+              onValueChange('formattedAddress', address);
+              geocodeByPlaceId(placeId)
+                .then(results => getLatLng(results[0]))
+                .then(latlng => onValueChange('latlng', latlng))
+                .catch(console.error);
+            }}
+          />
+        </LocationDiv>
+        <StartDateDiv>
+          <FormControl
+            onChange={value => {
+              onValueChange('startDate', value);
+            }}
+            value={state.startDate}
+            dayPickerProps={{
+              disabledDays: { before: new Date(), after: isOwner ? state.endDate : undefined }, // if it's the owner of the trip then make sure he selects a startDate less than the endDate, else remove validation
+            }}
+            type="date"
+            placeholder="From date"
+            leftIcon="date"
+          />
+        </StartDateDiv>
+        <EndDateDiv>
+          <FormControl
+            onChange={value => {
+              onValueChange('endDate', value);
+            }}
+            value={state.endDate}
+            dayPickerProps={{ disabledDays: { before: state.startDate || new Date() } }}
+            type="date"
+            placeholder="To date"
+            leftIcon="date"
+          />
+        </EndDateDiv>
+      </GridFormContainer>
+    </Wrap>
+  );
+}
+
+function old({
   state,
   onSubmit,
   onValueChange,
@@ -77,18 +154,7 @@ export default function ToolBar({
                     .catch(console.error);
                 }}
               />
-              <FormControl
-                onChange={value => {
-                  onValueChange('startDate', value);
-                }}
-                value={state.startDate}
-                dayPickerProps={{
-                  disabledDays: { before: new Date(), after: isOwner ? state.endDate : undefined }, // if it's the owner of the trip then make sure he selects a startDate less than the endDate, else remove validation
-                }}
-                type="date"
-                placeholder="From date"
-                leftIcon="date"
-              />
+
               {isOwner ? (
                 <FormControl
                   onChange={value => {
