@@ -35,7 +35,7 @@ const EmptyServicesText = styled.p`
 const TripSectionComponent = props => {
   return (
     <section>
-      {props.trips.map((trip, index) => (
+      {props.trips.map(trip => (
         <SectionContent key={trip.objectId}>
           <Divider />
           <Link to={'/trips/' + trip.objectId}>
