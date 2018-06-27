@@ -94,7 +94,7 @@ const ActionsWrap = styled.div`
 `;
 
 // MODULE
-export default function TopBarDesktopNav({ home, language, currency, theme }) {
+export default function TopBarDesktopNav({ home, language, currency, theme, history }) {
   return (
     <Media
       query={`(min-width: ${sizes.large})`}
@@ -113,7 +113,7 @@ export default function TopBarDesktopNav({ home, language, currency, theme }) {
           </Nav>
           <ActionsWrap>
             <CurrencySelector />
-            <DesktopDropDownMenu theme={theme}/>
+            <DesktopDropDownMenu theme={theme} history={history}/>
           </ActionsWrap>
         </Wrap>
       )}

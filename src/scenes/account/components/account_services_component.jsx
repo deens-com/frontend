@@ -15,7 +15,7 @@ class AccountServicesComponent extends Component {
     return (
       <section>
         <Page topPush>
-          <TopBar fixed withPadding />
+          <TopBar fixed withPadding {...this.props} />
           <PageContent padding="24px">
             <AccountServicesScene {...this.props} />
           </PageContent>

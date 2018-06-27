@@ -14,7 +14,6 @@ import { Dropdown } from 'semantic-ui-react';
 
 import history from "./../../main/history";
 import ImgurAvatar from "./../../assets/imgur-avatar.png";
-
 // STYLES
 const Wrap = styled.div`
   align-items: center;
@@ -93,11 +92,15 @@ export default class DesktopDropDownMenu extends Component {
 
   logged_in() {
     const dpUrl = (this.state.current_user.profilePicture && this.state.current_user.profilePicture.url) || ImgurAvatar;
+    const showAddServiceButton = window.location.hash !== "#/account/services"; //this.props.history && this.props.history.location.pathname !== "/account/services"
     return(
       <Wrap>
-        <Button type="link" theme="mainFilled" round size="small" href="/services/new">
+        {
+          showAddServiceButton &&
+          <Button type="link" theme="mainFilled" round size="small" href="/services/new">
           Add a Service
-        </Button>
+          </Button>
+        }
         <AvatarWrapper>
           <Image src={dpUrl} circular onClick={() => this.navigate_to("/account/profile")} />
         </AvatarWrapper>
