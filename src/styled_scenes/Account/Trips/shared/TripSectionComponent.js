@@ -50,14 +50,7 @@ const TripSectionComponent = props => {
           <br />
           <CarouselWrapper>
             <Carousel sm_slides_nb={1} md_slides_nb={2} lg_slides_nb={4} xl_slides_nb={4}>
-              {trip.services.map((item, index) => (
-                <Link to={'/services/' + item.objectId} key={item ? item.objectId : index}>
-                  <LocationCart
-                    item={item}
-                    index={index}
-                  />
-                </Link>
-              ))}
+              {trip.services.map((item, index) => <LocationCart item={item} index={index} key={item.objectId} />)}
             </Carousel>
           </CarouselWrapper>
           {trip.services.length ? null : <EmptyServicesText>No services in this trip</EmptyServicesText>}
