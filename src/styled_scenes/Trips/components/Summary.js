@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Button } from 'semantic-ui-react';
 import Parse from 'parse';
+import moment from 'moment';
 
 // COMPONENTS
 import PriceTag from '../../../shared_components/Currency/PriceTag';
@@ -95,6 +96,8 @@ export default class TripSummary extends Component {
     onBookClick(query.startDate, query.person.value);
   };
 
+  formatDateForCompare = date => moment(getISODateString(date)).utc().format('YYYYMMDD');
+
   componentWillReceiveProps(nextProps) {
     const { trip, query } = nextProps;
     if (!trip || !trip.objectId) return;
@@ -105,10 +108,10 @@ export default class TripSummary extends Component {
       if (this.state.tripDirty) this.setState({ tripDirty: false });
       return;
     }
-    const startDateLHS = getISODateString(query.startDate);
-    const startDateRHS = getISODateString(trip.beginDate || '');
-    const endDateLHS = getISODateString(query.endDate);
-    const endDateRHS = getISODateString(trip.endDate || '');
+    const startDateLHS = this.formatDateForCompare(query.startDate);
+    const startDateRHS = this.formatDateForCompare(trip.beginDate || '');
+    const endDateLHS = this.formatDateForCompare(query.endDate);
+    const endDateRHS = this.formatDateForCompare(trip.endDate || '');
     const isStartDateDirty = startDateLHS !== startDateRHS;
     const isEndDateDirty = endDateLHS !== endDateRHS;
     const isPeopleCountDirty = parseInt(query.person.value, 10) !== trip.numberOfPerson;
