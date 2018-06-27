@@ -33,8 +33,8 @@ class AccountSettingsScene extends Component {
   constructor(props){
     super(props);
     this.state = {
-      metamaskEthBalance: 0,
-      ledgerEthBalance: 0,
+      metamaskEthBalance: undefined,
+      ledgerEthBalance: undefined,
       metamaskFaucetTransaction: undefined,
       ledgerFaucetTransaction: undefined,
       metamaskFaucetRequested: false,
@@ -144,8 +144,11 @@ class AccountSettingsScene extends Component {
               <p><a target="_blank" href={'https://ropsten.etherscan.io/address/' + this.props.user_profile.metamaskPublicAddress}>{this.props.user_profile.metamaskPublicAddress}</a></p>
               <h4>Metamask ETH Balance</h4>
               <InlineSpan>
-                <p>{this.state.metamaskEthBalance} ETH</p>&nbsp;&nbsp;
-                <HeightenedButton disabled={this.state.metamaskFaucetRequested} onClick={() => this.requestFaucetEther(this.props.user_profile.metamaskPublicAddress, 'metamask')}>Request Ether</HeightenedButton>
+                <p>{this.state.metamaskEthBalance || 0} ETH</p>&nbsp;&nbsp;
+                {
+                  this.state.metamaskEthBalance < 1 &&
+                  <HeightenedButton disabled={this.state.metamaskFaucetRequested} onClick={() => this.requestFaucetEther(this.props.user_profile.metamaskPublicAddress, 'metamask')}>Request Ether</HeightenedButton>
+                }
               </InlineSpan>
               {
                 this.state.metamaskFaucetTransaction &&
@@ -164,8 +167,11 @@ class AccountSettingsScene extends Component {
               <p><a target="_blank" href={`https://ropsten.etherscan.io/address/` + this.props.user_profile.ledgerPublicAddress}>{this.props.user_profile.ledgerPublicAddress}</a></p>
               <h4>Ledger ETH Balance</h4>
               <InlineSpan>
-                <p>{this.state.ledgerEthBalance} ETH</p>&nbsp;&nbsp;
-                <HeightenedButton disabled={this.state.ledgerFaucetRequested} onClick={() => this.requestFaucetEther(this.props.user_profile.ledgerPublicAddress, 'ledger')}>Request Ether</HeightenedButton>
+                <p>{this.state.ledgerEthBalance || 0} ETH</p>&nbsp;&nbsp;
+                {
+                  this.state.ledgerEthBalance < 1 &&
+                  <HeightenedButton disabled={this.state.ledgerFaucetRequested} onClick={() => this.requestFaucetEther(this.props.user_profile.ledgerPublicAddress, 'ledger')}>Request Ether</HeightenedButton>
+                }
               </InlineSpan>
               {
                 this.state.ledgerFaucetTransaction &&
