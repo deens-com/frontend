@@ -5,6 +5,7 @@ import Form from 'shared_components/Form';
 import FormControl from 'shared_components/Form/FormControl';
 import ToolbarButton from './ToolbarButton';
 import toolBarPropTypes from './toolbar-proptypes';
+import ResponsiveToolbarWrap from './ResponsiveToolBarWrap';
 
 const GridFormContainer = styled(Form)`
   display: grid;
@@ -26,39 +27,43 @@ function NonOwnerToolBar({
   serviceAvailabilityCheckInProgress,
 }) {
   return (
-    <GridFormContainer>
-      <StartDateDiv>
-        <FormControl
-          onChange={value => {
-            onValueChange('startDate', value);
-          }}
-          value={state.startDate}
-          dayPickerProps={{
-            disabledDays: { before: new Date(), after: state.endDate }, // if it's the owner of the trip then make sure he selects a startDate less than the endDate, else remove validation
-          }}
-          type="date"
-          placeholder="From date"
-          leftIcon="date"
-        />
-      </StartDateDiv>
-      <div>
-        <FormControl
-          onChange={value => {
-            onValueChange('person', value);
-          }}
-          value={state.person}
-          type="person"
-          placeholder="2"
-          leftIcon="person"
-        />
-      </div>
-      <ToolbarButton
-        showSaveButton={false}
-        showTripUpdated={showTripUpdated}
-        onCheckAvailibilityClick={onCheckAvailabilityClick}
-        serviceAvailabilityCheckInProgress={serviceAvailabilityCheckInProgress}
-      />
-    </GridFormContainer>
+    <ResponsiveToolbarWrap>
+      {({ isMobile }) => (
+        <GridFormContainer>
+          <StartDateDiv>
+            <FormControl
+              onChange={value => {
+                onValueChange('startDate', value);
+              }}
+              value={state.startDate}
+              dayPickerProps={{
+                disabledDays: { before: new Date(), after: state.endDate }, // if it's the owner of the trip then make sure he selects a startDate less than the endDate, else remove validation
+              }}
+              type="date"
+              placeholder="From date"
+              leftIcon="date"
+            />
+          </StartDateDiv>
+          <div>
+            <FormControl
+              onChange={value => {
+                onValueChange('person', value);
+              }}
+              value={state.person}
+              type="person"
+              placeholder="2"
+              leftIcon="person"
+            />
+          </div>
+          <ToolbarButton
+            showSaveButton={false}
+            showTripUpdated={showTripUpdated}
+            onCheckAvailibilityClick={onCheckAvailabilityClick}
+            serviceAvailabilityCheckInProgress={serviceAvailabilityCheckInProgress}
+          />
+        </GridFormContainer>
+      )}
+    </ResponsiveToolbarWrap>
   );
 }
 
