@@ -95,6 +95,9 @@ export default class DesktopDropDownMenu extends Component {
     const dpUrl = (this.state.current_user.profilePicture && this.state.current_user.profilePicture.url) || ImgurAvatar;
     return(
       <Wrap>
+        <Button type="link" theme="mainFilled" round size="small" href="/services/new">
+          Add a Service
+        </Button>
         <AvatarWrapper>
           <Image src={dpUrl} circular onClick={() => this.navigate_to("/account/profile")} />
         </AvatarWrapper>
