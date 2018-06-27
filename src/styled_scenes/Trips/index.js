@@ -10,7 +10,6 @@ import Parse from 'parse';
 import { Divider } from 'semantic-ui-react';
 
 // COMPONENTS
-import BrandFooter from '../../shared_components/BrandFooter';
 import TopBar from './../../shared_components/TopBarWithSearch';
 import Results from './components/Results';
 import ToolBar from './components/ToolBar';
@@ -338,7 +337,6 @@ export default class TripsScene extends Component {
             </TripWrapper>
           </Wrap>
         </PageContent>
-        <BrandFooter withTopBorder withPadding />
       </Page>
     );
   }
