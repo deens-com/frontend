@@ -7,7 +7,6 @@ import { media } from 'libs/styled';
 import toolbarProptypes from './toolbar-proptypes';
 
 const Wrap = styled.div`
-  border-bottom: 1px solid #eef1f4;
   padding: 10px;
   // height: 65px;
   display: flex;

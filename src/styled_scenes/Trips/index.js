@@ -7,6 +7,7 @@ import GoogleMapReact from 'google-map-react';
 import { fitBounds } from 'google-map-react/utils';
 import moment from 'moment';
 import Parse from 'parse';
+import { Divider } from 'semantic-ui-react';
 
 // COMPONENTS
 import BrandFooter from '../../shared_components/BrandFooter';
@@ -316,6 +317,7 @@ export default class TripsScene extends Component {
                 isOwner={this.state.isOwner}
                 serviceAvailabilityCheckInProgress={this.props.serviceAvailabilityCheckInProgress}
               />
+              <Divider horizontal>Trip itinerary</Divider>
               <Results
                 trip={this.props.trip}
                 showDetails={this.state.details}
