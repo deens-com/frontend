@@ -1,8 +1,27 @@
 import React, { Component } from 'react';
-import { Button } from 'semantic-ui-react';
 import Media from 'react-media';
+import styled from 'styled-components';
 
 import { sizes } from 'libs/styled';
+import Button from 'shared_components/Button';
+import { FilterIcon } from 'shared_components/icons';
+
+const WrapTrigger = styled.div`
+  button {
+    padding: 12px 10px;
+    & > span {
+      display: flex;
+      align-items: center;
+    }
+    svg {
+      font-size: 20px;
+    }
+  }
+  svg {
+    display: inline-block !important;
+    margin-right: 15px;
+  }
+`;
 
 export default class ResponsiveToolBarWrap extends Component {
   state = {
@@ -20,7 +39,12 @@ export default class ResponsiveToolBarWrap extends Component {
         {matches =>
           matches ? (
             <div>
-              <Button onClick={this.toggleFilters}>{showFilters ? 'Hide' : 'Show'} Filters</Button>
+              <WrapTrigger>
+                <Button size="medium" type="button" onClick={this.toggleFilters} theme="textGreen">
+                  <FilterIcon />
+                  {showFilters ? 'Hide' : 'Show'} Filters
+                </Button>
+              </WrapTrigger>
               {showFilters ? this.props.children({ isMobile: true }) : null}
             </div>
           ) : (
