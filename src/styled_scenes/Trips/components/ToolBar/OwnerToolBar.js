@@ -45,7 +45,14 @@ function OwnerToolBar({
   return (
     <GridFormContainer display="grid" onSubmit={onSubmit}>
       <TitleDiv>
-        <FormControl type="text" placeholder="Name of the Trip" value={trip.title} />
+        <FormControl
+          type="text"
+          placeholder="Name of the Trip"
+          onChange={value => {
+            onValueChange('title', value);
+          }}
+          value={state.title}
+        />
       </TitleDiv>
       <LocationDiv>
         <LocationControl

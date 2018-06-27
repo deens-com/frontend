@@ -127,6 +127,7 @@ export default class TripsScene extends Component {
     const { query } = this.props;
     this.props.updateTripDetails(
       {
+        title: query.title,
         beginDate: query.startDate,
         endDate: query.endDate,
         numberOfPerson: query.person.value,
