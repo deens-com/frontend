@@ -75,11 +75,7 @@ export default class TripSummary extends Component {
   };
 
   componentDidMount() {
-    if (Parse.User.current() === null) {
-      this.setState({ logged_in: false });
-    } else {
-      this.setState({ logged_in: true });
-    }
+    this.setState({ tripDirty: false, logged_in: !!Parse.User.current() });
   }
 
   calculateTripTotalPrice() {
@@ -135,13 +131,13 @@ export default class TripSummary extends Component {
             {this.state.tripDirty && isDatesFormComplete && <ErrorMsg>Save the trip before booking</ErrorMsg>}
           </PricesWrap>
           <BookButton
-          size="small"
-          circular
-          onClick={this.onBookClickWithDates}
-          loading={this.props.isCloningInProcess}
-          disabled={this.state.tripDirty || !isDatesFormComplete}
+            size="small"
+            circular
+            onClick={this.onBookClickWithDates}
+            loading={this.props.isCloningInProcess}
+            disabled={this.state.tripDirty || !isDatesFormComplete}
           >
-          Book now
+            Book now
           </BookButton>
           {/*!this.state.logged_in && (
             <TotalHint>
