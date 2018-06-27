@@ -105,8 +105,12 @@ export default class TripSummary extends Component {
       if (this.state.tripDirty) this.setState({ tripDirty: false });
       return;
     }
-    const isStartDateDirty = getISODateString(query.startDate) !== getISODateString(trip.beginDate || '');
-    const isEndDateDirty = getISODateString(query.endDate) !== getISODateString(trip.endDate || '');
+    const startDateLHS = getISODateString(query.startDate);
+    const startDateRHS = getISODateString(trip.beginDate || '');
+    const endDateLHS = getISODateString(query.endDate);
+    const endDateRHS = getISODateString(trip.endDate || '');
+    const isStartDateDirty = startDateLHS !== startDateRHS;
+    const isEndDateDirty = endDateLHS !== endDateRHS;
     const isPeopleCountDirty = parseInt(query.person.value, 10) !== trip.numberOfPerson;
     const isTripDirty = isStartDateDirty || isEndDateDirty || isPeopleCountDirty;
     if (this.state.tripDirty !== isTripDirty) {
