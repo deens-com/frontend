@@ -1,10 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import Form from 'shared_components/Form';
 import FormControl from 'shared_components/Form/FormControl';
 import ToolbarButton from './ToolbarButton';
+import toolBarPropTypes from './toolbar-proptypes';
 
 const GridFormContainer = styled(Form)`
   display: grid;
@@ -20,8 +20,6 @@ const StartDateDiv = styled.div`
 
 function NonOwnerToolBar({
   state,
-  trip,
-  onSubmit,
   onValueChange,
   showTripUpdated,
   onCheckAvailabilityClick,
@@ -64,12 +62,6 @@ function NonOwnerToolBar({
   );
 }
 
-NonOwnerToolBar.propTypes = {
-  trip: PropTypes.object,
-  showTripUpdated: PropTypes.bool,
-  onCheckAvailabilityClick: PropTypes.func.isRequired,
-  serviceAvailabilityCheckInProgress: PropTypes.bool.isRequired,
-  isOwner: PropTypes.bool.isRequired,
-};
+NonOwnerToolBar.propTypes = toolBarPropTypes;
 
 export default NonOwnerToolBar;

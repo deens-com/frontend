@@ -1,10 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import OwnerToolBar from './OwnerToolBar';
 import NonOwnerToolBar from './NonOwnerToolBar';
 import { media } from 'libs/styled';
+import toolbarProptypes from './toolbar-proptypes';
 
 const Wrap = styled.div`
   border-bottom: 1px solid #eef1f4;
@@ -39,5 +39,7 @@ const Wrap = styled.div`
 function ToolBar(props) {
   return <Wrap>{props.isOwner ? <OwnerToolBar {...props} /> : <NonOwnerToolBar {...props} />}</Wrap>;
 }
+
+ToolBar.propTypes = toolbarProptypes;
 
 export default ToolBar;
