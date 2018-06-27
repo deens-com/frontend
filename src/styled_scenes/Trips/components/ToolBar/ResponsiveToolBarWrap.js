@@ -23,6 +23,10 @@ const WrapTrigger = styled.div`
   }
 `;
 
+const FullSizeDiv = styled.div`
+  width: 100%;
+`;
+
 export default class ResponsiveToolBarWrap extends Component {
   state = {
     showFilters: false,
@@ -38,7 +42,7 @@ export default class ResponsiveToolBarWrap extends Component {
       <Media query={`(max-width: ${sizes.small})`}>
         {matches =>
           matches ? (
-            <div>
+            <FullSizeDiv>
               <WrapTrigger>
                 <Button size="medium" type="button" onClick={this.toggleFilters} theme="textGreen">
                   <FilterIcon />
@@ -46,7 +50,7 @@ export default class ResponsiveToolBarWrap extends Component {
                 </Button>
               </WrapTrigger>
               {showFilters ? this.props.children({ isMobile: true }) : null}
-            </div>
+            </FullSizeDiv>
           ) : (
             this.props.children({ isMobile: false })
           )

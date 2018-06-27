@@ -11,16 +11,17 @@ import ResponsiveToolbarWrap from './ResponsiveToolBarWrap';
 
 const GridFormContainer = styled(Form)`
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: ${({ isMobile }) => (isMobile ? '1fr' : '2fr 1fr 1fr 1fr 1fr')};
+  grid-row-gap: 15px;
+  grid-column-gap: ${({ isMobile }) => (isMobile ? '0' : '15px')};
   width: 100%;
-  grid-row-gap: 20px;
 `;
 
 const TitleDiv = styled.div`
-  grid-column: span 2;
+  grid-column: span ${({ isMobile }) => (isMobile ? '1' : '2')};
 `;
 const LocationDiv = styled.div`
-  grid-column: span 3;
+  grid-column: span ${({ isMobile }) => (isMobile ? '1' : '3')};
 `;
 const StartDateDiv = styled.div`
   & > div {
@@ -28,7 +29,7 @@ const StartDateDiv = styled.div`
   }
 `;
 const EndDateDiv = styled.div`
-  grid-column: span 2;
+  grid-column: span ${({ isMobile }) => (isMobile ? '1' : '2')};
   & > div {
     height: 100%;
   }
@@ -46,8 +47,8 @@ function OwnerToolBar({
   return (
     <ResponsiveToolbarWrap>
       {({ isMobile }) => (
-        <GridFormContainer display="grid" onSubmit={onSubmit}>
-          <TitleDiv>
+        <GridFormContainer display="grid" onSubmit={onSubmit} isMobile={isMobile}>
+          <TitleDiv isMobile={isMobile}>
             <FormControl
               type="text"
               placeholder="Name of the Trip"
@@ -57,7 +58,7 @@ function OwnerToolBar({
               value={state.title}
             />
           </TitleDiv>
-          <LocationDiv>
+          <LocationDiv isMobile={isMobile}>
             <LocationControl
               formatted_address={state.formattedAddress}
               onSelect={(address, placeId) => {
@@ -69,7 +70,7 @@ function OwnerToolBar({
               }}
             />
           </LocationDiv>
-          <StartDateDiv>
+          <StartDateDiv isMobile={isMobile}>
             <FormControl
               onChange={value => {
                 onValueChange('startDate', value);
@@ -83,7 +84,7 @@ function OwnerToolBar({
               leftIcon="date"
             />
           </StartDateDiv>
-          <EndDateDiv>
+          <EndDateDiv isMobile={isMobile}>
             <FormControl
               onChange={value => {
                 onValueChange('endDate', value);

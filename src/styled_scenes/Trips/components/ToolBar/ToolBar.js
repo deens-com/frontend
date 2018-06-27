@@ -16,7 +16,7 @@ const Wrap = styled.div`
   z-index: 18;
   box-shadow: 0 8px 25px 0 rgba(141, 141, 141, 0.22);
 
-  ${media.minSmall} {
+  ${media.mobileMinSmall} {
     height: 70px;
   }
 
@@ -28,11 +28,6 @@ const Wrap = styled.div`
     width: auto;
     z-index: 0;
     box-shadow: none;
-  }
-
-  > div,
-  > form > div {
-    margin-right: 15px;
   }
 `;
 

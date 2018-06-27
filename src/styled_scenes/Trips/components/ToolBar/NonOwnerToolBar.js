@@ -9,7 +9,9 @@ import ResponsiveToolbarWrap from './ResponsiveToolBarWrap';
 
 const GridFormContainer = styled(Form)`
   display: grid;
-  grid-template-columns: 4fr 1fr 1fr;
+  grid-template-columns: ${({ isMobile }) => (isMobile ? '1fr' : '4fr 1fr 1fr')};
+  grid-row-gap: ${({ isMobile }) => (isMobile ? '15px' : '0')};
+  grid-column-gap: ${({ isMobile }) => (isMobile ? '0' : '15px')};
   width: 100%;
 `;
 
@@ -29,7 +31,7 @@ function NonOwnerToolBar({
   return (
     <ResponsiveToolbarWrap>
       {({ isMobile }) => (
-        <GridFormContainer>
+        <GridFormContainer isMobile={isMobile}>
           <StartDateDiv>
             <FormControl
               onChange={value => {
