@@ -32,7 +32,10 @@ export const fetchTrip = tripId => async (dispatch, getState) => {
   const Trip = Parse.Object.extend('Trip');
   try {
     const [tripRaw, tripOrganizationsRaw] = await Promise.all([
-      fetch_helpers.build_query('Trip').include('owner').get(tripId),
+      fetch_helpers
+        .build_query('Trip')
+        .include('owner')
+        .get(tripId),
       fetch_helpers
         .build_query('TripOrganization')
         .equalTo('trip', new Trip({ id: tripId }))
@@ -54,7 +57,11 @@ export const fetchTrip = tripId => async (dispatch, getState) => {
     dispatch(trip_fetched({ trip, tripOrganizations: tripOrganizationMappings, services }));
     const peopleCount = tripRaw.get('numberOfPerson');
     const formattedAddress = tripRaw.get('formattedAddress');
-    updateTripQuery({ person: { label: peopleCount, value: peopleCount }, formattedAddress })(dispatch, getState);
+    const title = tripRaw.get('title');
+    updateTripQuery({ person: { label: peopleCount, value: peopleCount }, formattedAddress, title })(
+      dispatch,
+      getState
+    );
     checkAvailability(tripRaw.get('beginDate'), peopleCount)(dispatch, getState);
   } catch (error) {
     console.error(error);
