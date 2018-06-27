@@ -1,5 +1,5 @@
 // NPM
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Label as SemanticLabel, Icon } from 'semantic-ui-react';
@@ -84,22 +84,33 @@ const RelativeCard = styled(Cart)`
   position: relative;
 `;
 
-const stopEventPropogation = e => e.stopPropagation();
+const ImageGridContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 120px;
+`;
+
+const ImageItem = styled.div`
+  grid-row-start: 1;
+  grid-column-start: 1;
+  grid-column-end: span 2;
+`;
+
+const ContractStatusItem = styled.div`
+  grid-column-start: 2;
+  grid-row-start: 1;
+  z-index: 1;
+`;
 
 const wrapInRopstenLink = (text, reservation) => (
-  <a
-    href={`https://ropsten.etherscan.io/tx/${reservation.transactionHash}`}
-    target="_blank"
-    onClick={stopEventPropogation}
-  >
+  <a href={`https://ropsten.etherscan.io/tx/${reservation.transactionHash}`} target="_blank">
     {text}
   </a>
 );
 
-const getSmartContractBookingStatus = (props) => {
+const getSmartContractBookingStatus = props => {
   if (!props.item.reservation) return null;
   const { transactionHash, transactionStatus } = props.item.reservation;
-  const values = {pricePerSession: props.item.pricePerSession, slots: props.item.slots};
+  const values = { pricePerSession: props.item.pricePerSession, slots: props.item.slots };
   if (transactionHash != null) {
     if (transactionStatus === 1) {
       return wrapInRopstenLink(
@@ -112,16 +123,16 @@ const getSmartContractBookingStatus = (props) => {
     if (transactionStatus === 0) {
       return (
         <div>
-          <a
-            href={`https://ropsten.etherscan.io/tx/${props.item.reservation.transactionHash}`}
-            target="_blank"
-            onClick={stopEventPropogation}
-          >
+          {wrapInRopstenLink(
             <SemanticLabelFixed color="red">
               Failed <Icon name="external" />
             </SemanticLabelFixed>
-          </a>
-          <SemanticLabelFixed style={{top: "40px"}} onClick={() => props.redeployContract(values, props.item, props.history)} color="green">
+          )}
+          <SemanticLabelFixed
+            style={{ top: '40px' }}
+            onClick={() => props.redeployContract(values, props.item, props.history)}
+            color="green"
+          >
             Re-deploy
           </SemanticLabelFixed>
         </div>
@@ -137,47 +148,49 @@ const getSmartContractBookingStatus = (props) => {
     }
   }
   return <SemanticLabelFixed color="green">Confirmed</SemanticLabelFixed>;
-}
-
-const cart = (props) => {
-  return (
-    <RelativeCard withShadow={props.withShadow} column>
-      {getSmartContractBookingStatus(props) && getSmartContractBookingStatus(props)}
-      <Thumb url={props.item.image} />
-      <ContentWrap>
-        <Title>
-          <p>{props.item.title}</p>
-        </Title>
-        <Excerpt>{props.item.excerpt}</Excerpt>
-
-        {props.item.type && (
-          <Location>
-            <PinIcon />
-            {props.item.location}
-          </Location>
-        )}
-        <Rating marginBottom="25px" rating={props.item.rating} count={props.item.reviewCount} />
-        <Label>Starting from</Label>
-        <PriceTag price={props.item.price} />
-      </ContentWrap>
-    </RelativeCard>
-  )
 };
 
 // MODULE
 class ServiceLocationCard extends Component {
-  render(){
+  wrapWithLink = element => {
+    const { item } = this.props;
+    return <Link to={`/services/${item.objectId}`}>{element}</Link>;
+  };
+
+  render() {
+    const { item, withShadow, mdBasis, smBasis, xsBasis } = this.props;
     return (
-      <Col xsBasis={this.props.xsBasis} mdBasis={this.props.mdBasis} smBasis={this.props.smBasis}>
-        <div>
-          {this.props.href && <Link to={this.props.href}>{cart(this.props)}</Link>}
-          {!this.props.href && cart(this.props)}
-        </div>
+      <Col xsBasis={xsBasis} mdBasis={smBasis} smBasis={mdBasis}>
+        <RelativeCard withShadow={withShadow} column>
+          <ImageGridContainer>
+            <ImageItem>{this.wrapWithLink(<Thumb url={item.image} />)}</ImageItem>
+            <ContractStatusItem>{getSmartContractBookingStatus(this.props)}</ContractStatusItem>
+          </ImageGridContainer>
+          <ContentWrap>
+            {this.wrapWithLink(
+              <div>
+                <Title>
+                  <p>{item.title}</p>
+                </Title>
+                <Excerpt>{item.excerpt}</Excerpt>
+
+                {item.type && (
+                  <Location>
+                    <PinIcon />
+                    {item.location}
+                  </Location>
+                )}
+                <Rating marginBottom="25px" rating={item.rating} count={item.reviewCount} />
+                <Label>Starting from</Label>
+                <PriceTag price={item.price} />
+              </div>
+            )}
+          </ContentWrap>
+        </RelativeCard>
       </Col>
     );
   }
 }
-
 
 const mapStateToProps = state => ({});
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
