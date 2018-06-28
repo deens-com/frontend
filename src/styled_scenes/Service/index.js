@@ -14,18 +14,16 @@ import { BadgeIcon } from './icons';
 import TripCart from '../../shared_components/Carts/Location';
 import Review from '../../shared_components/Review';
 import Carousel from '../../shared_components/Carousel';
-//import Button from '../../shared_components/Button';
 import ImgSlider from './components/ImgSlider';
 import MapMaker from '../../shared_components/MapMarker';
 import AddToTripButton from './components/AddToTripButton';
-import FormControl from './../../shared_components/Form/FormControl';
 
 // ACTIONS/CONFIG
 import { media, sizes } from '../../libs/styled';
 
 // STYLES
 import { Page, PageContent } from '../../shared_components/layout/Page';
-import { Icon, Modal } from 'semantic-ui-react';
+import { Icon, Button } from 'semantic-ui-react';
 import SmartContractDetails from './components/SmartContractDetails';
 import ServiceTags from './components/ServiceTags';
 import ServiceInformation from './components/ServiceInformation';
@@ -340,81 +338,12 @@ class FoodDetailScene extends Component {
                 </span>
               ) : null}
             </DataWrap>
+            <Media
+              query={`(max-width: ${sizes.large})`}
+              render={() => <ImgSlider images={this.props.service.pictures} />}
+            />
             <ActionWrap>
-              {/*<DetailPickers />*/}
-              <Wrap>
-                <FormControl
-                  onChange={value => {
-                    console.log(value);
-                  }}
-                  value={this.state.date}
-                  type="date"
-                  placeholder="Pick the date"
-                  leftIcon="date"
-                />
-                {/*<FormControl
-                  onChange={value => {
-                    console.log(value);
-                  }}
-                  value={this.state.time}
-                  type="time"
-                  placeholder="Pick the time"
-                  leftIcon="date"
-                />*/}
-                {/*<FormControl
-                  onChange={this.handleInputChange}
-                  value={this.state.person}
-                  type="person"
-                  name="person"
-                  placeholder="Person"
-                  leftIcon="person"
-                />*/}
-
-                <select
-                  style={{ backgroundColor: 'white', borderColor: '#eef1f4' }}
-                  name="personNb"
-                  value={this.state.personNb}
-                  onChange={this.handleInputChange}
-                >
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                  <option value="6">6</option>
-                  <option value="7">7</option>
-                  <option value="8">8</option>
-                  <option value="9">9</option>
-                  <option value="10">10</option>
-                </select>
-
-                <Modal
-                  closeIcon
-                  open={this.props.isServiceUnavailableModalOpen}
-                  onClose={this.closeServiceUnavailabilityModal}
-                >
-                  <Modal.Header>We're Sorry</Modal.Header>
-                  <Modal.Content>
-                    <Modal.Description>
-                      {/*<Header>Default Profile Image</Header>*/}
-                      <p>Service Is unavailable for selected slots</p>
-                    </Modal.Description>
-                  </Modal.Content>
-                </Modal>
-              </Wrap>
-
               <ButtonsWrap>
-                {/*<Button
-                  type="button"
-                  round
-                  size="small"
-                  onClick={ev => {
-                    this.checkServiceAvailability(this.props.service.objectId);
-                  }}
-                  iconAfter="arrow"
-                  text="Book now"
-                  theme="textGreen"
-                />*/}
                 <AddToTripButton
                   myUnpurchasedTrips={this.props.myUnpurchasedTrips}
                   onTripClick={this.props.onAddServiceToTrip}
@@ -432,11 +361,11 @@ class FoodDetailScene extends Component {
                   Already added to <b>{this.props.serviceAlreadyAddedToTrip.title}</b>
                 </WarningMessage>
               )}
+              <Button icon labelPosition="right" color="blue">
+                Book Now
+                <Icon name="shop" />
+              </Button>
             </ActionWrap>
-            <Media
-              query={`(max-width: ${sizes.large})`}
-              render={() => <ImgSlider images={this.props.service.pictures} />}
-            />
             <ContactWrap>
               <MapWrap>
                 <GoogleMapReact

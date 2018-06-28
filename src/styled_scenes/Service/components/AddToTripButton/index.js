@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Popup } from 'semantic-ui-react';
+import { Icon, Popup } from 'semantic-ui-react';
 
-import Button from '../../../../shared_components/Button';
 import TripsListInDropDown from './TripsListInDropDown';
+import CustomColorSemanticButton from 'shared_components/CustomColorSemanticButton';
 
 export default class AddToTripButton extends React.Component {
   static propTypes = {
@@ -37,15 +37,10 @@ export default class AddToTripButton extends React.Component {
   render() {
     const { props } = this;
     const addToTripButton = (
-      <Button
-        type="button"
-        round
-        size="small"
-        iconAfter="arrowDown"
-        theme="mainFilled"
-        text="Add to trip"
-        width="auto"
-      />
+      <CustomColorSemanticButton icon labelPosition="right" bgColor="rgb(95, 183, 158)" whiteText>
+        Add to trip
+        <Icon name="angle down" />
+      </CustomColorSemanticButton>
     );
     const listComponent = (
       <TripsListInDropDown
