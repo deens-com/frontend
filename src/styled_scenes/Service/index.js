@@ -16,17 +16,16 @@ import Review from '../../shared_components/Review';
 import Carousel from '../../shared_components/Carousel';
 import ImgSlider from './components/ImgSlider';
 import MapMaker from '../../shared_components/MapMarker';
-import AddToTripButton from './components/AddToTripButton';
 
 // ACTIONS/CONFIG
 import { media, sizes } from '../../libs/styled';
 
 // STYLES
 import { Page, PageContent } from '../../shared_components/layout/Page';
-import { Icon, Button } from 'semantic-ui-react';
 import SmartContractDetails from './components/SmartContractDetails';
 import ServiceTags from './components/ServiceTags';
 import ServiceInformation from './components/ServiceInformation';
+import ServiceActionButtons from './components/ServiceActionButtons';
 
 const DetailWrapper = styled.div`
   width: 100%;
@@ -133,24 +132,6 @@ const Contacts = styled.div`
   }
 `;
 
-const ButtonsWrap = styled.div`
-  display: flex;
-  margin-right: 25px;
-
-  & div:first-child {
-    order: 1;
-  }
-
-  ${media.minLarge} {
-    flex-direction: column;
-
-    & div:first-child {
-      order: 0;
-      margin-bottom: 10px;
-    }
-  }
-`;
-
 const TripsWrap = styled.div`
   margin-bottom: 50px;
 
@@ -161,102 +142,6 @@ const TripsWrap = styled.div`
 
   .slick-track {
     margin: 0;
-  }
-`;
-
-const ActionWrap = styled.div`
-  margin-bottom: 50px;
-
-  ${media.minMedium} {
-    display: flex;
-    align-items: center;
-    margin-bottom: 35px;
-  }
-
-  ${media.minLarge} {
-    flex-direction: column;
-    align-items: left;
-    justify-content: center;
-  }
-
-  ${media.minLargePlus} {
-    flex-direction: row;
-    align-items: center;
-    justify-content: left;
-  }
-`;
-
-const SuccessMessage = styled(Link)`
-  color: #5fb79e;
-  align-self: flex-end;
-  margin-top: 25px;
-
-  :hover {
-    color: #4ac4a1;
-  }
-`;
-
-const WarningMessage = styled(Link)`
-  color: #f57c00;
-  align-self: flex-end;
-  margin-top: 25px;
-
-  :hover {
-    color: #ff9800;
-  }
-`;
-
-const Wrap = styled.div`
-  background: white;
-  box-shadow: 0 8px 25px 0 rgba(141, 141, 141, 0.22);
-  padding: 10px;
-  margin-bottom: 50px;
-
-  ${media.minSmall} {
-    display: flex;
-  }
-
-  ${media.minMedium} {
-    margin-bottom: 0;
-    margin-right: 25px;
-  }
-
-  ${media.minLarge} {
-    margin-bottom: 25px;
-  }
-
-  ${media.minLargePlus} {
-    margin-bottom: 0;
-  }
-
-  & > div {
-    border: none;
-    flex: 1;
-    min-width: 143px;
-    display: flex;
-    align-items: center;
-
-    & > div {
-      width: 100%;
-    }
-
-    ${media.minMedium} {
-      &:after {
-        content: '';
-        width: 1px;
-        height: 60%;
-        background: #eef1f4;
-        position: absolute;
-        right: 10px;
-        top: 20%;
-      }
-
-      &:last-child {
-        &:after {
-          display: none;
-        }
-      }
-    }
   }
 `;
 
@@ -342,30 +227,13 @@ class FoodDetailScene extends Component {
               query={`(max-width: ${sizes.large})`}
               render={() => <ImgSlider images={this.props.service.pictures} />}
             />
-            <ActionWrap>
-              <ButtonsWrap>
-                <AddToTripButton
-                  myUnpurchasedTrips={this.props.myUnpurchasedTrips}
-                  onTripClick={this.props.onAddServiceToTrip}
-                  onNewTripClick={this.props.onAddServiceToNewTrip}
-                />
-              </ButtonsWrap>
-              {this.props.serviceRecentlyAddedToTrip && (
-                <SuccessMessage to={`/trips/${this.props.serviceRecentlyAddedToTrip.objectId}`}>
-                  Added to <b>{this.props.serviceRecentlyAddedToTrip.title}</b>
-                  <Icon name="check circle outline" />
-                </SuccessMessage>
-              )}
-              {this.props.serviceAlreadyAddedToTrip && (
-                <WarningMessage to={`/trips/${this.props.serviceAlreadyAddedToTrip.objectId}`}>
-                  Already added to <b>{this.props.serviceAlreadyAddedToTrip.title}</b>
-                </WarningMessage>
-              )}
-              <Button icon labelPosition="right" color="blue">
-                Book Now
-                <Icon name="shop" />
-              </Button>
-            </ActionWrap>
+            <ServiceActionButtons
+              myUnpurchasedTrips={this.props.myUnpurchasedTrips}
+              onAddServiceToTrip={this.props.onAddServiceToTrip}
+              onAddServiceToNewTrip={this.props.onAddServiceToNewTrip}
+              serviceRecentlyAddedToTrip={this.props.serviceRecentlyAddedToTrip}
+              serviceAlreadyAddedToTrip={this.props.serviceAlreadyAddedToTrip}
+            />
             <ContactWrap>
               <MapWrap>
                 <GoogleMapReact
@@ -414,6 +282,7 @@ class FoodDetailScene extends Component {
 FoodDetailScene.propTypes = {
   myUnpurchasedTrips: PropTypes.array,
   onAddServiceToTrip: PropTypes.func.isRequired,
+  onAddServiceToNewTrip: PropTypes.func.isRequired,
   serviceRecentlyAddedToTrip: PropTypes.object,
   serviceAlreadyAddedToTrip: PropTypes.object,
 };
