@@ -38,7 +38,7 @@ class TripsContainer extends Component {
   };
 
   updateTripDetails = (newDetails, showSaved) => {
-    if (newDetails.status !== this.props.trip.status) {
+    if (newDetails.status && newDetails.status !== this.props.trip.status) {
       this.props.setShowTripStatusChanged(true);
     }
     this.props.updateTrip(newDetails, showSaved);
