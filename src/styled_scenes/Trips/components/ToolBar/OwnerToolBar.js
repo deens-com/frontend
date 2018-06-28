@@ -40,7 +40,6 @@ function OwnerToolBar({
   trip,
   onSubmit,
   onValueChange,
-  showTripUpdated,
   onCheckAvailabilityClick,
   serviceAvailabilityCheckInProgress,
 }) {
@@ -114,7 +113,6 @@ function OwnerToolBar({
           </div>
           <ToolbarButton
             showSaveButton={true}
-            showTripUpdated={showTripUpdated}
             onCheckAvailibilityClick={onCheckAvailabilityClick}
             serviceAvailabilityCheckInProgress={serviceAvailabilityCheckInProgress}
           />

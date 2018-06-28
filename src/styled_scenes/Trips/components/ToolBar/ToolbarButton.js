@@ -11,7 +11,6 @@ const ToolbarButton = ({ showSaveButton, onCheckAvailibilityClick, serviceAvaila
 
 ToolbarButton.propTypes = {
   showSaveButton: PropTypes.bool,
-  showTripUpdated: PropTypes.bool,
   onCheckAvailibilityClick: PropTypes.func.isRequired,
   serviceAvailabilityCheckInProgress: PropTypes.bool.isRequired,
 };

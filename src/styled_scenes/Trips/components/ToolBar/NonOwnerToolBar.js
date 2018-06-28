@@ -24,7 +24,6 @@ const StartDateDiv = styled.div`
 function NonOwnerToolBar({
   state,
   onValueChange,
-  showTripUpdated,
   onCheckAvailabilityClick,
   serviceAvailabilityCheckInProgress,
 }) {
@@ -59,7 +58,6 @@ function NonOwnerToolBar({
           </div>
           <ToolbarButton
             showSaveButton={false}
-            showTripUpdated={showTripUpdated}
             onCheckAvailibilityClick={onCheckAvailabilityClick}
             serviceAvailabilityCheckInProgress={serviceAvailabilityCheckInProgress}
           />

@@ -311,7 +311,6 @@ export default class TripsScene extends Component {
                 onValueChange={this.onValueChange}
                 state={query}
                 trip={this.props.trip}
-                showTripUpdated={this.props.showTripUpdated}
                 onCheckAvailabilityClick={this.checkAvailability}
                 isOwner={this.state.isOwner}
                 serviceAvailabilityCheckInProgress={this.props.serviceAvailabilityCheckInProgress}

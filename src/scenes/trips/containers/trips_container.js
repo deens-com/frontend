@@ -17,7 +17,6 @@ class TripsContainer extends Component {
   componentDidMount() {
     const trip_id = this.props.match.params.id;
     this.props.fetchTrip(trip_id);
-    this.props.setShowTripUpdated(false);
     this.setState({ isLoggedIn: Parse.User.current() != null });
     this.props.setShowTripStatusChanged(false);
   }
@@ -81,7 +80,6 @@ const mapStateToProps = state => {
     tripError: state.TripsReducer.tripError,
     scheduledServices: selectors.getScheduledServices(state),
     unScheduledServices: selectors.getUnScheduledServices(state),
-    showTripUpdated: state.TripsReducer.showTripUpdated,
     isCloningInProcess: state.TripsReducer.cloningStatus === statuses.STARTED,
     query: state.TripsReducer.query,
     serviceAvailabilityCheckInProgress: state.TripsReducer.serviceAvailabilityCheckStatus === statuses.STARTED,

@@ -18,8 +18,6 @@ export const removeService = tripOrganizationId => ({
   payload: tripOrganizationId,
 });
 
-export const tripUpdated = value => ({ type: 'TRIP_UPDATED', payload: value });
-
 export const serviceAvailabilitiesStart = () => ({ type: 'SERVICE_AVAILIBILITIES_START' });
 export const serviceAvailabilitiesSuccess = obj => ({ type: 'SERVICE_AVAILIBILITIES_SUCCESS', payload: obj });
 export const setTripCloningStatus = status => ({ type: 'CLONING_STATUS', payload: status });
@@ -98,10 +96,6 @@ export const updateTrip = (newDetails, showSaved) => async (dispatch, getState) 
   const state = getState();
   const tripId = state.TripsReducer.trip.objectId;
   await Parse.Cloud.run('updateTripDetails', { tripId, ...newDetails });
-  if (showSaved) {
-    dispatch(tripUpdated(true));
-    setTimeout(() => dispatch(tripUpdated(false)), 3000);
-  }
   fetchTrip(tripId)(dispatch, getState);
 };
 
@@ -113,8 +107,6 @@ export const checkAvailability = (beginDate, peopleCount) => async (dispatch, ge
   const result = await Parse.Cloud.run('checkAvailabilityByTrip', { tripId, beginDate, peopleCount });
   dispatch(serviceAvailabilitiesSuccess(result));
 };
-
-export const setShowTripUpdated = value => dispatch => dispatch(tripUpdated(value));
 
 export const cloneTrip = (beginDate, peopleCount, history) => async (dispatch, getState) => {
   const state = getState();

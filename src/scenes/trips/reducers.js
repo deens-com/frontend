@@ -5,7 +5,6 @@ import { statuses } from '../../libs/fetch_helpers';
 const initialState = {
   trip: {},
   tripError: null,
-  showTripUpdated: false,
   serviceAvailabilities: {},
   cloningStatus: null,
   preBookingStepResult: null,
@@ -51,12 +50,6 @@ export default function TripsReducer(state = initialState, action = {}) {
       return {
         ...state,
         tripOrganizations: removeKey(state.tripOrganizations, tripOrganizationId),
-      };
-    }
-    case 'TRIP_UPDATED': {
-      return {
-        ...state,
-        showTripUpdated: action.payload,
       };
     }
     case 'SERVICE_AVAILIBILITIES_START': {
