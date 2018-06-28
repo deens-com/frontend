@@ -29,10 +29,10 @@ import ServiceActionButtons from './components/ServiceActionButtons';
 
 const DetailWrapper = styled.div`
   width: 100%;
-  padding: 25px 15px;
+  padding: 15px 15px 25px 15px;
 
   ${media.minMedium} {
-    padding: 50px 25px 25px 50px;
+    padding: 15px 25px 25px 50px;
   }
 
   ${media.minLarge} {
@@ -187,7 +187,6 @@ class FoodDetailScene extends Component {
             render={() => <ImgSlider images={this.props.service.pictures} />}
           />
           <DetailWrapper>
-            <br />
             <HeaderWrap>
               <h2>{this.props.service.title}</h2>
               <ServiceTags service={this.props.service} />
