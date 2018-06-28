@@ -157,13 +157,14 @@ export default class TripsScene extends Component {
    * If the user viewing this isn't the owner of the trip
    * it shows him tomorrow's date for the trip
    */
-  getBeginDate = trip => {
-    if (!this.state.isOwner) {
+  getBeginDate = ({ trip, isOwner } = {}) => {
+    if (!trip) trip = this.props.trip;
+    if (!isOwner) isOwner = this.state.isOwner;
+    if (trip && !isOwner) {
       return moment()
         .add(1, 'day')
         .toISOString();
     }
-    if (!trip) trip = this.props.trip;
     return trip && trip.beginDate && trip.beginDate.iso;
   };
 
@@ -193,9 +194,13 @@ export default class TripsScene extends Component {
     let beginDate,
       endDate,
       person = query.person;
+    if (!trip) return;
     const isDifferentTrip = (this.props.trip && this.props.trip.objectId) !== (trip && trip.objectId);
+    const tripOwnerId = trip && trip.owner && trip.owner.objectId;
+    const currentUser = Parse.User.current();
+    const isOwner = tripOwnerId === (currentUser && currentUser.id);
     if (!query.startDate || isDifferentTrip) {
-      const isoBeginDate = this.getBeginDate(trip);
+      const isoBeginDate = this.getBeginDate({ trip, isOwner });
       beginDate = isoBeginDate && moment(isoBeginDate).toDate();
     }
     if (!query.endDate || isDifferentTrip) {
@@ -214,9 +219,6 @@ export default class TripsScene extends Component {
       // dispatch update only if there's an update
       updateTripQuery(diff);
     }
-    const tripOwnerId = trip && trip.owner && trip.owner.objectId;
-    const currentUser = Parse.User.current();
-    const isOwner = tripOwnerId === (currentUser && currentUser.id);
 
     const currentMarkers = this.getMarkerLatLngs(this.props);
     const newMarkers = this.getMarkerLatLngs(nextProps);
