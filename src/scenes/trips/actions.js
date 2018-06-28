@@ -1,5 +1,7 @@
 import Parse from 'parse';
+import moment from 'moment';
 import fetch_helpers from './../../libs/fetch_helpers';
+import { getISODateString } from 'libs/Utils';
 
 export const trip_fetched = trip => ({
   type: 'TRIP_FETCHED',
@@ -21,6 +23,11 @@ export const removeService = tripOrganizationId => ({
 export const serviceAvailabilitiesStart = () => ({ type: 'SERVICE_AVAILIBILITIES_START' });
 export const serviceAvailabilitiesSuccess = obj => ({ type: 'SERVICE_AVAILIBILITIES_SUCCESS', payload: obj });
 export const setTripCloningStatus = status => ({ type: 'CLONING_STATUS', payload: status });
+
+const isCurrentUser = userObject => {
+  const currentUser = Parse.User.current();
+  return (userObject && (userObject.objectId || userObject.id)) === (currentUser && currentUser.id);
+};
 
 export const fetchTrip = tripId => async (dispatch, getState) => {
   if (!tripId) {
@@ -53,19 +60,39 @@ export const fetchTrip = tripId => async (dispatch, getState) => {
     }));
     const services = tripOrganizations.map(tOrg => tOrg.service);
     dispatch(trip_fetched({ trip, tripOrganizations: tripOrganizationMappings, services }));
-    const peopleCount = tripRaw.get('numberOfPerson');
-    const formattedAddress = tripRaw.get('formattedAddress');
-    const title = tripRaw.get('title');
-    updateTripQuery({ person: { label: peopleCount, value: peopleCount }, formattedAddress, title })(
-      dispatch,
-      getState
-    );
-    checkAvailability(tripRaw.get('beginDate'), peopleCount)(dispatch, getState);
+    postFetchTripActions(trip, dispatch, getState);
   } catch (error) {
     console.error(error);
     if (error.code === Parse.Error.OBJECT_NOT_FOUND) dispatch(tripFetchError(error));
   }
 };
+
+function postFetchTripActions(trip, dispatch, getState) {
+  const { title, numberOfPerson: peopleCount, formattedAddress } = trip;
+  const isOwner = isCurrentUser(trip.owner);
+  let startDate = new Date(getISODateString(trip.beginDate));
+  let endDate = new Date(getISODateString(trip.endDate));
+  if (!isOwner) {
+    const newStartDate = moment()
+      .add(1, 'day')
+      .startOf('day');
+    const beginMoment = moment(startDate).startOf('day');
+    const diffDays = Math.ceil(newStartDate.diff(beginMoment, 'days', true));
+    endDate = moment(endDate)
+      .startOf('day')
+      .add(diffDays, 'days')
+      .toDate();
+    startDate = newStartDate.toDate();
+  }
+  updateTripQuery({
+    person: { label: peopleCount, value: peopleCount },
+    formattedAddress,
+    title,
+    startDate,
+    endDate,
+  })(dispatch, getState);
+  checkAvailability(startDate, peopleCount)(dispatch, getState);
+}
 
 export const changeServiceDay = (tripOrganizationId, newDay) => async (dispatch, getState) => {
   if (!tripOrganizationId) {
