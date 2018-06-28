@@ -53,7 +53,7 @@ function ServiceActionButtons(props) {
         onTripClick={props.onAddServiceToTrip}
         onNewTripClick={props.onAddServiceToNewTrip}
       />
-      <Button icon labelPosition="right" color="blue">
+      <Button icon labelPosition="right" color="blue" onClick={props.onBookNowClick}>
         Book Now
         <Icon name="shop" />
       </Button>
@@ -80,6 +80,7 @@ ServiceActionButtons.propTypes = {
   onAddServiceToNewTrip: PropTypes.func.isRequired,
   serviceRecentlyAddedToTrip: PropTypes.object,
   serviceAlreadyAddedToTrip: PropTypes.object,
+  onBookNowClick: PropTypes.func.isRequired,
 };
 
 export default ServiceActionButtons;

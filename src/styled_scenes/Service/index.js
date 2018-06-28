@@ -233,6 +233,7 @@ class FoodDetailScene extends Component {
               onAddServiceToNewTrip={this.props.onAddServiceToNewTrip}
               serviceRecentlyAddedToTrip={this.props.serviceRecentlyAddedToTrip}
               serviceAlreadyAddedToTrip={this.props.serviceAlreadyAddedToTrip}
+              onBookNowClick={this.props.onBookNowClick}
             />
             <ContactWrap>
               <MapWrap>
@@ -285,6 +286,7 @@ FoodDetailScene.propTypes = {
   onAddServiceToNewTrip: PropTypes.func.isRequired,
   serviceRecentlyAddedToTrip: PropTypes.object,
   serviceAlreadyAddedToTrip: PropTypes.object,
+  onBookNowClick: PropTypes.func.isRequired,
 };
 
 export default FoodDetailScene;

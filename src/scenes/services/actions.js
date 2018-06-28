@@ -1,5 +1,6 @@
 import Parse from 'parse';
 import fetch_helpers from './../../libs/fetch_helpers';
+import history from 'main/history';
 
 export const trips_fetched = trips => {
   return {
@@ -132,7 +133,7 @@ export const addServiceToTrip = trip => async (dispatch, getState) => {
   }
 };
 
-export const createNewTrip = () => async (dispatch, getState) => {
+export const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (dispatch, getState) => {
   const state = getState();
   const { service } = state.ServicesReducer;
   if (!service) {
@@ -147,7 +148,11 @@ export const createNewTrip = () => async (dispatch, getState) => {
       tripTitle: newTripTitle,
     });
     fetch_service(service.objectId)(dispatch);
-    setAddedToTripMessage(trip)(dispatch);
+    if (redirectToCreatedTrip) {
+      history.push(`/trips/${trip.objectId}`);
+    } else {
+      setAddedToTripMessage(trip)(dispatch);
+    }
   } catch (error) {
     console.error(error);
     if (error.code === 141) {
@@ -155,6 +160,10 @@ export const createNewTrip = () => async (dispatch, getState) => {
       console.error('error running parse function', error.message.message);
     }
   }
+};
+
+export const onBookNowClick = () => async (dispatch, getState) => {
+  createNewTrip({ redirectToCreatedTrip: true })(dispatch, getState);
 };
 
 /**
