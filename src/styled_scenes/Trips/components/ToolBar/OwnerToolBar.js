@@ -75,6 +75,7 @@ function OwnerToolBar({
             <FormControl
               onChange={value => {
                 onValueChange('startDate', value);
+                setTimeout(onSubmit, 0);
               }}
               value={state.startDate}
               dayPickerProps={{
@@ -83,20 +84,19 @@ function OwnerToolBar({
               type="date"
               placeholder="From date"
               leftIcon="date"
-              onBlur={onSubmit}
             />
           </StartDateDiv>
           <EndDateDiv isMobile={isMobile}>
             <FormControl
               onChange={value => {
                 onValueChange('endDate', value);
+                setTimeout(onSubmit, 0);
               }}
               value={state.endDate}
               dayPickerProps={{ disabledDays: { before: state.startDate || new Date() } }}
               type="date"
               placeholder="To date"
               leftIcon="date"
-              onBlur={onSubmit}
             />
           </EndDateDiv>
           <div>
