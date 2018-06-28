@@ -11,14 +11,14 @@ import ResponsiveToolbarWrap from './ResponsiveToolBarWrap';
 
 const GridFormContainer = styled(Form)`
   display: grid;
-  grid-template-columns: ${({ isMobile }) => (isMobile ? '1fr' : '2fr 1fr 1fr 1fr 1fr')};
+  grid-template-columns: ${({ isMobile }) => (isMobile ? '1fr' : '2fr 1fr 1fr 1fr')};
   grid-row-gap: 15px;
   grid-column-gap: ${({ isMobile }) => (isMobile ? '0' : '15px')};
   width: 100%;
 `;
 
 const TitleDiv = styled.div`
-  grid-column: span ${({ isMobile }) => (isMobile ? '1' : '2')};
+  grid-column: span 1;
 `;
 const LocationDiv = styled.div`
   grid-column: span ${({ isMobile }) => (isMobile ? '1' : '3')};
