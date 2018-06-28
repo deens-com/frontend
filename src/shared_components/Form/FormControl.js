@@ -74,6 +74,10 @@ export default class FormControl extends Component {
 
   onBlur() {
     this.setState({ focused: false });
+    if (typeof this.props.onBlur === 'function') {
+      // using setTimeout because sometimes onChange happens after onBlur, for example in a dropdown
+      setTimeout(this.props.onBlur, 0);
+    }
   }
 
   getFormIcon(type) {
@@ -201,7 +205,8 @@ FormControl.propTypes = {
   name: PropTypes.string,
   min: PropTypes.number,
   max: PropTypes.number,
-  step: PropTypes.number
+  step: PropTypes.number,
+  onBlur: PropTypes.func,
 };
 
 FormControl.defaultProps = {

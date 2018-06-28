@@ -124,6 +124,10 @@ export default class LocationFormControl extends Component {
 
   onBlur() {
     this.setState({ focused: false });
+    if (typeof this.props.onBlur === 'function') {
+      // using setTimeout because sometimes onChange happens after onBlur, for example in a dropdown
+      setTimeout(this.props.onBlur, 0);
+    }
   }
 
   onLocationChange(address) {
@@ -162,4 +166,5 @@ LocationFormControl.propTypes = {
   onChange: PropTypes.func,
   onSelect: PropTypes.func.isRequired,
   formatted_address: PropTypes.string,
+  onBlur: PropTypes.func,
 };

@@ -55,6 +55,7 @@ function OwnerToolBar({
               onChange={value => {
                 onValueChange('title', value);
               }}
+              onBlur={onSubmit}
               value={state.title}
             />
           </TitleDiv>
@@ -68,6 +69,7 @@ function OwnerToolBar({
                   .then(latlng => onValueChange('latlng', latlng))
                   .catch(console.error);
               }}
+              onBlur={onSubmit}
             />
           </LocationDiv>
           <StartDateDiv isMobile={isMobile}>
@@ -82,6 +84,7 @@ function OwnerToolBar({
               type="date"
               placeholder="From date"
               leftIcon="date"
+              onBlur={onSubmit}
             />
           </StartDateDiv>
           <EndDateDiv isMobile={isMobile}>
@@ -94,6 +97,7 @@ function OwnerToolBar({
               type="date"
               placeholder="To date"
               leftIcon="date"
+              onBlur={onSubmit}
             />
           </EndDateDiv>
           <div>
@@ -105,6 +109,7 @@ function OwnerToolBar({
               type="person"
               placeholder="2"
               leftIcon="person"
+              onBlur={onSubmit}
             />
           </div>
           <ToolbarButton
