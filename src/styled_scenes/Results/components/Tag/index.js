@@ -34,8 +34,6 @@ const ServiceCarouselButton = styled.a``;
 const Wrap = styled.div`
   background: ${props => props.background || "#ddd"};
   border-radius: 4px;
-  /*box-shadow: ${props =>
-    props.withShadow ? "0 8px 25px 0 rgba(141,141,141,0.22)" : "none"};*/
   box-shadow: ${props =>
     props.withShadow ? "0px 8px 10px 0 rgba(0, 0, 0, 0.22)" : "none"};
   cursor: pointer;
