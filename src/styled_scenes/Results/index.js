@@ -37,6 +37,7 @@ const MapWrapper = styled.div`
 
 const ServicesWrapper = styled.div`
   width: 100%;
+  min-height: 90vh;
 
   ${media.minLarge} {
     width: 58%;
