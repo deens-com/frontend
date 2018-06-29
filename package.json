@@ -64,6 +64,7 @@
   "devDependencies": {
     "enzyme": "^3.3.0",
     "react-app-rewire-lodash": "^2.0.0",
+    "react-app-rewire-preload-plugin": "^1.0.0",
     "react-app-rewire-webpack-bundle-analyzer": "^1.0.1",
     "react-app-rewired": "^1.5.2",
     "webpack-bundle-analyzer": "^2.13.1"

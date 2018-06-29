@@ -3,6 +3,7 @@ const webpack = require('webpack');
 
 const rewireStyledComponents = require('react-app-rewire-styled-components');
 const rewireWebpackBundleAnalyzer = require('react-app-rewire-webpack-bundle-analyzer');
+const rewirePreloadPlugin = require('react-app-rewire-preload-plugin');
 // const rewireLodash = require('react-app-rewire-lodash');
 const { inspect } = require('util');
 
@@ -36,6 +37,8 @@ module.exports = function override(config, env) {
         minChunks: ({ resource }) => /node_modules/.test(resource),
       })
     );
+    // Add preloading support
+    config = rewirePreloadPlugin(config, env, { rel: 'prefetch' });
   }
 
   console.log(inspect(config, null, 20));
