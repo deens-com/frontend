@@ -130,16 +130,16 @@ export const fetchUserProfile = () => dispatch => {
 export const resetErrors = () => dispatch => {
   dispatch({
     type: types.SERVICE_CREATE_ERROR,
-    payload: {}
+    payload: {},
   });
 };
 
 export const redeployContract = (values, serviceId, history) => async (dispatch, getState) => {
-  try{
+  try {
     // Redeploy from styled_scenes/Account/Trips/shared/Carts/Location Or Redeploy from service creation form
     let service = await fetch_helpers.build_query('Service').get(serviceId);
     dispatch(deployContract(service, values, history));
-  }catch(error){
+  } catch (error) {
     console.log(error);
   }
 };
@@ -181,7 +181,7 @@ export const deployContract = (service, values, history) => async (dispatch, get
 
     if (user.metamaskPublicAddress) {
       try {
-          preferredWeb3 = await getWeb3();
+        preferredWeb3 = await getWeb3();
       } catch (e) {
         preferredWeb3 = await getLedgerWeb3();
       }
@@ -236,9 +236,11 @@ export const deployContract = (service, values, history) => async (dispatch, get
     dispatch({
       type: types.SERVICE_CREATE_ERROR,
       payload: {
-        message: 'We could not deploy the smart contract. Please check if your ledger device or meta mask are connected properly. ' + e.toString(),
-        serviceId: service.id
-      }
+        message:
+          'We could not deploy the smart contract. Please check if your ledger device or meta mask are connected properly. ' +
+          e.toString(),
+        serviceId: service.id,
+      },
     });
   }
 };
