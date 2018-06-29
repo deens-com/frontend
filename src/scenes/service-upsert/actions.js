@@ -1,5 +1,4 @@
 import Parse from 'parse';
-import ethers from 'ethers';
 import fetch_helpers from '../../libs/fetch_helpers';
 import history from '../../main/history';
 import { getWeb3, getLedgerWeb3 } from 'libs/web3-utils';
@@ -147,6 +146,8 @@ export const redeployContract = (values, serviceId, history) => async (dispatch,
 
 export const deployContract = (service, values, history) => async (dispatch, getState) => {
   try {
+    // TODO: @vlad if possible change this to use web3 as we're already using Web3 in other parts of the app
+    const ethers = await import('ethers');
     const { pricePerSession, slots } = values;
     const user = getState().ServiceUpsert.userProfile;
 
