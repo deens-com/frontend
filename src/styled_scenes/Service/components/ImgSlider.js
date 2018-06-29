@@ -19,14 +19,20 @@ const Wrap = styled.div`
   justify-content: center;
   position: relative;
 
+  img {
+    max-height: 100%;
+    max-width: 100%;
+  }
+
   ${media.minLarge} {
     height: 100vh;
     width: 42%;
     max-height: 800px;
-  }
 
-  img {
-    height: 100%;
+    img {
+      max-height: 100%;
+      max-width: fit-content;
+    }
   }
 `;
 
