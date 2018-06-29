@@ -11,14 +11,14 @@ import ResponsiveToolbarWrap from './ResponsiveToolBarWrap';
 
 const GridFormContainer = styled(Form)`
   display: grid;
-  grid-template-columns: ${({ isMobile }) => (isMobile ? '1fr' : '2fr 1fr 1fr 1fr 1fr')};
+  grid-template-columns: ${({ isMobile }) => (isMobile ? '1fr' : '2fr 1fr 1fr 1fr')};
   grid-row-gap: 15px;
   grid-column-gap: ${({ isMobile }) => (isMobile ? '0' : '15px')};
   width: 100%;
 `;
 
 const TitleDiv = styled.div`
-  grid-column: span ${({ isMobile }) => (isMobile ? '1' : '2')};
+  grid-column: span 1;
 `;
 const LocationDiv = styled.div`
   grid-column: span ${({ isMobile }) => (isMobile ? '1' : '3')};
@@ -40,7 +40,6 @@ function OwnerToolBar({
   trip,
   onSubmit,
   onValueChange,
-  showTripUpdated,
   onCheckAvailabilityClick,
   serviceAvailabilityCheckInProgress,
 }) {
@@ -55,6 +54,7 @@ function OwnerToolBar({
               onChange={value => {
                 onValueChange('title', value);
               }}
+              onBlur={onSubmit}
               value={state.title}
             />
           </TitleDiv>
@@ -68,12 +68,14 @@ function OwnerToolBar({
                   .then(latlng => onValueChange('latlng', latlng))
                   .catch(console.error);
               }}
+              onBlur={onSubmit}
             />
           </LocationDiv>
           <StartDateDiv isMobile={isMobile}>
             <FormControl
               onChange={value => {
                 onValueChange('startDate', value);
+                setTimeout(onSubmit, 0);
               }}
               value={state.startDate}
               dayPickerProps={{
@@ -88,6 +90,7 @@ function OwnerToolBar({
             <FormControl
               onChange={value => {
                 onValueChange('endDate', value);
+                setTimeout(onSubmit, 0);
               }}
               value={state.endDate}
               dayPickerProps={{ disabledDays: { before: state.startDate || new Date() } }}
@@ -105,11 +108,11 @@ function OwnerToolBar({
               type="person"
               placeholder="2"
               leftIcon="person"
+              onBlur={onSubmit}
             />
           </div>
           <ToolbarButton
             showSaveButton={true}
-            showTripUpdated={showTripUpdated}
             onCheckAvailibilityClick={onCheckAvailabilityClick}
             serviceAvailabilityCheckInProgress={serviceAvailabilityCheckInProgress}
           />

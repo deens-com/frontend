@@ -24,7 +24,6 @@ import { media, sizes } from '../../libs/styled';
 // STYLES
 import { Page, PageContent } from '../../shared_components/layout/Page';
 import { Hr } from '../../shared_components/styledComponents/misc';
-import { oneWayDiff } from '../../libs/Utils';
 
 const Wrap = styled.div`
   ${media.minMediumPlus} {
@@ -152,68 +151,8 @@ export default class TripsScene extends Component {
     this.setState({ details: !this.state.details });
   };
 
-  /**
-   * Gets the beginDate of the trip
-   * If the user viewing this isn't the owner of the trip
-   * it shows him tomorrow's date for the trip
-   */
-  getBeginDate = trip => {
-    if (!this.state.isOwner) {
-      return moment()
-        .add(1, 'day')
-        .toISOString();
-    }
-    if (!trip) trip = this.props.trip;
-    return trip && trip.beginDate && trip.beginDate.iso;
-  };
-
-  /**
-   * Gets the endDate of the trip
-   * If the user viewing this isn't the owner of the trip
-   * it shows him the endDate of the trip starting tomorrow
-   */
-  getEndDate = trip => {
-    if (!trip) trip = this.props.trip;
-    if (!trip || !trip.beginDate || !trip.endDate) return undefined;
-    if (!this.state.isOwner) {
-      const beginMoment = moment(trip.beginDate.iso);
-      const diffDays = moment()
-        .add(1, 'day')
-        .diff(beginMoment, 'days');
-      return moment(trip.endDate.iso)
-        .add(diffDays + 1, 'days')
-        .toISOString();
-    }
-    return trip.endDate.iso;
-  };
-
   componentWillReceiveProps(nextProps) {
-    const { query, updateTripQuery } = this.props;
     const { trip } = nextProps;
-    let beginDate,
-      endDate,
-      person = query.person;
-    const isDifferentTrip = (this.props.trip && this.props.trip.objectId) !== (trip && trip.objectId);
-    if (!query.startDate || isDifferentTrip) {
-      const isoBeginDate = this.getBeginDate(trip);
-      beginDate = isoBeginDate && moment(isoBeginDate).toDate();
-    }
-    if (!query.endDate || isDifferentTrip) {
-      const isoEndDate = this.getEndDate(trip);
-      endDate = isoEndDate && moment(isoEndDate).toDate();
-    }
-    if ((!query.person || !query.person.value) && trip.numberOfPerson) {
-      person = { label: trip.numberOfPerson, value: trip.numberOfPerson };
-    }
-    const diff = oneWayDiff(query, {
-      startDate: beginDate || query.startDate,
-      endDate: endDate || query.endDate,
-      person,
-    });
-    if (Object.keys(diff).length) {
-      // dispatch update only if there's an update
-      updateTripQuery(diff);
-    }
     const tripOwnerId = trip && trip.owner && trip.owner.objectId;
     const currentUser = Parse.User.current();
     const isOwner = tripOwnerId === (currentUser && currentUser.id);
@@ -254,8 +193,6 @@ export default class TripsScene extends Component {
   };
 
   render() {
-    const beginDate = this.getBeginDate();
-    const endDate = this.getEndDate();
     const { query } = this.props;
     return (
       <Page topPush>
@@ -267,8 +204,8 @@ export default class TripsScene extends Component {
                 <h3>{this.props.trip.title}</h3>
                 <DatesWrap>
                   <p>
-                    {beginDate && moment(beginDate).format('MMM Do YY')} -{' '}
-                    {endDate && moment(endDate).format('MMM Do YY')}
+                    {query.startDate && moment(query.startDate).format('MMM Do YY')} -{' '}
+                    {query.endDate && moment(query.endDate).format('MMM Do YY')}
                   </p>
                 </DatesWrap>
                 <span>
@@ -311,7 +248,6 @@ export default class TripsScene extends Component {
                 onValueChange={this.onValueChange}
                 state={query}
                 trip={this.props.trip}
-                showTripUpdated={this.props.showTripUpdated}
                 onCheckAvailabilityClick={this.checkAvailability}
                 isOwner={this.state.isOwner}
                 serviceAvailabilityCheckInProgress={this.props.serviceAvailabilityCheckInProgress}

@@ -19,16 +19,6 @@ const Wrap = styled.div`
   flex-direction: row-reverse;
 `;
 
-// const TotalHint = styled.p`
-//   color: #6e7885;
-//   font-size: 15px;
-//   max-width: 360px;
-//
-//   a {
-//     color: #5fb79e;
-//   }
-// `;
-
 const BookButton = styled(Button)`
   && {
     color: #fff;
@@ -43,10 +33,6 @@ const BookButton = styled(Button)`
       border: 1px solid #5fb79e;
     }
   }
-`;
-
-const ErrorMsg = styled.div`
-  color: red;
 `;
 
 const StickyWrap = styled.div`
@@ -72,11 +58,10 @@ export default class TripSummary extends Component {
     logged_in: false,
     total: 0,
     services: [],
-    tripDirty: false,
   };
 
   componentDidMount() {
-    this.setState({ tripDirty: false, logged_in: !!Parse.User.current() });
+    this.setState({ logged_in: !!Parse.User.current() });
   }
 
   calculateTripTotalPrice() {
@@ -96,30 +81,10 @@ export default class TripSummary extends Component {
     onBookClick(query.startDate, query.person.value);
   };
 
-  formatDateForCompare = date => moment(getISODateString(date)).utc().format('YYYYMMDD');
-
-  componentWillReceiveProps(nextProps) {
-    const { trip, query } = nextProps;
-    if (!trip || !trip.objectId) return;
-    const currentTripId = this.props.trip && this.props.trip.objectId;
-    const currentUser = Parse.User.current();
-    if (!currentUser) return;
-    if (currentUser.id !== trip.owner.objectId || currentTripId !== trip.objectId) {
-      if (this.state.tripDirty) this.setState({ tripDirty: false });
-      return;
-    }
-    const startDateLHS = this.formatDateForCompare(query.startDate);
-    const startDateRHS = this.formatDateForCompare(trip.beginDate || '');
-    const endDateLHS = this.formatDateForCompare(query.endDate);
-    const endDateRHS = this.formatDateForCompare(trip.endDate || '');
-    const isStartDateDirty = startDateLHS !== startDateRHS;
-    const isEndDateDirty = endDateLHS !== endDateRHS;
-    const isPeopleCountDirty = parseInt(query.person.value, 10) !== trip.numberOfPerson;
-    const isTripDirty = isStartDateDirty || isEndDateDirty || isPeopleCountDirty;
-    if (this.state.tripDirty !== isTripDirty) {
-      this.setState({ tripDirty: isTripDirty });
-    }
-  }
+  formatDateForCompare = date =>
+    moment(getISODateString(date))
+      .utc()
+      .format('YYYYMMDD');
 
   render() {
     const { query } = this.props;
@@ -135,23 +100,16 @@ export default class TripSummary extends Component {
             <h6>Total Price : &nbsp;</h6>
             <PriceTag price={this.calculateTripTotalPrice() * this.props.query.person.value} unit="hidden" />
             &nbsp;&nbsp;
-            {this.state.tripDirty && isDatesFormComplete && <ErrorMsg>Save the trip before booking</ErrorMsg>}
           </PricesWrap>
           <BookButton
             size="small"
             circular
             onClick={this.onBookClickWithDates}
             loading={this.props.isCloningInProcess}
-            disabled={this.state.tripDirty || !isDatesFormComplete}
+            disabled={!isDatesFormComplete}
           >
             Book now
           </BookButton>
-          {/*!this.state.logged_in && (
-            <TotalHint>
-            Trip is not saved! Please <Link to="/register">Sign Up</Link> or <Link to="/login">Login</Link> in order
-            to save tre trip.
-            </TotalHint>
-          )*/}
         </Wrap>
       </StickyWrap>
     );

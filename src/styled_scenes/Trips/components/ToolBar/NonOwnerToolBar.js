@@ -21,13 +21,7 @@ const StartDateDiv = styled.div`
   }
 `;
 
-function NonOwnerToolBar({
-  state,
-  onValueChange,
-  showTripUpdated,
-  onCheckAvailabilityClick,
-  serviceAvailabilityCheckInProgress,
-}) {
+function NonOwnerToolBar({ state, onValueChange, onCheckAvailabilityClick, serviceAvailabilityCheckInProgress }) {
   return (
     <ResponsiveToolbarWrap>
       {({ isMobile }) => (
@@ -38,9 +32,7 @@ function NonOwnerToolBar({
                 onValueChange('startDate', value);
               }}
               value={state.startDate}
-              dayPickerProps={{
-                disabledDays: { before: new Date(), after: state.endDate }, // if it's the owner of the trip then make sure he selects a startDate less than the endDate, else remove validation
-              }}
+              dayPickerProps={{ disabledDays: { before: new Date() } }}
               type="date"
               placeholder="From date"
               leftIcon="date"
@@ -59,7 +51,6 @@ function NonOwnerToolBar({
           </div>
           <ToolbarButton
             showSaveButton={false}
-            showTripUpdated={showTripUpdated}
             onCheckAvailibilityClick={onCheckAvailabilityClick}
             serviceAvailabilityCheckInProgress={serviceAvailabilityCheckInProgress}
           />
