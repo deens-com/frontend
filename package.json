@@ -20,6 +20,7 @@
     "query-string": "^5.0.0",
     "raven-js": "^3.25.2",
     "react": "^16.2.0",
+    "react-app-rewire-styled-components": "^3.0.2",
     "react-beautiful-dnd": "7.1.2",
     "react-day-picker": "^7.1.4",
     "react-dom": "^16.2.0",
@@ -47,19 +48,21 @@
     "web3-provider-engine": "14.0.4"
   },
   "scripts": {
-    "start": "HTTPS=true react-scripts start",
+    "start": "HTTPS=true react-app-rewired start",
     "now-start": "serve ./build --single",
-    "build": "REACT_APP_NODE_ENV=production react-scripts build",
-    "now-build": "REACT_APP_NODE_ENV=staging react-scripts build",
-    "build:staging": "REACT_APP_NODE_ENV=staging react-scripts build",
+    "build": "REACT_APP_NODE_ENV=production react-app-rewired build",
+    "now-build": "REACT_APP_NODE_ENV=staging react-app-rewired build",
+    "build:staging": "REACT_APP_NODE_ENV=staging react-app-rewired build",
     "postbuild": "cp -r .circleci/* build/.circleci/",
-    "test": "react-scripts test --env=jsdom",
+    "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject",
     "precommit": "pretty-quick --staged",
     "predeploy": "REACT_APP_NODE_ENV=production npm run build",
     "deploy": "gh-pages -d build --dotfiles true"
   },
   "devDependencies": {
-    "enzyme": "^3.3.0"
+    "enzyme": "^3.3.0",
+    "react-app-rewired": "^1.5.2",
+    "webpack-bundle-analyzer": "^2.13.1"
   }
 }
