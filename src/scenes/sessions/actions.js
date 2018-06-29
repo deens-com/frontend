@@ -1,6 +1,5 @@
 import Parse from 'parse';
 import history from './../../main/history';
-import { getPublicAddress, signMessage, getLedgerPublicAddress, ledgerSignMessage } from '../../libs/web3-utils';
 import fetch_helpers from './../../libs/fetch_helpers';
 
 export const types = {
@@ -79,6 +78,7 @@ export const loginRequest = (email, password) => {
 
 export const loginWithLedger = () => async dispatch => {
   try {
+    const { getLedgerPublicAddress, ledgerSignMessage } = await import('libs/web3-utils');
     dispatch(displayLedgerLoader(true));
     const publicAddress = await getLedgerPublicAddress();
     const response = await Parse.Cloud.run('getMetaMaskNonce', { publicAddress: publicAddress, type: 'ledger' });
@@ -123,6 +123,7 @@ export const loginWithLedger = () => async dispatch => {
 
 export const loginWithMetamask = () => async dispatch => {
   try {
+    const { getPublicAddress, signMessage } = await import('libs/web3-utils');
     const publicAddress = await getPublicAddress();
     const response = await Parse.Cloud.run('getMetaMaskNonce', { publicAddress, type: 'metamask' });
     const { signature } = await signMessage(response.nonce);

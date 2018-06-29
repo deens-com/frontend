@@ -1,7 +1,6 @@
 import Parse from 'parse';
 import fetch_helpers from './../../libs/fetch_helpers';
 import history from './../../main/history';
-import { signMessage, ledgerSignMessage } from '../../libs/web3-utils';
 import validator from 'validator';
 
 export const user_profile_fetched = user_profile => {
@@ -145,7 +144,10 @@ export const signData = () => async dispatch => {
   dispatch({ type: 'METAMASK_ERROR', payload: {} });
 
   try {
-    const { nonce } = await Parse.Cloud.run('getNonceForUser');
+    const [{ signMessage }, { nonce }] = await Promise.all([
+      import('../../libs/web3-utils'),
+      Parse.Cloud.run('getNonceForUser'),
+    ]);
     const { signature } = await signMessage(nonce);
     const userObj = await Parse.Cloud.run('storePublicAddress', { signature: signature, type: 'metamask' });
     dispatch(fetch_user_profile());
@@ -167,7 +169,10 @@ export const ledgerSignData = () => async dispatch => {
   dispatch({ type: 'LEDGER_ERROR', payload: {} });
 
   try {
-    const { nonce } = await Parse.Cloud.run('getNonceForUser');
+    const [{ ledgerSignMessage }, { nonce }] = await Promise.all([
+      import('../../libs/web3-utils'),
+      Parse.Cloud.run('getNonceForUser'),
+    ]);
     const { signature } = await ledgerSignMessage(nonce);
     const userObj = await Parse.Cloud.run('storePublicAddress', { signature: signature, type: 'ledger' });
     dispatch(fetch_user_profile());
