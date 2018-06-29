@@ -1,4 +1,5 @@
 const { injectBabelPlugin } = require('react-app-rewired');
+const webpack = require('webpack');
 
 const rewireStyledComponents = require('react-app-rewire-styled-components');
 const rewireWebpackBundleAnalyzer = require('react-app-rewire-webpack-bundle-analyzer');
@@ -29,6 +30,12 @@ module.exports = function override(config, env) {
       analyzerMode: 'static',
       reportFilename: 'report.html',
     });
+    config.plugins.push(
+      new webpack.optimize.CommonsChunkPlugin({
+        name: 'vendor',
+        minChunks: ({ resource }) => /node_modules/.test(resource),
+      })
+    );
   }
 
   console.log(inspect(config, null, 20));
