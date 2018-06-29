@@ -1,12 +1,12 @@
 // NPM
-import React, { Component } from "react";
-import styled from "styled-components";
+import React, { Component } from 'react';
+import styled from 'styled-components';
 
 // COMPONENTS
-import { ArrowIcon } from "../../../shared_components/icons";
+import { ArrowIcon } from '../../../shared_components/icons';
 
 // ACTIONS/CONFIG
-import { media } from "../../../libs/styled";
+import { media } from '../../../libs/styled';
 
 // STYLES
 const Wrap = styled.div`
@@ -79,7 +79,7 @@ export default class FoodImgSlider extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      index: 0
+      index: 0,
     };
 
     this.goToNext = this.goToNext.bind(this);
@@ -109,21 +109,33 @@ export default class FoodImgSlider extends Component {
   render() {
     return (
       <Wrap>
-        { (this.props.images && this.props.images.length && this.props.images.length !== 1) &&
-          <span>
-            <LeftArrow onClick={this.goToPrevious}>
-              <ArrowIcon />
-            </LeftArrow>
-            <RightArrow onClick={this.goToNext}>
-              <ArrowIcon />
-            </RightArrow>
-          </span>
-        }
+        {this.props.images &&
+          this.props.images.length &&
+          this.props.images.length !== 1 && (
+            <span>
+              <LeftArrow onClick={this.goToPrevious}>
+                <ArrowIcon />
+              </LeftArrow>
+              <RightArrow onClick={this.goToNext}>
+                <ArrowIcon />
+              </RightArrow>
+            </span>
+          )}
         <img
-          // eslint-disable-next-line
-          src={this.props.images && this.props.images.length && this.props.images[this.state.index] && this.props.images[this.state.index].url || "https://dummyimage.com/600x400/000/fff"}
-          // eslint-disable-next-line
-          alt={this.props.images && this.props.images.length && this.props.images[this.state.index] && this.props.images[this.state.index].name || "missing mainPicture"}
+          src={
+            (this.props.images &&
+              this.props.images.length &&
+              this.props.images[this.state.index] &&
+              this.props.images[this.state.index].url) ||
+            'https://dummyimage.com/600x400/000/fff'
+          }
+          alt={
+            (this.props.images &&
+              this.props.images.length &&
+              this.props.images[this.state.index] &&
+              this.props.images[this.state.index].name) ||
+            'missing mainPicture'
+          }
         />
       </Wrap>
     );
