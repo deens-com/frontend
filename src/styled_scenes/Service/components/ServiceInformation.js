@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import UserAvatar from 'shared_components/UserAvatar';
 import { padStart } from 'libs/Utils';
 import PriceTag from 'shared_components/Currency/PriceTag';
+import Rating from 'shared_components/Rating';
 
 const Table = styled.table`
   table-layout: fixed;
@@ -35,6 +36,16 @@ const ServiceInformation = ({ service }) => {
         <td>Price Per Session</td>
         <td>
           <PriceTag price={service.pricePerSession} />
+        </td>
+      </tr>
+      <tr {...rowProps}>
+        <td>Location</td>
+        <td>{service.location}</td>
+      </tr>
+      <tr {...rowProps}>
+        <td>Rating</td>
+        <td>
+          <Rating rating={service.rating} count={service.reviewCount} />
         </td>
       </tr>
     </Table>

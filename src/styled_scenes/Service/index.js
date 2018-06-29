@@ -9,7 +9,6 @@ import GoogleMapReact from 'google-map-react';
 // COMPONENTS
 import TopBar from './../../shared_components/TopBarWithSearch';
 import BrandFooter from '../../shared_components/BrandFooter';
-import Rating from '../../shared_components/Rating';
 import { BadgeIcon } from './icons';
 import TripCart from '../../shared_components/Carts/Location';
 import Review from '../../shared_components/Review';
@@ -193,15 +192,6 @@ class FoodDetailScene extends Component {
               <PreserveWhiteSpace>{this.props.service.description}</PreserveWhiteSpace>
             </HeaderWrap>
             <DataWrap>
-              <DataBlock>
-                <TextLabel>Location</TextLabel>
-                <span>{this.props.service.location}</span>
-              </DataBlock>
-              <DataBlock>
-                <TextLabel>Rating</TextLabel>
-                <Rating marginBottom="25px" rating={this.props.service.rating} count={this.props.service.reviewCount} />
-              </DataBlock>
-
               {this.props.trips.length ? (
                 <span>
                   <DataBlock>
