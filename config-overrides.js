@@ -43,7 +43,5 @@ module.exports = function override(config, env) {
     config = rewirePreloadPlugin(config, env, { rel: 'prefetch' });
   }
 
-  console.log(inspect(config, null, 20));
-  console.log(inspect(env, null, 20));
   return config;
 };
