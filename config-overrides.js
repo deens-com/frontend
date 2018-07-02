@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const rewireStyledComponents = require('react-app-rewire-styled-components');
 const rewireWebpackBundleAnalyzer = require('react-app-rewire-webpack-bundle-analyzer');
 const rewirePreloadPlugin = require('react-app-rewire-preload-plugin');
+const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin');
 // const rewireLodash = require('react-app-rewire-lodash');
 const { inspect } = require('util');
 
@@ -35,7 +36,8 @@ module.exports = function override(config, env) {
       new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor',
         minChunks: ({ resource }) => /node_modules/.test(resource),
-      })
+      }),
+      new DuplicatePackageCheckerPlugin()
     );
     // Add preloading support
     config = rewirePreloadPlugin(config, env, { rel: 'prefetch' });

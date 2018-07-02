@@ -62,6 +62,7 @@
     "deploy": "gh-pages -d build --dotfiles true"
   },
   "devDependencies": {
+    "duplicate-package-checker-webpack-plugin": "^2.1.0",
     "enzyme": "^3.3.0",
     "react-app-rewire-lodash": "^2.0.0",
     "react-app-rewire-preload-plugin": "^1.0.0",
