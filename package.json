@@ -69,5 +69,13 @@
     "react-app-rewire-webpack-bundle-analyzer": "^1.0.1",
     "react-app-rewired": "^1.5.2",
     "webpack-bundle-analyzer": "^2.13.1"
+  },
+  "resolutions": {
+    "eventemitter3": "1.2.0",
+    "inherits": "2.0.3",
+    "bn.js": "4.11.8",
+    "elliptic": "6.4.0",
+    "setimmediate": "1.0.5",
+    "web3-provider-engine": "14.0.5"
   }
 }
