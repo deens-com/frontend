@@ -87,8 +87,9 @@ export default class TripSummary extends Component {
       .format('YYYYMMDD');
 
   render() {
-    const { query } = this.props;
+    const { query, trip } = this.props;
     const isDatesFormComplete = query.startDate && query.endDate && query.person.value;
+    const booked = trip && trip.booked;
     return (
       <StickyWrap>
         <Wrap>
@@ -108,7 +109,7 @@ export default class TripSummary extends Component {
             loading={this.props.isCloningInProcess}
             disabled={!isDatesFormComplete}
           >
-            Book now
+            Book {booked ? 'again' : 'now'}
           </BookButton>
         </Wrap>
       </StickyWrap>
