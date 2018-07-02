@@ -7,7 +7,7 @@ import GoogleMapReact from 'google-map-react';
 import { fitBounds } from 'google-map-react/utils';
 import moment from 'moment';
 import Parse from 'parse';
-import { Divider } from 'semantic-ui-react';
+import { Divider, Message } from 'semantic-ui-react';
 
 // COMPONENTS
 import TopBar from './../../shared_components/TopBarWithSearch';
@@ -253,6 +253,7 @@ export default class TripsScene extends Component {
               />
             </LeftWrap>
             <TripWrapper>
+              {trip.booked ? <Message>This trip is already booked.</Message> : null}
               <ToolBar
                 onSubmit={this.onSubmit}
                 onValueChange={this.onValueChange}
