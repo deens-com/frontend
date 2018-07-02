@@ -198,6 +198,7 @@ export default class TripsScene extends Component {
 
   render() {
     const { query, trip } = this.props;
+
     return (
       <Page topPush>
         <TopBar fixed withPadding />
@@ -253,7 +254,7 @@ export default class TripsScene extends Component {
               />
             </LeftWrap>
             <TripWrapper>
-              {trip.booked ? <Message>This trip is already booked.</Message> : null}
+              {trip.booked && this.state.isOwner ? <Message>This trip is already booked.</Message> : null}
               <ToolBar
                 onSubmit={this.onSubmit}
                 onValueChange={this.onValueChange}
@@ -277,6 +278,7 @@ export default class TripsScene extends Component {
                 trip={trip}
                 scheduledServices={this.props.scheduledServices}
                 unScheduledServices={this.props.unScheduledServices}
+                isOwner={this.state.isOwner}
                 onBookClick={this.props.onBookClick}
                 isCloningInProcess={this.props.isCloningInProcess}
                 query={query}

@@ -87,7 +87,7 @@ export default class TripSummary extends Component {
       .format('YYYYMMDD');
 
   render() {
-    const { query, trip } = this.props;
+    const { query, trip, isOwner } = this.props;
     const isDatesFormComplete = query.startDate && query.endDate && query.person.value;
     const booked = trip && trip.booked;
     return (
@@ -109,7 +109,7 @@ export default class TripSummary extends Component {
             loading={this.props.isCloningInProcess}
             disabled={!isDatesFormComplete}
           >
-            Book {booked ? 'again' : 'now'}
+            Book {booked && isOwner ? 'again' : 'now'}
           </BookButton>
         </Wrap>
       </StickyWrap>
@@ -125,4 +125,5 @@ TripSummary.propTypes = {
   onBookClick: PropTypes.func.isRequired,
   isCloningInProcess: PropTypes.bool.isRequired,
   query: PropTypes.object,
+  isOwner: PropTypes.bool.isRequired,
 };
