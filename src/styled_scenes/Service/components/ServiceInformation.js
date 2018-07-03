@@ -17,37 +17,40 @@ const Table = styled.table`
   }
 `;
 
+const Row = styled.tr`
+  height: 65px;
+`;
+
 const ServiceInformation = ({ service }) => {
   if (!service) return null;
-  const rowProps = { height: '65px' };
   return (
     <Table>
-      <tr {...rowProps}>
+      <Row>
         <td>Host</td>
         <td>
           <UserAvatar user={service.owner} />
         </td>
-      </tr>
-      <tr {...rowProps}>
+      </Row>
+      <Row>
         <td>Working Hours</td>
         <td> {`${padStart(service.openingTime, 2)}:00 - ${padStart(service.closingTime, 2)}:00`} </td>
-      </tr>
-      <tr {...rowProps}>
+      </Row>
+      <Row>
         <td>Price Per Session</td>
         <td>
           <PriceTag price={service.pricePerSession} />
         </td>
-      </tr>
-      <tr {...rowProps}>
+      </Row>
+      <Row>
         <td>Location</td>
         <td>{service.location}</td>
-      </tr>
-      <tr {...rowProps}>
+      </Row>
+      <Row>
         <td>Rating</td>
         <td>
           <Rating rating={service.rating} count={service.reviewCount} />
         </td>
-      </tr>
+      </Row>
     </Table>
   );
 };
