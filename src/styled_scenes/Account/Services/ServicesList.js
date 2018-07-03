@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import uuid from 'uuid/v1';
 import { Divider, Label, Button, Icon } from 'semantic-ui-react';
 import styled from "styled-components";
 import Rating from "shared_components/Rating";
@@ -110,7 +109,7 @@ const ServicesList = props => {
       <br /><br />
       <Divider/>
       {props.user_services.map((item, index) => (
-        <Wrap key={uuid()}>
+        <Wrap key={item.objectId}>
             <ServiceItem {...item} {...props}/>
         </Wrap>
       ))}

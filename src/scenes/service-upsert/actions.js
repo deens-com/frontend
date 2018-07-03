@@ -1,8 +1,6 @@
 import Parse from 'parse';
-import ethers from 'ethers';
 import fetch_helpers from '../../libs/fetch_helpers';
 import history from '../../main/history';
-import { getWeb3, getLedgerWeb3 } from 'libs/web3-utils';
 
 export const types = {
   SERVICE_CREATE_STARTED: 'SERVICE_CREATE_STARTED',
@@ -131,22 +129,24 @@ export const fetchUserProfile = () => dispatch => {
 export const resetErrors = () => dispatch => {
   dispatch({
     type: types.SERVICE_CREATE_ERROR,
-    payload: {}
+    payload: {},
   });
 };
 
 export const redeployContract = (values, serviceId, history) => async (dispatch, getState) => {
-  try{
+  try {
     // Redeploy from styled_scenes/Account/Trips/shared/Carts/Location Or Redeploy from service creation form
     let service = await fetch_helpers.build_query('Service').get(serviceId);
     dispatch(deployContract(service, values, history));
-  }catch(error){
+  } catch (error) {
     console.log(error);
   }
 };
 
 export const deployContract = (service, values, history) => async (dispatch, getState) => {
   try {
+    // TODO: @vlad if possible change this to use web3 as we're already using Web3 in other parts of the app
+    const [ethers, { getWeb3, getLedgerWeb3 }] = await Promise.all([import('ethers'), import('libs/web3-utils')]);
     const { pricePerSession, slots } = values;
     const user = getState().ServiceUpsert.userProfile;
 
@@ -180,7 +180,7 @@ export const deployContract = (service, values, history) => async (dispatch, get
 
     if (user.metamaskPublicAddress) {
       try {
-          preferredWeb3 = await getWeb3();
+        preferredWeb3 = await getWeb3();
       } catch (e) {
         preferredWeb3 = await getLedgerWeb3();
       }
@@ -235,9 +235,11 @@ export const deployContract = (service, values, history) => async (dispatch, get
     dispatch({
       type: types.SERVICE_CREATE_ERROR,
       payload: {
-        message: 'We could not deploy the smart contract. Please check if your ledger device or meta mask are connected properly. ' + e.toString(),
-        serviceId: service.id
-      }
+        message:
+          'We could not deploy the smart contract. Please check if your ledger device or meta mask are connected properly. ' +
+          e.toString(),
+        serviceId: service.id,
+      },
     });
   }
 };
