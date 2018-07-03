@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import UserAvatar from 'shared_components/UserAvatar';
 import { padStart } from 'libs/Utils';
 import PriceTag from 'shared_components/Currency/PriceTag';
+import Rating from 'shared_components/Rating';
 
 const Table = styled.table`
   table-layout: fixed;
@@ -16,27 +17,40 @@ const Table = styled.table`
   }
 `;
 
+const Row = styled.tr`
+  height: 65px;
+`;
+
 const ServiceInformation = ({ service }) => {
   if (!service) return null;
-  const rowProps = { height: '65px' };
   return (
     <Table>
-      <tr {...rowProps}>
+      <Row>
         <td>Host</td>
         <td>
           <UserAvatar user={service.owner} />
         </td>
-      </tr>
-      <tr {...rowProps}>
+      </Row>
+      <Row>
         <td>Working Hours</td>
         <td> {`${padStart(service.openingTime, 2)}:00 - ${padStart(service.closingTime, 2)}:00`} </td>
-      </tr>
-      <tr {...rowProps}>
+      </Row>
+      <Row>
         <td>Price Per Session</td>
         <td>
           <PriceTag price={service.pricePerSession} />
         </td>
-      </tr>
+      </Row>
+      <Row>
+        <td>Location</td>
+        <td>{service.location}</td>
+      </Row>
+      <Row>
+        <td>Rating</td>
+        <td>
+          <Rating rating={service.rating} count={service.reviewCount} />
+        </td>
+      </Row>
     </Table>
   );
 };

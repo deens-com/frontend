@@ -3,13 +3,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Media from 'react-media';
-import { Link } from 'react-router-dom';
 import GoogleMapReact from 'google-map-react';
 
 // COMPONENTS
 import TopBar from './../../shared_components/TopBarWithSearch';
 import BrandFooter from '../../shared_components/BrandFooter';
-import Rating from '../../shared_components/Rating';
 import { BadgeIcon } from './icons';
 import TripCart from '../../shared_components/Carts/Location';
 import Review from '../../shared_components/Review';
@@ -59,24 +57,6 @@ const HeaderWrap = styled.div`
   }
 `;
 
-const DataBlock = styled.div`
-  display: inline-block;
-  margin-right: 25px;
-
-  &:last-child {
-    margin-right: 0;
-  }
-`;
-
-const TextLabel = styled.span`
-  padding-top: 5px;
-  display: block;
-  color: #6e7885;
-  font-size: 13px;
-  text-transform: uppercase;
-  margin-bottom: 10px;
-`;
-
 const Badge = styled.span`
   display: block;
   width: 40px;
@@ -87,14 +67,6 @@ const Badge = styled.span`
 
   svg {
     fill: #fff;
-  }
-`;
-
-const DataWrap = styled.div`
-  margin-bottom: 50px;
-
-  ${media.minSmall} {
-    margin-bottom: 25px;
   }
 `;
 
@@ -133,9 +105,11 @@ const Contacts = styled.div`
 `;
 
 const TripsWrap = styled.div`
+  display: grid;
+  grid-template-columns: 48px 1fr;
   margin-bottom: 50px;
 
-  & > h3 {
+  & > span {
     margin-bottom: 35px;
     font-size: 28px;
   }
@@ -143,6 +117,13 @@ const TripsWrap = styled.div`
   .slick-track {
     margin: 0;
   }
+`;
+
+const SelfAlignCenter = styled.span`
+  align-self: center;
+`;
+const CarouselColumnSpan = styled.div`
+  grid-column: span 2;
 `;
 
 const PreserveWhiteSpace = styled.p`
@@ -192,36 +173,6 @@ class FoodDetailScene extends Component {
               <ServiceTags service={this.props.service} />
               <PreserveWhiteSpace>{this.props.service.description}</PreserveWhiteSpace>
             </HeaderWrap>
-            <DataWrap>
-              <DataBlock>
-                <TextLabel>Location</TextLabel>
-                <span>{this.props.service.location}</span>
-              </DataBlock>
-              <DataBlock>
-                <TextLabel>Rating</TextLabel>
-                <Rating marginBottom="25px" rating={this.props.service.rating} count={this.props.service.reviewCount} />
-              </DataBlock>
-
-              {this.props.trips.length ? (
-                <span>
-                  <DataBlock>
-                    <Badge>
-                      <BadgeIcon />
-                    </Badge>
-                  </DataBlock>
-                  <DataBlock>
-                    <TextLabel>PART OF THE TRIP</TextLabel>
-                    <span>
-                      <Link to={'/trips/' + (this.props.trips[0] && this.props.trips[0].objectId)}>
-                        "{this.props.trips.length &&
-                          this.props.trips[0] &&
-                          this.props.trips[0].description.slice(0, 40)}" and {this.props.trips.length} more ...
-                      </Link>
-                    </span>
-                  </DataBlock>
-                </span>
-              ) : null}
-            </DataWrap>
             <Media
               query={`(max-width: ${sizes.large})`}
               render={() => <ImgSlider images={this.props.service.pictures} />}
@@ -257,12 +208,17 @@ class FoodDetailScene extends Component {
             </ContactWrap>
             {this.props.trips.length ? (
               <TripsWrap>
-                <h3>Part of trips</h3>
-                <Carousel sm_slides_nb={1} md_slides_nb={2} lg_slides_nb={4} xl_slides_nb={4}>
-                  {this.props.trips.map(trip => (
-                    <TripCart item={trip} withShadow key={trip.title} size="small" href={'/trips/' + trip.objectId} />
-                  ))}
-                </Carousel>
+                <Badge>
+                  <BadgeIcon />
+                </Badge>
+                <SelfAlignCenter>Part of trips</SelfAlignCenter>
+                <CarouselColumnSpan>
+                  <Carousel sm_slides_nb={1} md_slides_nb={2} lg_slides_nb={4} xl_slides_nb={4}>
+                    {this.props.trips.map(trip => (
+                      <TripCart item={trip} withShadow key={trip.title} size="small" href={'/trips/' + trip.objectId} />
+                    ))}
+                  </Carousel>
+                </CarouselColumnSpan>
               </TripsWrap>
             ) : null}
             <div>
