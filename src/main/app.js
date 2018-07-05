@@ -4,7 +4,7 @@ import { Route, HashRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store';
 import withSegmentTracker from './middlewares/with_segment_tracker';
-import withErrorHandler from './middlewares/WithErrorHandler';
+import withErrorBoundary from './middlewares/WithErrorBoundary';
 import Home from './../scenes/home/home';
 import Account from './../scenes/account/account';
 import Sessions from './../scenes/sessions/sessions';
@@ -18,7 +18,7 @@ import ScrollToTop from './middlewares/ScrollToTop';
 import ServiceUpsert from '../scenes/service-upsert';
 import Checkout from '../scenes/checkout';
 
-const commonHOCs = comp => withErrorHandler(withSegmentTracker(comp));
+const commonHOCs = comp => withErrorBoundary(withSegmentTracker(comp));
 
 const TripsWithSegment = commonHOCs(Trips);
 // when the url param changes React Router doesn't unmount & remount the component
@@ -43,7 +43,7 @@ const App = () => {
             <Route path={process.env.PUBLIC_URL + '/checkout/:id'} component={commonHOCs(Checkout)} />
             <Route path={process.env.PUBLIC_URL + '/users/:userName'} component={commonHOCs(Users)} />
             <Route path={process.env.PUBLIC_URL + '/account'} component={commonHOCs(Account)} />
-            <Route component={withErrorHandler(Notfound)} />
+            <Route component={withErrorBoundary(Notfound)} />
           </Switch>
         </ScrollToTop>
       </HashRouter>

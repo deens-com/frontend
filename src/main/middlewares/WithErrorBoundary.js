@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 export default ChildComponent => {
-  return class ErrorHandler extends Component {
+  return class ErrorBoundary extends Component {
     state = {
       showErrorPage: false,
     };
