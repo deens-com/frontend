@@ -94,7 +94,7 @@ class ServiceForm extends Component {
         const latlngPromise = getLatLng(currentResult);
         setFieldValue('formattedAddress', currentResult.formatted_address);
         const { address_components: addressComponents } = currentResult;
-        const localities = addressComponents.filter(c => c.types.includes('locality'));
+        const localities = addressComponents.filter(c => c.types.includes('locality') || c.types.includes('postal_town'));
         const countries = addressComponents.filter(c => c.types.includes('country'));
         if (countries[0] && countries[0].long_name) {
           setFieldValue('country', countries[0].long_name);
