@@ -73,7 +73,7 @@ export default class TripSummary extends Component {
       });
     });
 
-    return totalPrice;
+    return totalPrice.toFixed(2);
   }
 
   onBookClickWithDates = () => {

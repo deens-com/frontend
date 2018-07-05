@@ -27,7 +27,7 @@ const Unit = styled.span`
 class PriceTag extends Component {
   // exposing the Price style so others can use this same style as the default render
   static PriceStyle = Price;
-  
+
   calculatePrice() {
     const priceInBitcoin = (1 / this.props.baseCurrency.rates.USD) * this.props.price;
     switch (this.props.baseCurrency.value) {
@@ -50,8 +50,8 @@ class PriceTag extends Component {
       return (
         <PriceWrap>
           <Price size={this.props.size}>
-            {convertedPrice}
             {symbol}
+            {convertedPrice}
           </Price>
           {this.props.unit !== 'hidden' && <Unit> / person</Unit>}
         </PriceWrap>
