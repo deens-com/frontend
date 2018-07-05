@@ -43,6 +43,7 @@ function OwnerToolBar({
   onCheckAvailabilityClick,
   serviceAvailabilityCheckInProgress,
 }) {
+  const isTripBooked = trip && trip.booked;
   return (
     <ResponsiveToolbarWrap>
       {({ isMobile }) => (
@@ -56,6 +57,7 @@ function OwnerToolBar({
               }}
               onBlur={onSubmit}
               value={state.title}
+              disabled={isTripBooked}
             />
           </TitleDiv>
           <LocationDiv isMobile={isMobile}>
@@ -69,6 +71,7 @@ function OwnerToolBar({
                   .catch(console.error);
               }}
               onBlur={onSubmit}
+              disabled={isTripBooked}
             />
           </LocationDiv>
           <StartDateDiv isMobile={isMobile}>
@@ -84,6 +87,7 @@ function OwnerToolBar({
               type="date"
               placeholder="From date"
               leftIcon="date"
+              disabled={isTripBooked}
             />
           </StartDateDiv>
           <EndDateDiv isMobile={isMobile}>
@@ -97,6 +101,7 @@ function OwnerToolBar({
               type="date"
               placeholder="To date"
               leftIcon="date"
+              disabled={isTripBooked}
             />
           </EndDateDiv>
           <div>
@@ -109,6 +114,7 @@ function OwnerToolBar({
               placeholder="2"
               leftIcon="person"
               onBlur={onSubmit}
+              disabled={isTripBooked}
             />
           </div>
           <ToolbarButton

@@ -74,11 +74,15 @@ function postFetchTripActions(trip, dispatch, getState) {
   let endDate = new Date(getISODateString(trip.endDate));
   if (!isOwner) {
     const newStartDate = moment()
+      .utc()
       .add(1, 'day')
       .startOf('day');
-    const beginMoment = moment(startDate).startOf('day');
+    const beginMoment = moment(startDate)
+      .utc()
+      .startOf('day');
     const diffDays = Math.ceil(newStartDate.diff(beginMoment, 'days', true));
     endDate = moment(endDate)
+      .utc()
       .startOf('day')
       .add(diffDays, 'days')
       .toDate();
@@ -129,8 +133,12 @@ export const updateTrip = (newDetails, showSaved) => async (dispatch, getState) 
 export const checkAvailability = (beginDate, peopleCount) => async (dispatch, getState) => {
   if (!beginDate) return;
   const state = getState();
-  const tripId = state.TripsReducer.trip.objectId;
+  const { objectId: tripId, booked } = state.TripsReducer.trip;
   dispatch(serviceAvailabilitiesStart());
+  if (booked) {
+    dispatch(serviceAvailabilitiesSuccess({}));
+    return;
+  }
   const result = await Parse.Cloud.run('checkAvailabilityByTrip', { tripId, beginDate, peopleCount });
   dispatch(serviceAvailabilitiesSuccess(result));
 };
@@ -148,6 +156,29 @@ export const cloneTrip = (beginDate, peopleCount, history) => async (dispatch, g
     }
   } catch (error) {
     dispatch(setTripCloningStatus(fetch_helpers.statuses.ERROR));
+  }
+};
+
+/**
+ * Once the user has selected the image for the trip
+ * The component calls this action to upload the image
+ */
+export const onImageSelect = file => async (dispatch, getState) => {
+  if (!file) return;
+  const state = getState();
+  const tripId = state.TripsReducer.trip.objectId;
+  try {
+    dispatch({ type: 'TRIP/UPDATE_IMAGE_START' });
+    const [trip, parseFile] = await Promise.all([
+      fetch_helpers.build_query('Trip').get(tripId),
+      new Parse.File(file.name, file).save(),
+    ]);
+    await trip.save({ picture: parseFile });
+    dispatch({ type: 'TRIP/UPDATE_IMAGE_FINISH' });
+    fetchTrip(tripId)(dispatch, getState);
+  } catch (error) {
+    console.error(error);
+    dispatch({ type: 'TRIP/UPDATE_IMAGE_ERROR' });
   }
 };
 

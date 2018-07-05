@@ -41,7 +41,7 @@ export default function Results({
   onServiceRemoveClick,
 }) {
   const currentUser = Parse.User.current();
-  const allowServiceRearrange = (trip && trip.owner && trip.owner.objectId) === (currentUser && currentUser.id);
+  const allowServiceRearrange = trip && (trip.owner && trip.owner.objectId) === (currentUser && currentUser.id) && !trip.booked;
   const dayProps = { trip, allowServiceRearrange, onServiceRemoveClick };
   const services = [];
   if (showDetails) {

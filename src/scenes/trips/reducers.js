@@ -14,6 +14,7 @@ const initialState = {
     person: {},
   },
   showTripStatusChanged: false,
+  isImageUploadInProgress: false,
 };
 
 export default function TripsReducer(state = initialState, action = {}) {
@@ -93,6 +94,18 @@ export default function TripsReducer(state = initialState, action = {}) {
         showTripStatusChanged: action.payload,
       };
     }
+    case 'TRIP/UPDATE_IMAGE_START': {
+      return {
+        ...state,
+        isImageUploadInProgress: true,
+      };
+    }
+    case 'TRIP/UPDATE_IMAGE_FINISH':
+    case 'TRIP/UPDATE_IMAGE_ERROR':
+      return {
+        ...state,
+        isImageUploadInProgress: false,
+      };
     default:
       return state;
   }

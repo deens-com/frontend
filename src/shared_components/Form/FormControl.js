@@ -69,7 +69,7 @@ export default class FormControl extends Component {
   }
 
   onFocus() {
-    this.setState({ focused: true });
+    if (!this.props.disabled) this.setState({ focused: true });
   }
 
   onBlur() {

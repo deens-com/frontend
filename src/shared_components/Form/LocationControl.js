@@ -119,7 +119,7 @@ export default class LocationFormControl extends Component {
   }
 
   onFocus() {
-    this.setState({ focused: true });
+    if (!this.props.disabled) this.setState({ focused: true });
   }
 
   onBlur() {
@@ -145,6 +145,7 @@ export default class LocationFormControl extends Component {
     if (addr.includes('936ZER0378')) {
       addr = addr.replace('936ZER0378', '');
     }
+    this.inputProps.disabled = this.props.disabled;
     this.inputProps.value = addr;
 
     return (

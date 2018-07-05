@@ -16,7 +16,8 @@ export default function DateInput(props) {
       }}
       inputProps={{
         onBlur: props.onBlur,
-        onFocus: props.onFocus
+        onFocus: props.onFocus,
+        disabled: props.disabled,
       }}
       placeholder={props.placeholder}
       value={props.value}

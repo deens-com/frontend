@@ -7,7 +7,7 @@ import GoogleMapReact from 'google-map-react';
 import { fitBounds } from 'google-map-react/utils';
 import moment from 'moment';
 import Parse from 'parse';
-import { Divider } from 'semantic-ui-react';
+import { Divider, Message } from 'semantic-ui-react';
 
 // COMPONENTS
 import TopBar from './../../shared_components/TopBarWithSearch';
@@ -24,6 +24,7 @@ import { media, sizes } from '../../libs/styled';
 // STYLES
 import { Page, PageContent } from '../../shared_components/layout/Page';
 import { Hr } from '../../shared_components/styledComponents/misc';
+import ChangeTripImageButton from './components/ChangeTripImageButton';
 
 const Wrap = styled.div`
   ${media.minMediumPlus} {
@@ -65,8 +66,11 @@ const DatesWrap = styled.div`
 `;
 
 const ActionsWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   & > div:first-child {
-    margin-right: 15px;
+    margin-bottom: 15px;
   }
 `;
 
@@ -193,7 +197,8 @@ export default class TripsScene extends Component {
   };
 
   render() {
-    const { query } = this.props;
+    const { query, trip } = this.props;
+
     return (
       <Page topPush>
         <TopBar fixed withPadding />
@@ -201,7 +206,7 @@ export default class TripsScene extends Component {
           <Wrap>
             <LeftWrap>
               <ShareWrap>
-                <h3>{this.props.trip.title}</h3>
+                <h3>{trip.title}</h3>
                 <DatesWrap>
                   <p>
                     {query.startDate && moment(query.startDate).format('MMM Do YY')} -{' '}
@@ -210,18 +215,24 @@ export default class TripsScene extends Component {
                 </DatesWrap>
                 <span>
                   <ProfileWrap>
-                    <UserAvatar user={this.props.trip && this.props.trip.owner} usernameColor="#fff" />
+                    <UserAvatar user={trip && trip.owner} usernameColor="#fff" />
                   </ProfileWrap>
                 </span>
                 <ActionsWrap>
                   <ShareButton
-                    trip={this.props.trip}
+                    trip={trip}
                     updateTripDetails={this.props.updateTripDetails}
                     showTripStatusChanged={this.props.showTripStatusChanged}
                     onShareModalClose={this.props.onShareModalClose}
                   />
+                  <ChangeTripImageButton
+                    trip={trip}
+                    isOwner={this.state.isOwner}
+                    onImageSelect={this.props.onImageSelect}
+                    isImageUploadInProgress={this.props.isImageUploadInProgress}
+                  />
                 </ActionsWrap>
-                <ShareBg url="/img/food/mamamia.jpg" />
+                <ShareBg url={(trip && trip.picture && trip.picture.url) || '/img/food/mamamia.jpg'} />
               </ShareWrap>
               <Media
                 query={`(min-width: ${sizes.medium})`}
@@ -243,18 +254,21 @@ export default class TripsScene extends Component {
               />
             </LeftWrap>
             <TripWrapper>
+              {trip.booked && this.state.isOwner ? (
+                <Message>This trip has already booked on {moment(query.startDate).format('Do MMM YYYY')}.</Message>
+              ) : null}
               <ToolBar
                 onSubmit={this.onSubmit}
                 onValueChange={this.onValueChange}
                 state={query}
-                trip={this.props.trip}
+                trip={trip}
                 onCheckAvailabilityClick={this.checkAvailability}
                 isOwner={this.state.isOwner}
                 serviceAvailabilityCheckInProgress={this.props.serviceAvailabilityCheckInProgress}
               />
               <Divider horizontal>Trip itinerary</Divider>
               <Results
-                trip={this.props.trip}
+                trip={trip}
                 showDetails={this.state.details}
                 scheduledServices={this.props.scheduledServices}
                 unScheduledServices={this.props.unScheduledServices}
@@ -263,9 +277,10 @@ export default class TripsScene extends Component {
               />
               <Hr />
               <Summary
-                trip={this.props.trip}
+                trip={trip}
                 scheduledServices={this.props.scheduledServices}
                 unScheduledServices={this.props.unScheduledServices}
+                isOwner={this.state.isOwner}
                 onBookClick={this.props.onBookClick}
                 isCloningInProcess={this.props.isCloningInProcess}
                 query={query}
@@ -290,4 +305,6 @@ TripsScene.propTypes = {
   isCloningInProcess: PropTypes.bool.isRequired,
   serviceAvailabilityCheckInProgress: PropTypes.bool.isRequired,
   onShareModalClose: PropTypes.func.isRequired,
+  onImageSelect: PropTypes.func.isRequired,
+  isImageUploadInProgress: PropTypes.bool.isRequired,
 };
