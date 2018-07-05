@@ -133,8 +133,12 @@ export const updateTrip = (newDetails, showSaved) => async (dispatch, getState) 
 export const checkAvailability = (beginDate, peopleCount) => async (dispatch, getState) => {
   if (!beginDate) return;
   const state = getState();
-  const tripId = state.TripsReducer.trip.objectId;
+  const { objectId: tripId, booked } = state.TripsReducer.trip;
   dispatch(serviceAvailabilitiesStart());
+  if (booked) {
+    dispatch(serviceAvailabilitiesSuccess({}));
+    return;
+  }
   const result = await Parse.Cloud.run('checkAvailabilityByTrip', { tripId, beginDate, peopleCount });
   dispatch(serviceAvailabilitiesSuccess(result));
 };
