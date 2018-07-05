@@ -151,6 +151,29 @@ export const cloneTrip = (beginDate, peopleCount, history) => async (dispatch, g
   }
 };
 
+/**
+ * Once the user has selected the image for the trip
+ * The component calls this action to upload the image
+ */
+export const onImageSelect = file => async (dispatch, getState) => {
+  if (!file) return;
+  const state = getState();
+  const tripId = state.TripsReducer.trip.objectId;
+  try {
+    dispatch({ type: 'TRIP/UPDATE_IMAGE_START' });
+    const [trip, parseFile] = await Promise.all([
+      fetch_helpers.build_query('Trip').get(tripId),
+      new Parse.File(file.name, file).save(),
+    ]);
+    await trip.save({ picture: parseFile });
+    dispatch({ type: 'TRIP/UPDATE_IMAGE_FINISH' });
+    fetchTrip(tripId)(dispatch, getState);
+  } catch (error) {
+    console.error(error);
+    dispatch({ type: 'TRIP/UPDATE_IMAGE_ERROR' });
+  }
+};
+
 export const removePreBookingResults = () => dispatch => {
   dispatch({ type: 'TRIP_CLONNED', payload: null });
 };
