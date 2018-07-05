@@ -20,7 +20,7 @@ class EditServiceFormContainer extends Component {
   componentWillReceiveProps(nextProps) {
     const { service, userProfile } = nextProps;
 
-    if (service && userProfile && service.owner.objectId !== userProfile.objectId) {
+    if (service && userProfile && service.owner && service.owner.objectId !== userProfile.objectId) {
       history.push('/account/services');
     }
   }
