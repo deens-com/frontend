@@ -197,7 +197,7 @@ export default class TripsScene extends Component {
   };
 
   render() {
-    const { query } = this.props;
+    const { query, trip } = this.props;
     return (
       <Page topPush>
         <TopBar fixed withPadding />
@@ -205,7 +205,7 @@ export default class TripsScene extends Component {
           <Wrap>
             <LeftWrap>
               <ShareWrap>
-                <h3>{this.props.trip.title}</h3>
+                <h3>{trip.title}</h3>
                 <DatesWrap>
                   <p>
                     {query.startDate && moment(query.startDate).format('MMM Do YY')} -{' '}
@@ -214,29 +214,24 @@ export default class TripsScene extends Component {
                 </DatesWrap>
                 <span>
                   <ProfileWrap>
-                    <UserAvatar user={this.props.trip && this.props.trip.owner} usernameColor="#fff" />
+                    <UserAvatar user={trip && trip.owner} usernameColor="#fff" />
                   </ProfileWrap>
                 </span>
                 <ActionsWrap>
                   <ShareButton
-                    trip={this.props.trip}
+                    trip={trip}
                     updateTripDetails={this.props.updateTripDetails}
                     showTripStatusChanged={this.props.showTripStatusChanged}
                     onShareModalClose={this.props.onShareModalClose}
                   />
                   <ChangeTripImageButton
-                    trip={this.props.trip}
+                    trip={trip}
                     isOwner={this.state.isOwner}
                     onImageSelect={this.props.onImageSelect}
                     isImageUploadInProgress={this.props.isImageUploadInProgress}
                   />
                 </ActionsWrap>
-                <ShareBg
-                  url={
-                    (this.props.trip && this.props.trip.picture && this.props.trip.picture.url) ||
-                    '/img/food/mamamia.jpg'
-                  }
-                />
+                <ShareBg url={(trip && trip.picture && trip.picture.url) || '/img/food/mamamia.jpg'} />
               </ShareWrap>
               <Media
                 query={`(min-width: ${sizes.medium})`}
@@ -262,14 +257,14 @@ export default class TripsScene extends Component {
                 onSubmit={this.onSubmit}
                 onValueChange={this.onValueChange}
                 state={query}
-                trip={this.props.trip}
+                trip={trip}
                 onCheckAvailabilityClick={this.checkAvailability}
                 isOwner={this.state.isOwner}
                 serviceAvailabilityCheckInProgress={this.props.serviceAvailabilityCheckInProgress}
               />
               <Divider horizontal>Trip itinerary</Divider>
               <Results
-                trip={this.props.trip}
+                trip={trip}
                 showDetails={this.state.details}
                 scheduledServices={this.props.scheduledServices}
                 unScheduledServices={this.props.unScheduledServices}
@@ -278,7 +273,7 @@ export default class TripsScene extends Component {
               />
               <Hr />
               <Summary
-                trip={this.props.trip}
+                trip={trip}
                 scheduledServices={this.props.scheduledServices}
                 unScheduledServices={this.props.unScheduledServices}
                 onBookClick={this.props.onBookClick}
