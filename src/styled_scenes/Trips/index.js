@@ -24,6 +24,7 @@ import { media, sizes } from '../../libs/styled';
 // STYLES
 import { Page, PageContent } from '../../shared_components/layout/Page';
 import { Hr } from '../../shared_components/styledComponents/misc';
+import ChangeTripImageButton from './components/ChangeTripImageButton';
 
 const Wrap = styled.div`
   ${media.minMediumPlus} {
@@ -65,8 +66,11 @@ const DatesWrap = styled.div`
 `;
 
 const ActionsWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   & > div:first-child {
-    margin-right: 15px;
+    margin-bottom: 15px;
   }
 `;
 
@@ -220,6 +224,7 @@ export default class TripsScene extends Component {
                     showTripStatusChanged={this.props.showTripStatusChanged}
                     onShareModalClose={this.props.onShareModalClose}
                   />
+                  <ChangeTripImageButton trip={this.props.trip} isOwner={this.state.isOwner} />
                 </ActionsWrap>
                 <ShareBg url="/img/food/mamamia.jpg" />
               </ShareWrap>
