@@ -12,7 +12,7 @@ export default class ChangeTripImageButton extends Component {
 
   onFileSelect = e => {
     const file = e.currentTarget.files[0];
-    this.props.onImageSelect(file);
+    if (file) this.props.onImageSelect(file);
   };
 
   render() {
