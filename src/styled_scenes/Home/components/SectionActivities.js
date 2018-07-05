@@ -18,6 +18,8 @@ import {
   More
 } from "../../../shared_components/layout/Page";
 
+import {BadgeDecentralized} from './../../../shared_components/Badge';
+
 export default function HomeSectionLocations({ locations }) {
   return (
     <PageWrapper>
@@ -36,6 +38,9 @@ export default function HomeSectionLocations({ locations }) {
             xl_slides_nb={4}>
             {locations.map(item => (
               <Link to={"/services/" + item.objectId} key={item.objectId}>
+                { item.contractAddress &&
+                  <BadgeDecentralized>Decentralized</BadgeDecentralized>
+                }
                 <LocationCart
                   item={item}
                   withShadow
