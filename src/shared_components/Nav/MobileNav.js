@@ -108,7 +108,6 @@ export default class MobileNav extends Component {
     }else{
       this.setState({ logged_in: true });
     }
-
   }
 
   guestDropdown() {
