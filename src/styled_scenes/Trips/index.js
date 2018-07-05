@@ -7,7 +7,7 @@ import GoogleMapReact from 'google-map-react';
 import { fitBounds } from 'google-map-react/utils';
 import moment from 'moment';
 import Parse from 'parse';
-import { Divider } from 'semantic-ui-react';
+import { Divider, Message } from 'semantic-ui-react';
 
 // COMPONENTS
 import TopBar from './../../shared_components/TopBarWithSearch';
@@ -198,6 +198,7 @@ export default class TripsScene extends Component {
 
   render() {
     const { query, trip } = this.props;
+
     return (
       <Page topPush>
         <TopBar fixed withPadding />
@@ -253,6 +254,9 @@ export default class TripsScene extends Component {
               />
             </LeftWrap>
             <TripWrapper>
+              {trip.booked && this.state.isOwner ? (
+                <Message>This trip has already booked on {moment(query.startDate).format('Do MMM YYYY')}.</Message>
+              ) : null}
               <ToolBar
                 onSubmit={this.onSubmit}
                 onValueChange={this.onValueChange}
@@ -276,6 +280,7 @@ export default class TripsScene extends Component {
                 trip={trip}
                 scheduledServices={this.props.scheduledServices}
                 unScheduledServices={this.props.unScheduledServices}
+                isOwner={this.state.isOwner}
                 onBookClick={this.props.onBookClick}
                 isCloningInProcess={this.props.isCloningInProcess}
                 query={query}

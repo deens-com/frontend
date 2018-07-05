@@ -74,11 +74,15 @@ function postFetchTripActions(trip, dispatch, getState) {
   let endDate = new Date(getISODateString(trip.endDate));
   if (!isOwner) {
     const newStartDate = moment()
+      .utc()
       .add(1, 'day')
       .startOf('day');
-    const beginMoment = moment(startDate).startOf('day');
+    const beginMoment = moment(startDate)
+      .utc()
+      .startOf('day');
     const diffDays = Math.ceil(newStartDate.diff(beginMoment, 'days', true));
     endDate = moment(endDate)
+      .utc()
       .startOf('day')
       .add(diffDays, 'days')
       .toDate();
@@ -129,8 +133,12 @@ export const updateTrip = (newDetails, showSaved) => async (dispatch, getState) 
 export const checkAvailability = (beginDate, peopleCount) => async (dispatch, getState) => {
   if (!beginDate) return;
   const state = getState();
-  const tripId = state.TripsReducer.trip.objectId;
+  const { objectId: tripId, booked } = state.TripsReducer.trip;
   dispatch(serviceAvailabilitiesStart());
+  if (booked) {
+    dispatch(serviceAvailabilitiesSuccess({}));
+    return;
+  }
   const result = await Parse.Cloud.run('checkAvailabilityByTrip', { tripId, beginDate, peopleCount });
   dispatch(serviceAvailabilitiesSuccess(result));
 };
