@@ -108,6 +108,7 @@ export default class MobileNav extends Component {
     }else{
       this.setState({ logged_in: true });
     }
+
   }
 
   guestDropdown() {
@@ -124,7 +125,7 @@ export default class MobileNav extends Component {
   }
 
   render() {
-    if (!this.props.menuIsOpened) return null;
+    if (!this.props.showProfileMenu) return null;
 
     return (
       <Media
@@ -139,7 +140,7 @@ export default class MobileNav extends Component {
                 <Divider />
               </li>
               {mainNav.map(item => (
-                <li aria-hidden="false" key={item.label}>
+                <li aria-hidden="false" key={item.label} onClick={this.props.toggleProfileMenu}>
                   <NavLink activeclassname="is-active" to={item.href}>
                     {item.label}
                   </NavLink>
