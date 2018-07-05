@@ -84,6 +84,7 @@ const mapStateToProps = state => {
     query: state.TripsReducer.query,
     serviceAvailabilityCheckInProgress: state.TripsReducer.serviceAvailabilityCheckStatus === statuses.STARTED,
     showTripStatusChanged: state.TripsReducer.showTripStatusChanged,
+    isImageUploadInProgress: state.TripsReducer.isImageUploadInProgress,
   };
 };
 

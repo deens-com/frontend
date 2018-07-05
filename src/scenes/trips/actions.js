@@ -160,14 +160,17 @@ export const onImageSelect = file => async (dispatch, getState) => {
   const state = getState();
   const tripId = state.TripsReducer.trip.objectId;
   try {
+    dispatch({ type: 'TRIP/UPDATE_IMAGE_START' });
     const [trip, parseFile] = await Promise.all([
       fetch_helpers.build_query('Trip').get(tripId),
       new Parse.File(file.name, file).save(),
     ]);
     await trip.save({ picture: parseFile });
+    dispatch({ type: 'TRIP/UPDATE_IMAGE_FINISH' });
     fetchTrip(tripId)(dispatch, getState);
   } catch (error) {
     console.error(error);
+    dispatch({ type: 'TRIP/UPDATE_IMAGE_ERROR' });
   }
 };
 

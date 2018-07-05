@@ -228,6 +228,7 @@ export default class TripsScene extends Component {
                     trip={this.props.trip}
                     isOwner={this.state.isOwner}
                     onImageSelect={this.props.onImageSelect}
+                    isImageUploadInProgress={this.props.isImageUploadInProgress}
                   />
                 </ActionsWrap>
                 <ShareBg
@@ -305,4 +306,5 @@ TripsScene.propTypes = {
   serviceAvailabilityCheckInProgress: PropTypes.bool.isRequired,
   onShareModalClose: PropTypes.func.isRequired,
   onImageSelect: PropTypes.func.isRequired,
+  isImageUploadInProgress: PropTypes.bool.isRequired,
 };

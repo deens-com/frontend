@@ -7,6 +7,7 @@ export default class ChangeTripImageButton extends Component {
     trip: PropTypes.object,
     isOwner: PropTypes.bool.isRequired,
     onImageSelect: PropTypes.func.isRequired,
+    isImageUploadInProgress: PropTypes.bool.isRequired,
   };
 
   onFileSelect = e => {
@@ -15,7 +16,7 @@ export default class ChangeTripImageButton extends Component {
   };
 
   render() {
-    const { trip, isOwner } = this.props;
+    const { trip, isOwner, isImageUploadInProgress } = this.props;
     if (!trip || !isOwner) return null;
     return (
       <div>
@@ -27,7 +28,14 @@ export default class ChangeTripImageButton extends Component {
           hidden
           onChange={this.onFileSelect}
         />
-        <Button icon labelPosition="left" as="label" for="change-trip-image-btn-input">
+        <Button
+          icon
+          labelPosition="left"
+          as="label"
+          htmlFor="change-trip-image-btn-input"
+          loading={isImageUploadInProgress}
+          disabled={isImageUploadInProgress}
+        >
           <Icon name="camera" />
           Change Image
         </Button>
