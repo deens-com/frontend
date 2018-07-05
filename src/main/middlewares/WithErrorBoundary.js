@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ErrorPage from 'shared_components/ErrorPage';
 
 export default ChildComponent => {
   return class ErrorBoundary extends Component {
@@ -13,8 +14,8 @@ export default ChildComponent => {
     }
 
     render() {
-      if (!this.state.showErrorPage) {
-        return <h1>no!!!!! it broke</h1>;
+      if (this.state.showErrorPage) {
+        return <ErrorPage />;
       }
       return <ChildComponent {...this.props} />;
     }
