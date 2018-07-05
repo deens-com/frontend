@@ -224,9 +224,18 @@ export default class TripsScene extends Component {
                     showTripStatusChanged={this.props.showTripStatusChanged}
                     onShareModalClose={this.props.onShareModalClose}
                   />
-                  <ChangeTripImageButton trip={this.props.trip} isOwner={this.state.isOwner} />
+                  <ChangeTripImageButton
+                    trip={this.props.trip}
+                    isOwner={this.state.isOwner}
+                    onImageSelect={this.props.onImageSelect}
+                  />
                 </ActionsWrap>
-                <ShareBg url="/img/food/mamamia.jpg" />
+                <ShareBg
+                  url={
+                    (this.props.trip && this.props.trip.picture && this.props.trip.picture.url) ||
+                    '/img/food/mamamia.jpg'
+                  }
+                />
               </ShareWrap>
               <Media
                 query={`(min-width: ${sizes.medium})`}
@@ -295,4 +304,5 @@ TripsScene.propTypes = {
   isCloningInProcess: PropTypes.bool.isRequired,
   serviceAvailabilityCheckInProgress: PropTypes.bool.isRequired,
   onShareModalClose: PropTypes.func.isRequired,
+  onImageSelect: PropTypes.func.isRequired,
 };
