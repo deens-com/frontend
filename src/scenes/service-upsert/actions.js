@@ -1,6 +1,7 @@
 import Parse from 'parse';
 import fetch_helpers from '../../libs/fetch_helpers';
 import history from '../../main/history';
+import {generateFilename} from './../../libs/filename';
 
 export const types = {
   SERVICE_CREATE_STARTED: 'SERVICE_CREATE_STARTED',
@@ -32,7 +33,10 @@ export const registerService = (values, history) => async (dispatch, getState) =
     const { mainPicture, acceptETH } = values;
     let parseFile;
     if (mainPicture) {
-      parseFile = await new Parse.File(mainPicture.name, mainPicture).save();
+      const filename = generateFilename(mainPicture.name);
+      if (filename.length) {
+        parseFile = await new Parse.File(filename, mainPicture).save();
+      }
     }
     const result = await Parse.Cloud.run('createOrUpdateService', {
       ...values,
