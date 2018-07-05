@@ -1,20 +1,37 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Icon } from 'semantic-ui-react';
 
-const ChangeTripImageButton = ({ trip, isOwner, onImageSelect }) => {
-  if (!trip || !isOwner) return null;
-  return (
-    <Button icon labelPosition="left">
-      <Icon name="camera" />
-      Change Image
-    </Button>
-  );
-};
+export default class ChangeTripImageButton extends Component {
+  static propTypes = {
+    trip: PropTypes.object,
+    isOwner: PropTypes.bool.isRequired,
+    onImageSelect: PropTypes.func.isRequired,
+  };
 
-ChangeTripImageButton.propTypes = {
-  trip: PropTypes.object,
-  isOwner: PropTypes.bool.isRequired,
-};
+  onFileSelect = e => {
+    const file = e.currentTarget.files[0];
+    this.props.onImageSelect(file);
+  };
 
-export default ChangeTripImageButton;
+  render() {
+    const { trip, isOwner } = this.props;
+    if (!trip || !isOwner) return null;
+    return (
+      <div>
+        <input
+          type="file"
+          id="change-trip-image-btn-input"
+          name="files"
+          accept=".jpg, .jpeg, .png"
+          hidden
+          onChange={this.onFileSelect}
+        />
+        <Button icon labelPosition="left" as="label" for="change-trip-image-btn-input">
+          <Icon name="camera" />
+          Change Image
+        </Button>
+      </div>
+    );
+  }
+}
