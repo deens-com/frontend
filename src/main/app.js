@@ -4,6 +4,7 @@ import { Route, HashRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store';
 import withSegmentTracker from './middlewares/with_segment_tracker';
+import withErrorHandler from './middlewares/WithErrorHandler';
 import Home from './../scenes/home/home';
 import Account from './../scenes/account/account';
 import Sessions from './../scenes/sessions/sessions';
@@ -17,7 +18,9 @@ import ScrollToTop from './middlewares/ScrollToTop';
 import ServiceUpsert from '../scenes/service-upsert';
 import Checkout from '../scenes/checkout';
 
-const TripsWithSegment = withSegmentTracker(Trips);
+const commonHOCs = comp => withErrorHandler(withSegmentTracker(comp));
+
+const TripsWithSegment = commonHOCs(Trips);
 // when the url param changes React Router doesn't unmount & remount the component
 // instead it just changes the props
 // by applying a key, React will unmount and remount the component on key change
@@ -29,18 +32,18 @@ const App = () => {
       <HashRouter>
         <ScrollToTop>
           <Switch>
-            <Route exact path={process.env.PUBLIC_URL + '/'} component={withSegmentTracker(Home)} />
-            <Route path={process.env.PUBLIC_URL + '/login'} component={withSegmentTracker(Sessions)} />
-            <Route path={process.env.PUBLIC_URL + '/register'} component={withSegmentTracker(Registrations)} />
-            <Route path={process.env.PUBLIC_URL + '/results'} component={withSegmentTracker(Results)} />
-            <Route path={process.env.PUBLIC_URL + '/services/new'} component={withSegmentTracker(ServiceUpsert)} />
-            <Route path={process.env.PUBLIC_URL + '/services/edit/:id'} component={withSegmentTracker(ServiceUpsert)} />
-            <Route path={process.env.PUBLIC_URL + '/services/:id'} component={withSegmentTracker(Services)} />
+            <Route exact path={process.env.PUBLIC_URL + '/'} component={commonHOCs(Home)} />
+            <Route path={process.env.PUBLIC_URL + '/login'} component={commonHOCs(Sessions)} />
+            <Route path={process.env.PUBLIC_URL + '/register'} component={commonHOCs(Registrations)} />
+            <Route path={process.env.PUBLIC_URL + '/results'} component={commonHOCs(Results)} />
+            <Route path={process.env.PUBLIC_URL + '/services/new'} component={commonHOCs(ServiceUpsert)} />
+            <Route path={process.env.PUBLIC_URL + '/services/edit/:id'} component={commonHOCs(ServiceUpsert)} />
+            <Route path={process.env.PUBLIC_URL + '/services/:id'} component={commonHOCs(Services)} />
             <Route path={process.env.PUBLIC_URL + '/trips/:id'} render={renderTrips} />
-            <Route path={process.env.PUBLIC_URL + '/checkout/:id'} component={withSegmentTracker(Checkout)} />
-            <Route path={process.env.PUBLIC_URL + '/users/:userName'} component={Users} />
-            <Route path={process.env.PUBLIC_URL + '/account'} component={Account} />
-            <Route component={Notfound} />
+            <Route path={process.env.PUBLIC_URL + '/checkout/:id'} component={commonHOCs(Checkout)} />
+            <Route path={process.env.PUBLIC_URL + '/users/:userName'} component={commonHOCs(Users)} />
+            <Route path={process.env.PUBLIC_URL + '/account'} component={commonHOCs(Account)} />
+            <Route component={withErrorHandler(Notfound)} />
           </Switch>
         </ScrollToTop>
       </HashRouter>
