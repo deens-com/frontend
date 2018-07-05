@@ -1,19 +1,19 @@
-import React from "react";
-import { Switch } from "react-router";
-import { Route, HashRouter } from "react-router-dom";
-import { Provider } from "react-redux";
-import store from "./store";
-import withSegmentTracker from "./middlewares/with_segment_tracker";
-import Home from "./../scenes/home/home";
-import Account from "./../scenes/account/account";
-import Sessions from "./../scenes/sessions/sessions";
-import Results from "./../scenes/results/results";
-import Trips from "./../scenes/trips/trips";
-import Users from "./../scenes/users/users";
-import Services from "./../scenes/services/services";
-import Registrations from "./../scenes/registrations/registrations";
-import Notfound from "./../styled_scenes/NotFound";
-import ScrollToTop from "./middlewares/ScrollToTop";
+import React from 'react';
+import { Switch } from 'react-router';
+import { Route, HashRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import store from './store';
+import withSegmentTracker from './middlewares/with_segment_tracker';
+import Home from './../scenes/home/home';
+import Account from './../scenes/account/account';
+import Sessions from './../scenes/sessions/sessions';
+import Results from './../scenes/results/results';
+import Trips from './../scenes/trips/trips';
+import Users from './../scenes/users/users';
+import Services from './../scenes/services/services';
+import Registrations from './../scenes/registrations/registrations';
+import Notfound from './../styled_scenes/NotFound';
+import ScrollToTop from './middlewares/ScrollToTop';
 import ServiceUpsert from '../scenes/service-upsert';
 import Checkout from '../scenes/checkout';
 
@@ -21,7 +21,7 @@ const TripsWithSegment = withSegmentTracker(Trips);
 // when the url param changes React Router doesn't unmount & remount the component
 // instead it just changes the props
 // by applying a key, React will unmount and remount the component on key change
-const renderTrips = props => <TripsWithSegment {...props} key={props.location.pathname}/>
+const renderTrips = props => <TripsWithSegment {...props} key={props.location.pathname} />;
 
 const App = () => {
   return (
@@ -29,51 +29,17 @@ const App = () => {
       <HashRouter>
         <ScrollToTop>
           <Switch>
-            <Route
-              exact
-              path={process.env.PUBLIC_URL + "/"}
-              component={withSegmentTracker(Home)}
-            />
-            <Route
-              path={process.env.PUBLIC_URL + "/login"}
-              component={withSegmentTracker(Sessions)}
-            />
-            <Route
-              path={process.env.PUBLIC_URL + "/register"}
-              component={withSegmentTracker(Registrations)}
-            />
-            <Route
-              path={process.env.PUBLIC_URL + "/results"}
-              component={withSegmentTracker(Results)}
-            />
-            <Route
-              path={process.env.PUBLIC_URL + "/services/new"}
-              component={withSegmentTracker(ServiceUpsert)}
-            />
-            <Route
-              path={process.env.PUBLIC_URL + "/services/edit/:id"}
-              component={withSegmentTracker(ServiceUpsert)}
-            />
-            <Route
-              path={process.env.PUBLIC_URL + "/services/:id"}
-              component={withSegmentTracker(Services)}
-            />
-            <Route
-              path={process.env.PUBLIC_URL + "/trips/:id"}
-              render={renderTrips}
-            />
-            <Route
-              path={process.env.PUBLIC_URL + "/checkout/:id"}
-              component={withSegmentTracker(Checkout)}
-            />
-            <Route
-              path={process.env.PUBLIC_URL + "/users/:userName"}
-              component={Users}
-            />
-            <Route
-              path={process.env.PUBLIC_URL + "/account"}
-              component={Account}
-            />
+            <Route exact path={process.env.PUBLIC_URL + '/'} component={withSegmentTracker(Home)} />
+            <Route path={process.env.PUBLIC_URL + '/login'} component={withSegmentTracker(Sessions)} />
+            <Route path={process.env.PUBLIC_URL + '/register'} component={withSegmentTracker(Registrations)} />
+            <Route path={process.env.PUBLIC_URL + '/results'} component={withSegmentTracker(Results)} />
+            <Route path={process.env.PUBLIC_URL + '/services/new'} component={withSegmentTracker(ServiceUpsert)} />
+            <Route path={process.env.PUBLIC_URL + '/services/edit/:id'} component={withSegmentTracker(ServiceUpsert)} />
+            <Route path={process.env.PUBLIC_URL + '/services/:id'} component={withSegmentTracker(Services)} />
+            <Route path={process.env.PUBLIC_URL + '/trips/:id'} render={renderTrips} />
+            <Route path={process.env.PUBLIC_URL + '/checkout/:id'} component={withSegmentTracker(Checkout)} />
+            <Route path={process.env.PUBLIC_URL + '/users/:userName'} component={Users} />
+            <Route path={process.env.PUBLIC_URL + '/account'} component={Account} />
             <Route component={Notfound} />
           </Switch>
         </ScrollToTop>
