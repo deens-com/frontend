@@ -130,7 +130,7 @@ export default class TopBar extends Component {
           searchIsHidden={!showSearch}
           toggleSearch={this.toggleSearch}
         />
-        <MobileNav menuIsOpened={showMenu} />
+        <MobileNav toggleProfileMenu={this.toggleMenu} showProfileMenu={showMenu} />
 
       </div>
     );
