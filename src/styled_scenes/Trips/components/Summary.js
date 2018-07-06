@@ -102,15 +102,17 @@ export default class TripSummary extends Component {
             <PriceTag price={this.calculateTripTotalPrice() * this.props.query.person.value} unit="hidden" />
             &nbsp;&nbsp;
           </PricesWrap>
-          <BookButton
-            size="small"
-            circular
-            onClick={this.onBookClickWithDates}
-            loading={this.props.isCloningInProcess}
-            disabled={!isDatesFormComplete}
-          >
-            Book {booked && isOwner ? 'again' : 'now'}
-          </BookButton>
+          {booked && isOwner ? null : (
+            <BookButton
+              size="small"
+              circular
+              onClick={this.onBookClickWithDates}
+              loading={this.props.isCloningInProcess}
+              disabled={!isDatesFormComplete}
+            >
+              Book now
+            </BookButton>
+          )}
         </Wrap>
       </StickyWrap>
     );
