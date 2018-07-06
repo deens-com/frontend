@@ -1,4 +1,5 @@
 const initialState = {
+  isPageLoading: false,
   service: {},
   trips: [],
   userUnpurchasedTrips: {
@@ -15,10 +16,21 @@ const initialState = {
 
 export default function ServicesReducer(state = initialState, action = {}) {
   switch (action.type) {
+    case 'SERVICE_FETCH_START':
+      return {
+        ...state,
+        isPageLoading: true,
+      };
     case 'SERVICE_FETCHED':
       return {
         ...state,
+        isPageLoading: false,
         service: action.payload.service,
+      };
+    case 'SERVICE_FETCH_ERROR':
+      return {
+        ...state,
+        isPageLoading: false,
       };
     case 'TRIPS_FETCHED':
       return {
@@ -63,6 +75,8 @@ export default function ServicesReducer(state = initialState, action = {}) {
         ...action.payload,
         abi: JSON.stringify(action.payload.abi),
       };
+    case 'SERVICE/RESET':
+      return initialState;
     default:
       return state;
   }

@@ -202,7 +202,7 @@ export default class TripsScene extends Component {
     return (
       <Page topPush>
         <TopBar fixed withPadding />
-        <PageContent>
+        <PageContent loading={this.props.isPageLoading}>
           <Wrap>
             <LeftWrap>
               <ShareWrap>

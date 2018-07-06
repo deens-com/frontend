@@ -21,6 +21,10 @@ class TripsContainer extends Component {
     this.props.setShowTripStatusChanged(false);
   }
 
+  componentWillUnmount() {
+    this.props.resetTripData();
+  }
+
   /**
    * Called when a service is dragged and dropped
    * could be in the same day
@@ -85,6 +89,7 @@ const mapStateToProps = state => {
     serviceAvailabilityCheckInProgress: state.TripsReducer.serviceAvailabilityCheckStatus === statuses.STARTED,
     showTripStatusChanged: state.TripsReducer.showTripStatusChanged,
     isImageUploadInProgress: state.TripsReducer.isImageUploadInProgress,
+    isPageLoading: state.TripsReducer.isPageLoading,
   };
 };
 

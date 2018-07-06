@@ -162,7 +162,7 @@ class FoodDetailScene extends Component {
     return (
       <Page topPush>
         <TopBar fixed withPadding />
-        <PageContent flex>
+        <PageContent flex loading={this.props.isPageLoading}>
           <Media
             query={`(min-width: ${sizes.large})`}
             render={() => <ImgSlider images={this.props.service.pictures} />}

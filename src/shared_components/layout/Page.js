@@ -1,5 +1,7 @@
-import styled, { css } from "styled-components";
-import { media } from "../../libs/styled";
+import React from 'react';
+import styled, { css } from 'styled-components';
+import { Segment } from 'semantic-ui-react';
+import { media } from '../../libs/styled';
 
 export const Page = styled.div`
   display: flex;
@@ -19,13 +21,28 @@ export const Page = styled.div`
 export const PageWrapper = styled.div`
   max-width: 960px;
   margin: 0 auto;
-  padding: ${props => props.padding || "0 10px"};
+  padding: ${props => props.padding || '0 10px'};
 `;
 
-export const PageContent = styled.main`
-  padding: ${props => props.padding || "0"};
-  display: ${props => (props.flex ? "flex" : "block")};
+export const PageContentStyles = styled.main`
+  padding: ${props => props.padding || '0'};
+  display: ${props => (props.flex ? 'flex' : 'block')};
 `;
+
+export const SegmentWithoutPadding = styled(Segment)`
+  && {
+    padding: 0;
+    margin: 0;
+  }
+`;
+
+export const PageContent = props => {
+  return (
+    <SegmentWithoutPadding basic {...props}>
+      <PageContentStyles {...props}>{props.children}</PageContentStyles>
+    </SegmentWithoutPadding>
+  );
+};
 
 export const SectionWrap = styled.section`
   margin-bottom: 50px;
