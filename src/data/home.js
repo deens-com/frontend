@@ -1,22 +1,23 @@
+import i18n from './../libs/i18n';
 export const categories = [
   {
     img: "/img/categories/trips.png",
-    label: "Trips",
+    label: i18n.t('trips.label'),
     href: "/results?service_types=trip"
   },
   {
     img: "/img/categories/places.png",
-    label: "Places",
+    label: i18n.t('places.label'),
     href: "/results?service_types=place"
   },
   {
     img: "/img/categories/activities.png",
-    label: "Activities",
+    label: i18n.t('activities.label'),
     href: "/results?service_types=activity"
   },
   {
     img: "/img/categories/food.png",
-    label: "Food",
+    label: i18n.t('foods.label'),
     href: "/results?service_types=food"
   }
 ];

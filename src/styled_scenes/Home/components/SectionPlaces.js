@@ -17,7 +17,7 @@ import {
   SectionContent,
   More
 } from "../../../shared_components/layout/Page";
-
+import i18n from './../../../libs/i18n';
 import {BadgeDecentralized} from './../../../shared_components/Badge';
 
 export default function HomeSectionPlaces({ trips }) {
@@ -25,9 +25,9 @@ export default function HomeSectionPlaces({ trips }) {
     <PageWrapper>
       <SectionWrap>
         <SectionHeader>
-          <h3>Popular places</h3>
+          <h3>Popular {i18n.t('places.label')}</h3>
           <More>
-            <Link to="/results?service_types=place">All places</Link>
+            <Link to="/results?service_types=place">All {i18n.t('places.label')}</Link>
           </More>
         </SectionHeader>
         <SectionContent>
