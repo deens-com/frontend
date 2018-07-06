@@ -45,8 +45,8 @@ const PaymentSection = ({ pricePerPerson, totalPrice, onPaymentClick, isLoading 
                 </Button>
                 <Label as="a" basic color="green" pointing="left">
                   <PriceTag.PriceStyle>
-                    {convertedPrice}
                     {symbol}
+                    {convertedPrice}
                   </PriceTag.PriceStyle>
                 </Label>
               </Button>
