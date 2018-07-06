@@ -2,6 +2,7 @@ import Parse from 'parse';
 import moment from 'moment';
 import fetch_helpers from './../../libs/fetch_helpers';
 import { getISODateString } from 'libs/Utils';
+import {generateFilename} from 'libs/filename';
 
 export const trip_fetched = trip => ({
   type: 'TRIP_FETCHED',
@@ -167,11 +168,12 @@ export const onImageSelect = file => async (dispatch, getState) => {
   if (!file) return;
   const state = getState();
   const tripId = state.TripsReducer.trip.objectId;
+  const filename = generateFilename(file.name);
   try {
     dispatch({ type: 'TRIP/UPDATE_IMAGE_START' });
     const [trip, parseFile] = await Promise.all([
       fetch_helpers.build_query('Trip').get(tripId),
-      new Parse.File(file.name, file).save(),
+      new Parse.File(filename, file).save(),
     ]);
     await trip.save({ picture: parseFile });
     dispatch({ type: 'TRIP/UPDATE_IMAGE_FINISH' });

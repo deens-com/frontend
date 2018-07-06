@@ -2,11 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Image, List } from 'semantic-ui-react';
 import moment from 'moment';
+import placeholder from './../../../../assets/placeholder350x350.png';
 window.moment = moment;
 
 const getTripImage = trip => {
   if (trip.picture && trip.picture.url) return trip.picture.url;
-  return 'http://via.placeholder.com/350x350';
+  return placeholder;
 };
 
 class TripsListInDropDown extends React.Component {
