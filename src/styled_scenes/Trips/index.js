@@ -255,7 +255,7 @@ export default class TripsScene extends Component {
             </LeftWrap>
             <TripWrapper>
               {trip.booked && this.state.isOwner ? (
-                <Message>This trip has already booked on {moment(query.startDate).format('Do MMM YYYY')}.</Message>
+                <Message>This trip has already been booked on {moment(query.startDate).format('Do MMM YYYY')}.</Message>
               ) : null}
               <ToolBar
                 onSubmit={this.onSubmit}
