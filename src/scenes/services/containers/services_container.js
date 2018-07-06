@@ -21,6 +21,10 @@ class ServicesContainer extends Component {
     if (!this.props.abi) this.props.fetchServiceContractABI();
   }
 
+  componentWillUnmount() {
+    this.props.resetServiceData();
+  }
+
   onAddServiceToTrip = trip => {
     if (Parse.User.current() != null) {
       this.props.addServiceToTrip(trip);
@@ -58,6 +62,7 @@ const mapStateToProps = state => {
     serviceAlreadyAddedToTrip: state.ServicesReducer.serviceAlreadyAddedToTrip,
     isServiceUnavailableModalOpen: state.ServicesReducer.isServiceUnavailableModalOpen,
     abi: state.ServicesReducer.abi,
+    isPageLoading: state.ServicesReducer.isPageLoading,
   };
 };
 
@@ -65,4 +70,7 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators(services_actions, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ServicesContainer));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(ServicesContainer));

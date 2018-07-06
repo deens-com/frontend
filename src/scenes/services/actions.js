@@ -16,6 +16,7 @@ export const reviews_fetched = reviews => {
   };
 };
 
+export const serviceFetchStart = () => ({ type: 'SERVICE_FETCH_START' });
 export const service_fetched = service => {
   return {
     type: 'SERVICE_FETCHED',
@@ -37,6 +38,7 @@ export const userUnpurchasedTripsFetchFinish = trips => ({
 });
 
 export const fetch_service = service_id => dispatch => {
+  dispatch(serviceFetchStart());
   let query = fetch_helpers.build_query('Service');
   query.equalTo('objectId', service_id);
   query.include('owner');
@@ -99,6 +101,7 @@ export const fetch_service = service_id => dispatch => {
     error => {
       // TODO dispatch the error to error handler
       console.log(error);
+      dispatch({ type: 'SERVICE_FETCH_ERROR', payload: error });
     }
   );
 };
@@ -202,4 +205,8 @@ export const checkAvailability = (serviceId, slotsNb) => {
 export const fetchServiceContractABI = () => async dispatch => {
   const result = await Parse.Cloud.run('getLastContract');
   dispatch({ type: 'SERVICE_CONTRACT_ABI', payload: result });
+};
+
+export const resetServiceData = () => async dispatch => {
+  dispatch({ type: 'SERVICE/RESET' });
 };
