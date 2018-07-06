@@ -2,8 +2,9 @@ import Parse from 'parse';
 import moment from 'moment';
 import fetch_helpers from './../../libs/fetch_helpers';
 import { getISODateString } from 'libs/Utils';
-import {generateFilename} from 'libs/filename';
+import { generateFilename } from 'libs/filename';
 
+export const tripFetchStart = () => ({ type: 'TRIP_FETCH_START' });
 export const trip_fetched = trip => ({
   type: 'TRIP_FETCHED',
   payload: trip,
@@ -37,6 +38,7 @@ export const fetchTrip = tripId => async (dispatch, getState) => {
   }
   const Trip = Parse.Object.extend('Trip');
   try {
+    dispatch(tripFetchStart());
     const [tripRaw, tripOrganizationsRaw] = await Promise.all([
       fetch_helpers
         .build_query('Trip')
@@ -202,4 +204,11 @@ export const updateTripQuery = values => dispatch => {
  */
 export const setShowTripStatusChanged = showStatusChanged => dispatch => {
   dispatch({ type: 'SHOW_TRIP_STATUS_CHANGED', payload: showStatusChanged });
+};
+
+/**
+ * when exiting a scene it clears the store data related to trip
+ */
+export const resetTripData = () => dispatch => {
+  dispatch({ type: 'TRIP/RESET' });
 };

@@ -3,6 +3,7 @@ import { removeKey } from '../../libs/Utils';
 import { statuses } from '../../libs/fetch_helpers';
 
 const initialState = {
+  isPageLoading: false,
   trip: {},
   tripError: null,
   serviceAvailabilities: {},
@@ -19,9 +20,17 @@ const initialState = {
 
 export default function TripsReducer(state = initialState, action = {}) {
   switch (action.type) {
+    case 'TRIP_FETCH_START': {
+      const isPageLoading = Object.keys(state.trip).length === 0;
+      return {
+        ...state,
+        isPageLoading,
+      };
+    }
     case 'TRIP_FETCHED':
       return {
         ...state,
+        isPageLoading: false,
         trip: action.payload.trip,
         tripError: null,
         tripOrganizations: keyBy(action.payload.tripOrganizations, 'objectId'),
@@ -30,6 +39,7 @@ export default function TripsReducer(state = initialState, action = {}) {
     case 'TRIP_FETCH_ERROR': {
       return {
         ...state,
+        isPageLoading: false,
         tripError: action.payload,
       };
     }
@@ -106,6 +116,8 @@ export default function TripsReducer(state = initialState, action = {}) {
         ...state,
         isImageUploadInProgress: false,
       };
+    case 'TRIP/RESET':
+      return initialState;
     default:
       return state;
   }
