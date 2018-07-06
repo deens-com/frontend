@@ -11,6 +11,7 @@ import Search from "./Search";
 import MobileSearch from "./Search/MobileSearch";
 import MobileDropdownMenu from "../Nav/MobileDropdownMenu";
 import MobileNavProfile from "../Nav/MobileNavProfile";
+import GlobalTeaser from "shared_components/GlobalTeaser"
 
 // ACTIONS/CONFIG
 import { media } from "../../libs/styled";
@@ -105,6 +106,7 @@ export default class TopBar extends Component {
 
     return (
       <div>
+        <GlobalTeaser />
         <InnerWrap
           // eslint-disable-next-line
           role="baner"
