@@ -126,7 +126,8 @@ const getSmartContractBookingStatus = props => {
           {wrapInRopstenLink(
             <SemanticLabelFixed color="red">
               Failed <Icon name="external" />
-            </SemanticLabelFixed>
+            </SemanticLabelFixed>,
+            props.item.reservation
           )}
           <SemanticLabelFixed
             style={{ top: '40px' }}
