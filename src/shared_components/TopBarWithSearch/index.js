@@ -114,7 +114,6 @@ export default class TopBar extends Component {
           showMenu={showMenu}
           withPadding={withPadding}
           home={home}
-          fixed={fixed}
         >
           <Logo
             menuIsOpened={showMenu}

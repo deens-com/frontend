@@ -7,15 +7,6 @@ export const Page = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100%;
-  ${props =>
-    props.topPush &&
-    css`
-      margin-top: 65px;
-
-      ${media.minMedium} {
-        margin-top: 95px;
-      }
-    `};
 `;
 
 export const PageWrapper = styled.div`
