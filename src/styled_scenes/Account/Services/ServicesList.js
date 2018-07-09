@@ -7,6 +7,7 @@ import * as SmartContractStatus from "shared_components/SmartContract/Status";
 import PriceTag from "../../../shared_components/Currency/PriceTag";
 import Thumb from "../../../shared_components/Carts/components/Thumb";
 import { Cart, ContentWrap } from "../../../shared_components/Carts/styles";
+import i18n from './../../../libs/i18n';
 
 const EmptyServicesText = styled.p`
   font-style: italic;
@@ -50,6 +51,19 @@ const PriceTitle = styled.span`
   text-transform: uppercase;
 `;
 
+const getItemType = (type) => {
+  switch (type) {
+    case 'place':
+      return i18n.t('places.singular')
+    case 'activity':
+      return i18n.t('activities.singular')
+    case 'food':
+      return i18n.t('foods.singular')
+    default:
+      return '';
+  }
+}
+
 const ServiceItem = (item) => {
   const isActivated = item.serviceStatus !== "disabled";
 
@@ -80,7 +94,7 @@ const ServiceItem = (item) => {
             count={item.reviewCount}
           />
 
-          <Label>{item.type}</Label>
+          <Label>{getItemType(item.type)}</Label>
 
           <br /><br />
           <PriceTitle>Starting from</PriceTitle>
