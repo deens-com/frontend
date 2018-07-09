@@ -106,7 +106,7 @@ export default class DesktopDropDownMenu extends Component {
         </AvatarWrapper>
         <Dropdown direction="left" text={this.state.current_user.username} style={this.props.theme === "light"? {color: 'white'} : {color: 'inherit'}}>
           <Dropdown.Menu>
-            <Dropdown.Item icon='plane' text='My Trips' onClick={() => this.navigate_to("/account/trips/planned")} />
+            <Dropdown.Item icon='plane' text='My Trips' onClick={() => this.navigate_to("/account/trips/all")} />
             <Dropdown.Item icon='list' text='My Services' onClick={() => this.navigate_to("/account/services")} />
             <Dropdown.Item icon='user' text='Profile' onClick={() => this.navigate_to("/account/profile")} />
             <Dropdown.Item icon='cogs' text='Settings' onClick={() => this.navigate_to("/account/settings")} />
