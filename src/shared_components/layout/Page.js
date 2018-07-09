@@ -1,21 +1,11 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { Segment } from 'semantic-ui-react';
-import { media } from '../../libs/styled';
 
 export const Page = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100%;
-  ${props =>
-    props.topPush &&
-    css`
-      margin-top: 65px;
-
-      ${media.minMedium} {
-        margin-top: 95px;
-      }
-    `};
 `;
 
 export const PageWrapper = styled.div`

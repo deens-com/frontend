@@ -11,6 +11,7 @@ import Search from "./Search";
 import MobileSearch from "./Search/MobileSearch";
 import MobileDropdownMenu from "../Nav/MobileDropdownMenu";
 import MobileNavProfile from "../Nav/MobileNavProfile";
+import GlobalTeaser from "shared_components/GlobalTeaser"
 
 // ACTIONS/CONFIG
 import { media } from "../../libs/styled";
@@ -25,6 +26,7 @@ const InnerWrap = styled.header`
   padding: ${props => (props.withPadding ? "0 15px" : "0")};
   width: 100%;
   z-index: 110;
+  position: relative;
   ${props =>
     props.showMenu &&
     css`
@@ -105,6 +107,7 @@ export default class TopBar extends Component {
 
     return (
       <div>
+        <GlobalTeaser />
         <InnerWrap
           // eslint-disable-next-line
           role="baner"
@@ -112,7 +115,6 @@ export default class TopBar extends Component {
           showMenu={showMenu}
           withPadding={withPadding}
           home={home}
-          fixed={fixed}
         >
           <Logo
             menuIsOpened={showMenu}
