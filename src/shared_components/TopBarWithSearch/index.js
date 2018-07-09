@@ -26,6 +26,7 @@ const InnerWrap = styled.header`
   padding: ${props => (props.withPadding ? "0 15px" : "0")};
   width: 100%;
   z-index: 110;
+  position: relative;
   ${props =>
     props.showMenu &&
     css`

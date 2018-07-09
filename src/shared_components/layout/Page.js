@@ -1,7 +1,6 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { Segment } from 'semantic-ui-react';
-import { media } from '../../libs/styled';
 
 export const Page = styled.div`
   display: flex;
