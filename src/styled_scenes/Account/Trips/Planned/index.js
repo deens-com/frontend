@@ -17,6 +17,9 @@ const AccountTripsScene = props => {
       </Grid.Column>
       <Grid.Column mobile={16} tablet={11} computer={12}>
         <h1>My Trips</h1>
+        <Link to="/account/trips/all" onClick={scrollDownMobileOnly}>
+          All
+        </Link>&nbsp; | &nbsp;
         <Link to="/account/trips/planned" onClick={scrollDownMobileOnly} style={{ borderBottom: '2px solid #50a189' }}>
           Planned
         </Link>&nbsp; | &nbsp;
