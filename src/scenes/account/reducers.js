@@ -1,5 +1,6 @@
 const initialState = {
   user_profile: {},
+  all_trips: [],
   planned_trips: [],
   completed_trips: [],
   unscheduled_trips: [],

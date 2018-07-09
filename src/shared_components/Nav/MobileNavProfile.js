@@ -149,7 +149,7 @@ export default class MobileNavProfile extends Component {
           <Wrap>
             <InnerList>
               <li>
-                <NavLink to="/account/trips/planned" onClick={this.scrollDownMobileOnly}>My Trips</NavLink>
+                <NavLink to="/account/trips/all" onClick={this.scrollDownMobileOnly}>My Trips</NavLink>
               </li>
               <li>
                 <NavLink to="/account/services" onClick={this.scrollDownMobileOnly}>My Services</NavLink>

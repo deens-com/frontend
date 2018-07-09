@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import AccountTripsPlannedComponent from './account_trips_planned_component';
 import AccountTripsCompletedComponent from './account_trips_completed_component';
 import AccountTripsUnscheduledComponent from './account_trips_unscheduled_component';
+import AccountTripsAllComponent from './account_trips_all_component';
 import * as account_actions from './../actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -11,6 +12,10 @@ class AccountTripsComponent extends Component {
   render() {
     return (
       <div className="AccountTripsComponent">
+        <Route
+          path={process.env.PUBLIC_URL + '/account/trips/all'}
+          render={props => <AccountTripsAllComponent {...this.props} user_profile={this.props.user_profile} />}
+        />
         <Route
           path={process.env.PUBLIC_URL + '/account/trips/planned'}
           render={props => <AccountTripsPlannedComponent {...this.props} user_profile={this.props.user_profile} />}
