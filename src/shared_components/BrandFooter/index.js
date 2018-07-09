@@ -58,12 +58,6 @@ const Nav = styled.div`
   }
 `;
 
-const FLink = styled(Link)`
-  font-size: 14px;
-  display: inline-block;
-  padding: 3px 4px;
-`;
-
 const ALink = styled.a`
   font-size: 14px;
   display: inline-block;
@@ -76,12 +70,12 @@ export default function Footer({ withTopBorder, withPadding }) {
     <Wrapper withTopBorder={withTopBorder} withPadding={withPadding}>
       <Company>
         <Logo style={{width: "120px", marginRight: "10px"}} />
-        <span>© Please SEZC.</span>
+        <span>© Please.com</span>
       </Company>
       <Nav>
         <div>
-          <FLink to="/">Terms</FLink>
-          <FLink to="/">Privacy</FLink>
+          <ALink target="_blank" href="https://vision.please.com/assets/terms.pdf">Terms</ALink>
+          <ALink target="_blank" href="https://vision.please.com/assets/privacy.pdf">Privacy</ALink>
         </div>
         <div>
           <ALink href="https://www.facebook.com/PleaseDotCom" target="_blank">
