@@ -6,24 +6,18 @@ import PropTypes from 'prop-types';
 import TopBar from '../../shared_components/TopBarWithSearch';
 import Logo from '../../shared_components/TopBar/Logo';
 import BrandFooter from '../../shared_components/BrandFooter';
-
+import {Divider} from 'semantic-ui-react';
 // ACTIONS/CONFIG
 
 // STYLES
 import { Page, PageWrapper, PageContent } from '../../shared_components/layout/Page';
 import styled, { css } from 'styled-components';
 
-export const Hr = styled.hr`
-  background: #efeff0;
-  border: none;
-  height: 1px;
+const FooterWrapper = styled.footer`
+  position: fixed;
+  bottom: 0px;
   width: 100%;
-
-  ${props =>
-    props.withSpacing &&
-    css`
-      margin: 50px 0;
-    `};
+  padding: 0px 20px;
 `;
 
 // MODULE
@@ -43,22 +37,22 @@ export default function NotFoundScene({ showScene }) {
       <p style={{ textAlign: 'center', marginBottom: '150px' }}>
         We are sorry but we could not find the page you are looking for.
       </p>
-      <Hr withSpacing />
-      <Hr />
-      <BrandFooter />
+      <FooterWrapper>
+        <Divider />
+        <BrandFooter />
+      </FooterWrapper>
     </React.Fragment>
   );
+
   if (!showScene) return innerElements;
   return (
     <Page>
-      <PageWrapper>
         <TopBar>
           <Logo />
           <span>Links</span>
         </TopBar>
-      </PageWrapper>
       <PageContent>
-        <PageWrapper>{innerElements}</PageWrapper>
+        {innerElements}
       </PageContent>
     </Page>
   );
