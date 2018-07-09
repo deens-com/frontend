@@ -20,6 +20,8 @@ import * as results_actions from "./../../../scenes/results/actions";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
+import i18n from './../../../libs/i18n';
+
 // STYLES
 const Wrap = styled.div`
   display: flex;
@@ -344,7 +346,7 @@ class SearchFilters extends Component {
                       checked={service_types && service_types.includes("trip")}
                     />
                     <Checkbox
-                      label="Place"
+                      label={i18n.t('places.label')}
                       value="place"
                       onClick={this.handleServiceTypeChange}
                       checked={service_types && service_types.includes("place")}
@@ -423,7 +425,7 @@ class SearchFilters extends Component {
             checked={service_types && service_types.includes("trip")}
           />
           <Checkbox
-            label="Place"
+            label={i18n.t('places.label')}
             value="place"
             onClick={this.handleServiceTypeChange}
             checked={service_types && service_types.includes("place")}
