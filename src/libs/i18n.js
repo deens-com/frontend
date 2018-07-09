@@ -11,7 +11,7 @@ i18next
     resources: {
       en: {
         translation: {
-          places: { label: 'Accommodations', singular: 'Accomodation' },
+          places: { label: 'Accomodations', singular: 'Accomodation' },
           activities: { label: 'Activities', singular: 'Activity' },
           foods: { label: 'Food', singular: 'Food' },
           trips: { label: 'Trips', singular: 'Trip' },
