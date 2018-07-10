@@ -33,7 +33,9 @@ class AccountTripsAllComponent extends Component{
   render(){
     let ordered_all_trips = this.props.all_trips;
     ordered_all_trips = ordered_all_trips.sort(function(a,b){
-      return new Date(b.endDate.iso) - new Date(a.endDate.iso);
+      if (b.endDate && a.endDate) {
+        return new Date(b.endDate.iso) - new Date(a.endDate.iso);
+      }
     });
     return (
       <section>
