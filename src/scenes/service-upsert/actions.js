@@ -96,10 +96,15 @@ export const saveServiceChanges = (serviceId, values, history) => async (dispatc
       availableDays: [...values.availableDays],
       parseFile,
     };
+
     const result = await Parse.Cloud.run('createOrUpdateService', input);
-    dispatch({ type: types.SERVICE_SAVE_SUCCCESS, payload: result });
-    // TODO: @vlad update smart contract
-    history.push(`/services/${result.id}`);
+
+    if (service.acceptETH) {
+      dispatch(deployContract(result, service, history));
+    } else {
+      dispatch({ type: types.SERVICE_CREATE_SUCCESS, payload: result });
+      history.push(`/services/${result.id}`);
+    }
   } catch (error) {
     if (error.errors) {
       dispatch({ type: types.SERVICE_SAVE_ERROR, payload: error.errors });

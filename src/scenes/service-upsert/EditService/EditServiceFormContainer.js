@@ -25,8 +25,11 @@ class EditServiceFormContainer extends Component {
     }
   }
 
+  redeployFailedContract = (values, serviceId) => {
+    this.props.redeployContract(values, serviceId, this.props.history);
+  }
+
   onSubmit = values => {
-    console.log('on submit', values);
     this.props.saveServiceChanges(this.getServiceId(), values, this.props.history);
   };
 
@@ -38,7 +41,7 @@ class EditServiceFormContainer extends Component {
     return (
       <React.Fragment>
         <h2> Editing Service {service && <Link to={`/services/${service.objectId}`}>{service.name}</Link>} </h2>
-        <ServiceForm onSubmit={this.onSubmit} submitInFlight={isLoading} submitButtonText="Save" {...this.props} />
+        <ServiceForm onSubmit={this.onSubmit} submitInFlight={isLoading} globalError={this.props.error} onRedeployContract={this.redeployFailedContract} submitButtonText="Save" {...this.props} />
       </React.Fragment>
     );
   }
@@ -47,6 +50,7 @@ class EditServiceFormContainer extends Component {
 const mapStateToProps = state => ({
   isLoading: state.ServiceUpsert.isLoading,
   service: state.ServiceUpsert.service,
+  error: state.ServiceUpsert.error,
   fetchError: state.ServiceUpsert.error,
   userProfile: state.ServiceUpsert.userProfile,
 });
