@@ -98,7 +98,7 @@ export default class DesktopDropDownMenu extends Component {
         {
           showAddServiceButton &&
           <Button type="link" theme="mainFilled" round size="small" href="/services/new">
-          Add a Service
+          Add Service
           </Button>
         }
         <AvatarWrapper>
