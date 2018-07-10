@@ -163,7 +163,7 @@ class ServiceForm extends Component {
               Re-deploy
             </Button>
             <Button color="red" onClick={this.handleModalClose}>
-              Cancel
+              Close
             </Button>
           </Modal.Actions>
         </Modal>
