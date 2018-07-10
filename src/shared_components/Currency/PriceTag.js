@@ -32,7 +32,7 @@ class PriceTag extends Component {
     const priceInBitcoin = (1 / this.props.baseCurrency.rates.USD) * this.props.price;
     switch (this.props.baseCurrency.value) {
       case 'USD':
-        return this.props.price;
+        return parseFloat(this.props.price).toFixed(2);
       case 'BTC':
         return priceInBitcoin.toFixed(8);
       case 'ETH':
