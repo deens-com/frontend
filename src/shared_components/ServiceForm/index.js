@@ -10,8 +10,8 @@ import {Link} from 'react-router-dom';
 import history from './../../main/history';
 import { isMobile } from 'libs/Utils';
 import i18n from './../../libs/i18n';
-const serviceTypes = [i18n.t('places.singular'), i18n.t('activities.singular'), i18n.t('foods.singular')];
-const serviceTypeDropdownOptions = serviceTypes.map(text => ({ value: text.toLowerCase(), text }));
+const serviceTypes = [{label: i18n.t('places.singular'), value: 'place'}, {label: i18n.t('activities.singular'), value: 'activity'}, {label: i18n.t('foods.singular'), value: 'food'}];
+const serviceTypeDropdownOptions = serviceTypes.map(text => ({ value: text.value, text: text.label }));
 const hours = Array.from({ length: 24 }, (v, k) => k);
 const hoursDropdownOptions = hours.map(h => ({ value: h, text: h.toString().padStart(2, '0') + ':00' }));
 const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -54,14 +54,8 @@ class ServiceForm extends Component {
 
   onDropDownChange = (e, { name, value }) => {
     const { setFieldValue, setFieldTouched } = this.props;
-    // Quick ugly fix to change Place to accomodation
-    if (name === 'type' && value === 'accomodation') {
-      setFieldValue('type', 'place');
-      setFieldTouched('type', true, false);
-    } else {
-      setFieldValue(name, value);
-      setFieldTouched(name, true, false);
-    }
+    setFieldValue(name, value);
+    setFieldTouched(name, true, false);
   };
 
   onAvailableDaysChange = (e, { label, checked }) => {

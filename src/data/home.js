@@ -7,7 +7,7 @@ export const categories = [
   },
   {
     img: "/img/categories/places.png",
-    label: i18n.t('places.label'),
+    label: i18n.t('places.singular'),
     href: "/results?service_types=place"
   },
   {

@@ -216,10 +216,10 @@ class SearchFilters extends Component {
       });
   }
 
-  handleServiceTypeChange(event) {
+  handleServiceTypeChange(event, data) {
     const service_types = [ ...this.props.search_query.type ];
     let types = service_types;
-    const type = event.target.innerText.toLowerCase();
+    const type = data.value;
     if(types.includes(type)){
       types = types.filter(st => st !== type);
     }else{
@@ -346,7 +346,7 @@ class SearchFilters extends Component {
                       checked={service_types && service_types.includes("trip")}
                     />
                     <Checkbox
-                      label={i18n.t('places.label')}
+                      label={i18n.t('places.singular')}
                       value="place"
                       onClick={this.handleServiceTypeChange}
                       checked={service_types && service_types.includes("place")}
@@ -425,8 +425,8 @@ class SearchFilters extends Component {
             checked={service_types && service_types.includes("trip")}
           />
           <Checkbox
-            label={i18n.t('places.label')}
-            value="place"
+            label={i18n.t('places.singular')}
+            value='place'
             onClick={this.handleServiceTypeChange}
             checked={service_types && service_types.includes("place")}
           />

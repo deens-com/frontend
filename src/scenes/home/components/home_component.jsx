@@ -95,7 +95,7 @@ const HomeComponent = props => {
         itemType="http://schema.org/ItemList"
         padding="100px 0 0"
       >
-        <SectionHappy categories={categories} />
+        {/*<SectionHappy categories={categories} />*/}
         <SectionMood tags={props.tags} />
         <SectionTrips trips={props.trips} />
         <SectionPlaces trips={props.popularPlaces} />

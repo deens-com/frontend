@@ -25,9 +25,9 @@ export default function HomeSectionPlaces({ trips }) {
     <PageWrapper>
       <SectionWrap>
         <SectionHeader>
-          <h3>Popular {i18n.t('places.label')}</h3>
+          <h3>Popular {i18n.t('places.singular')}</h3>
           <More>
-            <Link to="/results?service_types=place">All {i18n.t('places.label')}</Link>
+            <Link to="/results?service_types=place">All {i18n.t('places.singular')}</Link>
           </More>
         </SectionHeader>
         <SectionContent>
