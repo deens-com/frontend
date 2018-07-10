@@ -10,8 +10,8 @@ import {Divider} from 'semantic-ui-react';
 // ACTIONS/CONFIG
 
 // STYLES
-import { Page, PageWrapper, PageContent } from '../../shared_components/layout/Page';
-import styled, { css } from 'styled-components';
+import { Page, PageContent } from '../../shared_components/layout/Page';
+import styled from 'styled-components';
 
 const FooterWrapper = styled.footer`
   position: fixed;

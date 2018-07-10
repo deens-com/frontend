@@ -122,7 +122,9 @@ class ServiceForm extends Component {
     }
   }
 
-  handleModalClose = () => this.setState({ showGlobalError: false });
+  handleModalClose = () => {
+    history.go('/services/edit/' + this.state.serviceId);
+  }
 
   render() {
     const {
@@ -145,6 +147,9 @@ class ServiceForm extends Component {
     const userHasConnectedWallet =
       userProfile && (userProfile.ledgerPublicAddress || userProfile.metamaskPublicAddress);
 
+    const serviceHasContract =
+      service && service.contractAddress != null;
+
     return (
       <Form onSubmit={handleSubmit} loading={submitInFlight}>
         <Modal closeOnDimmerClick={false} size="tiny" open={this.state.showGlobalError} onClose={this.handleModalClose}>
@@ -157,7 +162,7 @@ class ServiceForm extends Component {
             >
               Re-deploy
             </Button>
-            <Button color="red" onClick={() => history.push('/services/' + this.state.serviceId)}>
+            <Button color="red" onClick={this.handleModalClose}>
               Cancel
             </Button>
           </Modal.Actions>
@@ -330,9 +335,9 @@ class ServiceForm extends Component {
                   checked={values.acceptETH}
                   {...defaultProps}
                   label="Yes, deploy service as a smart contract"
-                  disabled={!!service}
+                  disabled={serviceHasContract}
                 />
-                {service && <span>*Can't update this once service is created</span>}
+                {serviceHasContract && <span>* Can't update the service smart contract once contract has been deployed</span>}
                 {!service &&
                   userProfile.ledgerPublicAddress && (
                     <p>
