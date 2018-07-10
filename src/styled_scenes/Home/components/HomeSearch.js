@@ -13,6 +13,8 @@ import * as results_actions from "./../../../scenes/results/actions";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
+import i18n from './../../../libs/i18n';
+
 // COMPONENTS
 import {
   SearchIcon,
@@ -279,9 +281,9 @@ class HomeSearch extends Component {
     this.setState({keywords: ev.target.value});
   }
 
-  handleServiceTypeChange(event) {
+  handleServiceTypeChange(event, data) {
     const service_types = { ...this.state.service_type };
-    const type = event.target.innerText.toLowerCase();
+    const type = data.value;
     service_types[type] = !this.state.service_type[type];
     this.setState({ service_type: service_types });
   }
@@ -497,7 +499,7 @@ class HomeSearch extends Component {
                   onClick={this.handleServiceTypeChange}
                 />
                 <Checkbox
-                  label="Place"
+                  label={i18n.t('places.singular')}
                   value="place"
                   onClick={this.handleServiceTypeChange}
                 />
