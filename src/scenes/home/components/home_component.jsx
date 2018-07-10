@@ -11,13 +11,11 @@ import MobileHero from "./../../../styled_scenes/Home/components/MobileHero";
 import HeroSlider from "./../../../styled_scenes/Home/components/HeroSlider";
 import SectionActivities from "./../../../styled_scenes/Home/components/SectionActivities";
 import SectionFood from "./../../../styled_scenes/Home/components/SectionFood";
-import SectionHappy from "./../../../styled_scenes/Home/components/SectionHappy";
 import SectionMood from "./../../../styled_scenes/Home/components/SectionMood";
 import SectionPlaces from "./../../../styled_scenes/Home/components/SectionPlaces";
 import SectionTrips from "./../../../styled_scenes/Home/components/SectionTrips";
 
 // ACTIONS/CONFIG
-import { categories } from "./../../../data/home";
 import { sizes, media } from "./../../../libs/styled";
 
 // STYLES
