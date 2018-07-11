@@ -8,7 +8,8 @@ import { fitBounds } from 'google-map-react/utils';
 import moment from 'moment';
 import Parse from 'parse';
 import { Divider, Message } from 'semantic-ui-react';
-
+import {Link} from 'react-router-dom';
+import Tag from './../Service/components/Tag';
 // COMPONENTS
 import TopBar from './../../shared_components/TopBarWithSearch';
 import Results from './components/Results';
@@ -113,6 +114,9 @@ const ProfileWrap = styled.div`
   margin-bottom: 15px;
 `;
 
+const TagsWrapper = styled.section`
+  margin-left: 20px;
+`;
 // MODULE
 export default class TripsScene extends Component {
   state = {
@@ -267,6 +271,13 @@ export default class TripsScene extends Component {
                 serviceAvailabilityCheckInProgress={this.props.serviceAvailabilityCheckInProgress}
               />
               <Divider horizontal>Trip itinerary</Divider>
+              <TagsWrapper>
+                { trip.tags && trip.tags.map(tag =>
+                  <Link to={`/results?tags=${tag.label}`}>
+                    <Tag key={tag.label} item={tag} />
+                  </Link>
+                )}
+              </TagsWrapper>
               <Results
                 trip={trip}
                 showDetails={this.state.details}
