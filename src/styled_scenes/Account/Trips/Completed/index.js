@@ -23,8 +23,7 @@ const AccountTripsScene = props => {
         <Link to="/account/trips/planned" onClick={scrollDownMobileOnly}>Planned</Link>&nbsp; | &nbsp;
         <Link to="/account/trips/completed" onClick={scrollDownMobileOnly} style={{ borderBottom: '2px solid #50a189' }}>
           Completed
-        </Link>&nbsp; | &nbsp;
-        <Link to="/account/trips/unscheduled" onClick={scrollDownMobileOnly}>Unscheduled</Link>
+        </Link>
         <br />
         <br />
         <TripSectionComponent trips={props.completed_trips} />
