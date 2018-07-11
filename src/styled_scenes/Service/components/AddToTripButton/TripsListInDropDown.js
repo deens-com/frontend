@@ -43,22 +43,27 @@ class TripsListInDropDown extends React.Component {
     }
   };
 
+  renderItem = trip => {
+    const startDateStr = this.getStartTripDate(trip);
+    const duration = this.getTripDuration(trip);
+    const description = startDateStr ? `From: ${startDateStr}, Duration: ${duration}` : null;
+    return (
+      <List.Item key={trip.objectId} onClick={this.onItemClick(trip)}>
+        <Image avatar src={getTripImage(trip)} />
+        <List.Content>
+          <List.Header>
+            <ItemTitle>{trip.title}</ItemTitle>
+          </List.Header>
+          {description && <List.Description>{description}</List.Description>}
+        </List.Content>
+      </List.Item>
+    );
+  };
+
   render() {
     return (
       <List selection verticalAlign="middle" divided>
-        {this.props.trips.map(trip => (
-          <List.Item key={trip.objectId} onClick={this.onItemClick(trip)}>
-            <Image avatar src={getTripImage(trip)} />
-            <List.Content>
-              <List.Header>
-                <ItemTitle>{trip.title}</ItemTitle>
-              </List.Header>
-              <List.Description>
-                From: {this.getStartTripDate(trip)}, Duration: {this.getTripDuration(trip)}
-              </List.Description>
-            </List.Content>
-          </List.Item>
-        ))}
+        {this.props.trips.map(this.renderItem)}
         <List.Item onClick={this.props.onNewTripClick}>
           <List.Icon name="add" />
           <List.Content>
