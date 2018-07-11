@@ -35,7 +35,7 @@ const Excerpt = styled.p`
   color: #6e7885;
   line-height: 1.5;
   margin-bottom: 15px;
-  height: 48px;
+  height: 45px;
   width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -136,7 +136,9 @@ export default function LocationCart({ item, href, withShadow, smBasis, xsBasis,
         <Title>
           <p>{item.title}</p>
         </Title>
-        <Excerpt>{item.excerpt}</Excerpt>
+        { item.type &&
+          <Excerpt>{item.excerpt}</Excerpt>
+        }
 
         {item.type && (
           <Location>

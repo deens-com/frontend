@@ -35,7 +35,7 @@ const Title = styled.h3`
 
 const Excerpt = styled.p`
   color: #6e7885;
-  height: 48px;
+  height: 45px;
   line-height: 1.5;
   margin-bottom: 15px;
   overflow: hidden;
@@ -65,7 +65,9 @@ export default function TripCart({ item, withTooltip, href }) {
           <Title>
             {item.title}
           </Title>
-          <Excerpt>{item.excerpt}</Excerpt>
+          { item.type &&
+            <Excerpt>{item.excerpt}</Excerpt>
+          }
           <Rating
             marginBottom="25px"
             rating={item.rating}
