@@ -6,6 +6,9 @@ import styled from "styled-components";
 import back from "./img/back.jpg";
 import jump from "./img/jump.jpg";
 import mountain from "./img/mountain.jpg";
+import beach from "./img/beach.jpg";
+import field from "./img/field.jpg";
+import trekking from "./img/trekking.jpg";
 import { ArrowIcon } from "../../../../shared_components/icons";
 import SliderPerson from "./SliderPerson";
 
@@ -87,6 +90,24 @@ const slider = [
     location: "Chaing Mai, Thailand",
     avatar: "#",
     image: jump
+  },
+  {
+    name: "Beach",
+    location: "Chaing Mai, Thailand",
+    avatar: "#",
+    image: beach
+  },
+  {
+    name: "Field",
+    location: "Chaing Mai, Thailand",
+    avatar: "#",
+    image: field
+  },
+  {
+    name: "Trekking",
+    location: "Chaing Mai, Thailand",
+    avatar: "#",
+    image: trekking
   },
 ];
 
