@@ -131,7 +131,7 @@ export default class HeroSlider extends Component {
   }
 
   componentDidMount() {
-    this.interval = setInterval(() => this.tick(), 3000);
+    this.interval = setInterval(() => this.tick(), 6000);
   }
 
   componentWillUnmount() {
