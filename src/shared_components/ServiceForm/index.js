@@ -123,7 +123,9 @@ class ServiceForm extends Component {
   }
 
   handleModalClose = () => {
-    history.go('/services/edit/' + this.state.serviceId);
+    history.push('/services/edit/' + this.state.serviceId);
+    this.setState({ showGlobalError: false });
+    this.props.resetErrors();
   }
 
   render() {
@@ -392,6 +394,10 @@ function validate(values) {
     if (!errors[field] && isNaN(values[field])) {
       errors[field] = 'Invalid number';
     }
+  }
+  // exception: smart contracts doesn't accept price with a floating point, therefor we should accept round numbers only
+  if (!Number.isInteger(parseFloat(values['pricePerSession']))) {
+    errors['pricePerSession'] = 'Invalid number';
   }
   const hourFields = ['openingTime', 'closingTime'];
   for (const field of hourFields) {

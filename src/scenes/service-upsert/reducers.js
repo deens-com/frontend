@@ -25,6 +25,7 @@ export default (state = initialState, action) => {
         ...state,
         error: action.payload,
         isSubmitting: false,
+        isLoading: false,
       };
     case actionTypes.SERVICE_FETCH_STARTED:
     case actionTypes.SERVICE_SAVE_STARTED:
