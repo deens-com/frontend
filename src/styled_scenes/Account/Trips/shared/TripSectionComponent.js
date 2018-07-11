@@ -4,7 +4,7 @@ import { SectionContent } from './../../../../shared_components/layout/Page';
 import Carousel from './Carousel';
 import LocationCart from './Carts/Location';
 import moment from 'moment';
-import { Divider, Label } from 'semantic-ui-react';
+import { Button, Divider, Icon, Label } from 'semantic-ui-react';
 import styled from 'styled-components';
 
 const get_label_color = status => {
@@ -32,15 +32,32 @@ const EmptyServicesText = styled.p`
   color: #a3a9b2;
 `;
 
+const InlineH2 = styled.h2`
+  display: inline;
+`;
+
+const TripTitleRow = styled.span`
+  vertical-align: middle;
+  a:last-child {
+    margin-left: 24px;
+  }
+`;
+
 const TripSectionComponent = props => {
   return (
     <section>
       {props.trips.map(trip => (
         <SectionContent key={trip.objectId}>
           <Divider />
-          <Link to={'/trips/' + trip.objectId}>
-            <h2>{trip.title}</h2>
-          </Link>
+          <TripTitleRow>
+            <Link to={'/trips/' + trip.objectId}>
+              <InlineH2>{trip.title}</InlineH2>
+            </Link>
+            <Button as={Link} basic icon labelPosition="left" size="tiny" to={'/trips/' + trip.objectId}>
+              <Icon name="edit" />
+              Edit
+            </Button>
+          </TripTitleRow>
           <p style={{ color: '#b3a7a7' }}>
             {trip.beginDate && moment(trip.beginDate).format('L')} - {trip.endDate && moment(trip.endDate).format('L')}
           </p>
