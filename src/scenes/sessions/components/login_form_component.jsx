@@ -4,9 +4,8 @@ import { Button, Form, Grid, Header, Message, Segment, Modal, Dimmer, Loader } f
 import styled from 'styled-components';
 import TopBar from './../../../shared_components/TopBarWithSearch';
 import BrandFooter from './../../../shared_components/BrandFooter';
-import { Page, PageContent, PageWrapper } from './../../../shared_components/layout/Page';
+import { Page, PageContent } from './../../../shared_components/layout/Page';
 import { Link } from 'react-router-dom';
-import { Hr } from './../../../shared_components/styledComponents/misc';
 import { media } from '../../../libs/styled';
 
 const displayErrorMessage = (isLoginError, message) => {
