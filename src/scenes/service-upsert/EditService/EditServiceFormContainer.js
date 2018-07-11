@@ -15,6 +15,7 @@ class EditServiceFormContainer extends Component {
   componentDidMount() {
     this.props.fetchUserProfile();
     this.props.fetchService(this.getServiceId());
+    this.props.resetErrors();
   }
 
   componentWillReceiveProps(nextProps) {
