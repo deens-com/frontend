@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, Grid, Header, Message, Segment, Modal, Dimmer, Loader } from 'semantic-ui-react';
 import styled from 'styled-components';
-import TopBar from './../../../shared_components/TopBar';
+import TopBar from './../../../shared_components/TopBarWithSearch';
 import BrandFooter from './../../../shared_components/BrandFooter';
 import { Page, PageContent, PageWrapper } from './../../../shared_components/layout/Page';
 import { Link } from 'react-router-dom';
