@@ -17,6 +17,15 @@ const WithTopMargin = styled.div`
   margin-top: 16px;
 `;
 
+const StaticFooter = styled.footer`
+  position: static;
+  bottom: 0px;
+`;
+
+const LoginContainer = styled.div`
+  min-height: 85vh;
+`;
+
 const MetamaskButton = styled(Button)`
   display: none !important;
   ${media.mobileMinSmall} {
@@ -53,7 +62,7 @@ export default class LoginFormComponent extends Component {
         <Page topPush>
           <TopBar fixed withPadding />
           <PageContent>
-            <div className="login-form">
+            <LoginContainer>
               <Grid textAlign="center" style={{ height: '100%' }} verticalAlign="middle">
                 <Grid.Column style={{ maxWidth: 450 }}>
                   <br />
@@ -154,14 +163,11 @@ export default class LoginFormComponent extends Component {
                   </Message>
                 </Grid.Column>
               </Grid>
-            </div>
-
-            <PageWrapper>
-              <Hr withSpacing />
-              <Hr />
-              <BrandFooter />
-            </PageWrapper>
+            </LoginContainer>
           </PageContent>
+          <StaticFooter>
+            <BrandFooter withTopBorder withPadding />
+          </StaticFooter>
         </Page>
       </section>
     );
