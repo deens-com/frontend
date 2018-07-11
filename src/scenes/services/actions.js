@@ -51,9 +51,11 @@ export const fetch_service = service_id => dispatch => {
       trip_org_query.find().then(
         response => {
           const trips_organization = fetch_helpers.normalizeParseResponseData(response);
-          const trips = trips_organization.map(trip_org => {
-            return trip_org.trip;
-          });
+          const tripsMap = trips_organization.reduce((tripsMap, tripOrg) => {
+            if (tripOrg.trip) tripsMap[tripOrg.trip.objectId] = tripOrg.trip;
+            return tripsMap;
+          }, {});
+          const trips = Object.values(tripsMap);
           const serialized_trips = fetch_helpers.mapServiceObjects(trips);
           dispatch(trips_fetched({ trips: serialized_trips }));
         },
@@ -149,6 +151,7 @@ export const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (dispatch
       tripTitle: newTripTitle,
     });
     fetch_service(service.objectId)(dispatch);
+    fetchMyTrips()(dispatch, getState);
     if (redirectToCreatedTrip) {
       history.push(`/trips/${trip.objectId}`);
     } else {

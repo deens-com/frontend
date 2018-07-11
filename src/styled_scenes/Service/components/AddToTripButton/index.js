@@ -59,6 +59,7 @@ export default class AddToTripButton extends React.Component {
         onClose={this.handleClose}
         onOpen={this.handleOpen}
         position="bottom right"
+        wide
       />
     );
   }
