@@ -71,6 +71,12 @@ const RightArrow = Arrow.extend`
 // MODULE
 const slider = [
   {
+    name: "Cycling",
+    location: "Patagonia, Chile",
+    avatar: "#",
+    image: mountain
+  },
+  {
     name: "Rock diving",
     location: "Bali, Indonesia",
     avatar: "#",
@@ -82,12 +88,6 @@ const slider = [
     avatar: "#",
     image: jump
   },
-  {
-    name: "Cycling",
-    location: "Patagonia, Chile",
-    avatar: "#",
-    image: mountain
-  }
 ];
 
 export default class HeroSlider extends Component {
@@ -120,6 +120,22 @@ export default class HeroSlider extends Component {
       index = this.state.index + 1;
     }
     this.setState({ index });
+  }
+
+  tick() {
+    if (this.state.index < slider.length - 1) {
+      this.setState({ index: this.state.index + 1 });
+    } else if (this.state.index === slider.length - 1) {
+      this.setState({ index: 0 });
+    }
+  }
+
+  componentDidMount() {
+    this.interval = setInterval(() => this.tick(), 3000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   render() {
