@@ -25,7 +25,7 @@ class TripsListInDropDown extends React.Component {
 
   getStartTripDate = trip => {
     if (trip.beginDate) {
-      return moment(trip.beginDate).format('DD-MM-YYYY');
+      return moment(trip.beginDate).format('Do MMM YYYY');
     } else {
       return undefined;
     }
