@@ -3,7 +3,6 @@ const initialState = {
   all_trips: [],
   planned_trips: [],
   completed_trips: [],
-  unscheduled_trips: [],
   user_services: [],
   metamaskError: {},
   ledger_error: {},
