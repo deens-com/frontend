@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Image, List } from 'semantic-ui-react';
 import moment from 'moment';
+import styled from 'styled-components';
 import placeholder from './../../../../assets/placeholder350x350.png';
 window.moment = moment;
 
@@ -10,6 +11,13 @@ const getTripImage = trip => {
   return placeholder;
 };
 
+const ItemTitle = styled.div`
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
 class TripsListInDropDown extends React.Component {
   onItemClick = trip => () => {
     this.props.onTripClick(trip);
@@ -17,7 +25,7 @@ class TripsListInDropDown extends React.Component {
 
   getStartTripDate = trip => {
     if (trip.beginDate) {
-      return '- ' + moment(trip.beginDate).format('DD-MM-YYYY') + ', ';
+      return moment(trip.beginDate).format('DD-MM-YYYY');
     } else {
       return undefined;
     }
@@ -43,9 +51,11 @@ class TripsListInDropDown extends React.Component {
             <Image avatar src={getTripImage(trip)} />
             <List.Content>
               <List.Header>
-                {trip.title} {this.getStartTripDate(trip)}
-                {this.getTripDuration(trip)}
+                <ItemTitle>{trip.title}</ItemTitle>
               </List.Header>
+              <List.Description>
+                From: {this.getStartTripDate(trip)}, Duration: {this.getTripDuration(trip)}
+              </List.Description>
             </List.Content>
           </List.Item>
         ))}
