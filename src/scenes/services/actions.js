@@ -151,6 +151,7 @@ export const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (dispatch
       tripTitle: newTripTitle,
     });
     fetch_service(service.objectId)(dispatch);
+    fetchMyTrips()(dispatch, getState);
     if (redirectToCreatedTrip) {
       history.push(`/trips/${trip.objectId}`);
     } else {
