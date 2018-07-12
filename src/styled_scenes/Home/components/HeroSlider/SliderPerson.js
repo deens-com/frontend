@@ -31,14 +31,14 @@ const Content = styled.div`
   }
 `;
 
-const Avatar = styled.div`
-  background: #1e1013;
-  border-radius: 30px;
-  border: 2px solid white;
-  height: 30px;
-  overflow: hidden;
-  width: 30px;
-`;
+// const Avatar = styled.div`
+//   background: #1e1013;
+//   border-radius: 30px;
+//   border: 2px solid white;
+//   height: 30px;
+//   overflow: hidden;
+//   width: 30px;
+// `;
 
 // MODULE
 export default function SliderPerson({ name, location, avatar }) {
