@@ -1,5 +1,6 @@
 import Parse from 'parse';
 import history from './../../main/history';
+import { identifyUsingSession } from 'libs/analytics';
 
 export const types = {
   REGISTRATION_SUCCESS: 'REGISTRATION_SUCCESS',
@@ -10,6 +11,7 @@ export const registrationSuccess = session => {
   return {
     type: this.types.REGISTRATION_SUCCESS,
     payload: session,
+    meta: { analytics: identifyUsingSession(session.session) },
   };
 };
 

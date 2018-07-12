@@ -1,7 +1,7 @@
 import Parse from 'parse';
-import { EventTypes } from 'redux-segment';
 import history from './../../main/history';
 import fetch_helpers from './../../libs/fetch_helpers';
+import { identifyUsingSession } from 'libs/analytics';
 
 export const types = {
   LOGIN_SUCCESS: 'LOGIN_SUCCESS',
@@ -14,20 +14,10 @@ export const types = {
 };
 
 export const sessionsFetched = session => {
-  let analytics;
-
-  if (session.session && session.session.id) {
-    analytics = {
-      eventType: EventTypes.identify,
-      eventPayload: {
-        userId: session.session.id,
-      },
-    };
-  }
   return {
     type: this.types.LOGIN_SUCCESS,
     payload: session,
-    meta: { analytics },
+    meta: { analytics: identifyUsingSession(session.session) },
   };
 };
 
