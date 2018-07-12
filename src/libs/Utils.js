@@ -1,3 +1,5 @@
+import tagsData from './../data/tags';
+
 export default class Utils {
   static getBaseSymbol(currency = "USD") {
     switch (currency) {
@@ -35,7 +37,7 @@ export const comparatorWithNullValues = (valueA, valueB) => {
 };
 
 /**
- * This is a one-way diff, 
+ * This is a one-way diff,
  * meaning that it will return keys/values from object2 that are not identical to their counterparts in object1
  */
 export const oneWayDiff = (object1, object2) => {
@@ -82,3 +84,13 @@ export const padStart = (str, length, padChar = '0') => {
 };
 
 export const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+const randBgColors = ["#7bbed6", "#82689a", "#75c1a5", "#ed837f", "#ffb777", "#19C2FF", "#00BCFF", "#B25C00", "#FF8300", "#ACB200", "#19FFAA"];
+export const tagsColorMatcher = (tag) => {
+  let background = tagsData.filter(tagObj => tagObj.label === tag)[0] &&
+    tagsData.filter(tagObj => tagObj.label === tag)[0].background;
+  if (!background) {
+    background = randBgColors[Math.floor(Math.random() * randBgColors.length)];
+  }
+  return background;
+};

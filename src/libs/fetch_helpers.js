@@ -1,4 +1,5 @@
 import Parse from "parse";
+import {tagsColorMatcher} from './Utils';
 
 const normalizeParseResponseData = data => {
   let dataInJsonString = JSON.stringify(data);
@@ -18,9 +19,6 @@ const get_service_image = mainPicture => {
   return mainPicture.url;
 };
 
-const bgColors = ["#7bbed6", "#82689a", "#75c1a5", "#ed837f", "#ffb777"];
-const hoverBgColors = ["#84c5dd", "#9379ab", "#76caac", "#eb8e8a", "#ffc089"];
-
 const mapServiceObjects = services => {
   return services.map(service => {
     try{
@@ -37,9 +35,8 @@ const mapServiceObjects = services => {
       service.price = service.price == null ? service.pricePerSession : service.price;
       if(service.tags && service.tags.length){
         const tags = service.tags.map(tag => {
-          const randBg = bgColors[Math.floor(Math.random() * bgColors.length)];
-          const randHoverBg = hoverBgColors[Math.floor(Math.random() * hoverBgColors.length)];
-          return {label: tag, hoverBg: randHoverBg, background: randBg}
+          const tagBg = tagsColorMatcher(tag);
+          return {label: tag, hoverBg: tagBg, background: tagBg}
         });
         service.tags = tags;
       }
@@ -80,7 +77,5 @@ export default {
   mapServiceObjects,
   removeDuplicates,
   build_query,
-  bgColors,
-  hoverBgColors,
   statuses
 }
