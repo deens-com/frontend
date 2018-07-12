@@ -84,7 +84,6 @@ export default class TripDay extends Component {
     };
     this.toggleExpansion = this.toggleExpansion.bind(this);
     this.generate_search_query = this.generate_search_query.bind(this);
-    this.retrieve_tags_from_trip = this.retrieve_tags_from_trip.bind(this);
   }
 
   toggleExpansion() {
@@ -114,10 +113,6 @@ export default class TripDay extends Component {
     history.push("/results?" + query_string);
   }
 
-  retrieve_tags_from_trip(trip){
-    return trip && trip.tags && trip.tags.length && trip.tags.map(tag => tag.label).join("+");
-  }
-
   render() {
     const { day, allowServiceRearrange } = this.props;
     const dayTitle = day.day === 'null' || !day.day ? 'Unscheduled' : `Day ${day.day}`;
@@ -139,13 +134,9 @@ export default class TripDay extends Component {
         ))
       );
     const query_params = {
-      tags: this.retrieve_tags_from_trip(this.props.trip),
-      latitude: this.props.trip.latitude,
-      longitude: this.props.trip.longitude,
       person_nb: this.props.trip.numberOfPerson,
       start_date: this.props.trip.beginDate && this.props.trip.beginDate.iso,
       end_date: this.props.trip.endDate && this.props.trip.endDate.iso,
-      //address: this.props.trip.location || undefined
     }
 
     return (
