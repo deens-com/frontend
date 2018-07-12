@@ -270,14 +270,14 @@ export default class TripsScene extends Component {
                 isOwner={this.state.isOwner}
                 serviceAvailabilityCheckInProgress={this.props.serviceAvailabilityCheckInProgress}
               />
-              <Divider horizontal>Trip itinerary</Divider>
               <TagsWrapper>
-                { trip.tags && trip.tags.map(tag =>
-                  <Link to={`/results?tags=${tag.label}`}>
-                    <Tag key={tag.label} item={tag} />
-                  </Link>
-                )}
+              { trip.tags && trip.tags.map(tag =>
+                <Link to={`/results?tags=${tag.label}`}>
+                <Tag key={tag.label} item={tag} />
+                </Link>
+              )}
               </TagsWrapper>
+              <Divider horizontal>Trip itinerary</Divider>
               <Results
                 trip={trip}
                 showDetails={this.state.details}
