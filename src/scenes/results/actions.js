@@ -1,5 +1,6 @@
 import Parse from "parse";
 import history from "./../../main/history";
+import {tagsColorMatcher} from './../../libs/Utils';
 
 export const results_fetched = results => {
   return {
@@ -119,8 +120,6 @@ export const fetch_results = results_search_query => {
   };
 };
 
-const bgColors = ["#7bbed6", "#82689a", "#75c1a5", "#ed837f", "#ffb777"];
-const hoverBgColors = ["#84c5dd", "#9379ab", "#76caac", "#eb8e8a", "#ffc089"];
 const find_popular_tags = services => {
   let arr_services = services.results;
   // let arr_services = services.services.places
@@ -149,10 +148,8 @@ const find_popular_tags = services => {
   );
   let tags_ordered_by_count = tags_array.sort((a, b) => b.count - a.count);
   let tags_ordered_by_popularity = tags_ordered_by_count.map(tag => {
-    let randBg = bgColors[Math.floor(Math.random() * bgColors.length)];
-    let randHoverBg =
-      hoverBgColors[Math.floor(Math.random() * hoverBgColors.length)];
-    return { label: tag.tag, background: randBg, hoverBg: randHoverBg };
+    const tagBg = tagsColorMatcher(tag.tag);
+    return { label: tag.tag, background: tagBg, hoverBg: tagBg };
   });
   // Ugly code to retrive popular tags but we might refactor tags data model in near future
   return tags_ordered_by_popularity;

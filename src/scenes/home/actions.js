@@ -1,5 +1,6 @@
 import Parse from "parse";
 import fetch_helpers from "./../../libs/fetch_helpers";
+import {tagsColorMatcher} from './../../libs/Utils';
 
 export const services_fetched = services => {
   return {
@@ -134,10 +135,8 @@ const find_popular_tags = services => {
   let tags_ordered_by_count = tags_array.sort((a, b) => b.count - a.count);
   //return tags_ordered_by_count
   let tags_ordered_by_popularity = tags_ordered_by_count.map(tag => {
-    let randBg = fetch_helpers.bgColors[Math.floor(Math.random() * fetch_helpers.bgColors.length)];
-    let randHoverBg =
-      fetch_helpers.hoverBgColors[Math.floor(Math.random() * fetch_helpers.hoverBgColors.length)];
-    return { label: tag.tag, background: randBg, hoverBg: randHoverBg };
+    const tagBg = tagsColorMatcher(tag.tag);
+    return { label: tag.tag, background: tagBg, hoverBg: tagBg };
   });
   // Ugly code to retrive popular tags but we might refactor tags data model in near future
   return tags_ordered_by_popularity;
