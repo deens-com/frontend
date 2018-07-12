@@ -1,7 +1,7 @@
 // NPM
 import React, { Component } from "react";
 import styled from "styled-components";
-import { Checkbox as SemanticCheckbox } from "semantic-ui-react";
+import { Checkbox as SemanticCheckbox, Popup } from "semantic-ui-react";
 import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import history from "./../../../main/history";
 import annyang from 'annyang';
@@ -391,11 +391,15 @@ class HomeSearch extends Component {
         <div>
           {
             this.state.written_speech_query === "to use your voice and tell us about your dream stay"
-            ? (<ButtonLink
-              onClick={this.activate_annyang}
-            >
-              Click here
-            </ButtonLink>)
+            ? (<Popup
+                  trigger={<ButtonLink onClick={this.activate_annyang}>Click here</ButtonLink>}
+                  content='and say "Trip to Paris" or "Looking for a trip in New York for next month with my husband"'
+                  position='bottom left'
+                  size='huge'
+                  verticalOffset={20}
+                  flowing='true'
+                  inverted='true'
+              />)
             : null
           }
 
