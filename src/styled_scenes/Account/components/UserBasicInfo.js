@@ -83,7 +83,7 @@ const UserBasicInfo = ({ user_profile: user = {}, match }) => {
 
         <Menu secondary fluid vertical style={{paddingLeft: "10px"}}>
 
-          <Link to="/account/trips/planned" onClick={scrollDownMobileOnly}>
+          <Link to="/account/trips/all" onClick={scrollDownMobileOnly}>
             <Menu.Item name='trips' active={activePath === 'trips'}>
               <MenuIcon disabled name='angle right' circular />
               <span>
