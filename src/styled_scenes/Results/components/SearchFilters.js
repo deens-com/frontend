@@ -304,7 +304,7 @@ class SearchFilters extends Component {
 
                     <CarouselPicker {...this.props} />
 
-                    <LocationFormControl formatted_address={address} onChange={this.handleLocationChange} />
+                    <LocationFormControl formatted_address={address} onSelect={this.handleLocationChange} />
                     <MobileClearInputIcon onClick={this.clear_address} link name='close' />
 
                     <FormControl
@@ -383,7 +383,7 @@ class SearchFilters extends Component {
       <section>
         <Wrap>
 
-          <LocationFormControl formatted_address={address} onChange={this.handleLocationChange} />
+          <LocationFormControl formatted_address={address} onSelect={this.handleLocationChange} />
           <ClearInputIcon onClick={this.clear_address} link name='close' />
 
           <FormControl
