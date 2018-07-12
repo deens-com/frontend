@@ -1,6 +1,7 @@
 import Parse from "parse";
 import history from "./../../main/history";
 import {tagsColorMatcher} from './../../libs/Utils';
+import { trackVoiceUsage } from "libs/analytics";
 
 export const results_fetched = results => {
   return {
@@ -153,4 +154,8 @@ const find_popular_tags = services => {
   });
   // Ugly code to retrive popular tags but we might refactor tags data model in near future
   return tags_ordered_by_popularity;
+};
+
+export const voiceQuery = results => dispatch => {
+  dispatch({ type: 'analytics', meta: { analytics: trackVoiceUsage(results) } });
 };

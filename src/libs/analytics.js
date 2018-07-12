@@ -58,3 +58,41 @@ export const trackTripCloned = ({ originalTripId, newTripId }) => {
     },
   };
 };
+
+export const trackTripBooked = tripId => {
+  return {
+    eventType: EventTypes.track,
+    eventPayload: {
+      event: 'Trip Booked',
+      properties: { tripId },
+    },
+  };
+};
+
+export const trackVoiceUsage = searchQuery => {
+  return {
+    eventType: EventTypes.track,
+    eventPayload: {
+      event: 'Voice Query',
+      properties: { voiceToText: searchQuery },
+    },
+  };
+};
+
+export const trackMetamaskConnected = () => {
+  return {
+    eventType: EventTypes.track,
+    eventPayload: {
+      event: 'Metamask Connected',
+    },
+  };
+};
+
+export const trackLedgerConnected = () => {
+  return {
+    eventType: EventTypes.track,
+    eventPayload: {
+      event: 'Ledger Connected',
+    },
+  };
+};
