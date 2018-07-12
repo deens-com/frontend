@@ -100,17 +100,16 @@ export default class TripDay extends Component {
     }
   }
 
-
   generate_search_query(search_params) {
     let query_arr = [];
     Object.entries(search_params).forEach(([key, value]) => {
-      if(value){
-        let to_concat = key + "=" + value;
+      if (value) {
+        let to_concat = key + '=' + value;
         query_arr = query_arr.concat(to_concat);
       }
     });
-    let query_string = query_arr.join("&");
-    history.push("/results?" + query_string);
+    let query_string = query_arr.join('&');
+    history.push('/results?' + query_string);
   }
 
   render() {
@@ -137,7 +136,7 @@ export default class TripDay extends Component {
       person_nb: this.props.trip.numberOfPerson,
       start_date: this.props.trip.beginDate && this.props.trip.beginDate.iso,
       end_date: this.props.trip.endDate && this.props.trip.endDate.iso,
-    }
+    };
 
     return (
       <Wrap>
@@ -156,35 +155,37 @@ export default class TripDay extends Component {
               onClick={this.toggleExpansion}
               text={this.state.expanded ? 'Collapse all' : 'Expand all'}
             />
-            <DropPicker>
-              <Trigger iconBefore="plus" size="small" round={true} text="Add new Service" />
-              <Drop>
-                <DropItem
-                  onChange={ev => {
-                    query_params.service_types = "place";
-                    this.generate_search_query(query_params);
-                  }}
-                >
-                  Place
-                </DropItem>
-                <DropItem
-                  onChange={ev => {
-                    query_params.service_types = "food";
-                    this.generate_search_query(query_params);
-                  }}
-                >
-                  Food
-                </DropItem>
-                <DropItem
-                  onChange={ev => {
-                    query_params.service_types = "activity";
-                    this.generate_search_query(query_params);
-                  }}
-                >
-                  Activity
-                </DropItem>
-              </Drop>
-            </DropPicker>
+            {allowServiceRearrange && (
+              <DropPicker>
+                <Trigger iconBefore="plus" size="small" round={true} text="Add new Service" />
+                <Drop>
+                  <DropItem
+                    onChange={ev => {
+                      query_params.service_types = 'place';
+                      this.generate_search_query(query_params);
+                    }}
+                  >
+                    Place
+                  </DropItem>
+                  <DropItem
+                    onChange={ev => {
+                      query_params.service_types = 'food';
+                      this.generate_search_query(query_params);
+                    }}
+                  >
+                    Food
+                  </DropItem>
+                  <DropItem
+                    onChange={ev => {
+                      query_params.service_types = 'activity';
+                      this.generate_search_query(query_params);
+                    }}
+                  >
+                    Activity
+                  </DropItem>
+                </Drop>
+              </DropPicker>
+            )}
             {/* <Button
               type="button"
               round
