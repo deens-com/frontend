@@ -11,7 +11,9 @@ export const registrationSuccess = session => {
   return {
     type: this.types.REGISTRATION_SUCCESS,
     payload: session,
-    meta: { analytics: [analytics.userRegistered(session.session), analytics.identifyUsingSession(session.session)] },
+    meta: {
+      analytics: [analytics.trackUserRegistered(session.session), analytics.identifyUsingSession(session.session)],
+    },
   };
 };
 

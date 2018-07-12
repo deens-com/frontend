@@ -3,6 +3,7 @@ import moment from 'moment';
 import fetch_helpers from './../../libs/fetch_helpers';
 import { getISODateString } from 'libs/Utils';
 import { generateFilename } from 'libs/filename';
+import { trackTripCloned } from 'libs/analytics';
 
 export const tripFetchStart = () => ({ type: 'TRIP_FETCH_START' });
 export const trip_fetched = trip => ({
@@ -152,7 +153,7 @@ export const cloneTrip = (beginDate, peopleCount, history) => async (dispatch, g
   dispatch(setTripCloningStatus(fetch_helpers.statuses.STARTED));
   try {
     const result = await Parse.Cloud.run('preBookingStep', { tripId, beginDate, peopleCount });
-    dispatch({ type: 'TRIP_CLONNED', payload: result });
+    dispatch({ type: 'TRIP_CLONNED', payload: result, meta: { analytics: trackTripCloned(result) } });
     if (result.allAvailable) {
       // if all the services are available take the user to Checkout Page
       history.push(`/checkout/${result.newTripId}`);
