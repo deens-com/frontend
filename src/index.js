@@ -5,11 +5,13 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './index.css';
 import App from './main/app';
+import createHistory from 'history/createBrowserHistory';
 import { unregister as unregisterServiceWorker } from './registerServiceWorker';
 import Parse from 'parse';
 import Raven from 'raven-js';
 
 Parse.initialize('myAppId');
+const history = createHistory();
 
 if (process.env.REACT_APP_NODE_ENV === 'production') {
   Raven.config('https://fd51482cf40f43fca379bc14417b6f2b@sentry.io/1220761').install();
@@ -27,7 +29,7 @@ unregisterServiceWorker();
 // Stole from: https://stackoverflow.com/a/9870540/1115059
 function getQueryStringValue(key) {
   return decodeURIComponent(
-    window.location.search.replace(
+    history.location.search.replace(
       new RegExp('^(?:.*[&\\?]' + encodeURIComponent(key).replace(/[\.\+\*]/g, '\\$&') + '(?:\\=([^&]*))?)?.*$', 'i'),
       '$1'
     )
