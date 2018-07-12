@@ -17,6 +17,7 @@ class PaymentContainer extends React.Component {
     return (
       <div>
         <PaymentSection
+          numberOfPerson={trip.numberOfPerson}
           pricePerPerson={trip.price}
           totalPrice={totalPrice}
           onPaymentClick={markTripBooked}
