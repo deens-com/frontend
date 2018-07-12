@@ -1,10 +1,9 @@
 import React from "react";
 import {
   Page,
-  PageContent,
-  PageWrapper
+  PageContent
 } from "./../../../shared_components/layout/Page";
-import TopBar from "./../../../shared_components/TopBar";
+import TopBar from './../../../shared_components/TopBarWithSearch';
 import BrandFooter from "./../../../shared_components/BrandFooter";
 import {
   Button,
@@ -15,7 +14,16 @@ import {
   Segment
 } from "semantic-ui-react";
 import { Link } from "react-router-dom";
-import { Hr } from "./../../../shared_components/styledComponents/misc";
+import styled from 'styled-components';
+
+const StaticFooter = styled.footer`
+  position: static;
+  bottom: 0px;
+`;
+
+const LoginContainer = styled.div`
+  min-height: 85vh;
+`;
 
 const RegistrationsComponent = props => {
   return (
@@ -23,16 +31,16 @@ const RegistrationsComponent = props => {
       <Page topPush>
         <TopBar fixed withPadding />
         <PageContent>
-          <div className="login-form">
+          <LoginContainer>
             <Grid
               textAlign="center"
               style={{ height: "100%" }}
               verticalAlign="middle"
             >
               <Grid.Column style={{ maxWidth: 450 }}>
+                <br />
                 <Header as="h2" color="teal" textAlign="center">
-                  <br />
-                  Register
+                  Create your new account
                 </Header>
                 {Object.keys(props.errors).length !== 0 && (
                   <Message style={{ color: "red" }}>
@@ -115,14 +123,11 @@ const RegistrationsComponent = props => {
                 </Message>
               </Grid.Column>
             </Grid>
-          </div>
-
-          <PageWrapper>
-            <Hr withSpacing />
-            <Hr />
-            <BrandFooter />
-          </PageWrapper>
+          </LoginContainer>
         </PageContent>
+        <StaticFooter>
+          <BrandFooter withTopBorder withPadding />
+        </StaticFooter>
       </Page>
     </section>
   );
