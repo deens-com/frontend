@@ -1,6 +1,7 @@
 import Parse from 'parse';
 import fetch_helpers from './../../libs/fetch_helpers';
 import history from 'main/history';
+import { trackTripCreated } from 'libs/analytics';
 
 export const trips_fetched = trips => {
   return {
@@ -152,6 +153,7 @@ export const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (dispatch
     });
     fetch_service(service.objectId)(dispatch);
     fetchMyTrips()(dispatch, getState);
+    dispatch({ type: 'analytics', meta: { analytics: trackTripCreated(trip) } });
     if (redirectToCreatedTrip) {
       history.push(`/trips/${trip.objectId}`);
     } else {
