@@ -35,6 +35,6 @@ function getQueryStringValue(key) {
 }
 
 const customerId = getQueryStringValue('customer_id');
-if (customerId) {
+if (customerId && window.analytics) {
   window.analytics.identify(customerId);
 }
