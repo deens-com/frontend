@@ -73,7 +73,7 @@ const renderTrip = trip => {
           {trip.services.map((item, index) => <LocationCart item={item} index={index} key={item.objectId} />)}
         </Carousel>
       </CarouselWrapper>
-      {trip.services.length ? null : <EmptyServicesText>No services in this trip</EmptyServicesText>}
+      {trip.services.length ? null : <EmptyServicesText>No scheduled services in this trip</EmptyServicesText>}
       <br />
     </SectionContent>
   );
