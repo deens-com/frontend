@@ -2,6 +2,7 @@ import Parse from 'parse';
 import fetch_helpers from './../../libs/fetch_helpers';
 import history from './../../main/history';
 import validator from 'validator';
+import { trackMetamaskConnected, trackLedgerConnected } from 'libs/analytics';
 
 export const user_profile_fetched = user_profile => {
   return {
@@ -152,6 +153,7 @@ export const signData = () => async dispatch => {
     const userObj = await Parse.Cloud.run('storePublicAddress', { signature: signature, type: 'metamask' });
     dispatch(fetch_user_profile());
     dispatch(user_profile_fetched({ user_profile: fetch_helpers.normalizeParseResponseData(userObj) }));
+    dispatch({ type: 'analytics', meta: { analytics: trackMetamaskConnected() } });
   } catch (error) {
     console.error(error);
     if (error.showToUser) {
@@ -177,6 +179,7 @@ export const ledgerSignData = () => async dispatch => {
     const userObj = await Parse.Cloud.run('storePublicAddress', { signature: signature, type: 'ledger' });
     dispatch(fetch_user_profile());
     dispatch(user_profile_fetched({ user_profile: fetch_helpers.normalizeParseResponseData(userObj) }));
+    dispatch({ type: 'analytics', meta: { analytics: trackLedgerConnected() } });
   } catch (error) {
     if (error.showToUser) {
       dispatch({

@@ -1,7 +1,8 @@
 import Parse from 'parse';
 import fetch_helpers from '../../libs/fetch_helpers';
 import history from '../../main/history';
-import {generateFilename} from './../../libs/filename';
+import { generateFilename } from './../../libs/filename';
+import { trackServiceCreated } from 'libs/analytics';
 
 export const types = {
   SERVICE_CREATE_STARTED: 'SERVICE_CREATE_STARTED',
@@ -47,7 +48,11 @@ export const registerService = (values, history) => async (dispatch, getState) =
     if (acceptETH) {
       dispatch(deployContract(result, values, history));
     } else {
-      dispatch({ type: types.SERVICE_CREATE_SUCCESS, payload: result });
+      dispatch({
+        type: types.SERVICE_CREATE_SUCCESS,
+        payload: result,
+        meta: { analytics: trackServiceCreated(result) },
+      });
       history.push(`/services/${result.id}`);
     }
   } catch (error) {

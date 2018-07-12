@@ -240,6 +240,7 @@ class HomeSearch extends Component {
         that.hide_gif();
         this.setState({written_speech_query: speech[0]});
         console.log("The user may have said : ", speech);
+        this.props.voiceQuery(speech);
         this.props.fetch_results({speech_query: speech[0]});
         if(this.props.toggleSearch){
           this.props.toggleSearch();

@@ -1,6 +1,7 @@
 import Parse from 'parse';
 import history from './../../main/history';
 import fetch_helpers from './../../libs/fetch_helpers';
+import { identifyUsingSession } from 'libs/analytics';
 
 export const types = {
   LOGIN_SUCCESS: 'LOGIN_SUCCESS',
@@ -16,6 +17,7 @@ export const sessionsFetched = session => {
   return {
     type: this.types.LOGIN_SUCCESS,
     payload: session,
+    meta: { analytics: identifyUsingSession(session.session) },
   };
 };
 
