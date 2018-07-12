@@ -391,7 +391,14 @@ class HomeSearch extends Component {
         <div>
           {
             this.state.written_speech_query === "to use your voice and tell us about your dream stay"
-            ? (<Popup trigger={<ButtonLink onClick={this.activate_annyang}>Click here</ButtonLink>} content='and say "Trip to Paris"' position='bottom left' size='huge' verticalOffset={20} inverted='true'/>)
+            ? (<Popup
+                  trigger={<ButtonLink onClick={this.activate_annyang}>Click here</ButtonLink>}
+                  content='and say "Trip to Paris"'
+                  position='bottom left'
+                  size='huge' 
+                  verticalOffset={20}
+                  inverted='true'
+              />)
             : null
           }
 
