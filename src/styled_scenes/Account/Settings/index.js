@@ -42,6 +42,28 @@ class AccountSettingsScene extends Component {
       faucetRequestError: ''
     };
   }
+  componentDidMount() {
+    if(this.props.user_profile.metamaskPublicAddress){
+      const url = "https://api-ropsten.etherscan.io/api?module=account&action=balance&address=" + this.props.user_profile.metamaskPublicAddress + "&tag=latest&apikey=RUTM2Q3ZP65U8UJQUD9GUZU2GZHQ363FYC";
+      fetch(url).then(res => {
+        return res.json();
+      }).then(json_res => {
+        const gweiBalance = json_res.result;
+        const ethBalance = gweiBalance / 10**18;
+        this.setState({metamaskEthBalance: ethBalance});
+      })
+    }
+    if(this.props.user_profile.ledgerPublicAddress){
+      const url = "https://api-ropsten.etherscan.io/api?module=account&action=balance&address=" + this.props.user_profile.ledgerPublicAddress + "&tag=latest&apikey=RUTM2Q3ZP65U8UJQUD9GUZU2GZHQ363FYC";
+      fetch(url).then(res => {
+        return res.json();
+      }).then(json_res => {
+        const gweiBalance = json_res.result;
+        const ethBalance = gweiBalance / 10**18;
+        this.setState({ledgerEthBalance: ethBalance});
+      })
+    }
+  }
   componentWillReceiveProps(nextProps){
     if(this.props.user_profile !== nextProps.user_profile){
       if(nextProps.user_profile.metamaskPublicAddress){
