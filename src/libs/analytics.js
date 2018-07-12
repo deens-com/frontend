@@ -16,3 +16,14 @@ export const identifyUsingSession = session => {
   }
   return undefined;
 };
+
+export const userRegistered = session => {
+  const email = session && session.get('email');
+  return {
+    eventType: EventTypes.track,
+    eventPayload: {
+      event: 'User Registered',
+      properties: { email },
+    },
+  };
+};
