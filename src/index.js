@@ -30,13 +30,14 @@ unregisterServiceWorker();
 function getQueryStringValue(key) {
   return decodeURIComponent(
     history.location.search.replace(
-      new RegExp('^(?:.*[&\\?]' + encodeURIComponent(key).replace(/[\.\+\*]/g, '\\$&') + '(?:\\=([^&]*))?)?.*$', 'i'),
+      new RegExp('^(?:.*[&\\?]' + encodeURIComponent(key).replace(/[.+*]/g, '\\$&') + '(?:\\=([^&]*))?)?.*$', 'i'),
       '$1'
     )
   );
 }
 
 const customerId = getQueryStringValue('customer_id');
+console.log({ customerId });
 if (customerId && window.analytics) {
   window.analytics.identify(customerId);
 }
