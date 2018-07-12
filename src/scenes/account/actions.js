@@ -127,10 +127,6 @@ export const fetch_user_trips = (owner_id, trip_state) => dispatch => {
     Parse.Cloud.run('myCompletedTrips')
       .then(fetch_helpers.normalizeParseResponseData)
       .then(result => dispatch(categorizedTripsFetched({ completed_trips: result })));
-  } else if (trip_state === 'unscheduled') {
-    Parse.Cloud.run('myUnscheduledTrips')
-      .then(fetch_helpers.normalizeParseResponseData)
-      .then(result => dispatch(categorizedTripsFetched({ unscheduled_trips: result })));
   } else if (trip_state === 'all') {
     Parse.Cloud.run('myAllTrips')
       .then(fetch_helpers.normalizeParseResponseData)
