@@ -15,9 +15,20 @@ const Wrap = styled.div`
   justify-content: center;
 `;
 
-const PaymentSection = ({ pricePerPerson, totalPrice, onPaymentClick, isLoading }) => (
+const GuestCountStyle = styled.p`
+  font-size: 18px;
+  font-weight: 500;
+`;
+
+const PaymentSection = ({ pricePerPerson, totalPrice, onPaymentClick, numberOfPerson, isLoading }) => (
   <Wrap>
     <Grid>
+      <Grid.Row columns={2}>
+        <Grid.Column stretched>Guest(s)</Grid.Column>
+        <Grid.Column textAlign="right">
+          <GuestCountStyle>{numberOfPerson} adults</GuestCountStyle>
+        </Grid.Column>
+      </Grid.Row>
       <Grid.Row columns={2}>
         <Grid.Column stretched>Total price per person</Grid.Column>
         <Grid.Column textAlign="right">
@@ -64,6 +75,7 @@ PaymentSection.propTypes = {
   pricePerPerson: PropTypes.number.isRequired,
   totalPrice: PropTypes.number.isRequired,
   onPaymentClick: PropTypes.func.isRequired,
+  numberOfPerson: PropTypes.func.isRequired,
 };
 
 export default PaymentSection;
