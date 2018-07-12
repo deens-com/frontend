@@ -127,7 +127,7 @@ export default function FullCart({ data, toggleExpansion, onDeleteClick, isOwner
   return (
     <Wrap>
       <LeftCol>
-        <Thumb url={data.mainPicture.url} tripCount={data.partOf} withTooltip />
+        <Thumb url={data.mainPicture && data.mainPicture.url} tripCount={data.partOf} withTooltip />
       </LeftCol>
       <ContentCol>
         <CenterCol>
