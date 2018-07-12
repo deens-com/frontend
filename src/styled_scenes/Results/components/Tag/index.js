@@ -52,6 +52,7 @@ const Wrap = styled.div`
     background: ${props => props.hoverBg || "#dd9"};
     box-shadow: ${props =>
       props.withShadow ? "0 8px 40px 0px rgba(141,141,141,0.28)" : "none"};
+    opacity: 0.8;
   }
 
   a {
