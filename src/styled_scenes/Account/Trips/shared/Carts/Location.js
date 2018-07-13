@@ -39,16 +39,6 @@ const Title = styled.h3`
   }
 `;
 
-const Excerpt = styled.p`
-  color: #6e7885;
-  line-height: 1.5;
-  margin-bottom: 15px;
-  height: 48px;
-  width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
 const Label = styled.span`
   display: block;
   font-size: 12px;
@@ -178,7 +168,6 @@ class ServiceLocationCard extends Component {
                 <Title>
                   <Truncate lines={4}>{item.title}</Truncate>
                 </Title>
-                <Excerpt>{item.excerpt}</Excerpt>
 
                 {item.type && (
                   <Location>
