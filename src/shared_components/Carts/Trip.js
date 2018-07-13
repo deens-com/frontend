@@ -1,17 +1,19 @@
 // NPM
-import React from "react";
-import PropTypes from "prop-types";
-import styled from "styled-components";
+import React from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import Truncate from 'react-truncate';
 
 // COMPONENTS
-import Rating from "../Rating";
-import PriceTag from "../Currency/PriceTag";
-import Thumb from "./components/Thumb";
+import Rating from '../Rating';
+import PriceTag from '../Currency/PriceTag';
+import Thumb from './components/Thumb';
 
 // ACTIONS/CONFIG
 
 // STYLES
-import { Cart, ContentWrap } from "./styles";
+import { Cart, ContentWrap } from './styles';
+import { cardConfig } from 'libs/config';
 
 const Wrap = styled.div`
   display: inline-block;
@@ -19,28 +21,18 @@ const Wrap = styled.div`
   padding: 10px;
 `;
 
+// How did we come up with height: 104px?
+// the max number of lines Title can render is 4
+// rendered a title that long and saw how many pixels it takes 😜
 const Title = styled.h3`
   font-size: 18px;
   font-weight: 500;
-  margin-bottom: 15px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 100%;
+  margin-bottom: 4px;
+  height: ${cardConfig.titleHeight};
 
   a {
     color: inherit;
   }
-`;
-
-const Excerpt = styled.p`
-  color: #6e7885;
-  height: 45px;
-  line-height: 1.5;
-  margin-bottom: 15px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 100%;
 `;
 
 const Label = styled.span`
@@ -56,23 +48,12 @@ export default function TripCart({ item, withTooltip, href }) {
   return (
     <Wrap>
       <Cart column>
-        <Thumb
-          url={item.image}
-          tripCount={item.partOf}
-          withTooltip={withTooltip}
-        />
+        <Thumb url={item.image} tripCount={item.partOf} withTooltip={withTooltip} />
         <ContentWrap>
           <Title>
-            {item.title}
+            <Truncate lines={cardConfig.titleLines}>{item.title}</Truncate>
           </Title>
-          { item.type &&
-            <Excerpt>{item.excerpt}</Excerpt>
-          }
-          <Rating
-            marginBottom="25px"
-            rating={item.rating}
-            count={item.reviews}
-          />
+          <Rating marginBottom="10px" rating={item.rating} count={item.reviews} />
           <Label>Starting from</Label>
           <PriceTag price={item.price} />
         </ContentWrap>
@@ -90,16 +71,16 @@ TripCart.propTypes = {
     excerpt: PropTypes.string,
     rating: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     review: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    price: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    price: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   }),
   withTooltip: PropTypes.bool,
   href: PropTypes.string,
-  withShadow: PropTypes.bool
+  withShadow: PropTypes.bool,
 };
 
 // Default props
 TripCart.defaultProps = {
   withTooltip: false,
   withShadow: false,
-  href: "/"
+  href: '/',
 };
