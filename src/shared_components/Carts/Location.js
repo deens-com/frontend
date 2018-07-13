@@ -17,6 +17,7 @@ import { PinIcon } from '../icons';
 
 // STYLES
 import { Cart } from './styles';
+import { cardConfig } from 'libs/config';
 
 const ContentWrap = styled.div`
   padding: 20px;
@@ -28,8 +29,8 @@ const ContentWrap = styled.div`
 const Title = styled.h3`
   font-size: 18px;
   font-weight: 500;
-  margin-bottom: 15px;
-  height: 104px;
+  margin-bottom: 4px;
+  height: ${cardConfig.titleHeight};
 
   a {
     color: inherit;
@@ -41,14 +42,13 @@ const Label = styled.span`
   font-size: 12px;
   text-transform: uppercase;
   color: #6e7885;
-  margin-bottom: 5px;
 `;
 
 const Location = styled.span`
   color: #6e7885;
   display: flex;
   align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
   height: 44px;
 
   svg {
@@ -134,18 +134,18 @@ export default function LocationCart({ item, href, withShadow, smBasis, xsBasis,
       <Thumb url={item.image} />
       <ContentWrap>
         <Title>
-          <Truncate lines={4}>{item.title}</Truncate>
+          <Truncate lines={cardConfig.titleLines}>{item.title}</Truncate>
         </Title>
 
         {item.type && (
           <Location>
             <PinIcon />
             <p>
-              <Truncate lines={2}>{item.location}</Truncate>
+              <Truncate lines={cardConfig.locationLines}>{item.location}</Truncate>
             </p>
           </Location>
         )}
-        <Rating marginBottom="25px" rating={item.rating} count={item.reviewCount} />
+        <Rating marginBottom="10px" rating={item.rating} count={item.reviewCount} />
         <Label>Starting from</Label>
         <PriceTag price={item.price} />
       </ContentWrap>

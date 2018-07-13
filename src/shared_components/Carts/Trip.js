@@ -13,6 +13,7 @@ import Thumb from './components/Thumb';
 
 // STYLES
 import { Cart, ContentWrap } from './styles';
+import { cardConfig } from 'libs/config';
 
 const Wrap = styled.div`
   display: inline-block;
@@ -26,8 +27,8 @@ const Wrap = styled.div`
 const Title = styled.h3`
   font-size: 18px;
   font-weight: 500;
-  margin-bottom: 15px;
-  height: 104px;
+  margin-bottom: 4px;
+  height: ${cardConfig.titleHeight};
 
   a {
     color: inherit;
@@ -50,9 +51,9 @@ export default function TripCart({ item, withTooltip, href }) {
         <Thumb url={item.image} tripCount={item.partOf} withTooltip={withTooltip} />
         <ContentWrap>
           <Title>
-            <Truncate lines={4}>{item.title}</Truncate>
+            <Truncate lines={cardConfig.titleLines}>{item.title}</Truncate>
           </Title>
-          <Rating marginBottom="25px" rating={item.rating} count={item.reviews} />
+          <Rating marginBottom="10px" rating={item.rating} count={item.reviews} />
           <Label>Starting from</Label>
           <PriceTag price={item.price} />
         </ContentWrap>
