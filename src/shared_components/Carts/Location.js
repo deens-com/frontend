@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Label as SemanticLabel, Icon } from 'semantic-ui-react';
+import Truncate from 'react-truncate';
 
 // COMPONENTS
 import Rating from '../Rating';
@@ -21,10 +22,14 @@ const ContentWrap = styled.div`
   padding: 20px;
 `;
 
+// How did we come up with min-height: 104px?
+// the max number of lines Title can render is 4
+// rendered a title that long and saw how many pixels it takes 😜
 const Title = styled.h3`
   font-size: 18px;
   font-weight: 500;
   margin-bottom: 15px;
+  min-height: 104px;
 
   a {
     color: inherit;
@@ -134,11 +139,9 @@ export default function LocationCart({ item, href, withShadow, smBasis, xsBasis,
       <Thumb url={item.image} />
       <ContentWrap>
         <Title>
-          <p>{item.title}</p>
+          <Truncate lines={4}>{item.title}</Truncate>
         </Title>
-        { item.type &&
-          <Excerpt>{item.excerpt}</Excerpt>
-        }
+        {item.type && <Excerpt>{item.excerpt}</Excerpt>}
 
         {item.type && (
           <Location>
