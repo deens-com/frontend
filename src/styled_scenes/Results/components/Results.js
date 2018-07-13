@@ -78,6 +78,9 @@ const Badge = styled.div`
   border-radius: 4px;
 `;
 
+const LoaderWithMargin = styled.section`
+  margin-top: 40px;
+`;
 
 const limit_per_page = 12;
 
@@ -134,7 +137,9 @@ export default class Results extends Component {
           }
           { this.props.isLoadingResults
               ?
-                <Loader active inline='centered' size='massive' style={{marginTop: '40px'}}>Loading Results</Loader>
+                <LoaderWithMargin>
+                  <Loader active inline='centered' size='massive'>Loading Results</Loader>
+                </LoaderWithMargin>
               :
                 this.state.filteredData.map((result, i) => (
                   <ResultItem key={result.objectId}>

@@ -29,7 +29,7 @@ export default function ResultsReducer(state = initialState, action = {}) {
     case "RESULTS_FETCH_STARTED":
       return {
         ...state,
-        isLoadingResults: action.payload
+        isLoadingResults: true
       }
     default:
       return state;

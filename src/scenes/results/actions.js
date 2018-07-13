@@ -10,10 +10,9 @@ export const results_fetched = results => {
   };
 };
 
-export const results_fetch_started = (bool) => {
+export const results_fetch_started = () => {
   return {
-    type: "RESULTS_FETCH_STARTED",
-    payload: bool
+    type: "RESULTS_FETCH_STARTED"
   };
 };
 
