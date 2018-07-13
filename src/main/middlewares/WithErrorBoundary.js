@@ -11,7 +11,6 @@ export default ChildComponent => {
     componentDidCatch(error, info) {
       this.setState({ showErrorPage: true });
       console.log({ error, info });
-      // TODO: @jaydp send the error to sentry
       Raven.captureException(error, { extra: info });
     }
 
