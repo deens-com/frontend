@@ -6,8 +6,6 @@ import styled from "styled-components";
 import { ArrowIcon } from "../../../../shared_components/icons";
 import SliderPerson from "./SliderPerson";
 
-import Image from 'shared_components/Image';
-
 // ACTIONS/CONFIG
 import { resetButton } from "../../../../libs/styled";
 
@@ -21,22 +19,14 @@ const Wrap = styled.div`
   z-index: 0;
 `;
 
-const BGImage = styled(Image)`
-  background-size: cover;
-  bottom: 0;
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-  z-index: 0;
-`;
-
-const BGGradient = styled.div`
+const BGImage = styled.div`
   background-image: linear-gradient(
-    176deg,
-    rgba(0, 0, 0, 0.31) 0%,
-    rgba(0, 0, 0, 0.72)
-  );
+      176deg,
+      rgba(0, 0, 0, 0.31) 0%,
+      rgba(0, 0, 0, 0.72)
+    ),
+    url(${props => props.img || "#"});
+  background-size: cover;
   bottom: 0;
   left: 0;
   position: absolute;
@@ -169,11 +159,9 @@ export default class HeroSlider extends Component {
       <Wrap>
         <BGImage
           rel="img"
-          src={currImg.image}
-          background
+          img={currImg.image}
           aria-label={`${currImg.name}, ${currImg.location}`}
         />
-        <BGGradient aria-label={`${currImg.name}, ${currImg.location}`} />
         <LeftArrow onClick={this.goToPrevious}>
           <ArrowIcon />
         </LeftArrow>
