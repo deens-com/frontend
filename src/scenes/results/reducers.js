@@ -4,7 +4,8 @@ const initialState = {
     service_types: [],
     tags: []
   },
-  carousel_tags: []
+  carousel_tags: [],
+  isLoadingResults: false
 };
 
 export default function ResultsReducer(state = initialState, action = {}) {
@@ -12,7 +13,8 @@ export default function ResultsReducer(state = initialState, action = {}) {
     case "RESULTS_FETCHED":
       return {
         ...state,
-        results: action.payload.results
+        results: action.payload.results,
+        isLoadingResults: false
       };
     case "SEARCH_QUERY_UPDATED":
       return {
@@ -23,6 +25,11 @@ export default function ResultsReducer(state = initialState, action = {}) {
       return {
         ...state,
         carousel_tags: action.payload
+      }
+    case "RESULTS_FETCH_STARTED":
+      return {
+        ...state,
+        isLoadingResults: true
       }
     default:
       return state;

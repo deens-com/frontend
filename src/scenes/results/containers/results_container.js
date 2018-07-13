@@ -67,7 +67,8 @@ const mapStateToProps = state => {
   return {
     results: state.ResultsReducer.results,
     search_query: state.ResultsReducer.search_query,
-    carousel_tags: state.ResultsReducer.carousel_tags
+    carousel_tags: state.ResultsReducer.carousel_tags,
+    isLoadingResults: state.ResultsReducer.isLoadingResults
   };
 };
 

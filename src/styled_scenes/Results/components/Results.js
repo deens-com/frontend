@@ -8,6 +8,7 @@ import Row from "../../../shared_components/layout/Row";
 import TripCart from "../../../shared_components/Carts/Trip";
 import ReactPaginate from 'react-paginate';
 import { media } from '../../../libs/styled';
+import { Loader } from 'semantic-ui-react'
 
 // STYLES
 const Wrap = styled.div`
@@ -77,6 +78,9 @@ const Badge = styled.div`
   border-radius: 4px;
 `;
 
+const LoaderWithMargin = styled.section`
+  margin-top: 40px;
+`;
 
 const limit_per_page = 12;
 
@@ -131,26 +135,33 @@ export default class Results extends Component {
               <br/>
             </section>
           }
-          {this.state.filteredData.map((result, i) => (
-            <ResultItem key={result.objectId}>
-              <Link to={(result.type ? '/services/' : '/trips/') + result.objectId}>
-                {result.contractAddress &&
-                  <Badge>Decentralized</Badge>
-                }
-                <TripCart
+          { this.props.isLoadingResults
+              ?
+                <LoaderWithMargin>
+                  <Loader active inline='centered' size='massive'>Loading Results</Loader>
+                </LoaderWithMargin>
+              :
+                this.state.filteredData.map((result, i) => (
+                  <ResultItem key={result.objectId}>
+                  <Link to={(result.type ? '/services/' : '/trips/') + result.objectId}>
+                  {result.contractAddress &&
+                    <Badge>Decentralized</Badge>
+                  }
+                  <TripCart
                   key={result.label}
                   withTooltip
                   withShadow
                   item={result}
-                />
-              </Link>
-            </ResultItem>
-          ))}
+                  />
+                  </Link>
+                  </ResultItem>
+                ))
+          }
         </Row>
         <Row>
           <PaginationWrap>
             {
-              this.state.filteredData.length
+              (!this.props.isLoadingResults && this.state.filteredData.length)
                 ?
               <ReactPaginate pageCount={Math.ceil(this.state.totalItems / limit_per_page)}
               marginPagesDisplayed={1}

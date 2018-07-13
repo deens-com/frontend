@@ -10,6 +10,12 @@ export const results_fetched = results => {
   };
 };
 
+export const results_fetch_started = () => {
+  return {
+    type: "RESULTS_FETCH_STARTED"
+  };
+};
+
 export const search_query_updated = search_query => {
   return {
     type: "SEARCH_QUERY_UPDATED",
@@ -94,6 +100,7 @@ export const update_search_query = search_params => {
   return dispatch => {
     dispatch(search_query_updated({ search_query: search_params }));
     dispatch(fetch_results(search_params));
+    dispatch(results_fetch_started());
   };
 };
 
@@ -101,7 +108,7 @@ export const fetch_results = results_search_query => {
   return dispatch => {
     if(results_search_query.speech_query){
       const speech_query_params = results_search_query.speech_query;
-      console.log(speech_query_params);
+      //console.log(speech_query_params);
       Parse.Cloud.run("fetch_speech_query", {message:speech_query_params}).then(search_query_object => {
         let search_query = search_query_object.search_query;
         dispatch(update_path(search_query));
