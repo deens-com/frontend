@@ -100,7 +100,7 @@ export const update_search_query = search_params => {
   return dispatch => {
     dispatch(search_query_updated({ search_query: search_params }));
     dispatch(fetch_results(search_params));
-    dispatch(results_fetch_started(true));
+    dispatch(results_fetch_started());
   };
 };
 
