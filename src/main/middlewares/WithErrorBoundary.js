@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Raven from 'raven-js';
 import ErrorPage from 'shared_components/ErrorPage';
 
 export default ChildComponent => {
