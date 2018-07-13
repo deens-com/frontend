@@ -22,25 +22,26 @@ const ContentWrap = styled.div`
   padding: 20px;
 `;
 
-// How did we come up with min-height: 104px?
+// How did we come up with height: 104px?
 // the max number of lines Title can render is 4
 // rendered a title that long and saw how many pixels it takes 😜
 const Title = styled.h3`
   font-size: 18px;
   font-weight: 500;
   margin-bottom: 15px;
-  min-height: 104px;
+  height: 104px;
 
   a {
     color: inherit;
   }
 `;
 
+// height over here is also calculated using the same way as above
 const Excerpt = styled.p`
   color: #6e7885;
   line-height: 1.5;
   margin-bottom: 15px;
-  height: 45px;
+  height: 42px;
   width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -59,6 +60,7 @@ const Location = styled.span`
   display: flex;
   align-items: center;
   margin-bottom: 15px;
+  height: 44px;
 
   svg {
     display: inline-block;
@@ -141,7 +143,11 @@ export default function LocationCart({ item, href, withShadow, smBasis, xsBasis,
         <Title>
           <Truncate lines={4}>{item.title}</Truncate>
         </Title>
-        {item.type && <Excerpt>{item.excerpt}</Excerpt>}
+        {item.type && (
+          <Excerpt>
+            <Truncate lines={2}>{item.excerpt}</Truncate>
+          </Excerpt>
+        )}
 
         {item.type && (
           <Location>
