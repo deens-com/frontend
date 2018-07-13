@@ -6,6 +6,7 @@ import { Label as SemanticLabel, Icon } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router';
+import Truncate from 'react-truncate';
 import * as actions from './../../../../../scenes/service-upsert/actions';
 
 // COMPONENTS
@@ -24,10 +25,14 @@ const ContentWrap = styled.div`
   padding: 20px;
 `;
 
+// How did we come up with height: 104px?
+// the max number of lines Title can render is 4
+// rendered a title that long and saw how many pixels it takes 😜
 const Title = styled.h3`
   font-size: 18px;
   font-weight: 500;
   margin-bottom: 15px;
+  height: 104px;
 
   a {
     color: inherit;
@@ -171,7 +176,7 @@ class ServiceLocationCard extends Component {
             {this.wrapWithLink(
               <div>
                 <Title>
-                  <p>{item.title}</p>
+                  <Truncate lines={4}>{item.title}</Truncate>
                 </Title>
                 <Excerpt>{item.excerpt}</Excerpt>
 
