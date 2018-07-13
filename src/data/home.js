@@ -1,22 +1,22 @@
 import i18n from './../libs/i18n';
 export const categories = [
   {
-    img: "/img/categories/trips.png",
+    img: "https://please-com.imgix.net/static/categories/trips.png",
     label: i18n.t('trips.label'),
     href: "/results?service_types=trip"
   },
   {
-    img: "/img/categories/places.png",
+    img: "https://please-com.imgix.net/static/categories/places.png",
     label: i18n.t('places.singular'),
     href: "/results?service_types=place"
   },
   {
-    img: "/img/categories/activities.png",
+    img: "https://please-com.imgix.net/static/categories/activities.png",
     label: i18n.t('activities.label'),
     href: "/results?service_types=activity"
   },
   {
-    img: "/img/categories/food.png",
+    img: "https://please-com.imgix.net/static/categories/food.png",
     label: i18n.t('foods.label'),
     href: "/results?service_types=food"
   }
@@ -32,7 +32,7 @@ export const tags = [
 
 export const tripsData = [
   {
-    img: "/img/trips/new-york.png",
+    img: "https://please-com.imgix.net/static/trips/new-york.png",
     title: "Explore New York",
     excerpt: "Winter pearl in the heart of Europe and other stuff here.",
     rating: "5",
@@ -40,7 +40,7 @@ export const tripsData = [
     price: "230"
   },
   {
-    img: "/img/trips/bali.png",
+    img: "https://please-com.imgix.net/static/trips/bali.png",
     title: "Balinese secrets",
     excerpt: "Winter pearl in the heart.",
     rating: "4",
@@ -48,7 +48,7 @@ export const tripsData = [
     price: "1530"
   },
   {
-    img: "/img/trips/africa.png",
+    img: "https://please-com.imgix.net/static/trips/africa.png",
     title: "African sunsets",
     excerpt: "Winter pearl in the heart of Europe.",
     rating: "3",
@@ -56,7 +56,7 @@ export const tripsData = [
     price: "430"
   },
   {
-    img: "/img/trips/paris.png",
+    img: "https://please-com.imgix.net/static/trips/paris.png",
     title: "French baguettes",
     excerpt: "Winter pearl in the heart of.",
     rating: "5",
@@ -64,7 +64,7 @@ export const tripsData = [
     price: "50"
   },
   {
-    img: "/img/trips/new-york.png",
+    img: "https://please-com.imgix.net/static/trips/new-york.png",
     title: "Explore New York 1",
     excerpt: "Winter pearl in the heart of Europe and other stuff here.",
     rating: "5",
@@ -72,7 +72,7 @@ export const tripsData = [
     price: "230"
   },
   {
-    img: "/img/trips/bali.png",
+    img: "https://please-com.imgix.net/static/trips/bali.png",
     title: "Balinese secrets 1",
     excerpt: "Winter pearl in the heart.",
     rating: "4",
@@ -80,7 +80,7 @@ export const tripsData = [
     price: "1530"
   },
   {
-    img: "/img/trips/africa.png",
+    img: "https://please-com.imgix.net/static/trips/africa.png",
     title: "African sunsets 1",
     excerpt: "Winter pearl in the heart of Europe.",
     rating: "3",
@@ -91,7 +91,7 @@ export const tripsData = [
 
 export const placesData = [
   {
-    img: "/img/places/tallinn.png",
+    img: "https://please-com.imgix.net/static/places/tallinn.png",
     title: "Tallinn, Estonia",
     excerpt: "Winter pearl in the heart of Europe and other stuff here.",
     rating: "5",
@@ -99,7 +99,7 @@ export const placesData = [
     price: "230"
   },
   {
-    img: "/img/places/tokyo.png",
+    img: "https://please-com.imgix.net/static/places/tokyo.png",
     title: "Tokyo, Japan",
     excerpt: "Winter pearl in the heart.",
     rating: "4",
@@ -107,7 +107,7 @@ export const placesData = [
     price: "1530"
   },
   {
-    img: "/img/places/london.png",
+    img: "https://please-com.imgix.net/static/places/london.png",
     title: "London, Great Britain",
     excerpt: "Winter pearl in the heart of Europe.",
     rating: "3",
@@ -115,7 +115,7 @@ export const placesData = [
     price: "430"
   },
   {
-    img: "/img/places/firenze.png",
+    img: "https://please-com.imgix.net/static/places/firenze.png",
     title: "Firenze, Italy",
     excerpt: "Winter pearl in the heart of.",
     rating: "5",
@@ -126,7 +126,7 @@ export const placesData = [
 
 export const activitiesData = [
   {
-    img: "/img/places/tallinn.png",
+    img: "https://please-com.imgix.net/static/places/tallinn.png",
     title: "Bungee jumping",
     location: "Tallinn, Estonia",
     rating: "5",
@@ -134,7 +134,7 @@ export const activitiesData = [
     price: "230"
   },
   {
-    img: "/img/places/tokyo.png",
+    img: "https://please-com.imgix.net/static/places/tokyo.png",
     title: "Boat trip",
     location: "Milano, Italy",
     rating: "4",
@@ -142,7 +142,7 @@ export const activitiesData = [
     price: "1530"
   },
   {
-    img: "/img/places/london.png",
+    img: "https://please-com.imgix.net/static/places/london.png",
     title: "Surfing lesson",
     location: "Tallinn, Estonia",
     rating: "3",
@@ -150,7 +150,7 @@ export const activitiesData = [
     price: "430"
   },
   {
-    img: "/img/places/firenze.png",
+    img: "https://please-com.imgix.net/static/places/firenze.png",
     title: "Diving adventure",
     location: "Tallinn, Estonia",
     rating: "5",
@@ -161,7 +161,7 @@ export const activitiesData = [
 
 export const foodData = [
   {
-    img: "/img/food/italian.png",
+    img: "https://please-com.imgix.net/static/food/italian.png",
     title: "Italian cuisine",
     excerpt: "Winter pearl in the heart of Europe and other stuff here.",
     rating: "5",
@@ -169,7 +169,7 @@ export const foodData = [
     price: "230"
   },
   {
-    img: "/img/food/bbq.png",
+    img: "https://please-com.imgix.net/static/food/bbq.png",
     title: "BBQ dinner outside",
     excerpt: "Winter pearl in the heart.",
     rating: "4",
@@ -177,7 +177,7 @@ export const foodData = [
     price: "1530"
   },
   {
-    img: "/img/food/mexican.png",
+    img: "https://please-com.imgix.net/static/food/mexican.png",
     title: "Mexican stories",
     excerpt: "Winter pearl in the heart of Europe.",
     rating: "3",
@@ -185,7 +185,7 @@ export const foodData = [
     price: "430"
   },
   {
-    img: "/img/food/breakfast.png",
+    img: "https://please-com.imgix.net/static/food/breakfast.png",
     title: "Healthy morning",
     excerpt: "Winter pearl in the heart of.",
     rating: "5",
