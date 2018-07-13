@@ -11,6 +11,7 @@ export const identifyUsingSession = session => {
       eventType: EventTypes.identify,
       eventPayload: {
         userId: email,
+        traits: { email },
       },
     };
   }
