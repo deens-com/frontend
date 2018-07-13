@@ -34,16 +34,6 @@ const Title = styled.h3`
   }
 `;
 
-const Excerpt = styled.p`
-  color: #6e7885;
-  height: 45px;
-  line-height: 1.5;
-  margin-bottom: 15px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 100%;
-`;
-
 const Label = styled.span`
   color: #6e7885;
   display: block;
@@ -66,9 +56,6 @@ export default function TripCart({ item, withTooltip, href }) {
           <Title>
             <Truncate lines={4}>{item.title}</Truncate>
           </Title>
-          { item.type &&
-            <Excerpt>{item.excerpt}</Excerpt>
-          }
           <Rating
             marginBottom="25px"
             rating={item.rating}

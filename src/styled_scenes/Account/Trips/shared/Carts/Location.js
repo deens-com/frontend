@@ -52,6 +52,7 @@ const Location = styled.span`
   display: flex;
   align-items: center;
   margin-bottom: 15px;
+  height: 44px;
 
   svg {
     display: inline-block;
@@ -61,6 +62,10 @@ const Location = styled.span`
     fill: #d3d7dc;
     position: relative;
     left: -3px;
+  }
+
+  p {
+    width: 100%;
   }
 `;
 
@@ -172,7 +177,9 @@ class ServiceLocationCard extends Component {
                 {item.type && (
                   <Location>
                     <PinIcon />
-                    {item.location}
+                    <p>
+                      <Truncate lines={2}>{item.location}</Truncate>
+                    </p>
                   </Location>
                 )}
                 <Rating marginBottom="25px" rating={item.rating} count={item.reviewCount} />

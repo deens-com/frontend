@@ -60,6 +60,10 @@ const Location = styled.span`
     position: relative;
     left: -3px;
   }
+
+  p {
+    width: 100%;
+  }
 `;
 
 const SemanticLabelFixed = styled(SemanticLabel)`
@@ -136,7 +140,9 @@ export default function LocationCart({ item, href, withShadow, smBasis, xsBasis,
         {item.type && (
           <Location>
             <PinIcon />
-            {item.location}
+            <p>
+              <Truncate lines={2}>{item.location}</Truncate>
+            </p>
           </Location>
         )}
         <Rating marginBottom="25px" rating={item.rating} count={item.reviewCount} />
