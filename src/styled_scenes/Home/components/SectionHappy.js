@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import Row from "../../../shared_components/layout/Row";
 import Col from "../../../shared_components/layout/Col";
 import { ArrowIcon } from "../../../shared_components/icons";
+import Image from 'shared_components/Image';
 
 // ACTIONS/CONFIG
 
@@ -78,7 +79,7 @@ export default function HomeSectionHappy({ categories }) {
                 <Cart withShadow>
                   <CartLink to={item.href}>
                     <CategoryThumb>
-                      <img src={process.env.PUBLIC_URL + item.img} alt=""/>
+                      <Image src={process.env.PUBLIC_URL + item.img} alt=""/>
                     </CategoryThumb>
                     <TagCategory>{item.label}</TagCategory>
                     <CategoryArrow>

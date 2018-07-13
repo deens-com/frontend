@@ -49,7 +49,7 @@ export default function SliderPerson({ name, location, avatar }) {
         <span>{location}</span>
       </Content>
       {/*<Avatar>
-        <img src={avatar} alt={name} />
+        <Image src={avatar} alt={name} />
       </Avatar>*/}
     </Person>
   );

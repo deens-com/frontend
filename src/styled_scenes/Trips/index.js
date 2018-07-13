@@ -18,6 +18,7 @@ import Summary from './components/Summary';
 import MapMaker from '../../shared_components/MapMarker';
 import UserAvatar from '../../shared_components/UserAvatar';
 import ShareButton from './components/ShareButton';
+import Image from 'shared_components/Image';
 
 // ACTIONS/CONFIG
 import { media, sizes } from '../../libs/styled';
@@ -75,9 +76,8 @@ const ActionsWrap = styled.div`
   }
 `;
 
-const ShareBg = styled.div`
+const ShareBg = styled(Image)`
   position: absolute;
-  background: url(${props => props.url || '#'}) no-repeat;
   background-size: cover;
   height: 100%;
   width: 100%;
@@ -236,7 +236,7 @@ export default class TripsScene extends Component {
                     isImageUploadInProgress={this.props.isImageUploadInProgress}
                   />
                 </ActionsWrap>
-                <ShareBg url={(trip && trip.picture && trip.picture.url) || '/img/food/mamamia.jpg'} />
+                <ShareBg src={(trip && trip.picture && trip.picture.url) || '/img/food/mamamia.jpg'} background />
               </ShareWrap>
               <Media
                 query={`(min-width: ${sizes.medium})`}

@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styled, { css } from "styled-components";
+import Image from 'shared_components/Image';
 
 // STYLES
 const Wrap = styled.div`
@@ -28,10 +29,9 @@ const Wrap = styled.div`
     `};
 `;
 
-const Thumb = styled.div`
+const Thumb = styled(Image)`
   padding-top: 65%;
   background: #d3d7dc;
-  background-image: url(${props => props.url});
   background-size: cover;
   background-position: center;
   height: 100%;
@@ -70,7 +70,7 @@ export default class CartThumb extends Component {
 
     return (
       <Wrap withTooltip={withTooltip} onMouseLeave={this.hideTooltip}>
-        <Thumb url={url} />
+        <Thumb src={url} background />
         {/*withTooltip && (
           <TagWrap
             innerRef={tag => {
