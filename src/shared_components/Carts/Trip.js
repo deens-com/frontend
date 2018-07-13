@@ -1,18 +1,18 @@
 // NPM
-import React from "react";
-import PropTypes from "prop-types";
-import styled from "styled-components";
+import React from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import Truncate from 'react-truncate';
 
 // COMPONENTS
-import Rating from "../Rating";
-import PriceTag from "../Currency/PriceTag";
-import Thumb from "./components/Thumb";
+import Rating from '../Rating';
+import PriceTag from '../Currency/PriceTag';
+import Thumb from './components/Thumb';
 
 // ACTIONS/CONFIG
 
 // STYLES
-import { Cart, ContentWrap } from "./styles";
+import { Cart, ContentWrap } from './styles';
 
 const Wrap = styled.div`
   display: inline-block;
@@ -47,20 +47,12 @@ export default function TripCart({ item, withTooltip, href }) {
   return (
     <Wrap>
       <Cart column>
-        <Thumb
-          url={item.image}
-          tripCount={item.partOf}
-          withTooltip={withTooltip}
-        />
+        <Thumb url={item.image} tripCount={item.partOf} withTooltip={withTooltip} />
         <ContentWrap>
           <Title>
             <Truncate lines={4}>{item.title}</Truncate>
           </Title>
-          <Rating
-            marginBottom="25px"
-            rating={item.rating}
-            count={item.reviews}
-          />
+          <Rating marginBottom="25px" rating={item.rating} count={item.reviews} />
           <Label>Starting from</Label>
           <PriceTag price={item.price} />
         </ContentWrap>
@@ -78,16 +70,16 @@ TripCart.propTypes = {
     excerpt: PropTypes.string,
     rating: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     review: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    price: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    price: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   }),
   withTooltip: PropTypes.bool,
   href: PropTypes.string,
-  withShadow: PropTypes.bool
+  withShadow: PropTypes.bool,
 };
 
 // Default props
 TripCart.defaultProps = {
   withTooltip: false,
   withShadow: false,
-  href: "/"
+  href: '/',
 };
