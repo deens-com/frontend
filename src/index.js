@@ -23,6 +23,14 @@ if (process.env.REACT_APP_NODE_ENV === 'production') {
   Parse.serverURL = 'https://api.please.docker/parse';
 }
 
+if (process.env.NODE_ENV === 'production') {
+  const noop = () => {};
+  const error = error => Raven.captureException(error);
+  console.log = noop;
+  console.warn = error;
+  console.error = error;
+}
+
 ReactDOM.render(<App />, document.getElementById('root'));
 unregisterServiceWorker();
 
