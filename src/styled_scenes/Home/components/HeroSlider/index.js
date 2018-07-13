@@ -12,6 +12,8 @@ import trekking from "./img/trekking.jpg";
 import { ArrowIcon } from "../../../../shared_components/icons";
 import SliderPerson from "./SliderPerson";
 
+import Image from 'shared_components/Image';
+
 // ACTIONS/CONFIG
 import { resetButton } from "../../../../libs/styled";
 
@@ -25,14 +27,22 @@ const Wrap = styled.div`
   z-index: 0;
 `;
 
-const BGImage = styled.div`
-  background-image: linear-gradient(
-      176deg,
-      rgba(0, 0, 0, 0.31) 0%,
-      rgba(0, 0, 0, 0.72)
-    ),
-    url(${props => props.img || "#"});
+const BGImage = styled(Image)`
   background-size: cover;
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 0;
+`;
+
+const BGGradient = styled.div`
+  background-image: linear-gradient(
+    176deg,
+    rgba(0, 0, 0, 0.31) 0%,
+    rgba(0, 0, 0, 0.72)
+  );
   bottom: 0;
   left: 0;
   position: absolute;
@@ -165,9 +175,11 @@ export default class HeroSlider extends Component {
       <Wrap>
         <BGImage
           rel="img"
-          img={currImg.image}
+          src={currImg.image}
+          background
           aria-label={`${currImg.name}, ${currImg.location}`}
         />
+        <BGGradient aria-label={`${currImg.name}, ${currImg.location}`} />
         <LeftArrow onClick={this.goToPrevious}>
           <ArrowIcon />
         </LeftArrow>
