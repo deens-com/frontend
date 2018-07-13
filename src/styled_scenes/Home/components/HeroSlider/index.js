@@ -65,7 +65,12 @@ const RightArrow = Arrow.extend`
   transform: translateY(-50%);
 `;
 
-// MODULE
+
+// NOTE: If you update any of the urls in the below array, make sure you also update it in index.html
+// where we're pre-fetching all these images
+// If you fail to do so, we might load images that may never be used.
+// YOU HAVE BEEN WARNED!!
+// - @jaydp
 const slider = [
   {
     name: "Cycling",
