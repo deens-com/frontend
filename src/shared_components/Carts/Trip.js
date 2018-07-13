@@ -2,6 +2,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import Truncate from 'react-truncate';
 
 // COMPONENTS
 import Rating from "../Rating";
@@ -19,14 +20,14 @@ const Wrap = styled.div`
   padding: 10px;
 `;
 
+// How did we come up with height: 104px?
+// the max number of lines Title can render is 4
+// rendered a title that long and saw how many pixels it takes 😜
 const Title = styled.h3`
   font-size: 18px;
   font-weight: 500;
   margin-bottom: 15px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 100%;
+  height: 104px;
 
   a {
     color: inherit;
@@ -63,7 +64,7 @@ export default function TripCart({ item, withTooltip, href }) {
         />
         <ContentWrap>
           <Title>
-            {item.title}
+            <Truncate lines={4}>{item.title}</Truncate>
           </Title>
           { item.type &&
             <Excerpt>{item.excerpt}</Excerpt>
