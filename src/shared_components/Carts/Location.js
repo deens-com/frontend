@@ -36,17 +36,6 @@ const Title = styled.h3`
   }
 `;
 
-// height over here is also calculated using the same way as above
-const Excerpt = styled.p`
-  color: #6e7885;
-  line-height: 1.5;
-  margin-bottom: 15px;
-  height: 42px;
-  width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
 const Label = styled.span`
   display: block;
   font-size: 12px;
@@ -143,11 +132,6 @@ export default function LocationCart({ item, href, withShadow, smBasis, xsBasis,
         <Title>
           <Truncate lines={4}>{item.title}</Truncate>
         </Title>
-        {item.type && (
-          <Excerpt>
-            <Truncate lines={2}>{item.excerpt}</Truncate>
-          </Excerpt>
-        )}
 
         {item.type && (
           <Location>
