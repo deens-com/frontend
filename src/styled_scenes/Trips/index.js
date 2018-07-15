@@ -8,7 +8,7 @@ import { fitBounds } from 'google-map-react/utils';
 import moment from 'moment';
 import Parse from 'parse';
 import { Divider, Message } from 'semantic-ui-react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Tag from './../Service/components/Tag';
 // COMPONENTS
 import TopBar from './../../shared_components/TopBarWithSearch';
@@ -18,6 +18,7 @@ import Summary from './components/Summary';
 import MapMaker from '../../shared_components/MapMarker';
 import UserAvatar from '../../shared_components/UserAvatar';
 import ShareButton from './components/ShareButton';
+import Image from 'shared_components/Image';
 
 // ACTIONS/CONFIG
 import { media, sizes } from '../../libs/styled';
@@ -75,9 +76,8 @@ const ActionsWrap = styled.div`
   }
 `;
 
-const ShareBg = styled.div`
+const ShareBg = styled(Image)`
   position: absolute;
-  background: url(${props => props.url || '#'}) no-repeat;
   background-size: cover;
   height: 100%;
   width: 100%;
@@ -236,7 +236,12 @@ export default class TripsScene extends Component {
                     isImageUploadInProgress={this.props.isImageUploadInProgress}
                   />
                 </ActionsWrap>
-                <ShareBg url={(trip && trip.picture && trip.picture.url) || '/img/food/mamamia.jpg'} />
+                <ShareBg
+                  src={
+                    (trip && trip.picture && trip.picture.url) || 'https://please-com.imgix.net/static/food/mamamia.jpg'
+                  }
+                  background
+                />
               </ShareWrap>
               <Media
                 query={`(min-width: ${sizes.medium})`}
@@ -271,11 +276,12 @@ export default class TripsScene extends Component {
                 serviceAvailabilityCheckInProgress={this.props.serviceAvailabilityCheckInProgress}
               />
               <TagsWrapper>
-              { trip.tags && trip.tags.map(tag =>
-                <Link to={`/results?tags=${tag.label}`}>
-                <Tag key={tag.label} item={tag} />
-                </Link>
-              )}
+                {trip.tags &&
+                  trip.tags.map(tag => (
+                    <Link to={`/results?tags=${tag.label}`}>
+                      <Tag key={tag.label} item={tag} />
+                    </Link>
+                  ))}
               </TagsWrapper>
               <Divider horizontal>Trip itinerary</Divider>
               <Results

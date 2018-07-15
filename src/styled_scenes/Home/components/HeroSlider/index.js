@@ -3,12 +3,6 @@ import React, { Component } from "react";
 import styled from "styled-components";
 
 // COMPONENTS
-import back from "./img/back.jpg";
-import jump from "./img/jump.jpg";
-import mountain from "./img/mountain.jpg";
-import beach from "./img/beach.jpg";
-import field from "./img/field.jpg";
-import trekking from "./img/trekking.jpg";
 import { ArrowIcon } from "../../../../shared_components/icons";
 import SliderPerson from "./SliderPerson";
 
@@ -71,43 +65,48 @@ const RightArrow = Arrow.extend`
   transform: translateY(-50%);
 `;
 
-// MODULE
+
+// NOTE: If you update any of the urls in the below array, make sure you also update it in index.html
+// where we're pre-fetching all these images
+// If you fail to do so, we might load images that may never be used.
+// YOU HAVE BEEN WARNED!!
+// - @jaydp
 const slider = [
   {
     name: "Cycling",
     location: "Patagonia, Chile",
     avatar: "#",
-    image: mountain
+    image: 'https://please-com.imgix.net/static/hero-slider/beach-2018-07-13.jpg'
   },
   {
     name: "Rock diving",
     location: "Bali, Indonesia",
     avatar: "#",
-    image: back
+    image: 'https://please-com.imgix.net/static/hero-slider/back-2018-07-13.jpg'
   },
   {
     name: "Sky diving",
     location: "Chaing Mai, Thailand",
     avatar: "#",
-    image: jump
+    image: 'https://please-com.imgix.net/static/hero-slider/jump-2018-07-13.jpg'
   },
   {
     name: "Beach",
     location: "Chaing Mai, Thailand",
     avatar: "#",
-    image: beach
+    image: 'https://please-com.imgix.net/static/hero-slider/beach-2018-07-13.jpg'
   },
   {
     name: "Field",
     location: "Chaing Mai, Thailand",
     avatar: "#",
-    image: field
+    image: 'https://please-com.imgix.net/static/hero-slider/field-2018-07-13.jpg'
   },
   {
     name: "Trekking",
     location: "Chaing Mai, Thailand",
     avatar: "#",
-    image: trekking
+    image: 'https://please-com.imgix.net/static/hero-slider/trekking-2018-07-13.jpg'
   },
 ];
 

@@ -1,10 +1,10 @@
 // NPM
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 
 // COMPONENTS
 import { ArrowIcon } from "../../../../../components/icons";
+import Image from 'shared_components/Image';
 
 // ACTIONS/CONFIG
 import { media } from "../../../../../libs/styled";
@@ -116,7 +116,7 @@ export default class FoodImgSlider extends Component {
         <RightArrow onClick={this.goToNext}>
           <ArrowIcon />
         </RightArrow>
-        <img
+        <Image
           src={this.props.images[this.state.index].src}
           alt={this.props.images[this.state.index].label}
         />

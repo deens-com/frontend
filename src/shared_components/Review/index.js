@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 // COMPONENTS
 import Stars from '../Rating/Stars';
+import Image from 'shared_components/Image';
 
 // ACTIONS/CONFIG
 
@@ -70,7 +71,14 @@ export default function ReviewCart({ review }) {
       <ProfileWrap>
         <Link to={reviewerProfileLink}>
           <Avatar>
-            <img src={review.reviewer.profilePicture ? review.reviewer.profilePicture.url : "https://dummyimage.com/60x40/000/fff"} alt=""/>
+            <Image
+              src={
+                review.reviewer.profilePicture
+                  ? review.reviewer.profilePicture.url
+                  : 'https://dummyimage.com/60x40/000/fff'
+              }
+              alt=""
+            />
           </Avatar>
         </Link>
         <Profile>

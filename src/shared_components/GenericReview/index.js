@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 // COMPONENTS
 import Stars from '../Rating/Stars';
+import Image from 'shared_components/Image';
 
 // ACTIONS/CONFIG
 
@@ -67,9 +68,9 @@ export default function ReviewCart({ title, rating, message, city, country, name
     <Wrap>
       <ProfileWrap>
         <Link to={link}>
-        <Avatar>
-          <img src={image || 'https://dummyimage.com/60x40/000/fff'} alt=""/>
-        </Avatar>
+          <Avatar>
+            <Image src={image || 'https://dummyimage.com/60x40/000/fff'} alt="" />
+          </Avatar>
         </Link>
         <Profile>
         <span><Link to={link}>{name}</Link></span>
