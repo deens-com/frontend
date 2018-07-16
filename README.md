@@ -29,6 +29,9 @@ $ export REACT_APP_PARSE_SERVER_URL=https://please-api.herokuapp.com/parse
 $ yarn start
 ```
 
+## Troubleshooting
+If you're stuck somewhere while working on something create an issue or jump on to the [Telegram group](https://t.me/PleaseDotCom) and we'll help you out.
+
 ## 🎓 License
 
 Licensed under the MIT license. See [LICENSE](LICENSE) for more information.
