@@ -1,7 +1,7 @@
 {
   "name": "frontend",
   "version": "0.1.0",
-  "homepage": "https://github.com/PleaseDotCom/frontend#readme",
+  "homepage": "https://PleaseDotCom.github.io",
   "main": "src/index.js",
   "repository": {
     "type": "git",
