@@ -34,7 +34,7 @@ if (process.env.NODE_ENV === 'production') {
 ReactDOM.render(<App />, document.getElementById('root'));
 unregisterServiceWorker();
 
-// Stole from: https://stackoverflow.com/a/9870540/1115059
+// Stolen from: https://stackoverflow.com/a/9870540/1115059
 function getQueryStringValue(key) {
   return decodeURIComponent(
     history.location.search.replace(
