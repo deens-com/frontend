@@ -1,12 +1,32 @@
-This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
+<div align="center">
+  <a href="https://demo.please.com"><img src="https://please-com.imgix.net/static/please-logo.png?w=600" alt="please.com" width="500px"/></a>
 
-All you have to do is to run `yarn` and `yarn start`.
+### Book curated trips in minutes.
 
-<pre>
-       .__                                                        
-______ |  |   ____ _____    ______ ____       ____  ____   _____  
-\____ \|  | _/ __ \\__  \  /  ___// __ \    _/ ___\/  _ \ /     \ 
-|  |_> >  |_\  ___/ / __ \_\___ \\  ___/    \  \__(  <_> )  Y Y  \
-|   __/|____/\___  >____  /____  >\___  > /\ \___  >____/|__|_|  /
-|__|             \/     \/     \/     \/  \/     \/            \/ 
-</pre>
+</div>
+
+This is the repository for the frontend of [demo.please.com](https://demo.please.com). This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app) and then later moved over to [React app rewired](https://github.com/timarney/react-app-rewired).
+
+## 🏗 Development
+
+```sh
+$ git clone git@github.com:PleaseDotCom/please-frontend.git
+$ cd please-frontend
+
+# install dependencies
+$ yarn
+```
+
+We have a few [yarn](https://yarnpkg.com/) specific code in our `package.json` thus we recommend you use [yarn](https://yarnpkg.com/) for package management with this repo.
+
+```sh
+# export the backend endpoint to use
+$ export REACT_APP_PARSE_SERVER_URL=https://internal-api.please.com/parse
+
+# start the web app
+$ yarn start
+```
+
+## 🎓 License
+
+Licensed under the MIT license. See [LICENSE](LICENSE) for more information.
