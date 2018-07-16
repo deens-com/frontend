@@ -12,7 +12,7 @@ export const tags = [
 
 export const foodList = [
   {
-    img: "/img/food/italian.png",
+    img: "https://please-com.imgix.net/static/food/italian.png",
     partOf: "152",
     title: "Mamma mia",
     excerpt: "Winter pearl in the heart of Europe.",
@@ -22,7 +22,7 @@ export const foodList = [
     currency: "EUR"
   },
   {
-    img: "/img/food/bbq.png",
+    img: "https://please-com.imgix.net/static/food/bbq.png",
     partOf: "12",
     title: "BBQ dinner outside",
     excerpt: "Winter pearl in the heart of Europe.",
@@ -32,7 +32,7 @@ export const foodList = [
     currency: "EUR"
   },
   {
-    img: "/img/food/mexican.png",
+    img: "https://please-com.imgix.net/static/food/mexican.png",
     partOf: "1",
     title: "Mexican stories",
     excerpt: "Winter pearl in the heart of Europe.",
@@ -42,7 +42,7 @@ export const foodList = [
     currency: "EUR"
   },
   {
-    img: "/img/food/italian.png",
+    img: "https://please-com.imgix.net/static/food/italian.png",
     partOf: "152",
     title: "Mamma mia",
     excerpt: "Winter pearl in the heart of Europe.",
@@ -52,7 +52,7 @@ export const foodList = [
     currency: "EUR"
   },
   {
-    img: "/img/food/bbq.png",
+    img: "https://please-com.imgix.net/static/food/bbq.png",
     partOf: "12",
     title: "BBQ dinner outside",
     excerpt: "Winter pearl in the heart of Europe.",
@@ -62,7 +62,7 @@ export const foodList = [
     currency: "EUR"
   },
   {
-    img: "/img/food/mexican.png",
+    img: "https://please-com.imgix.net/static/food/mexican.png",
     partOf: "1",
     title: "Mexican stories",
     excerpt: "Winter pearl in the heart of Europe.",
@@ -100,12 +100,12 @@ export const restaurant = {
     ]
   },
   images: [
-    { src: "/img/food/mamamia.jpg", label: "mamamia 1" },
-    { src: "/img/food/mamamia2.jpg", label: "mamamia 2" }
+    { src: "https://please-com.imgix.net/static/food/mamamia.jpg", label: "mamamia 1" },
+    { src: "https://please-com.imgix.net/static/food/mamamia2.jpg", label: "mamamia 2" }
   ],
   partOf: [
     {
-      img: "/img/trips/new-york.png",
+      img: "https://please-com.imgix.net/static/trips/new-york.png",
       title: "Explore New York",
       excerpt: "Winter pearl in the heart of Europe and other stuff here.",
       rating: "5",
@@ -113,7 +113,7 @@ export const restaurant = {
       price: "230"
     },
     {
-      img: "/img/trips/bali.png",
+      img: "https://please-com.imgix.net/static/trips/bali.png",
       title: "Balinese secrets",
       excerpt: "Winter pearl in the heart.",
       rating: "4",
@@ -121,7 +121,7 @@ export const restaurant = {
       price: "1530"
     },
     {
-      img: "/img/trips/africa.png",
+      img: "https://please-com.imgix.net/static/trips/africa.png",
       title: "African sunsets",
       excerpt: "Winter pearl in the heart of Europe.",
       rating: "3",
@@ -129,7 +129,7 @@ export const restaurant = {
       price: "430"
     },
     {
-      img: "/img/trips/paris.png",
+      img: "https://please-com.imgix.net/static/trips/paris.png",
       title: "French baguettes",
       excerpt: "Winter pearl in the heart of.",
       rating: "5",

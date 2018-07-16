@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 // COMPONENTS
 import { ArrowIcon } from '../../../shared_components/icons';
+import Image from 'shared_components/Image'
 
 // ACTIONS/CONFIG
 import { media } from '../../../libs/styled';
@@ -127,7 +128,7 @@ export default class FoodImgSlider extends Component {
               </RightArrow>
             </span>
           )}
-        <img
+        <Image
           src={
             (this.props.images &&
               this.props.images.length &&

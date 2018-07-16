@@ -10,6 +10,7 @@ import {Link} from 'react-router-dom';
 import history from './../../main/history';
 import { isMobile } from 'libs/Utils';
 import i18n from './../../libs/i18n';
+import Image from 'shared_components/Image';
 const serviceTypes = [{label: i18n.t('places.singular'), value: 'place'}, {label: i18n.t('activities.singular'), value: 'activity'}, {label: i18n.t('foods.singular'), value: 'food'}];
 const serviceTypeDropdownOptions = serviceTypes.map(text => ({ value: text.value, text: text.label }));
 const hours = Array.from({ length: 24 }, (v, k) => k);
@@ -319,7 +320,7 @@ class ServiceForm extends Component {
           <Flex>
             {!values.mainPicture &&
               service &&
-              service.mainPicture && <img src={service.mainPicture.url} alt="service" height="43px" />}
+              service.mainPicture && <Image src={service.mainPicture.url} alt="service" height="43px" />}
             <input type="file" name="mainPicture" accept=".jpg, .jpeg, .png" onChange={this.onFileSelect} />
           </Flex>
         </Form.Field>

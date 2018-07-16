@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Label as SemanticLabel, Icon } from 'semantic-ui-react';
+import Truncate from 'react-truncate';
 
 // COMPONENTS
 import Rating from '../Rating';
@@ -16,29 +17,24 @@ import { PinIcon } from '../icons';
 
 // STYLES
 import { Cart } from './styles';
+import { cardConfig } from 'libs/config';
 
 const ContentWrap = styled.div`
   padding: 20px;
 `;
 
+// How did we come up with height: 104px?
+// the max number of lines Title can render is 4
+// rendered a title that long and saw how many pixels it takes 😜
 const Title = styled.h3`
   font-size: 18px;
   font-weight: 500;
-  margin-bottom: 15px;
+  margin-bottom: 4px;
+  height: ${cardConfig.titleHeight};
 
   a {
     color: inherit;
   }
-`;
-
-const Excerpt = styled.p`
-  color: #6e7885;
-  line-height: 1.5;
-  margin-bottom: 15px;
-  height: 45px;
-  width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
 `;
 
 const Label = styled.span`
@@ -46,14 +42,14 @@ const Label = styled.span`
   font-size: 12px;
   text-transform: uppercase;
   color: #6e7885;
-  margin-bottom: 5px;
 `;
 
 const Location = styled.span`
   color: #6e7885;
   display: flex;
   align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
+  height: 44px;
 
   svg {
     display: inline-block;
@@ -63,6 +59,10 @@ const Location = styled.span`
     fill: #d3d7dc;
     position: relative;
     left: -3px;
+  }
+
+  p {
+    width: 100%;
   }
 `;
 
@@ -134,19 +134,18 @@ export default function LocationCart({ item, href, withShadow, smBasis, xsBasis,
       <Thumb url={item.image} />
       <ContentWrap>
         <Title>
-          <p>{item.title}</p>
+          <Truncate lines={cardConfig.titleLines}>{item.title}</Truncate>
         </Title>
-        { item.type &&
-          <Excerpt>{item.excerpt}</Excerpt>
-        }
 
         {item.type && (
           <Location>
             <PinIcon />
-            {item.location}
+            <p>
+              <Truncate lines={cardConfig.locationLines}>{item.location}</Truncate>
+            </p>
           </Location>
         )}
-        <Rating marginBottom="25px" rating={item.rating} count={item.reviewCount} />
+        <Rating marginBottom="10px" rating={item.rating} count={item.reviewCount} />
         <Label>Starting from</Label>
         <PriceTag price={item.price} />
       </ContentWrap>
