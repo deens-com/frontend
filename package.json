@@ -1,8 +1,16 @@
 {
   "name": "please-frontend",
   "version": "0.1.0",
-  "private": true,
-  "homepage": "https://pleasecom.github.io",
+  "homepage": "https://github.com/PleaseDotCom/please-frontend#readme",
+  "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PleaseDotCom/please-frontend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/PleaseDotCom/please-frontend/issues"
+  },
+  "license": "MIT",
   "dependencies": {
     "@ledgerhq/hw-transport-u2f": "^4.7.3",
     "@ledgerhq/web3-subprovider": "^4.11.1",
