@@ -20,7 +20,7 @@ if (process.env.REACT_APP_NODE_ENV === 'production') {
   Raven.config('https://fd51482cf40f43fca379bc14417b6f2b@sentry.io/1220761').install();
   Parse.serverURL = process.env.REACT_APP_PARSE_SERVER_URL || 'https://please-api.herokuapp.com/parse';
 } else {
-  Parse.serverURL = 'https://api.please.docker/parse';
+  Parse.serverURL = process.env.REACT_APP_PARSE_SERVER_URL || 'https://api.please.docker/parse';
 }
 
 if (process.env.NODE_ENV === 'production') {
