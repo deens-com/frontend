@@ -65,6 +65,7 @@
     "build": "REACT_APP_NODE_ENV=production react-app-rewired build",
     "now-build": "REACT_APP_NODE_ENV=staging react-app-rewired build",
     "build:staging": "REACT_APP_NODE_ENV=staging react-app-rewired build",
+    "postbuild": "mkdir -p build/.circleci && cp -r .circleci/* build/.circleci/",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject",
     "precommit": "pretty-quick --staged",
