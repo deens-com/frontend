@@ -66,7 +66,6 @@ export const fetchTrip = tripId => async (dispatch, getState) => {
     dispatch(trip_fetched({ trip, tripOrganizations: tripOrganizationMappings, services }));
     postFetchTripActions(trip, dispatch, getState);
   } catch (error) {
-    console.error(error);
     if (error.code === Parse.Error.OBJECT_NOT_FOUND) dispatch(tripFetchError(error));
   }
 };
