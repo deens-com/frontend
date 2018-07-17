@@ -93,6 +93,11 @@ export default class DesktopDropDownMenu extends Component {
   logged_in() {
     const dpUrl = (this.state.current_user.profilePicture && this.state.current_user.profilePicture.url) || ImgurAvatar;
     const showAddServiceButton = window.location.hash !== "#/account/services"; //this.props.history && this.props.history.location.pathname !== "/account/services"
+    const truncatesUsername = this.state.current_user.username.length > 13
+      ?
+        this.state.current_user.username.substring(0, 11).concat('...')
+      :
+        this.state.current_user.username;
     return(
       <Wrap>
         {
@@ -104,7 +109,7 @@ export default class DesktopDropDownMenu extends Component {
         <AvatarWrapper>
           <Image src={dpUrl} circular onClick={() => this.navigate_to("/account/profile")} />
         </AvatarWrapper>
-        <Dropdown direction="left" text={this.state.current_user.username} style={this.props.theme === "light"? {color: 'white'} : {color: 'inherit'}}>
+        <Dropdown direction="left" text={truncatesUsername} style={this.props.theme === "light"? {color: 'white'} : {color: 'inherit'}}>
           <Dropdown.Menu>
             <Dropdown.Item icon='plane' text='My Trips' onClick={() => this.navigate_to("/account/trips/all")} />
             <Dropdown.Item icon='list' text='My Services' onClick={() => this.navigate_to("/account/services")} />
