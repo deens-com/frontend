@@ -65,3 +65,7 @@ p {
   position: relative;
   top: 20%;
 }
+
+.semantic-popup-wrapper::before {
+    box-shadow: none !important;
+}
