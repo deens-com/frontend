@@ -7,11 +7,9 @@ import { Droppable } from 'react-beautiful-dnd';
 // COMPONENTS
 import Button from '../../../shared_components/Button';
 import DetailCart from '../../../shared_components/Carts/DetailCart';
-import DropPicker from '../../../shared_components/DropPicker';
 import Trigger from '../../../shared_components/DropPicker/Trigger';
-import Drop from '../../../shared_components/DropPicker/Drop';
-import DropItem from '../../../shared_components/DropPicker/DropItem';
 import EmptyTripDay from './EmptyTripDay';
+import { Popup } from 'semantic-ui-react'
 
 // ACTIONS/CONFIG
 import { media } from '../../../libs/styled';
@@ -70,6 +68,34 @@ const DayButtons = styled.div`
     & > div:first-child {
       order: 0;
     }
+  }
+`;
+
+const DropItem = styled.div`
+  padding: 5px 10px;
+  position: relative;
+  cursor: pointer;
+  font-size: 14px;
+  float: left;
+  font-weight: lighter;
+
+  &:hover,
+  &:focus {
+    color: #4fb798;
+  }
+
+  &:after {
+    content: "";
+    width: 1px;
+    height: 60%;
+    background: #eef1f4;
+    position: absolute;
+    right: 0px;
+    top: 20%;
+  }
+
+  &:last-child:after {
+    display: none;
   }
 `;
 
@@ -156,11 +182,11 @@ export default class TripDay extends Component {
               text={this.state.expanded ? 'Collapse all' : 'Expand all'}
             />
             {allowServiceRearrange && (
-              <DropPicker>
-                <Trigger iconBefore="plus" size="small" round={true} text="Add new Service" />
-                <Drop>
+              <Popup
+                trigger={<Trigger iconBefore="plus" size="small" round={true} text="Add new Service" />}
+                content={<div>
                   <DropItem
-                    onChange={ev => {
+                    onClick={() => {
                       query_params.service_types = 'place';
                       this.generate_search_query(query_params);
                     }}
@@ -168,7 +194,7 @@ export default class TripDay extends Component {
                     Place
                   </DropItem>
                   <DropItem
-                    onChange={ev => {
+                    onClick={() => {
                       query_params.service_types = 'food';
                       this.generate_search_query(query_params);
                     }}
@@ -176,27 +202,29 @@ export default class TripDay extends Component {
                     Food
                   </DropItem>
                   <DropItem
-                    onChange={ev => {
+                    onClick={() => {
                       query_params.service_types = 'activity';
                       this.generate_search_query(query_params);
                     }}
                   >
                     Activity
                   </DropItem>
-                </Drop>
-              </DropPicker>
+                </div>}
+                position='left center'
+                on='click'
+                flowing={true}
+                className='semantic-popup-wrapper'
+                style={{
+                  float: 'left',
+                  background: 'white',
+                  borderRadius: '4px',
+                  padding: '5px 10px',
+                  border: '0px',
+                  boxShadow: '0 8px 25px 0 rgba(141, 141, 141, 0.22)'
+                }}
+                horizontalOffset='5'
+              />
             )}
-            {/* <Button
-              type="button"
-              round
-              size="small"
-              iconBefore="plus"
-              theme="mainFilled"
-              onClick={() => {
-                alert('Adding new event');
-              }}
-              text="Add new event"
-            /> */}
           </DayButtons>
         </Header>
         {allowServiceRearrange ? (
