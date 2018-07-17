@@ -14,6 +14,7 @@ import Thumb from './components/Thumb';
 // STYLES
 import { Cart, ContentWrap } from './styles';
 import { cardConfig } from 'libs/config';
+import { PinIcon } from 'shared_components/icons';
 
 const Wrap = styled.div`
   display: inline-block;
@@ -43,6 +44,28 @@ const Label = styled.span`
   text-transform: uppercase;
 `;
 
+const Location = styled.span`
+  color: #6e7885;
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  height: 44px;
+
+  svg {
+    display: inline-block;
+    width: 17px;
+    height: 17px;
+    margin-right: 2px;
+    fill: #d3d7dc;
+    position: relative;
+    left: -3px;
+  }
+
+  p {
+    width: 100%;
+  }
+`;
+
 // MODULE
 export default function TripCart({ item, withTooltip, href }) {
   return (
@@ -53,6 +76,12 @@ export default function TripCart({ item, withTooltip, href }) {
           <Title>
             <Truncate lines={cardConfig.titleLines}>{item.title}</Truncate>
           </Title>
+          <Location>
+            <PinIcon />
+            <p>
+              <Truncate lines={cardConfig.locationLines}>{item.location}</Truncate>
+            </p>
+          </Location>
           <Rating marginBottom="10px" rating={item.rating} count={item.reviews} />
           <Label>Starting from</Label>
           <PriceTag price={item.price} />
