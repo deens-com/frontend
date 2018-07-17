@@ -46,6 +46,6 @@ jobs:
             if [ "${CIRCLE_BRANCH}" == "staging" ];
               then CI=false npm run build:staging && \
                    cd build && \
-                   $NOW_CLI_PATH --team please -t $NOW_SH_TOKEN && \
-                   $NOW_CLI_PATH --team please -t $NOW_SH_TOKEN alias please-staging
+                   npx now --team please -t $NOW_SH_TOKEN && \
+                   npx now --team please -t $NOW_SH_TOKEN alias please-staging
             fi
