@@ -1,5 +1,7 @@
 import { EventTypes } from 'redux-segment';
 
+const commonSuffix = ' on Demo';
+
 /**
  * Given a object of user, it identifies the user on segment
  * @param {ParseObject} session
@@ -23,7 +25,7 @@ export const trackUserRegistered = session => {
   return {
     eventType: EventTypes.track,
     eventPayload: {
-      event: 'User Registered',
+      event: `User Registered${commonSuffix}`,
       properties: { email },
     },
   };
@@ -33,7 +35,7 @@ export const trackServiceCreated = service => {
   return {
     eventType: EventTypes.track,
     eventPayload: {
-      event: 'Service Created',
+      event: `Service Created${commonSuffix}`,
       properties: { serviceId: service.id },
     },
   };
@@ -43,7 +45,7 @@ export const trackTripCreated = trip => {
   return {
     eventType: EventTypes.track,
     eventPayload: {
-      event: 'Trip Created',
+      event: `Trip Created${commonSuffix}`,
       properties: { tripId: trip.id || trip.objectId },
     },
   };
@@ -54,7 +56,7 @@ export const trackTripCloned = ({ originalTripId, newTripId }) => {
   return {
     eventType: EventTypes.track,
     eventPayload: {
-      event: 'Trip Cloned',
+      event: `Trip Cloned'${commonSuffix}`,
       properties: { originalTripId, newTripId },
     },
   };
@@ -64,7 +66,7 @@ export const trackTripBooked = tripId => {
   return {
     eventType: EventTypes.track,
     eventPayload: {
-      event: 'Trip Booked',
+      event: `Trip Booked${commonSuffix}`,
       properties: { tripId },
     },
   };
@@ -74,7 +76,7 @@ export const trackVoiceUsage = searchQuery => {
   return {
     eventType: EventTypes.track,
     eventPayload: {
-      event: 'Voice Query',
+      event: `Voice Query${commonSuffix}`,
       properties: { voiceToText: searchQuery },
     },
   };
@@ -84,7 +86,7 @@ export const trackMetamaskConnected = () => {
   return {
     eventType: EventTypes.track,
     eventPayload: {
-      event: 'Metamask Connected',
+      event: `Metamask Connected${commonSuffix}`,
     },
   };
 };
@@ -93,7 +95,7 @@ export const trackLedgerConnected = () => {
   return {
     eventType: EventTypes.track,
     eventPayload: {
-      event: 'Ledger Connected',
+      event: `Ledger Connected${commonSuffix}`,
     },
   };
 };
