@@ -67,8 +67,15 @@ export default class ResultsScene extends Component {
     }));
   };
 
-  getCenterAndZoom = markers => {
-    if (!markers.length) return { center: defaultCenter, zoom: defaultZoom };
+  getCenterAndZoom = (markers, props) => {
+    if (!markers.length) {
+      if (props.latitude && props.longitude) {
+        const center = { lat: parseFloat(props.latitude), lng: parseFloat(props.longitude) };
+        return { center: center, zoom: defaultZoom };
+      } else {
+        return { center: defaultCenter, zoom: defaultZoom };
+      }
+    }
     if (markers.length === 1) {
       return { center: markers[0], zoom: defaultZoom };
     }
@@ -91,10 +98,14 @@ export default class ResultsScene extends Component {
     const currentMarkers = this.getMarkerLatLngs(this.props);
     const newMarkers = this.getMarkerLatLngs(nextProps);
     if (currentMarkers.length !== newMarkers.length) {
-      const { center, zoom } = this.getCenterAndZoom(newMarkers);
-      console.log({ center, zoom });
+      const { center, zoom } = this.getCenterAndZoom(newMarkers, nextProps);
       this.setState({ center, zoom, markers: newMarkers });
     }
+  }
+
+  componentDidMount() {
+    const { center, zoom } = this.getCenterAndZoom([], this.props);
+    this.setState({ center, zoom, markers: [] });
   }
 
   render() {
