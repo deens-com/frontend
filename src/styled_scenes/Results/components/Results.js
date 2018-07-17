@@ -129,7 +129,7 @@ export default class Results extends Component {
       <Wrap>
         <Row>
           {
-            this.state.filteredData.length === 0 &&
+            (!this.props.isLoadingResults && this.state.filteredData.length === 0) &&
             <section>
               <h4 style={{textAlign: 'center', color: 'grey'}}>There are no search results for given search criteria.</h4>
               <br/>
