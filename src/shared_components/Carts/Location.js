@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Label as SemanticLabel, Icon } from 'semantic-ui-react';
 import Truncate from 'react-truncate';
-import {Popup} from 'semantic-ui-react';
+import { Popup } from 'semantic-ui-react';
 
 // COMPONENTS
 import Rating from '../Rating';
@@ -135,36 +135,29 @@ const CardLocation = (item, withShadow, smartContractBookingStatus) => {
         <Title>
           <Truncate lines={cardConfig.titleLines}>{item.title}</Truncate>
         </Title>
-
-        {item.type && (
-          <Location>
-            <PinIcon />
-            <p>
-              <Truncate lines={cardConfig.locationLines}>{item.location}</Truncate>
-            </p>
-          </Location>
-        )}
+        <Location>
+          <PinIcon />
+          <p>
+            <Truncate lines={cardConfig.locationLines}>{item.location}</Truncate>
+          </p>
+        </Location>
         <Rating marginBottom="10px" rating={item.rating} count={item.reviewCount} />
         <Label>Starting from</Label>
         <PriceTag price={item.price} />
       </ContentWrap>
     </RelativeCard>
-  )
-}
+  );
+};
 
 // MODULE
 export default function LocationCart({ item, href, withShadow, smBasis, xsBasis, mdBasis }) {
   const smartContractBookingStatus = getSmartContractBookingStatus(item.reservation);
-  const cart = (
-    item.title.length > cardConfig.truncateThreshold
-      ?
-    <Popup
-      trigger={CardLocation(item, withShadow, smartContractBookingStatus)}
-      content={item.title}
-    />
-      :
-    CardLocation(item, withShadow, smartContractBookingStatus)
-  );
+  const cart =
+    item.title.length > cardConfig.truncateThreshold ? (
+      <Popup trigger={CardLocation(item, withShadow, smartContractBookingStatus)} content={item.title} />
+    ) : (
+      CardLocation(item, withShadow, smartContractBookingStatus)
+    );
   return (
     <Col xsBasis={xsBasis} mdBasis={mdBasis} smBasis={smBasis}>
       <div>
