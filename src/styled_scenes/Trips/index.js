@@ -141,6 +141,8 @@ export default class TripsScene extends Component {
         formattedAddress: query.formattedAddress,
         latitude: query.latlng && query.latlng.lat,
         longitude: query.latlng && query.latlng.lng,
+        city: query.city,
+        country: query.country,
       },
       true
     );
