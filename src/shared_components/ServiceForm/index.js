@@ -129,6 +129,12 @@ class ServiceForm extends Component {
     this.props.resetErrors();
   }
 
+  redeploy = (values, serviceId) => {
+    this.props.resetErrors();
+    this.setState({ showGlobalError: false });
+    this.props.onRedeployContract(values, serviceId);
+  }
+
   render() {
     const {
       values,
@@ -161,7 +167,7 @@ class ServiceForm extends Component {
           <Modal.Actions>
             <Button
               color="green"
-              onClick={() => this.props.onRedeployContract(this.props.values, this.state.serviceId)}
+              onClick={() => this.redeploy(this.props.values, this.state.serviceId)}
             >
               Re-deploy
             </Button>

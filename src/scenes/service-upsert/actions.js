@@ -16,12 +16,21 @@ export const types = {
   SERVICE_SAVE_STARTED: 'EDIT/SERVICE_SAVE_STARTED',
   SERVICE_SAVE_SUCCCESS: 'EDIT/SERVICE_SAVE_SUCCCESS',
   SERVICE_SAVE_ERROR: 'EDIT/SERVICE_SAVE_ERROR',
+
+  TOGGLE_SUBMITTING_STATE: 'TOGGLE_SUBMITTING_STATE'
 };
 
 export const user_profile_fetched = userProfile => {
   return {
     type: 'USER_PROFILE_FETCHED',
     payload: userProfile,
+  };
+};
+
+export const submittingStateChanged = bool => {
+  return {
+    type: 'TOGGLE_SUBMITTING_STATE',
+    payload: bool
   };
 };
 
@@ -150,6 +159,7 @@ export const resetErrors = () => dispatch => {
 export const redeployContract = (values, serviceId, history) => async (dispatch, getState) => {
   try {
     // Redeploy from styled_scenes/Account/Trips/shared/Carts/Location Or Redeploy from service creation form
+    dispatch(submittingStateChanged(true));
     let service = await fetch_helpers.build_query('Service').get(serviceId);
     dispatch(deployContract(service, values, history));
   } catch (error) {
