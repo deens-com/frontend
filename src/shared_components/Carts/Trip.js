@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Truncate from 'react-truncate';
+import {Popup} from 'semantic-ui-react';
 
 // COMPONENTS
 import Rating from '../Rating';
@@ -66,8 +67,7 @@ const Location = styled.span`
   }
 `;
 
-// MODULE
-export default function TripCart({ item, withTooltip, href }) {
+const Card = (item, withTooltip, href) => {
   return (
     <Wrap>
       <Cart column>
@@ -88,6 +88,20 @@ export default function TripCart({ item, withTooltip, href }) {
         </ContentWrap>
       </Cart>
     </Wrap>
+  )
+}
+
+// MODULE
+export default function TripCart({ item, withTooltip, href }) {
+  return (
+    item.title.length > cardConfig.truncateThreshold
+      ?
+    <Popup
+      trigger={Card(item, withTooltip, href)}
+      content={item.title}
+    />
+      :
+    Card(item, withTooltip, href)
   );
 }
 
