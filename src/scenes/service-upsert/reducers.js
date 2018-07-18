@@ -56,6 +56,11 @@ export default (state = initialState, action) => {
         ...state,
         userProfile: action.payload.userProfile,
       };
+    case actionTypes.TOGGLE_SUBMITTING_STATE:
+      return {
+        ...state,
+        isSubmitting: action.payload
+      }
     default:
       return state;
   }

@@ -43,7 +43,7 @@ class AccountSettingsScene extends Component {
     };
   }
   componentDidMount() {
-    if(this.props.user_profile.metamaskPublicAddress){
+    if(this.props.user_profile && this.props.user_profile.metamaskPublicAddress){
       const url = "https://api-ropsten.etherscan.io/api?module=account&action=balance&address=" + this.props.user_profile.metamaskPublicAddress + "&tag=latest&apikey=RUTM2Q3ZP65U8UJQUD9GUZU2GZHQ363FYC";
       fetch(url).then(res => {
         return res.json();
@@ -53,7 +53,7 @@ class AccountSettingsScene extends Component {
         this.setState({metamaskEthBalance: ethBalance});
       })
     }
-    if(this.props.user_profile.ledgerPublicAddress){
+    if(this.props.user_profile && this.props.user_profile.ledgerPublicAddress){
       const url = "https://api-ropsten.etherscan.io/api?module=account&action=balance&address=" + this.props.user_profile.ledgerPublicAddress + "&tag=latest&apikey=RUTM2Q3ZP65U8UJQUD9GUZU2GZHQ363FYC";
       fetch(url).then(res => {
         return res.json();
