@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { withRouter } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 import Parse from 'parse';
 import NotFound from '../../../styled_scenes/NotFound';
 import TripsComponent from './../components/trips_component';
@@ -66,14 +66,27 @@ class TripsContainer extends Component {
       return <NotFound />;
     }
     return (
-      <TripsComponent
-        {...this.props}
-        onServiceDragEnd={this.onDragReOrderChange}
-        onServiceRemoveClick={this.onServiceRemoveClick}
-        updateTripDetails={this.updateTripDetails}
-        onBookClick={this.onBookClick}
-        onShareModalClose={this.onShareModalClose}
-      />
+      <section>
+        <Route
+          path={process.env.PUBLIC_URL + this.props.trip.objectId + '/edit'}
+          render={ props => <TripsComponent
+            {...this.props}
+            onServiceDragEnd={this.onDragReOrderChange}
+            onServiceRemoveClick={this.onServiceRemoveClick}
+            updateTripDetails={this.updateTripDetails}
+            onBookClick={this.onBookClick}
+            onShareModalClose={this.onShareModalClose}
+          /> }
+        />
+        <TripsComponent
+          {...this.props}
+          onServiceDragEnd={this.onDragReOrderChange}
+          onServiceRemoveClick={this.onServiceRemoveClick}
+          updateTripDetails={this.updateTripDetails}
+          onBookClick={this.onBookClick}
+          onShareModalClose={this.onShareModalClose}
+        />
+      </section>
     );
   }
 }
