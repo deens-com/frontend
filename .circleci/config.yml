@@ -8,11 +8,6 @@ jobs:
       # specify the version you desire here
       - image: circleci/node:8.10
 
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
-
     working_directory: ~/repo
 
     steps:
@@ -25,27 +20,63 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
-      - run: yarn install
+      - run:
+          name: Install Dependencies
+          command: |
+            yarn install
 
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-      # run tests!
-      - run: yarn test
-      - run: git config --global user.email "$GIT_AUTHOR_EMAIL"
-      - run: git config --global user.name "$GIT_AUTHOR_NAME"
+      # Run tests
       - run:
+          name: Run Tests
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ];
-              then CI=false yarn deploy;
-            fi
+            yarn test
+      - run:
+          name: Configure Git
+          command: |
+            git config --global user.email "$GIT_AUTHOR_EMAIL" && \
+            git config --global user.name "$GIT_AUTHOR_NAME"
+      # Buld and Deploy
       - deploy:
+          name: Build and Deploy
           command: |
-            if [ "${CIRCLE_BRANCH}" == "staging" ];
-              then CI=false npm run build:staging && \
-                   cd build && \
-                   npx now --team please -t $NOW_SH_TOKEN && \
-                   npx now --team please -t $NOW_SH_TOKEN alias please-staging
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              CI=false yarn deploy;
+            elif [ "${CIRCLE_BRANCH}" == "staging" ]; then
+              CI=false npm run build:staging && \
+              cd build && \
+              npx now --team please -t $NOW_SH_TOKEN && \
+              npx now --team please -t $NOW_SH_TOKEN alias please-staging
+            else
+              CI=false npm run build:staging && \
+              cd build && \
+              echo "export URL=$(npx now --team please -t $NOW_SH_TOKEN)" > /tmp/env.tmp
+            fi
+            source /tmp/env.tmp && \
+            if [ -n "${CI_PULL_REQUEST}" ]; then
+              export PR_NUMBER=$(node -p "'${CI_PULL_REQUEST}'.split('/').pop()") && \
+              curl -i -H "Authorization: token ${GIT_TOKEN}" -H "Content-Type: application/json" --request POST --data "{\"body\": \"Your commit ${CIRCLE_SHA1} has been deployed to ${URL}.\"}" https://api.github.com/repos/PleaseDotCom/frontend/issues/${PR_NUMBER}/comments
+            fi
+      # Run visual regression tests
+      - run:
+          name: Run GhostInspector
+          command: |
+            if [ "${CIRCLE_BRANCH}" != "master" ] && [ "${CIRCLE_BRANCH}" != "staging" ]; then
+              source /tmp/env.tmp && \
+              bash -c 'while [[ "$(curl -s -o /tmp/curl.json -w ''%{http_code}'' https://api.ghostinspector.com/v1/suites/5b4f7cc48cbdd775d4a69c27/execute/?apiKey=${GI_API_KEY} -d 'startUrl=${URL}')" != "200" ]]; do sleep 5; done' && \
+              export GI_STATUS=$(node -p "(require('/tmp/curl.json').data[0].passing) ? 'Passed' : 'Failed'") && \
+              export GI_RESULT_ID=$(node -p "require('/tmp/curl.json').data[0].suiteResult") && \
+
+              if [ -n "${CI_PULL_REQUEST}" ]; then
+                export PR_NUMBER=$(node -p "'${CI_PULL_REQUEST}'.split('/').pop()") && \
+                curl -i -H "Authorization: token ${GIT_TOKEN}" -H "Content-Type: application/json" --request POST --data "{\"body\": \"Regression tests: [${GI_STATUS}](https://app.ghostinspector.com/suite-results/${GI_RESULT_ID})\"}" https://api.github.com/repos/PleaseDotCom/frontend/issues/${PR_NUMBER}/comments
+              fi
+
+              if [ "${GI_STATUS}" == "Failed" ]; then
+                false
+              fi
             fi
