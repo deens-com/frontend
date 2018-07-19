@@ -232,7 +232,12 @@ export default class TripsScene extends Component {
                     showTripStatusChanged={this.props.showTripStatusChanged}
                     onShareModalClose={this.props.onShareModalClose}
                   />
-                  <Button type='button' text='Edit Trip' onClick={() => this.props.history.push('/trips/' + trip.objectId + '/edit')} />
+                  {
+                    this.state.isOwner &&
+                    <Button type='button' text='Edit Trip'
+                      onClick={() => this.props.history.push('/trips/' + trip.objectId + '/edit')}
+                      />
+                  }
                   <ChangeTripImageButton
                     trip={trip}
                     isOwner={this.state.isOwner}
