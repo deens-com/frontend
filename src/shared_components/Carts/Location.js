@@ -1,5 +1,5 @@
 // NPM
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
@@ -126,46 +126,78 @@ function getSmartContractBookingStatus(reservation) {
   return <SemanticLabelFixed color="green">Confirmed</SemanticLabelFixed>;
 }
 
-const CardLocation = (item, withShadow, smartContractBookingStatus) => {
-  return (
-    <RelativeCard withShadow={withShadow} column>
-      {smartContractBookingStatus && smartContractBookingStatus}
-      <Thumb url={item.image} />
-      <ContentWrap>
-        <Title>
-          <Truncate lines={cardConfig.titleLines}>{item.title}</Truncate>
-        </Title>
-        <Location>
-          <PinIcon />
-          <p>
-            <Truncate lines={cardConfig.locationLines}>{item.location}</Truncate>
-          </p>
-        </Location>
-        <Rating marginBottom="10px" rating={item.rating} count={item.reviewCount} />
-        <Label>Starting from</Label>
-        <PriceTag price={item.price} />
-      </ContentWrap>
-    </RelativeCard>
-  );
-};
+export default class LocationCart extends Component {
 
-// MODULE
-export default function LocationCart({ item, href, withShadow, smBasis, xsBasis, mdBasis }) {
-  const smartContractBookingStatus = getSmartContractBookingStatus(item.reservation);
-  const cart =
-    item.title.length > cardConfig.truncateThreshold ? (
-      <Popup trigger={CardLocation(item, withShadow, smartContractBookingStatus)} content={item.title} />
-    ) : (
-      CardLocation(item, withShadow, smartContractBookingStatus)
+  constructor(props){
+    super(props);
+    this.state = {
+      truncated: false
+    };
+  }
+
+  handleTruncate = (truncated) => {
+    if (this.state.truncated !== truncated) {
+      this.setState({
+        truncated
+      });
+    }
+  }
+
+  render() {
+    const smartContractBookingStatus = getSmartContractBookingStatus(this.props.item.reservation);
+    return (
+      <Col>
+        <div>
+          {
+            this.state.truncated ? (
+              <Popup trigger={
+                <RelativeCard withShadow={this.props.withShadow} column>
+                  {smartContractBookingStatus && smartContractBookingStatus}
+                  <Thumb url={this.props.item.image} />
+                  <ContentWrap>
+                    <Title>
+                      <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>{this.props.item.title}</Truncate>
+                    </Title>
+                    <Location>
+                      <PinIcon />
+                      <p>
+                        <Truncate lines={cardConfig.locationLines}>{this.props.item.location}</Truncate>
+                      </p>
+                    </Location>
+                    <Rating marginBottom="10px" rating={this.props.item.rating} count={this.props.item.reviewCount} />
+                    <Label>Starting from</Label>
+                    <PriceTag price={this.props.item.price} />
+                  </ContentWrap>
+                </RelativeCard>
+                }
+                content={this.props.item.title}
+              />
+            ) : (
+              <RelativeCard withShadow={this.props.withShadow} column>
+                {smartContractBookingStatus && smartContractBookingStatus}
+                <Thumb url={this.props.item.image} />
+                <ContentWrap>
+                  <Title>
+                    <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>{this.props.item.title}</Truncate>
+                  </Title>
+                  <Location>
+                    <PinIcon />
+                    <p>
+                      <Truncate lines={cardConfig.locationLines}>{this.props.item.location}</Truncate>
+                    </p>
+                  </Location>
+                  <Rating marginBottom="10px" rating={this.props.item.rating} count={this.props.item.reviewCount} />
+                  <Label>Starting from</Label>
+                  <PriceTag price={this.props.item.price} />
+                </ContentWrap>
+              </RelativeCard>
+            )
+          }
+        </div>
+      </Col>
     );
-  return (
-    <Col xsBasis={xsBasis} mdBasis={mdBasis} smBasis={smBasis}>
-      <div>
-        {href && <Link to={href}>{cart}</Link>}
-        {!href && cart}
-      </div>
-    </Col>
-  );
+  }
+
 }
 
 // Props Validation
