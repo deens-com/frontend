@@ -66,16 +66,14 @@ class TripsContainer extends Component {
       return <NotFound />;
     }
     return (
-      <div>
-        <TripsComponent
-          {...this.props}
-          onServiceDragEnd={this.onDragReOrderChange}
-          onServiceRemoveClick={this.onServiceRemoveClick}
-          updateTripDetails={this.updateTripDetails}
-          onBookClick={this.onBookClick}
-          onShareModalClose={this.onShareModalClose}
-        />
-      </div>
+      <TripsComponent
+        {...this.props}
+        onServiceDragEnd={this.onDragReOrderChange}
+        onServiceRemoveClick={this.onServiceRemoveClick}
+        updateTripDetails={this.updateTripDetails}
+        onBookClick={this.onBookClick}
+        onShareModalClose={this.onShareModalClose}
+      />
     );
   }
 }
