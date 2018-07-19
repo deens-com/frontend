@@ -54,12 +54,13 @@ jobs:
             else
               CI=false npm run build:staging && \
               cd build && \
-              echo "export URL=$(npx now --team please -t $NOW_SH_TOKEN)" > /tmp/env.tmp
-            fi
-            source /tmp/env.tmp && \
-            if [ -n "${CI_PULL_REQUEST}" ]; then
-              export PR_NUMBER=$(node -p "'${CI_PULL_REQUEST}'.split('/').pop()") && \
-              curl -i -H "Authorization: token ${GIT_TOKEN}" -H "Content-Type: application/json" --request POST --data "{\"body\": \"Your commit ${CIRCLE_SHA1} has been deployed to ${URL}.\"}" https://api.github.com/repos/PleaseDotCom/frontend/issues/${PR_NUMBER}/comments
+              echo "export URL=$(npx now --team please -t $NOW_SH_TOKEN)" > /tmp/env.tmp && \
+
+              source /tmp/env.tmp && \
+              if [ -n "${CI_PULL_REQUEST}" ]; then
+                export PR_NUMBER=$(node -p "'${CI_PULL_REQUEST}'.split('/').pop()") && \
+                curl -i -H "Authorization: token ${GIT_TOKEN}" -H "Content-Type: application/json" --request POST --data "{\"body\": \"Your commit ${CIRCLE_SHA1} has been deployed to ${URL}.\"}" https://api.github.com/repos/PleaseDotCom/frontend/issues/${PR_NUMBER}/comments
+              fi
             fi
       # Run visual regression tests
       - run:
