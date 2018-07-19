@@ -1,5 +1,5 @@
 // NPM
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Truncate from 'react-truncate';
@@ -67,42 +67,76 @@ const Location = styled.span`
   }
 `;
 
-const Card = (item, withTooltip, href) => {
-  return (
-    <Wrap>
-      <Cart column>
-        <Thumb url={item.image} tripCount={item.partOf} withTooltip={withTooltip} />
-        <ContentWrap>
-          <Title>
-            <Truncate lines={cardConfig.titleLines}>{item.title}</Truncate>
-          </Title>
-          <Location>
-            <PinIcon />
-            <p>
-              <Truncate lines={cardConfig.locationLines}>{item.location}</Truncate>
-            </p>
-          </Location>
-          <Rating marginBottom="10px" rating={item.rating} count={item.reviews} />
-          <Label>Starting from</Label>
-          <PriceTag price={item.price} />
-        </ContentWrap>
-      </Cart>
-    </Wrap>
-  )
-}
+export default class TripCart extends Component {
 
-// MODULE
-export default function TripCart({ item, withTooltip, href }) {
-  return (
-    item.title.length > cardConfig.truncateThreshold
-      ?
-    <Popup
-      trigger={Card(item, withTooltip, href)}
-      content={item.title}
-    />
-      :
-    Card(item, withTooltip, href)
-  );
+  constructor(props){
+    super(props);
+    this.state = {
+      truncated: false
+    };
+  }
+
+  handleTruncate = (truncated) => {
+    if (this.state.truncated !== truncated) {
+      this.setState({
+        truncated
+      });
+    }
+  }
+
+  render() {
+    return (
+      <div>
+      {
+        this.state.truncated ?
+          <Popup
+            trigger={
+              <Wrap>
+                <Cart column>
+                  <Thumb url={this.props.item.image} tripCount={this.props.item.partOf} withTooltip={this.props.withTooltip} />
+                  <ContentWrap>
+                    <Title>
+                      <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>{this.props.item.title}</Truncate>
+                    </Title>
+                    <Location>
+                      <PinIcon />
+                      <p>
+                        <Truncate lines={cardConfig.locationLines}>{this.props.item.location}</Truncate>
+                      </p>
+                    </Location>
+                    <Rating marginBottom="10px" rating={this.props.item.rating} count={this.props.item.reviews} />
+                    <Label>Starting from</Label>
+                    <PriceTag price={this.props.item.price} />
+                  </ContentWrap>
+                </Cart>
+              </Wrap>
+            }
+            content={this.props.item.title}
+          />
+        :
+        <Wrap>
+          <Cart column>
+            <Thumb url={this.props.item.image} tripCount={this.props.item.partOf} withTooltip={this.props.withTooltip} />
+            <ContentWrap>
+              <Title>
+                <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>{this.props.item.title}</Truncate>
+              </Title>
+              <Location>
+                <PinIcon />
+                <p>
+                  <Truncate lines={cardConfig.locationLines}>{this.props.item.location}</Truncate>
+                </p>
+              </Location>
+              <Rating marginBottom="10px" rating={this.props.item.rating} count={this.props.item.reviews} />
+              <Label>Starting from</Label>
+              <PriceTag price={this.props.item.price} />
+            </ContentWrap>
+          </Cart>
+        </Wrap>
+      }
+      </div>
+    )
+  }
 }
 
 // Props Validation
