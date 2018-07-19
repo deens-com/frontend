@@ -1,17 +1,19 @@
 // NPM
-import React from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
-import styled, { css } from "styled-components";
-import Media from "react-media";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import styled, { css } from 'styled-components';
+import Media from 'react-media';
+import { connect } from 'react-redux';
 
 // COMPONENTS
-import DesktopDropDownMenu from "./DesktopDropDownMenu";
-import CurrencySelector from "../Currency/Selector";
+import DesktopDropDownMenu from './DesktopDropDownMenu';
+import CurrencySelector from '../Currency/Selector';
 
 // ACTIONS/CONFIG
-import { sizes } from "../../libs/styled";
-import { mainNav } from "../../data/nav";
+import { sizes } from '../../libs/styled';
+import { mainNav } from '../../data/nav';
+import { trackHeaderCategoryClick } from 'libs/analytics';
 
 // STYLES
 const Wrap = styled.div`
@@ -52,7 +54,7 @@ const NavLink = styled(Link)`
   &:after {
     background: #4fb798;
     bottom: 0;
-    content: "";
+    content: '';
     display: block;
     height: 2px;
     left: 50%;
@@ -94,7 +96,7 @@ const ActionsWrap = styled.div`
 `;
 
 // MODULE
-export default function TopBarDesktopNav({ home, language, currency, theme, history }) {
+const TopBarDesktopNav = function TopBarDesktopNav({ home, language, currency, theme, history, analytics }) {
   return (
     <Media
       query={`(min-width: ${sizes.large})`}
@@ -106,6 +108,7 @@ export default function TopBarDesktopNav({ home, language, currency, theme, hist
                 key={item.label}
                 activeclassname="is-active"
                 to={item.href}
+                onClick={() => analytics(trackHeaderCategoryClick(item.label))}
               >
                 {item.label}
               </NavLink>
@@ -113,23 +116,33 @@ export default function TopBarDesktopNav({ home, language, currency, theme, hist
           </Nav>
           <ActionsWrap>
             <CurrencySelector />
-            <DesktopDropDownMenu theme={theme} history={history}/>
+            <DesktopDropDownMenu theme={theme} history={history} />
           </ActionsWrap>
         </Wrap>
       )}
     />
   );
-}
+};
 
 // Props Validation
 TopBarDesktopNav.propTypes = {
   home: PropTypes.bool.isRequired,
   language: PropTypes.string,
   theme: PropTypes.string,
-  currency: PropTypes.string
+  currency: PropTypes.string,
 };
 
 TopBarDesktopNav.defaultProps = {
-  language: "english",
-  currency: "USD"
+  language: 'english',
+  currency: 'USD',
 };
+
+const mapDispatchToProps = dispatch => {
+  return {
+    analytics: analyticsPayload => dispatch({ type: 'analytics', meta: { analytics: analyticsPayload } }),
+  };
+};
+export default connect(
+  null,
+  mapDispatchToProps
+)(TopBarDesktopNav);

@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import Media from "react-media";
 import Parse from "parse";
+import { connect } from 'react-redux';
 
 // COMPONENTS
 import CurrencySelector from "../Currency/Selector";
@@ -11,6 +12,7 @@ import CurrencySelector from "../Currency/Selector";
 // ACTIONS/CONFIG
 import { sizes } from "../../libs/styled";
 import { mainNav } from "../../data/nav";
+import { trackHeaderCategoryClick } from "libs/analytics";
 
 // STYLES
 const Wrap = styled.div`
@@ -100,7 +102,7 @@ const Divider = styled.hr`
 `;
 
 // MODULE
-export default class MobileNav extends Component {
+class MobileNav extends Component {
 
   componentDidMount() {
     if(Parse.User.current() === null){
@@ -125,6 +127,7 @@ export default class MobileNav extends Component {
 
   render() {
     if (!this.props.showProfileMenu) return null;
+    const { analytics } = this.props;
 
     return (
       <Media
@@ -140,7 +143,7 @@ export default class MobileNav extends Component {
               </li>
               {mainNav.map(item => (
                 <li aria-hidden="false" key={item.label} onClick={this.props.toggleProfileMenu}>
-                  <NavLink activeclassname="is-active" to={item.href}>
+                  <NavLink activeclassname="is-active" to={item.href} onClick={() => analytics(trackHeaderCategoryClick(item.label))}>
                     {item.label}
                   </NavLink>
                 </li>
@@ -162,3 +165,13 @@ export default class MobileNav extends Component {
     );
   }
 }
+
+const mapDispatchToProps = dispatch => {
+  return {
+    analytics: analyticsPayload => dispatch({ type: 'analytics', meta: { analytics: analyticsPayload } }),
+  };
+};
+export default connect(
+  null,
+  mapDispatchToProps
+)(MobileNav);
