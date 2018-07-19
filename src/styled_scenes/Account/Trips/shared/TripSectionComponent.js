@@ -56,7 +56,7 @@ const renderTrip = trip => {
         <Link to={linkToTrip}>
           <InlineH2>{trip.title}</InlineH2>
         </Link>
-        <Button as={Link} basic icon labelPosition="left" size="tiny" to={linkToTrip}>
+        <Button as={Link} basic icon labelPosition="left" size="tiny" to={`/trips/${trip.objectId}/edit`}>
           <Icon name="edit" />
           Edit
         </Button>

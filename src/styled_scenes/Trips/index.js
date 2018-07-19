@@ -238,6 +238,7 @@ export default class TripsScene extends Component {
                       onClick={() => this.props.history.push('/trips/' + trip.objectId + '/edit')}
                       />
                   }
+                  <br/>
                   <ChangeTripImageButton
                     trip={trip}
                     isOwner={this.state.isOwner}
