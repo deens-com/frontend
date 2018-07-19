@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { withRouter, Route } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import Parse from 'parse';
 import NotFound from '../../../styled_scenes/NotFound';
 import TripsComponent from './../components/trips_component';
 import * as trips_actions from './../actions';
 import * as selectors from '../selectors';
 import { statuses } from '../../../libs/fetch_helpers';
-import EditTripContainer from './edit_trip_container';
 
 class TripsContainer extends Component {
   state = {

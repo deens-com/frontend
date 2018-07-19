@@ -2,7 +2,7 @@ import React from 'react';
 import TripsContainer from './containers/trips_container';
 import EditTripContainer from './containers/edit_trip_container';
 import PreBookingPopupContainer from './containers/PreBookingPopupContainer';
-import { Route, withRouter } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 const Trips = props => {
   return (
