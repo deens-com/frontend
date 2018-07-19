@@ -8,6 +8,7 @@ import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router';
 import Truncate from 'react-truncate';
 import * as actions from './../../../../../scenes/service-upsert/actions';
+import { Popup } from 'semantic-ui-react';
 
 // COMPONENTS
 import Rating from './../../../../../shared_components/Rating';
@@ -153,6 +154,22 @@ const getSmartContractBookingStatus = props => {
 
 // MODULE
 class ServiceLocationCard extends Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      truncated: false
+    };
+  }
+
+  handleTruncate = (truncated) => {
+    if (this.state.truncated !== truncated) {
+      this.setState({
+        truncated
+      });
+    }
+  }
+
   wrapWithLink = element => {
     const { item } = this.props;
     return <Link to={`/services/${item.objectId}`}>{element}</Link>;
@@ -161,35 +178,79 @@ class ServiceLocationCard extends Component {
   render() {
     const { item, withShadow, mdBasis, smBasis, xsBasis } = this.props;
     return (
-      <Col xsBasis={xsBasis} mdBasis={smBasis} smBasis={mdBasis}>
-        <RelativeCard withShadow={withShadow} column>
-          <ImageGridContainer>
-            <ImageItem>{this.wrapWithLink(<Thumb url={item.image} />)}</ImageItem>
-            <ContractStatusItem>{getSmartContractBookingStatus(this.props)}</ContractStatusItem>
-          </ImageGridContainer>
-          <ContentWrap>
-            {this.wrapWithLink(
-              <div>
-                <Title>
-                  <Truncate lines={cardConfig.titleLines}>{item.title}</Truncate>
-                </Title>
+      <div>
+      {
+        this.state.truncated ?
 
-                {item.type && (
-                  <Location>
-                    <PinIcon />
-                    <p>
-                      <Truncate lines={cardConfig.locationLines}>{item.location}</Truncate>
-                    </p>
-                  </Location>
+        <Popup trigger={
+          <Col xsBasis={xsBasis} mdBasis={smBasis} smBasis={mdBasis}>
+            <RelativeCard withShadow={withShadow} column>
+              <ImageGridContainer>
+                <ImageItem>{this.wrapWithLink(<Thumb url={item.image} />)}</ImageItem>
+                <ContractStatusItem>{getSmartContractBookingStatus(this.props)}</ContractStatusItem>
+              </ImageGridContainer>
+              <ContentWrap>
+                {this.wrapWithLink(
+                  <div>
+                    <Title>
+                      <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>{item.title}</Truncate>
+                    </Title>
+
+                    {item.type && (
+                      <Location>
+                        <PinIcon />
+                        <p>
+                          <Truncate lines={cardConfig.locationLines}>{item.location}</Truncate>
+                        </p>
+                      </Location>
+                    )}
+                    <Rating marginBottom="10px" rating={item.rating} count={item.reviewCount} />
+                    <Label>Starting from</Label>
+                    <PriceTag price={item.price} />
+                  </div>
                 )}
-                <Rating marginBottom="10px" rating={item.rating} count={item.reviewCount} />
-                <Label>Starting from</Label>
-                <PriceTag price={item.price} />
-              </div>
-            )}
-          </ContentWrap>
-        </RelativeCard>
-      </Col>
+              </ContentWrap>
+            </RelativeCard>
+          </Col>
+          }
+          content={this.props.item.title}
+        />
+
+        :
+
+        <Col xsBasis={xsBasis} mdBasis={smBasis} smBasis={mdBasis}>
+          <RelativeCard withShadow={withShadow} column>
+            <ImageGridContainer>
+              <ImageItem>{this.wrapWithLink(<Thumb url={item.image} />)}</ImageItem>
+              <ContractStatusItem>{getSmartContractBookingStatus(this.props)}</ContractStatusItem>
+            </ImageGridContainer>
+            <ContentWrap>
+              {this.wrapWithLink(
+                <div>
+                  <Title>
+                    <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>{item.title}</Truncate>
+                  </Title>
+
+                  {item.type && (
+                    <Location>
+                      <PinIcon />
+                      <p>
+                        <Truncate lines={cardConfig.locationLines}>{item.location}</Truncate>
+                      </p>
+                    </Location>
+                  )}
+                  <Rating marginBottom="10px" rating={item.rating} count={item.reviewCount} />
+                  <Label>Starting from</Label>
+                  <PriceTag price={item.price} />
+                </div>
+              )}
+            </ContentWrap>
+          </RelativeCard>
+        </Col>
+
+      }
+      </div>
+
     );
   }
 }
