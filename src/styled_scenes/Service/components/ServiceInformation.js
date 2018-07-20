@@ -25,32 +25,34 @@ const ServiceInformation = ({ service }) => {
   if (!service) return null;
   return (
     <Table>
-      <Row>
-        <td>Host</td>
-        <td>
-          <UserAvatar user={service.owner} />
-        </td>
-      </Row>
-      <Row>
-        <td>Working Hours</td>
-        <td> {`${padStart(service.openingTime, 2)}:00 - ${padStart(service.closingTime, 2)}:00`} </td>
-      </Row>
-      <Row>
-        <td>Price Per Session</td>
-        <td>
-          <PriceTag price={service.pricePerSession} />
-        </td>
-      </Row>
-      <Row>
-        <td>Location</td>
-        <td>{service.location}</td>
-      </Row>
-      <Row>
-        <td>Rating</td>
-        <td>
-          <Rating rating={service.rating} count={service.reviewCount} />
-        </td>
-      </Row>
+      <tbody>
+        <Row>
+          <td>Host</td>
+          <td>
+            <UserAvatar user={service.owner} />
+          </td>
+        </Row>
+        <Row>
+          <td>Working Hours</td>
+          <td> {`${padStart(service.openingTime, 2)}:00 - ${padStart(service.closingTime, 2)}:00`} </td>
+        </Row>
+        <Row>
+          <td>Price Per Session</td>
+          <td>
+            <PriceTag price={service.pricePerSession} />
+          </td>
+        </Row>
+        <Row>
+          <td>Location</td>
+          <td>{service.location}</td>
+        </Row>
+        <Row>
+          <td>Rating</td>
+          <td>
+            <Rating rating={service.rating} count={service.reviewCount} />
+          </td>
+        </Row>
+      </tbody>
     </Table>
   );
 };
