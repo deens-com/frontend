@@ -459,7 +459,7 @@ class HomeSearch extends Component {
                 }}
                 value={this.state.keywords}
                 onChange={this.setKeyWords}
-                placeholder="Stary typing.."
+                placeholder="Start typing.."
               />
             </form>
           )}
