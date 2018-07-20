@@ -2,7 +2,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import { Label as SemanticLabel, Icon } from 'semantic-ui-react';
 import Truncate from 'react-truncate';
 import { Popup } from 'semantic-ui-react';

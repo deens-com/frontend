@@ -27,7 +27,6 @@ import { media, sizes } from '../../libs/styled';
 import { Page, PageContent } from '../../shared_components/layout/Page';
 import { Hr } from '../../shared_components/styledComponents/misc';
 import ChangeTripImageButton from './components/ChangeTripImageButton';
-import Button from '../../shared_components/Button';
 
 const Wrap = styled.div`
   ${media.minMediumPlus} {
@@ -232,13 +231,6 @@ export default class TripsScene extends Component {
                     showTripStatusChanged={this.props.showTripStatusChanged}
                     onShareModalClose={this.props.onShareModalClose}
                   />
-                  {
-                    this.state.isOwner &&
-                    <Button type='button' text='Edit Trip'
-                      onClick={() => this.props.history.push('/trips/' + trip.objectId + '/edit')}
-                      />
-                  }
-                  <br/>
                   <ChangeTripImageButton
                     trip={trip}
                     isOwner={this.state.isOwner}
