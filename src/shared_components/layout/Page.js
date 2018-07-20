@@ -27,8 +27,10 @@ export const SegmentWithoutPadding = styled(Segment)`
 `;
 
 export const PageContent = props => {
+  // _removed because sending flex=true to SegmentWithoutPadding causes SemanticUI to log an error in console
+  const { flex: _removed, ...rest } = props;
   return (
-    <SegmentWithoutPadding basic {...props}>
+    <SegmentWithoutPadding basic {...rest}>
       <PageContentStyles {...props}>{props.children}</PageContentStyles>
     </SegmentWithoutPadding>
   );
