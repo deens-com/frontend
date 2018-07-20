@@ -2,6 +2,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import { Link } from 'react-router-dom';
 
 // ACTIONS/CONFIG
 import { media } from "../../../../libs/styled";
@@ -29,7 +30,7 @@ const tagSizes = {
 };
 
 // quick fix to maintain the style
-const ServiceCarouselButton = styled.a``;
+const ServiceCarouselButton = styled(Link)``;
 
 const Wrap = styled.div`
   background: ${props => props.background || "#ddd"};
@@ -75,7 +76,7 @@ export default function CategoryTag(props) {
       hoverBg={props.item.hoverBg}
       background={props.item.background}
     >
-      <ServiceCarouselButton>
+      <ServiceCarouselButton to={props.href}>
         {props.item.label}
       </ServiceCarouselButton>
     </Wrap>
@@ -90,7 +91,8 @@ CategoryTag.propTypes = {
     hoverBg: PropTypes.string,
     background: PropTypes.string,
     label: PropTypes.string
-  }).isRequired
+  }).isRequired,
+  href: PropTypes.string,
 };
 
 // Default Props
