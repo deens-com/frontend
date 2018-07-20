@@ -397,8 +397,8 @@ class HomeSearch extends Component {
                   position='bottom left'
                   size='huge'
                   verticalOffset={20}
-                  flowing='true'
-                  inverted='true'
+                  flowing={true}
+                  inverted={true}
               />)
             : null
           }
