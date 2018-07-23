@@ -78,7 +78,7 @@ export default class OwnerToolBar extends Component {
                   onValueChange('title', value);
                 }}
                 onBlur={onSubmit}
-                value={state.title}
+                value={state.title || ''}
                 disabled={isTripBooked}
               />
             </TitleDiv>
