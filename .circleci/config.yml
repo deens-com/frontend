@@ -32,6 +32,12 @@ jobs:
 
       # Run tests
       - run:
+          name: Set up commit status
+          command: |
+            curl -i -H "Authorization: token ${GIT_TOKEN}" -H "Content-Type: application/json" --request POST --data "{\"state\": \"pending\", \"description\": \"Waiting for build to finish\", \"context\": \"ci/deploy-feature\"}" https://api.github.com/repos/PleaseDotCom/frontend/statuses/${CIRCLE_SHA1}
+            curl -i -H "Authorization: token ${GIT_TOKEN}" -H "Content-Type: application/json" --request POST --data "{\"state\": \"pending\", \"description\": \"Waiting for deployment to finish\", \"context\": \"ci/regression-tests\"}" https://api.github.com/repos/PleaseDotCom/frontend/statuses/${CIRCLE_SHA1}
+
+      - run:
           name: Run Tests
           command: |
             yarn test
@@ -44,6 +50,8 @@ jobs:
       - deploy:
           name: Build and Deploy
           command: |
+            curl -i -H "Authorization: token ${GIT_TOKEN}" -H "Content-Type: application/json" --request POST --data "{\"state\": \"pending\", \"description\": \"Deployment started\", \"context\": \"ci/deploy-feature\"}" https://api.github.com/repos/PleaseDotCom/frontend/statuses/${CIRCLE_SHA1}
+
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               CI=false yarn deploy;
             elif [ "${CIRCLE_BRANCH}" == "staging" ]; then
@@ -54,30 +62,31 @@ jobs:
             else
               CI=false npm run build:staging && \
               cd build && \
-              echo "export URL=$(npx now --team please -t $NOW_SH_TOKEN)" > /tmp/env.tmp && \
+              echo "export URL=$(npx now --team please -t $NOW_SH_TOKEN)" > /tmp/env.tmp && source /tmp/env.tmp && \
 
-              source /tmp/env.tmp && \
-              if [ -n "${CI_PULL_REQUEST}" ]; then
-                export PR_NUMBER=$(node -p "'${CI_PULL_REQUEST}'.split('/').pop()") && \
-                curl -i -H "Authorization: token ${GIT_TOKEN}" -H "Content-Type: application/json" --request POST --data "{\"body\": \"Your commit ${CIRCLE_SHA1} has been deployed to ${URL}.\"}" https://api.github.com/repos/PleaseDotCom/frontend/issues/${PR_NUMBER}/comments
+              if [ "${URL}" == "" ]; then
+                curl -i -H "Authorization: token ${GIT_TOKEN}" -H "Content-Type: application/json" --request POST --data "{\"state\": \"error\", \"description\": \"Deployment failed\", \"context\": \"ci/deploy-feature\"}" https://api.github.com/repos/PleaseDotCom/frontend/statuses/${CIRCLE_SHA1} && \
+                false
               fi
+
+              curl -i -H "Authorization: token ${GIT_TOKEN}" -H "Content-Type: application/json" --request POST --data "{\"state\": \"success\", \"target_url\": \"${URL}\", \"description\": \"Feature deployed\", \"context\": \"ci/deploy-feature\"}" https://api.github.com/repos/PleaseDotCom/frontend/statuses/${CIRCLE_SHA1}
             fi
       # Run visual regression tests
       - run:
           name: Run GhostInspector
           command: |
+            curl -i -H "Authorization: token ${GIT_TOKEN}" -H "Content-Type: application/json" --request POST --data "{\"state\": \"pending\", \"description\": \"Regression tests started\", \"context\": \"ci/regression-tests\"}" https://api.github.com/repos/PleaseDotCom/frontend/statuses/${CIRCLE_SHA1}
+
             if [ "${CIRCLE_BRANCH}" != "master" ] && [ "${CIRCLE_BRANCH}" != "staging" ]; then
               source /tmp/env.tmp && \
               bash -c 'while [[ "$(curl -s -o /tmp/curl.json -w ''%{http_code}'' https://api.ghostinspector.com/v1/suites/5b4f7cc48cbdd775d4a69c27/execute/?apiKey=${GI_API_KEY} -d 'startUrl=${URL}')" != "200" ]]; do sleep 5; done' && \
               export GI_STATUS=$(node -p "(require('/tmp/curl.json').data[0].passing) ? 'Passed' : 'Failed'") && \
               export GI_RESULT_ID=$(node -p "require('/tmp/curl.json').data[0].suiteResult") && \
 
-              if [ -n "${CI_PULL_REQUEST}" ]; then
-                export PR_NUMBER=$(node -p "'${CI_PULL_REQUEST}'.split('/').pop()") && \
-                curl -i -H "Authorization: token ${GIT_TOKEN}" -H "Content-Type: application/json" --request POST --data "{\"body\": \"Regression tests: [${GI_STATUS}](https://app.ghostinspector.com/suite-results/${GI_RESULT_ID})\"}" https://api.github.com/repos/PleaseDotCom/frontend/issues/${PR_NUMBER}/comments
-              fi
-
               if [ "${GI_STATUS}" == "Failed" ]; then
+                curl -i -H "Authorization: token ${GIT_TOKEN}" -H "Content-Type: application/json" --request POST --data "{\"state\": \"failure\", \"target_url\": \"https://app.ghostinspector.com/suite-results/${GI_RESULT_ID}\", \"description\": \"Regression tests failed\", \"context\": \"ci/regression-tests\"}" https://api.github.com/repos/PleaseDotCom/frontend/statuses/${CIRCLE_SHA1} && \
                 false
               fi
+
+              curl -i -H "Authorization: token ${GIT_TOKEN}" -H "Content-Type: application/json" --request POST --data "{\"state\": \"success\", \"target_url\": \"https://app.ghostinspector.com/suite-results/${GI_RESULT_ID}\", \"description\": \"Regression tests finished\", \"context\": \"ci/regression-tests\"}" https://api.github.com/repos/PleaseDotCom/frontend/statuses/${CIRCLE_SHA1}
             fi
