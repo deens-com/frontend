@@ -411,7 +411,7 @@ class SearchFilters extends Component {
             leftIcon="person"
             min={1}
             max={10}
-            value={person_nb}
+            value={person_nb || 2}
           />
           <ClearInputIcon onClick={this.clear_person_nb} link name='close' />
 
