@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Popup } from 'semantic-ui-react';
+import Parse from 'parse';
 
+import history from 'main/history';
 import TripsListInDropDown from './TripsListInDropDown';
 import CustomColorSemanticButton from 'shared_components/CustomColorSemanticButton';
 
@@ -34,14 +36,27 @@ export default class AddToTripButton extends React.Component {
     this.props.onNewTripClick();
   };
 
+  isLoggedIn = () => Parse.User.current() != null;
+
+  redirectToLogin = () => history.push('/login');
+
   render() {
     const { props } = this;
+
+    const isLoggedIn = this.isLoggedIn();
+    const clickProps = isLoggedIn ? {} : { onClick: this.redirectToLogin };
+
     const addToTripButton = (
-      <CustomColorSemanticButton icon labelPosition="right" bgColor="rgb(95, 183, 158)" whiteText>
+      <CustomColorSemanticButton icon labelPosition="right" bgColor="rgb(95, 183, 158)" whiteText {...clickProps}>
         Add to trip
         <Icon name="angle down" />
       </CustomColorSemanticButton>
     );
+
+    if (!isLoggedIn) {
+      return addToTripButton;
+    }
+
     const listComponent = (
       <TripsListInDropDown
         trips={props.myUnpurchasedTrips}
