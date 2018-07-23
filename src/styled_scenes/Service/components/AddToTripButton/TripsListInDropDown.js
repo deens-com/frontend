@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Image, List } from 'semantic-ui-react';
+import { Image, List, Popup } from 'semantic-ui-react';
 import moment from 'moment';
 import styled from 'styled-components';
 import placeholder from './../../../../assets/placeholder350x350.png';
@@ -36,19 +36,16 @@ class TripsListInDropDown extends React.Component {
       const beginMoment = moment(trip.beginDate);
       const endMoment = moment(trip.endDate);
       const diff = endMoment.diff(beginMoment, 'days') + 1;
-      if (diff === 1) return `${diff} day`;
-      return `${diff} days`;
+      if (diff === 1) return { count: diff, label: 'day' };
+      return { count: diff, label: 'days' };
     } else {
-      return undefined;
+      return {};
     }
   };
 
-  renderItem = trip => {
-    const startDateStr = this.getStartTripDate(trip);
-    const duration = this.getTripDuration(trip);
-    const description = startDateStr ? `From: ${startDateStr}, Duration: ${duration}` : null;
+  renderItem = (trip, description) => {
     return (
-      <List.Item key={trip.objectId} onClick={this.onItemClick(trip)}>
+      <List.Item /* onClick={this.onItemClick(trip)} */>
         <Image avatar src={getTripImage(trip)} />
         <List.Content>
           <List.Header>
@@ -60,10 +57,31 @@ class TripsListInDropDown extends React.Component {
     );
   };
 
+  renderItemWithPopup = trip => {
+    const startDateStr = this.getStartTripDate(trip);
+    const duration = this.getTripDuration(trip);
+    const description = startDateStr ? `From: ${startDateStr}, Duration: ${duration.count} ${duration.label}` : null;
+    const item = this.renderItem(trip, description);
+    const dayItems = [];
+    for (let i = 0; i < duration.count; i++) {
+      dayItems.push(<List.Item key={i}>Day {i + 1}</List.Item>);
+    }
+    return (
+      <Popup key={trip.objectId} position="right center" on="click" trigger={item}>
+        <Popup.Header>Select Day</Popup.Header>
+        <Popup.Content>
+          <List selection verticalAlign="middle" divided>
+            {dayItems}
+          </List>
+        </Popup.Content>
+      </Popup>
+    );
+  };
+
   render() {
     return (
       <List selection verticalAlign="middle" divided>
-        {this.props.trips.map(this.renderItem)}
+        {this.props.trips.map(this.renderItemWithPopup)}
         <List.Item onClick={this.props.onNewTripClick}>
           <List.Icon name="add" />
           <List.Content>
