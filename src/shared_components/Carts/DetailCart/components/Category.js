@@ -1,18 +1,18 @@
 // NPM
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 // COMPONENTS
-import { FoodIcon, PlaceIcon, ActivityIcon } from "./icons";
+import { FoodIcon, PlaceIcon, ActivityIcon } from './icons';
 
 // ACTIONS/CONFIG
-import { media } from "../../../../libs/styled";
+import { media } from '../../../../libs/styled';
 
 // STYLES
 const iconColors = {
-  food: "#4fb798",
-  place: "#82689a",
-  activity: "#7ba8d6"
+  food: '#4fb798',
+  place: '#82689a',
+  activity: '#7ba8d6',
 };
 
 export const Category = styled.span`
@@ -48,12 +48,12 @@ export const CategoryIcon = styled.span`
 
 const getIcon = function(name) {
   switch (name) {
-    case "food":
-      return <FoodIcon style={{ fill: "#4fb798" }} />;
-    case "place":
-      return <PlaceIcon style={{ fill: "#82689a" }} />;
-    case "activity":
-      return <ActivityIcon style={{ fill: "#7ba8d6" }} />;
+    case 'food':
+      return <FoodIcon style={{ fill: '#4fb798' }} />;
+    case 'place':
+      return <PlaceIcon style={{ fill: '#82689a' }} />;
+    case 'activity':
+      return <ActivityIcon style={{ fill: '#7ba8d6' }} />;
     default:
       return false;
   }

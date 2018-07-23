@@ -21,14 +21,19 @@ class EditServiceFormContainer extends Component {
   componentWillReceiveProps(nextProps) {
     const { service, userProfile } = nextProps;
 
-    if (service && userProfile && service.owner && service.owner.objectId !== userProfile.objectId) {
+    if (
+      service &&
+      userProfile &&
+      service.owner &&
+      service.owner.objectId !== userProfile.objectId
+    ) {
       history.push('/account/services');
     }
   }
 
   redeployFailedContract = (values, serviceId) => {
     this.props.redeployContract(values, serviceId, this.props.history);
-  }
+  };
 
   onSubmit = values => {
     this.props.saveServiceChanges(this.getServiceId(), values, this.props.history);
@@ -41,8 +46,19 @@ class EditServiceFormContainer extends Component {
     }
     return (
       <React.Fragment>
-        <h2> Editing Service {service && <Link to={`/services/${service.objectId}`}>{service.name}</Link>} </h2>
-        <ServiceForm onSubmit={this.onSubmit} submitInFlight={isLoading} globalError={this.props.error} onRedeployContract={this.redeployFailedContract} submitButtonText="Save" {...this.props} />
+        <h2>
+          {' '}
+          Editing Service{' '}
+          {service && <Link to={`/services/${service.objectId}`}>{service.name}</Link>}{' '}
+        </h2>
+        <ServiceForm
+          onSubmit={this.onSubmit}
+          submitInFlight={isLoading}
+          globalError={this.props.error}
+          onRedeployContract={this.redeployFailedContract}
+          submitButtonText="Save"
+          {...this.props}
+        />
       </React.Fragment>
     );
   }
@@ -60,5 +76,5 @@ const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(withRouter(EditServiceFormContainer));

@@ -1,5 +1,5 @@
 // NPM
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Label as SemanticLabel, Icon } from 'semantic-ui-react';
@@ -102,7 +102,7 @@ function getSmartContractBookingStatus(reservation) {
         <SemanticLabelFixed color="green">
           Confirmed <Icon name="external" />
         </SemanticLabelFixed>,
-        reservation
+        reservation,
       );
     }
     if (transactionStatus === 0) {
@@ -110,7 +110,7 @@ function getSmartContractBookingStatus(reservation) {
         <SemanticLabelFixed color="red">
           Unconfirmed <Icon name="external" />
         </SemanticLabelFixed>,
-        reservation
+        reservation,
       );
     }
     if (!transactionStatus) {
@@ -118,7 +118,7 @@ function getSmartContractBookingStatus(reservation) {
         <SemanticLabelFixed color="blue">
           Processing <Icon name="external" />
         </SemanticLabelFixed>,
-        reservation
+        reservation,
       );
     }
   }
@@ -126,77 +126,88 @@ function getSmartContractBookingStatus(reservation) {
 }
 
 export default class LocationCart extends Component {
-
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      truncated: false
+      truncated: false,
     };
   }
 
-  handleTruncate = (truncated) => {
+  handleTruncate = truncated => {
     if (this.state.truncated !== truncated) {
       this.setState({
-        truncated
+        truncated,
       });
     }
-  }
+  };
 
   render() {
     const smartContractBookingStatus = getSmartContractBookingStatus(this.props.item.reservation);
     return (
       <Col>
         <div>
-          {
-            this.state.truncated ? (
-              <Popup trigger={
+          {this.state.truncated ? (
+            <Popup
+              trigger={
                 <RelativeCard withShadow={this.props.withShadow} column>
                   {smartContractBookingStatus && smartContractBookingStatus}
                   <Thumb url={this.props.item.image} />
                   <ContentWrap>
                     <Title>
-                      <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>{this.props.item.title}</Truncate>
+                      <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>
+                        {this.props.item.title}
+                      </Truncate>
                     </Title>
                     <Location>
                       <PinIcon />
                       <p>
-                        <Truncate lines={cardConfig.locationLines}>{this.props.item.location}</Truncate>
+                        <Truncate lines={cardConfig.locationLines}>
+                          {this.props.item.location}
+                        </Truncate>
                       </p>
                     </Location>
-                    <Rating marginBottom="10px" rating={this.props.item.rating} count={this.props.item.reviewCount} />
+                    <Rating
+                      marginBottom="10px"
+                      rating={this.props.item.rating}
+                      count={this.props.item.reviewCount}
+                    />
                     <Label>Starting from</Label>
                     <PriceTag price={this.props.item.price} />
                   </ContentWrap>
                 </RelativeCard>
-                }
-                content={this.props.item.title}
-              />
-            ) : (
-              <RelativeCard withShadow={this.props.withShadow} column>
-                {smartContractBookingStatus && smartContractBookingStatus}
-                <Thumb url={this.props.item.image} />
-                <ContentWrap>
-                  <Title>
-                    <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>{this.props.item.title}</Truncate>
-                  </Title>
-                  <Location>
-                    <PinIcon />
-                    <p>
-                      <Truncate lines={cardConfig.locationLines}>{this.props.item.location}</Truncate>
-                    </p>
-                  </Location>
-                  <Rating marginBottom="10px" rating={this.props.item.rating} count={this.props.item.reviewCount} />
-                  <Label>Starting from</Label>
-                  <PriceTag price={this.props.item.price} />
-                </ContentWrap>
-              </RelativeCard>
-            )
-          }
+              }
+              content={this.props.item.title}
+            />
+          ) : (
+            <RelativeCard withShadow={this.props.withShadow} column>
+              {smartContractBookingStatus && smartContractBookingStatus}
+              <Thumb url={this.props.item.image} />
+              <ContentWrap>
+                <Title>
+                  <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>
+                    {this.props.item.title}
+                  </Truncate>
+                </Title>
+                <Location>
+                  <PinIcon />
+                  <p>
+                    <Truncate lines={cardConfig.locationLines}>{this.props.item.location}</Truncate>
+                  </p>
+                </Location>
+                <Rating
+                  marginBottom="10px"
+                  rating={this.props.item.rating}
+                  count={this.props.item.reviewCount}
+                />
+                <Label>Starting from</Label>
+                <PriceTag price={this.props.item.price} />
+              </ContentWrap>
+            </RelativeCard>
+          )}
         </div>
       </Col>
     );
   }
-
 }
 
 // Props Validation

@@ -15,10 +15,12 @@ const history = createHistory();
 
 if (process.env.REACT_APP_NODE_ENV === 'production') {
   Raven.config('https://fd51482cf40f43fca379bc14417b6f2b@sentry.io/1220761').install();
-  Parse.serverURL = process.env.REACT_APP_PARSE_SERVER_URL || 'https://internal-api.please.com/parse';
+  Parse.serverURL =
+    process.env.REACT_APP_PARSE_SERVER_URL || 'https://internal-api.please.com/parse';
 } else if (process.env.REACT_APP_NODE_ENV === 'staging') {
   Raven.config('https://fd51482cf40f43fca379bc14417b6f2b@sentry.io/1220761').install();
-  Parse.serverURL = process.env.REACT_APP_PARSE_SERVER_URL || 'https://staging-internal-api.please.com/parse';
+  Parse.serverURL =
+    process.env.REACT_APP_PARSE_SERVER_URL || 'https://staging-internal-api.please.com/parse';
 } else {
   Parse.serverURL = process.env.REACT_APP_PARSE_SERVER_URL || 'https://api.please.docker/parse';
 }
@@ -38,9 +40,12 @@ unregisterServiceWorker();
 function getQueryStringValue(key) {
   return decodeURIComponent(
     history.location.search.replace(
-      new RegExp('^(?:.*[&\\?]' + encodeURIComponent(key).replace(/[.+*]/g, '\\$&') + '(?:\\=([^&]*))?)?.*$', 'i'),
-      '$1'
-    )
+      new RegExp(
+        '^(?:.*[&\\?]' + encodeURIComponent(key).replace(/[.+*]/g, '\\$&') + '(?:\\=([^&]*))?)?.*$',
+        'i',
+      ),
+      '$1',
+    ),
   );
 }
 

@@ -44,7 +44,9 @@ export default class OwnerToolBar extends Component {
     const currentResult = results[0];
     const latlngPromise = getLatLng(currentResult);
     const { address_components: addressComponents } = currentResult;
-    const localities = addressComponents.filter(c => c.types.includes('locality') || c.types.includes('postal_town'));
+    const localities = addressComponents.filter(
+      c => c.types.includes('locality') || c.types.includes('postal_town'),
+    );
     const countries = addressComponents.filter(c => c.types.includes('country'));
     if (countries[0] && countries[0].long_name) {
       onValueChange('country', countries[0].long_name);

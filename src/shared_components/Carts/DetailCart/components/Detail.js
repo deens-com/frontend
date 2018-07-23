@@ -1,20 +1,20 @@
 // NPM
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styled from "styled-components";
-import Media from "react-media";
+import styled from 'styled-components';
+import Media from 'react-media';
 
 // COMPONENTS
-import Button from "../../../Button";
-import { PinIcon, PencilIcon } from "../../../icons";
-import { ClockIcon, PhoneIcon } from "./icons";
+import Button from '../../../Button';
+import { PinIcon, PencilIcon } from '../../../icons';
+import { ClockIcon, PhoneIcon } from './icons';
 
 // ACTIONS/CONFIG
-import { sizes, media } from "../../../../libs/styled";
+import { sizes, media } from '../../../../libs/styled';
 
 // STYLES
 const Detail = styled.div`
-  display: ${props => (props.block ? "flex" : "inline-flex")};
+  display: ${props => (props.block ? 'flex' : 'inline-flex')};
   align-items: center;
   height: 24px;
   font-size: 12px;
@@ -65,7 +65,7 @@ export default class CartDetail extends Component {
   constructor() {
     super();
     this.state = {
-      showEdit: false
+      showEdit: false,
     };
 
     this.toggleEdit = this.toggleEdit.bind(this);
@@ -77,48 +77,45 @@ export default class CartDetail extends Component {
 
   getIcon(icon) {
     switch (icon) {
-      case "clock": {
+      case 'clock': {
         return <ClockIcon />;
       }
-      case "pin": {
+      case 'pin': {
         return <PinIcon />;
       }
-      case "phone": {
+      case 'phone': {
         return <PhoneIcon />;
       }
       default:
-        return "LI";
+        return 'LI';
     }
   }
 
   render() {
     return (
-      <Detail
-        block={this.props.block}
-      >
-        {this.props.icon && (
-          <LeftIcon>{this.getIcon(this.props.icon)}</LeftIcon>
-        )}
+      <Detail block={this.props.block}>
+        {this.props.icon && <LeftIcon>{this.getIcon(this.props.icon)}</LeftIcon>}
         <Text>{this.props.text}</Text>
-        {this.props.showEdit && this.state.showEdit && (
-          <Media
-            query={`(min-width: ${sizes.large})`}
-            render={() => (
-              <EditWrap>
-                <Button
-                  type="button"
-                  theme="icon"
-                  size="text"
-                  onClick={ev => {
-                    alert("editing");
-                  }}
-                >
-                  <PencilIcon />
-                </Button>
-              </EditWrap>
-            )}
-          />
-        )}
+        {this.props.showEdit &&
+          this.state.showEdit && (
+            <Media
+              query={`(min-width: ${sizes.large})`}
+              render={() => (
+                <EditWrap>
+                  <Button
+                    type="button"
+                    theme="icon"
+                    size="text"
+                    onClick={ev => {
+                      alert('editing');
+                    }}
+                  >
+                    <PencilIcon />
+                  </Button>
+                </EditWrap>
+              )}
+            />
+          )}
       </Detail>
     );
   }

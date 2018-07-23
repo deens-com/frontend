@@ -1,12 +1,12 @@
 // NPM
-import React, { Component } from "react";
-import styled from "styled-components";
+import React, { Component } from 'react';
+import styled from 'styled-components';
 
 // COMPONENTS
-import Button from "../../../shared_components/Button";
-import { FilterIcon } from "../../../shared_components/icons";
-import Form from "../../../shared_components/Form";
-import FormControl from "../../../shared_components/Form/FormControl";
+import Button from '../../../shared_components/Button';
+import { FilterIcon } from '../../../shared_components/icons';
+import Form from '../../../shared_components/Form';
+import FormControl from '../../../shared_components/Form/FormControl';
 
 // STYLES
 const WrapTrigger = styled.div`
@@ -46,7 +46,7 @@ export default class MobileFilter extends Component {
   constructor() {
     super();
     this.state = {
-      showFilters: false
+      showFilters: false,
     };
     this.toggleFilters = this.toggleFilters.bind(this);
   }
@@ -60,21 +60,16 @@ export default class MobileFilter extends Component {
     return (
       <MobileWrap>
         <WrapTrigger>
-          <Button
-            size="medium"
-            type="button"
-            onClick={this.toggleFilters}
-            theme="textGreen"
-          >
+          <Button size="medium" type="button" onClick={this.toggleFilters} theme="textGreen">
             <FilterIcon />
-            {this.state.showFilters ? "Hide" : "Show"} filters
+            {this.state.showFilters ? 'Hide' : 'Show'} filters
           </Button>
         </WrapTrigger>
         {this.state.showFilters && (
           <Form onSubmit={onSubmit}>
             <FormControl
               onChange={value => {
-                onValueChange("location", value);
+                onValueChange('location', value);
               }}
               value={state.location}
               type="text"
@@ -83,7 +78,7 @@ export default class MobileFilter extends Component {
             />
             <FormControl
               onChange={value => {
-                onValueChange("startDate", value);
+                onValueChange('startDate', value);
               }}
               value={state.startDate}
               type="date"
@@ -92,7 +87,7 @@ export default class MobileFilter extends Component {
             />
             <FormControl
               onChange={value => {
-                onValueChange("endDate", value);
+                onValueChange('endDate', value);
               }}
               value={state.endDate}
               type="date"
@@ -101,7 +96,7 @@ export default class MobileFilter extends Component {
             />
             <FormControl
               onChange={value => {
-                onValueChange("person", value);
+                onValueChange('person', value);
               }}
               value={state.person}
               type="person"

@@ -1,12 +1,12 @@
 // NPM
-import React, { Component } from "react";
-import styled from "styled-components";
+import React, { Component } from 'react';
+import styled from 'styled-components';
 
 // COMPONENTS
-import FormControl from "../../../shared_components/Form/FormControl";
+import FormControl from '../../../shared_components/Form/FormControl';
 
 // ACTIONS/CONFIG
-import { media } from "../../../libs/styled";
+import { media } from '../../../libs/styled';
 
 // STYLES
 
@@ -46,7 +46,7 @@ const Wrap = styled.div`
 
     ${media.minMedium} {
       &:after {
-        content: "";
+        content: '';
         width: 1px;
         height: 60%;
         background: #eef1f4;
@@ -71,7 +71,7 @@ export default class FoodDetailPickers extends Component {
     this.state = {
       date: null,
       time: null,
-      person: null
+      person: null,
     };
   }
   render() {

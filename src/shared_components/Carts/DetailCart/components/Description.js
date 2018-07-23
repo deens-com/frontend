@@ -1,15 +1,15 @@
 // NPM
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 // COMPONENTS
 
 // ACTIONS/CONFIG
-import { media } from "../../../../libs/styled";
+import { media } from '../../../../libs/styled';
 
 // STYLES
 const Description = styled.span`
-  display: ${props => props.type || "block"};
+  display: ${props => props.type || 'block'};
   margin-right: 15px;
   font-size: 18px;
   font-weight: 500;

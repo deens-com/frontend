@@ -22,12 +22,7 @@ class PreBookingPopupContainer extends React.Component {
     if (!preBookingStepResult) {
       return null;
     }
-    return (
-      <PreBookingPopup
-        {...this.props}
-        redirectToOwnedTrip={this.redirectToOwnedTrip}
-      />
-    );
+    return <PreBookingPopup {...this.props} redirectToOwnedTrip={this.redirectToOwnedTrip} />;
   }
 }
 
@@ -40,5 +35,5 @@ const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(withRouter(PreBookingPopupContainer));

@@ -25,8 +25,16 @@ const Reviews = ({ title, reviews, emptyText }) => {
       </SectionHeader>
       <CarouselWrap>
         {reviews.length > 0 && (
-          <Carousel sm_slides_nb={1} md_slides_nb={2} lg_slides_nb={3} xl_slides_nb={4} topPosition="24%">
-            {reviews.map(r => <GenericReview key={r.objectId} {...r} link={`/${r.reviewedType}s/${r.reviewedId}`} />)}
+          <Carousel
+            sm_slides_nb={1}
+            md_slides_nb={2}
+            lg_slides_nb={3}
+            xl_slides_nb={4}
+            topPosition="24%"
+          >
+            {reviews.map(r => (
+              <GenericReview key={r.objectId} {...r} link={`/${r.reviewedType}s/${r.reviewedId}`} />
+            ))}
           </Carousel>
         )}
         {reviews.length === 0 && <EmptyText>{emptyText}</EmptyText>}

@@ -17,7 +17,7 @@ export const types = {
   SERVICE_SAVE_SUCCCESS: 'EDIT/SERVICE_SAVE_SUCCCESS',
   SERVICE_SAVE_ERROR: 'EDIT/SERVICE_SAVE_ERROR',
 
-  TOGGLE_SUBMITTING_STATE: 'TOGGLE_SUBMITTING_STATE'
+  TOGGLE_SUBMITTING_STATE: 'TOGGLE_SUBMITTING_STATE',
 };
 
 export const user_profile_fetched = userProfile => {
@@ -30,7 +30,7 @@ export const user_profile_fetched = userProfile => {
 export const submittingStateChanged = bool => {
   return {
     type: 'TOGGLE_SUBMITTING_STATE',
-    payload: bool
+    payload: bool,
   };
 };
 
@@ -170,7 +170,10 @@ export const redeployContract = (values, serviceId, history) => async (dispatch,
 export const deployContract = (service, values, history) => async (dispatch, getState) => {
   try {
     // TODO: @vlad if possible change this to use web3 as we're already using Web3 in other parts of the app
-    const [ethers, { getWeb3, getLedgerWeb3 }] = await Promise.all([import('ethers'), import('libs/web3-utils')]);
+    const [ethers, { getWeb3, getLedgerWeb3 }] = await Promise.all([
+      import('ethers'),
+      import('libs/web3-utils'),
+    ]);
     const { pricePerSession, slots } = values;
     const user = getState().ServiceUpsert.userProfile;
 
@@ -181,7 +184,11 @@ export const deployContract = (service, values, history) => async (dispatch, get
     let ipfsContractObject = await query.first();
 
     // automatically assign the contract version to service
-    service.set('contractVersion', { __type: 'Pointer', className: 'ipfsContract', objectId: ipfsContractObject.id });
+    service.set('contractVersion', {
+      __type: 'Pointer',
+      className: 'ipfsContract',
+      objectId: ipfsContractObject.id,
+    });
     await service.save();
 
     // retrieve contract details from ipfsAPI end point (abi and bytecode)
@@ -212,7 +219,10 @@ export const deployContract = (service, values, history) => async (dispatch, get
       preferredWeb3 = await getLedgerWeb3();
     }
 
-    let wallet = new ethers.providers.Web3Provider(preferredWeb3.currentProvider, network).getSigner();
+    let wallet = new ethers.providers.Web3Provider(
+      preferredWeb3.currentProvider,
+      network,
+    ).getSigner();
 
     let deployTransaction = ethers.Contract.getDeployTransaction(
       bytecode,
@@ -229,7 +239,7 @@ export const deployContract = (service, values, history) => async (dispatch, get
       ipfsContractObject.get('tokenRateAddress'),
       ipfsContractObject.get('delegateResolverAddress'),
       ipfsContractObject.get('bookingTimeUtilsAddress'),
-      ipfsContractObject.get('eventHubAddress')
+      ipfsContractObject.get('eventHubAddress'),
     );
 
     // we will use this later, hence I'll keep these lines commented

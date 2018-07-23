@@ -27,4 +27,5 @@ export const markTripBooked = () => async (dispatch, getState) => {
   }
 };
 
-export const clearTripBooked = () => dispatch => dispatch({ type: types.MARK_TRIP_BOOKED_STATUS, payload: null });
+export const clearTripBooked = () => dispatch =>
+  dispatch({ type: types.MARK_TRIP_BOOKED_STATUS, payload: null });

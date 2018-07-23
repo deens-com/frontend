@@ -8,12 +8,13 @@ const Trips = props => {
   return (
     <div className="Trips">
       <Route
-        exact path={process.env.PUBLIC_URL + '/trips/:id' }
-        render={ props => <TripsContainer {...props} /> }
+        exact
+        path={process.env.PUBLIC_URL + '/trips/:id'}
+        render={props => <TripsContainer {...props} />}
       />
       <Route
         path={process.env.PUBLIC_URL + '/trips/:id/edit'}
-        render={ props => <EditTripContainer {...props} /> }
+        render={props => <EditTripContainer {...props} />}
       />
       <PreBookingPopupContainer />
     </div>

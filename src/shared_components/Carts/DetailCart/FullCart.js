@@ -138,7 +138,12 @@ export default function FullCart({ data, toggleExpansion, onDeleteClick, isOwner
             </Link>
           </HeaderRow>
           <ContentRow>
-            <Detail block icon="clock" text={`${padStart(data.openingTime, 2)}:00 - ${padStart(data.closingTime, 2)}:00`} showEdit={isOwner} />
+            <Detail
+              block
+              icon="clock"
+              text={`${padStart(data.openingTime, 2)}:00 - ${padStart(data.closingTime, 2)}:00`}
+              showEdit={isOwner}
+            />
             <Detail block icon="pin" text={data.city + ', ' + data.country} showEdit={isOwner} />
           </ContentRow>
         </CenterCol>

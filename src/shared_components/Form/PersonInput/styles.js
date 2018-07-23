@@ -21,7 +21,7 @@ export const Overlay = styled.div`
 
 export const Button = styled.button`
   ${resetButton({
-    border: '1px solid #53B698'
+    border: '1px solid #53B698',
   })};
   display: flex;
   padding: 0;

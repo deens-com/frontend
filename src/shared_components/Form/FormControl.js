@@ -1,22 +1,22 @@
 // NPM
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import styled from "styled-components";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
 // COMPONENTS
-import Input from "./controls/Input";
-import Label from "./controls/Label";
-import DateInput from "./DateInput";
-import PersonInput from "./PersonInput";
-import { DateIcon, PersonIcon, PinIcon } from "../icons";
-import TimeSelect from "./TimeSelect";
+import Input from './controls/Input';
+import Label from './controls/Label';
+import DateInput from './DateInput';
+import PersonInput from './PersonInput';
+import { DateIcon, PersonIcon, PinIcon } from '../icons';
+import TimeSelect from './TimeSelect';
 
 // ACTIONS/CONFIG
 
 // STYLES
 const FormGroup = styled.div`
   position: relative;
-  border: 1px solid ${props => (props.focused ? "#4fb798" : "#eef1f4")};
+  border: 1px solid ${props => (props.focused ? '#4fb798' : '#eef1f4')};
   border-radius: 4px;
   padding: 10px 15px;
   transition: border-color 0.1s ease-out;
@@ -24,7 +24,7 @@ const FormGroup = styled.div`
 
 const FormError = styled.div`
   position: relative;
-  border: 1px solid ${props => (props.focused ? "#4fb798" : "#eef1f4")};
+  border: 1px solid ${props => (props.focused ? '#4fb798' : '#eef1f4')};
   border-radius: 4px;
   padding: 10px 15px;
   transition: border-color 0.1s ease-out;
@@ -41,7 +41,7 @@ const InnerLeftIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${props => (props.focused ? "#4fb798" : "#d3d7dc")};
+  color: ${props => (props.focused ? '#4fb798' : '#d3d7dc')};
 
   svg {
     transition: color 0.1s ease-out;
@@ -53,7 +53,7 @@ export default class FormControl extends Component {
   constructor() {
     super();
     this.state = {
-      focused: false
+      focused: false,
     };
     this.onFocus = this.onFocus.bind(this);
     this.onBlur = this.onBlur.bind(this);
@@ -82,11 +82,11 @@ export default class FormControl extends Component {
 
   getFormIcon(type) {
     switch (type) {
-      case "pin":
+      case 'pin':
         return <PinIcon />;
-      case "person":
+      case 'person':
         return <PersonIcon />;
-      case "date":
+      case 'date':
         return <DateIcon />;
       default:
         return false;
@@ -97,7 +97,7 @@ export default class FormControl extends Component {
     let input;
 
     switch (this.props.type) {
-      case "number": {
+      case 'number': {
         input = (
           <Input
             {...this.props}
@@ -114,7 +114,7 @@ export default class FormControl extends Component {
         );
         break;
       }
-      case "text": {
+      case 'text': {
         input = (
           <Input
             {...this.props}
@@ -128,7 +128,7 @@ export default class FormControl extends Component {
         );
         break;
       }
-      case "date": {
+      case 'date': {
         input = (
           <DateInput
             {...this.props}
@@ -142,7 +142,7 @@ export default class FormControl extends Component {
         );
         break;
       }
-      case "time": {
+      case 'time': {
         input = (
           <TimeSelect
             {...this.props}
@@ -158,7 +158,7 @@ export default class FormControl extends Component {
         );
         break;
       }
-      case "person": {
+      case 'person': {
         input = (
           <PersonInput
             {...this.props}
@@ -180,20 +180,16 @@ export default class FormControl extends Component {
 
     return (
       <FormGroup focused={this.state.focused} onClick={this.focusElement}>
-        {this.props.label && (
-          <Label id={this.props.id} label={this.props.label} />
-        )}
+        {this.props.label && <Label id={this.props.id} label={this.props.label} />}
         <InnerWrap>
-          {typeof this.props.leftIcon !== "undefined" && (
+          {typeof this.props.leftIcon !== 'undefined' && (
             <InnerLeftIcon focused={this.state.focused}>
               {this.getFormIcon(this.props.leftIcon)}
             </InnerLeftIcon>
           )}
           {input}
           {this.props.error ||
-            (this.state.error && (
-              <FormError>{this.props.error || this.state.error}</FormError>
-            ))}
+            (this.state.error && <FormError>{this.props.error || this.state.error}</FormError>)}
         </InnerWrap>
       </FormGroup>
     );
@@ -210,5 +206,5 @@ FormControl.propTypes = {
 };
 
 FormControl.defaultProps = {
-  step: 1
+  step: 1,
 };

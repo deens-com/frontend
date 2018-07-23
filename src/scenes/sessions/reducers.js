@@ -1,9 +1,9 @@
-import * as sessions_actions from "./actions";
+import * as sessions_actions from './actions';
 
 // set default base currency
-let defaultBaseCurrency = {label: "$", value: "USD", rates: {}}
+let defaultBaseCurrency = { label: '$', value: 'USD', rates: {} };
 
-if (typeof localStorage !== "undefined" && localStorage.getItem('currency')) {
+if (typeof localStorage !== 'undefined' && localStorage.getItem('currency')) {
   defaultBaseCurrency = JSON.parse(localStorage.getItem('currency'));
 }
 
@@ -13,7 +13,7 @@ const initialState = {
   metaMaskError: {},
   ledgerError: {},
   baseCurrency: defaultBaseCurrency,
-  isLedgerLoaderDisplayed: false
+  isLedgerLoaderDisplayed: false,
 };
 
 export default function SessionsReducer(state = initialState, action = {}) {
@@ -22,33 +22,33 @@ export default function SessionsReducer(state = initialState, action = {}) {
       return {
         ...state,
         session: action.payload.session,
-        loginError: {}
+        loginError: {},
       };
     case sessions_actions.types.LOGIN_ERROR:
       return {
         ...state,
-        loginError: action.payload
+        loginError: action.payload,
       };
     case sessions_actions.types.METAMASK_ERROR:
       return {
         ...state,
         metaMaskError: action.payload,
-      }
+      };
     case sessions_actions.types.LEDGER_ERROR:
       return {
         ...state,
         ledgerError: action.payload,
-      }
+      };
     case sessions_actions.types.BASE_CURRENCY_SET:
       return {
         ...state,
-        baseCurrency: action.payload.baseCurrency
-      }
+        baseCurrency: action.payload.baseCurrency,
+      };
     case sessions_actions.types.TOGGLE_LEDGER_LOADER_DISPLAY:
       return {
         ...state,
-        isLedgerLoaderDisplayed: action.payload
-      }
+        isLedgerLoaderDisplayed: action.payload,
+      };
     default:
       return state;
   }

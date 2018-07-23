@@ -1,12 +1,12 @@
 import React from 'react';
-import SessionsContainer from './containers/sessions_container'
+import SessionsContainer from './containers/sessions_container';
 
 const Sessions = () => {
   return (
     <div className="Sessions">
       <SessionsContainer />
     </div>
-  )
-}
+  );
+};
 
-export default Sessions
+export default Sessions;

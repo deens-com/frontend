@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import countries from "./countries";
-import "./styles.css";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import countries from './countries';
+import './styles.css';
 
 // THE CODE IS USED FROM https://github.com/ekwonye-richard/react-flags-select
 // However, it needed custom arrow, so the onyl way to modify is to copy and paste here.
@@ -29,14 +29,13 @@ class FlagsSelect extends Component {
           );
         });
 
-    let defaultCountry =
-      countries[this.props.defaultCountry] && this.props.defaultCountry;
+    let defaultCountry = countries[this.props.defaultCountry] && this.props.defaultCountry;
 
     this.state = {
       openOptions: false,
       countries: selectCountries || fullCountries,
       defaultCountry: defaultCountry,
-      filteredCountries: []
+      filteredCountries: [],
     };
 
     this.toggleOptions = this.toggleOptions.bind(this);
@@ -48,7 +47,7 @@ class FlagsSelect extends Component {
   toggleOptions() {
     !this.state.disabled &&
       this.setState({
-        openOptions: !this.state.openOptions
+        openOptions: !this.state.openOptions,
       });
   }
 
@@ -59,7 +58,7 @@ class FlagsSelect extends Component {
       event.target !== this.refs.filterText
     ) {
       this.setState({
-        openOptions: false
+        openOptions: false,
       });
     }
   }
@@ -67,7 +66,7 @@ class FlagsSelect extends Component {
   onSelect(countryCode) {
     this.setState({
       selected: countryCode,
-      filter: ""
+      filter: '',
     });
     this.props.onSelect && this.props.onSelect(countryCode);
   }
@@ -77,7 +76,7 @@ class FlagsSelect extends Component {
 
     isValid &&
       this.setState({
-        selected: countryCode
+        selected: countryCode,
       });
   }
 
@@ -87,43 +86,35 @@ class FlagsSelect extends Component {
       filterValue &&
       this.state.countries.filter(key => {
         let label = this.props.customLabels[key] || countries[key];
-        return label && label.match(new RegExp(filterValue, "i"));
+        return label && label.match(new RegExp(filterValue, 'i'));
       });
 
     this.setState({
       filter: filterValue,
-      filteredCountries: filteredCountries
+      filteredCountries: filteredCountries,
     });
   }
 
   componentDidMount() {
-    !this.props.disabled && window.addEventListener("click", this.closeOptions);
+    !this.props.disabled && window.addEventListener('click', this.closeOptions);
   }
 
   componentWillUnmount() {
-    !this.props.disabled &&
-      window.removeEventListener("click", this.closeOptions);
+    !this.props.disabled && window.removeEventListener('click', this.closeOptions);
   }
 
   render() {
     let isSelected = this.state.selected || this.state.defaultCountry;
     let selectedSize = this.props.selectedSize;
     let optionsSize = this.props.optionsSize;
-    let alignClass =
-      this.props.alignOptions.toLowerCase() === "left" ? "to--left" : "";
+    let alignClass = this.props.alignOptions.toLowerCase() === 'left' ? 'to--left' : '';
 
     return (
-      <div
-        className={`flag-select ${
-          this.props.className ? this.props.className : ""
-        }`}
-      >
+      <div className={`flag-select ${this.props.className ? this.props.className : ''}`}>
         <div
           ref="selectedFlag"
           style={{ fontSize: `${selectedSize}px` }}
-          className={`selected--flag--option ${
-            this.props.disabled ? "no--focus" : ""
-          }`}
+          className={`selected--flag--option ${this.props.disabled ? 'no--focus' : ''}`}
           onClick={this.toggleOptions}
         >
           {isSelected && (
@@ -131,10 +122,10 @@ class FlagsSelect extends Component {
               className="country-flag"
               style={{
                 width: `${selectedSize}px`,
-                height: `${selectedSize}px`
+                height: `${selectedSize}px`,
               }}
             >
-              <img src={require(`./flags/${isSelected.toLowerCase()}.svg`)} alt=""/>
+              <img src={require(`./flags/${isSelected.toLowerCase()}.svg`)} alt="" />
               {this.props.showSelectedLabel && (
                 <span className="country-label">
                   {this.props.customLabels[isSelected] || countries[isSelected]}
@@ -143,12 +134,8 @@ class FlagsSelect extends Component {
             </span>
           )}
 
-          {!isSelected && (
-            <span className="country-label">{this.props.placeholder}</span>
-          )}
-          <span
-            className={`arrow-down ${this.props.disabled ? "hidden" : ""}`}
-          />
+          {!isSelected && <span className="country-label">{this.props.placeholder}</span>}
+          <span className={`arrow-down ${this.props.disabled ? 'hidden' : ''}`} />
         </div>
 
         {this.state.openOptions && (
@@ -167,37 +154,30 @@ class FlagsSelect extends Component {
                 />
               </div>
             )}
-            {(this.state.filter
-              ? this.state.filteredCountries
-              : this.state.countries
-            ).map(countryCode => (
-              <div
-                className={`flag-option ${
-                  this.props.showOptionLabel ? "has-label" : ""
-                }`}
-                key={countryCode}
-                onClick={() => this.onSelect(countryCode)}
-              >
-                <span
-                  className="country-flag"
-                  style={{
-                    width: `${optionsSize}px`,
-                    height: `${optionsSize}px`
-                  }}
+            {(this.state.filter ? this.state.filteredCountries : this.state.countries).map(
+              countryCode => (
+                <div
+                  className={`flag-option ${this.props.showOptionLabel ? 'has-label' : ''}`}
+                  key={countryCode}
+                  onClick={() => this.onSelect(countryCode)}
                 >
-                  <img
-                    src={require(`./flags/${countryCode.toLowerCase()}.svg`)}
-                    alt=""
-                  />
-                  {this.props.showOptionLabel && (
-                    <span className="country-label">
-                      {this.props.customLabels[countryCode] ||
-                        countries[countryCode]}
-                    </span>
-                  )}
-                </span>
-              </div>
-            ))}
+                  <span
+                    className="country-flag"
+                    style={{
+                      width: `${optionsSize}px`,
+                      height: `${optionsSize}px`,
+                    }}
+                  >
+                    <img src={require(`./flags/${countryCode.toLowerCase()}.svg`)} alt="" />
+                    {this.props.showOptionLabel && (
+                      <span className="country-label">
+                        {this.props.customLabels[countryCode] || countries[countryCode]}
+                      </span>
+                    )}
+                  </span>
+                </div>
+              ),
+            )}
           </div>
         )}
       </div>
@@ -208,14 +188,14 @@ class FlagsSelect extends Component {
 FlagsSelect.defaultProps = {
   selectedSize: 16,
   optionsSize: 14,
-  placeholder: "Select a country",
+  placeholder: 'Select a country',
   showSelectedLabel: true,
   showOptionLabel: true,
-  alignOptions: "right",
+  alignOptions: 'right',
   customLabels: [],
   disabled: false,
   blackList: false,
-  searchable: false
+  searchable: false,
 };
 
 FlagsSelect.propsType = {
@@ -232,7 +212,7 @@ FlagsSelect.propsType = {
   alignOptions: PropTypes.string,
   onSelect: PropTypes.func,
   disabled: PropTypes.bool,
-  searchable: PropTypes.bool
+  searchable: PropTypes.bool,
 };
 
 export default FlagsSelect;

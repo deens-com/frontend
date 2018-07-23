@@ -6,7 +6,7 @@
 // })
 
 // Switching to HashHistory in order to get react-router to work
-import { createHashHistory } from "history";
+import { createHashHistory } from 'history';
 export default createHashHistory({
   /* pass a configuration object here if needed */
 });

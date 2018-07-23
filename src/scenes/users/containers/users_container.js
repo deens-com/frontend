@@ -7,7 +7,6 @@ import * as selectors from '../selectors';
 import NotFound from '../../../styled_scenes/NotFound';
 
 class UsersContainer extends Component {
-
   componentDidMount() {
     const { userName } = this.props.match.params;
     this.props.fetchFullUser(userName);
@@ -24,7 +23,9 @@ class UsersContainer extends Component {
     };
     if (childProps.user) {
       childProps.tripsBooked = this.props.getTripsBooked(childProps.user.objectId);
-      childProps.tripsAndServicesOffered = this.props.getTripsAndServicesOffered(childProps.user.objectId);
+      childProps.tripsAndServicesOffered = this.props.getTripsAndServicesOffered(
+        childProps.user.objectId,
+      );
       childProps.givenReviews = this.props.getGivenReviews(childProps.user.objectId);
       childProps.receivedReviews = this.props.getReceivedReviews(childProps.user.objectId);
     }
@@ -50,4 +51,7 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators(users_actions, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UsersContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(UsersContainer);

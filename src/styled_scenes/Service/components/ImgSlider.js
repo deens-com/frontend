@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 // COMPONENTS
 import { ArrowIcon } from '../../../shared_components/icons';
-import Image from 'shared_components/Image'
+import Image from 'shared_components/Image';
 
 // ACTIONS/CONFIG
 import { media } from '../../../libs/styled';

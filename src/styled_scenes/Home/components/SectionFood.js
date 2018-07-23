@@ -1,11 +1,11 @@
 // NPM
-import React from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 // COMPONENTS
-import Carousel from "../../../shared_components/Carousel";
-import LocationCart from "../../../shared_components/Carts/Location";
+import Carousel from '../../../shared_components/Carousel';
+import LocationCart from '../../../shared_components/Carts/Location';
 
 // ACTIONS/CONFIG
 
@@ -15,10 +15,10 @@ import {
   SectionWrap,
   SectionHeader,
   SectionContent,
-  More
-} from "../../../shared_components/layout/Page";
+  More,
+} from '../../../shared_components/layout/Page';
 
-import {BadgeDecentralized} from './../../../shared_components/Badge';
+import { BadgeDecentralized } from './../../../shared_components/Badge';
 
 export default function HomeSectionFood({ foods }) {
   return (
@@ -31,21 +31,11 @@ export default function HomeSectionFood({ foods }) {
           </More>
         </SectionHeader>
         <SectionContent>
-          <Carousel
-            sm_slides_nb={1}
-            md_slides_nb={2}
-            lg_slides_nb={4}
-            xl_slides_nb={4}>
+          <Carousel sm_slides_nb={1} md_slides_nb={2} lg_slides_nb={4} xl_slides_nb={4}>
             {foods.map(item => (
-              <Link to={"/services/" + item.objectId} key={item.objectId}>
-                { item.contractAddress &&
-                  <BadgeDecentralized>Decentralized</BadgeDecentralized>
-                }
-                <LocationCart
-                  item={item}
-                  withShadow
-                  key={item.title}
-                />
+              <Link to={'/services/' + item.objectId} key={item.objectId}>
+                {item.contractAddress && <BadgeDecentralized>Decentralized</BadgeDecentralized>}
+                <LocationCart item={item} withShadow key={item.title} />
               </Link>
             ))}
           </Carousel>
@@ -57,5 +47,5 @@ export default function HomeSectionFood({ foods }) {
 
 // Props Validation
 HomeSectionFood.propTypes = {
-  foods: PropTypes.arrayOf(PropTypes.object)
+  foods: PropTypes.arrayOf(PropTypes.object),
 };

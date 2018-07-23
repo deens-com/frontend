@@ -86,7 +86,8 @@ const mapStateToProps = state => {
     unScheduledServices: selectors.getUnScheduledServices(state),
     isCloningInProcess: state.TripsReducer.cloningStatus === statuses.STARTED,
     query: state.TripsReducer.query,
-    serviceAvailabilityCheckInProgress: state.TripsReducer.serviceAvailabilityCheckStatus === statuses.STARTED,
+    serviceAvailabilityCheckInProgress:
+      state.TripsReducer.serviceAvailabilityCheckStatus === statuses.STARTED,
     showTripStatusChanged: state.TripsReducer.showTripStatusChanged,
     isImageUploadInProgress: state.TripsReducer.isImageUploadInProgress,
     isPageLoading: state.TripsReducer.isPageLoading,
@@ -99,5 +100,5 @@ const mapDispatchToProps = dispatch => {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(withRouter(TripsContainer));

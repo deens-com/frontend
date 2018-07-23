@@ -1,8 +1,8 @@
 // NPM
-import React, {Component} from "react";
-import styled from "styled-components";
-import fetch_helpers from "./../../libs/fetch_helpers";
-import Parse from "parse";
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import fetch_helpers from './../../libs/fetch_helpers';
+import Parse from 'parse';
 import Media from 'react-media';
 // COMPONENTS
 
@@ -11,7 +11,7 @@ import { Image } from 'semantic-ui-react';
 
 // ACTIONS/CONFIG
 import { sizes } from '../../libs/styled';
-import ImgurAvatar from "./../../assets/imgur-avatar.png";
+import ImgurAvatar from './../../assets/imgur-avatar.png';
 
 // STYLES
 const AvatarWithUsername = styled.div`
@@ -50,27 +50,28 @@ const AvatarWithUsername = styled.div`
 
 // MODULE
 export default class MobileDropDownMenu extends Component {
-
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       logged_in: false,
-      current_user: {}
-    }
+      current_user: {},
+    };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     let user = Parse.User.current();
-    if(user === null){
-      this.setState({logged_in: false});
-    }else{
+    if (user === null) {
+      this.setState({ logged_in: false });
+    } else {
       const json_user = fetch_helpers.normalizeParseResponseData(user);
-      this.setState({logged_in: true, current_user: json_user});
+      this.setState({ logged_in: true, current_user: json_user });
     }
   }
 
-  render(){
-    const dpUrl = (this.state.current_user.profilePicture && this.state.current_user.profilePicture.url) || ImgurAvatar;
+  render() {
+    const dpUrl =
+      (this.state.current_user.profilePicture && this.state.current_user.profilePicture.url) ||
+      ImgurAvatar;
 
     if (!this.state.logged_in) {
       return null;
@@ -80,14 +81,13 @@ export default class MobileDropDownMenu extends Component {
       <Media query={`(max-width: ${sizes.large})`}>
         <AvatarWithUsername
           onClick={this.props.toggleProfileMenu}
-          className={`${this.props.dark && "dark"} ${this.props.hide && "hidden"} ${this.props.avatarOnly && "avatar-only"}`}
-          >
+          className={`${this.props.dark && 'dark'} ${this.props.hide && 'hidden'} ${this.props
+            .avatarOnly && 'avatar-only'}`}
+        >
           <Image src={dpUrl} circular />
-          {!this.props.avatarOnly &&
-            this.state.current_user.username
-          }
+          {!this.props.avatarOnly && this.state.current_user.username}
         </AvatarWithUsername>
       </Media>
-    )
+    );
   }
 }

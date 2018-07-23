@@ -1,32 +1,28 @@
 // NPM
-import React, { Component } from "react";
-import styled from "styled-components";
-import { Checkbox as SemanticCheckbox, Popup } from "semantic-ui-react";
-import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
-import history from "./../../../main/history";
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import { Checkbox as SemanticCheckbox, Popup } from 'semantic-ui-react';
+import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
+import history from './../../../main/history';
 import annyang from 'annyang';
 import waveGif from './../../../assets/wave.gif';
 
 import { Message } from 'semantic-ui-react';
 
-import * as results_actions from "./../../../scenes/results/actions";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import * as results_actions from './../../../scenes/results/actions';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import i18n from './../../../libs/i18n';
 
 // COMPONENTS
-import {
-  SearchIcon,
-  MicrophoneIcon,
-  DateIcon
-} from "../../../shared_components/icons";
-import FormControl from "../../../shared_components/Form/FormControl";
-import LocationFormControl from "../../../shared_components/Form/LocationControl";
-import Button from "../../../shared_components/Button";
+import { SearchIcon, MicrophoneIcon, DateIcon } from '../../../shared_components/icons';
+import FormControl from '../../../shared_components/Form/FormControl';
+import LocationFormControl from '../../../shared_components/Form/LocationControl';
+import Button from '../../../shared_components/Button';
 
 // ACTIONS & CONFIG
-import { placeholderMixin, resetButton, sizes } from "../../../libs/styled";
+import { placeholderMixin, resetButton, sizes } from '../../../libs/styled';
 
 // STYLES
 const ButtonLink = styled.button`
@@ -42,7 +38,7 @@ const ButtonLink = styled.button`
 `;
 
 const Span = styled.span`
-  color: ${props => (props.muted ? "#99a9be" : "inherit")};
+  color: ${props => (props.muted ? '#99a9be' : 'inherit')};
 `;
 
 const Input = styled.input`
@@ -70,8 +66,7 @@ const Wrapper = styled.div`
 
 const TypeIcon = styled.div`
   align-items: center;
-  background: ${props =>
-    props.active ? "#4eb798" : "#d3e9db"};
+  background: ${props => (props.active ? '#4eb798' : '#d3e9db')};
   border-radius: 50%;
   color: white;
   cursor: pointer;
@@ -135,7 +130,7 @@ const DateWrap = styled.div`
     &:first-child {
       &:after {
         color: red;
-        content: "";
+        content: '';
         display: block;
         height: 100%;
         position: absolute;
@@ -191,26 +186,26 @@ const ButtonWrap = styled.div`
 
 // MODULE
 const searchTypes = [
-  { type: "voice", label: "V" },
-  { type: "text", label: "S" },
-  { type: "date", label: "D" }
+  { type: 'voice', label: 'V' },
+  { type: 'text', label: 'S' },
+  { type: 'date', label: 'D' },
 ];
 
 class HomeSearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      type: "voice",
+      type: 'voice',
       service_type: { trip: false, place: false, activity: false, food: false },
-      search: "",
-      address: "",
+      search: '',
+      address: '',
       latitude: undefined,
       longitude: undefined,
       person_nb: undefined,
-      keywords: "",
-      written_speech_query: "to use your voice and tell us about your dream stay",
+      keywords: '',
+      written_speech_query: 'to use your voice and tell us about your dream stay',
       show_wave_gif: false,
-      show_banner: false
+      show_banner: false,
     };
 
     this.setType = this.setType.bind(this);
@@ -228,21 +223,20 @@ class HomeSearch extends Component {
     this.show_gif = this.show_gif.bind(this);
   }
 
- componentDidMount() {
-  }
+  componentDidMount() {}
 
-  activate_annyang(){
+  activate_annyang() {
     let that = this;
-    if(annyang){
+    if (annyang) {
       this.show_gif();
       annyang.addCallback('result', speech => {
         annyang.abort();
         that.hide_gif();
-        this.setState({written_speech_query: speech[0]});
-        console.log("The user may have said : ", speech);
+        this.setState({ written_speech_query: speech[0] });
+        console.log('The user may have said : ', speech);
         this.props.voiceQuery(speech);
-        this.props.fetch_results({speech_query: speech[0]});
-        if(this.props.toggleSearch){
+        this.props.fetch_results({ speech_query: speech[0] });
+        if (this.props.toggleSearch) {
           this.props.toggleSearch();
         }
       });
@@ -250,22 +244,22 @@ class HomeSearch extends Component {
       // });
       /* To consider : https://github.com/TalAter/annyang/blob/master/docs/FAQ.md#what-can-i-do-to-make-speech-recognition-results-return-faster */
       annyang.start({ autoRestart: true, continuous: false });
-     }else{
-       this.setState({show_banner: true});
-       console.log("Your browser does not support speech recognition.");
-     }
+    } else {
+      this.setState({ show_banner: true });
+      console.log('Your browser does not support speech recognition.');
+    }
   }
 
-  show_gif(){
-    this.setState({show_wave_gif: true});
+  show_gif() {
+    this.setState({ show_wave_gif: true });
   }
 
-  hide_gif(){
-    this.setState({show_wave_gif: false});
+  hide_gif() {
+    this.setState({ show_wave_gif: false });
   }
 
   componentDidUpdate() {
-    if (this.state.type === "text") {
+    if (this.state.type === 'text') {
       this.input.focus();
     }
   }
@@ -279,7 +273,7 @@ class HomeSearch extends Component {
   }
 
   setKeyWords(ev) {
-    this.setState({keywords: ev.target.value});
+    this.setState({ keywords: ev.target.value });
   }
 
   handleServiceTypeChange(event, data) {
@@ -290,7 +284,10 @@ class HomeSearch extends Component {
   }
 
   handleOnlySmartContracts = () => {
-    this.setState(prevState => ({ ...prevState, onlySmartContracts: !prevState.onlySmartContracts }));
+    this.setState(prevState => ({
+      ...prevState,
+      onlySmartContracts: !prevState.onlySmartContracts,
+    }));
   };
 
   handleLocationChange(address) {
@@ -310,8 +307,8 @@ class HomeSearch extends Component {
     this.setState({
       search: {
         ...this.state.search,
-        startDate
-      }
+        startDate,
+      },
     });
   }
 
@@ -320,8 +317,8 @@ class HomeSearch extends Component {
     this.setState({
       search: {
         ...this.state.search,
-        endDate
-      }
+        endDate,
+      },
     });
   }
 
@@ -329,10 +326,10 @@ class HomeSearch extends Component {
     this.setState({ person_nb: person });
   }
 
-  handleKeywordsSearchSubmit(ev){
+  handleKeywordsSearchSubmit(ev) {
     ev.preventDefault();
-    this.props.fetch_results({speech_query: this.state.keywords});
-    if(this.props.toggleSearch){
+    this.props.fetch_results({ speech_query: this.state.keywords });
+    if (this.props.toggleSearch) {
       this.props.toggleSearch();
     }
   }
@@ -348,74 +345,68 @@ class HomeSearch extends Component {
     });
 
     const query_params = {
-      service_types: filtered_service_type.join("+"),
+      service_types: filtered_service_type.join('+'),
       start_date: startDate,
       end_date: endDate,
       person_nb: this.state.person_nb,
-      address: this.state.address ? this.state.address + "936ZER0378" : "",
+      address: this.state.address ? this.state.address + '936ZER0378' : '',
       latitude: this.state.latitude,
       longitude: this.state.longitude,
       onlySmartContracts: this.state.onlySmartContracts,
     };
     let query_arr = [];
     Object.entries(query_params).forEach(([key, value]) => {
-      if(value){
-        let to_concat = key + "=" + value;
+      if (value) {
+        let to_concat = key + '=' + value;
         query_arr = query_arr.concat(to_concat);
       }
     });
-    let query_string = query_arr.join("&");
-    if(this.props.toggleSearch){
+    let query_string = query_arr.join('&');
+    if (this.props.toggleSearch) {
       this.props.toggleSearch();
     }
     history.push(`/results?${query_string}`);
   }
 
-  render_voice_search_form(){
-    if(this.state.show_wave_gif){
-      return(
+  render_voice_search_form() {
+    if (this.state.show_wave_gif) {
+      return (
         <div>
-          <img src={waveGif} alt="wave" style={{"maxHeight": "65px"}} />
-          <Span muted style={{"position": "relative", "bottom": "24px"}}>
-            {" "}
-            {
-              this.state.written_speech_query === "to use your voice and tell us about your dream stay"
-              ? ""
-              : this.state.written_speech_query
-            }
+          <img src={waveGif} alt="wave" style={{ maxHeight: '65px' }} />
+          <Span muted style={{ position: 'relative', bottom: '24px' }}>
+            {' '}
+            {this.state.written_speech_query ===
+            'to use your voice and tell us about your dream stay'
+              ? ''
+              : this.state.written_speech_query}
           </Span>
         </div>
-      )
-    }else{
-      return(
+      );
+    } else {
+      return (
         <div>
-          {
-            this.state.written_speech_query === "to use your voice and tell us about your dream stay"
-            ? (<Popup
-                  trigger={<ButtonLink onClick={this.activate_annyang}>Click here</ButtonLink>}
-                  content='and say "Trip to Paris" or "Looking for a trip in New York for next month with my husband"'
-                  position='bottom left'
-                  size='huge'
-                  verticalOffset={20}
-                  flowing={true}
-                  inverted={true}
-              />)
-            : null
-          }
+          {this.state.written_speech_query ===
+          'to use your voice and tell us about your dream stay' ? (
+            <Popup
+              trigger={<ButtonLink onClick={this.activate_annyang}>Click here</ButtonLink>}
+              content="and say &quot;Trip to Paris&quot; or &quot;Looking for a trip in New York for next month with my husband&quot;"
+              position="bottom left"
+              size="huge"
+              verticalOffset={20}
+              flowing={true}
+              inverted={true}
+            />
+          ) : null}
 
-          <Span muted>
-            {" "}
-            {this.state.written_speech_query}
-          </Span>
+          <Span muted> {this.state.written_speech_query}</Span>
         </div>
-      )
+      );
     }
-
   }
 
   handleDismiss = () => {
     this.setState({ show_banner: false });
-  }
+  };
 
   render() {
     const startDate = this.state.search.startDate && new Date(this.state.search.startDate);
@@ -430,9 +421,9 @@ class HomeSearch extends Component {
                 this.setType(opt.type);
               }}
             >
-              {opt.type === "voice" && <MicrophoneIcon />}
-              {opt.type === "text" && <SearchIcon />}
-              {opt.type === "date" && <DateIcon />}
+              {opt.type === 'voice' && <MicrophoneIcon />}
+              {opt.type === 'text' && <SearchIcon />}
+              {opt.type === 'date' && <DateIcon />}
             </TypeIcon>
           ))}
         </TypeWrapper>
@@ -440,17 +431,13 @@ class HomeSearch extends Component {
           <BGPin
             style={{
               transform: `rotate(-90deg) translateY(${
-                this.state.type === "voice"
-                  ? "24"
-                  : this.state.type === "text" ? "72" : "122"
-              }px)`
+                this.state.type === 'voice' ? '24' : this.state.type === 'text' ? '72' : '122'
+              }px)`,
             }}
           />
-          {this.state.type === "voice" && (
-            this.render_voice_search_form()
-          )}
-          {this.state.type === "text" && (
-            <form style={{ width: "100%" }} onSubmit={this.handleKeywordsSearchSubmit}>
+          {this.state.type === 'voice' && this.render_voice_search_form()}
+          {this.state.type === 'text' && (
+            <form style={{ width: '100%' }} onSubmit={this.handleKeywordsSearchSubmit}>
               <Input
                 type="text"
                 name="search"
@@ -463,7 +450,7 @@ class HomeSearch extends Component {
               />
             </form>
           )}
-          {this.state.type === "date" && (
+          {this.state.type === 'date' && (
             <div>
               <DateWrap>
                 <LocationFormControl onChange={this.handleLocationChange} />
@@ -498,11 +485,7 @@ class HomeSearch extends Component {
               </DateWrap>
 
               <CheckboxWrap>
-                <Checkbox
-                  label="Trip"
-                  value="trip"
-                  onClick={this.handleServiceTypeChange}
-                />
+                <Checkbox label="Trip" value="trip" onClick={this.handleServiceTypeChange} />
                 <Checkbox
                   label={i18n.t('places.singular')}
                   value="place"
@@ -513,11 +496,7 @@ class HomeSearch extends Component {
                   value="activity"
                   onClick={this.handleServiceTypeChange}
                 />
-                <Checkbox
-                  label="Food"
-                  value="food"
-                  onClick={this.handleServiceTypeChange}
-                />
+                <Checkbox label="Food" value="food" onClick={this.handleServiceTypeChange} />
                 <Checkbox
                   label="Decentralized"
                   value="smart"
@@ -526,39 +505,37 @@ class HomeSearch extends Component {
               </CheckboxWrap>
 
               <ButtonWrap>
-                <Button
-                  round
-                  theme="mainFilled"
-                  onClick={this.handleSearchSubmit}
-                  align="center"
-                >
+                <Button round theme="mainFilled" onClick={this.handleSearchSubmit} align="center">
                   Search now
                 </Button>
               </ButtonWrap>
             </div>
           )}
         </SearchBg>
-        {
-          this.state.show_banner &&
-          <Message color="red" onDismiss={this.handleDismiss} style={{position: "fixed", bottom: "5px", left: "5px"}}>
-            <Message.Header>
-              Warning !
-            </Message.Header>
+        {this.state.show_banner && (
+          <Message
+            color="red"
+            onDismiss={this.handleDismiss}
+            style={{ position: 'fixed', bottom: '5px', left: '5px' }}
+          >
+            <Message.Header>Warning !</Message.Header>
             <p>
-              Your browser does not support voice recognition so we have disabled it on this website. Please use a compatible desktop browser like Chrome (<a href='https://www.google.com/chrome/'>https://www.google.com/chrome/</a>)
+              Your browser does not support voice recognition so we have disabled it on this
+              website. Please use a compatible desktop browser like Chrome (<a href="https://www.google.com/chrome/">
+                https://www.google.com/chrome/
+              </a>)
             </p>
           </Message>
-        }
+        )}
       </Wrapper>
     );
   }
 }
 
-
 const mapStateToProps = state => {
   return {
     results: state.ResultsReducer.results,
-    search_query: state.ResultsReducer.search_query
+    search_query: state.ResultsReducer.search_query,
   };
 };
 
@@ -566,8 +543,10 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators(results_actions, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeSearch);
-
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(HomeSearch);
 
 // Props Validation
 HomeSearch.propTypes = {};

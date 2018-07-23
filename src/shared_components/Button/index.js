@@ -1,40 +1,40 @@
 // NPM
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import styled, { css } from "styled-components";
-import { Link } from "react-router-dom";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import styled, { css } from 'styled-components';
+import { Link } from 'react-router-dom';
 
 // COMPONENTS
-import { ArrowIcon } from "../icons";
-import { DropArrow, PlusIcon } from "../icons";
+import { ArrowIcon } from '../icons';
+import { DropArrow, PlusIcon } from '../icons';
 
 // ACTIONS/CONFIG
-import { resetButton } from "../../libs/styled";
+import { resetButton } from '../../libs/styled';
 
 // STYLES
 const size = {
   text: {
-    padding: "0",
-    fontSize: "16px",
-    iconSize: "12px"
+    padding: '0',
+    fontSize: '16px',
+    iconSize: '12px',
   },
   small: {
-    padding: "6px 18px",
-    fontSize: "16px",
-    iconSize: "12px"
+    padding: '6px 18px',
+    fontSize: '16px',
+    iconSize: '12px',
   },
   medium: {
-    padding: "12px 28px",
-    fontSize: "18px",
-    iconSize: "12px"
-  }
+    padding: '12px 28px',
+    fontSize: '18px',
+    iconSize: '12px',
+  },
 };
 
 const colors = {
-  green: "#5FB79E",
-  greenActive: "#4ac4a1",
-  white: "#fff",
-  gray: "#d3d7dc"
+  green: '#5FB79E',
+  greenActive: '#4ac4a1',
+  white: '#fff',
+  gray: '#d3d7dc',
 };
 
 export const theme = {
@@ -44,23 +44,23 @@ export const theme = {
     border: colors.green,
     borderHover: colors.green,
     color: colors.white,
-    colorHover: colors.white
+    colorHover: colors.white,
   },
   white: {
-    background: "transparent",
+    background: 'transparent',
     backgroundHover: colors.green,
     border: colors.green,
     borderHover: colors.greenActive,
     color: colors.green,
-    colorHover: colors.white
+    colorHover: colors.white,
   },
   whiteTransparent: {
-    background: "transparent",
+    background: 'transparent',
     backgroundHover: colors.green,
     border: colors.green,
     borderHover: colors.greenActive,
     color: colors.white,
-    colorHover: colors.white
+    colorHover: colors.white,
   },
   textGreen: {
     background: colors.white,
@@ -68,16 +68,16 @@ export const theme = {
     border: colors.white,
     borderHover: colors.white,
     color: colors.green,
-    colorHover: colors.greenActive
+    colorHover: colors.greenActive,
   },
   icon: {
-    background: "transparent",
-    backgroundHover: "transparent",
-    border: "transparent",
-    borderHover: "transparent",
+    background: 'transparent',
+    backgroundHover: 'transparent',
+    border: 'transparent',
+    borderHover: 'transparent',
     color: colors.gray,
-    colorHover: colors.gray
-  }
+    colorHover: colors.gray,
+  },
 };
 
 export const Wrap = styled.div`
@@ -85,19 +85,19 @@ export const Wrap = styled.div`
 
   > button,
   > a {
-    border-radius: ${props => (props.round ? "25px" : "0")};
+    border-radius: ${props => (props.round ? '25px' : '0')};
     cursor: pointer;
     display: inline-block;
-    font-size: ${props => (props.size ? size[props.size].fontSize : "inherit")};
+    font-size: ${props => (props.size ? size[props.size].fontSize : 'inherit')};
     height: auto;
     overflow: hidden;
-    padding: ${props => (props.size ? size[props.size].padding : "0")};
+    padding: ${props => (props.size ? size[props.size].padding : '0')};
     text-align: ${props => props.align};
     transition: all 0.1s ease-out;
     width: ${props => props.width};
 
     svg {
-      font-size: ${props => (props.size ? size[props.size].iconSize : "12px")};
+      font-size: ${props => (props.size ? size[props.size].iconSize : '12px')};
     }
 
     ${props =>
@@ -152,16 +152,16 @@ export default class Button extends Component {
 
   getIcon(type) {
     switch (type) {
-      case "arrowDown": {
+      case 'arrowDown': {
         return <DropArrow />;
       }
-      case "arrowUp": {
-        return <DropArrow style={{ transform: "rotate(180deg)" }} />;
+      case 'arrowUp': {
+        return <DropArrow style={{ transform: 'rotate(180deg)' }} />;
       }
-      case "arrow": {
+      case 'arrow': {
         return <ArrowIcon />;
       }
-      case "plus": {
+      case 'plus': {
         return <PlusIcon />;
       }
       default:
@@ -176,13 +176,9 @@ export default class Button extends Component {
 
   render() {
     let El;
-    if (this.props.type === "link") {
+    if (this.props.type === 'link') {
       El = props => (
-        <Link
-          to={this.props.href}
-          target={this.props.target}
-          children={this.props.children}
-        />
+        <Link to={this.props.href} target={this.props.target} children={this.props.children} />
       );
     } else {
       El = props => (
@@ -206,13 +202,9 @@ export default class Button extends Component {
         width={this.props.width}
       >
         <El>
-          {this.props.iconBefore && (
-            <IconBefore>{this.getIcon(this.props.iconBefore)}</IconBefore>
-          )}
+          {this.props.iconBefore && <IconBefore>{this.getIcon(this.props.iconBefore)}</IconBefore>}
           <span>{this.props.text || this.props.children}</span>
-          {this.props.iconAfter && (
-            <IconAfter>{this.getIcon(this.props.iconAfter)}</IconAfter>
-          )}
+          {this.props.iconAfter && <IconAfter>{this.getIcon(this.props.iconAfter)}</IconAfter>}
         </El>
       </Wrap>
     );
@@ -230,17 +222,17 @@ Button.propTypes = {
   iconBefore: PropTypes.string,
   iconAfter: PropTypes.string,
   text: PropTypes.string,
-  children: PropTypes.node
+  children: PropTypes.node,
 };
 
 Button.defaultProps = {
-  theme: "mainFilled",
-  type: "button",
+  theme: 'mainFilled',
+  type: 'button',
   round: true,
-  size: "small",
-  align: "left",
-  width: "100%",
-  iconBefore: "",
-  iconAfter: "",
-  text: ""
+  size: 'small',
+  align: 'left',
+  width: '100%',
+  iconBefore: '',
+  iconAfter: '',
+  text: '',
 };

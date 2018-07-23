@@ -34,7 +34,10 @@ const ServiceInformation = ({ service }) => {
         </Row>
         <Row>
           <td>Working Hours</td>
-          <td> {`${padStart(service.openingTime, 2)}:00 - ${padStart(service.closingTime, 2)}:00`} </td>
+          <td>
+            {' '}
+            {`${padStart(service.openingTime, 2)}:00 - ${padStart(service.closingTime, 2)}:00`}{' '}
+          </td>
         </Row>
         <Row>
           <td>Price Per Session</td>

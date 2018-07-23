@@ -24,7 +24,7 @@ module.exports = function override(config, env) {
         addCssImports: false,
       },
     ],
-    config
+    config,
   );
 
   if (isProd) {
@@ -37,7 +37,7 @@ module.exports = function override(config, env) {
         name: 'vendor',
         minChunks: ({ resource }) => /node_modules/.test(resource),
       }),
-      new DuplicatePackageCheckerPlugin()
+      new DuplicatePackageCheckerPlugin(),
     );
     // Add preloading support
     config = rewirePreloadPlugin(config, env, { rel: 'prefetch' });

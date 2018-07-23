@@ -1,19 +1,18 @@
 // NPM
-import React from "react";
-import PropTypes from "prop-types";
-import styled from "styled-components";
-import Media from "react-media";
+import React from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import Media from 'react-media';
 
 // COMPONENTS
-import Button from "../../../shared_components/Button";
+import Button from '../../../shared_components/Button';
 // COMMENT: the homeSearch is just for the time being
-import HomeSearch from "../../../styled_scenes/Home/components/HomeSearch";
+import HomeSearch from '../../../styled_scenes/Home/components/HomeSearch';
 
 // ACTIONS/CONFIG
-import { sizes, media } from "../../../libs/styled";
+import { sizes, media } from '../../../libs/styled';
 
-
-import history from "./../../../main/history";
+import history from './../../../main/history';
 
 // STYLES
 const Wrap = styled.div`
@@ -54,7 +53,7 @@ export default function MobileSearch({ searchIsHidden, toggleSearch }) {
             <span>Where</span>
             <Button
               onClick={() => {
-                history.push("/results?service_types=place");
+                history.push('/results?service_types=place');
               }}
               type="button"
               text="clear"
@@ -70,5 +69,5 @@ export default function MobileSearch({ searchIsHidden, toggleSearch }) {
 // Props Validation
 MobileSearch.propTypes = {
   searchIsHidden: PropTypes.bool.isRequired,
-  toggleSearch: PropTypes.func.isRequired
+  toggleSearch: PropTypes.func.isRequired,
 };

@@ -60,13 +60,15 @@ export default class ShareDialogContent extends Component {
   render() {
     const { trip, showTripStatusChanged } = this.props;
     const currentUser = Parse.User.current();
-    const allowChangeStatus = (trip.owner && trip.owner.objectId) === (currentUser && currentUser.id);
+    const allowChangeStatus =
+      (trip.owner && trip.owner.objectId) === (currentUser && currentUser.id);
     const tripUrl = window.location.toString();
     return (
       <Container>
         <Grid columns="2">
           <VisibilityToggle visible={showTripStatusChanged}>
-            <Icon name="check circle outline" color="green" /> {statusUpdateMessages[this.state.newStatus]}
+            <Icon name="check circle outline" color="green" />{' '}
+            {statusUpdateMessages[this.state.newStatus]}
           </VisibilityToggle>
           <Grid.Row>
             <Grid.Column verticalAlign="middle">

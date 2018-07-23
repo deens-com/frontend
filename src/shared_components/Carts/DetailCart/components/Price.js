@@ -1,12 +1,12 @@
 // NPM
-import React from "react";
-import styled, { css } from "styled-components";
+import React from 'react';
+import styled, { css } from 'styled-components';
 
 // COMPONENTS
-import PriceTag from "../../../Currency/PriceTag";
+import PriceTag from '../../../Currency/PriceTag';
 
 // ACTIONS/CONFIG
-import { media } from "../../../../libs/styled";
+import { media } from '../../../../libs/styled';
 
 // STYLES
 const Amount = styled.span`
@@ -32,7 +32,7 @@ const PriceWrap = styled.div`
   margin-bottom: 10px;
 
   ${Amount} {
-    font-size: ${props => (props.isExpanded ? "24px" : "20px")};
+    font-size: ${props => (props.isExpanded ? '24px' : '20px')};
   }
 
   ${media.minSmall} {
@@ -55,10 +55,10 @@ const PriceWrap = styled.div`
 export default function CartPrice({ price, currency, isExpanded }) {
   return (
     <PriceWrap isExpanded={isExpanded}>
-      <Amount muted={price === "0"}>
+      <Amount muted={price === '0'}>
         <PriceTag price={price} />
       </Amount>
-      {isExpanded && price === "0" && <Unit muted>You pay on the spot</Unit>}
+      {isExpanded && price === '0' && <Unit muted>You pay on the spot</Unit>}
     </PriceWrap>
   );
 }

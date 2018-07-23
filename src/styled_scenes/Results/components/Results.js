@@ -1,14 +1,14 @@
 // NPM
-import React, { Component } from "react";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 // COMPONENTS
-import Row from "../../../shared_components/layout/Row";
-import TripCart from "../../../shared_components/Carts/Trip";
+import Row from '../../../shared_components/layout/Row';
+import TripCart from '../../../shared_components/Carts/Trip';
 import ReactPaginate from 'react-paginate';
 import { media } from '../../../libs/styled';
-import { Loader } from 'semantic-ui-react'
+import { Loader } from 'semantic-ui-react';
 
 // STYLES
 const Wrap = styled.div`
@@ -60,7 +60,7 @@ const ResultItem = styled.div`
   position: relative;
   display: inline-block;
   margin-left: 12%;
-  ${media.minSmall}{
+  ${media.minSmall} {
     margin-left: 0px;
   }
 `;
@@ -86,22 +86,21 @@ const limit_per_page = 12;
 
 // MODULE
 export default class Results extends Component {
-
   constructor(props) {
     super(props);
 
     this.state = {
       filteredData: [],
-      totalItems: 0
-    }
+      totalItems: 0,
+    };
   }
 
   componentWillReceiveProps() {
     this.loadData();
-    this.setState({totalItems: this.props.data.length});
+    this.setState({ totalItems: this.props.data.length });
   }
 
-  loadData = (item) => {
+  loadData = item => {
     let data = [];
     let skip = 0;
     let selected = 0;
@@ -111,65 +110,59 @@ export default class Results extends Component {
     }
 
     this.props.data.forEach((result, i) => {
-      if (i < (selected * limit_per_page)) {
-        skip++
+      if (i < selected * limit_per_page) {
+        skip++;
         return;
       }
 
-      if (i < (skip + limit_per_page)) {
+      if (i < skip + limit_per_page) {
         data.push(result);
       }
     });
 
-    this.setState({filteredData: data});
-  }
+    this.setState({ filteredData: data });
+  };
 
   render() {
     return (
       <Wrap>
         <Row>
-          {
-            (!this.props.isLoadingResults && this.state.filteredData.length === 0) &&
-            <section>
-              <h4 style={{textAlign: 'center', color: 'grey'}}>There are no search results for given search criteria.</h4>
-              <br/>
-            </section>
-          }
-          { this.props.isLoadingResults
-              ?
-                <LoaderWithMargin>
-                  <Loader active inline='centered' size='massive'>Loading Results</Loader>
-                </LoaderWithMargin>
-              :
-                this.state.filteredData.map((result, i) => (
-                  <ResultItem key={result.objectId}>
-                  <Link to={(result.type ? '/services/' : '/trips/') + result.objectId}>
-                  {result.contractAddress &&
-                    <Badge>Decentralized</Badge>
-                  }
-                  <TripCart
-                  key={result.label}
-                  withTooltip
-                  withShadow
-                  item={result}
-                  />
-                  </Link>
-                  </ResultItem>
-                ))
-          }
+          {!this.props.isLoadingResults &&
+            this.state.filteredData.length === 0 && (
+              <section>
+                <h4 style={{ textAlign: 'center', color: 'grey' }}>
+                  There are no search results for given search criteria.
+                </h4>
+                <br />
+              </section>
+            )}
+          {this.props.isLoadingResults ? (
+            <LoaderWithMargin>
+              <Loader active inline="centered" size="massive">
+                Loading Results
+              </Loader>
+            </LoaderWithMargin>
+          ) : (
+            this.state.filteredData.map((result, i) => (
+              <ResultItem key={result.objectId}>
+                <Link to={(result.type ? '/services/' : '/trips/') + result.objectId}>
+                  {result.contractAddress && <Badge>Decentralized</Badge>}
+                  <TripCart key={result.label} withTooltip withShadow item={result} />
+                </Link>
+              </ResultItem>
+            ))
+          )}
         </Row>
         <Row>
           <PaginationWrap>
-            {
-              (!this.props.isLoadingResults && this.state.filteredData.length)
-                ?
-              <ReactPaginate pageCount={Math.ceil(this.state.totalItems / limit_per_page)}
-              marginPagesDisplayed={1}
-              pageRangeDisplayed={2}
-              onPageChange={this.loadData} />
-                :
-              null
-            }
+            {!this.props.isLoadingResults && this.state.filteredData.length ? (
+              <ReactPaginate
+                pageCount={Math.ceil(this.state.totalItems / limit_per_page)}
+                marginPagesDisplayed={1}
+                pageRangeDisplayed={2}
+                onPageChange={this.loadData}
+              />
+            ) : null}
           </PaginationWrap>
         </Row>
       </Wrap>

@@ -73,7 +73,9 @@ export default function ReviewCart({ title, rating, message, city, country, name
           </Avatar>
         </Link>
         <Profile>
-        <span><Link to={link}>{name}</Link></span>
+          <span>
+            <Link to={link}>{name}</Link>
+          </span>
           <span>
             {city}
             {country && `, ${country}`}

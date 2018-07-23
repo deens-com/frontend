@@ -1,24 +1,24 @@
 import tagsData from './../data/tags';
 
 export default class Utils {
-  static getBaseSymbol(currency = "USD") {
+  static getBaseSymbol(currency = 'USD') {
     switch (currency) {
-      case "EUR":
-        return "€";
-      case "GBP":
-        return "£";
-      case "JPY":
-        return "¥";
-      case "USD":
-        return "$";
-      case "BTC":
-        return "Ƀ";
-      case "ETH":
-        return "Ξ";
-      case "PLS":
-        return "🄿";
+      case 'EUR':
+        return '€';
+      case 'GBP':
+        return '£';
+      case 'JPY':
+        return '¥';
+      case 'USD':
+        return '$';
+      case 'BTC':
+        return 'Ƀ';
+      case 'ETH':
+        return 'Ξ';
+      case 'PLS':
+        return '🄿';
       default:
-        return "$";
+        return '$';
     }
   }
 }
@@ -32,7 +32,8 @@ export const removeKey = (obj, propToDelete) => {
 export const comparatorWithNullValues = (valueA, valueB) => {
   if (!valueA) return 1;
   else if (!valueB) return -1;
-  else if (valueA === valueB) return 0; // because a & b both could be null/undefined
+  else if (valueA === valueB) return 0;
+  // because a & b both could be null/undefined
   else return valueA - valueB;
 };
 
@@ -51,11 +52,11 @@ export const oneWayDiff = (object1, object2) => {
 };
 
 /* Does not work as expected */
-export const uniqEs6 = (arrArg) => {
+export const uniqEs6 = arrArg => {
   return arrArg.filter((elem, pos, arr) => {
     return arr.indexOf(elem) === pos;
   });
-}
+};
 
 /**
  * A lot of times it's difficult to get the ISO date
@@ -85,9 +86,22 @@ export const padStart = (str, length, padChar = '0') => {
 
 export const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-const randBgColors = ["#7bbed6", "#82689a", "#75c1a5", "#ed837f", "#ffb777", "#19C2FF", "#00BCFF", "#B25C00", "#FF8300", "#ACB200", "#19FFAA"];
-export const tagsColorMatcher = (tag) => {
-  let background = tagsData.filter(tagObj => tagObj.label === tag)[0] &&
+const randBgColors = [
+  '#7bbed6',
+  '#82689a',
+  '#75c1a5',
+  '#ed837f',
+  '#ffb777',
+  '#19C2FF',
+  '#00BCFF',
+  '#B25C00',
+  '#FF8300',
+  '#ACB200',
+  '#19FFAA',
+];
+export const tagsColorMatcher = tag => {
+  let background =
+    tagsData.filter(tagObj => tagObj.label === tag)[0] &&
     tagsData.filter(tagObj => tagObj.label === tag)[0].background;
   if (!background) {
     background = randBgColors[Math.floor(Math.random() * randBgColors.length)];

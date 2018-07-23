@@ -1,28 +1,27 @@
 // NPM
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import styled, { css } from "styled-components";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import styled, { css } from 'styled-components';
 
 // COMPONENTS
-import DesktopNav from "../Nav/DesktopNav";
-import MobileNav from "../Nav/MobileNav";
-import Logo from "./Logo";
-import Search from "./Search";
-import MobileSearch from "./Search/MobileSearch";
-import MobileDropdownMenu from "../Nav/MobileDropdownMenu";
-import MobileNavProfile from "../Nav/MobileNavProfile";
+import DesktopNav from '../Nav/DesktopNav';
+import MobileNav from '../Nav/MobileNav';
+import Logo from './Logo';
+import Search from './Search';
+import MobileSearch from './Search/MobileSearch';
+import MobileDropdownMenu from '../Nav/MobileDropdownMenu';
+import MobileNavProfile from '../Nav/MobileNavProfile';
 
 // ACTIONS/CONFIG
-import { media } from "../../libs/styled";
+import { media } from '../../libs/styled';
 
 // STYLES
 const InnerWrap = styled.header`
   align-items: center;
-  background: ${props =>
-    props.home && !props.showMenu ? "transparent" : "white"};
+  background: ${props => (props.home && !props.showMenu ? 'transparent' : 'white')};
   display: flex;
   height: 65px;
-  padding: ${props => (props.withPadding ? "0 15px" : "0")};
+  padding: ${props => (props.withPadding ? '0 15px' : '0')};
   width: 100%;
   z-index: 110;
   ${props =>
@@ -32,7 +31,7 @@ const InnerWrap = styled.header`
       top: 0;
     `} ${media.minMedium} {
     height: 95px;
-    padding: ${props => (props.withPadding ? "0 25px" : "0")};
+    padding: ${props => (props.withPadding ? '0 25px' : '0')};
   }
 
   ${props =>
@@ -55,12 +54,11 @@ const InnerWrap = styled.header`
 
 // MODULE
 export default class TopBar extends Component {
-
   constructor() {
     super();
     this.state = {
       showMenu: false,
-      showSearch: false
+      showSearch: false,
     };
 
     this.toggleMenu = this.toggleMenu.bind(this);
@@ -72,25 +70,25 @@ export default class TopBar extends Component {
     const { showMenu } = this.state;
     const body = document.body;
     if (showMenu) {
-      body.style.overflow = "";
+      body.style.overflow = '';
     } else {
-      body.style.overflow = "hidden";
+      body.style.overflow = 'hidden';
     }
     this.setState({ showMenu: !showMenu });
   }
 
   componentWillUnmount() {
     const body = document.body;
-    body.style.overflow = "";
+    body.style.overflow = '';
   }
 
   toggleProfileMenu() {
     const { showProfileMenu } = this.state;
     const body = document.body;
     if (showProfileMenu) {
-      body.style.overflow = "";
+      body.style.overflow = '';
     } else {
-      body.style.overflow = "hidden";
+      body.style.overflow = 'hidden';
     }
     this.setState({ showProfileMenu: !showProfileMenu });
   }
@@ -120,17 +118,16 @@ export default class TopBar extends Component {
             toggleMenu={this.toggleMenu}
             applyFixation={showMenu && !fixed}
           />
-          {!noSearch && (
-            <Search menuIsOpened={showMenu} toggleSearch={this.toggleSearch} />
-          )}
-          <DesktopNav home={home} theme="light"/>
+          {!noSearch && <Search menuIsOpened={showMenu} toggleSearch={this.toggleSearch} />}
+          <DesktopNav home={home} theme="light" />
         </InnerWrap>
-        <MobileSearch
-          searchIsHidden={!showSearch}
-          toggleSearch={this.toggleSearch}
-        />
+        <MobileSearch searchIsHidden={!showSearch} toggleSearch={this.toggleSearch} />
         <MobileNav toggleProfileMenu={this.toggleMenu} showProfileMenu={showMenu} />
-        <MobileDropdownMenu toggleProfileMenu={this.toggleProfileMenu} dark={showProfileMenu} hide={showMenu}/>
+        <MobileDropdownMenu
+          toggleProfileMenu={this.toggleProfileMenu}
+          dark={showProfileMenu}
+          hide={showMenu}
+        />
         <MobileNavProfile menuIsOpened={showProfileMenu} />
       </div>
     );
@@ -142,12 +139,12 @@ TopBar.propTypes = {
   home: PropTypes.bool,
   fixed: PropTypes.bool,
   noSearch: PropTypes.bool,
-  withPadding: PropTypes.bool
+  withPadding: PropTypes.bool,
 };
 
 TopBar.defaultProps = {
   home: false,
   fixed: false,
   noSearch: false,
-  withPadding: false
+  withPadding: false,
 };

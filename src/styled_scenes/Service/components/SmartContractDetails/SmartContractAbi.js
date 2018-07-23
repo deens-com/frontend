@@ -37,7 +37,10 @@ export default class SmartContractAbi extends Component {
         setTimeout(() => this.setState({ showCopied: false }), 3000);
       })
       .catch(err => {
-        this.setState({ showCopied: true, copiedContent: 'Sorry! There was an error while copying the ABI' });
+        this.setState({
+          showCopied: true,
+          copiedContent: 'Sorry! There was an error while copying the ABI',
+        });
         setTimeout(() => this.setState({ showCopied: false }), 3000);
       });
   };
@@ -87,7 +90,7 @@ export default class SmartContractAbi extends Component {
           {this.modalTrigger(
             <Button color="grey" size="mini">
               Show ABI
-            </Button>
+            </Button>,
           )}
         </Body>
       </CellContainer>

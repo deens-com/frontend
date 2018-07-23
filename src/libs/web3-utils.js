@@ -1,15 +1,15 @@
 import Web3 from 'web3';
 
-import TransportU2F from "@ledgerhq/hw-transport-u2f";
-import createLedgerSubprovider from "@ledgerhq/web3-subprovider";
+import TransportU2F from '@ledgerhq/hw-transport-u2f';
+import createLedgerSubprovider from '@ledgerhq/web3-subprovider';
 
-import ProviderEngine from "web3-provider-engine/dist/es5";
-import FetchSubprovider from "web3-provider-engine/dist/es5/subproviders/fetch";
+import ProviderEngine from 'web3-provider-engine/dist/es5';
+import FetchSubprovider from 'web3-provider-engine/dist/es5/subproviders/fetch';
 
 /* ganache-cli --networkId 1337 */
-const rpcUrl = process.env.REACT_APP_NETWORK_URL || "https://ropsten.infura.io/ncVw7Yywaql0109ntVNK";
-const networkId = parseInt(process.env.REACT_APP_NETWORK_ID || "3", 10);
-
+const rpcUrl =
+  process.env.REACT_APP_NETWORK_URL || 'https://ropsten.infura.io/ncVw7Yywaql0109ntVNK';
+const networkId = parseInt(process.env.REACT_APP_NETWORK_ID || '3', 10);
 
 let _web3Instance;
 export async function getWeb3() {
@@ -33,7 +33,7 @@ export async function getLedgerWeb3() {
     const getTransport = () => TransportU2F.create();
     const ledger = createLedgerSubprovider(getTransport, {
       networkId,
-      accountsLength: 5
+      accountsLength: 5,
     });
     engine.addProvider(ledger);
     engine.addProvider(new FetchSubprovider({ rpcUrl }));
@@ -73,8 +73,7 @@ export async function signMessage(msg) {
   return { publicAddress, signature };
 }
 
-
-const promisify = (inner) =>
+const promisify = inner =>
   new Promise((resolve, reject) =>
     inner((err, res) => {
       if (err) {
@@ -82,22 +81,22 @@ const promisify = (inner) =>
       } else {
         resolve(res);
       }
-    })
-);
+    }),
+  );
 
 export async function getLedgerPublicAddress() {
   const web3Instance = await getLedgerWeb3();
   const accounts = await promisify(cb => web3Instance.eth.getAccounts(cb));
-  if (accounts.length === 0) throw new Error("no accounts found");
+  if (accounts.length === 0) throw new Error('no accounts found');
 
   return web3Instance.eth.getCoinbase();
 }
 
 export async function ledgerSignMessage(msg) {
   let publicAddress;
-  try{
+  try {
     publicAddress = await getLedgerPublicAddress();
-  }catch(error){
+  } catch (error) {
     error.showToUser = true;
     throw error;
   }

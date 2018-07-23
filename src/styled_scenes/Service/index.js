@@ -188,7 +188,10 @@ class FoodDetailScene extends Component {
             <ContactWrap>
               <MapWrap>
                 <GoogleMapReact
-                  center={{ lat: this.props.service.latitude || 0, lng: this.props.service.longitude || 0 }}
+                  center={{
+                    lat: this.props.service.latitude || 0,
+                    lng: this.props.service.longitude || 0,
+                  }}
                   defaultZoom={11}
                   bootstrapURLKeys={{
                     key: 'AIzaSyDICUW2RF412bnmELi3Y_zCCzHa-w8WnXc',
@@ -215,7 +218,13 @@ class FoodDetailScene extends Component {
                 <CarouselColumnSpan>
                   <Carousel sm_slides_nb={1} md_slides_nb={2} lg_slides_nb={4} xl_slides_nb={4}>
                     {this.props.trips.map(trip => (
-                      <TripCart item={trip} withShadow key={trip.title} size="small" href={'/trips/' + trip.objectId} />
+                      <TripCart
+                        item={trip}
+                        withShadow
+                        key={trip.title}
+                        size="small"
+                        href={'/trips/' + trip.objectId}
+                      />
                     ))}
                   </Carousel>
                 </CarouselColumnSpan>
@@ -225,7 +234,10 @@ class FoodDetailScene extends Component {
               {this.props.reviews.length ? <h2>Reviews</h2> : null}
               {this.props.reviews.map(review => <Review key={review.objectId} review={review} />)}
             </div>
-            <SmartContractDetails address={this.props.service.contractAddress} abi={this.props.abi} />
+            <SmartContractDetails
+              address={this.props.service.contractAddress}
+              abi={this.props.abi}
+            />
           </DetailWrapper>
         </PageContent>
         <BrandFooter withTopBorder withPadding />

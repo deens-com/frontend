@@ -35,7 +35,8 @@ const EmptyTripDay = ({ allowServiceRearrange }) => {
   return (
     <RestDay>
       <RestDayText>
-        It's a rest day! It is good to take some time for yourself to wander around with nothing planned
+        It's a rest day! It is good to take some time for yourself to wander around with nothing
+        planned
       </RestDayText>
     </RestDay>
   );

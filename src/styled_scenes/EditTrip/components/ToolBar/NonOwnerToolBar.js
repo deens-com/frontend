@@ -21,7 +21,12 @@ const StartDateDiv = styled.div`
   }
 `;
 
-function NonOwnerToolBar({ state, onValueChange, onCheckAvailabilityClick, serviceAvailabilityCheckInProgress }) {
+function NonOwnerToolBar({
+  state,
+  onValueChange,
+  onCheckAvailabilityClick,
+  serviceAvailabilityCheckInProgress,
+}) {
   return (
     <ResponsiveToolbarWrap>
       {({ isMobile }) => (

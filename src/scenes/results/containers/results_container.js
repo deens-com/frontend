@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import ResultsComponent from "./../components/results_component";
-import * as results_actions from "./../actions";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import React, { Component } from 'react';
+import ResultsComponent from './../components/results_component';
+import * as results_actions from './../actions';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 class ResultsContainer extends Component {
   componentDidMount() {
@@ -57,9 +57,7 @@ class ResultsContainer extends Component {
   };
 
   render() {
-    return (
-      <ResultsComponent {...this.props} service_data={this.props.results} />
-    );
+    return <ResultsComponent {...this.props} service_data={this.props.results} />;
   }
 }
 
@@ -68,7 +66,7 @@ const mapStateToProps = state => {
     results: state.ResultsReducer.results,
     search_query: state.ResultsReducer.search_query,
     carousel_tags: state.ResultsReducer.carousel_tags,
-    isLoadingResults: state.ResultsReducer.isLoadingResults
+    isLoadingResults: state.ResultsReducer.isLoadingResults,
   };
 };
 
@@ -76,4 +74,7 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators(results_actions, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ResultsContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ResultsContainer);

@@ -1,13 +1,13 @@
 // NPM
-import React, { Component } from "react";
-import styled from "styled-components";
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import history from './../../../main/history';
 
 // COMPONENTS
-import { ArrowIcon, MicrophoneIcon, SearchIcon } from "../../icons";
+import { ArrowIcon, MicrophoneIcon, SearchIcon } from '../../icons';
 
 // ACTIONS/CONFIG
-import { resetButton } from "../../../libs/styled";
+import { resetButton } from '../../../libs/styled';
 
 // STYLES
 const Wrapper = styled.div`
@@ -21,7 +21,7 @@ const Wrapper = styled.div`
 const Inner = styled.div`
   background-color: #ffffff;
   border-radius: 4px;
-  border: solid 1px ${props => (props.inFocus ? "#4fb798" : "#eef1f4")};
+  border: solid 1px ${props => (props.inFocus ? '#4fb798' : '#eef1f4')};
   display: flex;
   flex: 1;
   height: 48px;
@@ -32,7 +32,7 @@ const Inner = styled.div`
 
 const IconButton = styled.button`
   ${resetButton()};
-  color: ${props => (props.active ? "#50a18a" : "#d3d7dc")};
+  color: ${props => (props.active ? '#50a18a' : '#d3d7dc')};
   font-size: 24px;
   height: 26px;
   margin-right: 8px;
@@ -73,7 +73,7 @@ const ArrowWrap = styled.span`
 
 const SubmitButton = styled.button`
   ${resetButton({
-    fontWeight: "500"
+    fontWeight: '500',
   })};
   align-items: center;
   color: #4fb798;
@@ -86,9 +86,9 @@ export default class DesktopSearch extends Component {
   constructor() {
     super();
     this.state = {
-      search: "",
-      mode: "text",
-      inFocus: false
+      search: '',
+      mode: 'text',
+      inFocus: false,
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -107,7 +107,7 @@ export default class DesktopSearch extends Component {
   }
   handleSubmit(ev) {
     ev.preventDefault();
-    const query_string = "keywords=" + this.state.search;
+    const query_string = 'keywords=' + this.state.search;
     history.push(`/results?${query_string}`);
   }
   render() {
@@ -115,10 +115,10 @@ export default class DesktopSearch extends Component {
       <Wrapper inFocus={this.state.inFocus}>
         <Inner>
           <div>
-            <IconButton active={this.state.mode === "voice"}>
+            <IconButton active={this.state.mode === 'voice'}>
               <MicrophoneIcon />
             </IconButton>
-            <IconButton active={this.state.mode === "text"}>
+            <IconButton active={this.state.mode === 'text'}>
               <SearchIcon />
             </IconButton>
           </div>

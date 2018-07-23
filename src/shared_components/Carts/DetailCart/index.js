@@ -60,7 +60,11 @@ export default class DetailCart extends Component {
     }
 
     return (
-      <Draggable key={props.item.tripOrganizationId} draggableId={props.item.tripOrganizationId} index={props.index}>
+      <Draggable
+        key={props.item.tripOrganizationId}
+        draggableId={props.item.tripOrganizationId}
+        index={props.index}
+      >
         {(provided, snapshot) => (
           <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
             {serviceCard}

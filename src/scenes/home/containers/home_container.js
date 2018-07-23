@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import HomeComponent from "./../components/home_component";
-import * as home_actions from "./../actions";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import GlobalTeaser from "shared_components/GlobalTeaser"
+import React, { Component } from 'react';
+import HomeComponent from './../components/home_component';
+import * as home_actions from './../actions';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import GlobalTeaser from 'shared_components/GlobalTeaser';
 
 class HomeContainer extends Component {
   componentDidMount() {
@@ -35,7 +35,7 @@ const mapStateToProps = state => {
     trips: state.HomeReducer.trips.filter(item => !!item),
     popularPlaces: state.HomeReducer.popularPlaces,
     exciting_activities: state.HomeReducer.exciting_activities,
-    delicious_foods: state.HomeReducer.delicious_foods
+    delicious_foods: state.HomeReducer.delicious_foods,
   };
 };
 
@@ -43,4 +43,7 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators(home_actions, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(HomeContainer);

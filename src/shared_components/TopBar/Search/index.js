@@ -1,15 +1,15 @@
 // NPM
-import React from "react";
-import PropTypes from "prop-types";
-import Media from "react-media";
-import styled from "styled-components";
+import React from 'react';
+import PropTypes from 'prop-types';
+import Media from 'react-media';
+import styled from 'styled-components';
 
 // COMPONENTS
-import { SearchIcon } from "../../icons";
-import DesktopSearch from "./DesktopSearch";
+import { SearchIcon } from '../../icons';
+import DesktopSearch from './DesktopSearch';
 
 // ACTIONS/CONFIG
-import { sizes, resetButton } from "../../../libs/styled";
+import { sizes, resetButton } from '../../../libs/styled';
 
 // STYLES
 const TriggerWrap = styled.button`
@@ -44,5 +44,5 @@ export default function TopBarSearch({ menuIsOpened, toggleSearch }) {
 // Props Validation
 TopBarSearch.propTypes = {
   menuIsOpened: PropTypes.bool.isRequired,
-  toggleSearch: PropTypes.func.isRequired
+  toggleSearch: PropTypes.func.isRequired,
 };

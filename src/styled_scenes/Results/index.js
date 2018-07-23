@@ -60,11 +60,13 @@ export default class ResultsScene extends Component {
   static propTypes = {};
 
   getMarkerLatLngs = props => {
-    return props.service_data.filter(({ latitude, longitude }) => latitude && longitude).map(service => ({
-      key: service.objectId,
-      lat: parseFloat(service.latitude),
-      lng: parseFloat(service.longitude),
-    }));
+    return props.service_data
+      .filter(({ latitude, longitude }) => latitude && longitude)
+      .map(service => ({
+        key: service.objectId,
+        lat: parseFloat(service.latitude),
+        lng: parseFloat(service.longitude),
+      }));
   };
 
   getCenterAndZoom = (markers, props) => {
@@ -97,7 +99,11 @@ export default class ResultsScene extends Component {
   componentWillReceiveProps(nextProps) {
     const currentMarkers = this.getMarkerLatLngs(this.props);
     const newMarkers = this.getMarkerLatLngs(nextProps);
-    if ((currentMarkers.length !== newMarkers.length) || (this.props.latitude !== nextProps.latitude) || (this.props.longitude !== nextProps.longitude)) {
+    if (
+      currentMarkers.length !== newMarkers.length ||
+      this.props.latitude !== nextProps.latitude ||
+      this.props.longitude !== nextProps.longitude
+    ) {
       const { center, zoom } = this.getCenterAndZoom(newMarkers, nextProps);
       this.setState({ center, zoom, markers: newMarkers });
     }

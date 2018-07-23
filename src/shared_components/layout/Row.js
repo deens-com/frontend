@@ -1,6 +1,6 @@
 // NPM
-import React from "react";
-import styled, { css } from "styled-components";
+import React from 'react';
+import styled, { css } from 'styled-components';
 
 // COMPONENTS
 
@@ -8,14 +8,14 @@ import styled, { css } from "styled-components";
 
 // STYLES
 const RowWrapper = styled.div`
-  display: ${props => (props.flex ? "flex" : "block")};
+  display: ${props => (props.flex ? 'flex' : 'block')};
   ${props =>
     props.noMargin
       ? css`
           margin: 0;
         `
       : css`
-          margin: ${props => props.margin || "0 -10px"};
+          margin: ${props => props.margin || '0 -10px'};
         `};
 `;
 

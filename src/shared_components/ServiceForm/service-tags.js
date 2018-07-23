@@ -2,7 +2,6 @@ import tagsData from './../../data/tags';
 
 export default tagsData.map(tag => tag.label);
 
-
 // export default [
 //   'Motorbike',
 //   'Climbing',
