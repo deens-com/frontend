@@ -165,7 +165,7 @@ export default class LocationFormControl extends Component {
 
 LocationFormControl.propTypes = {
   onChange: PropTypes.func,
-  onSelect: PropTypes.func.isRequired,
+  onSelect: PropTypes.func,
   formatted_address: PropTypes.string,
   onBlur: PropTypes.func,
 };
