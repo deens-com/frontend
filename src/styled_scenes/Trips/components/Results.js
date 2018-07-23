@@ -3,7 +3,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { DragDropContext } from 'react-beautiful-dnd';
-import Parse from 'parse';
 
 // COMPONENTS
 import Col from '../../../shared_components/layout/Col';
@@ -40,7 +39,6 @@ export default function Results({
   onServiceDragEnd,
   onServiceRemoveClick,
 }) {
-  const currentUser = Parse.User.current();
   const allowServiceRearrange = false; // trip && (trip.owner && trip.owner.objectId) === (currentUser && currentUser.id) && !trip.booked;
   const dayProps = { trip, allowServiceRearrange, onServiceRemoveClick };
   const services = [];

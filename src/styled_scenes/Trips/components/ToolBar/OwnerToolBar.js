@@ -59,7 +59,6 @@ export default class OwnerToolBar extends Component {
   render() {
     const {
       state,
-      trip,
       onSubmit,
       onValueChange,
       onCheckAvailabilityClick,
