@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import * as SmartContractStatus from 'shared_components/SmartContract/Status';
 
 import Tag from './Tag';
@@ -35,11 +34,7 @@ const ServiceTags = ({ service }) => {
         <SmartContractStatus.Wrapper size="large" status={service.contractStatus} hash={service.hash} />
       )}
       {contractAddress && tags.length > 0 && <Divider />}
-      {tags.map(tag => (
-        <Link to={`/results?tags=${tag.label}`}>
-          <Tag key={tag.label} item={tag} />
-        </Link>
-      ))}
+      {tags.map(tag => <Tag key={tag.label} item={tag} href={`/results?tags=${tag.label}`} />)}
     </TagWrap>
   );
 };
