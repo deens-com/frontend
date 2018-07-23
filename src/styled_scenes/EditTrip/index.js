@@ -281,7 +281,7 @@ export default class TripsScene extends Component {
                 {trip.tags &&
                   trip.tags.map(tag => (
                     <Link to={`/results?tags=${tag.label}`}>
-                      <Tag key={tag.label} item={tag} />
+                      <Tag key={tag.label} item={tag} href={`/results?tags=${tag.label}`} />
                     </Link>
                   ))}
               </TagsWrapper>
