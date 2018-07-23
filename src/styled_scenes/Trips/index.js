@@ -178,9 +178,13 @@ export default class TripsScene extends Component {
 
   getMarkerLatLngs = props => {
     return props.scheduledServices.reduce(
-      (markers, { services }) => [
+      (markers, { day, services }) => [
         ...markers,
-        ...services.map(({ id, latitude, longitude }) => ({ serviceId: id, latitude, longitude })),
+        ...services.map(({ objectId, latitude, longitude }) => ({
+          key: `${objectId}-day${day}`,
+          latitude,
+          longitude,
+        })),
       ],
       []
     );
@@ -261,8 +265,8 @@ export default class TripsScene extends Component {
                 render={() => (
                   <MapWrapper>
                     <GoogleMapReact center={this.state.center} zoom={this.state.zoom}>
-                      {this.getMarkerLatLngs(this.props).map(({ serviceId, latitude, longitude }) => (
-                        <MapMaker key={serviceId} lat={latitude} lng={longitude} scale={1} color="#4fb798" />
+                      {this.getMarkerLatLngs(this.props).map(({ key, latitude, longitude }) => (
+                        <MapMaker key={key} lat={latitude} lng={longitude} scale={1} color="#4fb798" />
                       ))}
                     </GoogleMapReact>
                   </MapWrapper>
