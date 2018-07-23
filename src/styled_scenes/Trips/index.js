@@ -178,7 +178,10 @@ export default class TripsScene extends Component {
 
   getMarkerLatLngs = props => {
     return props.scheduledServices.reduce(
-      (markers, { services }) => [...markers, ...services.map(({ latitude, longitude }) => ({ latitude, longitude }))],
+      (markers, { services }) => [
+        ...markers,
+        ...services.map(({ id, latitude, longitude }) => ({ serviceId: id, latitude, longitude })),
+      ],
       []
     );
   };
@@ -231,13 +234,14 @@ export default class TripsScene extends Component {
                     showTripStatusChanged={this.props.showTripStatusChanged}
                     onShareModalClose={this.props.onShareModalClose}
                   />
-                  {
-                    this.state.isOwner &&
-                    <Button type='button' text='Edit Trip'
+                  {this.state.isOwner && (
+                    <Button
+                      type="button"
+                      text="Edit Trip"
                       onClick={() => this.props.history.push('/trips/' + trip.objectId + '/edit')}
-                      />
-                  }
-                  <br/>
+                    />
+                  )}
+                  <br />
                   <ChangeTripImageButton
                     trip={trip}
                     isOwner={this.state.isOwner}
@@ -257,14 +261,8 @@ export default class TripsScene extends Component {
                 render={() => (
                   <MapWrapper>
                     <GoogleMapReact center={this.state.center} zoom={this.state.zoom}>
-                      {this.getMarkerLatLngs(this.props).map(({ latitude, longitude }) => (
-                        <MapMaker
-                          key={`${latitude}-${longitude}`}
-                          lat={latitude}
-                          lng={longitude}
-                          scale={1}
-                          color="#4fb798"
-                        />
+                      {this.getMarkerLatLngs(this.props).map(({ serviceId, latitude, longitude }) => (
+                        <MapMaker key={serviceId} lat={latitude} lng={longitude} scale={1} color="#4fb798" />
                       ))}
                     </GoogleMapReact>
                   </MapWrapper>
