@@ -8,7 +8,6 @@ import { fitBounds } from 'google-map-react/utils';
 import moment from 'moment';
 import Parse from 'parse';
 import { Divider, Message } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
 import Tag from './../Service/components/Tag';
 // COMPONENTS
 import TopBar from './../../shared_components/TopBarWithSearch';
@@ -280,9 +279,7 @@ export default class TripsScene extends Component {
               <TagsWrapper>
                 {trip.tags &&
                   trip.tags.map(tag => (
-                    <Link to={`/results?tags=${tag.label}`}>
-                      <Tag key={tag.label} item={tag} href={`/results?tags=${tag.label}`} />
-                    </Link>
+                    <Tag key={tag.label} item={tag} href={`/results?tags=${tag.label}`} />
                   ))}
               </TagsWrapper>
               <Divider horizontal>Trip itinerary</Divider>

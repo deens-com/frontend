@@ -222,7 +222,7 @@ export default class TripDay extends Component {
                   border: '0px',
                   boxShadow: '0 8px 25px 0 rgba(141, 141, 141, 0.22)'
                 }}
-                horizontalOffset='5'
+                horizontalOffset={5}
               />
             )}
           </DayButtons>
