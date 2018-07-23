@@ -52,8 +52,8 @@ class SmartContractDetails extends Component {
 }
 
 SmartContractDetails.propTypes = {
-  address: PropTypes.string.isRequired,
-  abi: PropTypes.string.isRequired,
+  address: PropTypes.string,
+  abi: PropTypes.string,
 };
 
 export default SmartContractDetails;

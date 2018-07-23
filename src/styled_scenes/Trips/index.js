@@ -287,11 +287,7 @@ export default class TripsScene extends Component {
               />
               <TagsWrapper>
                 {trip.tags &&
-                  trip.tags.map(tag => (
-                    <Link to={`/results?tags=${tag.label}`}>
-                      <Tag key={tag.label} item={tag} />
-                    </Link>
-                  ))}
+                  trip.tags.map(tag => <Tag item={tag} href={`/results?tags=${tag.label}`} key={tag.label} />)}
               </TagsWrapper>
               <Divider horizontal>Trip itinerary</Divider>
               <Results

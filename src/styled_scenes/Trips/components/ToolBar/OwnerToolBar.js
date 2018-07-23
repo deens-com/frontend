@@ -65,7 +65,7 @@ export default class OwnerToolBar extends Component {
       onCheckAvailabilityClick,
       serviceAvailabilityCheckInProgress,
     } = this.props;
-    const isTripBooked = trip && trip.booked;
+    const isTripBooked = true; // trip && trip.booked;
     return (
       <ResponsiveToolbarWrap>
         {({ isMobile }) => (
