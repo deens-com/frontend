@@ -2,7 +2,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { Link } from 'react-router-dom';
 
 // ACTIONS/CONFIG
 import { media } from "../../../../libs/styled";
@@ -30,7 +29,7 @@ const tagSizes = {
 };
 
 // quick fix to maintain the style
-const ServiceCarouselButton = styled(Link)``;
+const ServiceCarouselButton = styled.a``;
 
 const Wrap = styled.div`
   background: ${props => props.background || "#ddd"};
@@ -76,7 +75,7 @@ export default function CategoryTag(props) {
       hoverBg={props.item.hoverBg}
       background={props.item.background}
     >
-      <ServiceCarouselButton to={props.href}>
+      <ServiceCarouselButton href={props.href}>
         {props.item.label}
       </ServiceCarouselButton>
     </Wrap>
