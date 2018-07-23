@@ -25,9 +25,9 @@ class ServicesContainer extends Component {
     this.props.resetServiceData();
   }
 
-  onAddServiceToTrip = trip => {
+  onAddServiceToTrip = ({ trip, day }) => {
     if (Parse.User.current() != null) {
-      this.props.addServiceToTrip(trip);
+      this.props.addServiceToTrip({ trip, day });
     } else {
       this.props.history.push('/login');
     }

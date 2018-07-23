@@ -118,13 +118,14 @@ export const fetchMyTrips = () => async (dispatch, getState) => {
   dispatch(userUnpurchasedTripsFetchFinish(normalizedTrips));
 };
 
-export const addServiceToTrip = trip => async (dispatch, getState) => {
+export const addServiceToTrip = ({ trip, day }) => async (dispatch, getState) => {
   const state = getState();
   const { service } = state.ServicesReducer;
   try {
     await Parse.Cloud.run('addServiceToTrip', {
       serviceId: service.objectId,
       tripId: trip.objectId,
+      day,
     });
     fetch_service(service.objectId)(dispatch);
     setAddedToTripMessage(trip)(dispatch);

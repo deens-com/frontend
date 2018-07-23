@@ -19,8 +19,8 @@ const ItemTitle = styled.div`
 `;
 
 class TripsListInDropDown extends React.Component {
-  onItemClick = trip => () => {
-    this.props.onTripClick(trip);
+  onItemClick = ({ trip, day }) => () => {
+    this.props.onTripClick({ trip, day });
   };
 
   getStartTripDate = trip => {
@@ -45,7 +45,7 @@ class TripsListInDropDown extends React.Component {
 
   renderItem = (trip, description) => {
     return (
-      <List.Item /* onClick={this.onItemClick(trip)} */>
+      <List.Item>
         <Image avatar src={getTripImage(trip)} />
         <List.Content>
           <List.Header>
@@ -64,7 +64,11 @@ class TripsListInDropDown extends React.Component {
     const item = this.renderItem(trip, description);
     const dayItems = [];
     for (let i = 0; i < duration.count; i++) {
-      dayItems.push(<List.Item key={i}>Day {i + 1}</List.Item>);
+      dayItems.push(
+        <List.Item key={i} onClick={this.onItemClick({ trip, day: i + 1 })}>
+          Day {i + 1}
+        </List.Item>
+      );
     }
     return (
       <Popup key={trip.objectId} position="right center" on="click" trigger={item}>
