@@ -52,13 +52,13 @@ export default class AddToTripButton extends React.Component {
 
     return (
       <Popup
+        keepInViewPort
         trigger={addToTripButton}
         content={listComponent}
         on="click"
         open={this.state.isOpen}
         onClose={this.handleClose}
         onOpen={this.handleOpen}
-        position="bottom right"
         wide
       />
     );

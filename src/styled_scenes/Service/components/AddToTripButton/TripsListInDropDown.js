@@ -71,7 +71,7 @@ class TripsListInDropDown extends React.Component {
       );
     }
     return (
-      <Popup key={trip.objectId} position="right center" on="click" trigger={item}>
+      <Popup key={trip.objectId} position="right center" on="click" trigger={item} keepInViewPort>
         <Popup.Header>Select Day</Popup.Header>
         <Popup.Content>
           <List selection verticalAlign="middle" divided>
