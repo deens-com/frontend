@@ -33,7 +33,17 @@ $ yarn start
 
 We use [Prettier](https://github.com/prettier/prettier) for formatting the code for this repo.
 
-Before comitting do run `yarn prettier-all` to format the code, or add it in the `pre-commit` hook.
+Before comitting do run `yarn prettier-all` to format the code, or add it in the `pre-commit` hook and it'll be automatically taken care of.
+
+#### How to add Prettier to pre-commit hook?
+
+```sh
+$ touch .git/hooks/pre-commit
+$ chmod +x .git/hooks/pre-commit
+$ echo '''#!/usr/bin/env bash
+
+yarn lint-staged''' > .git/hooks/pre-commit
+```
 
 ## Troubleshooting
 
