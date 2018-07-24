@@ -76,6 +76,7 @@
   "devDependencies": {
     "duplicate-package-checker-webpack-plugin": "^2.1.0",
     "enzyme": "^3.3.0",
+    "lint-staged": "^7.2.0",
     "prettier": "1.13.7",
     "react-app-rewire-lodash": "^2.0.0",
     "react-app-rewire-preload-plugin": "^1.0.0",
@@ -90,5 +91,15 @@
     "elliptic": "6.4.0",
     "setimmediate": "1.0.5",
     "web3-provider-engine": "14.0.5"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.json": [
+      "prettier --write",
+      "git add"
+    ]
   }
 }
