@@ -19,6 +19,7 @@ import UserAvatar from '../../shared_components/UserAvatar';
 import ShareButton from './components/ShareButton';
 import Image from 'shared_components/Image';
 import Trigger from 'shared_components/DropPicker/Trigger';
+import Button from 'shared_components/Button';
 
 // ACTIONS/CONFIG
 import { media, sizes } from '../../libs/styled';
@@ -148,8 +149,8 @@ const DropItem = styled.div`
 
 const TripActionsWrap = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  flex-direction: row;
+  justify-content: flex-end;
   padding-right: 25px;
 `;
 
@@ -160,6 +161,7 @@ export default class TripsScene extends Component {
     center: { lat: 59.95, lng: 30.33 },
     zoom: 11,
     isOwner: false,
+    resultsExpanded: false,
   };
 
   componentDidMount() {
@@ -239,6 +241,10 @@ export default class TripsScene extends Component {
     const size = { width: 800, height: 450 };
     const { center, zoom } = fitBounds(newBounds, size);
     return { center, zoom };
+  };
+
+  toggleExpansion = () => {
+    this.setState(prevState => ({ resultsExpanded: !prevState.resultsExpanded }));
   };
 
   render() {
@@ -379,6 +385,15 @@ export default class TripsScene extends Component {
                   }}
                   horizontalOffset={5}
                 />
+                <Button
+                  type="button"
+                  round
+                  size="small"
+                  iconAfter="arrowDown"
+                  theme="textGreen"
+                  onClick={this.toggleExpansion}
+                  text={this.state.resultsExpanded ? 'Collapse all' : 'Expand all'}
+                />
               </TripActionsWrap>
               <Results
                 trip={trip}
@@ -386,6 +401,7 @@ export default class TripsScene extends Component {
                 scheduledServices={this.props.scheduledServices}
                 onServiceDragEnd={this.props.onServiceDragEnd}
                 onServiceRemoveClick={this.props.onServiceRemoveClick}
+                expanded={this.state.resultsExpanded}
               />
               <Hr />
               <Summary
