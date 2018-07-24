@@ -143,7 +143,7 @@ export default class TripsScene extends Component {
         city: query.city,
         country: query.country,
       },
-      true
+      true,
     );
   };
 
@@ -177,8 +177,11 @@ export default class TripsScene extends Component {
 
   getMarkerLatLngs = props => {
     return props.scheduledServices.reduce(
-      (markers, { services }) => [...markers, ...services.map(({ latitude, longitude }) => ({ latitude, longitude }))],
-      []
+      (markers, { services }) => [
+        ...markers,
+        ...services.map(({ latitude, longitude }) => ({ latitude, longitude })),
+      ],
+      [],
     );
   };
 
@@ -239,7 +242,8 @@ export default class TripsScene extends Component {
                 </ActionsWrap>
                 <ShareBg
                   src={
-                    (trip && trip.picture && trip.picture.url) || 'https://please-com.imgix.net/static/food/mamamia.jpg'
+                    (trip && trip.picture && trip.picture.url) ||
+                    'https://please-com.imgix.net/static/food/mamamia.jpg'
                   }
                   background
                 />
@@ -265,7 +269,10 @@ export default class TripsScene extends Component {
             </LeftWrap>
             <TripWrapper>
               {trip.booked && this.state.isOwner ? (
-                <Message>This trip has already been booked on {moment(query.startDate).format('Do MMM YYYY')}.</Message>
+                <Message>
+                  This trip has already been booked on{' '}
+                  {moment(query.startDate).format('Do MMM YYYY')}.
+                </Message>
               ) : null}
               <ToolBar
                 onSubmit={this.onSubmit}

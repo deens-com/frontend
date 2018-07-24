@@ -1,4 +1,4 @@
-import reducers from "./reducers";
+import reducers from './reducers';
 
 const initialState = {
   services: {},
@@ -6,11 +6,11 @@ const initialState = {
   tags: [],
   popularPlaces: [],
   exciting_activities: [],
-  delicious_foods: []
+  delicious_foods: [],
 };
 
-describe("homes reducer", () => {
-  it("should handle initial state", () => {
+describe('homes reducer', () => {
+  it('should handle initial state', () => {
     expect(reducers(undefined, {})).toEqual(initialState);
   });
 });

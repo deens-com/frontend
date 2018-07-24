@@ -1,9 +1,9 @@
 // NPM
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 // COMPONENTS
-import DropItem from "./DropItem";
+import DropItem from './DropItem';
 
 // ACTIONS/CONFIG
 
@@ -36,7 +36,7 @@ export default function Drop({ children, onToggle }) {
     // COMMENT: the second condition is specifically for Gatsby.js problems
     if (child.type === DropItem || child.type === <DropItem />.type) {
       return React.cloneElement(child, {
-        onToggle: onToggle
+        onToggle: onToggle,
       });
     }
     return null;

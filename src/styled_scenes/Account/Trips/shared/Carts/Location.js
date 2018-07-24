@@ -118,7 +118,7 @@ const getSmartContractBookingStatus = props => {
         <SemanticLabelFixed onClick={props.redeployContract} color="green">
           Confirmed <Icon name="external" />
         </SemanticLabelFixed>,
-        props.item.reservation
+        props.item.reservation,
       );
     }
     if (transactionStatus === 0) {
@@ -128,7 +128,7 @@ const getSmartContractBookingStatus = props => {
             <SemanticLabelFixed color="red">
               Failed <Icon name="external" />
             </SemanticLabelFixed>,
-            props.item.reservation
+            props.item.reservation,
           )}
           <SemanticLabelFixed
             style={{ top: '40px' }}
@@ -145,7 +145,7 @@ const getSmartContractBookingStatus = props => {
         <SemanticLabelFixed color="blue">
           Pending <Icon name="external" />
         </SemanticLabelFixed>,
-        props.item.reservation
+        props.item.reservation,
       );
     }
   }
@@ -154,21 +154,20 @@ const getSmartContractBookingStatus = props => {
 
 // MODULE
 class ServiceLocationCard extends Component {
-
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      truncated: false
+      truncated: false,
     };
   }
 
-  handleTruncate = (truncated) => {
+  handleTruncate = truncated => {
     if (this.state.truncated !== truncated) {
       this.setState({
-        truncated
+        truncated,
       });
     }
-  }
+  };
 
   wrapWithLink = element => {
     const { item } = this.props;
@@ -179,10 +178,46 @@ class ServiceLocationCard extends Component {
     const { item, withShadow, mdBasis, smBasis, xsBasis } = this.props;
     return (
       <div>
-      {
-        this.state.truncated ?
+        {this.state.truncated ? (
+          <Popup
+            trigger={
+              <Col xsBasis={xsBasis} mdBasis={smBasis} smBasis={mdBasis}>
+                <RelativeCard withShadow={withShadow} column>
+                  <ImageGridContainer>
+                    <ImageItem>{this.wrapWithLink(<Thumb url={item.image} />)}</ImageItem>
+                    <ContractStatusItem>
+                      {getSmartContractBookingStatus(this.props)}
+                    </ContractStatusItem>
+                  </ImageGridContainer>
+                  <ContentWrap>
+                    {this.wrapWithLink(
+                      <div>
+                        <Title>
+                          <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>
+                            {item.title}
+                          </Truncate>
+                        </Title>
 
-        <Popup trigger={
+                        {item.type && (
+                          <Location>
+                            <PinIcon />
+                            <p>
+                              <Truncate lines={cardConfig.locationLines}>{item.location}</Truncate>
+                            </p>
+                          </Location>
+                        )}
+                        <Rating marginBottom="10px" rating={item.rating} count={item.reviewCount} />
+                        <Label>Starting from</Label>
+                        <PriceTag price={item.price} />
+                      </div>,
+                    )}
+                  </ContentWrap>
+                </RelativeCard>
+              </Col>
+            }
+            content={this.props.item.title}
+          />
+        ) : (
           <Col xsBasis={xsBasis} mdBasis={smBasis} smBasis={mdBasis}>
             <RelativeCard withShadow={withShadow} column>
               <ImageGridContainer>
@@ -193,7 +228,9 @@ class ServiceLocationCard extends Component {
                 {this.wrapWithLink(
                   <div>
                     <Title>
-                      <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>{item.title}</Truncate>
+                      <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>
+                        {item.title}
+                      </Truncate>
                     </Title>
 
                     {item.type && (
@@ -207,50 +244,13 @@ class ServiceLocationCard extends Component {
                     <Rating marginBottom="10px" rating={item.rating} count={item.reviewCount} />
                     <Label>Starting from</Label>
                     <PriceTag price={item.price} />
-                  </div>
+                  </div>,
                 )}
               </ContentWrap>
             </RelativeCard>
           </Col>
-          }
-          content={this.props.item.title}
-        />
-
-        :
-
-        <Col xsBasis={xsBasis} mdBasis={smBasis} smBasis={mdBasis}>
-          <RelativeCard withShadow={withShadow} column>
-            <ImageGridContainer>
-              <ImageItem>{this.wrapWithLink(<Thumb url={item.image} />)}</ImageItem>
-              <ContractStatusItem>{getSmartContractBookingStatus(this.props)}</ContractStatusItem>
-            </ImageGridContainer>
-            <ContentWrap>
-              {this.wrapWithLink(
-                <div>
-                  <Title>
-                    <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>{item.title}</Truncate>
-                  </Title>
-
-                  {item.type && (
-                    <Location>
-                      <PinIcon />
-                      <p>
-                        <Truncate lines={cardConfig.locationLines}>{item.location}</Truncate>
-                      </p>
-                    </Location>
-                  )}
-                  <Rating marginBottom="10px" rating={item.rating} count={item.reviewCount} />
-                  <Label>Starting from</Label>
-                  <PriceTag price={item.price} />
-                </div>
-              )}
-            </ContentWrap>
-          </RelativeCard>
-        </Col>
-
-      }
+        )}
       </div>
-
     );
   }
 }
@@ -260,5 +260,5 @@ const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(withRouter(ServiceLocationCard));

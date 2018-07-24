@@ -1,25 +1,25 @@
 // NPM
-import React from "react";
-import PropTypes from "prop-types";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
+import React from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 // COMPONENTS
-import Row from "../../../shared_components/layout/Row";
-import Col from "../../../shared_components/layout/Col";
-import { ArrowIcon } from "../../../shared_components/icons";
+import Row from '../../../shared_components/layout/Row';
+import Col from '../../../shared_components/layout/Col';
+import { ArrowIcon } from '../../../shared_components/icons';
 import Image from 'shared_components/Image';
 
 // ACTIONS/CONFIG
 
 // STYLES
-import { Cart } from "../../../shared_components/Carts/styles";
+import { Cart } from '../../../shared_components/Carts/styles';
 import {
   PageWrapper,
   SectionWrap,
   SectionHeader,
-  SectionContent
-} from "../../../shared_components/layout/Page";
+  SectionContent,
+} from '../../../shared_components/layout/Page';
 
 const CategoryThumb = styled.div`
   height: 88px;
@@ -79,7 +79,7 @@ export default function HomeSectionHappy({ categories }) {
                 <Cart withShadow>
                   <CartLink to={item.href}>
                     <CategoryThumb>
-                      <Image src={process.env.PUBLIC_URL + item.img} alt=""/>
+                      <Image src={process.env.PUBLIC_URL + item.img} alt="" />
                     </CategoryThumb>
                     <TagCategory>{item.label}</TagCategory>
                     <CategoryArrow>
@@ -98,5 +98,5 @@ export default function HomeSectionHappy({ categories }) {
 
 // Props Validation
 HomeSectionHappy.propTypes = {
-  categories: PropTypes.arrayOf(PropTypes.object)
+  categories: PropTypes.arrayOf(PropTypes.object),
 };

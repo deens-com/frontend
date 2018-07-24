@@ -9,7 +9,7 @@ import Button from '../../../shared_components/Button';
 import DetailCart from '../../../shared_components/Carts/DetailCart';
 import Trigger from '../../../shared_components/DropPicker/Trigger';
 import EmptyTripDay from './EmptyTripDay';
-import { Popup } from 'semantic-ui-react'
+import { Popup } from 'semantic-ui-react';
 
 // ACTIONS/CONFIG
 import { media } from '../../../libs/styled';
@@ -85,7 +85,7 @@ const DropItem = styled.div`
   }
 
   &:after {
-    content: "";
+    content: '';
     width: 1px;
     height: 60%;
     background: #eef1f4;
@@ -183,44 +183,48 @@ export default class TripDay extends Component {
             />
             {allowServiceRearrange && (
               <Popup
-                trigger={<Trigger iconBefore="plus" size="small" round={true} text="Add new Service" />}
-                content={<div>
-                  <DropItem
-                    onClick={() => {
-                      query_params.service_types = 'place';
-                      this.generate_search_query(query_params);
-                    }}
-                  >
-                    Place
-                  </DropItem>
-                  <DropItem
-                    onClick={() => {
-                      query_params.service_types = 'food';
-                      this.generate_search_query(query_params);
-                    }}
-                  >
-                    Food
-                  </DropItem>
-                  <DropItem
-                    onClick={() => {
-                      query_params.service_types = 'activity';
-                      this.generate_search_query(query_params);
-                    }}
-                  >
-                    Activity
-                  </DropItem>
-                </div>}
-                position='left center'
-                on='click'
+                trigger={
+                  <Trigger iconBefore="plus" size="small" round={true} text="Add new Service" />
+                }
+                content={
+                  <div>
+                    <DropItem
+                      onClick={() => {
+                        query_params.service_types = 'place';
+                        this.generate_search_query(query_params);
+                      }}
+                    >
+                      Place
+                    </DropItem>
+                    <DropItem
+                      onClick={() => {
+                        query_params.service_types = 'food';
+                        this.generate_search_query(query_params);
+                      }}
+                    >
+                      Food
+                    </DropItem>
+                    <DropItem
+                      onClick={() => {
+                        query_params.service_types = 'activity';
+                        this.generate_search_query(query_params);
+                      }}
+                    >
+                      Activity
+                    </DropItem>
+                  </div>
+                }
+                position="left center"
+                on="click"
                 flowing={true}
-                className='semantic-popup-wrapper'
+                className="semantic-popup-wrapper"
                 style={{
                   float: 'left',
                   background: 'white',
                   borderRadius: '4px',
                   padding: '5px 10px',
                   border: '0px',
-                  boxShadow: '0 8px 25px 0 rgba(141, 141, 141, 0.22)'
+                  boxShadow: '0 8px 25px 0 rgba(141, 141, 141, 0.22)',
                 }}
                 horizontalOffset={5}
               />

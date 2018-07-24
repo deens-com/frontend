@@ -3,11 +3,11 @@ import { Grid, Icon } from 'semantic-ui-react';
 import styled from 'styled-components';
 import CircularProfilePic from './CircularProfilePic';
 import Stars from './Stars';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import { Menu, Card } from 'semantic-ui-react';
-import Parse from "parse";
-import history from "./../../../main/history";
-import ImgurAvatar from "./../../../assets/imgur-avatar.png";
+import Parse from 'parse';
+import history from './../../../main/history';
+import ImgurAvatar from './../../../assets/imgur-avatar.png';
 
 const AttributeTitle = styled.h6`
   font-size: 9px;
@@ -38,25 +38,25 @@ const MenuIcon = styled(Icon)`
 const UserBasicInfo = ({ user_profile: user = {}, match }) => {
   const name = user.fullName || user.username;
   const dpUrl = (user.profilePicture && user.profilePicture.url) || ImgurAvatar;
-  let activePath = match.path.replace("/account/", "");
+  let activePath = match.path.replace('/account/', '');
   const logout = () => {
     Parse.User.logOut().then(() => {
-      history.push("/");
+      history.push('/');
     });
-  }
+  };
   const scrollDownMobileOnly = () => {
     const currentWidth = window.innerWidth;
-    if(currentWidth <= 750){
+    if (currentWidth <= 750) {
       setTimeout(() => {
         window.scrollBy(0, 520);
-      }, 20)
+      }, 20);
     }
-  }
+  };
   return (
     <Card>
       <Wrapper>
         <CenteredDiv>
-          <Link to={"/users/" + user.username}>
+          <Link to={'/users/' + user.username}>
             <CircularProfilePic src={dpUrl} />
             {name && <NameDiv>{name}</NameDiv>}
           </Link>
@@ -79,62 +79,54 @@ const UserBasicInfo = ({ user_profile: user = {}, match }) => {
           </Grid.Row>
         </Grid>
 
-        <br/>
+        <br />
 
-        <Menu secondary fluid vertical style={{paddingLeft: "10px"}}>
-
+        <Menu secondary fluid vertical style={{ paddingLeft: '10px' }}>
           <Link to="/account/trips/all" onClick={scrollDownMobileOnly}>
-            <Menu.Item name='trips' active={activePath === 'trips'}>
-              <MenuIcon disabled name='angle right' circular />
+            <Menu.Item name="trips" active={activePath === 'trips'}>
+              <MenuIcon disabled name="angle right" circular />
               <span>
-                <MenuIcon disabled name='plane' circular />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                My Trips
+                <MenuIcon disabled name="plane" circular />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; My Trips
               </span>
             </Menu.Item>
           </Link>
 
           <Link to="/account/services" onClick={scrollDownMobileOnly}>
-            <Menu.Item name='services' active={activePath === 'services'}>
-              <MenuIcon disabled name='angle right' circular />
+            <Menu.Item name="services" active={activePath === 'services'}>
+              <MenuIcon disabled name="angle right" circular />
               <span>
-                <MenuIcon disabled name='list' circular />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                My Services
+                <MenuIcon disabled name="list" circular />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; My Services
               </span>
             </Menu.Item>
           </Link>
 
           <Link to="/account/profile" onClick={scrollDownMobileOnly}>
-            <Menu.Item name='profile' active={activePath === 'profile'}>
-              <MenuIcon disabled name='angle right' circular />
+            <Menu.Item name="profile" active={activePath === 'profile'}>
+              <MenuIcon disabled name="angle right" circular />
               <span>
-                <MenuIcon disabled name='user' circular />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                Profile
+                <MenuIcon disabled name="user" circular />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Profile
               </span>
             </Menu.Item>
           </Link>
 
           <Link to="/account/settings" onClick={scrollDownMobileOnly}>
-            <Menu.Item name='settings' active={activePath === 'settings'}>
-              <MenuIcon disabled name='angle right' circular />
+            <Menu.Item name="settings" active={activePath === 'settings'}>
+              <MenuIcon disabled name="angle right" circular />
               <span>
-                <MenuIcon disabled name='cogs' circular />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                Settings
+                <MenuIcon disabled name="cogs" circular />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Settings
               </span>
             </Menu.Item>
           </Link>
 
-          <div style={{cursor: "pointer"}} onClick={logout}>
-            <Menu.Item name='logout' active={activePath === 'logout'}>
-              <MenuIcon disabled name='angle right' circular />
+          <div style={{ cursor: 'pointer' }} onClick={logout}>
+            <Menu.Item name="logout" active={activePath === 'logout'}>
+              <MenuIcon disabled name="angle right" circular />
               <span>
-                <MenuIcon disabled name='power' circular />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                Logout
+                <MenuIcon disabled name="power" circular />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Logout
               </span>
             </Menu.Item>
           </div>
-
         </Menu>
-
       </Wrapper>
     </Card>
   );

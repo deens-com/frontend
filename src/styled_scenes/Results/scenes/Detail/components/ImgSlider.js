@@ -1,13 +1,13 @@
 // NPM
-import React, { Component } from "react";
-import styled from "styled-components";
+import React, { Component } from 'react';
+import styled from 'styled-components';
 
 // COMPONENTS
-import { ArrowIcon } from "../../../../../components/icons";
+import { ArrowIcon } from '../../../../../components/icons';
 import Image from 'shared_components/Image';
 
 // ACTIONS/CONFIG
-import { media } from "../../../../../libs/styled";
+import { media } from '../../../../../libs/styled';
 
 // STYLES
 const Wrap = styled.div`
@@ -80,7 +80,7 @@ export default class FoodImgSlider extends Component {
   constructor() {
     super();
     this.state = {
-      index: 0
+      index: 0,
     };
 
     this.goToNext = this.goToNext.bind(this);

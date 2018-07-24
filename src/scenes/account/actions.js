@@ -18,7 +18,10 @@ export const user_services_fetched = user_services => {
   };
 };
 
-export const categorizedTripsFetched = trips => ({ type: 'ACCOUNT/CATEGORIZED_TRIPS_FETCHED', payload: trips });
+export const categorizedTripsFetched = trips => ({
+  type: 'ACCOUNT/CATEGORIZED_TRIPS_FETCHED',
+  payload: trips,
+});
 
 export const edit_user_error_raised = error => {
   return {
@@ -83,7 +86,9 @@ export const update_user_profile = (user_id, field_type, value) => {
     if (field_type === 'email') {
       isEmailValid = validator.isEmail(value);
       if (!isEmailValid) {
-        dispatch(edit_user_error_raised({ code: 203, error: 'Please, enter a valid email address.' }));
+        dispatch(
+          edit_user_error_raised({ code: 203, error: 'Please, enter a valid email address.' }),
+        );
         let json_user = user.toJSON();
         dispatch(user_profile_fetched({ user_profile: json_user }));
         return;
@@ -99,7 +104,12 @@ export const update_user_profile = (user_id, field_type, value) => {
       },
       error: function(error) {
         //console.log(error);
-        dispatch(edit_user_error_raised({ code: 202, error: 'Account already exists for this username or email.' }));
+        dispatch(
+          edit_user_error_raised({
+            code: 202,
+            error: 'Account already exists for this username or email.',
+          }),
+        );
         let json_user = user.toJSON();
         dispatch(user_profile_fetched({ user_profile: json_user }));
       },
@@ -150,9 +160,14 @@ export const signData = () => async dispatch => {
       Parse.Cloud.run('getNonceForUser'),
     ]);
     const { signature } = await signMessage(nonce);
-    const userObj = await Parse.Cloud.run('storePublicAddress', { signature: signature, type: 'metamask' });
+    const userObj = await Parse.Cloud.run('storePublicAddress', {
+      signature: signature,
+      type: 'metamask',
+    });
     dispatch(fetch_user_profile());
-    dispatch(user_profile_fetched({ user_profile: fetch_helpers.normalizeParseResponseData(userObj) }));
+    dispatch(
+      user_profile_fetched({ user_profile: fetch_helpers.normalizeParseResponseData(userObj) }),
+    );
     dispatch({ type: 'analytics', meta: { analytics: trackMetamaskConnected() } });
   } catch (error) {
     console.error(error);
@@ -176,9 +191,14 @@ export const ledgerSignData = () => async dispatch => {
       Parse.Cloud.run('getNonceForUser'),
     ]);
     const { signature } = await ledgerSignMessage(nonce);
-    const userObj = await Parse.Cloud.run('storePublicAddress', { signature: signature, type: 'ledger' });
+    const userObj = await Parse.Cloud.run('storePublicAddress', {
+      signature: signature,
+      type: 'ledger',
+    });
     dispatch(fetch_user_profile());
-    dispatch(user_profile_fetched({ user_profile: fetch_helpers.normalizeParseResponseData(userObj) }));
+    dispatch(
+      user_profile_fetched({ user_profile: fetch_helpers.normalizeParseResponseData(userObj) }),
+    );
     dispatch({ type: 'analytics', meta: { analytics: trackLedgerConnected() } });
   } catch (error) {
     if (error.showToUser) {

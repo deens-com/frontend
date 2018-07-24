@@ -1,13 +1,13 @@
 // NPM
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 // COMPONENTS
 
 // ACTIONS/CONFIG
 
 // STYLES
-import { InputControl } from "./styles";
+import { InputControl } from './styles';
 
 // MODULE
 export default class Input extends Component {
@@ -20,24 +20,22 @@ export default class Input extends Component {
   }
 
   onChange(ev) {
-    if (typeof this.props.onChange === "function")
-      this.props.onChange(ev.target.value);
+    if (typeof this.props.onChange === 'function') this.props.onChange(ev.target.value);
   }
 
   onFocus() {
-    if (typeof this.props.onFocus === "function")
-      this.props.onFocus(this.input);
+    if (typeof this.props.onFocus === 'function') this.props.onFocus(this.input);
   }
 
   onBlur() {
-    if (typeof this.props.onBlur === "function") this.props.onBlur();
+    if (typeof this.props.onBlur === 'function') this.props.onBlur();
   }
 
   render() {
     let input;
 
     switch (this.props.type) {
-      case "text": {
+      case 'text': {
         input = (
           <InputControl
             {...this.props}
@@ -58,7 +56,7 @@ export default class Input extends Component {
         );
         break;
       }
-      case "number": {
+      case 'number': {
         input = (
           <InputControl
             {...this.props}
@@ -93,5 +91,5 @@ export default class Input extends Component {
 
 // Props Validation
 Input.propTypes = {
-  name: PropTypes.string
+  name: PropTypes.string,
 };

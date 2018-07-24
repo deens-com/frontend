@@ -31,8 +31,8 @@ class PreBookingPopup extends React.Component {
               </strong>.
             </p>
             <p>
-              You may continue booking the remaining available services by clicking on Book Now or you can change your
-              search criteria
+              You may continue booking the remaining available services by clicking on Book Now or
+              you can change your search criteria
             </p>
           </Modal.Description>
         </Modal.Content>

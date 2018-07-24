@@ -6,7 +6,7 @@ const Account = () => {
     <div className="Account">
       <AccountContainer />
     </div>
-  )
-}
+  );
+};
 
 export default Account;

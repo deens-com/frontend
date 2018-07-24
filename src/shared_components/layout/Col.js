@@ -1,20 +1,20 @@
 // NPM
-import React from "react";
-import styled, { css } from "styled-components";
+import React from 'react';
+import styled, { css } from 'styled-components';
 
 // COMPONENTS
 
 // ACTIONS/CONFIG
-import { media } from "../../libs/styled";
+import { media } from '../../libs/styled';
 
 // STYLES
 const ColWrapper = styled.div`
   display: inline-block;
-  padding-right: ${props => props.paddingRight || "10px"};
-  padding-left: ${props => props.paddingLeft || "10px"};
-  width: ${props => props.basis || props.xsBasis || "100%"};
-  flex-basis: ${props => props.basis || props.xsBasis || "100%"};
-  max-width: ${props => props.basis || props.xsBasis || "100%"};
+  padding-right: ${props => props.paddingRight || '10px'};
+  padding-left: ${props => props.paddingLeft || '10px'};
+  width: ${props => props.basis || props.xsBasis || '100%'};
+  flex-basis: ${props => props.basis || props.xsBasis || '100%'};
+  max-width: ${props => props.basis || props.xsBasis || '100%'};
 
   ${media.minSmall} {
     ${props =>

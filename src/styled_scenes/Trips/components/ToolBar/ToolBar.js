@@ -31,7 +31,9 @@ const Wrap = styled.div`
 `;
 
 function ToolBar(props) {
-  return <Wrap>{props.isOwner ? <OwnerToolBar {...props} /> : <NonOwnerToolBar {...props} />}</Wrap>;
+  return (
+    <Wrap>{props.isOwner ? <OwnerToolBar {...props} /> : <NonOwnerToolBar {...props} />}</Wrap>
+  );
 }
 
 ToolBar.propTypes = toolbarProptypes;

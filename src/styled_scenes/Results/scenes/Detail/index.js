@@ -1,33 +1,33 @@
 // NPM
-import React from "react";
-import PropTypes from "prop-types";
-import styled from "styled-components";
-import Media from "react-media";
-import { Link } from "react-router-dom";
-import GoogleMapReact from "google-map-react";
+import React from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import Media from 'react-media';
+import { Link } from 'react-router-dom';
+import GoogleMapReact from 'google-map-react';
 
 // COMPONENTS
-import TopBar from "../../../../components/TopBar";
-import BrandFooter from "../../../../components/BrandFooter";
-import Tag from "../../../../components/Tag";
-import Rating from "../../../../components/Rating";
-import { BadgeIcon } from "./icons";
-import Row from "../../../../components/layout/Row";
-import Col from "../../../../components/layout/Col";
-import TripCart from "../../../../components/Carts/Trip";
-import Review from "../../../../components/Review";
-import DetailPickers from "./components/DetailPickers";
-import Carousel from "../../../../components/Carousel";
-import Button from "../../../../components/Button";
-import ImgSlider from "./components/ImgSlider";
-import MapMaker from "../../../../components/MapMarker";
+import TopBar from '../../../../components/TopBar';
+import BrandFooter from '../../../../components/BrandFooter';
+import Tag from '../../../../components/Tag';
+import Rating from '../../../../components/Rating';
+import { BadgeIcon } from './icons';
+import Row from '../../../../components/layout/Row';
+import Col from '../../../../components/layout/Col';
+import TripCart from '../../../../components/Carts/Trip';
+import Review from '../../../../components/Review';
+import DetailPickers from './components/DetailPickers';
+import Carousel from '../../../../components/Carousel';
+import Button from '../../../../components/Button';
+import ImgSlider from './components/ImgSlider';
+import MapMaker from '../../../../components/MapMarker';
 
 // ACTIONS/CONFIG
-import { media, sizes } from "../../../../libs/styled";
-import { restaurant } from "../../../../data/food";
+import { media, sizes } from '../../../../libs/styled';
+import { restaurant } from '../../../../data/food';
 
 // STYLES
-import { Page, PageContent } from "../../../../components/layout/Page";
+import { Page, PageContent } from '../../../../components/layout/Page';
 
 const DetailWrapper = styled.div`
   width: 100%;
@@ -227,9 +227,7 @@ export default function FoodDetailScene({}) {
           render={() => <ImgSlider images={restaurant.images} />}
         />
         <DetailWrapper>
-          <TagWrap>
-            {restaurant.tags.map(tag => <Tag key={tag.label} item={tag} />)}
-          </TagWrap>
+          <TagWrap>{restaurant.tags.map(tag => <Tag key={tag.label} item={tag} />)}</TagWrap>
           <HeaderWrap>
             <h2>{restaurant.title}</h2>
             <p>{restaurant.description}</p>
@@ -266,7 +264,7 @@ export default function FoodDetailScene({}) {
                 round
                 size="small"
                 onClick={ev => {
-                  alert("Book now.");
+                  alert('Book now.');
                 }}
                 iconAfter="arrow"
                 text="Book now"
@@ -278,7 +276,7 @@ export default function FoodDetailScene({}) {
                 size="small"
                 iconAfter="arrowDown"
                 onClick={ev => {
-                  alert("Adding to trip");
+                  alert('Adding to trip');
                 }}
                 theme="mainFilled"
                 text="Add to trip"
@@ -291,10 +289,7 @@ export default function FoodDetailScene({}) {
           />
           <ContactWrap>
             <MapWrap>
-              <GoogleMapReact
-                defaultCenter={{ lat: 59.95, lng: 30.33 }}
-                defaultZoom={11}
-              >
+              <GoogleMapReact defaultCenter={{ lat: 59.95, lng: 30.33 }} defaultZoom={11}>
                 <MapMaker lat={59.95} lng={30.33} scale={1} color="#4fb798" />
               </GoogleMapReact>
             </MapWrap>
@@ -327,20 +322,9 @@ export default function FoodDetailScene({}) {
           </ContactWrap>
           <TripsWrap>
             <h3>Part of trips</h3>
-            <Carousel
-              show="3"
-              length={restaurant.partOf.length}
-              shadowInside
-              withLoader
-            >
+            <Carousel show="3" length={restaurant.partOf.length} shadowInside withLoader>
               {restaurant.partOf.map(trip => (
-                <TripCart
-                  item={trip}
-                  withShadow
-                  key={trip.title}
-                  smBasis="50%"
-                  mdBasis="33.33%"
-                />
+                <TripCart item={trip} withShadow key={trip.title} smBasis="50%" mdBasis="33.33%" />
               ))}
             </Carousel>
           </TripsWrap>

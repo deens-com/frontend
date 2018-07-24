@@ -73,7 +73,7 @@ export const loginRequest = (email, password) => {
             },
           });
         }
-      }
+      },
     );
   };
 };
@@ -83,7 +83,10 @@ export const loginWithLedger = () => async dispatch => {
     const { getLedgerPublicAddress, ledgerSignMessage } = await import('libs/web3-utils');
     dispatch(displayLedgerLoader(true));
     const publicAddress = await getLedgerPublicAddress();
-    const response = await Parse.Cloud.run('getMetaMaskNonce', { publicAddress: publicAddress, type: 'ledger' });
+    const response = await Parse.Cloud.run('getMetaMaskNonce', {
+      publicAddress: publicAddress,
+      type: 'ledger',
+    });
     console.log(response);
     if (response.code === 404) {
       dispatch({

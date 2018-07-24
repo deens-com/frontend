@@ -1,15 +1,15 @@
 // NPM
-import React from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-import Media from "react-media";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import Media from 'react-media';
 
 // COMPONENTS
-import { Logo, DropArrow } from "../../icons";
+import { Logo, DropArrow } from '../../icons';
 
 // ACTIONS/CONFIG
-import { sizes, resetButton } from "../../../libs/styled";
+import { sizes, resetButton } from '../../../libs/styled';
 
 // STYLES
 const Wrap = styled.div`
@@ -24,10 +24,10 @@ const LogoWrap = styled.span`
 `;
 
 const ArrowWrap = styled.span`
-  color: ${props => (props.menuIsOpened ? "#62B69E" : "white")};
+  color: ${props => (props.menuIsOpened ? '#62B69E' : 'white')};
   display: inline-block;
   font-size: 12px;
-  transform: rotate(${props => (props.menuIsOpened ? "180deg" : "0deg")});
+  transform: rotate(${props => (props.menuIsOpened ? '180deg' : '0deg')});
   transition: transform 0.2s ease-out, color 0.1s ease-out;
   width: 15px;
 `;
@@ -58,21 +58,13 @@ const LogoLink = styled(Link)`
 `;
 
 // MODULE
-export default function TopBarLogo({
-  menuIsOpened,
-  toggleMenu,
-  applyFixation
-}) {
+export default function TopBarLogo({ menuIsOpened, toggleMenu, applyFixation }) {
   return (
     <Media query={`(max-width: ${sizes.large})`}>
       {matches =>
         matches ? (
           <Wrap applyFixation={applyFixation}>
-            <LogoButton
-              aria-label="Main navigation menu"
-              aria-haspopup={true}
-              onClick={toggleMenu}
-            >
+            <LogoButton aria-label="Main navigation menu" aria-haspopup={true} onClick={toggleMenu}>
               <LogoWrap>
                 <Logo />
               </LogoWrap>
@@ -97,5 +89,5 @@ export default function TopBarLogo({
 TopBarLogo.propTypes = {
   menuIsOpened: PropTypes.bool.isRequired,
   toggleMenu: PropTypes.func.isRequired,
-  applyFixation: PropTypes.bool.isRequired
+  applyFixation: PropTypes.bool.isRequired,
 };

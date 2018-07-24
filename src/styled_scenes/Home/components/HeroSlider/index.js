@@ -1,13 +1,13 @@
 // NPM
-import React, { Component } from "react";
-import styled from "styled-components";
+import React, { Component } from 'react';
+import styled from 'styled-components';
 
 // COMPONENTS
-import { ArrowIcon } from "../../../../shared_components/icons";
-import SliderPerson from "./SliderPerson";
+import { ArrowIcon } from '../../../../shared_components/icons';
+import SliderPerson from './SliderPerson';
 
 // ACTIONS/CONFIG
-import { resetButton } from "../../../../libs/styled";
+import { resetButton } from '../../../../libs/styled';
 
 // STYLES
 const Wrap = styled.div`
@@ -20,12 +20,8 @@ const Wrap = styled.div`
 `;
 
 const BGImage = styled.div`
-  background-image: linear-gradient(
-      176deg,
-      rgba(0, 0, 0, 0.31) 0%,
-      rgba(0, 0, 0, 0.72)
-    ),
-    url(${props => props.img || "#"});
+  background-image: linear-gradient(176deg, rgba(0, 0, 0, 0.31) 0%, rgba(0, 0, 0, 0.72)),
+    url(${props => props.img || '#'});
   background-size: cover;
   bottom: 0;
   left: 0;
@@ -65,7 +61,6 @@ const RightArrow = Arrow.extend`
   transform: translateY(-50%);
 `;
 
-
 // NOTE: If you update any of the urls in the below array, make sure you also update it in index.html
 // where we're pre-fetching all these images
 // If you fail to do so, we might load images that may never be used.
@@ -73,40 +68,40 @@ const RightArrow = Arrow.extend`
 // - @jaydp
 const slider = [
   {
-    name: "Cycling",
-    location: "Patagonia, Chile",
-    avatar: "#",
-    image: 'https://please-com.imgix.net/static/hero-slider/beach-2018-07-13.jpg'
+    name: 'Cycling',
+    location: 'Patagonia, Chile',
+    avatar: '#',
+    image: 'https://please-com.imgix.net/static/hero-slider/beach-2018-07-13.jpg',
   },
   {
-    name: "Rock diving",
-    location: "Bali, Indonesia",
-    avatar: "#",
-    image: 'https://please-com.imgix.net/static/hero-slider/back-2018-07-13.jpg'
+    name: 'Rock diving',
+    location: 'Bali, Indonesia',
+    avatar: '#',
+    image: 'https://please-com.imgix.net/static/hero-slider/back-2018-07-13.jpg',
   },
   {
-    name: "Sky diving",
-    location: "Chaing Mai, Thailand",
-    avatar: "#",
-    image: 'https://please-com.imgix.net/static/hero-slider/jump-2018-07-13.jpg'
+    name: 'Sky diving',
+    location: 'Chaing Mai, Thailand',
+    avatar: '#',
+    image: 'https://please-com.imgix.net/static/hero-slider/jump-2018-07-13.jpg',
   },
   {
-    name: "Beach",
-    location: "Chaing Mai, Thailand",
-    avatar: "#",
-    image: 'https://please-com.imgix.net/static/hero-slider/beach-2018-07-13.jpg'
+    name: 'Beach',
+    location: 'Chaing Mai, Thailand',
+    avatar: '#',
+    image: 'https://please-com.imgix.net/static/hero-slider/beach-2018-07-13.jpg',
   },
   {
-    name: "Field",
-    location: "Chaing Mai, Thailand",
-    avatar: "#",
-    image: 'https://please-com.imgix.net/static/hero-slider/field-2018-07-13.jpg'
+    name: 'Field',
+    location: 'Chaing Mai, Thailand',
+    avatar: '#',
+    image: 'https://please-com.imgix.net/static/hero-slider/field-2018-07-13.jpg',
   },
   {
-    name: "Trekking",
-    location: "Chaing Mai, Thailand",
-    avatar: "#",
-    image: 'https://please-com.imgix.net/static/hero-slider/trekking-2018-07-13.jpg'
+    name: 'Trekking',
+    location: 'Chaing Mai, Thailand',
+    avatar: '#',
+    image: 'https://please-com.imgix.net/static/hero-slider/trekking-2018-07-13.jpg',
   },
 ];
 
@@ -114,7 +109,7 @@ export default class HeroSlider extends Component {
   constructor() {
     super();
     this.state = {
-      index: 0
+      index: 0,
     };
 
     this.goToNext = this.goToNext.bind(this);
@@ -173,11 +168,7 @@ export default class HeroSlider extends Component {
         <RightArrow onClick={this.goToNext}>
           <ArrowIcon />
         </RightArrow>
-        <SliderPerson
-          name={currImg.name}
-          location={currImg.location}
-          avatar={currImg.avatar}
-        />
+        <SliderPerson name={currImg.name} location={currImg.location} avatar={currImg.avatar} />
       </Wrap>
     );
   }

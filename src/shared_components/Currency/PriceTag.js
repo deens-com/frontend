@@ -36,9 +36,13 @@ class PriceTag extends Component {
       case 'BTC':
         return priceInBitcoin.toFixed(8);
       case 'ETH':
-        return (priceInBitcoin * this.props.baseCurrency.rates[this.props.baseCurrency.value]).toFixed(4);
+        return (
+          priceInBitcoin * this.props.baseCurrency.rates[this.props.baseCurrency.value]
+        ).toFixed(4);
       default:
-        return (priceInBitcoin * this.props.baseCurrency.rates[this.props.baseCurrency.value]).toFixed(2);
+        return (
+          priceInBitcoin * this.props.baseCurrency.rates[this.props.baseCurrency.value]
+        ).toFixed(2);
     }
   }
 
@@ -70,5 +74,5 @@ const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(PriceTag);

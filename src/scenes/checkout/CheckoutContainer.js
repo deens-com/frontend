@@ -34,4 +34,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators(tripActions, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(CheckoutContainer));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withRouter(CheckoutContainer));

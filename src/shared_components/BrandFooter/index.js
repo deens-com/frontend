@@ -1,22 +1,20 @@
 // NPM
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 // COMPONENTS
-import { Logo } from "../icons";
-import { Instagram, Twitter, Facebook } from "./icons";
+import { Logo } from '../icons';
+import { Instagram, Twitter, Facebook } from './icons';
 
 // ACTIONS/CONFIG
-import { media } from "../../libs/styled";
+import { media } from '../../libs/styled';
 
 // STYLES
 const Wrapper = styled.footer`
-  padding: ${props =>
-    props.withPadding ? "10px 25px 15px 25px" : "10px 0 15px 0"};
+  padding: ${props => (props.withPadding ? '10px 25px 15px 25px' : '10px 0 15px 0')};
   display: flex;
   flex-direction: column;
-  border-top: 1px solid
-    ${props => (props.withTopBorder ? "#efeff0" : "transparent")};
+  border-top: 1px solid ${props => (props.withTopBorder ? '#efeff0' : 'transparent')};
 
   ${media.minSmall} {
     flex-direction: row;
@@ -68,42 +66,46 @@ export default function Footer({ withTopBorder, withPadding }) {
   return (
     <Wrapper withTopBorder={withTopBorder} withPadding={withPadding}>
       <Company>
-        <Logo style={{width: "120px", marginRight: "10px"}} />
+        <Logo style={{ width: '120px', marginRight: '10px' }} />
         <span>© Please.com</span>
       </Company>
       <Nav>
         <div>
-          <ALink target="_blank" href="https://vision.please.com/assets/terms.pdf">Terms</ALink>
-          <ALink target="_blank" href="https://vision.please.com/assets/privacy.pdf">Privacy</ALink>
+          <ALink target="_blank" href="https://vision.please.com/assets/terms.pdf">
+            Terms
+          </ALink>
+          <ALink target="_blank" href="https://vision.please.com/assets/privacy.pdf">
+            Privacy
+          </ALink>
         </div>
         <div>
           <ALink href="https://www.facebook.com/PleaseDotCom" target="_blank">
             <Facebook
               style={{
-                height: "16px",
-                width: "16px",
-                display: "block",
-                fill: "rgb(118, 118, 118)"
+                height: '16px',
+                width: '16px',
+                display: 'block',
+                fill: 'rgb(118, 118, 118)',
               }}
             />
           </ALink>
           <ALink href="https://twitter.com/PleaseDotCom" target="_blank">
             <Twitter
               style={{
-                height: "16px",
-                width: "16px",
-                display: "block",
-                fill: "rgb(118, 118, 118)"
+                height: '16px',
+                width: '16px',
+                display: 'block',
+                fill: 'rgb(118, 118, 118)',
               }}
             />
           </ALink>
           <ALink href="https://www.instagram.com/PleaseDotCom/" target="_blank">
             <Instagram
               style={{
-                height: "16px",
-                width: "16px",
-                display: "block",
-                fill: "rgb(118, 118, 118)"
+                height: '16px',
+                width: '16px',
+                display: 'block',
+                fill: 'rgb(118, 118, 118)',
               }}
             />
           </ALink>

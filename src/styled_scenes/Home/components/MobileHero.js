@@ -1,9 +1,9 @@
 // NPM
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 // COMPONENTS
-import back from "./HeroSlider/img/back.jpg";
+import back from './HeroSlider/img/back.jpg';
 
 // ACTIONS/CONFIG
 
@@ -15,11 +15,7 @@ const Wrap = styled.div`
   right: 0;
   bottom: 0;
   z-index: 0;
-  background-image: linear-gradient(
-      135deg,
-      rgba(7, 82, 83, 0.23) 0%,
-      rgba(2, 38, 54, 0.65)
-    ),
+  background-image: linear-gradient(135deg, rgba(7, 82, 83, 0.23) 0%, rgba(2, 38, 54, 0.65)),
     url(${back});
   background-size: cover;
   background-position: center;

@@ -1,17 +1,17 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import validator from "validator";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import validator from 'validator';
 
-import LoginFormComponent from "./../components/login_form_component";
-import * as sessionsActions from "./../actions";
+import LoginFormComponent from './../components/login_form_component';
+import * as sessionsActions from './../actions';
 
 class SessionsContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "",
-      password: ""
+      email: '',
+      password: '',
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -21,10 +21,14 @@ class SessionsContainer extends Component {
 
   parseLogin = event => {
     event.preventDefault();
-    if(!this.state.email){ this.setState({ [`email-error`]: true }); }
-    if(!this.state.password){ this.setState({ [`password-error`]: true }); }
-    if(!this.state.email || !this.state.password){
-      return this.props.login_error("Empty email or password");
+    if (!this.state.email) {
+      this.setState({ [`email-error`]: true });
+    }
+    if (!this.state.password) {
+      this.setState({ [`password-error`]: true });
+    }
+    if (!this.state.email || !this.state.password) {
+      return this.props.login_error('Empty email or password');
     }
     this.props.loginRequest(this.state.email, this.state.password);
   };
@@ -35,16 +39,16 @@ class SessionsContainer extends Component {
     const name = target.name;
 
     this.setState({
-      [name]: value
+      [name]: value,
     });
   }
 
   validateEmailInput(target) {
     const { name, value } = target;
 
-    if (name === "email" && value.length > 0 && !validator.isEmail(value)) {
+    if (name === 'email' && value.length > 0 && !validator.isEmail(value)) {
       return this.setState({
-        [`${name}-error`]: true
+        [`${name}-error`]: true,
       });
     }
   }
@@ -52,9 +56,9 @@ class SessionsContainer extends Component {
   validatePasswordInput(target) {
     const { name, value } = target;
 
-    if (name === "password" && value.length < 6) {
+    if (name === 'password' && value.length < 6) {
       return this.setState({
-        [`${name}-error`]: true
+        [`${name}-error`]: true,
       });
     }
   }
@@ -79,11 +83,11 @@ class SessionsContainer extends Component {
   };
 
   isInputInvalid(name) {
-    return this.state[name + "-error"];
+    return this.state[name + '-error'];
   }
 
   isLoginError() {
-    return Object.keys(this.props.loginError).includes("code");
+    return Object.keys(this.props.loginError).includes('code');
   }
 
   componentDidMount() {
@@ -122,7 +126,7 @@ const mapStateToProps = state => {
     loginError: state.SessionsReducer.loginError,
     metaMaskError: state.SessionsReducer.metaMaskError,
     ledgerError: state.SessionsReducer.ledgerError,
-    isLedgerLoaderDisplayed: state.SessionsReducer.isLedgerLoaderDisplayed
+    isLedgerLoaderDisplayed: state.SessionsReducer.isLedgerLoaderDisplayed,
   };
 };
 
@@ -130,4 +134,7 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators(sessionsActions, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SessionsContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(SessionsContainer);

@@ -144,7 +144,7 @@ export default class TripsScene extends Component {
         city: query.city,
         country: query.country,
       },
-      true
+      true,
     );
   };
 
@@ -186,7 +186,7 @@ export default class TripsScene extends Component {
           longitude,
         })),
       ],
-      []
+      [],
     );
   };
 
@@ -255,7 +255,8 @@ export default class TripsScene extends Component {
                 </ActionsWrap>
                 <ShareBg
                   src={
-                    (trip && trip.picture && trip.picture.url) || 'https://please-com.imgix.net/static/food/mamamia.jpg'
+                    (trip && trip.picture && trip.picture.url) ||
+                    'https://please-com.imgix.net/static/food/mamamia.jpg'
                   }
                   background
                 />
@@ -266,7 +267,13 @@ export default class TripsScene extends Component {
                   <MapWrapper>
                     <GoogleMapReact center={this.state.center} zoom={this.state.zoom}>
                       {this.getMarkerLatLngs(this.props).map(({ key, latitude, longitude }) => (
-                        <MapMaker key={key} lat={latitude} lng={longitude} scale={1} color="#4fb798" />
+                        <MapMaker
+                          key={key}
+                          lat={latitude}
+                          lng={longitude}
+                          scale={1}
+                          color="#4fb798"
+                        />
                       ))}
                     </GoogleMapReact>
                   </MapWrapper>
@@ -275,7 +282,10 @@ export default class TripsScene extends Component {
             </LeftWrap>
             <TripWrapper>
               {trip.booked && this.state.isOwner ? (
-                <Message>This trip has already been booked on {moment(query.startDate).format('Do MMM YYYY')}.</Message>
+                <Message>
+                  This trip has already been booked on{' '}
+                  {moment(query.startDate).format('Do MMM YYYY')}.
+                </Message>
               ) : null}
               <ToolBar
                 onSubmit={this.onSubmit}
@@ -288,7 +298,9 @@ export default class TripsScene extends Component {
               />
               <TagsWrapper>
                 {trip.tags &&
-                  trip.tags.map(tag => <Tag item={tag} href={`/results?tags=${tag.label}`} key={tag.label} />)}
+                  trip.tags.map(tag => (
+                    <Tag item={tag} href={`/results?tags=${tag.label}`} key={tag.label} />
+                  ))}
               </TagsWrapper>
               <Divider horizontal>Trip itinerary</Divider>
               <Results

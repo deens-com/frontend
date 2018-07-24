@@ -6,15 +6,25 @@ import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete';
 import styled from 'styled-components';
 import serviceTags from './service-tags';
 import LocationFormControl from '../Form/LocationControl';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import history from './../../main/history';
 import { isMobile } from 'libs/Utils';
 import i18n from './../../libs/i18n';
 import Image from 'shared_components/Image';
-const serviceTypes = [{label: i18n.t('places.singular'), value: 'place'}, {label: i18n.t('activities.singular'), value: 'activity'}, {label: i18n.t('foods.singular'), value: 'food'}];
-const serviceTypeDropdownOptions = serviceTypes.map(text => ({ value: text.value, text: text.label }));
+const serviceTypes = [
+  { label: i18n.t('places.singular'), value: 'place' },
+  { label: i18n.t('activities.singular'), value: 'activity' },
+  { label: i18n.t('foods.singular'), value: 'food' },
+];
+const serviceTypeDropdownOptions = serviceTypes.map(text => ({
+  value: text.value,
+  text: text.label,
+}));
 const hours = Array.from({ length: 24 }, (v, k) => k);
-const hoursDropdownOptions = hours.map(h => ({ value: h, text: h.toString().padStart(2, '0') + ':00' }));
+const hoursDropdownOptions = hours.map(h => ({
+  value: h,
+  text: h.toString().padStart(2, '0') + ':00',
+}));
 const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 const tagsDropdownOptions = serviceTags.map(value => ({ text: value, value }));
@@ -96,7 +106,9 @@ class ServiceForm extends Component {
         const latlngPromise = getLatLng(currentResult);
         setFieldValue('formattedAddress', currentResult.formatted_address);
         const { address_components: addressComponents } = currentResult;
-        const localities = addressComponents.filter(c => c.types.includes('locality') || c.types.includes('postal_town'));
+        const localities = addressComponents.filter(
+          c => c.types.includes('locality') || c.types.includes('postal_town'),
+        );
         const countries = addressComponents.filter(c => c.types.includes('country'));
         if (countries[0] && countries[0].long_name) {
           setFieldValue('country', countries[0].long_name);
@@ -127,13 +139,13 @@ class ServiceForm extends Component {
     history.push('/services/edit/' + this.state.serviceId);
     this.setState({ showGlobalError: false });
     this.props.resetErrors();
-  }
+  };
 
   redeploy = (values, serviceId) => {
     this.props.resetErrors();
     this.setState({ showGlobalError: false });
     this.props.onRedeployContract(values, serviceId);
-  }
+  };
 
   render() {
     const {
@@ -156,12 +168,16 @@ class ServiceForm extends Component {
     const userHasConnectedWallet =
       userProfile && (userProfile.ledgerPublicAddress || userProfile.metamaskPublicAddress);
 
-    const serviceHasContract =
-      service && service.contractAddress != null;
+    const serviceHasContract = service && service.contractAddress != null;
 
     return (
       <Form onSubmit={handleSubmit} loading={submitInFlight}>
-        <Modal closeOnDimmerClick={false} size="tiny" open={this.state.showGlobalError} onClose={this.handleModalClose}>
+        <Modal
+          closeOnDimmerClick={false}
+          size="tiny"
+          open={this.state.showGlobalError}
+          onClose={this.handleModalClose}
+        >
           <Modal.Header>There was an issue with creating your service</Modal.Header>
           <Modal.Content>{globalError.message}</Modal.Content>
           <Modal.Actions>
@@ -227,7 +243,8 @@ class ServiceForm extends Component {
             error={!!(touched.pricePerSession && errors.pricePerSession)}
             {...defaultProps}
           />
-          {touched.pricePerSession && errors.pricePerSession && <ErrorMsg>{errors.pricePerSession}</ErrorMsg>}
+          {touched.pricePerSession &&
+            errors.pricePerSession && <ErrorMsg>{errors.pricePerSession}</ErrorMsg>}
         </Form.Field>
 
         {/* Available Days */}
@@ -244,7 +261,8 @@ class ServiceForm extends Component {
                 onChange={this.onAvailableDaysChange}
               />
             ))}
-            {touched.availableDays && errors.availableDays && <ErrorMsg>{errors.availableDays}</ErrorMsg>}
+            {touched.availableDays &&
+              errors.availableDays && <ErrorMsg>{errors.availableDays}</ErrorMsg>}
           </Form.Field>
         </Form.Group>
 
@@ -326,8 +344,15 @@ class ServiceForm extends Component {
           <Flex>
             {!values.mainPicture &&
               service &&
-              service.mainPicture && <Image src={service.mainPicture.url} alt="service" height="43px" />}
-            <input type="file" name="mainPicture" accept=".jpg, .jpeg, .png" onChange={this.onFileSelect} />
+              service.mainPicture && (
+                <Image src={service.mainPicture.url} alt="service" height="43px" />
+              )}
+            <input
+              type="file"
+              name="mainPicture"
+              accept=".jpg, .jpeg, .png"
+              onChange={this.onFileSelect}
+            />
           </Flex>
         </Form.Field>
 
@@ -346,26 +371,29 @@ class ServiceForm extends Component {
                   label="Yes, deploy service as a smart contract"
                   disabled={serviceHasContract}
                 />
-                {serviceHasContract && <span>* Can't update the service smart contract once contract has been deployed</span>}
+                {serviceHasContract && (
+                  <span>
+                    * Can't update the service smart contract once contract has been deployed
+                  </span>
+                )}
                 {!service &&
                   userProfile.ledgerPublicAddress && (
                     <p>
-                      Before clicking submit, make sure you are connected on the Ethereum app in your Ledger and that
-                      it's not on standby mode
+                      Before clicking submit, make sure you are connected on the Ethereum app in
+                      your Ledger and that it's not on standby mode
                     </p>
                   )}
               </Form.Field>
             </Message.Content>
           </Message>
-        ) :
-        (
+        ) : (
           !service && (
             <Message info>
               <Message.Header>Deploy smart contract and accept payments in Ethereum</Message.Header>
               <br />
               <Message.Content>
-                If you want to deploy a smart contract and accept payments in Ethereum, you should connect your account
-                with Ledger or MetaMask. <br />
+                If you want to deploy a smart contract and accept payments in Ethereum, you should
+                connect your account with Ledger or MetaMask. <br />
                 <br />
                 <strong>
                   <Link to="/account/settings">Click here</Link>
@@ -374,8 +402,7 @@ class ServiceForm extends Component {
               </Message.Content>
             </Message>
           )
-        )
-      }
+        )}
 
         <Form.Button disabled={submitInFlight}>{this.props.submitButtonText}</Form.Button>
       </Form>
@@ -419,7 +446,8 @@ function validate(values) {
 function checkRequiredFields(values, requiredFields) {
   return requiredFields.reduce((errors, fieldName) => {
     const fieldValue = values[fieldName];
-    if (fieldValue == null || fieldValue.length === 0 || fieldValue.size === 0) errors[fieldName] = 'Required';
+    if (fieldValue == null || fieldValue.length === 0 || fieldValue.size === 0)
+      errors[fieldName] = 'Required';
     return errors;
   }, {});
 }
@@ -436,7 +464,10 @@ export default withFormik({
     closingTime: service && service.closingTime != null ? service.closingTime : null,
     slots: service && service.slots != null ? service.slots : '',
     latlong:
-      (service && service.latitude && service.longitude && { lat: service.latitude, lng: service.longitude }) || null,
+      (service &&
+        service.latitude &&
+        service.longitude && { lat: service.latitude, lng: service.longitude }) ||
+      null,
     tags: (service && service.tags) || [],
     formattedAddress: (service && service.formattedAddress) || undefined,
   }),

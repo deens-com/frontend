@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import TopBar from '../../shared_components/TopBarWithSearch';
 import Logo from '../../shared_components/TopBar/Logo';
 import BrandFooter from '../../shared_components/BrandFooter';
-import {Divider} from 'semantic-ui-react';
+import { Divider } from 'semantic-ui-react';
 // ACTIONS/CONFIG
 
 // STYLES
@@ -47,13 +47,11 @@ export default function NotFoundScene({ showScene }) {
   if (!showScene) return innerElements;
   return (
     <Page>
-        <TopBar>
-          <Logo />
-          <span>Links</span>
-        </TopBar>
-      <PageContent>
-        {innerElements}
-      </PageContent>
+      <TopBar>
+        <Logo />
+        <span>Links</span>
+      </TopBar>
+      <PageContent>{innerElements}</PageContent>
     </Page>
   );
 }

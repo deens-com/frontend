@@ -155,8 +155,13 @@ export default class LocationFormControl extends Component {
           <InnerLeftIcon focused={this.state.focused}>
             <PinIcon />
           </InnerLeftIcon>
-          <PlacesAutocomplete inputProps={this.inputProps} styles={customStyles} onSelect={this.onSelect} />
-          {this.props.error || (this.state.error && <FormError>{this.props.error || this.state.error}</FormError>)}
+          <PlacesAutocomplete
+            inputProps={this.inputProps}
+            styles={customStyles}
+            onSelect={this.onSelect}
+          />
+          {this.props.error ||
+            (this.state.error && <FormError>{this.props.error || this.state.error}</FormError>)}
         </InnerWrap>
       </FormGroup>
     );

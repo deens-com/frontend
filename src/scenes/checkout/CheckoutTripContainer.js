@@ -20,4 +20,7 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, null)(CheckoutTripContainer);
+export default connect(
+  mapStateToProps,
+  null,
+)(CheckoutTripContainer);

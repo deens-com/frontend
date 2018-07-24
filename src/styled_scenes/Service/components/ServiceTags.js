@@ -31,7 +31,11 @@ const ServiceTags = ({ service }) => {
   return (
     <TagWrap>
       {contractAddress && (
-        <SmartContractStatus.Wrapper size="large" status={service.contractStatus} hash={service.hash} />
+        <SmartContractStatus.Wrapper
+          size="large"
+          status={service.contractStatus}
+          hash={service.hash}
+        />
       )}
       {contractAddress && tags.length > 0 && <Divider />}
       {tags.map(tag => <Tag key={tag.label} item={tag} href={`/results?tags=${tag.label}`} />)}

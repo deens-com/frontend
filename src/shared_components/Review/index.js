@@ -65,7 +65,8 @@ export default function ReviewCart({ review }) {
   const reviewerProfileLink = `/users/${reviewer.username}`;
   let reviewerLocation = '';
   if (reviewer.city && reviewer.country) reviewerLocation = `${reviewer.city}, ${reviewer.country}`;
-  else if (reviewer.city || reviewer.country) reviewerLocation = `${reviewer.city} ${reviewer.country}`.trim();
+  else if (reviewer.city || reviewer.country)
+    reviewerLocation = `${reviewer.city} ${reviewer.country}`.trim();
   return (
     <Wrap>
       <ProfileWrap>

@@ -99,7 +99,10 @@ export default class TripSummary extends Component {
             <PriceTag price={this.calculateTripTotalPrice()} unit="hidden" />
             &nbsp;&nbsp;
             <h6>Total Price : &nbsp;</h6>
-            <PriceTag price={this.calculateTripTotalPrice() * this.props.query.person.value} unit="hidden" />
+            <PriceTag
+              price={this.calculateTripTotalPrice() * this.props.query.person.value}
+              unit="hidden"
+            />
             &nbsp;&nbsp;
           </PricesWrap>
           {booked && isOwner ? null : (

@@ -5,7 +5,7 @@ import UserBasicInfo from './../../components/UserBasicInfo';
 import { Link } from 'react-router-dom';
 
 import TripSectionComponent from './../shared/TripSectionComponent';
-import {scrollDownMobileOnly} from './../shared/scrollDownMobileOnly';
+import { scrollDownMobileOnly } from './../shared/scrollDownMobileOnly';
 
 const AccountTripsScene = props => {
   return (
@@ -17,10 +17,16 @@ const AccountTripsScene = props => {
       </Grid.Column>
       <Grid.Column mobile={16} tablet={11} computer={12}>
         <h1>My Trips</h1>
-        <Link to="/account/trips/all" onClick={scrollDownMobileOnly} style={{ borderBottom: '2px solid #50a189' }}>
+        <Link
+          to="/account/trips/all"
+          onClick={scrollDownMobileOnly}
+          style={{ borderBottom: '2px solid #50a189' }}
+        >
           All
         </Link>&nbsp; | &nbsp;
-        <Link to="/account/trips/planned" onClick={scrollDownMobileOnly}>Planned</Link>&nbsp; | &nbsp;
+        <Link to="/account/trips/planned" onClick={scrollDownMobileOnly}>
+          Planned
+        </Link>&nbsp; | &nbsp;
         <Link to="/account/trips/completed" onClick={scrollDownMobileOnly}>
           Completed
         </Link>

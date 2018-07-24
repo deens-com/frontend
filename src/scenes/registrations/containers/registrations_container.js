@@ -1,18 +1,18 @@
-import React, { Component } from "react";
-import RegistrationsComponent from "./../components/registrations_component";
-import * as registrations_actions from "./../actions";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import validator from "validator";
+import React, { Component } from 'react';
+import RegistrationsComponent from './../components/registrations_component';
+import * as registrations_actions from './../actions';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import validator from 'validator';
 class RegistrationsContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "",
-      email: "",
-      password: "",
-      password_confirmation: "",
-      errors: {}
+      username: '',
+      email: '',
+      password: '',
+      password_confirmation: '',
+      errors: {},
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.isInputInvalid = this.isInputInvalid.bind(this);
@@ -25,18 +25,18 @@ class RegistrationsContainer extends Component {
 
   validateEmailInput(target) {
     const { name, value } = target;
-    if (name === "email" && value.length > 0 && value.includes("@") === false) {
+    if (name === 'email' && value.length > 0 && value.includes('@') === false) {
       return this.setState({
-        [`${name}-error`]: true
+        [`${name}-error`]: true,
       });
     }
   }
 
   validatePasswordInput(target) {
     const { name, value } = target;
-    if (name === "password" && value.length < 6) {
+    if (name === 'password' && value.length < 6) {
       return this.setState({
-        [`${name}-error`]: true
+        [`${name}-error`]: true,
       });
     }
   }
@@ -60,43 +60,39 @@ class RegistrationsContainer extends Component {
   };
 
   isInputInvalid(name) {
-    return this.state[name + "-error"];
+    return this.state[name + '-error'];
   }
 
   parseRegister = () => {
     if (this.state.password !== this.state.password_confirmation) {
-      this.setState({ errors: { message: "Password does not match" } });
+      this.setState({ errors: { message: 'Password does not match' } });
       return;
     }
     if (this.state.password.length < 6) {
       this.setState({
-        errors: { message: "Password must be at least 6 characters long" }
+        errors: { message: 'Password must be at least 6 characters long' },
       });
       return;
     }
     if (this.state.username.length < 4) {
       this.setState({
-        errors: { message: "Username must be at least 4 characters long" }
+        errors: { message: 'Username must be at least 4 characters long' },
       });
       return;
     }
     if (!validator.isEmail(this.state.email)) {
       this.setState({
-        errors: { message: "Please enter a valid email address" }
+        errors: { message: 'Please enter a valid email address' },
       });
       return;
     }
     const email = this.state.email.toLowerCase();
-    this.props.postRegistration(
-      this.state.username,
-      email,
-      this.state.password
-    );
+    this.props.postRegistration(this.state.username, email, this.state.password);
   };
 
   handleInputChange(event) {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   }
 
@@ -125,7 +121,7 @@ class RegistrationsContainer extends Component {
 const mapStateToProps = state => {
   return {
     session: state.RegistrationsReducer.session,
-    errors: state.RegistrationsReducer.errors
+    errors: state.RegistrationsReducer.errors,
   };
 };
 
@@ -133,6 +129,7 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators(registrations_actions, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  RegistrationsContainer
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(RegistrationsContainer);

@@ -56,13 +56,21 @@ const renderTrip = trip => {
         <Link to={linkToTrip}>
           <InlineH2>{trip.title}</InlineH2>
         </Link>
-        <Button as={Link} basic icon labelPosition="left" size="tiny" to={`/trips/${trip.objectId}/edit`}>
+        <Button
+          as={Link}
+          basic
+          icon
+          labelPosition="left"
+          size="tiny"
+          to={`/trips/${trip.objectId}/edit`}
+        >
           <Icon name="edit" />
           Edit
         </Button>
       </TripTitleRow>
       <ColoredText>
-        {trip.beginDate && moment(trip.beginDate).format('L')} - {trip.endDate && moment(trip.endDate).format('L')}
+        {trip.beginDate && moment(trip.beginDate).format('L')} -{' '}
+        {trip.endDate && moment(trip.endDate).format('L')}
       </ColoredText>
       <Label color={get_label_color(trip.status)}>Trip visibility: {trip.status}</Label>
       {trip.booked ? <Label color="olive">purchased</Label> : null}
@@ -70,10 +78,14 @@ const renderTrip = trip => {
       <br />
       <CarouselWrapper>
         <Carousel sm_slides_nb={1} md_slides_nb={2} lg_slides_nb={4} xl_slides_nb={4}>
-          {trip.services.map((item, index) => <LocationCart item={item} index={index} key={item.objectId} />)}
+          {trip.services.map((item, index) => (
+            <LocationCart item={item} index={index} key={item.objectId} />
+          ))}
         </Carousel>
       </CarouselWrapper>
-      {trip.services.length ? null : <EmptyServicesText>No scheduled services in this trip</EmptyServicesText>}
+      {trip.services.length ? null : (
+        <EmptyServicesText>No scheduled services in this trip</EmptyServicesText>
+      )}
       <br />
     </SectionContent>
   );

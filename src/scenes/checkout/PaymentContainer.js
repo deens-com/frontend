@@ -37,5 +37,5 @@ const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(PaymentContainer);

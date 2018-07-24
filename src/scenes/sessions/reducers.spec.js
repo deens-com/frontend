@@ -1,77 +1,77 @@
-import reducers from "./reducers";
+import reducers from './reducers';
 
-describe("sessions reducer", () => {
-  it("should handle initial state", () => {
+describe('sessions reducer', () => {
+  it('should handle initial state', () => {
     expect(reducers(undefined, {})).toEqual({
       session: {},
       loginError: {},
       metaMaskError: {},
       ledgerError: {},
-      baseCurrency: {label: "$", value: "USD", rates: {}},
-      isLedgerLoaderDisplayed: false
+      baseCurrency: { label: '$', value: 'USD', rates: {} },
+      isLedgerLoaderDisplayed: false,
     });
   });
 
-  it("should handle LOGIN_ERROR", () => {
+  it('should handle LOGIN_ERROR', () => {
     expect(
       reducers(undefined, {
-        type: "LOGIN_ERROR",
+        type: 'LOGIN_ERROR',
         payload: {
           code: 111,
-          message: "Network error"
-        }
-      })
+          message: 'Network error',
+        },
+      }),
     ).toEqual({
-      loginError: { code: 111, message: "Network error" },
+      loginError: { code: 111, message: 'Network error' },
       session: {},
       metaMaskError: {},
       ledgerError: {},
-      baseCurrency: {label: "$", value: "USD", rates: {}},
-      isLedgerLoaderDisplayed: false
+      baseCurrency: { label: '$', value: 'USD', rates: {} },
+      isLedgerLoaderDisplayed: false,
     });
   });
 
-  it("should handle LOGIN_SUCCESS", () => {
+  it('should handle LOGIN_SUCCESS', () => {
     expect(
       reducers(undefined, {
-        type: "LOGIN_SUCCESS",
+        type: 'LOGIN_SUCCESS',
         payload: {
           session: {
-            hello: "world"
-          }
-        }
-      })
+            hello: 'world',
+          },
+        },
+      }),
     ).toEqual({
       loginError: {},
       session: {
-        hello: "world"
+        hello: 'world',
       },
       metaMaskError: {},
       ledgerError: {},
-      baseCurrency: {label: "$", value: "USD", rates: {}},
-      isLedgerLoaderDisplayed: false
+      baseCurrency: { label: '$', value: 'USD', rates: {} },
+      isLedgerLoaderDisplayed: false,
     });
   });
 
-  it("should clear the previous login error state when handle LOGIN_SUCCESS", () => {
+  it('should clear the previous login error state when handle LOGIN_SUCCESS', () => {
     const initialState = {
-      loginError: { code: 111, message: "Network error" },
-      session: {}
+      loginError: { code: 111, message: 'Network error' },
+      session: {},
     };
     expect(
       reducers(initialState, {
-        type: "LOGIN_SUCCESS",
+        type: 'LOGIN_SUCCESS',
         payload: {
           session: {
-            hello: "world"
-          }
-        }
-      })
+            hello: 'world',
+          },
+        },
+      }),
     ).toEqual({
       loginError: {},
       session: {
-        hello: "world"
-      }
+        hello: 'world',
+      },
     });
   });
 });

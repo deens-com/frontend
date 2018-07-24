@@ -13,7 +13,7 @@ class NewServiceFormContainer extends Component {
 
   redeployFailedContract = (values, serviceId) => {
     this.props.redeployContract(values, serviceId, this.props.history);
-  }
+  };
 
   componentDidMount() {
     this.props.fetchUserProfile();
@@ -43,5 +43,5 @@ const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(withRouter(NewServiceFormContainer));

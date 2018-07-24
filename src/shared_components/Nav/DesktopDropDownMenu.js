@@ -1,19 +1,19 @@
 // NPM
-import React, {Component} from "react";
-import styled from "styled-components";
+import React, { Component } from 'react';
+import styled from 'styled-components';
 
-import fetch_helpers from "./../../libs/fetch_helpers";
-import Parse from "parse";
+import fetch_helpers from './../../libs/fetch_helpers';
+import Parse from 'parse';
 // COMPONENTS
-import Button from "../Button";
+import Button from '../Button';
 // COMMENT: the homeSearch is just for the time being
 import { Image } from 'semantic-ui-react';
 
 // ACTIONS/CONFIG
 import { Dropdown } from 'semantic-ui-react';
 
-import history from "./../../main/history";
-import ImgurAvatar from "./../../assets/imgur-avatar.png";
+import history from './../../main/history';
+import ImgurAvatar from './../../assets/imgur-avatar.png';
 // STYLES
 const Wrap = styled.div`
   align-items: center;
@@ -41,97 +41,106 @@ const AvatarWrapper = styled.div`
 
 // MODULE
 export default class DesktopDropDownMenu extends Component {
-
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       logged_in: false,
-      current_user: {}
-    }
+      current_user: {},
+    };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     let user = Parse.User.current();
-    if(user === null){
-      this.setState({logged_in: false});
-    }else{
+    if (user === null) {
+      this.setState({ logged_in: false });
+    } else {
       const json_user = fetch_helpers.normalizeParseResponseData(user);
-      this.setState({logged_in: true, current_user: json_user});
+      this.setState({ logged_in: true, current_user: json_user });
     }
   }
 
   logout = () => {
     Parse.User.logOut().then(() => {
-      this.setState({logged_in: false, current_user: {}});
-      history.push("/");
+      this.setState({ logged_in: false, current_user: {} });
+      history.push('/');
     });
-  }
+  };
 
-  navigate_to = (path) => {
+  navigate_to = path => {
     history.push(path);
-  }
+  };
 
   logged_out() {
-    return(
+    return (
       <Wrap>
         <Button type="link" theme="white" round size="small" href="/login">
           Login
         </Button>
-        <Button
-          type="link"
-          theme="mainFilled"
-          round
-          size="small"
-          href="/register"
-        >
+        <Button type="link" theme="mainFilled" round size="small" href="/register">
           Sign up
         </Button>
       </Wrap>
-    )
+    );
   }
 
   logged_in() {
-    const dpUrl = (this.state.current_user.profilePicture && this.state.current_user.profilePicture.url) || ImgurAvatar;
-    const showAddServiceButton = window.location.hash !== "#/account/services"; //this.props.history && this.props.history.location.pathname !== "/account/services"
-    const truncatesUsername = this.state.current_user.username.length > 13
-      ?
-        this.state.current_user.username.substring(0, 11).concat('...')
-      :
-        this.state.current_user.username;
-    return(
+    const dpUrl =
+      (this.state.current_user.profilePicture && this.state.current_user.profilePicture.url) ||
+      ImgurAvatar;
+    const showAddServiceButton = window.location.hash !== '#/account/services'; //this.props.history && this.props.history.location.pathname !== "/account/services"
+    const truncatesUsername =
+      this.state.current_user.username.length > 13
+        ? this.state.current_user.username.substring(0, 11).concat('...')
+        : this.state.current_user.username;
+    return (
       <Wrap>
-        {
-          showAddServiceButton &&
+        {showAddServiceButton && (
           <Button type="link" theme="mainFilled" round size="small" href="/services/new">
-          Add Service
+            Add Service
           </Button>
-        }
+        )}
         <AvatarWrapper>
-          <Image src={dpUrl} circular onClick={() => this.navigate_to("/account/profile")} />
+          <Image src={dpUrl} circular onClick={() => this.navigate_to('/account/profile')} />
         </AvatarWrapper>
-        <Dropdown direction="left" text={truncatesUsername} style={this.props.theme === "light"? {color: 'white'} : {color: 'inherit'}}>
+        <Dropdown
+          direction="left"
+          text={truncatesUsername}
+          style={this.props.theme === 'light' ? { color: 'white' } : { color: 'inherit' }}
+        >
           <Dropdown.Menu>
-            <Dropdown.Item icon='plane' text='My Trips' onClick={() => this.navigate_to("/account/trips/all")} />
-            <Dropdown.Item icon='list' text='My Services' onClick={() => this.navigate_to("/account/services")} />
-            <Dropdown.Item icon='user' text='Profile' onClick={() => this.navigate_to("/account/profile")} />
-            <Dropdown.Item icon='cogs' text='Settings' onClick={() => this.navigate_to("/account/settings")} />
+            <Dropdown.Item
+              icon="plane"
+              text="My Trips"
+              onClick={() => this.navigate_to('/account/trips/all')}
+            />
+            <Dropdown.Item
+              icon="list"
+              text="My Services"
+              onClick={() => this.navigate_to('/account/services')}
+            />
+            <Dropdown.Item
+              icon="user"
+              text="Profile"
+              onClick={() => this.navigate_to('/account/profile')}
+            />
+            <Dropdown.Item
+              icon="cogs"
+              text="Settings"
+              onClick={() => this.navigate_to('/account/settings')}
+            />
             <Dropdown.Divider />
-            <Dropdown.Item icon='power' text='Logout' onClick={this.logout} />
+            <Dropdown.Item icon="power" text="Logout" onClick={this.logout} />
           </Dropdown.Menu>
         </Dropdown>
       </Wrap>
-    )
+    );
   }
 
-  render(){
-    if(!this.state.logged_in){
-      return (
-        this.logged_out()
-      )
-    }else{
-      return (
-        this.logged_in()
-      )
+  render() {
+    if (!this.state.logged_in) {
+      return this.logged_out();
+    } else {
+      return this.logged_in();
     }
   }
 }

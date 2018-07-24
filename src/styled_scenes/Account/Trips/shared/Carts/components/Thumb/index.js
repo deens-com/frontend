@@ -1,7 +1,7 @@
 // NPM
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import styled, { css } from "styled-components";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import styled, { css } from 'styled-components';
 
 // STYLES
 const Wrap = styled.div`
@@ -11,7 +11,7 @@ const Wrap = styled.div`
     props.withTooltip &&
     css`
       &:after {
-        content: "";
+        content: '';
         position: absolute;
         top: 0;
         left: 0;
@@ -43,7 +43,7 @@ export default class CartThumb extends Component {
     super();
     this.state = {
       tooltipVisible: false,
-      tagWidth: null
+      tagWidth: null,
     };
 
     this.setTagWidth = this.setTagWidth.bind(this);
@@ -104,11 +104,11 @@ export default class CartThumb extends Component {
 CartThumb.propTypes = {
   url: PropTypes.string.isRequired,
   tripCount: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  withTooltip: PropTypes.bool
+  withTooltip: PropTypes.bool,
 };
 
 // Default props
 CartThumb.defaultProps = {
-  tripCount: "0",
-  withTooltip: false
+  tripCount: '0',
+  withTooltip: false,
 };

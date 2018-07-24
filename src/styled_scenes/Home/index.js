@@ -1,39 +1,32 @@
 // NPM
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
-import Media from "react-media";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import Media from 'react-media';
 
 // COMPONENTS
-import BrandFooter from "../../components/BrandFooter";
-import Button from "../../components/Button";
-import hands from "./components/HeroSlider/img/hands.jpg";
-import HeroSlider from "./components/HeroSlider";
-import HomeSearch from "./components/HomeSearch";
-import MobileHero from "./components/MobileHero";
-import SectionActivities from "./components/SectionActivities";
-import SectionFood from "./components/SectionFood";
-import SectionHappy from "./components/SectionHappy";
-import SectionMood from "./components/SectionMood";
-import SectionPlaces from "./components/SectionPlaces";
-import SectionTrips from "./components/SectionTrips";
-import TopBar from "../../components/TopBar";
+import BrandFooter from '../../components/BrandFooter';
+import Button from '../../components/Button';
+import hands from './components/HeroSlider/img/hands.jpg';
+import HeroSlider from './components/HeroSlider';
+import HomeSearch from './components/HomeSearch';
+import MobileHero from './components/MobileHero';
+import SectionActivities from './components/SectionActivities';
+import SectionFood from './components/SectionFood';
+import SectionHappy from './components/SectionHappy';
+import SectionMood from './components/SectionMood';
+import SectionPlaces from './components/SectionPlaces';
+import SectionTrips from './components/SectionTrips';
+import TopBar from '../../components/TopBar';
 
 // ACTIONS/CONFIG
-import {
-  categories,
-  tags,
-  tripsData,
-  placesData,
-  activitiesData,
-  foodData
-} from "../../data/home";
-import { sizes, media } from "../../libs/styled";
+import { categories, tags, tripsData, placesData, activitiesData, foodData } from '../../data/home';
+import { sizes, media } from '../../libs/styled';
 
 // STYLES
-import { Hr } from "../../components/styledComponents/misc";
-import { Page, PageWrapper, PageContent } from "../../components/layout/Page";
+import { Hr } from '../../components/styledComponents/misc';
+import { Page, PageWrapper, PageContent } from '../../components/layout/Page';
 
 const Hero = styled.div`
   position: relative;

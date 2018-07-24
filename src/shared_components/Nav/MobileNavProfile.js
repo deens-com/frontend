@@ -1,15 +1,15 @@
 // NPM
-import React, { Component } from "react";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
-import Media from "react-media";
-import Parse from "parse";
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import Media from 'react-media';
+import Parse from 'parse';
 
 // COMPONENTS
 
 // ACTIONS/CONFIG
-import { sizes } from "../../libs/styled";
-import history from "./../../main/history";
+import { sizes } from '../../libs/styled';
+import history from './../../main/history';
 
 // STYLES
 const Wrap = styled.div`
@@ -107,37 +107,36 @@ const Divider = styled.hr`
 
 // MODULE
 export default class MobileNavProfile extends Component {
-
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       logged_in: false,
-    }
+    };
   }
 
   componentDidMount() {
-    if(Parse.User.current() === null){
+    if (Parse.User.current() === null) {
       this.setState({ logged_in: false });
-    }else{
+    } else {
       this.setState({ logged_in: true });
     }
   }
 
   logout = () => {
     Parse.User.logOut().then(() => {
-      this.setState({logged_in: false});
-      history.go("/");
+      this.setState({ logged_in: false });
+      history.go('/');
     });
-  }
+  };
 
   scrollDownMobileOnly = () => {
     const currentWidth = window.innerWidth;
-    if(currentWidth <= 750){
+    if (currentWidth <= 750) {
       setTimeout(() => {
         window.scrollBy(0, 520);
-      }, 20)
+      }, 20);
     }
-  }
+  };
 
   render() {
     if (!this.props.menuIsOpened) return null;
@@ -149,16 +148,24 @@ export default class MobileNavProfile extends Component {
           <Wrap>
             <InnerList>
               <li>
-                <NavLink to="/account/trips/all" onClick={this.scrollDownMobileOnly}>My Trips</NavLink>
+                <NavLink to="/account/trips/all" onClick={this.scrollDownMobileOnly}>
+                  My Trips
+                </NavLink>
               </li>
               <li>
-                <NavLink to="/account/services" onClick={this.scrollDownMobileOnly}>My Services</NavLink>
+                <NavLink to="/account/services" onClick={this.scrollDownMobileOnly}>
+                  My Services
+                </NavLink>
               </li>
               <li>
-                <NavLink to="/account/profile" onClick={this.scrollDownMobileOnly}>Profile</NavLink>
+                <NavLink to="/account/profile" onClick={this.scrollDownMobileOnly}>
+                  Profile
+                </NavLink>
               </li>
               <li>
-                <NavLink to="/account/settings" onClick={this.scrollDownMobileOnly}>Settings</NavLink>
+                <NavLink to="/account/settings" onClick={this.scrollDownMobileOnly}>
+                  Settings
+                </NavLink>
               </li>
               <li aria-hidden="true">
                 <Divider />

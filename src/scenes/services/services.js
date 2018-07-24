@@ -1,5 +1,5 @@
-import React from "react";
-import ServicesContainer from "./containers/services_container";
+import React from 'react';
+import ServicesContainer from './containers/services_container';
 
 const Services = props => {
   return (

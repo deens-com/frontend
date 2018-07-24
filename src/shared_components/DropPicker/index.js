@@ -1,10 +1,10 @@
 // NPM
-import React, { Component } from "react";
-import styled from "styled-components";
+import React, { Component } from 'react';
+import styled from 'styled-components';
 
 // COMPONENTS
-import Trigger from "./Trigger";
-import Drop from "./Drop";
+import Trigger from './Trigger';
+import Drop from './Drop';
 
 // ACTIONS/CONFIG
 
@@ -19,7 +19,7 @@ export default class DropPicker extends Component {
   constructor() {
     super();
     this.state = {
-      isOpen: false
+      isOpen: false,
     };
 
     this.handleBlur = this.handleBlur.bind(this);
@@ -47,7 +47,7 @@ export default class DropPicker extends Component {
           expanded: this.state.isOpen,
           onClick() {
             toggleDrop();
-          }
+          },
         });
         // COMMENT: the second condition is specifically for Gatsby.js problems
       } else if (child.type === Drop || child.type === <Drop />.type) {
@@ -55,7 +55,7 @@ export default class DropPicker extends Component {
           return React.cloneElement(child, {
             onToggle() {
               toggleDrop();
-            }
+            },
           });
         }
       }

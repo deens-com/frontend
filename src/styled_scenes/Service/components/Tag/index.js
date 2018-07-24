@@ -74,7 +74,12 @@ export default function CategoryTag(props) {
     <ServiceCarouselButton>{props.item.label}</ServiceCarouselButton>
   );
   return (
-    <Wrap size={props.size} withShadow={false} hoverBg={props.item.hoverBg} background={props.item.background}>
+    <Wrap
+      size={props.size}
+      withShadow={false}
+      hoverBg={props.item.hoverBg}
+      background={props.item.background}
+    >
       {tagButton}
     </Wrap>
   );

@@ -96,7 +96,14 @@ const ActionsWrap = styled.div`
 `;
 
 // MODULE
-const TopBarDesktopNav = function TopBarDesktopNav({ home, language, currency, theme, history, analytics }) {
+const TopBarDesktopNav = function TopBarDesktopNav({
+  home,
+  language,
+  currency,
+  theme,
+  history,
+  analytics,
+}) {
   return (
     <Media
       query={`(min-width: ${sizes.large})`}
@@ -139,10 +146,11 @@ TopBarDesktopNav.defaultProps = {
 
 const mapDispatchToProps = dispatch => {
   return {
-    analytics: analyticsPayload => dispatch({ type: 'analytics', meta: { analytics: analyticsPayload } }),
+    analytics: analyticsPayload =>
+      dispatch({ type: 'analytics', meta: { analytics: analyticsPayload } }),
   };
 };
 export default connect(
   null,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(TopBarDesktopNav);

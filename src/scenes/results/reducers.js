@@ -2,35 +2,35 @@ const initialState = {
   results: [],
   search_query: {
     service_types: [],
-    tags: []
+    tags: [],
   },
   carousel_tags: [],
-  isLoadingResults: false
+  isLoadingResults: false,
 };
 
 export default function ResultsReducer(state = initialState, action = {}) {
   switch (action.type) {
-    case "RESULTS_FETCHED":
+    case 'RESULTS_FETCHED':
       return {
         ...state,
         results: action.payload.results,
-        isLoadingResults: false
+        isLoadingResults: false,
       };
-    case "SEARCH_QUERY_UPDATED":
+    case 'SEARCH_QUERY_UPDATED':
       return {
         ...state,
-        search_query: action.payload.search_query
+        search_query: action.payload.search_query,
       };
-    case "CAROUSEL_TAGS_FETCHED":
+    case 'CAROUSEL_TAGS_FETCHED':
       return {
         ...state,
-        carousel_tags: action.payload
-      }
-    case "RESULTS_FETCH_STARTED":
+        carousel_tags: action.payload,
+      };
+    case 'RESULTS_FETCH_STARTED':
       return {
         ...state,
-        isLoadingResults: true
-      }
+        isLoadingResults: true,
+      };
     default:
       return state;
   }

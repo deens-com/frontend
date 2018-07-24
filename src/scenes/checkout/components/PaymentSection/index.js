@@ -20,7 +20,13 @@ const GuestCountStyle = styled.p`
   font-weight: 500;
 `;
 
-const PaymentSection = ({ pricePerPerson, totalPrice, onPaymentClick, numberOfPerson, isLoading }) => (
+const PaymentSection = ({
+  pricePerPerson,
+  totalPrice,
+  onPaymentClick,
+  numberOfPerson,
+  isLoading,
+}) => (
   <Wrap>
     <Grid>
       <Grid.Row columns={2}>

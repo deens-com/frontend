@@ -34,14 +34,32 @@ const App = () => {
           <Switch>
             <Route exact path={process.env.PUBLIC_URL + '/'} component={commonHOCs(Home)} />
             <Route path={process.env.PUBLIC_URL + '/login'} component={commonHOCs(Sessions)} />
-            <Route path={process.env.PUBLIC_URL + '/register'} component={commonHOCs(Registrations)} />
+            <Route
+              path={process.env.PUBLIC_URL + '/register'}
+              component={commonHOCs(Registrations)}
+            />
             <Route path={process.env.PUBLIC_URL + '/results'} component={commonHOCs(Results)} />
-            <Route path={process.env.PUBLIC_URL + '/services/new'} component={commonHOCs(ServiceUpsert)} />
-            <Route path={process.env.PUBLIC_URL + '/services/edit/:id'} component={commonHOCs(ServiceUpsert)} />
-            <Route path={process.env.PUBLIC_URL + '/services/:id'} component={commonHOCs(Services)} />
+            <Route
+              path={process.env.PUBLIC_URL + '/services/new'}
+              component={commonHOCs(ServiceUpsert)}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + '/services/edit/:id'}
+              component={commonHOCs(ServiceUpsert)}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + '/services/:id'}
+              component={commonHOCs(Services)}
+            />
             <Route path={process.env.PUBLIC_URL + '/trips/:id'} render={renderTrips} />
-            <Route path={process.env.PUBLIC_URL + '/checkout/:id'} component={commonHOCs(Checkout)} />
-            <Route path={process.env.PUBLIC_URL + '/users/:userName'} component={commonHOCs(Users)} />
+            <Route
+              path={process.env.PUBLIC_URL + '/checkout/:id'}
+              component={commonHOCs(Checkout)}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + '/users/:userName'}
+              component={commonHOCs(Users)}
+            />
             <Route path={process.env.PUBLIC_URL + '/account'} component={commonHOCs(Account)} />
             <Route component={withErrorBoundary(Notfound)} />
           </Switch>

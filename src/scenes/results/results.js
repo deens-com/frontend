@@ -1,22 +1,20 @@
-import React from "react";
-import ResultsContainer from "./containers/results_container";
-import queryString from "query-string";
+import React from 'react';
+import ResultsContainer from './containers/results_container';
+import queryString from 'query-string';
 
 const Results = props => {
   let search_params = queryString.parse(props.location.search);
   // does not properly parse '+'.
-  let service_types =
-    (search_params.service_types && search_params.service_types.split(" ")) ||
-    [];
-  let tags_arr = (search_params.tags && search_params.tags.split(" ")) || [];
-  let latitude = search_params.latitude || "";
-  let longitude = search_params.longitude || "";
-  let person_nb = search_params.person_nb || "";
-  let start_date = search_params.start_date || "";
-  let end_date = search_params.end_date || "";
-  let keywords = search_params.keywords || "";
-  let speech_query = search_params.speech_query || "";
-  let address = search_params.address || "";
+  let service_types = (search_params.service_types && search_params.service_types.split(' ')) || [];
+  let tags_arr = (search_params.tags && search_params.tags.split(' ')) || [];
+  let latitude = search_params.latitude || '';
+  let longitude = search_params.longitude || '';
+  let person_nb = search_params.person_nb || '';
+  let start_date = search_params.start_date || '';
+  let end_date = search_params.end_date || '';
+  let keywords = search_params.keywords || '';
+  let speech_query = search_params.speech_query || '';
+  let address = search_params.address || '';
   let onlySmartContracts = search_params.onlySmartContracts || false;
 
   return (

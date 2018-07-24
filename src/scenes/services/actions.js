@@ -63,7 +63,7 @@ export const fetch_service = service_id => dispatch => {
         error => {
           // TODO dispatch the error to error handler
           console.log(error);
-        }
+        },
       );
 
       // Associated Reviews
@@ -82,7 +82,7 @@ export const fetch_service = service_id => dispatch => {
         error => {
           // TODO dispatch the error to error handler
           console.log(error);
-        }
+        },
       );
 
       const json_service = fetch_helpers.normalizeParseResponseData(response);
@@ -105,7 +105,7 @@ export const fetch_service = service_id => dispatch => {
       // TODO dispatch the error to error handler
       console.log(error);
       dispatch({ type: 'SERVICE_FETCH_ERROR', payload: error });
-    }
+    },
   );
 };
 
@@ -122,7 +122,10 @@ export const addServiceToTrip = trip => async (dispatch, getState) => {
   const state = getState();
   const { service } = state.ServicesReducer;
   try {
-    await Parse.Cloud.run('addServiceToTrip', { serviceId: service.objectId, tripId: trip.objectId });
+    await Parse.Cloud.run('addServiceToTrip', {
+      serviceId: service.objectId,
+      tripId: trip.objectId,
+    });
     fetch_service(service.objectId)(dispatch);
     setAddedToTripMessage(trip)(dispatch);
   } catch (error) {

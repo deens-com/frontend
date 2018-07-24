@@ -1,5 +1,5 @@
-import React from "react";
-import UsersContainer from "./containers/users_container";
+import React from 'react';
+import UsersContainer from './containers/users_container';
 
 const Users = props => {
   return (

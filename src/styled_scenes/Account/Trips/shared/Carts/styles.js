@@ -1,6 +1,6 @@
-import styled, { css } from "styled-components";
+import styled, { css } from 'styled-components';
 
-import { media } from "../../../../../libs/styled";
+import { media } from '../../../../../libs/styled';
 
 export const ContentWrap = styled.div`
   padding: 15px;
@@ -36,25 +36,25 @@ export const CategoryThumb = styled.div`
 `;
 
 export const Cart = styled.div`
-  background: ${props => props.background || "white"};
+  background: ${props => props.background || 'white'};
   border-radius: 4px;
   overflow: hidden;
   display: flex;
-  flex-direction: ${props => (props.column ? "column" : "row")};
+  flex-direction: ${props => (props.column ? 'column' : 'row')};
   margin-bottom: 15px;
-  text-align: ${props => props.centerText || "left"};
-  min-height: ${props => props.height || "auto"};
+  text-align: ${props => props.centerText || 'left'};
+  min-height: ${props => props.height || 'auto'};
   box-shadow: 0 8px 25px 0 rgba(141, 141, 141, 0.22);
   transition: box-shadow 0.1s ease-in, background 0.1s ease-in;
 
   &:hover {
     box-shadow: 0 8px 40px 0px rgba(141, 141, 141, 0.28);
-    background: ${props => props.hoverBg || "white"};
+    background: ${props => props.hoverBg || 'white'};
   }
 
   & > a {
-    color: ${props => props.linkColor || "inherit"};
-    text-align: ${props => props.textAlign || "left"};
+    color: ${props => props.linkColor || 'inherit'};
+    text-align: ${props => props.textAlign || 'left'};
   }
 
   ${props =>

@@ -1,6 +1,6 @@
 // NPM
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 // COMPONENTS
 
@@ -19,7 +19,7 @@ const Wrap = styled.div`
   }
 
   &:after {
-    content: "";
+    content: '';
     width: 1px;
     height: 60%;
     background: #eef1f4;

@@ -1,10 +1,10 @@
 // NPM
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 // COMPONENTS
-import Carousel from "./Carousel";
-import Tag from "./Tag";
+import Carousel from './Carousel';
+import Tag from './Tag';
 
 // STYLES
 const Wrap = styled.div`
@@ -16,19 +16,9 @@ const Wrap = styled.div`
 export default function CarouselPicker(props) {
   return (
     <Wrap>
-      <Carousel
-        sm_slides_nb={3}
-        md_slides_nb={5}
-        lg_slides_nb={5}
-        xl_slides_nb={6}
-      >
+      <Carousel sm_slides_nb={3} md_slides_nb={5} lg_slides_nb={5} xl_slides_nb={6}>
         {props.carousel_tags.map(item => (
-          <Tag
-            key={item.label}
-            size="medium"
-            item={item}
-            {...props}
-          />
+          <Tag key={item.label} size="medium" item={item} {...props} />
         ))}
       </Carousel>
     </Wrap>

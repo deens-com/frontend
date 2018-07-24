@@ -1,18 +1,18 @@
 // NPM
-import React, { Component } from "react";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
-import Media from "react-media";
-import Parse from "parse";
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import Media from 'react-media';
+import Parse from 'parse';
 import { connect } from 'react-redux';
 
 // COMPONENTS
-import CurrencySelector from "../Currency/Selector";
+import CurrencySelector from '../Currency/Selector';
 
 // ACTIONS/CONFIG
-import { sizes } from "../../libs/styled";
-import { mainNav } from "../../data/nav";
-import { trackHeaderCategoryClick } from "libs/analytics";
+import { sizes } from '../../libs/styled';
+import { mainNav } from '../../data/nav';
+import { trackHeaderCategoryClick } from 'libs/analytics';
 
 // STYLES
 const Wrap = styled.div`
@@ -103,11 +103,10 @@ const Divider = styled.hr`
 
 // MODULE
 class MobileNav extends Component {
-
   componentDidMount() {
-    if(Parse.User.current() === null){
+    if (Parse.User.current() === null) {
       this.setState({ logged_in: false });
-    }else{
+    } else {
       this.setState({ logged_in: true });
     }
   }
@@ -122,7 +121,7 @@ class MobileNav extends Component {
           <NavLink to="/login">Login</NavLink>
         </li>
       </span>
-    )
+    );
   }
 
   render() {
@@ -143,7 +142,11 @@ class MobileNav extends Component {
               </li>
               {mainNav.map(item => (
                 <li aria-hidden="false" key={item.label} onClick={this.props.toggleProfileMenu}>
-                  <NavLink activeclassname="is-active" to={item.href} onClick={() => analytics(trackHeaderCategoryClick(item.label))}>
+                  <NavLink
+                    activeclassname="is-active"
+                    to={item.href}
+                    onClick={() => analytics(trackHeaderCategoryClick(item.label))}
+                  >
                     {item.label}
                   </NavLink>
                 </li>
@@ -157,7 +160,7 @@ class MobileNav extends Component {
               <li aria-hidden="true">
                 <Divider />
               </li>
-              {!this.state.logged_in && this.guestDropdown() }
+              {!this.state.logged_in && this.guestDropdown()}
             </InnerList>
           </Wrap>
         )}
@@ -168,10 +171,11 @@ class MobileNav extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    analytics: analyticsPayload => dispatch({ type: 'analytics', meta: { analytics: analyticsPayload } }),
+    analytics: analyticsPayload =>
+      dispatch({ type: 'analytics', meta: { analytics: analyticsPayload } }),
   };
 };
 export default connect(
   null,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(MobileNav);

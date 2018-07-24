@@ -4,7 +4,7 @@ const initialState = {
   isLoading: false,
   isSubmitting: false,
   service: null,
-  error: {}
+  error: {},
 };
 
 export default (state = initialState, action) => {
@@ -59,8 +59,8 @@ export default (state = initialState, action) => {
     case actionTypes.TOGGLE_SUBMITTING_STATE:
       return {
         ...state,
-        isSubmitting: action.payload
-      }
+        isSubmitting: action.payload,
+      };
     default:
       return state;
   }

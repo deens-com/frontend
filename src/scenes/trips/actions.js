@@ -24,7 +24,10 @@ export const removeService = tripOrganizationId => ({
 });
 
 export const serviceAvailabilitiesStart = () => ({ type: 'SERVICE_AVAILIBILITIES_START' });
-export const serviceAvailabilitiesSuccess = obj => ({ type: 'SERVICE_AVAILIBILITIES_SUCCESS', payload: obj });
+export const serviceAvailabilitiesSuccess = obj => ({
+  type: 'SERVICE_AVAILIBILITIES_SUCCESS',
+  payload: obj,
+});
 export const setTripCloningStatus = status => ({ type: 'CLONING_STATUS', payload: status });
 
 const isCurrentUser = userObject => {
@@ -106,7 +109,9 @@ export const changeServiceDay = (tripOrganizationId, newDay) => async (dispatch,
     console.error(new Error("can't update service day without tripOrganizationId"));
   }
   dispatch(tripChangeServiceDay(tripOrganizationId, newDay));
-  const tripOrganization = await fetch_helpers.build_query('TripOrganization').get(tripOrganizationId);
+  const tripOrganization = await fetch_helpers
+    .build_query('TripOrganization')
+    .get(tripOrganizationId);
   if (newDay === 'null') {
     tripOrganization.unset('day');
   } else {
@@ -120,7 +125,9 @@ export const changeServiceDay = (tripOrganizationId, newDay) => async (dispatch,
 export const removeServiceFromTrip = tripOrganizationId => async dispatch => {
   if (!tripOrganizationId) return;
   dispatch(removeService(tripOrganizationId));
-  const tripOrganization = await fetch_helpers.build_query('TripOrganization').get(tripOrganizationId);
+  const tripOrganization = await fetch_helpers
+    .build_query('TripOrganization')
+    .get(tripOrganizationId);
   tripOrganization.destroy();
 };
 
@@ -142,7 +149,11 @@ export const checkAvailability = (beginDate, peopleCount) => async (dispatch, ge
     dispatch(serviceAvailabilitiesSuccess({}));
     return;
   }
-  const result = await Parse.Cloud.run('checkAvailabilityByTrip', { tripId, beginDate, peopleCount });
+  const result = await Parse.Cloud.run('checkAvailabilityByTrip', {
+    tripId,
+    beginDate,
+    peopleCount,
+  });
   dispatch(serviceAvailabilitiesSuccess(result));
 };
 
@@ -152,7 +163,11 @@ export const cloneTrip = (beginDate, peopleCount, history) => async (dispatch, g
   dispatch(setTripCloningStatus(fetch_helpers.statuses.STARTED));
   try {
     const result = await Parse.Cloud.run('preBookingStep', { tripId, beginDate, peopleCount });
-    dispatch({ type: 'TRIP_CLONNED', payload: result, meta: { analytics: trackTripCloned(result) } });
+    dispatch({
+      type: 'TRIP_CLONNED',
+      payload: result,
+      meta: { analytics: trackTripCloned(result) },
+    });
     if (result.allAvailable) {
       // if all the services are available take the user to Checkout Page
       history.push(`/checkout/${result.newTripId}`);

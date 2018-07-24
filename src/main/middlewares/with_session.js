@@ -3,9 +3,7 @@ import { withRouter } from 'react-router';
 import Parse from 'parse';
 
 export default function requireAuth(Component) {
-
   class AuthenticatedComponent extends React.Component {
-
     componentWillMount() {
       this.checkAuth();
     }
@@ -17,11 +15,8 @@ export default function requireAuth(Component) {
     }
 
     render() {
-      return Parse.User.current()
-        ? <Component { ...this.props } />
-        : null;
+      return Parse.User.current() ? <Component {...this.props} /> : null;
     }
-
   }
 
   return withRouter(AuthenticatedComponent);

@@ -18,11 +18,14 @@ class AccountSettingsContainer extends Component {
 
 const mapStateToProps = state => ({
   metaMaskError: state.AccountReducer.metaMaskError,
-  ledger_error: state.AccountReducer.ledger_error
+  ledger_error: state.AccountReducer.ledger_error,
 });
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators({ signData, ledgerSignData, clearMetamaskErrors }, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AccountSettingsContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AccountSettingsContainer);
