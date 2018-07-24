@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete';
+import { withFormik } from 'formik';
+import { Form } from 'semantic-ui-react';
+import DayPickerInput from 'react-day-picker/DayPickerInput';
 
-import Form from 'shared_components/Form';
+// import Form from 'shared_components/Form';
 import FormControl from 'shared_components/Form/FormControl';
 import LocationControl from 'shared_components/Form/LocationControl';
 import ToolbarButton from './ToolbarButton';
@@ -34,7 +37,16 @@ const EndDateDiv = styled.div`
     height: 100%;
   }
 `;
-export default class OwnerToolBar extends Component {
+
+const ErrorMsg = styled.div`
+  color: red;
+`;
+
+const OwnerForm = styled(Form)`
+  width: 100%;
+`;
+
+class OwnerToolBar extends Component {
   static propTypes = toolBarPropTypes;
 
   onLocationSelect = async (address, placeId) => {
@@ -60,6 +72,12 @@ export default class OwnerToolBar extends Component {
 
   render() {
     const {
+      values,
+      touched,
+      errors,
+      handleChange,
+      handleBlur,
+
       state,
       trip,
       onSubmit,
@@ -68,81 +86,142 @@ export default class OwnerToolBar extends Component {
       serviceAvailabilityCheckInProgress,
     } = this.props;
     const isTripBooked = trip && trip.booked;
+    const defaultProps = {
+      onChange: handleChange,
+      onBlur: handleBlur,
+    };
     return (
       <ResponsiveToolbarWrap>
         {({ isMobile }) => (
-          <GridFormContainer display="grid" onSubmit={onSubmit} isMobile={isMobile}>
-            <TitleDiv isMobile={isMobile}>
-              <FormControl
-                type="text"
-                placeholder="Name of the Trip"
-                onChange={value => {
-                  onValueChange('title', value);
-                }}
-                onBlur={onSubmit}
-                value={state.title || ''}
-                disabled={isTripBooked}
+          <React.Fragment>
+            <OwnerForm>
+              <Form.Field required>
+                <label>Trip name</label>
+                <Form.Input
+                  name="title"
+                  placeholder="Trip name"
+                  value={values.title}
+                  error={!!(touched.title && errors.title)}
+                  {...defaultProps}
+                />
+                {touched.title && errors.title && <ErrorMsg>{errors.title}</ErrorMsg>}
+              </Form.Field>
+
+              <Form.Field required>
+                <label>Trip description</label>
+                <Form.TextArea
+                  name="description"
+                  placeholder="Tell us more..."
+                  value={values.description}
+                  error={!!(touched.description && errors.description)}
+                  {...defaultProps}
+                />
+                {touched.description &&
+                  errors.description && <ErrorMsg>{errors.description}</ErrorMsg>}
+              </Form.Field>
+
+              <Form.Group widths={3}>
+                <Form.Field required>
+                  <label>Location</label>
+                  <LocationControl
+                    formatted_address={state.formattedAddress}
+                    onSelect={this.onLocationSelect}
+                    onBlur={onSubmit}
+                    disabled={isTripBooked}
+                  />
+                </Form.Field>
+
+                <Form.Field required>
+                  <label>Duration (days)</label>
+                  <Form.Input
+                    name="duration"
+                    placeholder="3"
+                    type="number"
+                    icon="calendar outline"
+                    iconPosition="left"
+                    value={values.duration}
+                    error={!!(touched.duration && errors.duration)}
+                    {...defaultProps}
+                  />
+                  {touched.duration && errors.duration && <ErrorMsg>{errors.duration}</ErrorMsg>}
+                </Form.Field>
+              </Form.Group>
+            </OwnerForm>
+            {/* <GridFormContainer display="grid" onSubmit={onSubmit} isMobile={isMobile}>
+              <TitleDiv isMobile={isMobile}>
+                <FormControl
+                  type="text"
+                  placeholder="Name of the Trip"
+                  onChange={value => {
+                    onValueChange('title', value);
+                  }}
+                  onBlur={onSubmit}
+                  value={state.title || ''}
+                  disabled={isTripBooked}
+                />
+              </TitleDiv>
+              <LocationDiv isMobile={isMobile}>
+                <LocationControl
+                  formatted_address={state.formattedAddress}
+                  onSelect={this.onLocationSelect}
+                  onBlur={onSubmit}
+                  disabled={isTripBooked}
+                />
+              </LocationDiv>
+              <StartDateDiv isMobile={isMobile}>
+                <FormControl
+                  onChange={value => {
+                    onValueChange('startDate', value);
+                    setTimeout(onSubmit, 0);
+                  }}
+                  value={state.startDate}
+                  dayPickerProps={{
+                    disabledDays: { before: new Date(), after: state.endDate }, // if it's the owner of the trip then make sure he selects a startDate less than the endDate, else remove validation
+                  }}
+                  type="date"
+                  placeholder="From date"
+                  leftIcon="date"
+                  disabled={isTripBooked}
+                />
+              </StartDateDiv>
+              <EndDateDiv isMobile={isMobile}>
+                <FormControl
+                  onChange={value => {
+                    onValueChange('endDate', value);
+                    setTimeout(onSubmit, 0);
+                  }}
+                  value={state.endDate}
+                  dayPickerProps={{ disabledDays: { before: state.startDate || new Date() } }}
+                  type="date"
+                  placeholder="To date"
+                  leftIcon="date"
+                  disabled={isTripBooked}
+                />
+              </EndDateDiv>
+              <div>
+                <FormControl
+                  onChange={value => {
+                    onValueChange('person', value);
+                  }}
+                  value={state.person}
+                  type="person"
+                  placeholder="2"
+                  leftIcon="person"
+                  onBlur={onSubmit}
+                  disabled={isTripBooked}
+                />
+              </div>
+              <ToolbarButton
+                showSaveButton={true}
+                onCheckAvailibilityClick={onCheckAvailabilityClick}
+                serviceAvailabilityCheckInProgress={serviceAvailabilityCheckInProgress}
               />
-            </TitleDiv>
-            <LocationDiv isMobile={isMobile}>
-              <LocationControl
-                formatted_address={state.formattedAddress}
-                onSelect={this.onLocationSelect}
-                onBlur={onSubmit}
-                disabled={isTripBooked}
-              />
-            </LocationDiv>
-            <StartDateDiv isMobile={isMobile}>
-              <FormControl
-                onChange={value => {
-                  onValueChange('startDate', value);
-                  setTimeout(onSubmit, 0);
-                }}
-                value={state.startDate}
-                dayPickerProps={{
-                  disabledDays: { before: new Date(), after: state.endDate }, // if it's the owner of the trip then make sure he selects a startDate less than the endDate, else remove validation
-                }}
-                type="date"
-                placeholder="From date"
-                leftIcon="date"
-                disabled={isTripBooked}
-              />
-            </StartDateDiv>
-            <EndDateDiv isMobile={isMobile}>
-              <FormControl
-                onChange={value => {
-                  onValueChange('endDate', value);
-                  setTimeout(onSubmit, 0);
-                }}
-                value={state.endDate}
-                dayPickerProps={{ disabledDays: { before: state.startDate || new Date() } }}
-                type="date"
-                placeholder="To date"
-                leftIcon="date"
-                disabled={isTripBooked}
-              />
-            </EndDateDiv>
-            <div>
-              <FormControl
-                onChange={value => {
-                  onValueChange('person', value);
-                }}
-                value={state.person}
-                type="person"
-                placeholder="2"
-                leftIcon="person"
-                onBlur={onSubmit}
-                disabled={isTripBooked}
-              />
-            </div>
-            <ToolbarButton
-              showSaveButton={true}
-              onCheckAvailibilityClick={onCheckAvailabilityClick}
-              serviceAvailabilityCheckInProgress={serviceAvailabilityCheckInProgress}
-            />
-          </GridFormContainer>
+            </GridFormContainer> */}
+          </React.Fragment>
         )}
       </ResponsiveToolbarWrap>
     );
   }
 }
+
+export default withFormik({})(OwnerToolBar);
