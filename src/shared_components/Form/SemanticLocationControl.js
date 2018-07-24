@@ -57,7 +57,6 @@ export default class SemanticLocationControl extends Component {
                 })}
               />
             }
-            content={`This message will self-destruct in a few seconds!`}
             open={suggestions.length > 0}
             onClose={this.handleClose}
             onOpen={this.handleOpen}
