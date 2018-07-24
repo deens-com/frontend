@@ -263,161 +263,163 @@ export default class TripsScene extends Component {
       <Page topPush>
         <TopBar fixed withPadding />
         <PageContent loading={this.props.isPageLoading}>
-          <Wrap>
-            <LeftWrap>
-              <ShareWrap>
-                <h3>{trip.title}</h3>
-                <DatesWrap>
-                  <p>
-                    {query.startDate && moment(query.startDate).format('MMM Do YY')} -{' '}
-                    {query.endDate && moment(query.endDate).format('MMM Do YY')}
-                  </p>
-                </DatesWrap>
-                <span>
-                  <ProfileWrap>
-                    <UserAvatar user={trip && trip.owner} usernameColor="#fff" />
-                  </ProfileWrap>
-                </span>
-                <ActionsWrap>
-                  <ShareButton
-                    trip={trip}
-                    updateTripDetails={this.props.updateTripDetails}
-                    showTripStatusChanged={this.props.showTripStatusChanged}
-                    onShareModalClose={this.props.onShareModalClose}
+          {trip && (
+            <Wrap key={trip.objectId}>
+              <LeftWrap>
+                <ShareWrap>
+                  <h3>{trip.title}</h3>
+                  <DatesWrap>
+                    <p>
+                      {query.startDate && moment(query.startDate).format('MMM Do YY')} -{' '}
+                      {query.endDate && moment(query.endDate).format('MMM Do YY')}
+                    </p>
+                  </DatesWrap>
+                  <span>
+                    <ProfileWrap>
+                      <UserAvatar user={trip && trip.owner} usernameColor="#fff" />
+                    </ProfileWrap>
+                  </span>
+                  <ActionsWrap>
+                    <ShareButton
+                      trip={trip}
+                      updateTripDetails={this.props.updateTripDetails}
+                      showTripStatusChanged={this.props.showTripStatusChanged}
+                      onShareModalClose={this.props.onShareModalClose}
+                    />
+                    <ChangeTripImageButton
+                      trip={trip}
+                      isOwner={this.state.isOwner}
+                      onImageSelect={this.props.onImageSelect}
+                      isImageUploadInProgress={this.props.isImageUploadInProgress}
+                    />
+                  </ActionsWrap>
+                  <ShareBg
+                    src={
+                      (trip && trip.picture && trip.picture.url) ||
+                      'https://please-com.imgix.net/static/food/mamamia.jpg'
+                    }
+                    background
                   />
-                  <ChangeTripImageButton
-                    trip={trip}
-                    isOwner={this.state.isOwner}
-                    onImageSelect={this.props.onImageSelect}
-                    isImageUploadInProgress={this.props.isImageUploadInProgress}
+                </ShareWrap>
+                <Media
+                  query={`(min-width: ${sizes.medium})`}
+                  render={() => (
+                    <MapWrapper>
+                      <GoogleMapReact center={this.state.center} zoom={this.state.zoom}>
+                        {this.getMarkerLatLngs(this.props).map(({ key, latitude, longitude }) => (
+                          <MapMaker
+                            key={key}
+                            lat={latitude}
+                            lng={longitude}
+                            scale={1}
+                            color="#4fb798"
+                          />
+                        ))}
+                      </GoogleMapReact>
+                    </MapWrapper>
+                  )}
+                />
+              </LeftWrap>
+              <TripWrapper>
+                {trip.booked && this.state.isOwner ? (
+                  <Message>
+                    This trip has already been booked on{' '}
+                    {moment(query.startDate).format('Do MMM YYYY')}.
+                  </Message>
+                ) : null}
+                <ToolBar
+                  onSubmit={this.onSubmit}
+                  onValueChange={this.onValueChange}
+                  state={query}
+                  trip={trip}
+                  onCheckAvailabilityClick={this.checkAvailability}
+                  isOwner={this.state.isOwner}
+                  serviceAvailabilityCheckInProgress={this.props.serviceAvailabilityCheckInProgress}
+                />
+                <TagsWrapper>
+                  {trip.tags &&
+                    trip.tags.map(tag => (
+                      <Tag key={tag.label} item={tag} href={`/results?tags=${tag.label}`} />
+                    ))}
+                </TagsWrapper>
+                <Divider horizontal>Trip itinerary</Divider>
+                <TripActionsWrap>
+                  <Popup
+                    trigger={
+                      <Trigger iconBefore="plus" size="small" round={true} text="Add new Service" />
+                    }
+                    content={
+                      <div>
+                        <DropItem
+                          onClick={() => {
+                            query_params.service_types = 'place';
+                            this.generate_search_query(query_params);
+                          }}
+                        >
+                          Place
+                        </DropItem>
+                        <DropItem
+                          onClick={() => {
+                            query_params.service_types = 'food';
+                            this.generate_search_query(query_params);
+                          }}
+                        >
+                          Food
+                        </DropItem>
+                        <DropItem
+                          onClick={() => {
+                            query_params.service_types = 'activity';
+                            this.generate_search_query(query_params);
+                          }}
+                        >
+                          Activity
+                        </DropItem>
+                      </div>
+                    }
+                    position="left center"
+                    on="click"
+                    flowing={true}
+                    className="semantic-popup-wrapper"
+                    style={{
+                      float: 'left',
+                      background: 'white',
+                      borderRadius: '4px',
+                      padding: '5px 10px',
+                      border: '0px',
+                      boxShadow: '0 8px 25px 0 rgba(141, 141, 141, 0.22)',
+                    }}
+                    horizontalOffset={5}
                   />
-                </ActionsWrap>
-                <ShareBg
-                  src={
-                    (trip && trip.picture && trip.picture.url) ||
-                    'https://please-com.imgix.net/static/food/mamamia.jpg'
-                  }
-                  background
+                  <Button
+                    type="button"
+                    round
+                    size="small"
+                    iconAfter="arrowDown"
+                    theme="textGreen"
+                    onClick={this.toggleExpansion}
+                    text={this.state.resultsExpanded ? 'Collapse all' : 'Expand all'}
+                  />
+                </TripActionsWrap>
+                <Results
+                  trip={trip}
+                  showDetails={this.state.details}
+                  scheduledServices={this.props.scheduledServices}
+                  onServiceDragEnd={this.props.onServiceDragEnd}
+                  onServiceRemoveClick={this.props.onServiceRemoveClick}
+                  expanded={this.state.resultsExpanded}
                 />
-              </ShareWrap>
-              <Media
-                query={`(min-width: ${sizes.medium})`}
-                render={() => (
-                  <MapWrapper>
-                    <GoogleMapReact center={this.state.center} zoom={this.state.zoom}>
-                      {this.getMarkerLatLngs(this.props).map(({ key, latitude, longitude }) => (
-                        <MapMaker
-                          key={key}
-                          lat={latitude}
-                          lng={longitude}
-                          scale={1}
-                          color="#4fb798"
-                        />
-                      ))}
-                    </GoogleMapReact>
-                  </MapWrapper>
-                )}
-              />
-            </LeftWrap>
-            <TripWrapper>
-              {trip.booked && this.state.isOwner ? (
-                <Message>
-                  This trip has already been booked on{' '}
-                  {moment(query.startDate).format('Do MMM YYYY')}.
-                </Message>
-              ) : null}
-              <ToolBar
-                onSubmit={this.onSubmit}
-                onValueChange={this.onValueChange}
-                state={query}
-                trip={trip}
-                onCheckAvailabilityClick={this.checkAvailability}
-                isOwner={this.state.isOwner}
-                serviceAvailabilityCheckInProgress={this.props.serviceAvailabilityCheckInProgress}
-              />
-              <TagsWrapper>
-                {trip.tags &&
-                  trip.tags.map(tag => (
-                    <Tag key={tag.label} item={tag} href={`/results?tags=${tag.label}`} />
-                  ))}
-              </TagsWrapper>
-              <Divider horizontal>Trip itinerary</Divider>
-              <TripActionsWrap>
-                <Popup
-                  trigger={
-                    <Trigger iconBefore="plus" size="small" round={true} text="Add new Service" />
-                  }
-                  content={
-                    <div>
-                      <DropItem
-                        onClick={() => {
-                          query_params.service_types = 'place';
-                          this.generate_search_query(query_params);
-                        }}
-                      >
-                        Place
-                      </DropItem>
-                      <DropItem
-                        onClick={() => {
-                          query_params.service_types = 'food';
-                          this.generate_search_query(query_params);
-                        }}
-                      >
-                        Food
-                      </DropItem>
-                      <DropItem
-                        onClick={() => {
-                          query_params.service_types = 'activity';
-                          this.generate_search_query(query_params);
-                        }}
-                      >
-                        Activity
-                      </DropItem>
-                    </div>
-                  }
-                  position="left center"
-                  on="click"
-                  flowing={true}
-                  className="semantic-popup-wrapper"
-                  style={{
-                    float: 'left',
-                    background: 'white',
-                    borderRadius: '4px',
-                    padding: '5px 10px',
-                    border: '0px',
-                    boxShadow: '0 8px 25px 0 rgba(141, 141, 141, 0.22)',
-                  }}
-                  horizontalOffset={5}
+                <Hr />
+                <Summary
+                  trip={trip}
+                  scheduledServices={this.props.scheduledServices}
+                  isOwner={this.state.isOwner}
+                  onBookClick={this.props.onBookClick}
+                  isCloningInProcess={this.props.isCloningInProcess}
+                  query={query}
                 />
-                <Button
-                  type="button"
-                  round
-                  size="small"
-                  iconAfter="arrowDown"
-                  theme="textGreen"
-                  onClick={this.toggleExpansion}
-                  text={this.state.resultsExpanded ? 'Collapse all' : 'Expand all'}
-                />
-              </TripActionsWrap>
-              <Results
-                trip={trip}
-                showDetails={this.state.details}
-                scheduledServices={this.props.scheduledServices}
-                onServiceDragEnd={this.props.onServiceDragEnd}
-                onServiceRemoveClick={this.props.onServiceRemoveClick}
-                expanded={this.state.resultsExpanded}
-              />
-              <Hr />
-              <Summary
-                trip={trip}
-                scheduledServices={this.props.scheduledServices}
-                isOwner={this.state.isOwner}
-                onBookClick={this.props.onBookClick}
-                isCloningInProcess={this.props.isCloningInProcess}
-                query={query}
-              />
-            </TripWrapper>
-          </Wrap>
+              </TripWrapper>
+            </Wrap>
+          )}
         </PageContent>
       </Page>
     );
