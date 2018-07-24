@@ -3,11 +3,9 @@ import styled from 'styled-components';
 import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete';
 import { withFormik } from 'formik';
 import { Form } from 'semantic-ui-react';
-import DayPickerInput from 'react-day-picker/DayPickerInput';
+import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
 
 // import Form from 'shared_components/Form';
-import FormControl from 'shared_components/Form/FormControl';
-import LocationControl from 'shared_components/Form/LocationControl';
 import ToolbarButton from './ToolbarButton';
 import toolBarPropTypes from './toolbar-proptypes';
 import ResponsiveToolbarWrap from './ResponsiveToolBarWrap';
@@ -49,9 +47,9 @@ const OwnerForm = styled(Form)`
 class OwnerToolBar extends Component {
   static propTypes = toolBarPropTypes;
 
-  onLocationSelect = async (address, placeId) => {
-    const { onValueChange } = this.props;
-    onValueChange('formattedAddress', address);
+  onLocationChange = async (address, placeId) => {
+    const { setFieldValue } = this.props;
+    setFieldValue('formattedAddress', address);
     const results = await geocodeByPlaceId(placeId);
     const currentResult = results[0];
     const latlngPromise = getLatLng(currentResult);
@@ -61,13 +59,13 @@ class OwnerToolBar extends Component {
     );
     const countries = addressComponents.filter(c => c.types.includes('country'));
     if (countries[0] && countries[0].long_name) {
-      onValueChange('country', countries[0].long_name);
+      setFieldValue('country', countries[0].long_name);
     }
     if (localities[0] && localities[0].long_name) {
-      onValueChange('city', localities[0].long_name);
+      setFieldValue('city', localities[0].long_name);
     }
     const latlng = await latlngPromise;
-    onValueChange('latlng', latlng);
+    setFieldValue('latlng', latlng);
   };
 
   render() {
@@ -123,11 +121,13 @@ class OwnerToolBar extends Component {
               <Form.Group widths={3}>
                 <Form.Field required>
                   <label>Location</label>
-                  <LocationControl
-                    formatted_address={state.formattedAddress}
-                    onSelect={this.onLocationSelect}
-                    onBlur={onSubmit}
-                    disabled={isTripBooked}
+                  <SemanticLocationControl
+                    defaultAddress={values.address}
+                    onChange={this.onLocationChange}
+                    inputProps={{
+                      onBlur: handleBlur,
+                      disabled: isTripBooked,
+                    }}
                   />
                 </Form.Field>
 
