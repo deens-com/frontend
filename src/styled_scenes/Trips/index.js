@@ -26,7 +26,7 @@ import { media, sizes } from '../../libs/styled';
 import { Page, PageContent } from '../../shared_components/layout/Page';
 import { Hr } from '../../shared_components/styledComponents/misc';
 import ChangeTripImageButton from './components/ChangeTripImageButton';
-import Button from '../../shared_components/Button';
+import Button from 'shared_components/Button';
 
 const Wrap = styled.div`
   ${media.minMediumPlus} {
@@ -117,6 +117,14 @@ const ProfileWrap = styled.div`
 const TagsWrapper = styled.section`
   margin-left: 20px;
 `;
+
+const TripActionsWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding-right: 25px;
+`;
+
 // MODULE
 export default class TripsScene extends Component {
   state = {
@@ -124,6 +132,7 @@ export default class TripsScene extends Component {
     center: { lat: 59.95, lng: 30.33 },
     zoom: 11,
     isOwner: false,
+    resultsExpanded: false,
   };
 
   componentDidMount() {
@@ -207,6 +216,10 @@ export default class TripsScene extends Component {
     const size = { width: 800, height: 450 };
     const { center, zoom } = fitBounds(newBounds, size);
     return { center, zoom };
+  };
+
+  toggleExpansion = () => {
+    this.setState(prevState => ({ resultsExpanded: !prevState.resultsExpanded }));
   };
 
   render() {
@@ -303,19 +316,29 @@ export default class TripsScene extends Component {
                   ))}
               </TagsWrapper>
               <Divider horizontal>Trip itinerary</Divider>
+              <TripActionsWrap>
+                <Button
+                  type="button"
+                  round
+                  size="small"
+                  iconAfter="arrowDown"
+                  theme="textGreen"
+                  onClick={this.toggleExpansion}
+                  text={this.state.resultsExpanded ? 'Collapse all' : 'Expand all'}
+                />
+              </TripActionsWrap>
               <Results
                 trip={trip}
                 showDetails={this.state.details}
                 scheduledServices={this.props.scheduledServices}
-                unScheduledServices={this.props.unScheduledServices}
                 onServiceDragEnd={this.props.onServiceDragEnd}
                 onServiceRemoveClick={this.props.onServiceRemoveClick}
+                expanded={this.state.resultsExpanded}
               />
               <Hr />
               <Summary
                 trip={trip}
                 scheduledServices={this.props.scheduledServices}
-                unScheduledServices={this.props.unScheduledServices}
                 isOwner={this.state.isOwner}
                 onBookClick={this.props.onBookClick}
                 isCloningInProcess={this.props.isCloningInProcess}
@@ -333,7 +356,6 @@ export default class TripsScene extends Component {
 TripsScene.propTypes = {
   trip: PropTypes.object,
   scheduledServices: PropTypes.array,
-  unScheduledServices: PropTypes.array,
   onServiceDragEnd: PropTypes.func.isRequired,
   onServiceRemoveClick: PropTypes.func.isRequired,
   updateTripDetails: PropTypes.func.isRequired,

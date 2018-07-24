@@ -9,7 +9,7 @@ import Col from '../../../shared_components/layout/Col';
 import Row from '../../../shared_components/layout/Row';
 import TripCart from '../../../shared_components/Carts/Trip';
 import Button from '../../../shared_components/Button';
-import Day from './Day';
+import Day, { Header } from './Day';
 
 // ACTIONS/CONFIG
 import { media } from '../../../libs/styled';
@@ -17,7 +17,6 @@ import { tripsData } from '../../../data/home';
 
 // STYLES
 import { Highlight } from './styles';
-import { Header } from './Day';
 
 const Wrap = styled.div`
   padding: 45px 10px 10px;
@@ -35,17 +34,14 @@ export default function Results({
   trip,
   showDetails,
   scheduledServices,
-  unScheduledServices,
   onServiceDragEnd,
   onServiceRemoveClick,
+  expanded,
 }) {
   const allowServiceRearrange = false; // trip && (trip.owner && trip.owner.objectId) === (currentUser && currentUser.id) && !trip.booked;
-  const dayProps = { trip, allowServiceRearrange, onServiceRemoveClick };
+  const dayProps = { trip, allowServiceRearrange, onServiceRemoveClick, expanded };
   const services = [];
   if (showDetails) {
-    if (allowServiceRearrange) {
-      services.push(...unScheduledServices.map(day => <Day key="null" day={day} {...dayProps} />));
-    }
     services.push(...scheduledServices.map(day => <Day key={day.day} day={day} {...dayProps} />));
   }
   return (
@@ -87,12 +83,11 @@ Results.propTypes = {
   trip: PropTypes.object,
   showDetails: PropTypes.bool,
   scheduledTrips: PropTypes.array,
-  unScheduledTrips: PropTypes.array,
   onServiceDragEnd: PropTypes.func.isRequired,
   onServiceRemoveClick: PropTypes.func.isRequired,
+  expanded: PropTypes.bool.isRequired,
 };
 
 Results.defaultProps = {
   scheduledTrips: [],
-  unScheduledTrips: [],
 };

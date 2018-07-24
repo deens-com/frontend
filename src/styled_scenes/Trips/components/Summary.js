@@ -126,7 +126,6 @@ export default class TripSummary extends Component {
 TripSummary.propTypes = {
   trip: PropTypes.object,
   scheduledServices: PropTypes.arrayOf(PropTypes.object),
-  unScheduledServices: PropTypes.arrayOf(PropTypes.object),
   onBookClick: PropTypes.func.isRequired,
   isCloningInProcess: PropTypes.bool.isRequired,
   query: PropTypes.object,

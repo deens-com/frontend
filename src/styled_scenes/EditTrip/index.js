@@ -7,7 +7,7 @@ import GoogleMapReact from 'google-map-react';
 import { fitBounds } from 'google-map-react/utils';
 import moment from 'moment';
 import Parse from 'parse';
-import { Divider, Message } from 'semantic-ui-react';
+import { Divider, Message, Popup } from 'semantic-ui-react';
 import Tag from './../Service/components/Tag';
 // COMPONENTS
 import TopBar from './../../shared_components/TopBarWithSearch';
@@ -18,6 +18,8 @@ import MapMaker from '../../shared_components/MapMarker';
 import UserAvatar from '../../shared_components/UserAvatar';
 import ShareButton from './components/ShareButton';
 import Image from 'shared_components/Image';
+import Trigger from 'shared_components/DropPicker/Trigger';
+import Button from 'shared_components/Button';
 
 // ACTIONS/CONFIG
 import { media, sizes } from '../../libs/styled';
@@ -116,6 +118,42 @@ const ProfileWrap = styled.div`
 const TagsWrapper = styled.section`
   margin-left: 20px;
 `;
+
+const DropItem = styled.div`
+  padding: 5px 10px;
+  position: relative;
+  cursor: pointer;
+  font-size: 14px;
+  float: left;
+  font-weight: lighter;
+
+  &:hover,
+  &:focus {
+    color: #4fb798;
+  }
+
+  &:after {
+    content: '';
+    width: 1px;
+    height: 60%;
+    background: #eef1f4;
+    position: absolute;
+    right: 0px;
+    top: 20%;
+  }
+
+  &:last-child:after {
+    display: none;
+  }
+`;
+
+const TripActionsWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding-right: 25px;
+`;
+
 // MODULE
 export default class TripsScene extends Component {
   state = {
@@ -123,6 +161,7 @@ export default class TripsScene extends Component {
     center: { lat: 59.95, lng: 30.33 },
     zoom: 11,
     isOwner: false,
+    resultsExpanded: false,
   };
 
   componentDidMount() {
@@ -177,9 +216,13 @@ export default class TripsScene extends Component {
 
   getMarkerLatLngs = props => {
     return props.scheduledServices.reduce(
-      (markers, { services }) => [
+      (markers, { day, services }) => [
         ...markers,
-        ...services.map(({ latitude, longitude }) => ({ latitude, longitude })),
+        ...services.map(({ objectId, latitude, longitude }) => ({
+          key: `${objectId}-day${day}`,
+          latitude,
+          longitude,
+        })),
       ],
       [],
     );
@@ -204,8 +247,17 @@ export default class TripsScene extends Component {
     return { center, zoom };
   };
 
+  toggleExpansion = () => {
+    this.setState(prevState => ({ resultsExpanded: !prevState.resultsExpanded }));
+  };
+
   render() {
     const { query, trip } = this.props;
+    const query_params = {
+      person_nb: this.props.trip.numberOfPerson,
+      start_date: this.props.trip.beginDate && this.props.trip.beginDate.iso,
+      end_date: this.props.trip.endDate && this.props.trip.endDate.iso,
+    };
 
     return (
       <Page topPush>
@@ -253,9 +305,9 @@ export default class TripsScene extends Component {
                 render={() => (
                   <MapWrapper>
                     <GoogleMapReact center={this.state.center} zoom={this.state.zoom}>
-                      {this.getMarkerLatLngs(this.props).map(({ latitude, longitude }) => (
+                      {this.getMarkerLatLngs(this.props).map(({ key, latitude, longitude }) => (
                         <MapMaker
-                          key={`${latitude}-${longitude}`}
+                          key={key}
                           lat={latitude}
                           lng={longitude}
                           scale={1}
@@ -290,19 +342,75 @@ export default class TripsScene extends Component {
                   ))}
               </TagsWrapper>
               <Divider horizontal>Trip itinerary</Divider>
+              <TripActionsWrap>
+                <Popup
+                  trigger={
+                    <Trigger iconBefore="plus" size="small" round={true} text="Add new Service" />
+                  }
+                  content={
+                    <div>
+                      <DropItem
+                        onClick={() => {
+                          query_params.service_types = 'place';
+                          this.generate_search_query(query_params);
+                        }}
+                      >
+                        Place
+                      </DropItem>
+                      <DropItem
+                        onClick={() => {
+                          query_params.service_types = 'food';
+                          this.generate_search_query(query_params);
+                        }}
+                      >
+                        Food
+                      </DropItem>
+                      <DropItem
+                        onClick={() => {
+                          query_params.service_types = 'activity';
+                          this.generate_search_query(query_params);
+                        }}
+                      >
+                        Activity
+                      </DropItem>
+                    </div>
+                  }
+                  position="left center"
+                  on="click"
+                  flowing={true}
+                  className="semantic-popup-wrapper"
+                  style={{
+                    float: 'left',
+                    background: 'white',
+                    borderRadius: '4px',
+                    padding: '5px 10px',
+                    border: '0px',
+                    boxShadow: '0 8px 25px 0 rgba(141, 141, 141, 0.22)',
+                  }}
+                  horizontalOffset={5}
+                />
+                <Button
+                  type="button"
+                  round
+                  size="small"
+                  iconAfter="arrowDown"
+                  theme="textGreen"
+                  onClick={this.toggleExpansion}
+                  text={this.state.resultsExpanded ? 'Collapse all' : 'Expand all'}
+                />
+              </TripActionsWrap>
               <Results
                 trip={trip}
                 showDetails={this.state.details}
                 scheduledServices={this.props.scheduledServices}
-                unScheduledServices={this.props.unScheduledServices}
                 onServiceDragEnd={this.props.onServiceDragEnd}
                 onServiceRemoveClick={this.props.onServiceRemoveClick}
+                expanded={this.state.resultsExpanded}
               />
               <Hr />
               <Summary
                 trip={trip}
                 scheduledServices={this.props.scheduledServices}
-                unScheduledServices={this.props.unScheduledServices}
                 isOwner={this.state.isOwner}
                 onBookClick={this.props.onBookClick}
                 isCloningInProcess={this.props.isCloningInProcess}
@@ -320,7 +428,6 @@ export default class TripsScene extends Component {
 TripsScene.propTypes = {
   trip: PropTypes.object,
   scheduledServices: PropTypes.array,
-  unScheduledServices: PropTypes.array,
   onServiceDragEnd: PropTypes.func.isRequired,
   onServiceRemoveClick: PropTypes.func.isRequired,
   updateTripDetails: PropTypes.func.isRequired,

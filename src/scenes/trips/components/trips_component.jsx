@@ -9,7 +9,6 @@ const TripsComponent = props => {
 TripsComponent.propTypes = {
   trip: PropTypes.object,
   scheduledServices: PropTypes.array,
-  unScheduledServices: PropTypes.array,
   onServiceDragEnd: PropTypes.func.isRequired,
   onServiceRemoveClick: PropTypes.func.isRequired,
   updateTripDetails: PropTypes.func.isRequired,
