@@ -36,7 +36,6 @@ export default function Results({
   trip,
   showDetails,
   scheduledServices,
-  unScheduledServices,
   onServiceDragEnd,
   onServiceRemoveClick,
 }) {
@@ -46,9 +45,6 @@ export default function Results({
   const dayProps = { trip, allowServiceRearrange, onServiceRemoveClick };
   const services = [];
   if (showDetails) {
-    if (allowServiceRearrange) {
-      services.push(...unScheduledServices.map(day => <Day key="null" day={day} {...dayProps} />));
-    }
     services.push(...scheduledServices.map(day => <Day key={day.day} day={day} {...dayProps} />));
   }
   return (
@@ -90,12 +86,10 @@ Results.propTypes = {
   trip: PropTypes.object,
   showDetails: PropTypes.bool,
   scheduledTrips: PropTypes.array,
-  unScheduledTrips: PropTypes.array,
   onServiceDragEnd: PropTypes.func.isRequired,
   onServiceRemoveClick: PropTypes.func.isRequired,
 };
 
 Results.defaultProps = {
   scheduledTrips: [],
-  unScheduledTrips: [],
 };

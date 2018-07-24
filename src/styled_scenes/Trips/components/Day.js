@@ -140,7 +140,7 @@ export default class TripDay extends Component {
 
   render() {
     const { day, allowServiceRearrange } = this.props;
-    const dayTitle = day.day === 'null' || !day.day ? 'Unscheduled' : `Day ${day.day}`;
+    const dayTitle = `Day ${day.day}`;
     const services =
       day.services.length === 0 ? (
         <EmptyTripDay allowServiceRearrange={allowServiceRearrange} />

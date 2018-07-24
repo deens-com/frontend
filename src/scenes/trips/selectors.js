@@ -32,10 +32,3 @@ export const getScheduledServices = state => {
   }
   return Object.values(dayObjects);
 };
-
-export const getUnScheduledServices = state => {
-  const dayObjects = getDaysWithFilter(state, tOrg => tOrg.day == null || tOrg.day === 'null');
-  const dayIndex = 'null';
-  dayObjects[dayIndex] = dayObjects[dayIndex] || { day: dayIndex, services: [] };
-  return Object.values(dayObjects);
-};

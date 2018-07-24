@@ -307,7 +307,6 @@ export default class TripsScene extends Component {
                 trip={trip}
                 showDetails={this.state.details}
                 scheduledServices={this.props.scheduledServices}
-                unScheduledServices={this.props.unScheduledServices}
                 onServiceDragEnd={this.props.onServiceDragEnd}
                 onServiceRemoveClick={this.props.onServiceRemoveClick}
               />
@@ -315,7 +314,6 @@ export default class TripsScene extends Component {
               <Summary
                 trip={trip}
                 scheduledServices={this.props.scheduledServices}
-                unScheduledServices={this.props.unScheduledServices}
                 isOwner={this.state.isOwner}
                 onBookClick={this.props.onBookClick}
                 isCloningInProcess={this.props.isCloningInProcess}
@@ -333,7 +331,6 @@ export default class TripsScene extends Component {
 TripsScene.propTypes = {
   trip: PropTypes.object,
   scheduledServices: PropTypes.array,
-  unScheduledServices: PropTypes.array,
   onServiceDragEnd: PropTypes.func.isRequired,
   onServiceRemoveClick: PropTypes.func.isRequired,
   updateTripDetails: PropTypes.func.isRequired,

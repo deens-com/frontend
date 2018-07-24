@@ -83,7 +83,6 @@ const mapStateToProps = state => {
     trip: state.TripsReducer.trip,
     tripError: state.TripsReducer.tripError,
     scheduledServices: selectors.getScheduledServices(state),
-    unScheduledServices: selectors.getUnScheduledServices(state),
     isCloningInProcess: state.TripsReducer.cloningStatus === statuses.STARTED,
     query: state.TripsReducer.query,
     serviceAvailabilityCheckInProgress:
