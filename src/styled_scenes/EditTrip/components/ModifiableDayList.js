@@ -3,18 +3,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { DragDropContext } from 'react-beautiful-dnd';
-import Parse from 'parse';
 
 // COMPONENTS
-import Col from '../../../shared_components/layout/Col';
-import Row from '../../../shared_components/layout/Row';
-import TripCart from '../../../shared_components/Carts/Trip';
-import Button from '../../../shared_components/Button';
-import Day, { Header } from 'styled_scenes/Trips/components/Day';
+import Col from 'shared_components/layout/Col';
+import Row from 'shared_components/layout/Row';
+import TripCart from 'shared_components/Carts/Trip';
+import Button from 'shared_components/Button';
+import Day, { Header } from '../../Trips/components/Day';
 
 // ACTIONS/CONFIG
-import { media } from '../../../libs/styled';
-import { tripsData } from '../../../data/home';
+import { media } from 'libs/styled';
+import { tripsData } from 'data/home';
 
 // STYLES
 import { Highlight } from './styles';
@@ -31,7 +30,7 @@ const Wrap = styled.div`
 `;
 
 // MODULE
-export default function Results({
+export default function ModifiableDayList({
   trip,
   showDetails,
   scheduledServices,
@@ -39,10 +38,7 @@ export default function Results({
   onServiceRemoveClick,
   expanded,
 }) {
-  const currentUser = Parse.User.current();
-  const allowServiceRearrange =
-    trip && (trip.owner && trip.owner.objectId) === (currentUser && currentUser.id) && !trip.booked;
-  const dayProps = { trip, allowServiceRearrange, onServiceRemoveClick, expanded };
+  const dayProps = { trip, allowServiceRearrange: true, onServiceRemoveClick, expanded };
   const services = [];
   if (showDetails) {
     services.push(...scheduledServices.map(day => <Day key={day.day} day={day} {...dayProps} />));
@@ -82,7 +78,7 @@ export default function Results({
 }
 
 // Props Validation
-Results.propTypes = {
+ModifiableDayList.propTypes = {
   trip: PropTypes.object,
   showDetails: PropTypes.bool,
   scheduledTrips: PropTypes.array,
@@ -91,6 +87,6 @@ Results.propTypes = {
   expanded: PropTypes.bool.isRequired,
 };
 
-Results.defaultProps = {
+ModifiableDayList.defaultProps = {
   scheduledTrips: [],
 };

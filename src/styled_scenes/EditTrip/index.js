@@ -7,17 +7,20 @@ import GoogleMapReact from 'google-map-react';
 import { fitBounds } from 'google-map-react/utils';
 import moment from 'moment';
 import Parse from 'parse';
-import { Divider, Message, Popup } from 'semantic-ui-react';
+import { Divider, Message } from 'semantic-ui-react';
 import Tag from './../Service/components/Tag';
 // COMPONENTS
-import TopBar from './../../shared_components/TopBarWithSearch';
-import Results from './components/Results';
-import Summary from './components/Summary';
-import MapMaker from '../../shared_components/MapMarker';
-import UserAvatar from '../../shared_components/UserAvatar';
-import ShareButton from './components/ShareButton';
+import TopBar from 'shared_components/TopBarWithSearch';
+import ModifiableDayList from 'styled_scenes/EditTrip/components/ModifiableDayList';
+import Summary from 'styled_scenes/EditTrip/components/Summary';
+import MapMaker from 'shared_components/MapMarker';
+import UserAvatar from 'shared_components/UserAvatar';
+import ShareButton from 'styled_scenes/EditTrip/components/ShareButton';
 import Image from 'shared_components/Image';
 import Button from 'shared_components/Button';
+import ChangeTripImageButton from 'styled_scenes/EditTrip/components/ChangeTripImageButton';
+import OwnerToolBar from 'styled_scenes/EditTrip/components/ToolBar/OwnerToolBar';
+import AddNewServiceToTrip from 'styled_scenes/EditTrip/components/AddNewServiceToTrip';
 
 // ACTIONS/CONFIG
 import { media, sizes } from '../../libs/styled';
@@ -25,9 +28,6 @@ import { media, sizes } from '../../libs/styled';
 // STYLES
 import { Page, PageContent } from '../../shared_components/layout/Page';
 import { Hr } from '../../shared_components/styledComponents/misc';
-import ChangeTripImageButton from './components/ChangeTripImageButton';
-import OwnerToolBar from 'styled_scenes/EditTrip/components/ToolBar/OwnerToolBar';
-import AddNewServiceToTrip from 'styled_scenes/EditTrip/components/AddNewServiceToTrip';
 
 const Wrap = styled.div`
   ${media.minMediumPlus} {
@@ -317,7 +317,7 @@ export default class TripsScene extends Component {
                     text={this.state.resultsExpanded ? 'Collapse all' : 'Expand all'}
                   />
                 </TripActionsWrap>
-                <Results
+                <ModifiableDayList
                   trip={trip}
                   showDetails={this.state.details}
                   scheduledServices={this.props.scheduledServices}
