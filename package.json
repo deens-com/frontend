@@ -71,7 +71,7 @@
     "precommit": "pretty-quick --staged",
     "predeploy": "REACT_APP_NODE_ENV=production npm run build",
     "deploy": "gh-pages -d build --dotfiles true",
-    "prettier-all": "prettier --write '**/*.{js,json}'"
+    "prettier-all": "prettier --write '**/*.{js,json,jsx}'"
   },
   "devDependencies": {
     "duplicate-package-checker-webpack-plugin": "^2.1.0",
@@ -93,7 +93,7 @@
     "web3-provider-engine": "14.0.5"
   },
   "lint-staged": {
-    "*.js": [
+    "*.{js,jsx}": [
       "prettier --write",
       "git add"
     ],
