@@ -61,23 +61,6 @@ export default class TripsScene extends Component {
     this.setState({ isOwner: false });
   }
 
-  onSubmit = ev => {
-    const { query } = this.props;
-    this.props.updateTripDetails(
-      {
-        title: query.title,
-        beginDate: query.startDate,
-        numberOfPerson: query.person.value,
-        formattedAddress: query.formattedAddress,
-        latitude: query.latlng && query.latlng.lat,
-        longitude: query.latlng && query.latlng.lng,
-        city: query.city,
-        country: query.country,
-      },
-      true,
-    );
-  };
-
   checkAvailability = () => {
     const { query } = this.props;
     this.props.checkAvailability(query.startDate, parseInt(query.person.label, 10));
@@ -113,9 +96,6 @@ export default class TripsScene extends Component {
                       {moment(query.startDate).format('Do MMM YYYY')}.
                     </Message>
                   ) : null}
-                  {/* TODO: @jaydp the only thing used from React.Context is updateTripDetails */}
-                  {/* which is available in the component because of Modal */}
-                  {/* In case we don't use React.Context for anything else, consider removing it */}
                   <OwnerToolBar trip={trip} />
                   <TagsWrapper>
                     {trip.tags &&
@@ -168,11 +148,7 @@ TripsScene.propTypes = {
   scheduledServices: PropTypes.array,
   onServiceDragEnd: PropTypes.func.isRequired,
   onServiceRemoveClick: PropTypes.func.isRequired,
-  updateTripDetails: PropTypes.func.isRequired,
   onBookClick: PropTypes.func.isRequired,
   isCloningInProcess: PropTypes.bool.isRequired,
   serviceAvailabilityCheckInProgress: PropTypes.bool.isRequired,
-  onShareModalClose: PropTypes.func.isRequired,
-  onImageSelect: PropTypes.func.isRequired,
-  isImageUploadInProgress: PropTypes.bool.isRequired,
 };

@@ -21,7 +21,6 @@ class EditTripContainer extends Component {
 
   state = {
     isLoggedIn: false,
-    updateTripDetails: this.updateTripDetails,
   };
 
   /**
@@ -79,14 +78,22 @@ class EditTripContainer extends Component {
       return <NotFound />;
     }
     return (
-      <EditTripContext.Provider value={this.state}>
+      // If there's a way to avoid creating the value object every time we render
+      // Please do let me know
+      // - jaydp
+      <EditTripContext.Provider
+        value={{
+          ...this.state,
+          ...this.props,
+          updateTripDetails: this.updateTripDetails,
+          onShareModalClose: this.onShareModalClose,
+        }}
+      >
         <EditTripComponent
           {...this.props}
           onServiceDragEnd={this.onDragReOrderChange}
           onServiceRemoveClick={this.onServiceRemoveClick}
-          updateTripDetails={this.updateTripDetails}
           onBookClick={this.onBookClick}
-          onShareModalClose={this.onShareModalClose}
         />
       </EditTripContext.Provider>
     );

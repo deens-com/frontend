@@ -19,6 +19,7 @@ import {
   MapWrapper,
 } from './styles';
 import { getFormattedTripDates } from 'libs/Utils';
+import EditTripContainer from 'scenes/trips/containers/EditTripContainer';
 
 export default class TripLeftPortion extends Component {
   static propTypes = {
@@ -96,16 +97,22 @@ export default class TripLeftPortion extends Component {
             </ProfileWrap>
           </span>
           <ActionsWrap>
-            <ShareButton
-              trip={trip}
-              updateTripDetails={this.props.updateTripDetails}
-              showTripStatusChanged={this.props.showTripStatusChanged}
-              onShareModalClose={this.props.onShareModalClose}
-            />
-            <ChangeTripImageButton
-              onImageSelect={this.props.onImageSelect}
-              isImageUploadInProgress={this.props.isImageUploadInProgress}
-            />
+            <EditTripContainer.ContextConsumer>
+              {context => (
+                <React.Fragment>
+                  <ShareButton
+                    trip={trip}
+                    updateTripDetails={context.updateTripDetails}
+                    showTripStatusChanged={context.showTripStatusChanged}
+                    onShareModalClose={context.onShareModalClose}
+                  />
+                  <ChangeTripImageButton
+                    onImageSelect={context.onImageSelect}
+                    isImageUploadInProgress={context.isImageUploadInProgress}
+                  />
+                </React.Fragment>
+              )}
+            </EditTripContainer.ContextConsumer>
           </ActionsWrap>
           <ShareBg
             src={
