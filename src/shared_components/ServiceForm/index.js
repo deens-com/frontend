@@ -5,7 +5,7 @@ import { withFormik } from 'formik';
 import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete';
 import styled from 'styled-components';
 import serviceTags from './service-tags';
-import LocationFormControl from '../Form/LocationControl';
+import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
 import { Link } from 'react-router-dom';
 import history from './../../main/history';
 import { isMobile, checkRequiredFields } from 'libs/Utils';
@@ -91,7 +91,7 @@ class ServiceForm extends Component {
     setFieldTouched('mainPicture', true, false);
   };
 
-  onLocationChange = address => {
+  onLocationKeyUp = () => {
     const { setFieldValue, setFieldTouched } = this.props;
     setFieldValue('latlong', null);
     setFieldTouched('latlong', true, false);
@@ -170,8 +170,9 @@ class ServiceForm extends Component {
 
     const serviceHasContract = service && service.contractAddress != null;
 
+    // we're using the key prop over here because we want to re-create the form component once we get the service
     return (
-      <Form onSubmit={handleSubmit} loading={submitInFlight}>
+      <Form key={service && service.objectId} onSubmit={handleSubmit} loading={submitInFlight}>
         <Modal
           closeOnDimmerClick={false}
           size="tiny"
@@ -269,10 +270,10 @@ class ServiceForm extends Component {
         {/* Location search */}
         <Form.Field required>
           <label>Location</label>
-          <LocationFormControl
-            formatted_address={values.formattedAddress}
-            onChange={this.onLocationChange}
-            onSelect={this.onLocationSelect}
+          <SemanticLocationControl
+            defaultAddress={values.formattedAddress}
+            onKeyUp={this.onLocationKeyUp}
+            onChange={this.onLocationSelect}
           />
           {touched.latlong && errors.latlong && <ErrorMsg>{errors.latlong}</ErrorMsg>}
         </Form.Field>
