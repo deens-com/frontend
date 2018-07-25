@@ -137,10 +137,12 @@ function validate(values) {
   if (!errors.duration && isNaN(values.duration)) {
     errors.duration = 'Invalid number';
   }
+  if (!errors.duration && values.duration < 1) {
+    errors.duration = 'Minimum is 1';
+  }
   if (!errors.duration && !Number.isInteger(parseFloat(values.duration))) {
     errors.duration = 'Only integers allowed';
   }
-  console.log('errors', errors);
   return errors;
 }
 
