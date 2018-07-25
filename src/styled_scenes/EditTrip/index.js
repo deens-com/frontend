@@ -12,7 +12,6 @@ import Tag from './../Service/components/Tag';
 // COMPONENTS
 import TopBar from './../../shared_components/TopBarWithSearch';
 import Results from './components/Results';
-import ToolBar from './components/ToolBar';
 import Summary from './components/Summary';
 import MapMaker from '../../shared_components/MapMarker';
 import UserAvatar from '../../shared_components/UserAvatar';
@@ -28,6 +27,7 @@ import { media, sizes } from '../../libs/styled';
 import { Page, PageContent } from '../../shared_components/layout/Page';
 import { Hr } from '../../shared_components/styledComponents/misc';
 import ChangeTripImageButton from './components/ChangeTripImageButton';
+import OwnerToolBar from 'styled_scenes/EditTrip/components/ToolBar/OwnerToolBar';
 
 const Wrap = styled.div`
   ${media.minMediumPlus} {
@@ -327,15 +327,10 @@ export default class TripsScene extends Component {
                     {moment(query.startDate).format('Do MMM YYYY')}.
                   </Message>
                 ) : null}
-                <ToolBar
-                  onSubmit={this.onSubmit}
-                  onValueChange={this.onValueChange}
-                  state={query}
-                  trip={trip}
-                  onCheckAvailabilityClick={this.checkAvailability}
-                  isOwner={this.state.isOwner}
-                  serviceAvailabilityCheckInProgress={this.props.serviceAvailabilityCheckInProgress}
-                />
+                {/* TODO: @jaydp the only thing used from React.Context is updateTripDetails */}
+                {/* which is available in the component because of Modal */}
+                {/* In case we don't use React.Context for anything else, consider removing it */}
+                <OwnerToolBar trip={trip} />
                 <TagsWrapper>
                   {trip.tags &&
                     trip.tags.map(tag => (

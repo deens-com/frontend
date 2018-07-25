@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 import Parse from 'parse';
 import NotFound from '../../../styled_scenes/NotFound';
-import EditTripComponent from './../components/edit_trip_component';
+import EditTripComponent from 'styled_scenes/EditTrip';
 import * as trips_actions from './../actions';
 import * as selectors from '../selectors';
 import { statuses } from '../../../libs/fetch_helpers';
@@ -84,6 +84,7 @@ class EditTripContainer extends Component {
           {...this.props}
           onServiceDragEnd={this.onDragReOrderChange}
           onServiceRemoveClick={this.onServiceRemoveClick}
+          updateTripDetails={this.updateTripDetails}
           onBookClick={this.onBookClick}
           onShareModalClose={this.onShareModalClose}
         />
