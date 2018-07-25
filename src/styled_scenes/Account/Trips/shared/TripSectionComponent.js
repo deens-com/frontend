@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { SectionContent } from './../../../../shared_components/layout/Page';
+import moment from 'moment';
+import styled from 'styled-components';
+import { Button, Divider, Icon, Label } from 'semantic-ui-react';
+
+import { SectionContent } from 'shared_components/layout/Page';
+import { getISODateString } from 'libs/Utils';
 import Carousel from './Carousel';
 import LocationCart from './Carts/Location';
-import moment from 'moment';
-import { Button, Divider, Icon, Label } from 'semantic-ui-react';
-import styled from 'styled-components';
 
 const get_label_color = status => {
   switch (status) {
@@ -47,52 +50,66 @@ const ColoredText = styled.p`
   color: #b3a7a7;
 `;
 
-const renderTrip = trip => {
-  const linkToTrip = `/trips/${trip.objectId}`;
-  return (
-    <SectionContent key={trip.objectId}>
-      <Divider />
-      <TripTitleRow>
-        <Link to={linkToTrip}>
-          <InlineH2>{trip.title}</InlineH2>
-        </Link>
-        <Button
-          as={Link}
-          basic
-          icon
-          labelPosition="left"
-          size="tiny"
-          to={`/trips/${trip.objectId}/edit`}
-        >
-          <Icon name="edit" />
-          Edit
-        </Button>
-      </TripTitleRow>
-      <ColoredText>
-        {trip.beginDate && moment(trip.beginDate).format('L')} -{' '}
-        {trip.endDate && moment(trip.endDate).format('L')}
-      </ColoredText>
-      <Label color={get_label_color(trip.status)}>Trip visibility: {trip.status}</Label>
-      {trip.booked ? <Label color="olive">purchased</Label> : null}
-      <br />
-      <br />
-      <CarouselWrapper>
-        <Carousel sm_slides_nb={1} md_slides_nb={2} lg_slides_nb={4} xl_slides_nb={4}>
-          {trip.services.map((item, index) => (
-            <LocationCart item={item} index={index} key={item.objectId} />
-          ))}
-        </Carousel>
-      </CarouselWrapper>
-      {trip.services.length ? null : (
-        <EmptyServicesText>No scheduled services in this trip</EmptyServicesText>
-      )}
-      <br />
-    </SectionContent>
-  );
-};
+class Trip extends Component {
+  static propTypes = {
+    trip: PropTypes.object.isRequired,
+  };
+
+  state = {
+    linkToViewTrip: `/trips/${this.props.trip.objectId}`,
+    linkToEditTrip: `/trips/${this.props.trip.objectId}/edit`,
+    tripDates: (() => {
+      const { trip } = this.props;
+      const startMoment = moment(getISODateString(trip.beginDate));
+      const endMoment = startMoment.clone().add(trip.duration, 'days');
+      return `${startMoment.format('LL')} - ${endMoment.format('LL')}`;
+    })(),
+  };
+
+  render() {
+    const { trip } = this.props;
+    return (
+      <SectionContent key={trip.objectId}>
+        <Divider />
+        <TripTitleRow>
+          <Link to={this.state.linkToViewTrip}>
+            <InlineH2>{trip.title}</InlineH2>
+          </Link>
+          <Button
+            as={Link}
+            basic
+            icon
+            labelPosition="left"
+            size="tiny"
+            to={this.state.linkToEditTrip}
+          >
+            <Icon name="edit" />
+            Edit
+          </Button>
+        </TripTitleRow>
+        <ColoredText>{this.state.tripDates}</ColoredText>
+        <Label color={get_label_color(trip.status)}>Trip visibility: {trip.status}</Label>
+        {trip.booked ? <Label color="olive">purchased</Label> : null}
+        <br />
+        <br />
+        <CarouselWrapper>
+          <Carousel sm_slides_nb={1} md_slides_nb={2} lg_slides_nb={4} xl_slides_nb={4}>
+            {trip.services.map((item, index) => (
+              <LocationCart item={item} index={index} key={item.objectId} />
+            ))}
+          </Carousel>
+        </CarouselWrapper>
+        {trip.services.length ? null : (
+          <EmptyServicesText>No scheduled services in this trip</EmptyServicesText>
+        )}
+        <br />
+      </SectionContent>
+    );
+  }
+}
 
 const TripSectionComponent = props => {
-  return <section>{props.trips.map(renderTrip)}</section>;
+  return <section>{props.trips.map(trip => <Trip key={trip.objectId} trip={trip} />)}</section>;
 };
 
 export default TripSectionComponent;
