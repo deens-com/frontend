@@ -53,7 +53,7 @@ export default class SemanticLocationControl extends Component {
             basic
             trigger={
               <Form.Input
-                icon="map marker alternate"
+                icon="map pin"
                 iconPosition="left"
                 type="text"
                 {...getInputProps({
@@ -65,7 +65,7 @@ export default class SemanticLocationControl extends Component {
             open={suggestions.length > 0}
             onClose={this.handleClose}
             onOpen={this.handleOpen}
-            position="bottom center"
+            position="bottom left"
             wide
           >
             <List divided selection verticalAlign="middle">
