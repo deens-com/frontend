@@ -32,15 +32,9 @@ class TripsListInDropDown extends React.Component {
   };
 
   getTripDuration = trip => {
-    if (trip.beginDate && trip.endDate) {
-      const beginMoment = moment(trip.beginDate);
-      const endMoment = moment(trip.endDate);
-      const diff = endMoment.diff(beginMoment, 'days') + 1;
-      if (diff === 1) return { count: diff, label: 'day' };
-      return { count: diff, label: 'days' };
-    } else {
-      return {};
-    }
+    let label = 'day';
+    if (trip.duration > 1) label += 's';
+    return { count: trip.duration, label };
   };
 
   renderItem = (trip, description) => {

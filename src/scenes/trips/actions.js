@@ -77,21 +77,11 @@ function postFetchTripActions(trip, dispatch, getState) {
   const { title, numberOfPerson: peopleCount, formattedAddress } = trip;
   const isOwner = isCurrentUser(trip.owner);
   let startDate = new Date(getISODateString(trip.beginDate));
-  let endDate = new Date(getISODateString(trip.endDate));
   if (!isOwner) {
     const newStartDate = moment()
       .utc()
       .add(1, 'day')
       .startOf('day');
-    const beginMoment = moment(startDate)
-      .utc()
-      .startOf('day');
-    const diffDays = Math.ceil(newStartDate.diff(beginMoment, 'days', true));
-    endDate = moment(endDate)
-      .utc()
-      .startOf('day')
-      .add(diffDays, 'days')
-      .toDate();
     startDate = newStartDate.toDate();
   }
   updateTripQuery({
@@ -99,7 +89,6 @@ function postFetchTripActions(trip, dispatch, getState) {
     formattedAddress,
     title,
     startDate,
-    endDate,
   })(dispatch, getState);
   checkAvailability(startDate, peopleCount)(dispatch, getState);
 }
@@ -206,7 +195,7 @@ export const removePreBookingResults = () => dispatch => {
 };
 
 /**
- * Updates the startDate, endDate, person count in the ToolBar
+ * Updates the startDate, person count in the ToolBar
  */
 export const updateTripQuery = values => dispatch => {
   if (!values) return;

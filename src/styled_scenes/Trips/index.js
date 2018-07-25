@@ -27,6 +27,7 @@ import { Page, PageContent } from '../../shared_components/layout/Page';
 import { Hr } from '../../shared_components/styledComponents/misc';
 import ChangeTripImageButton from './components/ChangeTripImageButton';
 import Button from 'shared_components/Button';
+import { getFormattedTripDates } from 'libs/Utils';
 
 const Wrap = styled.div`
   ${media.minMediumPlus} {
@@ -145,7 +146,6 @@ export default class TripsScene extends Component {
       {
         title: query.title,
         beginDate: query.startDate,
-        endDate: query.endDate,
         numberOfPerson: query.person.value,
         formattedAddress: query.formattedAddress,
         latitude: query.latlng && query.latlng.lat,
@@ -234,10 +234,9 @@ export default class TripsScene extends Component {
               <ShareWrap>
                 <h3>{trip.title}</h3>
                 <DatesWrap>
-                  <p>
-                    {query.startDate && moment(query.startDate).format('MMM Do YY')} -{' '}
-                    {query.endDate && moment(query.endDate).format('MMM Do YY')}
-                  </p>
+                  {/* Given that this is ViewTrip Page the dates aren't gonna change */}
+                  {/* Thus this call can be optimized by storing the result in state and re-using it */}
+                  <p>{getFormattedTripDates(trip)}</p>
                 </DatesWrap>
                 <span>
                   <ProfileWrap>

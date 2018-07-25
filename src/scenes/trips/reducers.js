@@ -11,7 +11,6 @@ const initialState = {
   preBookingStepResult: null,
   query: {
     startDate: '',
-    endDate: '',
     person: {},
   },
   showTripStatusChanged: false,

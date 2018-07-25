@@ -88,7 +88,7 @@ export default class TripSummary extends Component {
 
   render() {
     const { query, trip, isOwner } = this.props;
-    const isDatesFormComplete = query.startDate && query.endDate && query.person.value;
+    const isDatesFormComplete = query.startDate && query.person.value;
     const booked = trip && trip.booked;
     return (
       <StickyWrap>
