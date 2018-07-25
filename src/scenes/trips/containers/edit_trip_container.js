@@ -9,10 +9,26 @@ import * as trips_actions from './../actions';
 import * as selectors from '../selectors';
 import { statuses } from '../../../libs/fetch_helpers';
 
+const EditTripContext = React.createContext();
+
 class EditTripContainer extends Component {
+  updateTripDetails = (newDetails, showSaved) => {
+    if (newDetails.status && newDetails.status !== this.props.trip.status) {
+      this.props.setShowTripStatusChanged(true);
+    }
+    this.props.updateTrip(newDetails, showSaved);
+  };
+
   state = {
     isLoggedIn: false,
+    updateTripDetails: this.updateTripDetails,
   };
+
+  /**
+   * For components deep down in the hierarchy make use of this context
+   * instead of Prop Drilling
+   */
+  static ContextConsumer = EditTripContext.Consumer;
 
   componentDidMount() {
     const trip_id = this.props.match.params.id;
@@ -41,13 +57,6 @@ class EditTripContainer extends Component {
     this.props.removeServiceFromTrip(tripOrganizationId);
   };
 
-  updateTripDetails = (newDetails, showSaved) => {
-    if (newDetails.status && newDetails.status !== this.props.trip.status) {
-      this.props.setShowTripStatusChanged(true);
-    }
-    this.props.updateTrip(newDetails, showSaved);
-  };
-
   onBookClick = (startDate, peopleCount) => {
     if (this.state.isLoggedIn) {
       this.props.cloneTrip(startDate, peopleCount, this.props.history);
@@ -70,14 +79,15 @@ class EditTripContainer extends Component {
       return <NotFound />;
     }
     return (
-      <EditTripComponent
-        {...this.props}
-        onServiceDragEnd={this.onDragReOrderChange}
-        onServiceRemoveClick={this.onServiceRemoveClick}
-        updateTripDetails={this.updateTripDetails}
-        onBookClick={this.onBookClick}
-        onShareModalClose={this.onShareModalClose}
-      />
+      <EditTripContext.Provider value={this.state}>
+        <EditTripComponent
+          {...this.props}
+          onServiceDragEnd={this.onDragReOrderChange}
+          onServiceRemoveClick={this.onServiceRemoveClick}
+          onBookClick={this.onBookClick}
+          onShareModalClose={this.onShareModalClose}
+        />
+      </EditTripContext.Provider>
     );
   }
 }
