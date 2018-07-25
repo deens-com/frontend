@@ -1,6 +1,6 @@
 import React from 'react';
-import TripsContainer from './containers/trips_container';
-import EditTripContainer from './containers/edit_trip_container';
+import ViewTripContainer from './containers/ViewTripContainer';
+import EditTripContainer from './containers/EditTripContainer';
 import PreBookingPopupContainer from './containers/PreBookingPopupContainer';
 import { Route } from 'react-router-dom';
 
@@ -10,7 +10,7 @@ const Trips = props => {
       <Route
         exact
         path={process.env.PUBLIC_URL + '/trips/:id'}
-        render={props => <TripsContainer {...props} />}
+        render={props => <ViewTripContainer {...props} />}
       />
       <Route
         path={process.env.PUBLIC_URL + '/trips/:id/edit'}

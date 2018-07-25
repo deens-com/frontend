@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 import Parse from 'parse';
 import NotFound from '../../../styled_scenes/NotFound';
-import TripsComponent from './../components/trips_component';
+import TripsComponent from 'styled_scenes/Trips';
 import * as trips_actions from './../actions';
 import * as selectors from '../selectors';
 import { statuses } from '../../../libs/fetch_helpers';
