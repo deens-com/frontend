@@ -104,6 +104,7 @@ class OwnerToolBar extends Component {
                 name: 'formattedAddress',
                 onBlur: handleBlur,
                 disabled: isTripBooked,
+                error: !!(touched.formattedAddress && errors.formattedAddress),
               }}
             />
             {touched.formattedAddress &&

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import PlacesAutocomplete from 'react-places-autocomplete';
-import { Input, List, Popup } from 'semantic-ui-react';
+import { Form, List, Popup } from 'semantic-ui-react';
 
 /**
  * A more advanced version of LocationControl
@@ -52,7 +52,7 @@ export default class SemanticLocationControl extends Component {
           <Popup
             basic
             trigger={
-              <Input
+              <Form.Input
                 icon="map marker alternate"
                 iconPosition="left"
                 type="text"
