@@ -18,7 +18,7 @@ import i18n from './../../../libs/i18n';
 // COMPONENTS
 import { SearchIcon, MicrophoneIcon, DateIcon } from '../../../shared_components/icons';
 import FormControl from '../../../shared_components/Form/FormControl';
-import LocationFormControl from '../../../shared_components/Form/LocationControl';
+import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
 import Button from '../../../shared_components/Button';
 
 // ACTIONS & CONFIG
@@ -190,6 +190,11 @@ const searchTypes = [
   { type: 'text', label: 'S' },
   { type: 'date', label: 'D' },
 ];
+
+const locationProps = {
+  inputStyles: { height: '100%' },
+  inputProps: { transparent: true },
+};
 
 class HomeSearch extends Component {
   constructor(props) {
@@ -453,7 +458,7 @@ class HomeSearch extends Component {
           {this.state.type === 'date' && (
             <div>
               <DateWrap>
-                <LocationFormControl onChange={this.handleLocationChange} />
+                <SemanticLocationControl onChange={this.handleLocationChange} {...locationProps} />
 
                 <FormControl
                   type="date"

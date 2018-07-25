@@ -4,7 +4,7 @@ import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete';
 
 import Form from 'shared_components/Form';
 import FormControl from 'shared_components/Form/FormControl';
-import LocationControl from 'shared_components/Form/LocationControl';
+import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
 import ToolbarButton from './ToolbarButton';
 import toolBarPropTypes from './toolbar-proptypes';
 import ResponsiveToolbarWrap from './ResponsiveToolBarWrap';
@@ -84,11 +84,15 @@ export default class OwnerToolBar extends Component {
               />
             </TitleDiv>
             <LocationDiv isMobile={isMobile}>
-              <LocationControl
-                formatted_address={state.formattedAddress}
-                onSelect={this.onLocationSelect}
-                onBlur={onSubmit}
-                disabled={isTripBooked}
+              <SemanticLocationControl
+                key={state.formattedAddress && 'location-control'}
+                defaultAddress={state.formattedAddress}
+                onChange={this.onLocationSelect}
+                inputProps={{
+                  fluid: true,
+                  onBlur: onSubmit,
+                  disabled: isTripBooked,
+                }}
               />
             </LocationDiv>
             <StartDateDiv isMobile={isMobile}>

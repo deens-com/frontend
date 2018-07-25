@@ -8,6 +8,7 @@ import { Form, List, Popup } from 'semantic-ui-react';
  * In this component, `onChange` is called only when the user selects a dropdown from the list
  * If you wanna pass props to the input element directly, then pass them in `inputProps` prop
  * If you wanna listen for all the text changes on the input pass `onKeyUp` prop function
+ * If you wanna change the styles of the input, pass `inputStyles` prop
  */
 export default class SemanticLocationControl extends Component {
   static propTypes = {
@@ -15,11 +16,13 @@ export default class SemanticLocationControl extends Component {
     onChange: PropTypes.func.isRequired,
     onKeyUp: PropTypes.func,
     inputProps: PropTypes.object,
+    inputStyles: PropTypes.object,
   };
 
   static defaultProps = {
     defaultAddress: '',
     inputProps: {},
+    inputStyles: {},
   };
 
   state = {
@@ -41,7 +44,7 @@ export default class SemanticLocationControl extends Component {
   };
 
   render() {
-    const { inputProps } = this.props;
+    const { inputProps, inputStyles } = this.props;
     return (
       <PlacesAutocomplete
         value={this.state.address}
@@ -60,6 +63,7 @@ export default class SemanticLocationControl extends Component {
                   ...inputProps,
                   placeholder: inputProps.placeholder || 'Enter location ...',
                 })}
+                style={inputStyles}
               />
             }
             open={suggestions.length > 0}

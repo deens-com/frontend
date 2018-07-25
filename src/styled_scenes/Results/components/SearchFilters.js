@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import LocationFormControl from '../../../shared_components/Form/LocationControl';
+import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
 import FormControl from '../../../shared_components/Form/FormControl';
 import Button from '../../../shared_components/Button';
 import CarouselPicker from './CarouselPicker';
@@ -297,9 +297,10 @@ class SearchFilters extends Component {
                   <MobileWrap>
                     <CarouselPicker {...this.props} />
 
-                    <LocationFormControl
-                      formatted_address={address}
-                      onSelect={this.handleLocationChange}
+                    <SemanticLocationControl
+                      key={address}
+                      defaultAddress={address}
+                      onChange={this.handleLocationChange}
                     />
                     <MobileClearInputIcon onClick={this.clear_address} link name="close" />
 
@@ -371,9 +372,10 @@ class SearchFilters extends Component {
           ) : (
             <section>
               <Wrap>
-                <LocationFormControl
-                  formatted_address={address}
-                  onSelect={this.handleLocationChange}
+                <SemanticLocationControl
+                  key={address}
+                  defaultAddress={address}
+                  onChange={this.handleLocationChange}
                 />
                 <ClearInputIcon onClick={this.clear_address} link name="close" />
 
