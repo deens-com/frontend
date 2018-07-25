@@ -10,7 +10,6 @@ import EmptyTripDay from './EmptyTripDay';
 
 // ACTIONS/CONFIG
 import { media } from '../../../libs/styled';
-import history from './../../../main/history';
 
 // STYLES
 import { Mute } from './styles';
@@ -57,7 +56,6 @@ export default class TripDay extends Component {
       opening: false,
       closing: false,
     };
-    this.generate_search_query = this.generate_search_query.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -72,18 +70,6 @@ export default class TripDay extends Component {
     if (this.state.opening || this.state.closing) {
       this.setState({ closing: false, opening: false });
     }
-  }
-
-  generate_search_query(search_params) {
-    let query_arr = [];
-    Object.entries(search_params).forEach(([key, value]) => {
-      if (value) {
-        let to_concat = key + '=' + value;
-        query_arr = query_arr.concat(to_concat);
-      }
-    });
-    let query_string = query_arr.join('&');
-    history.push('/results?' + query_string);
   }
 
   render() {

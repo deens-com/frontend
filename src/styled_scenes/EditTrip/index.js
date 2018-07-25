@@ -17,7 +17,6 @@ import MapMaker from '../../shared_components/MapMarker';
 import UserAvatar from '../../shared_components/UserAvatar';
 import ShareButton from './components/ShareButton';
 import Image from 'shared_components/Image';
-import Trigger from 'shared_components/DropPicker/Trigger';
 import Button from 'shared_components/Button';
 
 // ACTIONS/CONFIG
@@ -28,6 +27,7 @@ import { Page, PageContent } from '../../shared_components/layout/Page';
 import { Hr } from '../../shared_components/styledComponents/misc';
 import ChangeTripImageButton from './components/ChangeTripImageButton';
 import OwnerToolBar from 'styled_scenes/EditTrip/components/ToolBar/OwnerToolBar';
+import AddNewServiceToTrip from 'styled_scenes/EditTrip/components/AddNewServiceToTrip';
 
 const Wrap = styled.div`
   ${media.minMediumPlus} {
@@ -117,34 +117,6 @@ const ProfileWrap = styled.div`
 
 const TagsWrapper = styled.section`
   margin-left: 20px;
-`;
-
-const DropItem = styled.div`
-  padding: 5px 10px;
-  position: relative;
-  cursor: pointer;
-  font-size: 14px;
-  float: left;
-  font-weight: lighter;
-
-  &:hover,
-  &:focus {
-    color: #4fb798;
-  }
-
-  &:after {
-    content: '';
-    width: 1px;
-    height: 60%;
-    background: #eef1f4;
-    position: absolute;
-    right: 0px;
-    top: 20%;
-  }
-
-  &:last-child:after {
-    display: none;
-  }
 `;
 
 const TripActionsWrap = styled.div`
@@ -253,11 +225,6 @@ export default class TripsScene extends Component {
 
   render() {
     const { query, trip } = this.props;
-    const query_params = {
-      person_nb: this.props.trip.numberOfPerson,
-      start_date: this.props.trip.beginDate && this.props.trip.beginDate.iso,
-      end_date: this.props.trip.endDate && this.props.trip.endDate.iso,
-    };
 
     return (
       <Page topPush>
@@ -339,52 +306,7 @@ export default class TripsScene extends Component {
                 </TagsWrapper>
                 <Divider horizontal>Trip itinerary</Divider>
                 <TripActionsWrap>
-                  <Popup
-                    trigger={
-                      <Trigger iconBefore="plus" size="small" round={true} text="Add new Service" />
-                    }
-                    content={
-                      <div>
-                        <DropItem
-                          onClick={() => {
-                            query_params.service_types = 'place';
-                            this.generate_search_query(query_params);
-                          }}
-                        >
-                          Place
-                        </DropItem>
-                        <DropItem
-                          onClick={() => {
-                            query_params.service_types = 'food';
-                            this.generate_search_query(query_params);
-                          }}
-                        >
-                          Food
-                        </DropItem>
-                        <DropItem
-                          onClick={() => {
-                            query_params.service_types = 'activity';
-                            this.generate_search_query(query_params);
-                          }}
-                        >
-                          Activity
-                        </DropItem>
-                      </div>
-                    }
-                    position="left center"
-                    on="click"
-                    flowing={true}
-                    className="semantic-popup-wrapper"
-                    style={{
-                      float: 'left',
-                      background: 'white',
-                      borderRadius: '4px',
-                      padding: '5px 10px',
-                      border: '0px',
-                      boxShadow: '0 8px 25px 0 rgba(141, 141, 141, 0.22)',
-                    }}
-                    horizontalOffset={5}
-                  />
+                  <AddNewServiceToTrip trip={trip} />
                   <Button
                     type="button"
                     round
