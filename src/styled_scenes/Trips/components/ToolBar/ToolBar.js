@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import OwnerToolBar from './OwnerToolBar';
 import NonOwnerToolBar from './NonOwnerToolBar';
 import { media } from 'libs/styled';
 import toolbarProptypes from './toolbar-proptypes';
@@ -32,7 +31,9 @@ const Wrap = styled.div`
 
 function ToolBar(props) {
   return (
-    <Wrap>{props.isOwner ? <OwnerToolBar {...props} /> : <NonOwnerToolBar {...props} />}</Wrap>
+    <Wrap>
+      <NonOwnerToolBar {...props} />
+    </Wrap>
   );
 }
 
