@@ -114,3 +114,18 @@ export const orderArrayByCustomField = (array, field) => {
     return new Date(b[field]) - new Date(a[field]);
   });
 };
+
+/**
+ * When using Formik forms, this method is useful to bulk check for required fields
+ * @param {Object} values The Values provided by formik
+ * @param {Array<string>} requiredFields The fields to check for required
+ * @returns {Object} Errors in an object
+ */
+export function checkRequiredFields(values, requiredFields) {
+  return requiredFields.reduce((errors, fieldName) => {
+    const fieldValue = values[fieldName];
+    if (fieldValue == null || fieldValue.length === 0 || fieldValue.size === 0)
+      errors[fieldName] = 'Required';
+    return errors;
+  }, {});
+}

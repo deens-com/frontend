@@ -8,7 +8,7 @@ import serviceTags from './service-tags';
 import LocationFormControl from '../Form/LocationControl';
 import { Link } from 'react-router-dom';
 import history from './../../main/history';
-import { isMobile } from 'libs/Utils';
+import { isMobile, checkRequiredFields } from 'libs/Utils';
 import i18n from './../../libs/i18n';
 import Image from 'shared_components/Image';
 const serviceTypes = [
@@ -441,15 +441,6 @@ function validate(values) {
   }
 
   return errors;
-}
-
-function checkRequiredFields(values, requiredFields) {
-  return requiredFields.reduce((errors, fieldName) => {
-    const fieldValue = values[fieldName];
-    if (fieldValue == null || fieldValue.length === 0 || fieldValue.size === 0)
-      errors[fieldName] = 'Required';
-    return errors;
-  }, {});
 }
 
 export default withFormik({

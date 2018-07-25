@@ -7,6 +7,7 @@ import SemanticLocationControl from 'shared_components/Form/SemanticLocationCont
 
 // import Form from 'shared_components/Form';
 import toolBarPropTypes from './toolbar-proptypes';
+import { checkRequiredFields } from 'libs/Utils';
 
 const ErrorMsg = styled.div`
   color: red;
@@ -20,6 +21,7 @@ class OwnerToolBar extends Component {
   static propTypes = toolBarPropTypes;
 
   onLocationChange = async (address, placeId) => {
+    if (!address || !placeId) return;
     const { setFieldValue } = this.props;
     setFieldValue('formattedAddress', address);
     const results = await geocodeByPlaceId(placeId);
@@ -38,6 +40,11 @@ class OwnerToolBar extends Component {
     }
     const latlng = await latlngPromise;
     setFieldValue('latlng', latlng);
+  };
+
+  onLocationKeyUp = () => {
+    const { setValues, values } = this.props;
+    setValues({ ...values, formattedAddress: '', country: '', city: '', latlng: '' });
   };
 
   render() {
@@ -87,16 +94,20 @@ class OwnerToolBar extends Component {
         </Form.Field>
 
         <Form.Group widths={3}>
-          <Form.Field required>
+          <Form.Field required width={12}>
             <label>Location</label>
             <SemanticLocationControl
               defaultAddress={values.formattedAddress}
               onChange={this.onLocationChange}
+              onKeyUp={this.onLocationKeyUp}
               inputProps={{
+                name: 'formattedAddress',
                 onBlur: handleBlur,
                 disabled: isTripBooked,
               }}
             />
+            {touched.formattedAddress &&
+              errors.formattedAddress && <ErrorMsg>{errors.formattedAddress}</ErrorMsg>}
           </Form.Field>
 
           <Form.Field required>
@@ -119,10 +130,24 @@ class OwnerToolBar extends Component {
   }
 }
 
+function validate(values) {
+  const requiredFields = ['title', 'description', 'formattedAddress', 'duration'];
+  const errors = checkRequiredFields(values, requiredFields);
+  if (!errors.duration && isNaN(values.duration)) {
+    errors.duration = 'Invalid number';
+  }
+  if (!errors.duration && !Number.isInteger(parseFloat(values.duration))) {
+    errors.duration = 'Only integers allowed';
+  }
+  console.log('errors', errors);
+  return errors;
+}
+
 export default withFormik({
   mapPropsToValues: ({ trip }) => ({
     title: trip.title,
     description: trip.description,
     formattedAddress: trip.formattedAddress,
   }),
+  validate,
 })(OwnerToolBar);

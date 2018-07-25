@@ -7,11 +7,13 @@ import { Input, List, Popup } from 'semantic-ui-react';
  * A more advanced version of LocationControl
  * In this component, `onChange` is called only when the user selects a dropdown from the list
  * If you wanna pass props to the input element directly, then pass them in `inputProps` prop
+ * If you wanna listen for all the text changes on the input pass `onKeyUp` prop function
  */
 export default class SemanticLocationControl extends Component {
   static propTypes = {
     defaultAddress: PropTypes.string,
     onChange: PropTypes.func.isRequired,
+    onKeyUp: PropTypes.func,
     inputProps: PropTypes.object,
   };
 
@@ -25,7 +27,10 @@ export default class SemanticLocationControl extends Component {
   };
 
   onAddressChange = address => {
-    this.setState({ address });
+    const { onKeyUp } = this.props;
+    this.setState({ address }, () => {
+      if (onKeyUp) onKeyUp(address);
+    });
   };
 
   onSelect = (address, placeId) => {
