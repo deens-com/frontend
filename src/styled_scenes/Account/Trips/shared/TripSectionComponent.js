@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import moment from 'moment';
 import styled from 'styled-components';
 import { Button, Divider, Icon, Label } from 'semantic-ui-react';
 
 import { SectionContent } from 'shared_components/layout/Page';
-import { getISODateString } from 'libs/Utils';
+import { getFormattedTripDates } from 'libs/Utils';
 import Carousel from './Carousel';
 import LocationCart from './Carts/Location';
 
@@ -58,12 +57,7 @@ class Trip extends Component {
   state = {
     linkToViewTrip: `/trips/${this.props.trip.objectId}`,
     linkToEditTrip: `/trips/${this.props.trip.objectId}/edit`,
-    tripDates: (() => {
-      const { trip } = this.props;
-      const startMoment = moment(getISODateString(trip.beginDate));
-      const endMoment = startMoment.clone().add(trip.duration, 'days');
-      return `${startMoment.format('LL')} - ${endMoment.format('LL')}`;
-    })(),
+    tripDates: getFormattedTripDates(this.props.trip),
   };
 
   render() {

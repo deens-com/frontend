@@ -4,8 +4,6 @@ import { Button, Icon } from 'semantic-ui-react';
 
 export default class ChangeTripImageButton extends Component {
   static propTypes = {
-    trip: PropTypes.object,
-    isOwner: PropTypes.bool.isRequired,
     onImageSelect: PropTypes.func.isRequired,
     isImageUploadInProgress: PropTypes.bool.isRequired,
   };
@@ -16,8 +14,7 @@ export default class ChangeTripImageButton extends Component {
   };
 
   render() {
-    const { trip, isOwner, isImageUploadInProgress } = this.props;
-    if (!trip || !isOwner) return null;
+    const { isImageUploadInProgress } = this.props;
     return (
       <div>
         <input

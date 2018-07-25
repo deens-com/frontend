@@ -1,3 +1,4 @@
+import moment from 'moment';
 import tagsData from './../data/tags';
 
 export default class Utils {
@@ -128,4 +129,15 @@ export function checkRequiredFields(values, requiredFields) {
       errors[fieldName] = 'Required';
     return errors;
   }, {});
+}
+
+/**
+ * Given a trip it spits out
+ * July 23, 2018 - July 25, 2018
+ * @returns {string}
+ */
+export function getFormattedTripDates(trip) {
+  const startMoment = moment(getISODateString(trip.beginDate));
+  const endMoment = startMoment.clone().add(trip.duration, 'days');
+  return `${startMoment.format('LL')} - ${endMoment.format('LL')}`;
 }
