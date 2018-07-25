@@ -23,6 +23,7 @@ export const SegmentWithoutPadding = styled(Segment)`
   && {
     padding: 0;
     margin: 0;
+    min-height: 600px;
   }
 `;
 
