@@ -40,33 +40,17 @@ export const fetchTrip = tripId => async (dispatch, getState) => {
     console.error(new Error("can't fetch trip without TripId"));
     return;
   }
-  const Trip = Parse.Object.extend('Trip');
   try {
     dispatch(tripFetchStart());
-    const [tripRaw, tripOrganizationsRaw] = await Promise.all([
-      fetch_helpers
-        .build_query('Trip')
-        .include('owner')
-        .get(tripId),
-      fetch_helpers
-        .build_query('TripOrganization')
-        .equalTo('trip', new Trip({ id: tripId }))
-        .include('service')
-        .find(),
-    ]);
-    let trip = fetch_helpers.normalizeParseResponseData(tripRaw);
-    trip = fetch_helpers.mapServiceObjects([trip])[0];
-    const tripOrganizations = fetch_helpers
-      .normalizeParseResponseData(tripOrganizationsRaw)
-      .filter(tOrg => !!tOrg.service);
-    const tripOrganizationMappings = tripOrganizations.map(tOrg => ({
-      objectId: tOrg.objectId,
-      tripId: trip.objectId,
-      serviceId: tOrg.service.objectId,
-      day: tOrg.day,
-    }));
-    const services = tripOrganizations.map(tOrg => tOrg.service);
-    dispatch(trip_fetched({ trip, tripOrganizations: tripOrganizationMappings, services }));
+    const { trip: originalTrip, tripOrganizationMappings, services, notes } = await Parse.Cloud.run(
+      'fetchTrip',
+      {
+        id: tripId,
+        includes: ['services', 'notes'],
+      },
+    );
+    const trip = fetch_helpers.mapServiceObjects([originalTrip])[0];
+    dispatch(trip_fetched({ trip, tripOrganizations: tripOrganizationMappings, services, notes }));
     postFetchTripActions(trip, dispatch, getState);
   } catch (error) {
     if (error.code === Parse.Error.OBJECT_NOT_FOUND) dispatch(tripFetchError(error));

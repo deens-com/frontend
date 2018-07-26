@@ -34,6 +34,7 @@ export default function TripsReducer(state = initialState, action = {}) {
         tripError: null,
         tripOrganizations: keyBy(action.payload.tripOrganizations, 'objectId'),
         services: keyBy(action.payload.services, 'objectId'),
+        notes: keyBy(action.payload.notes, 'day'),
       };
     case 'TRIP_FETCH_ERROR': {
       return {
