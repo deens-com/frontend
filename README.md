@@ -5,7 +5,7 @@
 
 </div>
 
-[![CircleCI](https://img.shields.io/circleci/project/github/PleaseDotCom/frontend.svg)](https://circleci.com/gh/PleaseDotCom/frontend)
+[![CircleCI](https://circleci.com/gh/PleaseDotCom/frontend.svg?style=svg)](https://circleci.com/gh/PleaseDotCom/frontend)
 
 This is the repository for the frontend of [demo.please.com](https://demo.please.com). This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app) and then later moved over to [React app rewired](https://github.com/timarney/react-app-rewired).
 
