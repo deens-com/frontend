@@ -113,7 +113,7 @@ export default class TripSummary extends Component {
               loading={this.props.isCloningInProcess}
               disabled={!isDatesFormComplete}
             >
-              Book now
+              Customize & Book Now
             </BookButton>
           )}
         </Wrap>
