@@ -47,7 +47,13 @@ export default class AddToTripButton extends React.Component {
     const clickProps = isLoggedIn ? {} : { onClick: this.redirectToLogin };
 
     const addToTripButton = (
-      <CustomColorSemanticButton icon labelPosition="right" bgColor="rgb(95, 183, 158)" whiteText {...clickProps}>
+      <CustomColorSemanticButton
+        icon
+        labelPosition="right"
+        bgColor="rgb(95, 183, 158)"
+        whiteText
+        {...clickProps}
+      >
         Add to trip
         <Icon name="angle down" />
       </CustomColorSemanticButton>
