@@ -61,8 +61,12 @@ class EditTripContainer extends Component {
   };
 
   render() {
-    const { tripError } = this.props;
+    const { tripError, trip } = this.props;
     if (tripError && tripError.code === Parse.Error.OBJECT_NOT_FOUND) {
+      return <NotFound />;
+    }
+    const currentUser = Parse.User.current();
+    if ((trip && trip.owner && trip.owner.objectId) !== (currentUser && currentUser.id)) {
       return <NotFound />;
     }
     return (
