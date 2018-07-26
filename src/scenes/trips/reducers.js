@@ -15,6 +15,7 @@ const initialState = {
   },
   showTripStatusChanged: false,
   isImageUploadInProgress: false,
+  notes: {},
 };
 
 export default function TripsReducer(state = initialState, action = {}) {
@@ -41,6 +42,16 @@ export default function TripsReducer(state = initialState, action = {}) {
         ...state,
         isPageLoading: false,
         tripError: action.payload,
+      };
+    }
+    case 'TRIP/DAY_NOTE_SAVED': {
+      const note = action.payload;
+      return {
+        ...state,
+        notes: {
+          ...state.notes,
+          [note.day]: note,
+        },
       };
     }
     case 'CHANGE_SERVICE_DAY': {

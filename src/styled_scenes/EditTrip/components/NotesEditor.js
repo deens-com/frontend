@@ -5,9 +5,14 @@ import { withFormik } from 'formik';
 
 class NotesEditor extends Component {
   static propTypes = {
+    // day index
     day: PropTypes.number.isRequired,
+    // the already existing value of note
     defaultValue: PropTypes.string,
-    onSubmit: PropTypes.func.isRequired,
+    // if note already exists then the noteId
+    noteId: PropTypes.string,
+    // action to upsert note
+    saveDayNote: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -15,18 +20,18 @@ class NotesEditor extends Component {
   };
 
   render() {
-    const { defaultValue, values, handleChange, handleBlur } = this.props;
+    const { defaultValue, values, handleChange, handleSubmit, submitForm } = this.props;
     return (
-      <Form>
+      <Form onSubmit={handleSubmit}>
         <Form.Field>
           <label>Notes</label>
           <Form.TextArea
-            name="notes"
+            name="note"
             placeholder="Enter notes about the day"
             defaultValue={defaultValue}
-            value={values.description}
+            value={values.note}
             onChange={handleChange}
-            onBlur={handleBlur}
+            onBlur={submitForm}
           />
         </Form.Field>
       </Form>
@@ -34,4 +39,7 @@ class NotesEditor extends Component {
   }
 }
 
-export default withFormik({})(NotesEditor);
+export default withFormik({
+  handleSubmit: (values, { props }) =>
+    props.saveDayNote({ ...values, day: props.day, noteId: props.noteId }),
+})(NotesEditor);

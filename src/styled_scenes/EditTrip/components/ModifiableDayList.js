@@ -51,7 +51,17 @@ export default class ModifiableDayList extends React.Component {
     return (
       <Day key={day.day} day={day} {...dayProps}>
         <EditTripContainer.ContextConsumer>
-          {({ saveDayNote }) => <NotesEditor day={day.day} onSubmit={saveDayNote} />}
+          {({ saveDayNote, notes }) => {
+            const dayNote = notes[day.day] || {};
+            return (
+              <NotesEditor
+                day={day.day}
+                noteId={dayNote.objectId}
+                defaultValue={dayNote.note}
+                saveDayNote={saveDayNote}
+              />
+            );
+          }}
         </EditTripContainer.ContextConsumer>
       </Day>
     );

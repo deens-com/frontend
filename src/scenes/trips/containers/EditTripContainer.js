@@ -112,6 +112,7 @@ const mapStateToProps = state => {
     showTripStatusChanged: state.TripsReducer.showTripStatusChanged,
     isImageUploadInProgress: state.TripsReducer.isImageUploadInProgress,
     isPageLoading: state.TripsReducer.isPageLoading,
+    notes: state.TripsReducer.notes,
   };
 };
 
