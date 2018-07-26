@@ -108,6 +108,8 @@ export default class TripDay extends Component {
         ) : (
           services
         )}
+        {/* This the children prop is *mostly* used to render NotesEditor from EditTripPage */}
+        {this.props.children}
       </Wrap>
     );
   }

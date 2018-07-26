@@ -10,6 +10,8 @@ import Row from 'shared_components/layout/Row';
 import TripCart from 'shared_components/Carts/Trip';
 import Button from 'shared_components/Button';
 import Day, { Header } from '../../Trips/components/Day';
+import NotesEditor from './NotesEditor';
+import EditTripContainer from 'scenes/trips/containers/EditTripContainer';
 
 // ACTIONS/CONFIG
 import { media } from 'libs/styled';
@@ -29,64 +31,66 @@ const Wrap = styled.div`
   }
 `;
 
-// MODULE
-export default function ModifiableDayList({
-  trip,
-  showDetails,
-  scheduledServices,
-  onServiceDragEnd,
-  onServiceRemoveClick,
-  expanded,
-}) {
-  const dayProps = { trip, allowServiceRearrange: true, onServiceRemoveClick, expanded };
-  const services = [];
-  if (showDetails) {
-    services.push(...scheduledServices.map(day => <Day key={day.day} day={day} {...dayProps} />));
+export default class ModifiableDayList extends React.Component {
+  static propTypes = {
+    trip: PropTypes.object,
+    showDetails: PropTypes.bool,
+    scheduledTrips: PropTypes.array,
+    onServiceDragEnd: PropTypes.func.isRequired,
+    onServiceRemoveClick: PropTypes.func.isRequired,
+    expanded: PropTypes.bool.isRequired,
+  };
+
+  static defaultProps = {
+    scheduledTrips: [],
+  };
+
+  renderDay = day => {
+    const { trip, onServiceRemoveClick, expanded } = this.props;
+    const dayProps = { trip, allowServiceRearrange: true, onServiceRemoveClick, expanded };
+    return (
+      <Day key={day.day} day={day} {...dayProps}>
+        <EditTripContainer.ContextConsumer>
+          {({ saveDayNote }) => <NotesEditor day={day.day} onSubmit={saveDayNote} />}
+        </EditTripContainer.ContextConsumer>
+      </Day>
+    );
+  };
+
+  render() {
+    const { showDetails, scheduledServices, onServiceDragEnd } = this.props;
+    const services = showDetails ? scheduledServices.map(this.renderDay) : [];
+    return (
+      <Wrap>
+        {!showDetails && (
+          <Header>
+            <h4>
+              Most popular trips to <Highlight>New York</Highlight>
+            </h4>
+            <Button
+              type="button"
+              round
+              size="small"
+              theme="mainFilled"
+              onClick={ev => {
+                alert('Creating your event');
+              }}
+              text="Create your own trip"
+            />
+          </Header>
+        )}
+        {showDetails ? (
+          <DragDropContext onDragEnd={onServiceDragEnd}>{services}</DragDropContext>
+        ) : (
+          <Row>
+            {tripsData.map(item => (
+              <Col key={item.title} xsBasis="50%" lgBasis="25%">
+                <TripCart item={item} />
+              </Col>
+            ))}
+          </Row>
+        )}
+      </Wrap>
+    );
   }
-  return (
-    <Wrap>
-      {!showDetails && (
-        <Header>
-          <h4>
-            Most popular trips to <Highlight>New York</Highlight>
-          </h4>
-          <Button
-            type="button"
-            round
-            size="small"
-            theme="mainFilled"
-            onClick={ev => {
-              alert('Creating your event');
-            }}
-            text="Create your own trip"
-          />
-        </Header>
-      )}
-      {showDetails ? (
-        <DragDropContext onDragEnd={onServiceDragEnd}>{services}</DragDropContext>
-      ) : (
-        <Row>
-          {tripsData.map(item => (
-            <Col key={item.title} xsBasis="50%" lgBasis="25%">
-              <TripCart item={item} />
-            </Col>
-          ))}
-        </Row>
-      )}
-    </Wrap>
-  );
 }
-
-// Props Validation
-ModifiableDayList.propTypes = {
-  trip: PropTypes.object,
-  showDetails: PropTypes.bool,
-  scheduledTrips: PropTypes.array,
-  onServiceDragEnd: PropTypes.func.isRequired,
-  onServiceRemoveClick: PropTypes.func.isRequired,
-  expanded: PropTypes.bool.isRequired,
-};
-
-ModifiableDayList.defaultProps = {
-  scheduledTrips: [],
-};
