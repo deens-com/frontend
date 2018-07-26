@@ -5,8 +5,13 @@ import TopBar from '../../../shared_components/TopBarWithSearch';
 import * as account_actions from "./../actions";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { orderArrayByCustomField } from 'libs/Utils';
 
 class AccountTripsAllComponent extends Component{
+
+  state = {
+    orderedTrips: []
+  }
 
   componentDidMount(){
     if(this.props.user_profile){
@@ -22,6 +27,10 @@ class AccountTripsAllComponent extends Component{
         }
       }
     }
+
+    if(this.props.all_trips !== next_props.all_trips) { // trips have arrived
+      this.setState({orderedTrips: orderArrayByCustomField(next_props.all_trips, 'endDate.iso')});
+    }
   }
 
   did_user_props_changed = (current_props, next_props) => {
@@ -31,12 +40,7 @@ class AccountTripsAllComponent extends Component{
   }
 
   render(){
-    let ordered_all_trips = this.props.all_trips;
-    ordered_all_trips = ordered_all_trips.sort(function(a,b){
-      if (b.endDate && a.endDate) {
-        return new Date(b.endDate.iso) - new Date(a.endDate.iso);
-      }
-    });
+
     return (
       <section>
         <Page topPush>
@@ -45,7 +49,7 @@ class AccountTripsAllComponent extends Component{
             <AccountTripsAllScene
               {...this.props}
               user_profile={this.props.user_profile}
-              all_trips={ordered_all_trips}
+              all_trips={this.state.orderedTrips}
               />
           </PageContent>
         </Page>
