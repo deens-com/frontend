@@ -41,8 +41,11 @@ const mapServiceObjects = services => {
         service.tags = tags;
       }
       if (service.type === undefined) {
-        service.image =
-          (service.picture && service.picture.url) || 'https://dummyimage.com/600x400/000/fff';
+        if (service.picture) {
+          if (typeof service.picture._url === 'string') service.image = service.picture._url;
+          if (typeof service.picture.url === 'string') service.image = service.picture.url;
+        }
+        service.image = service.image || 'https://dummyimage.com/600x400/000/fff';
       } else {
         service.image = get_service_image(service.mainPicture);
       }
