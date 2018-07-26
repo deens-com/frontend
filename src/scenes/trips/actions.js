@@ -49,7 +49,9 @@ export const fetchTrip = tripId => async (dispatch, getState) => {
         includes: ['services', 'notes'],
       },
     );
-    const trip = fetch_helpers.mapServiceObjects([originalTrip])[0];
+    const trip = fetch_helpers.mapServiceObjects([
+      fetch_helpers.normalizeParseResponseData(originalTrip),
+    ])[0];
     dispatch(trip_fetched({ trip, tripOrganizations: tripOrganizationMappings, services, notes }));
     postFetchTripActions(trip, dispatch, getState);
   } catch (error) {

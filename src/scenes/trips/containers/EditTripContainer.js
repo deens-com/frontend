@@ -74,7 +74,10 @@ class EditTripContainer extends Component {
       return <NotFound />;
     }
     const currentUser = Parse.User.current();
-    if ((trip && trip.owner && trip.owner.objectId) !== (currentUser && currentUser.id)) {
+    if (
+      trip.objectId &&
+      (trip && trip.owner && trip.owner.objectId) !== (currentUser && currentUser.id)
+    ) {
       return <NotFound />;
     }
     return (
