@@ -90,7 +90,7 @@ export default class TripsScene extends Component {
               <Wrap key={trip.objectId}>
                 <TripLeftPortion trip={trip} scheduledServices={scheduledServices} />
                 <TripWrapper>
-                  {trip.booked && this.state.isOwner ? (
+                  {trip.booked ? (
                     <Message>
                       This trip has already been booked on{' '}
                       {moment(query.startDate).format('Do MMM YYYY')}.
@@ -128,7 +128,7 @@ export default class TripsScene extends Component {
                   <Summary
                     trip={trip}
                     scheduledServices={this.props.scheduledServices}
-                    isOwner={this.state.isOwner}
+                    isOwner
                     onBookClick={this.props.onBookClick}
                     isCloningInProcess={this.props.isCloningInProcess}
                     query={query}
