@@ -60,7 +60,7 @@ export const fetchTrip = tripId => async (dispatch, getState) => {
 };
 
 function postFetchTripActions(trip, dispatch, getState) {
-  const { title, numberOfPerson: peopleCount, formattedAddress } = trip;
+  const { title, numberOfPerson: peopleCount, formattedAddress, tags } = trip;
   const isOwner = isCurrentUser(trip.owner);
   let startDate = new Date(getISODateString(trip.beginDate));
   if (!isOwner) {
@@ -75,6 +75,7 @@ function postFetchTripActions(trip, dispatch, getState) {
     formattedAddress,
     title,
     startDate,
+    tags
   })(dispatch, getState);
   checkAvailability(startDate, peopleCount)(dispatch, getState);
 }

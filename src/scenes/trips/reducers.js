@@ -12,6 +12,7 @@ const initialState = {
   query: {
     startDate: '',
     person: {},
+    tags: []
   },
   showTripStatusChanged: false,
   isImageUploadInProgress: false,

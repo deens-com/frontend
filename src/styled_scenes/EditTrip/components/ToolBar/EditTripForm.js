@@ -3,11 +3,15 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete';
 import { withFormik } from 'formik';
-import { Form } from 'semantic-ui-react';
+import { Form, Dropdown } from 'semantic-ui-react';
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
+import tagsData from './../../../../data/tags';
+import Tag from './../../../Service/components/Tag';
 
 // import Form from 'shared_components/Form';
 import { checkRequiredFields } from 'libs/Utils';
+
+const tagsDropdownOptions = tagsData.map(value => ({ text: value.label, value: value.label }));
 
 const ErrorMsg = styled.div`
   color: red;
@@ -125,6 +129,24 @@ class EditTripForm extends Component {
             />
             {touched.duration && errors.duration && <ErrorMsg>{errors.duration}</ErrorMsg>}
           </Form.Field>
+          <Form.Field>
+            <label>Tags</label>
+            <Dropdown
+              name="tags"
+              options={tagsDropdownOptions}
+              placeholder="Edit tags"
+              search
+              selection
+              fluid
+              multiple
+              value={values.tags}
+              onChange={ (e, { name, value }) => {
+                  this.props.setFieldValue('tags', value);
+                  submitForm();
+                }
+              }
+            />
+          </Form.Field>
         </Form.Group>
       </OwnerForm>
     );
@@ -152,6 +174,7 @@ export default withFormik({
     description: trip.description,
     formattedAddress: trip.formattedAddress,
     duration: trip.duration || '',
+    tags: trip.tags.map(tag => tag.label) || []
   }),
   validate,
   handleSubmit: (values, { props }) => {
