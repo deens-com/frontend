@@ -141,7 +141,7 @@ class EditTripForm extends Component {
               value={values.tags}
               onChange={(e, { name, value }) => {
                 this.props.setFieldValue('tags', value);
-                submitForm();
+                setTimeout(submitForm, 1000);
               }}
             />
           </Form.Field>
