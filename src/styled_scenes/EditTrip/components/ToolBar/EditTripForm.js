@@ -9,6 +9,8 @@ import tagsData from './../../../../data/tags';
 
 // import Form from 'shared_components/Form';
 import { checkRequiredFields } from 'libs/Utils';
+import TripLengthFormInput from './TripLengthFormInput';
+import EditTripContainer from 'scenes/trips/containers/EditTripContainer';
 
 const tagsDropdownOptions = tagsData.map(value => ({ text: value.label, value: value.label }));
 
@@ -116,16 +118,18 @@ class EditTripForm extends Component {
 
           <Form.Field required>
             <label>Trip Length (days)</label>
-            <Form.Input
-              name="dayCount"
-              placeholder="3"
-              type="number"
-              icon="calendar outline"
-              iconPosition="left"
-              value={values.dayCount}
-              error={!!(touched.dayCount && errors.dayCount)}
-              {...defaultProps}
-            />
+            <EditTripContainer.ContextConsumer>
+              {({ scheduledServices }) => (
+                <TripLengthFormInput
+                  name="dayCount"
+                  placeholder="3"
+                  value={values.dayCount}
+                  error={!!(touched.dayCount && errors.dayCount)}
+                  scheduledServices={scheduledServices}
+                  {...defaultProps}
+                />
+              )}
+            </EditTripContainer.ContextConsumer>
             {touched.dayCount && errors.dayCount && <ErrorMsg>{errors.dayCount}</ErrorMsg>}
           </Form.Field>
           <Form.Field>
