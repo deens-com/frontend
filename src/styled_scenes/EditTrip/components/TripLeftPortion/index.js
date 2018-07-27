@@ -87,7 +87,7 @@ export default class TripLeftPortion extends Component {
         <ShareWrap>
           <h3>{trip.title}</h3>
           <DatesWrap>
-            {/* Not storing the formated date in state because it could change on duration or startDate change */}
+            {/* Not storing the formated date in state because it could change on dayCount or startDate change */}
             {/* and as this is the EditTrip page it's more likely to happen */}
             <p>{getFormattedTripDates(trip)}</p>
           </DatesWrap>

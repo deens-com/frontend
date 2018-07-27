@@ -31,10 +31,10 @@ class TripsListInDropDown extends React.Component {
     }
   };
 
-  getTripDuration = trip => {
+  getTripLength = trip => {
     let label = 'day';
-    if (trip.duration > 1) label += 's';
-    return { count: trip.duration, label };
+    if (trip.dayCount > 1) label += 's';
+    return { count: trip.dayCount, label };
   };
 
   renderItem = (trip, description) => {
@@ -53,13 +53,13 @@ class TripsListInDropDown extends React.Component {
 
   renderItemWithPopup = trip => {
     const startDateStr = this.getStartTripDate(trip);
-    const duration = this.getTripDuration(trip);
+    const dayCountObj = this.getTripLength(trip);
     const description = startDateStr
-      ? `From: ${startDateStr}, Duration: ${duration.count} ${duration.label}`
+      ? `From: ${startDateStr}, Length: ${dayCountObj.count} ${dayCountObj.label}`
       : null;
     const item = this.renderItem(trip, description);
     const dayItems = [];
-    for (let i = 0; i < duration.count; i++) {
+    for (let i = 0; i < dayCountObj.count; i++) {
       dayItems.push(
         <List.Item key={i} onClick={this.onItemClick({ trip, day: i + 1 })}>
           Day {i + 1}

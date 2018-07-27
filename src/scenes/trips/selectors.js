@@ -22,7 +22,7 @@ export const getDaysWithFilter = (state, filter) => {
 export const getScheduledServices = state => {
   const dayObjects = getDaysWithFilter(state, tOrg => tOrg.day != null && tOrg.day !== 'null');
   const { trip } = state.TripsReducer;
-  for (let dayIndex = 1; dayIndex <= trip.duration; dayIndex++) {
+  for (let dayIndex = 1; dayIndex <= trip.dayCount; dayIndex++) {
     dayObjects[dayIndex] = dayObjects[dayIndex] || { day: dayIndex, services: [] };
   }
   return Object.values(dayObjects);

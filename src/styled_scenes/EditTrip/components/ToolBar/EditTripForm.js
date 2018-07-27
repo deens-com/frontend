@@ -6,7 +6,6 @@ import { withFormik } from 'formik';
 import { Form, Dropdown } from 'semantic-ui-react';
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
 import tagsData from './../../../../data/tags';
-import Tag from './../../../Service/components/Tag';
 
 // import Form from 'shared_components/Form';
 import { checkRequiredFields } from 'libs/Utils';
@@ -116,18 +115,18 @@ class EditTripForm extends Component {
           </Form.Field>
 
           <Form.Field required>
-            <label>Duration (days)</label>
+            <label>Trip Length (days)</label>
             <Form.Input
-              name="duration"
+              name="dayCount"
               placeholder="3"
               type="number"
               icon="calendar outline"
               iconPosition="left"
-              value={values.duration}
-              error={!!(touched.duration && errors.duration)}
+              value={values.dayCount}
+              error={!!(touched.dayCount && errors.dayCount)}
               {...defaultProps}
             />
-            {touched.duration && errors.duration && <ErrorMsg>{errors.duration}</ErrorMsg>}
+            {touched.dayCount && errors.dayCount && <ErrorMsg>{errors.dayCount}</ErrorMsg>}
           </Form.Field>
           <Form.Field>
             <label>Tags</label>
@@ -140,11 +139,10 @@ class EditTripForm extends Component {
               fluid
               multiple
               value={values.tags}
-              onChange={ (e, { name, value }) => {
-                  this.props.setFieldValue('tags', value);
-                  submitForm();
-                }
-              }
+              onChange={(e, { name, value }) => {
+                this.props.setFieldValue('tags', value);
+                submitForm();
+              }}
             />
           </Form.Field>
         </Form.Group>
@@ -154,16 +152,16 @@ class EditTripForm extends Component {
 }
 
 function validate(values) {
-  const requiredFields = ['title', 'description', 'formattedAddress', 'duration'];
+  const requiredFields = ['title', 'description', 'formattedAddress', 'dayCount'];
   const errors = checkRequiredFields(values, requiredFields);
-  if (!errors.duration && isNaN(values.duration)) {
-    errors.duration = 'Invalid number';
+  if (!errors.dayCount && isNaN(values.dayCount)) {
+    errors.dayCount = 'Invalid number';
   }
-  if (!errors.duration && values.duration < 1) {
-    errors.duration = 'Minimum is 1';
+  if (!errors.dayCount && values.dayCount < 1) {
+    errors.dayCount = 'Minimum is 1';
   }
-  if (!errors.duration && !Number.isInteger(parseFloat(values.duration))) {
-    errors.duration = 'Only integers allowed';
+  if (!errors.dayCount && !Number.isInteger(parseFloat(values.dayCount))) {
+    errors.dayCount = 'Only integers allowed';
   }
   return errors;
 }
@@ -173,8 +171,8 @@ export default withFormik({
     title: trip.title,
     description: trip.description,
     formattedAddress: trip.formattedAddress,
-    duration: trip.duration || '',
-    tags: trip.tags.map(tag => tag.label) || []
+    dayCount: trip.dayCount || '',
+    tags: trip.tags.map(tag => tag.label) || [],
   }),
   validate,
   handleSubmit: (values, { props }) => {
