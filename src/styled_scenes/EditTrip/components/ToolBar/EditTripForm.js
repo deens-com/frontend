@@ -64,6 +64,7 @@ class EditTripForm extends Component {
       handleChange,
       handleBlur,
       handleSubmit,
+      setFieldValue,
       submitForm,
       trip,
     } = this.props;
@@ -126,6 +127,8 @@ class EditTripForm extends Component {
                   value={values.dayCount}
                   error={!!(touched.dayCount && errors.dayCount)}
                   scheduledServices={scheduledServices}
+                  setFieldValue={setFieldValue}
+                  submitForm={submitForm}
                   {...defaultProps}
                 />
               )}

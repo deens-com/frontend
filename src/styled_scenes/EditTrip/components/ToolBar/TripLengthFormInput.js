@@ -21,6 +21,8 @@ export default class TripLengthFormInput extends Component {
     onChange: PropTypes.func.isRequired,
     onBlur: PropTypes.func.isRequired,
     scheduledServices: PropTypes.array.isRequired,
+    setFieldValue: PropTypes.func.isRequired,
+    submitForm: PropTypes.func.isRequired,
   };
 
   state = {
@@ -28,7 +30,15 @@ export default class TripLengthFormInput extends Component {
   };
 
   onDaysChange = event => {
-    const newValue = event.target.value;
+    const newValueRaw = event.target.value;
+    if (isNaN(newValueRaw)) {
+      console.warn(`${newValueRaw} is not a number`);
+      return;
+    }
+    if (newValueRaw < 1) {
+      return;
+    }
+    const newValue = parseInt(newValueRaw, 10);
     const { scheduledServices, onChange } = this.props;
     const daysToBeRemoved = scheduledServices.filter(
       ({ day, services }) => day > newValue && services.length > 0,
@@ -43,6 +53,22 @@ export default class TripLengthFormInput extends Component {
     } else {
       this.setState({ showWarning: true, requestedLength: newValue, serviceRemovalCount });
     }
+  };
+
+  closePopup = () => {
+    this.setState({
+      showWarning: false,
+      requestedLength: undefined,
+      serviceRemovalCount: undefined,
+    });
+  };
+
+  yesRemove = () => {
+    const { name, setFieldValue, submitForm } = this.props;
+    const { requestedLength } = this.state;
+    setFieldValue(name, requestedLength);
+    setTimeout(submitForm, 100);
+    this.closePopup();
   };
 
   render() {
@@ -68,13 +94,18 @@ export default class TripLengthFormInput extends Component {
       >
         <Popup.Header>Remove {this.state.serviceRemovalCount} services?</Popup.Header>
         <Popup.Content>
-          Are you sure you want to remove {this.state.requestedLength} day(s) from your trip?
+          Are you sure you want to remove {value - this.state.requestedLength} day(s) from your
+          trip?
           <br />
           It'll remove {this.state.serviceRemovalCount} services existing in those days
           <br />
           <Flex>
-            <Button negative>Remove</Button>
-            <Button positive>Go back</Button>
+            <Button negative onClick={this.yesRemove}>
+              Remove
+            </Button>
+            <Button positive onClick={this.closePopup}>
+              Go back
+            </Button>
           </Flex>
         </Popup.Content>
       </Popup>
