@@ -138,6 +138,8 @@ class EditTripForm extends Component {
             </EditTripContainer.ContextConsumer>
             {touched.dayCount && errors.dayCount && <ErrorMsg>{errors.dayCount}</ErrorMsg>}
           </Form.Field>
+          </Form.Group>
+          <Form.Group widths={12}>
           <Form.Field>
             <label>Tags</label>
             <Dropdown
