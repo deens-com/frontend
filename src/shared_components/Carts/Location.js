@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Label as SemanticLabel, Icon } from 'semantic-ui-react';
 import Truncate from 'react-truncate';
 import { Popup } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 
 // COMPONENTS
 import Rating from '../Rating';
@@ -141,68 +142,47 @@ export default class LocationCart extends Component {
     }
   };
 
-  render() {
+  renderCard = () => {
     const smartContractBookingStatus = getSmartContractBookingStatus(this.props.item.reservation);
+    return (
+      <RelativeCard withShadow={this.props.withShadow} column>
+        {smartContractBookingStatus && smartContractBookingStatus}
+        <Thumb url={this.props.item.image} />
+        <ContentWrap>
+          <Title>
+            <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>
+              {this.props.item.title}
+            </Truncate>
+          </Title>
+          <Location>
+            <PinIcon />
+            <p>
+              <Truncate lines={cardConfig.locationLines}>{this.props.item.location}</Truncate>
+            </p>
+          </Location>
+          <Rating
+            marginBottom="10px"
+            rating={this.props.item.rating}
+            count={this.props.item.reviewCount}
+          />
+          <Label>Starting from</Label>
+          <PriceTag price={this.props.item.price} />
+        </ContentWrap>
+      </RelativeCard>
+    );
+  };
+
+  render() {
+    const { href } = this.props;
+    const card = this.renderCard();
+    const cartWithLink = href ? <Link to={href}>{card}</Link> : card;
     return (
       <Col>
         <div>
           {this.state.truncated ? (
-            <Popup
-              trigger={
-                <RelativeCard withShadow={this.props.withShadow} column>
-                  {smartContractBookingStatus && smartContractBookingStatus}
-                  <Thumb url={this.props.item.image} />
-                  <ContentWrap>
-                    <Title>
-                      <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>
-                        {this.props.item.title}
-                      </Truncate>
-                    </Title>
-                    <Location>
-                      <PinIcon />
-                      <p>
-                        <Truncate lines={cardConfig.locationLines}>
-                          {this.props.item.location}
-                        </Truncate>
-                      </p>
-                    </Location>
-                    <Rating
-                      marginBottom="10px"
-                      rating={this.props.item.rating}
-                      count={this.props.item.reviewCount}
-                    />
-                    <Label>Starting from</Label>
-                    <PriceTag price={this.props.item.price} />
-                  </ContentWrap>
-                </RelativeCard>
-              }
-              content={this.props.item.title}
-            />
+            <Popup trigger={cartWithLink} content={this.props.item.title} />
           ) : (
-            <RelativeCard withShadow={this.props.withShadow} column>
-              {smartContractBookingStatus && smartContractBookingStatus}
-              <Thumb url={this.props.item.image} />
-              <ContentWrap>
-                <Title>
-                  <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>
-                    {this.props.item.title}
-                  </Truncate>
-                </Title>
-                <Location>
-                  <PinIcon />
-                  <p>
-                    <Truncate lines={cardConfig.locationLines}>{this.props.item.location}</Truncate>
-                  </p>
-                </Location>
-                <Rating
-                  marginBottom="10px"
-                  rating={this.props.item.rating}
-                  count={this.props.item.reviewCount}
-                />
-                <Label>Starting from</Label>
-                <PriceTag price={this.props.item.price} />
-              </ContentWrap>
-            </RelativeCard>
+            cartWithLink
           )}
         </div>
       </Col>
