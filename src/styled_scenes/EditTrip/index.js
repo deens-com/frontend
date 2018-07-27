@@ -38,10 +38,6 @@ const TripWrapper = styled.div`
   }
 `;
 
-const TagsWrapper = styled.section`
-  margin-left: 20px;
-`;
-
 const TripActionsWrap = styled.div`
   display: flex;
   flex-direction: row;
@@ -97,12 +93,6 @@ export default class TripsScene extends Component {
                     </Message>
                   ) : null}
                   <OwnerToolBar trip={trip} />
-                  <TagsWrapper>
-                    {trip.tags &&
-                      trip.tags.map(tag => (
-                        <Tag key={tag.label} item={tag} href={`/results?tags=${tag.label}`} />
-                      ))}
-                  </TagsWrapper>
                   <Divider horizontal>Trip itinerary</Divider>
                   <TripActionsWrap>
                     <AddNewServiceToTrip trip={trip} />
