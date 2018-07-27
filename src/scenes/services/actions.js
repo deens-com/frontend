@@ -173,7 +173,11 @@ export const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (dispatch
 };
 
 export const onBookNowClick = () => async (dispatch, getState) => {
-  createNewTrip({ redirectToCreatedTrip: true })(dispatch, getState);
+  if (Parse.User.current()) {
+    createNewTrip({ redirectToCreatedTrip: true })(dispatch, getState);
+  } else {
+    history.push('/login');
+  }
 };
 
 /**
