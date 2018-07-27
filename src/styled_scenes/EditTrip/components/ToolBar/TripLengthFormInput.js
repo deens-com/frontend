@@ -23,6 +23,7 @@ export default class TripLengthFormInput extends Component {
     scheduledServices: PropTypes.array.isRequired,
     setFieldValue: PropTypes.func.isRequired,
     submitForm: PropTypes.func.isRequired,
+    disabled: PropTypes.bool,
   };
 
   state = {
@@ -73,7 +74,7 @@ export default class TripLengthFormInput extends Component {
   };
 
   render() {
-    const { name, placeholder, value, error } = this.props;
+    const { name, placeholder, value, error, disabled } = this.props;
     return (
       <Popup
         open={this.state.showWarning}
@@ -88,6 +89,7 @@ export default class TripLengthFormInput extends Component {
             iconPosition="left"
             value={value}
             error={error}
+            disabled={disabled}
             onChange={this.onDaysChange}
             onBlur={this.props.onBlur}
           />

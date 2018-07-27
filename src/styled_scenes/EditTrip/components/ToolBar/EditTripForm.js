@@ -82,6 +82,7 @@ class EditTripForm extends Component {
             placeholder="Trip name"
             value={values.title}
             error={!!(touched.title && errors.title)}
+            disabled={isTripBooked}
             {...defaultProps}
           />
           {touched.title && errors.title && <ErrorMsg>{errors.title}</ErrorMsg>}
@@ -94,6 +95,7 @@ class EditTripForm extends Component {
             placeholder="Tell us more..."
             value={values.description}
             error={!!(touched.description && errors.description)}
+            disabled={isTripBooked}
             {...defaultProps}
           />
           {touched.description && errors.description && <ErrorMsg>{errors.description}</ErrorMsg>}
@@ -129,6 +131,7 @@ class EditTripForm extends Component {
                   scheduledServices={scheduledServices}
                   setFieldValue={setFieldValue}
                   submitForm={submitForm}
+                  disabled={isTripBooked}
                   {...defaultProps}
                 />
               )}
@@ -146,6 +149,7 @@ class EditTripForm extends Component {
               fluid
               multiple
               value={values.tags}
+              disabled={isTripBooked}
               onChange={(e, { name, value }) => {
                 this.props.setFieldValue('tags', value);
                 setTimeout(submitForm, 1);
