@@ -50,6 +50,7 @@ export default class TripLengthFormInput extends Component {
     console.log(`days: ${daysToBeRemoved.length}, services: ${serviceRemovalCount}`);
     if (daysToBeRemoved.length === 0) {
       onChange(event);
+      this.closePopup();
     } else {
       this.setState({ showWarning: true, requestedLength: newValue, serviceRemovalCount });
     }
