@@ -60,6 +60,11 @@ class EditTripForm extends Component {
     setValues({ ...values, formattedAddress: '', country: '', city: '', latlng: '' });
   };
 
+  onTagsChange = (e, { value }) => {
+    this.props.setFieldValue('tags', value);
+    setTimeout(this.props.submitForm, 1);
+  };
+
   renderStartDateInput = props => (
     <Form.Input icon="calendar alternate outline" iconPosition="left" {...props} />
   );
@@ -160,10 +165,7 @@ class EditTripForm extends Component {
             multiple
             value={values.tags}
             disabled={isTripBooked}
-            onChange={(e, { name, value }) => {
-              this.props.setFieldValue('tags', value);
-              setTimeout(submitForm, 1);
-            }}
+            onChange={this.onTagsChange}
           />
         </Form.Field>
 
