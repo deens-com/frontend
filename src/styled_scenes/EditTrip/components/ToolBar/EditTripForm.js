@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete';
 import { withFormik } from 'formik';
-import { Form, Dropdown } from 'semantic-ui-react';
+import { Form, Dropdown, Segment, Label } from 'semantic-ui-react';
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
-import tagsData from './../../../../data/tags';
+import tagsData from 'data/tags';
+import DayPickerInput from 'react-day-picker/DayPickerInput';
 
 // import Form from 'shared_components/Form';
 import { checkRequiredFields } from 'libs/Utils';
@@ -20,6 +21,9 @@ const ErrorMsg = styled.div`
 
 const OwnerForm = styled(Form)`
   width: 100%;
+  .DayPickerInput {
+    min-width: 100%;
+  }
 `;
 
 class EditTripForm extends Component {
@@ -55,6 +59,10 @@ class EditTripForm extends Component {
     const { setValues, values } = this.props;
     setValues({ ...values, formattedAddress: '', country: '', city: '', latlng: '' });
   };
+
+  renderStartDateInput = props => (
+    <Form.Input icon="calendar alternate outline" iconPosition="left" {...props} />
+  );
 
   render() {
     const {
@@ -139,6 +147,7 @@ class EditTripForm extends Component {
             {touched.dayCount && errors.dayCount && <ErrorMsg>{errors.dayCount}</ErrorMsg>}
           </Form.Field>
         </Form.Group>
+
         <Form.Field>
           <label>Tags</label>
           <Dropdown
@@ -157,6 +166,27 @@ class EditTripForm extends Component {
             }}
           />
         </Form.Field>
+
+        <Segment padded>
+          <Label attached="top">Required if booking this trip</Label>
+          <Form.Group widths="equal">
+            <Form.Field>
+              <label>Start date</label>
+              <DayPickerInput component={this.renderStartDateInput} />
+            </Form.Field>
+
+            <Form.Field>
+              <label>Number of people</label>
+              <Form.Input
+                name="peopleCount"
+                placeholder="2"
+                type="number"
+                icon="user"
+                iconPosition="left"
+              />
+            </Form.Field>
+          </Form.Group>
+        </Segment>
       </OwnerForm>
     );
   }
