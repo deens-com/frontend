@@ -183,7 +183,7 @@ export default withFormik({
     description: trip.description,
     formattedAddress: trip.formattedAddress,
     dayCount: trip.dayCount || '',
-    tags: trip.tags.map(tag => tag.label) || [],
+    tags: (trip.tags || []).map(tag => tag.label),
   }),
   validate,
   handleSubmit: (values, { props }) => {
