@@ -75,7 +75,7 @@ function postFetchTripActions(trip, dispatch, getState) {
     formattedAddress,
     title,
     startDate,
-    tags
+    tags,
   })(dispatch, getState);
   checkAvailability(startDate, peopleCount)(dispatch, getState);
 }
