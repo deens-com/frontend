@@ -138,27 +138,25 @@ class EditTripForm extends Component {
             </EditTripContainer.ContextConsumer>
             {touched.dayCount && errors.dayCount && <ErrorMsg>{errors.dayCount}</ErrorMsg>}
           </Form.Field>
-          </Form.Group>
-          <Form.Group widths={12}>
-          <Form.Field>
-            <label>Tags</label>
-            <Dropdown
-              name="tags"
-              options={tagsDropdownOptions}
-              placeholder="Edit tags"
-              search
-              selection
-              fluid
-              multiple
-              value={values.tags}
-              disabled={isTripBooked}
-              onChange={(e, { name, value }) => {
-                this.props.setFieldValue('tags', value);
-                setTimeout(submitForm, 1);
-              }}
-            />
-          </Form.Field>
         </Form.Group>
+        <Form.Field>
+          <label>Tags</label>
+          <Dropdown
+            name="tags"
+            options={tagsDropdownOptions}
+            placeholder="Edit tags"
+            search
+            selection
+            fluid
+            multiple
+            value={values.tags}
+            disabled={isTripBooked}
+            onChange={(e, { name, value }) => {
+              this.props.setFieldValue('tags', value);
+              setTimeout(submitForm, 1);
+            }}
+          />
+        </Form.Field>
       </OwnerForm>
     );
   }
