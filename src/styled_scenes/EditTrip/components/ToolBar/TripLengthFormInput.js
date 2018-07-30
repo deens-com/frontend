@@ -36,7 +36,7 @@ export default class TripLengthFormInput extends Component {
       console.warn(`${newValueRaw} is not a number`);
       return;
     }
-    if (newValueRaw < 1) {
+    if (newValueRaw && newValueRaw < 1) {
       return;
     }
     const newValue = parseInt(newValueRaw, 10);
@@ -68,8 +68,10 @@ export default class TripLengthFormInput extends Component {
   yesRemove = () => {
     const { name, setFieldValue, submitForm } = this.props;
     const { requestedLength } = this.state;
-    setFieldValue(name, requestedLength);
-    setTimeout(submitForm, 100);
+    if (requestedLength > 0) {
+      setFieldValue(name, requestedLength);
+      setTimeout(submitForm, 100);
+    }
     this.closePopup();
   };
 
