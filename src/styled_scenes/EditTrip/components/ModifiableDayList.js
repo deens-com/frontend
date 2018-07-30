@@ -12,6 +12,7 @@ import Button from 'shared_components/Button';
 import Day, { Header } from '../../Trips/components/Day';
 import NotesEditor from './NotesEditor';
 import EditTripContainer from 'scenes/trips/containers/EditTripContainer';
+import AddNotesButton from './AddNotesButton';
 
 // ACTIONS/CONFIG
 import { media } from 'libs/styled';
@@ -54,12 +55,14 @@ export default class ModifiableDayList extends React.Component {
           {({ saveDayNote, notes }) => {
             const dayNote = notes[day.day] || {};
             return (
-              <NotesEditor
-                day={day.day}
-                noteId={dayNote.objectId}
-                defaultValue={dayNote.note}
-                saveDayNote={saveDayNote}
-              />
+              <AddNotesButton defaultShow={!dayNote.note}>
+                <NotesEditor
+                  day={day.day}
+                  noteId={dayNote.objectId}
+                  defaultValue={dayNote.note}
+                  saveDayNote={saveDayNote}
+                />
+              </AddNotesButton>
             );
           }}
         </EditTripContainer.ContextConsumer>
