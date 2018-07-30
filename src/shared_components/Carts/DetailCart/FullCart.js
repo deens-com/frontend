@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { Button as SemanticButton } from 'semantic-ui-react';
 
 // COMPONENTS
 import PriceTag from './components/Price';
@@ -11,7 +12,6 @@ import Detail from './components/Detail';
 import Category from './components/Category';
 import CardDescription from './components/Description';
 import Thumb from '../components/Thumb';
-import { TrashIcon } from './components/icons';
 
 // ACTIONS/CONFIG
 import { media } from '../../../libs/styled';
@@ -25,23 +25,14 @@ const Wrap = styled.div`
   position: relative;
 `;
 
-const DeleteButton = styled.div`
+const CardActions = styled.div`
   position: absolute;
   bottom: 0;
   right: 0;
-  color: #d3d7dc;
 
   ${media.minSmall} {
     position: static;
     margin: 10px 0;
-  }
-
-  & > div {
-    width: 25px;
-  }
-
-  svg {
-    font-size: 24px !important;
   }
 `;
 
@@ -149,11 +140,16 @@ export default function FullCart({ data, toggleExpansion, onDeleteClick, isOwner
         </CenterCol>
         <RightCol>
           {isOwner && (
-            <DeleteButton>
-              <Button theme="icon" size="text" type="button" onClick={onDeleteClick}>
-                <TrashIcon />
-              </Button>
-            </DeleteButton>
+            <CardActions>
+              <SemanticButton.Group basic size="medium">
+                <SemanticButton title="Copy service to another day" icon="copy" />
+                <SemanticButton
+                  title="Delete service"
+                  icon="trash alternate"
+                  onClick={onDeleteClick}
+                />
+              </SemanticButton.Group>
+            </CardActions>
           )}
           <PriceTag price={data.pricePerSession} currency={data.currency} isExpanded />
           <Button

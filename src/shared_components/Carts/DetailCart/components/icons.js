@@ -65,16 +65,3 @@ export const PhoneIcon = SvgWithProps(({ ariaHidden, focusable, role, style }) =
     <path d="M4.3 6.7c.4.1.7.4.6.7-.1.7-.1 2.6-1.2 2.1-.5-.2-1.1-.6-1.1-.6s-.3 0-.4-.4C1.1 6.1 3.5 1.1 6 .4c.3-.1.6.1.6.1s.6.3 1.1.5c1.1.6-.3 1.8-.8 2.3-.2.3-.6.2-1-.1-.9-.5-2.6 3.1-1.6 3.5z" />
   </svg>
 ));
-
-export const TrashIcon = SvgWithProps(({ ariaHidden, focusable, role, style }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 10 10"
-    aria-hidden={ariaHidden}
-    focusable={focusable}
-    role={role}
-    style={style}
-  >
-    <path d="M2.2 3.8c-.3 0-.6-.3-.6-.6v-.9c0-.4.3-.6.6-.6h1.2v-.4c0-.4.3-.7.7-.7h1.7c.4 0 .7.3.7.7v.3h1.2c.4 0 .6.3.6.6v.9c0 .3-.3.6-.6.6v4.4c0 .7-.5 1.2-1.2 1.2H3.4c-.7 0-1.2-.5-1.2-1.2V3.8zm4.4 4.9c.3 0 .5-.2.5-.5V3.8H2.8v4.4c0 .3.2.5.5.5h3.3zM4.1 1.3v.3h1.8v-.3s0-.1-.1-.1l-1.7.1zm-1.9 1v.9h5.6v-.9H2.2zm3.6 2.4h.6v3.1h-.6V4.7zm-1.1 0h.6v3.1h-.6V4.7zm-1.1 0h.6v3.1h-.6V4.7z" />
-  </svg>
-));
