@@ -68,6 +68,7 @@ export default class AddNewServiceToTrip extends Component {
       service_types: serviceType,
       latitude: this.props.trip.latitude,
       longitude: this.props.trip.longitude,
+      address: this.props.trip.formattedAddress,
     };
     this.goToResults(queryParams);
   };
