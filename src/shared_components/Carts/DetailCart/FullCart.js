@@ -12,6 +12,8 @@ import Detail from './components/Detail';
 import Category from './components/Category';
 import CardDescription from './components/Description';
 import Thumb from '../components/Thumb';
+import CopyServiceToDayButton from './components/CopyServiceToDayButton';
+import EditTripContainer from 'scenes/trips/containers/EditTripContainer';
 
 // ACTIONS/CONFIG
 import { media } from '../../../libs/styled';
@@ -142,7 +144,14 @@ export default function FullCart({ data, toggleExpansion, onDeleteClick, isOwner
           {isOwner && (
             <CardActions>
               <SemanticButton.Group basic size="medium">
-                <SemanticButton title="Copy service to another day" icon="copy" />
+                <EditTripContainer.ContextConsumer>
+                  {({ scheduledServices }) => (
+                    <CopyServiceToDayButton
+                      serviceId={data.objectId}
+                      scheduledServices={scheduledServices}
+                    />
+                  )}
+                </EditTripContainer.ContextConsumer>
                 <SemanticButton
                   title="Delete service"
                   icon="trash alternate"
