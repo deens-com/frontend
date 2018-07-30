@@ -5,7 +5,6 @@ import styled from 'styled-components';
 
 import moment from 'moment';
 import { Divider, Message } from 'semantic-ui-react';
-import Tag from './../Service/components/Tag';
 // COMPONENTS
 import TopBar from 'shared_components/TopBarWithSearch';
 import ModifiableDayList from 'styled_scenes/EditTrip/components/ModifiableDayList';
