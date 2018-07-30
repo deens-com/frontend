@@ -15,14 +15,11 @@ class TripsContainer extends Component {
   };
 
   componentDidMount() {
+    this.props.resetTripData();
     const trip_id = this.props.match.params.id;
     this.props.fetchTrip(trip_id);
     this.setState({ isLoggedIn: Parse.User.current() != null });
     this.props.setShowTripStatusChanged(false);
-  }
-
-  componentWillUnmount() {
-    this.props.resetTripData();
   }
 
   /**
