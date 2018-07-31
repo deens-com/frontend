@@ -26,6 +26,7 @@ import i18n from './../../../libs/i18n';
 const Wrap = styled.div`
   display: flex;
   flex-direction: row;
+  margin-left: 20px;
 `;
 
 const MobileWrap = styled.div`
