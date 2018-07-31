@@ -33,6 +33,10 @@ class EditTripForm extends Component {
     onSubmit: PropTypes.func.isRequired,
   };
 
+  componentDidMount() {
+    this.props.validateForm();
+  }
+
   onLocationChange = async (address, placeId) => {
     if (!address || !placeId) return;
     const { setFieldValue, submitForm } = this.props;
@@ -100,11 +104,11 @@ class EditTripForm extends Component {
             name="title"
             placeholder="Trip name"
             value={values.title}
-            error={!!(touched.title && errors.title)}
+            error={!!errors.title}
             disabled={isTripBooked}
             {...defaultProps}
           />
-          {touched.title && errors.title && <ErrorMsg>{errors.title}</ErrorMsg>}
+          {errors.title && <ErrorMsg>{errors.title}</ErrorMsg>}
         </Form.Field>
 
         <Form.Field required>
@@ -113,11 +117,11 @@ class EditTripForm extends Component {
             name="description"
             placeholder="Tell us more..."
             value={values.description}
-            error={!!(touched.description && errors.description)}
+            error={!!errors.description}
             disabled={isTripBooked}
             {...defaultProps}
           />
-          {touched.description && errors.description && <ErrorMsg>{errors.description}</ErrorMsg>}
+          {errors.description && <ErrorMsg>{errors.description}</ErrorMsg>}
         </Form.Field>
 
         <Form.Group widths={3}>
@@ -131,11 +135,10 @@ class EditTripForm extends Component {
                 name: 'formattedAddress',
                 onBlur: handleBlur,
                 disabled: isTripBooked,
-                error: !!(touched.formattedAddress && errors.formattedAddress),
+                error: !!errors.formattedAddress,
               }}
             />
-            {touched.formattedAddress &&
-              errors.formattedAddress && <ErrorMsg>{errors.formattedAddress}</ErrorMsg>}
+            {errors.formattedAddress && <ErrorMsg>{errors.formattedAddress}</ErrorMsg>}
           </Form.Field>
 
           <Form.Field required>
@@ -146,7 +149,7 @@ class EditTripForm extends Component {
                   name="dayCount"
                   placeholder="3"
                   value={values.dayCount}
-                  error={!!(touched.dayCount && errors.dayCount)}
+                  error={!!errors.dayCount}
                   scheduledServices={scheduledServices}
                   setFieldValue={setFieldValue}
                   submitForm={submitForm}
@@ -155,7 +158,7 @@ class EditTripForm extends Component {
                 />
               )}
             </EditTripContainer.ContextConsumer>
-            {touched.dayCount && errors.dayCount && <ErrorMsg>{errors.dayCount}</ErrorMsg>}
+            {errors.dayCount && <ErrorMsg>{errors.dayCount}</ErrorMsg>}
           </Form.Field>
         </Form.Group>
 
@@ -197,7 +200,7 @@ class EditTripForm extends Component {
                 }}
                 onDayChange={this.onStartDateChange}
               />
-              {touched.beginDate && errors.beginDate && <ErrorMsg>{errors.beginDate}</ErrorMsg>}
+              {errors.beginDate && <ErrorMsg>{errors.beginDate}</ErrorMsg>}
             </Form.Field>
 
             <Form.Field>
@@ -209,12 +212,11 @@ class EditTripForm extends Component {
                 icon="user"
                 iconPosition="left"
                 value={values.numberOfPerson}
-                error={!!(touched.numberOfPerson && errors.numberOfPerson)}
+                error={!!errors.numberOfPerson}
                 disabled={isTripBooked}
                 {...defaultProps}
               />
-              {touched.numberOfPerson &&
-                errors.numberOfPerson && <ErrorMsg>{errors.numberOfPerson}</ErrorMsg>}
+              {errors.numberOfPerson && <ErrorMsg>{errors.numberOfPerson}</ErrorMsg>}
             </Form.Field>
           </Form.Group>
         </Segment>
