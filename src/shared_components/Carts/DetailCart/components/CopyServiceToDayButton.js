@@ -8,26 +8,34 @@ export default class CopyServiceToDayButton extends Component {
     serviceId: PropTypes.string.isRequired,
   };
 
+  /**
+   * Checks if the current service exists on `dayIndex`
+   */
+  isAlreadyInDay = dayIndex => {
+    const { scheduledServices, serviceId } = this.props;
+    const dayObject = Object.values(scheduledServices).find(({ day }) => day === dayIndex);
+    if (!dayObject) return false;
+    return dayObject.services.some(service => service.objectId === serviceId);
+  };
+
   renderDay = dayIndex => {
     const { serviceId, copyToDay } = this.props;
+    const exists = this.isAlreadyInDay(dayIndex);
+    const text = exists ? <i>Day {dayIndex} (already exists)</i> : `Day ${dayIndex}`;
     return (
-      <List.Item key={dayIndex} onClick={() => copyToDay({ serviceId, dayIndex })}>
-        Day {dayIndex}
+      <List.Item
+        key={dayIndex}
+        disabled={exists}
+        onClick={() => copyToDay({ serviceId, dayIndex })}
+      >
+        {text}
       </List.Item>
     );
   };
 
   renderItems = () => {
     const { scheduledServices } = this.props;
-    return (
-      Object.values(scheduledServices)
-        // remove days which already have the service
-        .filter(
-          ({ services }) =>
-            !services.some(singleService => singleService.objectId === this.props.serviceId),
-        )
-        .map(({ day }) => this.renderDay(day))
-    );
+    return Object.values(scheduledServices).map(({ day }) => this.renderDay(day));
   };
 
   render() {
