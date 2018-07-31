@@ -208,9 +208,14 @@ export const resetTripData = () => dispatch => {
  * Upserts a Day note
  */
 export const saveDayNote = ({ note, day, noteId }) => async (dispatch, getState) => {
-  if (!note) return;
+  if (note == null) return;
   const state = getState();
   const tripId = state.TripsReducer.trip.objectId;
-  const savedNote = await Parse.Cloud.run('upsertNote', { note, dayNumber: day, noteId, tripId });
-  dispatch({ type: 'DAY_NOTE_SAVED', payload: savedNote });
+  if (noteId && note === '') {
+    await Parse.Cloud.run('deleteNote', { note, noteId });
+    dispatch({ type: 'TRIP/DAY_NOTE_REMOVED', payload: { day } });
+  } else {
+    const savedNote = await Parse.Cloud.run('upsertNote', { note, dayNumber: day, noteId, tripId });
+    dispatch({ type: 'TRIP/DAY_NOTE_SAVED', payload: savedNote });
+  }
 };

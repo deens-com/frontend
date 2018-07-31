@@ -55,6 +55,14 @@ export default function TripsReducer(state = initialState, action = {}) {
         },
       };
     }
+    case 'TRIP/DAY_NOTE_REMOVED': {
+      const { day } = action.payload;
+      const { [day.toString()]: removedNote, ...otherDayNotes } = state.notes;
+      return {
+        ...state,
+        notes: otherDayNotes,
+      };
+    }
     case 'CHANGE_SERVICE_DAY': {
       const { tripOrganizationId, newDay } = action.payload;
       return {
