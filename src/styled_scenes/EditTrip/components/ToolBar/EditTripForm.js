@@ -178,7 +178,9 @@ class EditTripForm extends Component {
         </Form.Field>
 
         <Segment padded>
-          <Label attached="top">Required if booking this trip</Label>
+          <Label attached="top">
+            Please provide a start date and guest count before booking this trip
+          </Label>
           <Form.Group widths="equal">
             <Form.Field>
               <label>Start date</label>
