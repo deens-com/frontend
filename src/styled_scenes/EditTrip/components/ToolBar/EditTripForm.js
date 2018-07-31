@@ -82,7 +82,6 @@ class EditTripForm extends Component {
   render() {
     const {
       values,
-      touched,
       errors,
       handleChange,
       handleBlur,
