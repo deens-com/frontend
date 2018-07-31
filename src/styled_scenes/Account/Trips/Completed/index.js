@@ -32,7 +32,7 @@ const AccountTripsScene = props => {
         </Link>
         <br />
         <br />
-        <TripSectionComponent trips={props.completed_trips} />
+        <TripSectionComponent trips={props.completed_trips} tripsType='completed' />
       </Grid.Column>
     </Grid>
   );
