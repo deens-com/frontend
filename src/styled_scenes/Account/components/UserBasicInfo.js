@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import CircularProfilePic from './CircularProfilePic';
 import Stars from './Stars';
 import { Link } from 'react-router-dom';
-import { Menu, Card } from 'semantic-ui-react';
+import { Menu, Card, Button } from 'semantic-ui-react';
 import Parse from 'parse';
 import history from './../../../main/history';
 import ImgurAvatar from './../../../assets/imgur-avatar.png';
@@ -15,7 +15,7 @@ const AttributeTitle = styled.h6`
 `;
 
 const CenteredDiv = styled.div`
-  //text-align: center;
+  text-align: center;
 `;
 
 const Wrapper = styled.div`
@@ -35,7 +35,26 @@ const MenuIcon = styled(Icon)`
   color: #5fb79e;
 `;
 
-const UserBasicInfo = ({ user_profile: user = {}, match }) => {
+const FileInputWrapper = styled.div`
+  margin-top: 5px;
+  height: 40px;
+  overflow: hidden;
+  position: relative;
+    > input[type="file"] {
+      font-size: 200px;
+      position: absolute;
+      top: 0;
+      right: 0;
+      opacity: 0;
+    }
+    > .btn-file-input {
+      display: inline-block;
+      width: 200px;
+      height: 40px;
+    }
+`;
+
+const UserBasicInfo = ({ user_profile: user = {}, match, update_user_avatar }) => {
   const name = user.fullName || user.username;
   const dpUrl = (user.profilePicture && user.profilePicture.url) || ImgurAvatar;
   let activePath = match.path.replace('/account/', '');
@@ -52,15 +71,24 @@ const UserBasicInfo = ({ user_profile: user = {}, match }) => {
       }, 20);
     }
   };
+  const onFileSelect = (e) => {
+    const file = e.currentTarget.files[0];
+    if (!file) return;
+    update_user_avatar(file);
+  };
   return (
     <Card>
       <Wrapper>
-        <CenteredDiv>
+          <CircularProfilePic src={dpUrl} />
+          <CenteredDiv>
+            <FileInputWrapper>
+              <Button circular class="btn-file-input">Update avatar</Button>
+              <input type="file" name="file" accept=".jpg, .jpeg, .png" onChange={onFileSelect} />
+            </FileInputWrapper>
+          </CenteredDiv>
           <Link to={'/users/' + user.username}>
-            <CircularProfilePic src={dpUrl} />
             {name && <NameDiv>{name}</NameDiv>}
           </Link>
-        </CenteredDiv>
 
         <Grid columns={2} divided>
           <Grid.Row>
