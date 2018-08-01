@@ -219,3 +219,11 @@ export const saveDayNote = ({ note, day, noteId }) => async (dispatch, getState)
     dispatch({ type: 'TRIP/DAY_NOTE_SAVED', payload: savedNote });
   }
 };
+
+export const copyServiceToDay = ({ serviceId, day }) => async (dispatch, getState) => {
+  if (!serviceId || !day) return;
+  const state = getState();
+  const tripId = state.TripsReducer.trip.objectId;
+  await Parse.Cloud.run('addServiceToTrip', { serviceId, tripId, day });
+  fetchTrip(tripId)(dispatch, getState);
+};

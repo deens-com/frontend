@@ -145,10 +145,11 @@ export default function FullCart({ data, toggleExpansion, onDeleteClick, isOwner
             <CardActions>
               <SemanticButton.Group basic size="medium">
                 <EditTripContainer.ContextConsumer>
-                  {({ scheduledServices }) => (
+                  {({ scheduledServices, copyServiceToDay }) => (
                     <CopyServiceToDayButton
                       serviceId={data.objectId}
                       scheduledServices={scheduledServices}
+                      copyServiceToDay={copyServiceToDay}
                     />
                   )}
                 </EditTripContainer.ContextConsumer>
