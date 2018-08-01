@@ -134,7 +134,7 @@ export default class ResultsScene extends Component {
                   center={center}
                   zoom={zoom}
                   bootstrapURLKeys={{
-                    key: 'AIzaSyD-dPVa4fWSFTwvbq5_ERdUaZLuuIf-dTU',
+                    key: 'AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc',
                   }}
                 >
                   {markers.map(marker => <MapMaker {...marker} scale={1} color="#4fb798" />)}

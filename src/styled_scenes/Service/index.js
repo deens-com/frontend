@@ -194,7 +194,7 @@ class FoodDetailScene extends Component {
                   }}
                   defaultZoom={11}
                   bootstrapURLKeys={{
-                    key: 'AIzaSyD-dPVa4fWSFTwvbq5_ERdUaZLuuIf-dTU',
+                    key: 'AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc',
                   }}
                 >
                   <MapMaker
