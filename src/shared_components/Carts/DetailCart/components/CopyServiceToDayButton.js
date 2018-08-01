@@ -21,7 +21,7 @@ export default class CopyServiceToDayButton extends Component {
   renderDay = dayIndex => {
     const { serviceId, copyToDay } = this.props;
     const exists = this.isAlreadyInDay(dayIndex);
-    const text = exists ? <i>Day {dayIndex} (already exists)</i> : `Day ${dayIndex}`;
+    const text = exists ? <i>Day {dayIndex}</i> : `Day ${dayIndex}`;
     return (
       <List.Item
         key={dayIndex}
