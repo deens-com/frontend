@@ -113,7 +113,7 @@ export default class TripLengthFormInput extends Component {
               Remove
             </Button>
             <Button positive onClick={this.closePopup}>
-              Go back
+              Cancel
             </Button>
           </Flex>
         </Popup.Content>

@@ -79,6 +79,13 @@ class EditTripForm extends Component {
     <Form.Input icon="calendar outline" iconPosition="left" {...props} />
   );
 
+  onPeopleCountChange = event => {
+    const newValueRaw = event.target.value;
+    console.log({ newValueRaw });
+    if (newValueRaw < 1 || isNaN(newValueRaw)) return;
+    this.props.setFieldValue('numberOfPerson', parseInt(newValueRaw, 10));
+  };
+
   render() {
     const {
       values,
@@ -216,6 +223,7 @@ class EditTripForm extends Component {
                 error={!!errors.numberOfPerson}
                 disabled={isTripBooked}
                 {...defaultProps}
+                onChange={this.onPeopleCountChange}
               />
               {errors.numberOfPerson && <ErrorMsg>{errors.numberOfPerson}</ErrorMsg>}
             </Form.Field>
