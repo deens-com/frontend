@@ -116,52 +116,64 @@ const HeaderRow = styled.div`
 const ContentRow = styled.div``;
 
 // MODULE
-export default function FullCart({ data, toggleExpansion, onDeleteClick, isOwner }) {
+export default function FullCart({ data: service, trip, toggleExpansion, onDeleteClick, isOwner }) {
   return (
     <Wrap>
       <LeftCol>
-        <Thumb url={data.mainPicture && data.mainPicture.url} tripCount={data.partOf} withTooltip />
+        <Thumb
+          url={service.mainPicture && service.mainPicture.url}
+          tripCount={service.partOf}
+          withTooltip
+        />
       </LeftCol>
       <ContentCol>
         <CenterCol>
           <HeaderRow>
-            <Category category={data.type} />
-            <Link to={`/services/${data.objectId}`}>
-              <CardDescription description={data.name} />
+            <Category category={service.type} />
+            <Link to={`/services/${service.objectId}`}>
+              <CardDescription description={service.name} />
             </Link>
           </HeaderRow>
           <ContentRow>
             <Detail
               block
               icon="clock"
-              text={`${padStart(data.openingTime, 2)}:00 - ${padStart(data.closingTime, 2)}:00`}
+              text={`${padStart(service.openingTime, 2)}:00 - ${padStart(
+                service.closingTime,
+                2,
+              )}:00`}
               showEdit={isOwner}
             />
-            <Detail block icon="pin" text={data.city + ', ' + data.country} showEdit={isOwner} />
+            <Detail
+              block
+              icon="pin"
+              text={service.city + ', ' + service.country}
+              showEdit={isOwner}
+            />
           </ContentRow>
         </CenterCol>
         <RightCol>
-          {isOwner && (
-            <CardActions>
-              <SemanticButton.Group basic size="medium">
-                <EditTripContainer.ContextConsumer>
-                  {({ scheduledServices, copyServiceToDay }) => (
+          <EditTripContainer.ContextConsumer>
+            {({ trip, scheduledServices, copyServiceToDay }) =>
+              trip && trip.objectId && isOwner && !trip.booked ? (
+                <CardActions>
+                  <SemanticButton.Group basic size="medium">
                     <CopyServiceToDayButton
-                      serviceId={data.objectId}
+                      serviceId={service.objectId}
                       scheduledServices={scheduledServices}
                       copyServiceToDay={copyServiceToDay}
                     />
-                  )}
-                </EditTripContainer.ContextConsumer>
-                <SemanticButton
-                  title="Delete service"
-                  icon="trash alternate"
-                  onClick={onDeleteClick}
-                />
-              </SemanticButton.Group>
-            </CardActions>
-          )}
-          <PriceTag price={data.pricePerSession} currency={data.currency} isExpanded />
+                    <SemanticButton
+                      title="Delete service"
+                      icon="trash alternate"
+                      onClick={onDeleteClick}
+                    />
+                  </SemanticButton.Group>
+                </CardActions>
+              ) : null
+            }
+          </EditTripContainer.ContextConsumer>
+          <PriceTag price={service.pricePerSession} currency={service.currency} isExpanded />
           <Button
             type="button"
             onClick={toggleExpansion}
@@ -174,8 +186,8 @@ export default function FullCart({ data, toggleExpansion, onDeleteClick, isOwner
           />
         </RightCol>
       </ContentCol>
-      {data.availability === true ? <Tag text="Available" backgroundColor="#4CAF50" /> : null}
-      {data.availability === false ? <Tag text="Unavailable" backgroundColor="#f44336" /> : null}
+      {service.availability === true ? <Tag text="Available" backgroundColor="#4CAF50" /> : null}
+      {service.availability === false ? <Tag text="Unavailable" backgroundColor="#f44336" /> : null}
     </Wrap>
   );
 }
@@ -184,6 +196,7 @@ export default function FullCart({ data, toggleExpansion, onDeleteClick, isOwner
 FullCart.propTypes = {
   onDeleteClick: PropTypes.func.isRequired,
   isOwner: PropTypes.bool.isRequired,
+  data: PropTypes.object.isRequired,
 };
 
 FullCart.defaultProps = {
