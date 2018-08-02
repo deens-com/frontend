@@ -57,7 +57,7 @@ const FileInputWrapper = styled.div`
 const UserBasicInfo = ({ user_profile: user = {}, match, update_user_avatar }) => {
   const name = user.fullName || user.username;
   const dpUrl = (user.profilePicture && user.profilePicture.url) || ImgurAvatar;
-  let activePath = match.path.replace('/account/', '');
+  const activePath = match.path.replace('/account/', '');
   const logout = () => {
     Parse.User.logOut().then(() => {
       history.push('/');
