@@ -40,18 +40,18 @@ const FileInputWrapper = styled.div`
   height: 40px;
   overflow: hidden;
   position: relative;
-    > input[type="file"] {
-      font-size: 200px;
-      position: absolute;
-      top: 0;
-      right: 0;
-      opacity: 0;
-    }
-    > .btn-file-input {
-      display: inline-block;
-      width: 200px;
-      height: 40px;
-    }
+  > input[type='file'] {
+    font-size: 200px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0;
+  }
+  > .btn-file-input {
+    display: inline-block;
+    width: 200px;
+    height: 40px;
+  }
 `;
 
 const UserBasicInfo = ({ user_profile: user = {}, match, update_user_avatar }) => {
@@ -71,7 +71,7 @@ const UserBasicInfo = ({ user_profile: user = {}, match, update_user_avatar }) =
       }, 20);
     }
   };
-  const onFileSelect = (e) => {
+  const onFileSelect = e => {
     const file = e.currentTarget.files[0];
     if (!file) return;
     update_user_avatar(file);
@@ -79,16 +79,16 @@ const UserBasicInfo = ({ user_profile: user = {}, match, update_user_avatar }) =
   return (
     <Card>
       <Wrapper>
-          <CircularProfilePic src={dpUrl} />
-          <CenteredDiv>
-            <FileInputWrapper>
-              <Button circular class="btn-file-input">Update avatar</Button>
-              <input type="file" name="file" accept=".jpg, .jpeg, .png" onChange={onFileSelect} />
-            </FileInputWrapper>
-          </CenteredDiv>
-          <Link to={'/users/' + user.username}>
-            {name && <NameDiv>{name}</NameDiv>}
-          </Link>
+        <CircularProfilePic src={dpUrl} />
+        <CenteredDiv>
+          <FileInputWrapper>
+            <Button circular class="btn-file-input">
+              Update avatar
+            </Button>
+            <input type="file" name="file" accept=".jpg, .jpeg, .png" onChange={onFileSelect} />
+          </FileInputWrapper>
+        </CenteredDiv>
+        <Link to={'/users/' + user.username}>{name && <NameDiv>{name}</NameDiv>}</Link>
 
         <Grid columns={2} divided>
           <Grid.Row>

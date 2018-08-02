@@ -73,7 +73,7 @@ export const update_user_service_status = e => async dispatch => {
   dispatch(fetch_user_services());
 };
 
-export const update_user_avatar = (file) => {
+export const update_user_avatar = file => {
   return async dispatch => {
     const user = Parse.User.current();
     let parseFile;
@@ -101,8 +101,8 @@ export const update_user_avatar = (file) => {
         dispatch(user_profile_fetched({ user_profile: json_user }));
       },
     });
-  }
-}
+  };
+};
 
 //const locales = ['ar', 'ar-AE', 'ar-BH', 'ar-DZ', 'ar-EG', 'ar-IQ', 'ar-JO', 'ar-KW', 'ar-LB', 'ar-LY', 'ar-MA', 'ar-QA', 'ar-QM', 'ar-SA', 'ar-SD', 'ar-SY', 'ar-TN', 'ar-YE', 'bg-BG', 'cs-CZ', 'da-DK', 'de-DE', 'el-GR', 'en-AU', 'en-GB', 'en-HK', 'en-IN', 'en-NZ', 'en-US', 'en-ZA', 'en-ZM', 'es-ES', 'fr-FR', 'hu-HU', 'it-IT', 'nb-NO', 'nl-NL', 'nn-NO', 'pl-PL', 'pt-BR', 'pt-PT', 'ru-RU', 'sk-SK', 'sr-RS', 'sr-RS@latin', 'sv-SE', 'tr-TR', 'uk-UA'];
 export const update_user_profile = (user_id, field_type, value) => {
