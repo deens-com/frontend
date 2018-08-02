@@ -13,7 +13,7 @@ class PreBookingPopupContainer extends React.Component {
 
   redirectToOwnedTrip = () => {
     const { preBookingStepResult, history } = this.props;
-    history.push(`/trips/${preBookingStepResult.newTripId}`);
+    history.push(`/trips/${preBookingStepResult.newTripId}/edit`);
     this.props.removePreBookingResults();
   };
 
