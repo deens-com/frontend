@@ -1,10 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { CardElement, injectStripe } from 'react-stripe-elements';
+import { Button } from 'semantic-ui-react';
 
 import PaymentSection from './components/PaymentSection';
 import * as actions from './actions';
 import { statuses } from '../../libs/fetch_helpers';
+import StripeAutoPaymentButton from './components/StripeAutoPaymentButton';
 
 class PaymentContainer extends React.Component {
   componentDidMount() {
@@ -23,6 +26,12 @@ class PaymentContainer extends React.Component {
           onPaymentClick={markTripBooked}
           isLoading={isLoading}
         />
+        <div className="checkout">
+          <StripeAutoPaymentButton currency="usd" amount={100} />
+          Or enter your payment details below
+          <CardElement />
+          <Button>Pay $1</Button>
+        </div>
       </div>
     );
   }
@@ -38,4 +47,4 @@ const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(PaymentContainer);
+)(injectStripe(PaymentContainer));

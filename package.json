@@ -48,6 +48,7 @@
     "react-select": "^1.2.1",
     "react-slick": "^0.23.1",
     "react-transition-group": "1.x",
+    "react-stripe-elements": "2.0.1",
     "react-truncate": "^2.3.0",
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.2",
