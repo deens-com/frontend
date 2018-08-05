@@ -11,6 +11,7 @@ import history from './../../main/history';
 import { isMobile, checkRequiredFields } from 'libs/Utils';
 import i18n from './../../libs/i18n';
 import Image from 'shared_components/Image';
+import MultiImageUploader from 'shared_components/MultiImageUploader/MultiImageUploader';
 const serviceTypes = [
   { label: i18n.t('places.singular'), value: 'place' },
   { label: i18n.t('activities.singular'), value: 'activity' },
@@ -340,6 +341,7 @@ class ServiceForm extends Component {
           />
         </Form.Field>
 
+        {/* Single image upload
         <Form.Field>
           <label>Service Picture</label>
           <Flex>
@@ -355,6 +357,13 @@ class ServiceForm extends Component {
               onChange={this.onFileSelect}
             />
           </Flex>
+        </Form.Field>
+        */}
+
+        {/* Multi image upload */}
+        <Form.Field>
+          <label>Service Images</label>
+          <MultiImageUploader />
         </Form.Field>
 
         {/* Accept Ethereum */}
