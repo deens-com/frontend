@@ -121,7 +121,7 @@ export default function FullCart({ data: service, trip, toggleExpansion, onDelet
     <Wrap>
       <LeftCol>
         <Thumb
-          url={service.mainPicture && service.mainPicture.url}
+          url={service.mainPicture && service.mainPicture.url()}
           tripCount={service.partOf}
           withTooltip
         />
