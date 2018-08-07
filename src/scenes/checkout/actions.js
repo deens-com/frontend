@@ -39,11 +39,10 @@ export const chargeStripeToken = (token, complete) => async (dispatch, getState)
   try {
     const result = await axios({
       method: 'POST',
-      url: '/payment/charge',
+      url: `/payment/charge/${tripId}`,
       data: {
         token: token.id,
         parseSessionToken: Parse.User.current().getSessionToken(),
-        tripId,
       },
     });
     complete('success'); // instructs the browser to close the native loader
