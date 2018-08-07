@@ -8,8 +8,7 @@ import EditTripComponent from 'styled_scenes/EditTrip';
 import * as trips_actions from './../actions';
 import * as selectors from '../selectors';
 import { statuses } from '../../../libs/fetch_helpers';
-
-const EditTripContext = React.createContext();
+import { ContextProvider } from '../context';
 
 class EditTripContainer extends Component {
   updateTripDetails = (newDetails, showSaved) => {
@@ -22,12 +21,6 @@ class EditTripContainer extends Component {
   state = {
     isLoggedIn: false,
   };
-
-  /**
-   * For components deep down in the hierarchy make use of this context
-   * instead of Prop Drilling
-   */
-  static ContextConsumer = EditTripContext.Consumer;
 
   componentDidMount() {
     this.props.resetTripData();
@@ -81,7 +74,7 @@ class EditTripContainer extends Component {
       // If there's a way to avoid creating the value object every time we render
       // Please do let me know
       // - jaydp
-      <EditTripContext.Provider
+      <ContextProvider
         value={{
           ...this.state,
           ...this.props,
@@ -95,7 +88,7 @@ class EditTripContainer extends Component {
           onServiceRemoveClick={this.onServiceRemoveClick}
           onBookClick={this.onBookClick}
         />
-      </EditTripContext.Provider>
+      </ContextProvider>
     );
   }
 }

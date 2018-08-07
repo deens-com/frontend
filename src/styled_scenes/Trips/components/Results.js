@@ -37,9 +37,10 @@ export default function Results({
   onServiceDragEnd,
   onServiceRemoveClick,
   expanded,
+  toggleExpansion,
 }) {
   const allowServiceRearrange = false; // trip && (trip.owner && trip.owner.objectId) === (currentUser && currentUser.id) && !trip.booked;
-  const dayProps = { trip, allowServiceRearrange, onServiceRemoveClick, expanded };
+  const dayProps = { trip, allowServiceRearrange, onServiceRemoveClick, expanded, toggleExpansion };
   const services = [];
   if (showDetails) {
     services.push(...scheduledServices.map(day => <Day key={day.day} day={day} {...dayProps} />));
@@ -85,7 +86,8 @@ Results.propTypes = {
   scheduledTrips: PropTypes.array,
   onServiceDragEnd: PropTypes.func.isRequired,
   onServiceRemoveClick: PropTypes.func.isRequired,
-  expanded: PropTypes.bool.isRequired,
+  expanded: PropTypes.object.isRequired,
+  toggleExpansion: PropTypes.func.isRequired,
 };
 
 Results.defaultProps = {

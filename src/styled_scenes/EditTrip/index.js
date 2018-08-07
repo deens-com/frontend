@@ -15,6 +15,8 @@ import Button from 'shared_components/Button';
 import OwnerToolBar from 'styled_scenes/EditTrip/components/ToolBar/OwnerToolBar';
 import AddNewServiceToTrip from 'styled_scenes/EditTrip/components/AddNewServiceToTrip';
 
+import expandCardsHoc from 'shared_components/Trip/expandCardsHoc';
+
 // ACTIONS/CONFIG
 import { media } from 'libs/styled';
 
@@ -45,11 +47,10 @@ const TripActionsWrap = styled.div`
 `;
 
 // MODULE
-export default class TripsScene extends Component {
+class TripsScene extends Component {
   state = {
     details: true,
     isOwner: false,
-    expandedResults: {},
   };
 
   componentDidMount() {
@@ -67,43 +68,6 @@ export default class TripsScene extends Component {
 
   toggleDetails = () => {
     this.setState({ details: !this.state.details });
-  };
-
-  toggleExpansionAll = () => {
-    const { scheduledServices } = this.props;
-    const shouldExpand = Object.keys(this.state.expandedResults).length === 0;
-
-    this.setState(prevState => ({
-      expandedResults: shouldExpand
-        ? scheduledServices.reduce(
-            (obj, day) => ({
-              ...obj,
-              ...day.services.reduce(
-                (serviceObj, service) => ({
-                  ...serviceObj,
-                  [service.tripOrganizationId]: true,
-                }),
-                {},
-              ),
-            }),
-            {},
-          )
-        : {},
-    }));
-  };
-
-  toggleExpansion = tripOrganizationId => {
-    const expandedResults = {
-      ...this.state.expandedResults,
-      [tripOrganizationId]: !this.state.expandedResults[tripOrganizationId],
-    };
-    if (!expandedResults[tripOrganizationId]) {
-      delete expandedResults[tripOrganizationId];
-    }
-
-    this.setState(prevState => ({
-      expandedResults,
-    }));
   };
 
   render() {
@@ -134,9 +98,9 @@ export default class TripsScene extends Component {
                       size="small"
                       iconAfter="arrowDown"
                       theme="textGreen"
-                      onClick={this.toggleExpansionAll}
+                      onClick={this.props.toggleExpansionAll}
                       text={
-                        Object.keys(this.state.expandedResults).length > 0
+                        Object.keys(this.props.expandedResults).length > 0
                           ? 'Collapse all'
                           : 'Expand all'
                       }
@@ -148,8 +112,8 @@ export default class TripsScene extends Component {
                     scheduledServices={this.props.scheduledServices}
                     onServiceDragEnd={this.props.onServiceDragEnd}
                     onServiceRemoveClick={this.props.onServiceRemoveClick}
-                    expanded={this.state.expandedResults}
-                    toggleExpansion={this.toggleExpansion}
+                    expanded={this.props.expandedResults}
+                    toggleExpansion={this.props.toggleExpansion}
                   />
                   <Hr />
                   <Summary
@@ -178,4 +142,9 @@ TripsScene.propTypes = {
   onBookClick: PropTypes.func.isRequired,
   isCloningInProcess: PropTypes.bool.isRequired,
   serviceAvailabilityCheckInProgress: PropTypes.bool.isRequired,
+  toggleExpansion: PropTypes.func.isRequired,
+  toggleExpansionAll: PropTypes.func.isRequired,
+  expandedResults: PropTypes.object.isRequired,
 };
+
+export default expandCardsHoc(TripsScene);

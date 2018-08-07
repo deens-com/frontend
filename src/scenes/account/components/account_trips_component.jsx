@@ -13,15 +13,24 @@ class AccountTripsComponent extends Component {
       <div className="AccountTripsComponent">
         <Route
           path={process.env.PUBLIC_URL + '/account/trips/all'}
-          render={props => <AccountTripsAllComponent {...this.props} user_profile={this.props.user_profile} />}
+          render={props => (
+            <AccountTripsAllComponent {...this.props} user_profile={this.props.user_profile} />
+          )}
         />
         <Route
           path={process.env.PUBLIC_URL + '/account/trips/planned'}
-          render={props => <AccountTripsPlannedComponent {...this.props} user_profile={this.props.user_profile} />}
+          render={props => (
+            <AccountTripsPlannedComponent {...this.props} user_profile={this.props.user_profile} />
+          )}
         />
         <Route
           path={process.env.PUBLIC_URL + '/account/trips/completed'}
-          render={props => <AccountTripsCompletedComponent {...this.props} user_profile={this.props.user_profile} />}
+          render={props => (
+            <AccountTripsCompletedComponent
+              {...this.props}
+              user_profile={this.props.user_profile}
+            />
+          )}
         />
       </div>
     );
@@ -41,6 +50,6 @@ const mapDispatchToProps = dispatch => {
 export default withRouter(
   connect(
     mapStateToProps,
-    mapDispatchToProps
-  )(AccountTripsComponent)
+    mapDispatchToProps,
+  )(AccountTripsComponent),
 );

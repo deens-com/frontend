@@ -8,6 +8,7 @@ import TripsComponent from 'styled_scenes/Trips';
 import * as trips_actions from './../actions';
 import * as selectors from '../selectors';
 import { statuses } from '../../../libs/fetch_helpers';
+import { ContextProvider } from '../context';
 
 class TripsContainer extends Component {
   state = {
@@ -63,14 +64,21 @@ class TripsContainer extends Component {
       return <NotFound />;
     }
     return (
-      <TripsComponent
-        {...this.props}
-        onServiceDragEnd={this.onDragReOrderChange}
-        onServiceRemoveClick={this.onServiceRemoveClick}
-        updateTripDetails={this.updateTripDetails}
-        onBookClick={this.onBookClick}
-        onShareModalClose={this.onShareModalClose}
-      />
+      <ContextProvider
+        value={{
+          ...this.state,
+          ...this.props,
+          updateTripDetails: this.updateTripDetails,
+          onShareModalClose: this.onShareModalClose,
+        }}
+      >
+        <TripsComponent
+          {...this.props}
+          onServiceDragEnd={this.onDragReOrderChange}
+          onServiceRemoveClick={this.onServiceRemoveClick}
+          onBookClick={this.onBookClick}
+        />
+      </ContextProvider>
     );
   }
 }
