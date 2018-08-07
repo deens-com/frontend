@@ -49,7 +49,7 @@ export default class TripsScene extends Component {
   state = {
     details: true,
     isOwner: false,
-    resultsExpanded: false,
+    expandedResults: {},
   };
 
   componentDidMount() {
@@ -69,8 +69,41 @@ export default class TripsScene extends Component {
     this.setState({ details: !this.state.details });
   };
 
-  toggleExpansion = () => {
-    this.setState(prevState => ({ resultsExpanded: !prevState.resultsExpanded }));
+  toggleExpansionAll = () => {
+    const { scheduledServices } = this.props;
+    const shouldExpand = Object.keys(this.state.expandedResults).length === 0;
+
+    this.setState(prevState => ({
+      expandedResults: shouldExpand
+        ? scheduledServices.reduce(
+            (obj, day) => ({
+              ...obj,
+              ...day.services.reduce(
+                (serviceObj, service) => ({
+                  ...serviceObj,
+                  [service.tripOrganizationId]: true,
+                }),
+                {},
+              ),
+            }),
+            {},
+          )
+        : {},
+    }));
+  };
+
+  toggleExpansion = tripOrganizationId => {
+    const expandedResults = {
+      ...this.state.expandedResults,
+      [tripOrganizationId]: !this.state.expandedResults[tripOrganizationId],
+    };
+    if (!expandedResults[tripOrganizationId]) {
+      delete expandedResults[tripOrganizationId];
+    }
+
+    this.setState(prevState => ({
+      expandedResults,
+    }));
   };
 
   render() {
@@ -101,8 +134,12 @@ export default class TripsScene extends Component {
                       size="small"
                       iconAfter="arrowDown"
                       theme="textGreen"
-                      onClick={this.toggleExpansion}
-                      text={this.state.resultsExpanded ? 'Collapse all' : 'Expand all'}
+                      onClick={this.toggleExpansionAll}
+                      text={
+                        Object.keys(this.state.expandedResults).length > 0
+                          ? 'Collapse all'
+                          : 'Expand all'
+                      }
                     />
                   </TripActionsWrap>
                   <ModifiableDayList
@@ -111,7 +148,8 @@ export default class TripsScene extends Component {
                     scheduledServices={this.props.scheduledServices}
                     onServiceDragEnd={this.props.onServiceDragEnd}
                     onServiceRemoveClick={this.props.onServiceRemoveClick}
-                    expanded={this.state.resultsExpanded}
+                    expanded={this.state.expandedResults}
+                    toggleExpansion={this.toggleExpansion}
                   />
                   <Hr />
                   <Summary
