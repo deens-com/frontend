@@ -1,5 +1,6 @@
-import fetch_helpers from '../../libs/fetch_helpers';
 import Parse from 'parse';
+import axios from 'libs/axios';
+import fetch_helpers from 'libs/fetch_helpers';
 import { trackTripBooked } from 'libs/analytics';
 
 export const types = {
@@ -29,3 +30,26 @@ export const markTripBooked = () => async (dispatch, getState) => {
 
 export const clearTripBooked = () => dispatch =>
   dispatch({ type: types.MARK_TRIP_BOOKED_STATUS, payload: null });
+
+export const chargeStripeToken = (token, complete) => async (dispatch, getState) => {
+  if (!token || !token.id) return;
+  const state = getState();
+  const { trip } = state.TripsReducer;
+  const tripId = trip.objectId;
+  try {
+    const result = await axios({
+      method: 'POST',
+      url: '/payment/charge',
+      data: {
+        token: token.id,
+        parseSessionToken: Parse.User.current().getSessionToken(),
+        tripId,
+      },
+    });
+    complete('success'); // instructs the browser to close the native loader
+    console.log('result', result.data);
+  } catch (error) {
+    console.error('charge failed', error);
+    complete('fail');
+  }
+};

@@ -6,6 +6,7 @@ class StripeAutoPaymentButton extends Component {
   static propTypes = {
     currency: PropTypes.string.isRequired,
     amount: PropTypes.number.isRequired,
+    onStripeTokenReceived: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -19,14 +20,14 @@ class StripeAutoPaymentButton extends Component {
       currency,
       total: {
         label: 'Demo total',
-        amount,
+        amount: amount * 100, // multiplying by 100 as stripe always needs amount in cents
       },
     });
 
     paymentRequest.on('token', ({ complete, token, ...data }) => {
       console.log('Received Stripe token: ', token);
       console.log('Received customer information: ', data);
-      complete('success');
+      this.props.onStripeTokenReceived(token, complete);
     });
 
     paymentRequest.canMakePayment().then(result => {
