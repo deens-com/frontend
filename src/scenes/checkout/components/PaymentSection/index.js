@@ -34,6 +34,7 @@ const PaymentSection = ({
   onPaymentClick,
   numberOfPerson,
   isLoading,
+  onStripeTokenReceived,
 }) => (
   <Wrap>
     <Grid>
@@ -84,14 +85,10 @@ const PaymentSection = ({
           {totalPrice && (
             <StripWrap>
               <StripeAutoPaymentButton
-                currency="usd"
                 amount={totalPrice}
-                onStripeTokenReceived={this.onStripeTokenReceived}
+                onStripeTokenReceived={onStripeTokenReceived}
               />
-              <StripeCardDetails
-                amount={totalPrice}
-                onStripeTokenReceived={this.onStripeTokenReceived}
-              />
+              <StripeCardDetails />
             </StripWrap>
           )}
         </Grid.Column>
@@ -106,7 +103,8 @@ PaymentSection.propTypes = {
   pricePerPerson: PropTypes.number.isRequired,
   totalPrice: PropTypes.number.isRequired,
   onPaymentClick: PropTypes.func.isRequired,
-  numberOfPerson: PropTypes.func.isRequired,
+  numberOfPerson: PropTypes.number.isRequired,
+  onStripeTokenReceived: PropTypes.func.isRequired,
 };
 
 export default PaymentSection;

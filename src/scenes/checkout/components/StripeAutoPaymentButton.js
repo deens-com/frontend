@@ -11,20 +11,19 @@ const Wrapper = styled.div`
 
 class StripeAutoPaymentButton extends Component {
   static propTypes = {
-    currency: PropTypes.string.isRequired,
     amount: PropTypes.number.isRequired,
     onStripeTokenReceived: PropTypes.func.isRequired,
   };
 
   constructor(props) {
     super(props);
-    const { currency, amount } = this.props;
+    const { amount } = this.props;
 
     // For full documentation of the available paymentRequest options, see:
     // https://stripe.com/docs/stripe.js#the-payment-request-object
     const paymentRequest = props.stripe.paymentRequest({
       country: 'US',
-      currency,
+      currency: 'usd',
       total: {
         label: 'Demo total',
         amount: amount * 100, // multiplying by 100 as stripe always needs amount in cents

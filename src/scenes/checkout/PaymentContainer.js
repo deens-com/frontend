@@ -8,11 +8,15 @@ import PaymentSection from './components/PaymentSection';
 import * as actions from './actions';
 import { statuses } from '../../libs/fetch_helpers';
 
-class PaymentContainer extends React.Component {
-  static propTypes = {
-    onStripeTokenReceived: PropTypes.func.isRequired,
-  };
+const PaymentContext = React.createContext();
 
+/**
+ * For components deep down in the hierarchy make use of this context
+ * instead of Prop Drilling
+ */
+export const PaymentContextConsumer = PaymentContext.Consumer;
+
+class PaymentContainer extends React.Component {
   componentDidMount() {
     this.props.clearTripBooked();
   }
@@ -21,7 +25,7 @@ class PaymentContainer extends React.Component {
     this.props.chargeStripeToken(token, complete);
   };
 
-  onSubmitClick = async () => {
+  onSubmitWithCardDetails = async () => {
     const { token, error } = await this.props.stripe.createToken({ name: 'Customer name' });
     console.log('stripe token', token);
     console.log('stripe error', error);
@@ -30,17 +34,24 @@ class PaymentContainer extends React.Component {
 
   render() {
     const { trip, markTripBooked, isLoading } = this.props;
+    if (!trip || !trip.objectId) return null;
     const totalPrice = trip.price * (trip.numberOfPerson || 1);
     return (
-      <div>
+      <PaymentContext.Provider
+        value={{
+          onSubmitWithCardDetails: this.onSubmitWithCardDetails,
+          totalPrice,
+        }}
+      >
         <PaymentSection
           numberOfPerson={trip.numberOfPerson}
           pricePerPerson={trip.price}
           totalPrice={totalPrice}
           onPaymentClick={markTripBooked}
           isLoading={isLoading}
+          onStripeTokenReceived={this.onStripeTokenReceived}
         />
-      </div>
+      </PaymentContext.Provider>
     );
   }
 }
