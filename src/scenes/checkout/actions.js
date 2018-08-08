@@ -47,8 +47,10 @@ export const chargeStripeToken = (token, complete = () => {}) => async (dispatch
     });
     complete('success'); // instructs the browser to close the native loader
     console.log('result', result.data);
+    setTimeout(() => alert('payment successful 🕺💃🎉'), 300);
   } catch (error) {
     console.error('charge failed', error);
     complete('fail');
+    setTimeout(() => alert('payment failed 😭'), 300);
   }
 };
