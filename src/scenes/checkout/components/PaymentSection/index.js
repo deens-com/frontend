@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import { Button, Label, Grid } from 'semantic-ui-react';
 import styled from 'styled-components';
 
-import PriceTag from '../../../../shared_components/Currency/PriceTag';
-import { media } from '../../../../libs/styled';
+import PriceTag from 'shared_components/Currency/PriceTag';
+import { media } from 'libs/styled';
 import BookedSuccessfullyPopup from '../BookedSuccessfullyPopup';
+import StripeAutoPaymentButton from '../StripeAutoPaymentButton';
+import StripeCardDetails from '../StripeCardDetails';
 
 const Wrap = styled.div`
   ${media.minSmall} {
@@ -18,6 +20,12 @@ const Wrap = styled.div`
 const GuestCountStyle = styled.p`
   font-size: 18px;
   font-weight: 500;
+`;
+
+const StripWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 `;
 
 const PaymentSection = ({
@@ -69,6 +77,23 @@ const PaymentSection = ({
               </Button>
             )}
           </PriceTag>
+        </Grid.Column>
+      </Grid.Row>
+      <Grid.Row>
+        <Grid.Column>
+          {totalPrice && (
+            <StripWrap>
+              <StripeAutoPaymentButton
+                currency="usd"
+                amount={totalPrice}
+                onStripeTokenReceived={this.onStripeTokenReceived}
+              />
+              <StripeCardDetails
+                amount={totalPrice}
+                onStripeTokenReceived={this.onStripeTokenReceived}
+              />
+            </StripWrap>
+          )}
         </Grid.Column>
       </Grid.Row>
     </Grid>

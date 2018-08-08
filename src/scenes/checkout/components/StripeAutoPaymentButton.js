@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { PaymentRequestButtonElement, injectStripe } from 'react-stripe-elements';
+import styled from 'styled-components';
+
+const Wrapper = styled.div`
+  width: 100%;
+  max-width: 500px;
+  min-height: 40px;
+`;
 
 class StripeAutoPaymentButton extends Component {
   static propTypes = {
@@ -42,19 +49,19 @@ class StripeAutoPaymentButton extends Component {
 
   render() {
     return this.state.canMakePayment ? (
-      <PaymentRequestButtonElement
-        paymentRequest={this.state.paymentRequest}
-        className="PaymentRequestButton"
-        style={{
-          // For more details on how to style the Payment Request Button, see:
-          // https://stripe.com/docs/elements/payment-request-button#styling-the-element
-          paymentRequestButton: {
-            type: 'buy',
-            theme: 'dark',
-            height: '64px',
-          },
-        }}
-      />
+      <Wrapper>
+        <PaymentRequestButtonElement
+          paymentRequest={this.state.paymentRequest}
+          className="PaymentRequestButton"
+          style={{
+            // For more details on how to style the Payment Request Button, see:
+            // https://stripe.com/docs/elements/payment-request-button#styling-the-element
+            paymentRequestButton: {
+              theme: 'dark',
+            },
+          }}
+        />
+      </Wrapper>
     ) : null;
   }
 }

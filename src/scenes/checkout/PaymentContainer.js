@@ -2,13 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { CardElement, injectStripe } from 'react-stripe-elements';
-import { Button } from 'semantic-ui-react';
+import { injectStripe } from 'react-stripe-elements';
 
 import PaymentSection from './components/PaymentSection';
 import * as actions from './actions';
 import { statuses } from '../../libs/fetch_helpers';
-import StripeAutoPaymentButton from './components/StripeAutoPaymentButton';
 
 class PaymentContainer extends React.Component {
   static propTypes = {
@@ -42,18 +40,6 @@ class PaymentContainer extends React.Component {
           onPaymentClick={markTripBooked}
           isLoading={isLoading}
         />
-        {totalPrice && (
-          <div className="checkout">
-            <StripeAutoPaymentButton
-              currency="usd"
-              amount={totalPrice}
-              onStripeTokenReceived={this.onStripeTokenReceived}
-            />
-            Or enter your payment details below
-            <CardElement />
-            <Button onClick={this.onSubmitClick}>Pay ${trip.price}</Button>
-          </div>
-        )}
       </div>
     );
   }
