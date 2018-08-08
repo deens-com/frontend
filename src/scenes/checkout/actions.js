@@ -31,7 +31,7 @@ export const markTripBooked = () => async (dispatch, getState) => {
 export const clearTripBooked = () => dispatch =>
   dispatch({ type: types.MARK_TRIP_BOOKED_STATUS, payload: null });
 
-export const chargeStripeToken = (token, complete) => async (dispatch, getState) => {
+export const chargeStripeToken = (token, complete = () => {}) => async (dispatch, getState) => {
   if (!token || !token.id) return;
   const state = getState();
   const { trip } = state.TripsReducer;
