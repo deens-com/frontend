@@ -8,6 +8,7 @@ import { SectionContent } from 'shared_components/layout/Page';
 import { getFormattedTripDates } from 'libs/Utils';
 import Carousel from './Carousel';
 import LocationCart from './Carts/Location';
+import { Loader } from 'semantic-ui-react';
 
 const get_label_color = status => {
   switch (status) {
@@ -103,8 +104,17 @@ class Trip extends Component {
 }
 
 const TripSectionComponent = props => {
-  if (!props.trips.length) { return (<p>You don't have any {props.tripsType} trips.</p>); }
-  return ( <section>{props.trips.map(trip => <Trip key={trip.objectId} trip={trip} />)}</section> );
+  if (props.isLoadingTrips) {
+    return (
+      <Loader active inline="centered" size="massive">
+        Loading
+      </Loader>
+    );
+  }
+  if (!props.trips.length) {
+    return <p>You don't have any {props.tripsType} trips.</p>;
+  }
+  return <section>{props.trips.map(trip => <Trip key={trip.objectId} trip={trip} />)}</section>;
 };
 
 export default TripSectionComponent;
