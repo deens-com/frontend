@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { CardElement } from 'react-stripe-elements';
-import { Button } from 'semantic-ui-react';
 import styled from 'styled-components';
+import CustomColorSemanticButton from 'shared_components/CustomColorSemanticButton';
 
 const Wrapper = styled.div`
   border-style: none;
@@ -60,9 +60,9 @@ const StripeCardDetails = ({ amount, currency, onStripeTokenReceived }) => {
             },
           }}
         />
-        <Button fluid color="green">
+        <CustomColorSemanticButton fluid bgColor="rgb(95, 183, 158)" whiteText>
           Pay ${amount}
-        </Button>
+        </CustomColorSemanticButton>
       </CardInputWrapper>
     </Wrapper>
   );
