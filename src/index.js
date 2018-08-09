@@ -10,6 +10,7 @@ import { unregister as unregisterServiceWorker } from './registerServiceWorker';
 import Parse from 'parse';
 import Raven from 'raven-js';
 import { serverBaseURL, isProd, isStaging } from './libs/config';
+import * as featureFlags from './libs/feature-flags';
 
 Parse.initialize('myAppId');
 Parse.serverURL = `${serverBaseURL}/parse`;
@@ -48,3 +49,6 @@ const customerId = getQueryStringValue('customer_id');
 if (customerId && window.analytics) {
   window.analytics.identify(customerId);
 }
+
+// for easier access to feature flag functions
+window.featureFlags = featureFlags;

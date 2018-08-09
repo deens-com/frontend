@@ -25,6 +25,7 @@
     "google-map-react": "^1.0.0",
     "history": "^4.7.2",
     "i18next": "^11.3.5",
+    "js-cookie": "^2.2.0",
     "moment": "^2.22.1",
     "now": "^11.2.4",
     "parse": "^1.11.1",

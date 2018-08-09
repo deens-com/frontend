@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Label, Grid } from 'semantic-ui-react';
 import styled from 'styled-components';
@@ -8,6 +8,7 @@ import { media } from 'libs/styled';
 import BookedSuccessfullyPopup from '../BookedSuccessfullyPopup';
 import StripeAutoPaymentButton from '../StripeAutoPaymentButton';
 import StripeCardDetails from '../StripeCardDetails';
+import { isStripeIntegrationEnabled } from 'libs/feature-flags';
 
 const Wrap = styled.div`
   ${media.minSmall} {
@@ -28,83 +29,94 @@ const StripWrap = styled.div`
   align-items: flex-end;
 `;
 
-const PaymentSection = ({
-  pricePerPerson,
-  totalPrice,
-  onPaymentClick,
-  numberOfPerson,
-  isLoading,
-  onStripeTokenReceived,
-}) => (
-  <Wrap>
-    <Grid>
-      <Grid.Row columns={2}>
-        <Grid.Column stretched>Guest(s)</Grid.Column>
-        <Grid.Column textAlign="right">
-          <GuestCountStyle>{numberOfPerson} adults</GuestCountStyle>
-        </Grid.Column>
-      </Grid.Row>
-      <Grid.Row columns={2}>
-        <Grid.Column stretched>Total price per person</Grid.Column>
-        <Grid.Column textAlign="right">
-          <PriceTag price={pricePerPerson} unit="hidden" />
-        </Grid.Column>
-      </Grid.Row>
-      <Grid.Row columns={2}>
-        <Grid.Column stretched>Total Price</Grid.Column>
-        <Grid.Column textAlign="right">
-          <PriceTag price={totalPrice} unit="hidden" />
-        </Grid.Column>
-      </Grid.Row>
-      <Grid.Row columns={1} textAlign="right">
-        <Grid.Column>
-          <PriceTag price={totalPrice}>
-            {({ convertedPrice, symbol }) => (
-              <Button
-                as="div"
-                labelPosition="right"
-                onClick={onPaymentClick}
-                disabled={parseFloat(convertedPrice) === 0}
-              >
-                <Button color="green" loading={isLoading}>
-                  Pay
-                </Button>
-                <Label as="a" basic color="green" pointing="left">
-                  <PriceTag.PriceStyle>
-                    {symbol}
-                    {convertedPrice}
-                  </PriceTag.PriceStyle>
-                </Label>
-              </Button>
-            )}
-          </PriceTag>
-        </Grid.Column>
-      </Grid.Row>
-      <Grid.Row>
-        <Grid.Column>
-          {totalPrice && (
-            <StripWrap>
-              <StripeAutoPaymentButton
-                amount={totalPrice}
-                onStripeTokenReceived={onStripeTokenReceived}
-              />
-              <StripeCardDetails />
-            </StripWrap>
+export default class PaymentSection extends Component {
+  static propTypes = {
+    isLoading: PropTypes.bool.isRequired,
+    pricePerPerson: PropTypes.number.isRequired,
+    totalPrice: PropTypes.number.isRequired,
+    onPaymentClick: PropTypes.func.isRequired,
+    numberOfPerson: PropTypes.number.isRequired,
+    onStripeTokenReceived: PropTypes.func.isRequired,
+  };
+
+  state = {
+    showStripeIntegration: isStripeIntegrationEnabled(),
+  };
+
+  render() {
+    const {
+      pricePerPerson,
+      totalPrice,
+      onPaymentClick,
+      numberOfPerson,
+      isLoading,
+      onStripeTokenReceived,
+    } = this.props;
+    return (
+      <Wrap>
+        <Grid>
+          <Grid.Row columns={2}>
+            <Grid.Column stretched>Guest(s)</Grid.Column>
+            <Grid.Column textAlign="right">
+              <GuestCountStyle>{numberOfPerson} adults</GuestCountStyle>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row columns={2}>
+            <Grid.Column stretched>Total price per person</Grid.Column>
+            <Grid.Column textAlign="right">
+              <PriceTag price={pricePerPerson} unit="hidden" />
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row columns={2}>
+            <Grid.Column stretched>Total Price</Grid.Column>
+            <Grid.Column textAlign="right">
+              <PriceTag price={totalPrice} unit="hidden" />
+            </Grid.Column>
+          </Grid.Row>
+          {!this.state.showStripeIntegration && (
+            <Grid.Row columns={1} textAlign="right">
+              <Grid.Column>
+                <PriceTag price={totalPrice}>
+                  {({ convertedPrice, symbol }) => (
+                    <Button
+                      as="div"
+                      labelPosition="right"
+                      onClick={onPaymentClick}
+                      disabled={parseFloat(convertedPrice) === 0}
+                    >
+                      <Button color="green" loading={isLoading}>
+                        Pay
+                      </Button>
+                      <Label as="a" basic color="green" pointing="left">
+                        <PriceTag.PriceStyle>
+                          {symbol}
+                          {convertedPrice}
+                        </PriceTag.PriceStyle>
+                      </Label>
+                    </Button>
+                  )}
+                </PriceTag>
+              </Grid.Column>
+            </Grid.Row>
           )}
-        </Grid.Column>
-      </Grid.Row>
-    </Grid>
-    <BookedSuccessfullyPopup />
-  </Wrap>
-);
-
-PaymentSection.propTypes = {
-  isLoading: PropTypes.bool.isRequired,
-  pricePerPerson: PropTypes.number.isRequired,
-  totalPrice: PropTypes.number.isRequired,
-  onPaymentClick: PropTypes.func.isRequired,
-  numberOfPerson: PropTypes.number.isRequired,
-  onStripeTokenReceived: PropTypes.func.isRequired,
-};
-
-export default PaymentSection;
+          {this.state.showStripeIntegration && (
+            <Grid.Row>
+              <Grid.Column>
+                {totalPrice && (
+                  <StripWrap>
+                    <StripeAutoPaymentButton
+                      amount={totalPrice}
+                      onStripeTokenReceived={onStripeTokenReceived}
+                    />
+                    <StripeCardDetails />
+                  </StripWrap>
+                )}
+              </Grid.Column>
+            </Grid.Row>
+          )}
+        </Grid>
+        <BookedSuccessfullyPopup />
+      </Wrap>
+    );
+  }
+}
