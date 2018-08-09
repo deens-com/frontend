@@ -1,4 +1,5 @@
-import i18n from './../libs/i18n';
+import i18n from 'libs/i18n';
+import { isCryptoCurrenciesDisabled } from 'libs/feature-flags';
 
 export const mainNav = [
   { label: i18n.t('trips.label'), href: '/results?service_types=trip', service_type: 'trip' },
@@ -17,12 +18,20 @@ export const languages = [
   { value: 'fr', label: 'FR' },
 ];
 
-export const currencies = [
+export const fiatCurrencies = [
   { value: 'USD', label: '$ (USD)' },
   { value: 'EUR', label: '€ (EUR)' },
   { value: 'JPY', label: '¥ (JPY)' },
   { value: 'GBP', label: '£ (GBP)' },
+];
+
+export const cryptoCurrencies = [
   { value: 'BTC', label: 'Ƀ (BTC)' },
   { value: 'ETH', label: 'Ξ (ETH)' },
   { value: 'PLS', label: '🄿 (PLS)' },
+];
+
+export const currencies = [
+  ...fiatCurrencies,
+  ...(isCryptoCurrenciesDisabled() ? [] : cryptoCurrencies),
 ];
