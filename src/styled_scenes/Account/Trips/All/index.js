@@ -8,7 +8,6 @@ import TripSectionComponent from './../shared/TripSectionComponent';
 import { scrollDownMobileOnly } from './../shared/scrollDownMobileOnly';
 
 const AccountTripsScene = props => {
-  console.log(props);
   return (
     <Grid centered columns={2}>
       <Grid.Column mobile={16} tablet={5} computer={4}>
