@@ -48,11 +48,14 @@ export const chargeStripeToken = (token, complete = () => {}) => async (dispatch
       },
     });
     complete('success'); // instructs the browser to close the native loader
+    dispatch({
+      type: types.MARK_TRIP_BOOKED_STATUS,
+      payload: statuses.SUCCESS,
+      meta: { analytics: trackTripBooked(tripId) },
+    });
     console.log('result', result.data);
-    setTimeout(() => alert('payment successful 🕺💃🎉'), 300);
   } catch (error) {
     console.error('charge failed', error);
     complete('fail');
-    setTimeout(() => alert('payment failed 😭'), 300);
   }
 };
