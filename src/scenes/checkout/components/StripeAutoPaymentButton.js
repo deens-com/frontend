@@ -11,22 +11,24 @@ const Wrapper = styled.div`
 
 class StripeAutoPaymentButton extends Component {
   static propTypes = {
+    currency: PropTypes.string.isRequired,
     amount: PropTypes.number.isRequired,
     onStripeTokenReceived: PropTypes.func.isRequired,
+    stripeMultiplier: PropTypes.number.isRequired,
   };
 
   constructor(props) {
     super(props);
-    const { amount } = this.props;
+    const { amount, currency, stripeMultiplier } = this.props;
 
     // For full documentation of the available paymentRequest options, see:
     // https://stripe.com/docs/stripe.js#the-payment-request-object
     const paymentRequest = props.stripe.paymentRequest({
       country: 'US',
-      currency: 'usd',
+      currency: currency.toLowerCase(),
       total: {
         label: 'Demo total',
-        amount: amount * 100, // multiplying by 100 as stripe always needs amount in cents
+        amount: parseInt(amount * stripeMultiplier, 10), // multiplying by 100 as stripe always needs amount in cents
       },
     });
 

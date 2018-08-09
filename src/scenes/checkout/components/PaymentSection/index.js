@@ -104,10 +104,18 @@ export default class PaymentSection extends Component {
               <Grid.Column>
                 {totalPrice && (
                   <StripWrap>
-                    <StripeAutoPaymentButton
-                      amount={totalPrice}
-                      onStripeTokenReceived={onStripeTokenReceived}
-                    />
+                    <PriceTag price={totalPrice}>
+                      {({ convertedPrice, stripeMultiplier, selectedCurrency }) => (
+                        <StripeAutoPaymentButton
+                          key={selectedCurrency}
+                          amount={parseFloat(convertedPrice)}
+                          stripeMultiplier={stripeMultiplier}
+                          convertedPrice={convertedPrice}
+                          currency={selectedCurrency}
+                          onStripeTokenReceived={onStripeTokenReceived}
+                        />
+                      )}
+                    </PriceTag>
                     <StripeCardDetails />
                   </StripWrap>
                 )}

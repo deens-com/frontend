@@ -62,7 +62,12 @@ class PriceTag extends Component {
       );
     }
     // else call the render prop
-    return this.props.children({ convertedPrice, symbol });
+    return this.props.children({
+      convertedPrice,
+      symbol,
+      selectedCurrency: this.props.baseCurrency.value,
+      stripeMultiplier: this.props.baseCurrency.stripeMultiplier,
+    });
   }
 }
 

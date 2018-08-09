@@ -19,10 +19,10 @@ export const languages = [
 ];
 
 export const fiatCurrencies = [
-  { value: 'USD', label: '$ (USD)' },
-  { value: 'EUR', label: '€ (EUR)' },
-  { value: 'JPY', label: '¥ (JPY)' },
-  { value: 'GBP', label: '£ (GBP)' },
+  { value: 'USD', label: '$ (USD)', stripeMultiplier: 100 },
+  { value: 'EUR', label: '€ (EUR)', stripeMultiplier: 100 },
+  { value: 'JPY', label: '¥ (JPY)', stripeMultiplier: 1 },
+  { value: 'GBP', label: '£ (GBP)', stripeMultiplier: 100 },
 ];
 
 export const cryptoCurrencies = [
