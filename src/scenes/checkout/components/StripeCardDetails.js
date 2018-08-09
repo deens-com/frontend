@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { CardElement } from 'react-stripe-elements';
 import styled from 'styled-components';
 import CustomColorSemanticButton from 'shared_components/CustomColorSemanticButton';
@@ -37,7 +38,7 @@ const StyledCardElement = styled(CardElement)`
   margin-bottom: 2px;
 `;
 
-const StripeCardDetails = () => {
+const StripeCardDetails = ({ symbol, amount }) => {
   return (
     <Wrapper>
       <p>Or enter card details!</p>
@@ -61,14 +62,15 @@ const StripeCardDetails = () => {
           }}
         />
         <PaymentContextConsumer>
-          {({ onSubmitWithCardDetails, totalPrice }) => (
+          {({ onSubmitWithCardDetails }) => (
             <CustomColorSemanticButton
               fluid
               bgColor="rgb(95, 183, 158)"
               whiteText
               onClick={onSubmitWithCardDetails}
             >
-              Pay ${totalPrice}
+              Pay {symbol}
+              {amount}
             </CustomColorSemanticButton>
           )}
         </PaymentContextConsumer>
@@ -77,6 +79,9 @@ const StripeCardDetails = () => {
   );
 };
 
-StripeCardDetails.propTypes = {};
+StripeCardDetails.propTypes = {
+  amount: PropTypes.number.isRequired,
+  symbol: PropTypes.string.isRequired,
+};
 
 export default StripeCardDetails;

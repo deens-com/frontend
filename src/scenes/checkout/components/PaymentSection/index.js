@@ -105,18 +105,22 @@ export default class PaymentSection extends Component {
                 {totalPrice && (
                   <StripWrap>
                     <PriceTag price={totalPrice}>
-                      {({ convertedPrice, stripeMultiplier, selectedCurrency }) => (
-                        <StripeAutoPaymentButton
-                          key={selectedCurrency}
-                          amount={parseFloat(convertedPrice)}
-                          stripeMultiplier={stripeMultiplier}
-                          convertedPrice={convertedPrice}
-                          currency={selectedCurrency}
-                          onStripeTokenReceived={onStripeTokenReceived}
-                        />
-                      )}
+                      {({ convertedPrice, stripeMultiplier, selectedCurrency, symbol }) => {
+                        const amount = parseFloat(convertedPrice);
+                        return (
+                          <React.Fragment>
+                            <StripeAutoPaymentButton
+                              key={selectedCurrency}
+                              amount={amount}
+                              stripeMultiplier={stripeMultiplier}
+                              currency={selectedCurrency}
+                              onStripeTokenReceived={onStripeTokenReceived}
+                            />
+                            <StripeCardDetails amount={amount} symbol={symbol} />
+                          </React.Fragment>
+                        );
+                      }}
                     </PriceTag>
-                    <StripeCardDetails />
                   </StripWrap>
                 )}
               </Grid.Column>
