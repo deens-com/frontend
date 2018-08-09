@@ -35,6 +35,8 @@ export const chargeStripeToken = (token, complete = () => {}) => async (dispatch
   if (!token || !token.id) return;
   const state = getState();
   const { trip } = state.TripsReducer;
+  const currency =
+    (state.SessionsReducer.baseCurrency && state.SessionsReducer.baseCurrency.value) || 'usd';
   const tripId = trip.objectId;
   try {
     const result = await axios({
@@ -42,7 +44,7 @@ export const chargeStripeToken = (token, complete = () => {}) => async (dispatch
       url: `/payment/charge/${tripId}`,
       data: {
         token: token.id,
-        parseSessionToken: Parse.User.current().getSessionToken(),
+        currency: currency.toLowerCase(),
       },
     });
     complete('success'); // instructs the browser to close the native loader
