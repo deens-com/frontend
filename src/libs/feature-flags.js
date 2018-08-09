@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie';
+import { reloadPage } from './Utils';
 
 window.Cookies = Cookies;
 
@@ -18,7 +19,10 @@ export const isCryptoCurrenciesDisabled = () => convertToBool(Cookies.get(keys.c
 /**
  * Enables/Disables crypto-currencies on the site
  */
-export const disableCryptoCurrencies = boolValue => Cookies.set(keys.cryptoCurrencies, !!boolValue);
+export const disableCryptoCurrencies = boolValue => {
+  Cookies.set(keys.cryptoCurrencies, !!boolValue);
+  reloadPage();
+};
 
 /**
  * Based on the cookies returns true/false
@@ -34,4 +38,5 @@ export const isStripeIntegrationEnabled = () => convertToBool(Cookies.get(keys.s
 export const enableStripeIntegration = boolValue => {
   Cookies.set(keys.stripeIntegration, !!boolValue);
   disableCryptoCurrencies(!!boolValue);
+  reloadPage();
 };

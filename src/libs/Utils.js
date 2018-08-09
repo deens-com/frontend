@@ -143,3 +143,12 @@ export function getFormattedTripDates(trip) {
   const endMoment = startMoment.clone().add(trip.dayCount, 'days');
   return `${startMoment.format('LL')} - ${endMoment.format('LL')}`;
 }
+
+/**
+ * reloads the page
+ */
+export function reloadPage() {
+  if (window && window.location && typeof window.location.reload === 'function') {
+    window.location.reload();
+  }
+}
