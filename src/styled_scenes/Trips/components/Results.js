@@ -83,7 +83,7 @@ export default function Results({
 Results.propTypes = {
   trip: PropTypes.object,
   showDetails: PropTypes.bool,
-  scheduledTrips: PropTypes.array,
+  scheduledServices: PropTypes.array,
   onServiceDragEnd: PropTypes.func.isRequired,
   onServiceRemoveClick: PropTypes.func.isRequired,
   expanded: PropTypes.object.isRequired,
@@ -91,5 +91,5 @@ Results.propTypes = {
 };
 
 Results.defaultProps = {
-  scheduledTrips: [],
+  scheduledServices: [],
 };

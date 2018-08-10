@@ -36,7 +36,7 @@ export default class ModifiableDayList extends React.Component {
   static propTypes = {
     trip: PropTypes.object,
     showDetails: PropTypes.bool,
-    scheduledTrips: PropTypes.array,
+    scheduledServices: PropTypes.array,
     onServiceDragEnd: PropTypes.func.isRequired,
     onServiceRemoveClick: PropTypes.func.isRequired,
     expanded: PropTypes.object.isRequired,
@@ -44,7 +44,7 @@ export default class ModifiableDayList extends React.Component {
   };
 
   static defaultProps = {
-    scheduledTrips: [],
+    scheduledServices: [],
   };
 
   renderDay = day => {
