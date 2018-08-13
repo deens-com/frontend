@@ -359,7 +359,6 @@ class ServiceForm extends Component {
           </Flex>
         </Form.Field>
 
-
         {/* Multi image upload
         <Form.Field>
           <label>Service Images</label>
