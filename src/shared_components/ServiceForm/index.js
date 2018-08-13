@@ -341,7 +341,7 @@ class ServiceForm extends Component {
           />
         </Form.Field>
 
-        {/* Single image upload
+        {/* Single image upload */}
         <Form.Field>
           <label>Service Picture</label>
           <Flex>
@@ -358,13 +358,14 @@ class ServiceForm extends Component {
             />
           </Flex>
         </Form.Field>
-        */}
 
-        {/* Multi image upload */}
+
+        {/* Multi image upload
         <Form.Field>
           <label>Service Images</label>
           <MultiImageUploader />
         </Form.Field>
+        */}
 
         {/* Accept Ethereum */}
         {isMobile ? null : userHasConnectedWallet ? (
