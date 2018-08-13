@@ -1,7 +1,8 @@
 // NPM
 import React, { Component } from 'react';
 import styled from 'styled-components';
-
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import fetch_helpers from './../../libs/fetch_helpers';
 import Parse from 'parse';
 // COMPONENTS
@@ -40,7 +41,7 @@ const AvatarWrapper = styled.div`
 `;
 
 // MODULE
-export default class DesktopDropDownMenu extends Component {
+class DesktopDropDownMenu extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -85,6 +86,7 @@ export default class DesktopDropDownMenu extends Component {
 
   logged_in() {
     const dpUrl =
+      (this.props.user_profile.profilePicture && this.props.user_profile.profilePicture.url) ||
       (this.state.current_user.profilePicture && this.state.current_user.profilePicture.url) ||
       ImgurAvatar;
     const showAddServiceButton = window.location.hash !== '#/account/services'; //this.props.history && this.props.history.location.pathname !== "/account/services"
@@ -144,3 +146,16 @@ export default class DesktopDropDownMenu extends Component {
     }
   }
 }
+
+
+const mapStateToProps = state => {
+  return {
+    user_profile: state.AccountReducer.user_profile
+  };
+};
+
+export default withRouter(
+  connect(
+    mapStateToProps,
+  )(DesktopDropDownMenu)
+);
