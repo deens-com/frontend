@@ -2,34 +2,31 @@ import React, { Component } from 'react';
 import AccountTripsPlannedScene from './../../../styled_scenes/Account/Trips/Planned';
 import { Page, PageContent } from './../../../shared_components/layout/Page';
 import TopBar from '../../../shared_components/TopBarWithSearch';
-import * as account_actions from "./../actions";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import * as account_actions from './../actions';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { comparatorWithNullValues } from '../../../libs/Utils';
 
-class AccountTripsPlannedComponent extends Component{
-
-  componentDidMount(){
-    if(this.props.user_profile){
-      this.props.fetch_user_trips(this.props.user_profile.objectId, "planned");
+class AccountTripsPlannedComponent extends Component {
+  componentDidMount() {
+    if (this.props.user_profile) {
+      this.props.fetch_user_trips(this.props.user_profile.objectId, 'planned');
     }
   }
 
-  componentWillUpdate(next_props){
-    if(this.did_user_props_changed(this.props, next_props)){
-      if(!this.props.planned_trips.length){
-        if(next_props.user_profile){
-          this.props.fetch_user_trips(next_props.user_profile.objectId, "planned");
+  componentWillUpdate(next_props) {
+    if (this.did_user_props_changed(this.props, next_props)) {
+      if (!this.props.planned_trips.length) {
+        if (next_props.user_profile) {
+          this.props.fetch_user_trips(next_props.user_profile.objectId, 'planned');
         }
       }
     }
   }
 
   did_user_props_changed = (current_props, next_props) => {
-    return (
-      current_props.user_profile !== next_props.user_profile
-    )
-  }
+    return current_props.user_profile !== next_props.user_profile;
+  };
 
   render() {
     let ordered_planned_trips = this.props.planned_trips;
@@ -47,18 +44,17 @@ class AccountTripsPlannedComponent extends Component{
               {...this.props}
               user_profile={this.props.user_profile}
               planned_trips={ordered_planned_trips}
-              />
+            />
           </PageContent>
         </Page>
       </section>
-    )
+    );
   }
-
 }
 
 const mapStateToProps = state => {
   return {
-    planned_trips: state.AccountReducer.planned_trips
+    planned_trips: state.AccountReducer.planned_trips,
   };
 };
 
@@ -66,4 +62,7 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators(account_actions, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AccountTripsPlannedComponent);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AccountTripsPlannedComponent);

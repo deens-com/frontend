@@ -1,29 +1,25 @@
 // NPM
-import React from "react";
-import styled from "styled-components";
-import Media from "react-media";
+import React from 'react';
+import styled from 'styled-components';
+import Media from 'react-media';
 
 // COMPONENTS
-import TopBar from "./../../../shared_components/TopBar";
-import HomeSearch from "./../../../styled_scenes/Home/components/HomeSearch";
-import BrandFooter from "./../../../shared_components/BrandFooter";
-import MobileHero from "./../../../styled_scenes/Home/components/MobileHero";
-import HeroSlider from "./../../../styled_scenes/Home/components/HeroSlider";
-import SectionActivities from "./../../../styled_scenes/Home/components/SectionActivities";
-import SectionFood from "./../../../styled_scenes/Home/components/SectionFood";
-import SectionMood from "./../../../styled_scenes/Home/components/SectionMood";
-import SectionPlaces from "./../../../styled_scenes/Home/components/SectionPlaces";
-import SectionTrips from "./../../../styled_scenes/Home/components/SectionTrips";
+import TopBar from './../../../shared_components/TopBar';
+import HomeSearch from './../../../styled_scenes/Home/components/HomeSearch';
+import BrandFooter from './../../../shared_components/BrandFooter';
+import MobileHero from './../../../styled_scenes/Home/components/MobileHero';
+import HeroSlider from './../../../styled_scenes/Home/components/HeroSlider';
+import SectionActivities from './../../../styled_scenes/Home/components/SectionActivities';
+import SectionFood from './../../../styled_scenes/Home/components/SectionFood';
+import SectionMood from './../../../styled_scenes/Home/components/SectionMood';
+import SectionPlaces from './../../../styled_scenes/Home/components/SectionPlaces';
+import SectionTrips from './../../../styled_scenes/Home/components/SectionTrips';
 
 // ACTIONS/CONFIG
-import { sizes, media } from "./../../../libs/styled";
+import { sizes, media } from './../../../libs/styled';
 
 // STYLES
-import {
-  Page,
-  PageWrapper,
-  PageContent
-} from "./../../../shared_components/layout/Page";
+import { Page, PageWrapper, PageContent } from './../../../shared_components/layout/Page';
 
 const Hero = styled.div`
   position: relative;
@@ -78,7 +74,7 @@ const HomeComponent = props => {
         <PageWrapper>
           <TopBar home noSearch />
           <HomeTagLine>
-            <span style={{ top: "-75px" }}>Rewarding</span> Experiences
+            <span style={{ top: '-75px' }}>Rewarding</span> Experiences
           </HomeTagLine>
           <HomeSearch />
         </PageWrapper>
