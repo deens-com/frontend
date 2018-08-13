@@ -1,6 +1,8 @@
 import moment from 'moment';
 import tagsData from './../data/tags';
 
+export const serverBaseURL = process.env.SERVER_BASE_URL || 'https://api.please.docker';
+
 export default class Utils {
   static getBaseSymbol(currency = 'USD') {
     switch (currency) {

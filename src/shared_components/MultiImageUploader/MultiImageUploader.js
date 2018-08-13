@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import Parse from 'parse';
 import FineUploaderTraditional from 'fine-uploader-wrappers';
 import Gallery from 'react-fine-uploader';
-
-import { generateFilename } from 'libs/filename';
+import { serverBaseURL } from 'libs/Utils';
 
 // ...or load this specific CSS file using a <link> tag in your document
 import 'react-fine-uploader/gallery/gallery.css';
@@ -19,7 +17,7 @@ const uploader = new FineUploaderTraditional({
       endpoint: '/uploads',
     },
     request: {
-      endpoint: 'https://api.please.docker/media',
+      endpoint: `${serverBaseURL}/media`,
     },
     validation: {
       allowedExtensions: ['jpeg', 'jpg', 'gif', 'png'],
