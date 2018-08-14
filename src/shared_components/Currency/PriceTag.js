@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { fiatCurrencies } from 'data/nav';
+import { keyBy } from 'libs/normalizer';
 
 // COMPONENTS
 
@@ -21,6 +23,8 @@ const Price = styled.span`
 const Unit = styled.span`
   font-size: 11px;
 `;
+
+const currencies = keyBy(fiatCurrencies, 'value');
 
 // MODULE
 
@@ -66,7 +70,9 @@ class PriceTag extends Component {
       convertedPrice,
       symbol,
       selectedCurrency: this.props.baseCurrency.value,
-      stripeMultiplier: this.props.baseCurrency.stripeMultiplier,
+      stripeMultiplier:
+        this.props.baseCurrency.stripeMultiplier ||
+        currencies[this.props.baseCurrency.value].stripeMultiplier,
     });
   }
 }
