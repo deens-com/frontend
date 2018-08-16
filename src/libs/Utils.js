@@ -1,6 +1,16 @@
 import moment from 'moment';
 import tagsData from './../data/tags';
 
+export const serverBaseURL = () => {
+  if (process.env.REACT_APP_NODE_ENV === 'production') {
+    return process.env.SERVER_BASE_URL || 'https://api.please.com';
+  } else if (process.env.REACT_APP_NODE_ENV === 'staging') {
+    return process.env.SERVER_BASE_URL || 'https://staging-api.please.com';
+  } else {
+    return process.env.SERVER_BASE_URL || 'https://api.please.docker';
+  }
+};
+
 export default class Utils {
   static getBaseSymbol(currency = 'USD') {
     switch (currency) {
