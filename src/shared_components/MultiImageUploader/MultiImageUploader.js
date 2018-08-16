@@ -14,15 +14,19 @@ const uploader = new FineUploaderTraditional({
     },
     deleteFile: {
       enabled: false,
-      endpoint: '/uploads',
     },
     request: {
       endpoint: `${serverBaseURL}/media`,
     },
     validation: {
       allowedExtensions: ['jpeg', 'jpg', 'gif', 'png'],
+      sizeLimit: 100,
     },
   },
+});
+
+uploader.on('error', (id, name, errorReason) => {
+  alert(errorReason);
 });
 
 export default class MultiImageUploader extends Component {
