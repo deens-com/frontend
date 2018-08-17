@@ -13,7 +13,8 @@ const uploader = new FineUploaderTraditional({
       enabled: false,
     },
     deleteFile: {
-      enabled: false
+      enabled: true,
+      endpoint: `${serverBaseURL()}/media`,
     },
     request: {
       endpoint: `${serverBaseURL()}/media`,
