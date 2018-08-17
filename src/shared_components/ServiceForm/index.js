@@ -122,6 +122,12 @@ class ServiceForm extends Component {
       });
   };
 
+  onUploadedFilesChanged = mediaUrls => {
+    const { setFieldValue, setFieldTouched } = this.props;
+    setFieldTouched('media', true);
+    setFieldValue('media', mediaUrls);
+  };
+
   componentWillReceiveProps(nextProps) {
     const { globalError } = nextProps;
 
@@ -358,7 +364,10 @@ class ServiceForm extends Component {
         {/* Multi image upload */}
         <Form.Field>
           <label>Service Images</label>
-          <MultiImageUploader />
+          <MultiImageUploader
+            value={values.media}
+            onUploadedFilesChanged={this.onUploadedFilesChanged}
+          />
         </Form.Field>
 
         {/* Accept Ethereum */}
@@ -466,6 +475,7 @@ export default withFormik({
       null,
     tags: (service && service.tags) || [],
     formattedAddress: (service && service.formattedAddress) || undefined,
+    media: (service && service.media) || [],
   }),
   validate,
   handleSubmit: (values, { props }) => {
