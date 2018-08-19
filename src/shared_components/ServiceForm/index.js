@@ -367,6 +367,7 @@ class ServiceForm extends Component {
           <MultiImageUploader
             value={values.media}
             onUploadedFilesChanged={this.onUploadedFilesChanged}
+            initialUploadedFiles={values.media}
           />
         </Form.Field>
 

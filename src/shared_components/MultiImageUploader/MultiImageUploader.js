@@ -10,16 +10,22 @@ import 'react-fine-uploader/gallery/gallery.css';
 export default class MultiImageUploader extends Component {
   static propTypes = {
     onUploadedFilesChanged: PropTypes.func.isRequired,
+    initialUploadedFiles: PropTypes.arrayOf(PropTypes.string),
+  };
+
+  static defaultProps = {
+    initialUploadedFiles: [],
   };
 
   state = {
-    fileUrls: [],
+    fileUrls: this.props.initialUploadedFiles,
   };
 
   constructor(props) {
     super(props);
     this.uploader = new FineUploaderTraditional({
       options: {
+        debug: true,
         autoUpload: true,
         chunking: {
           enabled: false,
@@ -48,6 +54,16 @@ export default class MultiImageUploader extends Component {
     this.uploader.on('error', (id, name, errorReason) => {
       alert(errorReason);
     });
+  }
+
+  componentDidMount() {
+    const initialFilesWithMeta = this.props.initialUploadedFiles.map((url, index) => ({
+      id: index,
+      name: url.substring(url.lastIndexOf('/') + 1),
+      thumbnailUrl: url,
+      // thumbnailUrl: `https://please-staging.imgix.net/${url.substring(url.lastIndexOf('/') + 1)}`,
+    }));
+    this.uploader.methods.addInitialFiles(initialFilesWithMeta);
   }
 
   render() {
