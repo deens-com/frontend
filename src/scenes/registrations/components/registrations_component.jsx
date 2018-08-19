@@ -1,19 +1,9 @@
-import React from "react";
-import {
-  Page,
-  PageContent
-} from "./../../../shared_components/layout/Page";
+import React from 'react';
+import { Page, PageContent } from './../../../shared_components/layout/Page';
 import TopBar from './../../../shared_components/TopBarWithSearch';
-import BrandFooter from "./../../../shared_components/BrandFooter";
-import {
-  Button,
-  Form,
-  Grid,
-  Header,
-  Message,
-  Segment
-} from "semantic-ui-react";
-import { Link } from "react-router-dom";
+import BrandFooter from './../../../shared_components/BrandFooter';
+import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StaticFooter = styled.footer`
@@ -32,25 +22,17 @@ const RegistrationsComponent = props => {
         <TopBar fixed withPadding />
         <PageContent>
           <LoginContainer>
-            <Grid
-              textAlign="center"
-              style={{ height: "100%" }}
-              verticalAlign="middle"
-            >
+            <Grid textAlign="center" style={{ height: '100%' }} verticalAlign="middle">
               <Grid.Column style={{ maxWidth: 450 }}>
                 <br />
                 <Header as="h2" color="teal" textAlign="center">
                   Create your new account
                 </Header>
                 {Object.keys(props.errors).length !== 0 && (
-                  <Message style={{ color: "red" }}>
-                    {props.errors.error.message}
-                  </Message>
+                  <Message style={{ color: 'red' }}>{props.errors.error.message}</Message>
                 )}
                 {Object.keys(props.stateErrors).length !== 0 && (
-                  <Message style={{ color: "red" }}>
-                    {props.stateErrors.message}
-                  </Message>
+                  <Message style={{ color: 'red' }}>{props.stateErrors.message}</Message>
                 )}
                 <Form size="large">
                   <Segment stacked>
@@ -76,7 +58,7 @@ const RegistrationsComponent = props => {
                       id="email"
                       onChange={props.handleInputChange}
                       onBlur={props.validateInput}
-                      error={props.isInputInvalid("email")}
+                      error={props.isInputInvalid('email')}
                       required
                     />
                     <Form.Input
@@ -89,7 +71,7 @@ const RegistrationsComponent = props => {
                       id="password"
                       onChange={props.handleInputChange}
                       onBlur={props.validateInput}
-                      error={props.isInputInvalid("password")}
+                      error={props.isInputInvalid('password')}
                       minLength={6}
                       required
                     />
@@ -103,23 +85,21 @@ const RegistrationsComponent = props => {
                       id="password_confirmation"
                       onChange={props.handleInputChange}
                       onBlur={props.validateInput}
-                      error={props.isInputInvalid("password")}
+                      error={props.isInputInvalid('password')}
                       minLength={6}
                       required
                     />
 
-                    <Button
-                      color="teal"
-                      fluid
-                      size="large"
-                      onClick={props.onSubmitRegistration}
-                    >
+                    <Button color="teal" fluid size="large" onClick={props.onSubmitRegistration}>
                       Register
                     </Button>
                   </Segment>
                 </Form>
                 <Message>
-                  Already have an account ? <Link to="/login" replace>Sign In</Link>
+                  Already have an account ?{' '}
+                  <Link to="/login" replace>
+                    Sign In
+                  </Link>
                 </Message>
               </Grid.Column>
             </Grid>

@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Form, Grid, Header, Message, Segment, Modal, Dimmer, Loader } from 'semantic-ui-react';
+import {
+  Button,
+  Form,
+  Grid,
+  Header,
+  Message,
+  Segment,
+  Modal,
+  Dimmer,
+  Loader,
+} from 'semantic-ui-react';
 import styled from 'styled-components';
 import TopBar from './../../../shared_components/TopBarWithSearch';
 import BrandFooter from './../../../shared_components/BrandFooter';
@@ -99,7 +109,10 @@ export default class LoginFormComponent extends Component {
                         required
                       />
 
-                      {displayErrorMessage(this.props.isLoginError(), this.props.loginError.message)}
+                      {displayErrorMessage(
+                        this.props.isLoginError(),
+                        this.props.loginError.message,
+                      )}
 
                       <Button color="teal" fluid size="large" onClick={this.props.submitLogin}>
                         Login
@@ -107,14 +120,25 @@ export default class LoginFormComponent extends Component {
                     </Segment>
                   </Form>
                   <WithTopMargin>
-                    {displayErrorMessage(!!this.props.metaMaskError.message, this.props.metaMaskError.message)}
-                    <MetamaskButton color="orange" fluid size="large" onClick={this.props.loginWithMetamask}>
+                    {displayErrorMessage(
+                      !!this.props.metaMaskError.message,
+                      this.props.metaMaskError.message,
+                    )}
+                    <MetamaskButton
+                      color="orange"
+                      fluid
+                      size="large"
+                      onClick={this.props.loginWithMetamask}
+                    >
                       Login with MetaMask
                     </MetamaskButton>
                   </WithTopMargin>
 
                   <WithTopMargin>
-                    {displayErrorMessage(!!this.props.ledgerError.message, this.props.ledgerError.message)}
+                    {displayErrorMessage(
+                      !!this.props.ledgerError.message,
+                      this.props.ledgerError.message,
+                    )}
 
                     {this.props.ledgerError.message && (
                       <Modal
@@ -128,11 +152,12 @@ export default class LoginFormComponent extends Component {
                           <Modal.Description>
                             <Header>An unexpected error occured</Header>
                             <p style={{ color: 'red' }}>
-                              {this.props.ledgerError.message && this.props.ledgerError.message.message}
+                              {this.props.ledgerError.message &&
+                                this.props.ledgerError.message.message}
                             </p>
                             <p>
-                              Please make sure to set "Browser support" and "Contract data" to YES on your connected
-                              Ledger device.
+                              Please make sure to set "Browser support" and "Contract data" to YES
+                              on your connected Ledger device.
                             </p>
                           </Modal.Description>
                         </Modal.Content>
@@ -143,13 +168,19 @@ export default class LoginFormComponent extends Component {
                       <Segment disabled={this.isLoaderActive()}>
                         <Dimmer active>
                           <Loader inline="centered">
-                            Please wait 6 seconds while we try to establish a connection with your ledger device.
+                            Please wait 6 seconds while we try to establish a connection with your
+                            ledger device.
                           </Loader>
                         </Dimmer>
                       </Segment>
                     )}
 
-                    <MetamaskButton color="green" fluid size="large" onClick={this.props.loginWithLedger}>
+                    <MetamaskButton
+                      color="green"
+                      fluid
+                      size="large"
+                      onClick={this.props.loginWithLedger}
+                    >
                       Login with Ledger
                     </MetamaskButton>
                   </WithTopMargin>
