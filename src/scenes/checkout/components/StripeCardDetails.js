@@ -62,12 +62,14 @@ const StripeCardDetails = ({ showOrInText, symbol, amount }) => {
           }}
         />
         <PaymentContextConsumer>
-          {({ onSubmitWithCardDetails }) => (
+          {({ onSubmitWithCardDetails, isPaymentProcessing }) => (
             <CustomColorSemanticButton
               fluid
               bgColor="rgb(95, 183, 158)"
               whiteText
               onClick={onSubmitWithCardDetails}
+              loading={isPaymentProcessing}
+              disabled={isPaymentProcessing}
             >
               Pay {symbol}
               {amount}

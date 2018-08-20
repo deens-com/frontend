@@ -20,15 +20,25 @@ class PaymentContainer extends React.Component {
     this.props.clearTripBooked();
   }
 
+  state = {
+    isPaymentProcessing: false,
+  };
+
   onStripeTokenReceived = (token, complete) => {
     this.props.chargeStripeToken(token, complete);
   };
 
   onSubmitWithCardDetails = async () => {
-    const { token, error } = await this.props.stripe.createToken({ name: 'Customer name' });
-    console.log('stripe token', token);
-    console.log('stripe error', error);
-    this.onStripeTokenReceived(token);
+    this.setState({ isPaymentProcessing: true });
+    try {
+      // TODO: @jaydp use the customer's name in the below line
+      const { token, error } = await this.props.stripe.createToken({ name: 'Customer name' });
+      console.log('stripe token', token);
+      console.log('stripe error', error);
+      this.onStripeTokenReceived(token, () => this.setState({ isPaymentProcessing: false }));
+    } catch (error) {
+      this.setState({ isPaymentProcessing: false });
+    }
   };
 
   render() {
@@ -40,6 +50,7 @@ class PaymentContainer extends React.Component {
         value={{
           onSubmitWithCardDetails: this.onSubmitWithCardDetails,
           totalPrice,
+          ...this.state,
         }}
       >
         <PaymentSection
