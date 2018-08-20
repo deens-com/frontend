@@ -23,6 +23,10 @@ export const categorizedTripsFetched = trips => ({
   payload: trips,
 });
 
+export const categorizedTripsFetchStarted = trips => ({
+  type: 'ACCOUNT/CATEGORIZED_TRIPS_FETCH_STARTED',
+});
+
 export const edit_user_error_raised = error => {
   return {
     type: 'EDIT_USER_ERROR_SET',
@@ -130,6 +134,7 @@ export const fetch_user_services = () => dispatch => {
 };
 
 export const fetch_user_trips = (owner_id, trip_state) => dispatch => {
+  dispatch(categorizedTripsFetchStarted());
   if (trip_state === 'planned') {
     Parse.Cloud.run('myPlannedTrips')
       .then(fetch_helpers.normalizeParseResponseData)

@@ -40,6 +40,7 @@ class AccountTripsComponent extends Component {
 const mapStateToProps = state => {
   return {
     user_profile: state.AccountReducer.user_profile,
+    isLoadingTrips: state.AccountReducer.isLoadingTrips,
   };
 };
 
