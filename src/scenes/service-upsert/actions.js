@@ -1,7 +1,6 @@
 import Parse from 'parse';
 import fetch_helpers from '../../libs/fetch_helpers';
 import history from '../../main/history';
-import { generateFilename } from './../../libs/filename';
 import { trackServiceCreated } from 'libs/analytics';
 
 export const types = {
