@@ -41,6 +41,11 @@ export default class PaymentSection extends Component {
 
   state = {
     showStripeIntegration: isStripeIntegrationEnabled(),
+    canMakeAutoPayment: false,
+  };
+
+  setCanMakeAutoPayment = boolValue => {
+    this.setState({ canMakeAutoPayment: boolValue });
   };
 
   render() {
@@ -115,8 +120,13 @@ export default class PaymentSection extends Component {
                               stripeMultiplier={stripeMultiplier}
                               currency={selectedCurrency}
                               onStripeTokenReceived={onStripeTokenReceived}
+                              canMakeAutoPayment={this.setCanMakeAutoPayment}
                             />
-                            <StripeCardDetails amount={amount} symbol={symbol} />
+                            <StripeCardDetails
+                              amount={amount}
+                              symbol={symbol}
+                              showOrInText={this.state.canMakeAutoPayment}
+                            />
                           </React.Fragment>
                         );
                       }}

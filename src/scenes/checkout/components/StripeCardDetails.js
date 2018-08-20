@@ -38,10 +38,10 @@ const StyledCardElement = styled(CardElement)`
   margin-bottom: 2px;
 `;
 
-const StripeCardDetails = ({ symbol, amount }) => {
+const StripeCardDetails = ({ showOrInText, symbol, amount }) => {
   return (
     <Wrapper>
-      <p>Or enter card details!</p>
+      <p>{showOrInText ? 'Or enter' : 'Enter'} card details!</p>
       <CardInputWrapper>
         <StyledCardElement
           style={{
@@ -82,6 +82,7 @@ const StripeCardDetails = ({ symbol, amount }) => {
 StripeCardDetails.propTypes = {
   amount: PropTypes.number.isRequired,
   symbol: PropTypes.string.isRequired,
+  showOrInText: PropTypes.bool.isRequired,
 };
 
 export default StripeCardDetails;

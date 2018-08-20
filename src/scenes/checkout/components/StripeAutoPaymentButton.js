@@ -15,6 +15,7 @@ class StripeAutoPaymentButton extends Component {
     amount: PropTypes.number.isRequired,
     onStripeTokenReceived: PropTypes.func.isRequired,
     stripeMultiplier: PropTypes.number.isRequired,
+    canMakeAutoPayment: PropTypes.func,
   };
 
   constructor(props) {
@@ -40,6 +41,8 @@ class StripeAutoPaymentButton extends Component {
 
     paymentRequest.canMakePayment().then(result => {
       this.setState({ canMakePayment: !!result });
+      const { canMakeAutoPayment } = this.props;
+      if (canMakeAutoPayment) canMakeAutoPayment(!!result);
     });
 
     this.state = {
