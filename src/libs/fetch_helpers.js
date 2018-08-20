@@ -12,11 +12,16 @@ const getRandomInt = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-const get_service_image = mainPicture => {
-  if (!mainPicture) {
+const get_service_image = mediaOrMainPicture => {
+  if (
+    !mediaOrMainPicture ||
+    (mediaOrMainPicture instanceof Array && mediaOrMainPicture.length === 0)
+  ) {
     return 'https://dummyimage.com/600x400/000/fff';
   }
-  return mainPicture.url;
+  if (typeof mediaOrMainPicture === 'string') return mediaOrMainPicture;
+  if (mediaOrMainPicture instanceof Array) return mediaOrMainPicture[0];
+  return mediaOrMainPicture.url;
 };
 
 const mapServiceObjects = services => {
@@ -47,7 +52,7 @@ const mapServiceObjects = services => {
         }
         service.image = service.image || 'https://dummyimage.com/600x400/000/fff';
       } else {
-        service.image = get_service_image(service.mainPicture);
+        service.image = get_service_image(service.media);
       }
     } catch (error) {
       console.log(error);

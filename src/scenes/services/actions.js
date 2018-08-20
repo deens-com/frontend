@@ -95,7 +95,7 @@ export const fetch_service = service_id => dispatch => {
       pics_query.find().then(service_pictures => {
         const service_pics = fetch_helpers.normalizeParseResponseData(service_pictures);
         let pics = service_pics.map(sp => sp.picture);
-        pics.unshift(serialized_services[0].mainPicture);
+        pics.unshift(serialized_services[0].media && serialized_services[0].media[0]);
         let service_with_pictures = serialized_services[0];
         service_with_pictures.pictures = pics;
         dispatch(service_fetched({ service: service_with_pictures }));

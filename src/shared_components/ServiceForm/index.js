@@ -79,13 +79,13 @@ class ServiceForm extends Component {
     setFieldTouched('availableDays', true, false);
   };
 
-  onFileSelect = e => {
-    const { setFieldValue, setFieldTouched } = this.props;
-    const file = e.currentTarget.files[0];
-    if (!file) return;
-    setFieldValue('mainPicture', file);
-    setFieldTouched('mainPicture', true, false);
-  };
+  // onFileSelect = e => {
+  //   const { setFieldValue, setFieldTouched } = this.props;
+  //   const file = e.currentTarget.files[0];
+  //   if (!file) return;
+  //   setFieldValue('mainPicture', file);
+  //   setFieldTouched('mainPicture', true, false);
+  // };
 
   onLocationKeyUp = () => {
     const { setFieldValue, setFieldTouched } = this.props;
