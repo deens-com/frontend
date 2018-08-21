@@ -33,8 +33,10 @@ class PaymentContainer extends React.Component {
     try {
       // TODO: @jaydp use the customer's name in the below line
       const { token, error } = await this.props.stripe.createToken({ name: 'Customer name' });
-      console.log('stripe token', token);
-      console.log('stripe error', error);
+      if (error) {
+        console.error('stripe error', error);
+        return;
+      }
       this.onStripeTokenReceived(token, () => this.setState({ isPaymentProcessing: false }));
     } catch (error) {
       this.setState({ isPaymentProcessing: false });

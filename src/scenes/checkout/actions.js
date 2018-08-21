@@ -39,7 +39,7 @@ export const chargeStripeToken = (token, complete = () => {}) => async (dispatch
     (state.SessionsReducer.baseCurrency && state.SessionsReducer.baseCurrency.value) || 'usd';
   const tripId = trip.objectId;
   try {
-    const result = await axios({
+    await axios({
       method: 'POST',
       url: `/payment/charge/${tripId}`,
       data: {
@@ -53,7 +53,6 @@ export const chargeStripeToken = (token, complete = () => {}) => async (dispatch
       payload: statuses.SUCCESS,
       meta: { analytics: trackTripBooked(tripId) },
     });
-    console.log('result', result.data);
   } catch (error) {
     console.error('charge failed', error);
     complete('fail');
