@@ -266,9 +266,7 @@ export default class TripsScene extends Component {
                   />
                 </ActionsWrap>
                 <ShareBg
-                  src={
-                    (trip && trip.image) || 'https://please-com.imgix.net/static/food/mamamia.jpg'
-                  }
+                  src={(trip && trip.image) || 'https://dummyimage.com/1280x720/000/fff'}
                   background
                 />
               </ShareWrap>

@@ -50,7 +50,7 @@ const mapServiceObjects = services => {
           if (typeof service.picture._url === 'string') service.image = service.picture._url;
           if (typeof service.picture.url === 'string') service.image = service.picture.url;
         }
-        service.image = service.image || 'https://dummyimage.com/600x400/000/fff';
+        service.image = service.image;
       } else {
         service.image = get_service_image(service.media);
       }

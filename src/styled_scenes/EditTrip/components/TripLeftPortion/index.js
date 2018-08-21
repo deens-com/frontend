@@ -82,6 +82,7 @@ export default class TripLeftPortion extends Component {
 
   render() {
     const { trip } = this.props;
+    const tripImage = (trip && trip.image) || 'https://dummyimage.com/1280x720/000/fff';
     return (
       <LeftWrap>
         <ShareWrap>
@@ -114,10 +115,7 @@ export default class TripLeftPortion extends Component {
               )}
             </EditTripContainer.ContextConsumer>
           </ActionsWrap>
-          <ShareBg
-            src={(trip && trip.image) || 'https://please-com.imgix.net/static/food/mamamia.jpg'}
-            background
-          />
+          <ShareBg src={tripImage} background />
         </ShareWrap>
         <Media
           query={`(min-width: ${sizes.medium})`}
