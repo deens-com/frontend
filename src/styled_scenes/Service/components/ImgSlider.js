@@ -114,6 +114,7 @@ export default class FoodImgSlider extends Component {
     this.setState({ index });
   }
   render() {
+    console.log('images', this.props.images);
     return (
       <Wrap>
         {this.props.images &&
@@ -132,18 +133,11 @@ export default class FoodImgSlider extends Component {
           src={
             (this.props.images &&
               this.props.images.length &&
-              this.props.images[this.state.index] &&
-              this.props.images[this.state.index].url) ||
+              this.props.images[this.state.index]) ||
             'https://dummyimage.com/600x400/000/fff'
           }
-          alt={
-            (this.props.images &&
-              this.props.images.length &&
-              this.props.images[this.state.index] &&
-              this.props.images[this.state.index].name) ||
-            'missing mainPicture'
-          }
           sizes="42vw"
+          alt="service main picture"
         />
       </Wrap>
     );
