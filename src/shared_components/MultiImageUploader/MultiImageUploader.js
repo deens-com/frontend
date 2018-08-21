@@ -5,6 +5,8 @@ import Gallery from 'react-fine-uploader';
 import { serverBaseURL } from 'libs/config';
 import 'react-fine-uploader/gallery/gallery.css';
 
+const allowedExtensions = ['jpeg', 'jpg', 'gif', 'png'];
+
 export default class MultiImageUploader extends Component {
   static propTypes = {
     onUploadedFilesChanged: PropTypes.func.isRequired,
@@ -36,7 +38,7 @@ export default class MultiImageUploader extends Component {
           endpoint: `${serverBaseURL}/media`,
         },
         validation: {
-          allowedExtensions: ['jpeg', 'jpg', 'gif', 'png'],
+          allowedExtensions,
           sizeLimit: 10000000,
         },
       },
@@ -50,7 +52,15 @@ export default class MultiImageUploader extends Component {
     });
 
     this.uploader.on('error', (id, name, errorReason) => {
-      alert(errorReason);
+      if (errorReason.includes('invalid extension')) {
+        alert(
+          `${name} file is not an supported image file.\nPlease use following file formats: ${allowedExtensions
+            .map(ext => `.${ext}`)
+            .join(', ')}`,
+        );
+      } else {
+        alert(errorReason);
+      }
     });
   }
 
