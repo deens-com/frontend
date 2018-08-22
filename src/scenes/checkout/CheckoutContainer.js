@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import Parse from 'parse';
 
 import * as tripActions from '../trips/actions';
@@ -22,14 +22,18 @@ class CheckoutContainer extends Component {
   }
 
   render() {
-    const { tripError } = this.props;
+    const { tripError, trip } = this.props;
     const isNotFound = !!(tripError && tripError.code === Parse.Error.OBJECT_NOT_FOUND);
+    if (trip && trip.booked) {
+      return <Redirect to={`/trips/${trip.objectId}`} />;
+    }
     return <CheckoutScene notFound={isNotFound} />;
   }
 }
 
 const mapStateToProps = state => ({
   tripError: state.TripsReducer.tripError,
+  trip: state.TripsReducer.trip,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(tripActions, dispatch);
