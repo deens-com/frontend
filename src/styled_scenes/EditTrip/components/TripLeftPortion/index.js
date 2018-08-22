@@ -19,7 +19,7 @@ import {
   MapWrapper,
 } from './styles';
 import { getFormattedTripDates } from 'libs/Utils';
-import { ContextConsumer } from 'scenes/trips/context';
+import EditTripContainer from 'scenes/trips/containers/EditTripContainer';
 
 export default class TripLeftPortion extends Component {
   static propTypes = {
@@ -97,7 +97,7 @@ export default class TripLeftPortion extends Component {
             </ProfileWrap>
           </span>
           <ActionsWrap>
-            <ContextConsumer>
+            <EditTripContainer.ContextConsumer>
               {context => (
                 <React.Fragment>
                   <ShareButton
@@ -112,7 +112,7 @@ export default class TripLeftPortion extends Component {
                   />
                 </React.Fragment>
               )}
-            </ContextConsumer>
+            </EditTripContainer.ContextConsumer>
           </ActionsWrap>
           <ShareBg
             src={(trip && trip.image) || 'https://please-com.imgix.net/static/food/mamamia.jpg'}

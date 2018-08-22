@@ -12,7 +12,7 @@ import { formatDate } from 'react-day-picker/moment';
 // import Form from 'shared_components/Form';
 import { checkRequiredFields, getISODateString } from 'libs/Utils';
 import TripLengthFormInput from './TripLengthFormInput';
-import { ContextConsumer } from 'scenes/trips/context';
+import EditTripContainer from 'scenes/trips/containers/EditTripContainer';
 
 const tagsDropdownOptions = tagsData.map(value => ({ text: value.label, value: value.label }));
 
@@ -149,7 +149,7 @@ class EditTripForm extends Component {
 
           <Form.Field required>
             <label>Trip Length (days)</label>
-            <ContextConsumer>
+            <EditTripContainer.ContextConsumer>
               {({ scheduledServices }) => (
                 <TripLengthFormInput
                   name="dayCount"
@@ -163,7 +163,7 @@ class EditTripForm extends Component {
                   {...defaultProps}
                 />
               )}
-            </ContextConsumer>
+            </EditTripContainer.ContextConsumer>
             {errors.dayCount && <ErrorMsg>{errors.dayCount}</ErrorMsg>}
           </Form.Field>
         </Form.Group>

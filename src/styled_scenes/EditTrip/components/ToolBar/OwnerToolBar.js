@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import EditTripForm from './EditTripForm';
-import { ContextConsumer } from 'scenes/trips/context';
+import EditTripContainer from 'scenes/trips/containers/EditTripContainer';
 import { media } from 'libs/styled';
 
 const Wrap = styled.div`
@@ -16,9 +16,9 @@ const Wrap = styled.div`
 const OwnerToolBar = ({ trip }) => {
   return (
     <Wrap>
-      <ContextConsumer>
+      <EditTripContainer.ContextConsumer>
         {({ updateTripDetails }) => <EditTripForm trip={trip} onSubmit={updateTripDetails} />}
-      </ContextConsumer>
+      </EditTripContainer.ContextConsumer>
     </Wrap>
   );
 };

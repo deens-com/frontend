@@ -8,12 +8,17 @@ import TripsComponent from 'styled_scenes/Trips';
 import * as trips_actions from './../actions';
 import * as selectors from '../selectors';
 import { statuses } from '../../../libs/fetch_helpers';
-import { ContextProvider } from '../context';
+
+const ViewTripContext = React.createContext('trip-view');
+
+const ContextProvider = ViewTripContext.Provider;
 
 class TripsContainer extends Component {
   state = {
     isLoggedIn: false,
   };
+
+  static ContextConsumer = ViewTripContext.Consumer;
 
   componentDidMount() {
     this.props.resetTripData();

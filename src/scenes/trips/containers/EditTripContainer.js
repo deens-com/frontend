@@ -8,7 +8,10 @@ import EditTripComponent from 'styled_scenes/EditTrip';
 import * as trips_actions from './../actions';
 import * as selectors from '../selectors';
 import { statuses } from '../../../libs/fetch_helpers';
-import { ContextProvider } from '../context';
+
+const EditTripContext = React.createContext('trip-edit');
+
+const ContextProvider = EditTripContext.Provider;
 
 class EditTripContainer extends Component {
   updateTripDetails = (newDetails, showSaved) => {
@@ -21,6 +24,12 @@ class EditTripContainer extends Component {
   state = {
     isLoggedIn: false,
   };
+
+  /**
+   * For components deep down in the hierarchy make use of this context
+   * instead of Prop Drilling
+   */
+  static ContextConsumer = EditTripContext.Consumer;
 
   componentDidMount() {
     this.props.resetTripData();

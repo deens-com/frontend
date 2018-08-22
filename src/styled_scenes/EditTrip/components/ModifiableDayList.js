@@ -11,7 +11,7 @@ import TripCart from 'shared_components/Carts/Trip';
 import Button from 'shared_components/Button';
 import Day, { Header } from '../../Trips/components/Day';
 import NotesEditor from './NotesEditor';
-import { ContextConsumer } from 'scenes/trips/context';
+import EditTripContainer from 'scenes/trips/containers/EditTripContainer';
 import AddNotesButton from './AddNotesButton';
 
 // ACTIONS/CONFIG
@@ -59,7 +59,7 @@ export default class ModifiableDayList extends React.Component {
 
     return (
       <Day key={day.day} day={day} {...dayProps}>
-        <ContextConsumer>
+        <EditTripContainer.ContextConsumer>
           {({ saveDayNote, notes }) => {
             const dayNote = notes[day.day] || {};
             return (
@@ -73,7 +73,7 @@ export default class ModifiableDayList extends React.Component {
               </AddNotesButton>
             );
           }}
-        </ContextConsumer>
+        </EditTripContainer.ContextConsumer>
       </Day>
     );
   };

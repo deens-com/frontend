@@ -13,7 +13,7 @@ import Category from './components/Category';
 import CardDescription from './components/Description';
 import Thumb from '../components/Thumb';
 import CopyServiceToDayButton from './components/CopyServiceToDayButton';
-import { ContextConsumer } from 'scenes/trips/context';
+import EditTripContainer from 'scenes/trips/containers/EditTripContainer';
 
 // ACTIONS/CONFIG
 import { media } from '../../../libs/styled';
@@ -153,7 +153,7 @@ export default function FullCart({ data: service, trip, toggleExpansion, onDelet
           </ContentRow>
         </CenterCol>
         <RightCol>
-          <ContextConsumer>
+          <EditTripContainer.ContextConsumer>
             {({ trip, scheduledServices, copyServiceToDay }) =>
               trip && trip.objectId && isOwner && !trip.booked ? (
                 <CardActions>
@@ -172,7 +172,7 @@ export default function FullCart({ data: service, trip, toggleExpansion, onDelet
                 </CardActions>
               ) : null
             }
-          </ContextConsumer>
+          </EditTripContainer.ContextConsumer>
           <PriceTag price={service.pricePerSession} currency={service.currency} isExpanded />
           <Button
             type="button"
