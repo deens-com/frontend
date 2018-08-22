@@ -69,3 +69,11 @@ export const chargeStripeToken = (token, complete = () => {}) => async (dispatch
     complete('fail');
   }
 };
+
+export const setPaymentError = error => (dispatch, getState) => {
+  if (!error) return;
+  dispatch({
+    type: types.PAYMENT_ERROR,
+    payload: error,
+  });
+};
