@@ -29,6 +29,10 @@ const StripWrap = styled.div`
   align-items: flex-end;
 `;
 
+const ErrorMessage = styled.p`
+  color: red;
+`;
+
 export default class PaymentSection extends Component {
   static propTypes = {
     isLoading: PropTypes.bool.isRequired,
@@ -56,6 +60,7 @@ export default class PaymentSection extends Component {
       numberOfPerson,
       isLoading,
       onStripeTokenReceived,
+      paymentError,
     } = this.props;
     return (
       <Wrap>
@@ -122,6 +127,7 @@ export default class PaymentSection extends Component {
                               onStripeTokenReceived={onStripeTokenReceived}
                               canMakeAutoPayment={this.setCanMakeAutoPayment}
                             />
+                            {paymentError && <ErrorMessage>{paymentError.message}</ErrorMessage>}
                             <StripeCardDetails
                               amount={amount}
                               symbol={symbol}

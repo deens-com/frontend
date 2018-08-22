@@ -7,6 +7,7 @@ const Wrapper = styled.div`
   width: 100%;
   max-width: 500px;
   min-height: 40px;
+  margin-bottom: 10px;
 `;
 
 class StripeAutoPaymentButton extends Component {

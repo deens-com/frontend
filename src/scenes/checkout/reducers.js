@@ -6,6 +6,13 @@ export default (state, action = {}) => {
       return {
         ...state,
         bookingStatus: action.payload,
+        paymentError: undefined,
+      };
+    }
+    case types.PAYMENT_ERROR: {
+      return {
+        ...state,
+        paymentError: action.payload,
       };
     }
     default:

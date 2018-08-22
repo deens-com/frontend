@@ -5,6 +5,7 @@ import { trackTripBooked } from 'libs/analytics';
 
 export const types = {
   MARK_TRIP_BOOKED_STATUS: 'MARK_TRIP_BOOKED_STATUS',
+  PAYMENT_ERROR: 'PAYMENT_ERROR',
 };
 
 const { statuses } = fetch_helpers;
@@ -39,6 +40,10 @@ export const chargeStripeToken = (token, complete = () => {}) => async (dispatch
     (state.SessionsReducer.baseCurrency && state.SessionsReducer.baseCurrency.value) || 'usd';
   const tripId = trip.objectId;
   try {
+    dispatch({
+      type: types.MARK_TRIP_BOOKED_STATUS,
+      payload: statuses.STARTED,
+    });
     await axios({
       method: 'POST',
       url: `/payment/charge/${tripId}`,
@@ -55,6 +60,12 @@ export const chargeStripeToken = (token, complete = () => {}) => async (dispatch
     });
   } catch (error) {
     console.error('charge failed', error);
+    let payload = error;
+    if (error.response.data) payload = error.response.data;
+    dispatch({
+      type: types.PAYMENT_ERROR,
+      payload,
+    });
     complete('fail');
   }
 };

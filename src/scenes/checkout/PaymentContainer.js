@@ -62,6 +62,7 @@ class PaymentContainer extends React.Component {
           onPaymentClick={markTripBooked}
           isLoading={isLoading}
           onStripeTokenReceived={this.onStripeTokenReceived}
+          paymentError={this.props.paymentError}
         />
       </PaymentContext.Provider>
     );
@@ -71,6 +72,7 @@ class PaymentContainer extends React.Component {
 const mapStateToProps = state => ({
   trip: state.TripsReducer.trip,
   isLoading: state.TripsReducer.bookingStatus === statuses.STARTED,
+  paymentError: state.TripsReducer.paymentError,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
