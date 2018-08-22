@@ -232,7 +232,9 @@ class FoodDetailScene extends Component {
             ) : null}
             <div>
               {this.props.reviews.length ? <h2>Reviews</h2> : null}
-              {this.props.reviews.map(review => <Review key={review.objectId} review={review} />)}
+              {this.props.reviews.map(review => (
+                <Review key={review.objectId} review={review} />
+              ))}
             </div>
             <SmartContractDetails
               address={this.props.service.contractAddress}

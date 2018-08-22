@@ -526,9 +526,8 @@ class HomeSearch extends Component {
             <Message.Header>Warning !</Message.Header>
             <p>
               Your browser does not support voice recognition so we have disabled it on this
-              website. Please use a compatible desktop browser like Chrome (<a href="https://www.google.com/chrome/">
-                https://www.google.com/chrome/
-              </a>)
+              website. Please use a compatible desktop browser like Chrome (
+              <a href="https://www.google.com/chrome/">https://www.google.com/chrome/</a>)
             </p>
           </Message>
         )}

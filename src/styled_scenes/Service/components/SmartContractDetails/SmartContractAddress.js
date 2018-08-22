@@ -19,7 +19,8 @@ const SmartContractAddress = ({ address }) => {
         <Icon name="address card outline" /> Address
       </Header>
       <Body>
-        <code>{address}</code>&nbsp;
+        <code>{address}</code>
+        &nbsp;
         <a target="_blank" href={`https://ropsten.etherscan.io/address/${address}`}>
           <Icon name="external" />
         </a>

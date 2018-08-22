@@ -77,13 +77,13 @@
     "precommit": "pretty-quick --staged",
     "predeploy": "REACT_APP_NODE_ENV=production npm run build",
     "deploy": "gh-pages -d build --dotfiles true",
-    "prettier-all": "prettier --write '**/*.{js,json,jsx}'"
+    "prettier-all": "prettier --write '**/*.{js,json,jsx,yml,yaml,md}'"
   },
   "devDependencies": {
     "duplicate-package-checker-webpack-plugin": "^2.1.0",
     "enzyme": "^3.3.0",
     "lint-staged": "^7.2.0",
-    "prettier": "1.13.7",
+    "prettier": "1.14.2",
     "react-app-rewire-lodash": "^2.0.0",
     "react-app-rewire-preload-plugin": "^1.0.0",
     "react-app-rewire-webpack-bundle-analyzer": "^1.0.1",

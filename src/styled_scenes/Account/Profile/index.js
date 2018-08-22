@@ -97,7 +97,11 @@ class AccountProfileScene extends Component {
                 onChange={this.handleInputChange}
               />
             ) : (
-              <p>&nbsp;{this.state.biography}&nbsp;</p>
+              <p>
+                &nbsp;
+                {this.state.biography}
+                &nbsp;
+              </p>
             )}
             {this.state.isBiographyEditable ? (
               <Button onClick={() => this.toggleEdition('biography')}>Save</Button>
@@ -116,7 +120,11 @@ class AccountProfileScene extends Component {
                 onChange={this.handleInputChange}
               />
             ) : (
-              <p>&nbsp;{this.state.username}&nbsp;</p>
+              <p>
+                &nbsp;
+                {this.state.username}
+                &nbsp;
+              </p>
             )}
             {this.state.isUsernameEditable ? (
               <Button onClick={() => this.toggleEdition('username')}>Save</Button>
@@ -135,7 +143,11 @@ class AccountProfileScene extends Component {
                 onChange={this.handleInputChange}
               />
             ) : (
-              <p>&nbsp;{this.state.email}&nbsp;</p>
+              <p>
+                &nbsp;
+                {this.state.email}
+                &nbsp;
+              </p>
             )}
             {this.state.isEmailEditable ? (
               <Button onClick={() => this.toggleEdition('email')}>Save</Button>

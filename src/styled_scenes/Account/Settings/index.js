@@ -212,7 +212,8 @@ class AccountSettingsScene extends Component {
                 </p>
                 <h4>Metamask ETH Balance</h4>
                 <InlineSpan>
-                  <p>{this.state.metamaskEthBalance || 0} ETH</p>&nbsp;&nbsp;
+                  <p>{this.state.metamaskEthBalance || 0} ETH</p>
+                  &nbsp;&nbsp;
                   {this.state.metamaskEthBalance < 1 && (
                     <HeightenedButton
                       disabled={this.state.metamaskFaucetRequested}
@@ -260,7 +261,8 @@ class AccountSettingsScene extends Component {
                 </p>
                 <h4>Ledger ETH Balance</h4>
                 <InlineSpan>
-                  <p>{this.state.ledgerEthBalance || 0} ETH</p>&nbsp;&nbsp;
+                  <p>{this.state.ledgerEthBalance || 0} ETH</p>
+                  &nbsp;&nbsp;
                   {this.state.ledgerEthBalance < 1 && (
                     <HeightenedButton
                       disabled={this.state.ledgerFaucetRequested}

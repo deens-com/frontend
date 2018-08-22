@@ -28,7 +28,8 @@ class PreBookingPopup extends React.Component {
               <strong>{moment(query.startDate).format('Do MMMM YYYY')}</strong> for{' '}
               <strong>
                 {query.person.value} {query.person.value === '1' ? 'person' : 'people'}
-              </strong>.
+              </strong>
+              .
             </p>
             <p>
               You may continue booking the remaining available services by clicking on Book Now or

@@ -19,10 +19,12 @@ const AccountTripsScene = props => {
         <h1>My Trips</h1>
         <Link to="/account/trips/all" onClick={scrollDownMobileOnly}>
           All
-        </Link>&nbsp; | &nbsp;
+        </Link>
+        &nbsp; | &nbsp;
         <Link to="/account/trips/planned" onClick={scrollDownMobileOnly}>
           Planned
-        </Link>&nbsp; | &nbsp;
+        </Link>
+        &nbsp; | &nbsp;
         <Link
           to="/account/trips/completed"
           onClick={scrollDownMobileOnly}

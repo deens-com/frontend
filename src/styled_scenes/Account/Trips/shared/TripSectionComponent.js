@@ -114,7 +114,13 @@ const TripSectionComponent = props => {
   if (!props.trips.length) {
     return <p>You don't have any {props.tripsType} trips.</p>;
   }
-  return <section>{props.trips.map(trip => <Trip key={trip.objectId} trip={trip} />)}</section>;
+  return (
+    <section>
+      {props.trips.map(trip => (
+        <Trip key={trip.objectId} trip={trip} />
+      ))}
+    </section>
+  );
 };
 
 export default TripSectionComponent;

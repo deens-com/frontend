@@ -86,7 +86,8 @@ const UserBasicInfo = ({ user_profile: user = {}, match }) => {
             <Menu.Item name="trips" active={activePath === 'trips'}>
               <MenuIcon disabled name="angle right" circular />
               <span>
-                <MenuIcon disabled name="plane" circular />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; My Trips
+                <MenuIcon disabled name="plane" circular />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; My Trips
               </span>
             </Menu.Item>
           </Link>
@@ -95,7 +96,8 @@ const UserBasicInfo = ({ user_profile: user = {}, match }) => {
             <Menu.Item name="services" active={activePath === 'services'}>
               <MenuIcon disabled name="angle right" circular />
               <span>
-                <MenuIcon disabled name="list" circular />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; My Services
+                <MenuIcon disabled name="list" circular />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; My Services
               </span>
             </Menu.Item>
           </Link>
@@ -104,7 +106,8 @@ const UserBasicInfo = ({ user_profile: user = {}, match }) => {
             <Menu.Item name="profile" active={activePath === 'profile'}>
               <MenuIcon disabled name="angle right" circular />
               <span>
-                <MenuIcon disabled name="user" circular />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Profile
+                <MenuIcon disabled name="user" circular />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Profile
               </span>
             </Menu.Item>
           </Link>
@@ -113,7 +116,8 @@ const UserBasicInfo = ({ user_profile: user = {}, match }) => {
             <Menu.Item name="settings" active={activePath === 'settings'}>
               <MenuIcon disabled name="angle right" circular />
               <span>
-                <MenuIcon disabled name="cogs" circular />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Settings
+                <MenuIcon disabled name="cogs" circular />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Settings
               </span>
             </Menu.Item>
           </Link>
@@ -122,7 +126,8 @@ const UserBasicInfo = ({ user_profile: user = {}, match }) => {
             <Menu.Item name="logout" active={activePath === 'logout'}>
               <MenuIcon disabled name="angle right" circular />
               <span>
-                <MenuIcon disabled name="power" circular />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Logout
+                <MenuIcon disabled name="power" circular />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Logout
               </span>
             </Menu.Item>
           </div>

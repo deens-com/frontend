@@ -102,10 +102,8 @@ export default class TripLengthFormInput extends Component {
         </Popup.Header>
         <Popup.Content>
           Are you sure you want to remove {value - this.state.requestedLength} day(s) from your
-          trip? Removing day(s) will cause deletion of {this.state.serviceRemovalCount} service{this
-            .state.serviceRemovalCount === 1
-            ? ' '
-            : 's '}
+          trip? Removing day(s) will cause deletion of {this.state.serviceRemovalCount} service
+          {this.state.serviceRemovalCount === 1 ? ' ' : 's '}
           from your trip.
           <br />
           <Flex>

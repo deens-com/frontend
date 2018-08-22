@@ -38,7 +38,9 @@ const ServiceTags = ({ service }) => {
         />
       )}
       {contractAddress && tags.length > 0 && <Divider />}
-      {tags.map(tag => <Tag key={tag.label} item={tag} href={`/results?tags=${tag.label}`} />)}
+      {tags.map(tag => (
+        <Tag key={tag.label} item={tag} href={`/results?tags=${tag.label}`} />
+      ))}
     </TagWrap>
   );
 };
