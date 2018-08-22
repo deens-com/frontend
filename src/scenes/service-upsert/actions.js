@@ -21,7 +21,7 @@ export const types = {
 
 export const user_profile_fetched = userProfile => {
   return {
-    type: 'USER_PROFILE_FETCHED',
+    type: 'service-upsert/USER_PROFILE_FETCHED',
     payload: userProfile,
   };
 };

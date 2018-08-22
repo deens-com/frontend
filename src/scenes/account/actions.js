@@ -7,7 +7,7 @@ import { generateFilename } from './../../libs/filename';
 
 export const user_profile_fetched = user_profile => {
   return {
-    type: 'USER_PROFILE_FETCHED',
+    type: 'account/USER_PROFILE_FETCHED',
     payload: user_profile,
   };
 };

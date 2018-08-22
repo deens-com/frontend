@@ -13,7 +13,7 @@ const initialState = {
 
 export default function AccountReducer(state = initialState, action = {}) {
   switch (action.type) {
-    case 'USER_PROFILE_FETCHED':
+    case 'account/USER_PROFILE_FETCHED':
       return {
         ...state,
         user_profile: action.payload.user_profile,
