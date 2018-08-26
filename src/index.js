@@ -13,7 +13,7 @@ import { serverBaseURL, isProd, isStaging } from './libs/config';
 import * as featureFlags from './libs/feature-flags';
 
 Parse.initialize('myAppId');
-Parse.serverURL = `${serverBaseURL}/`;
+Parse.serverURL = `${serverBaseURL}/parse`;
 
 const history = createHistory();
 
