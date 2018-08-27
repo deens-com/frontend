@@ -39,7 +39,7 @@ export default class MultiImageUploader extends Component {
         },
         validation: {
           allowedExtensions,
-          sizeLimit: 10000000,
+          sizeLimit: 5242880, // 5MB = 5 * 1024 * 1024
         },
       },
     });
