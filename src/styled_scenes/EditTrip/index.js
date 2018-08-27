@@ -13,7 +13,6 @@ import Summary from 'styled_scenes/EditTrip/components/Summary';
 import Button from 'shared_components/Button';
 
 import OwnerToolBar from 'styled_scenes/EditTrip/components/ToolBar/OwnerToolBar';
-import AddNewServiceToTrip from 'styled_scenes/EditTrip/components/AddNewServiceToTrip';
 
 // ACTIONS/CONFIG
 import { media } from 'libs/styled';
@@ -94,7 +93,6 @@ export default class TripsScene extends Component {
                   <OwnerToolBar trip={trip} />
                   <Divider horizontal>Trip itinerary</Divider>
                   <TripActionsWrap>
-                    <AddNewServiceToTrip trip={trip} />
                     <Button
                       type="button"
                       round
