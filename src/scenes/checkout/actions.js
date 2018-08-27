@@ -60,8 +60,8 @@ export const chargeStripeToken = (token, complete = () => {}) => async (dispatch
     });
   } catch (error) {
     console.error('charge failed', error);
-    setPaymentError(error);
     complete('fail');
+    setPaymentError(error);
   }
 };
 

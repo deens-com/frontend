@@ -127,7 +127,11 @@ export default class PaymentSection extends Component {
                               onStripeTokenReceived={onStripeTokenReceived}
                               canMakeAutoPayment={this.setCanMakeAutoPayment}
                             />
-                            {paymentError && <ErrorMessage>{paymentError.message}</ErrorMessage>}
+                            {paymentError && (
+                              <ErrorMessage>
+                                {paymentError.customMessage || paymentError.message}
+                              </ErrorMessage>
+                            )}
                             <StripeCardDetails
                               amount={amount}
                               symbol={symbol}
