@@ -27,7 +27,7 @@ const Wrap = styled.div`
 
   ${media.minLarge} {
     height: 100vh;
-    width: 42%;
+    width: 42vw;
     max-height: 800px;
 
     img {
@@ -143,6 +143,7 @@ export default class FoodImgSlider extends Component {
               this.props.images[this.state.index].name) ||
             'missing mainPicture'
           }
+          sizes="42vw"
         />
       </Wrap>
     );
