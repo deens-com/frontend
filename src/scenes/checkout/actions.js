@@ -60,20 +60,17 @@ export const chargeStripeToken = (token, complete = () => {}) => async (dispatch
     });
   } catch (error) {
     console.error('charge failed', error);
-    let payload = error;
-    if (error.response.data) payload = error.response.data;
-    dispatch({
-      type: types.PAYMENT_ERROR,
-      payload,
-    });
+    setPaymentError(error);
     complete('fail');
   }
 };
 
-export const setPaymentError = error => (dispatch, getState) => {
+export const setPaymentError = error => dispatch => {
   if (!error) return;
+  let payload = error;
+  if (error.response && error.response.data) payload = error.response.data;
   dispatch({
     type: types.PAYMENT_ERROR,
-    payload: error,
+    payload,
   });
 };
