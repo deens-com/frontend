@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import FineUploaderTraditional from 'fine-uploader-wrappers';
 import Gallery from 'react-fine-uploader';
-import { serverBaseURL } from 'libs/Utils';
+import { serverBaseURL } from 'libs/config';
 
 // ...or load this specific CSS file using a <link> tag in your document
 import 'react-fine-uploader/gallery/gallery.css';

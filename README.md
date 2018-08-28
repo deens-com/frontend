@@ -23,7 +23,7 @@ We have a few [yarn](https://yarnpkg.com/) specific code in our `package.json` t
 
 ```sh
 # export the backend endpoint to use
-$ export REACT_APP_PARSE_SERVER_URL=https://please-api.herokuapp.com/parse
+$ export REACT_APP_PARSE_SERVER_URL=https://please-api.herokuapp.com
 
 # start the web app
 $ yarn start
