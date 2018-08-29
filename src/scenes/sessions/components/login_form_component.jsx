@@ -119,6 +119,9 @@ export default class LoginFormComponent extends Component {
                       </Button>
                     </Segment>
                   </Form>
+
+                  { /* commenting out metamask and ledger for now
+
                   <WithTopMargin>
                     {displayErrorMessage(
                       !!this.props.metaMaskError.message,
@@ -184,6 +187,8 @@ export default class LoginFormComponent extends Component {
                       Login with Ledger
                     </MetamaskButton>
                   </WithTopMargin>
+
+                  end comment */ }
 
                   <Message>
                     New to us?{' '}
