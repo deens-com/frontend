@@ -2,6 +2,8 @@ import Parse from 'parse';
 import history from './../../main/history';
 import fetch_helpers from './../../libs/fetch_helpers';
 import { identifyUsingSession } from 'libs/analytics';
+import axios from 'axios';
+import { serverBaseURL, env } from 'libs/config';
 
 export const types = {
   LOGIN_SUCCESS: 'LOGIN_SUCCESS',
@@ -28,13 +30,13 @@ export const displayLedgerLoader = boolDisplay => {
   };
 };
 
-export const login_error = message => {
+export const setLoginError = payload => {
   return dispatch => {
     dispatch({
       type: types.LOGIN_ERROR,
       payload: {
-        code: '203',
-        message: message,
+        code: payload.code,
+        message: payload.message,
       },
     });
   };
@@ -57,24 +59,29 @@ export const set_base_currency = currency => async dispatch => {
 };
 
 export const loginRequest = (email, password) => {
-  return dispatch => {
-    Parse.User.logIn(email, password).then(
-      user => {
-        dispatch(sessionsFetched({ session: user }));
+  return async dispatch => {
+    try {
+      const auth0Response = await axios.post(
+        `${serverBaseURL}/users/login`,
+        { username: email, password: password },
+      ).catch( error => {
+        dispatch(setLoginError({code: error.response.status, message: error.response.data.error_description}));
+      });
+      if (auth0Response) {
+        const auth0Token = auth0Response.data.access_token;
+        const user = await axios.get(
+          `${serverBaseURL}/users/me`,
+          { headers: {'Authorization': `Bearer ${auth0Token}`} }
+        ).catch( error => {
+          dispatch(setLoginError({code: error.response.status, message: error.response.data.error_description}));
+        });
+        dispatch(sessionsFetched({ session: user.data }));
+        localStorage.setItem(`please-${env}-session`, JSON.stringify(user.data));
         history.goBack();
-      },
-      error => {
-        if (error.code === 101) {
-          dispatch({
-            type: types.LOGIN_ERROR,
-            payload: {
-              code: error.code,
-              message: 'Invalid email or password',
-            },
-          });
-        }
-      },
-    );
+      }
+    } catch (error) {
+      dispatch(setLoginError({code: 401, message: error}));
+    }
   };
 };
 
