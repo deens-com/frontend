@@ -1,6 +1,7 @@
-import Parse from 'parse';
 import history from './../../main/history';
 import * as analytics from 'libs/analytics';
+import axios from 'axios';
+import { serverBaseURL } from 'libs/config';
 
 export const types = {
   REGISTRATION_SUCCESS: 'REGISTRATION_SUCCESS',
@@ -29,18 +30,14 @@ export const registrationFailed = error_payload => {
 
 export const postRegistration = (username, email, password) => {
   return dispatch => {
-    let user = new Parse.User();
-    user.set('username', username);
-    user.set('email', email);
-    user.set('password', password);
-    user.signUp(null, {
-      success: user => {
-        dispatch(registrationSuccess({ session: user }));
-        history.push('/');
-      },
-      error: (user, error) => {
-        dispatch(registrationFailed({ user: user, error: error }));
-      },
+    axios.post(
+      `${serverBaseURL}/users/signup`,
+      { username: username, email: email, password: password },
+    ).then(res => {
+      dispatch(registrationSuccess({ session: res.data }));
+      history.push('/login');
+    }).catch(err => {
+      dispatch(registrationFailed({ error: {message: err.response.data.description} }));
     });
   };
 };
