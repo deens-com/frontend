@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import fetch_helpers from './../../libs/fetch_helpers';
-import Parse from 'parse';
+import { env } from 'libs/config';
+
 // COMPONENTS
 import Button from '../Button';
 // COMMENT: the homeSearch is just for the time being
@@ -51,20 +51,23 @@ class DesktopDropDownMenu extends Component {
   }
 
   componentDidMount() {
-    let user = Parse.User.current();
-    if (user === null) {
+    try {
+      const localSession = localStorage.getItem(`please-${env}-session`);
+      if (localSession) {
+        const jsonUser = JSON.parse(localSession);
+        this.setState({ logged_in: true, current_user: jsonUser });
+      } else {
+        this.setState({ logged_in: false });
+      }
+    } catch (error) {
       this.setState({ logged_in: false });
-    } else {
-      const json_user = fetch_helpers.normalizeParseResponseData(user);
-      this.setState({ logged_in: true, current_user: json_user });
     }
   }
 
   logout = () => {
-    Parse.User.logOut().then(() => {
-      this.setState({ logged_in: false, current_user: {} });
-      history.push('/');
-    });
+    localStorage.removeItem(`please-${env}-session`);
+    this.setState({ logged_in: false, current_user: {} });
+    history.push('/');
   };
 
   navigate_to = path => {
@@ -147,15 +150,10 @@ class DesktopDropDownMenu extends Component {
   }
 }
 
-
 const mapStateToProps = state => {
   return {
-    user_profile: state.AccountReducer.user_profile
+    user_profile: state.AccountReducer.user_profile,
   };
 };
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-  )(DesktopDropDownMenu)
-);
+export default withRouter(connect(mapStateToProps)(DesktopDropDownMenu));
