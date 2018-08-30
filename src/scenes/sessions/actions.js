@@ -77,7 +77,7 @@ export const loginRequest = (email, password) => {
         });
         const userData = user.data;
         userData.accessToken = auth0Token;
-        dispatch(sessionsFetched({ session: user.data }));
+        dispatch(sessionsFetched({ session: userData }));
         localStorage.setItem(`please-${env}-session`, JSON.stringify(userData));
         history.goBack();
       }
