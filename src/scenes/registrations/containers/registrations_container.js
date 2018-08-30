@@ -4,6 +4,9 @@ import * as registrations_actions from './../actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import validator from 'validator';
+import { env } from 'libs/config';
+import history from 'main/history';
+
 class RegistrationsContainer extends Component {
   constructor(props) {
     super(props);
@@ -16,6 +19,9 @@ class RegistrationsContainer extends Component {
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.isInputInvalid = this.isInputInvalid.bind(this);
+    if (localStorage.getItem(`please-${env}-session`)) {
+      history.push('/');
+    }
   }
 
   componentDidMount() {
