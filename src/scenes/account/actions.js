@@ -166,13 +166,12 @@ export const fetch_user_services = () => async dispatch => {
       { headers: {'Authorization': `Bearer ${jwtToken}`} }
     ).catch( error => {
       console.log(error);
-      //dispatch(setLoginError({code: error.response.status, message: error.response.data.error_description}));
     });
     if (userServices) {
+      const services = fetch_helpers.buildServicesJson(userServices.data);
       dispatch({
         type: 'USER_SERVICES_FETCHED',
-        payload: { user_services: userServices.data },
-        // payload: { user_services: fetch_helpers.normalizeParseResponseData(services) },
+        payload: { user_services: services },
       });
     }
   } else {
