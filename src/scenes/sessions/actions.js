@@ -75,8 +75,10 @@ export const loginRequest = (email, password) => {
         ).catch( error => {
           dispatch(setLoginError({code: error.response.status, message: error.response.data.error_description}));
         });
+        const userData = user.data;
+        userData.accessToken = auth0Token;
         dispatch(sessionsFetched({ session: user.data }));
-        localStorage.setItem(`please-${env}-session`, JSON.stringify(user.data));
+        localStorage.setItem(`please-${env}-session`, JSON.stringify(userData));
         history.goBack();
       }
     } catch (error) {
