@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import validator from 'validator';
-
+import history from 'main/history';
 import LoginFormComponent from './../components/login_form_component';
 import * as sessionsActions from './../actions';
 
@@ -17,6 +17,9 @@ class SessionsContainer extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.isInputInvalid = this.isInputInvalid.bind(this);
     this.isLoginError = this.isLoginError.bind(this);
+    if (localStorage.getItem('please-development-session')) {
+      history.push('/');
+    }
   }
 
   parseLogin = event => {
