@@ -22,6 +22,7 @@ AccountSettingsComponent.propTypes = {
   hasMetaMask: PropTypes.func.isRequired,
   metaMaskError: PropTypes.object,
   signData: PropTypes.func.isRequired,
+  logOut: PropTypes.func.isRequired
 };
 
 export default AccountSettingsComponent;
