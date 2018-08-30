@@ -156,16 +156,28 @@ export const update_user_profile = (user_id, field_type, value) => {
   };
 };
 
-export const fetch_user_services = () => dispatch => {
-  let services_query = fetch_helpers.build_query('Service');
-  services_query.equalTo('owner', Parse.User.current());
-
-  services_query.find().then(services => {
-    dispatch({
-      type: 'USER_SERVICES_FETCHED',
-      payload: { user_services: fetch_helpers.normalizeParseResponseData(services) },
+export const fetch_user_services = () => async dispatch => {
+  const localStorageUser = localStorage.getItem(`please-${env}-session`);
+  if (localStorageUser) {
+    const jsonUser = JSON.parse(localStorageUser);
+    const jwtToken = jsonUser.accessToken;
+    const userServices = await axios.get(
+      `${serverBaseURL}/services`,
+      { headers: {'Authorization': `Bearer ${jwtToken}`} }
+    ).catch( error => {
+      console.log(error);
+      //dispatch(setLoginError({code: error.response.status, message: error.response.data.error_description}));
     });
-  });
+    if (userServices) {
+      dispatch({
+        type: 'USER_SERVICES_FETCHED',
+        payload: { user_services: userServices.data },
+        // payload: { user_services: fetch_helpers.normalizeParseResponseData(services) },
+      });
+    }
+  } else {
+    history.push('/');
+  }
 };
 
 export const fetch_user_trips = (owner_id, trip_state) => dispatch => {
