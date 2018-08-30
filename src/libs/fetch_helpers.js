@@ -58,6 +58,7 @@ const buildServicesJson = services => {
       } else {
         service.image = get_service_image(service.mainPicture);
       }
+      service.mainPicture = service.mainPicture || service.image;
     } catch (error) {
       console.log(error);
     }
