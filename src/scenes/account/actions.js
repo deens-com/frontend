@@ -4,6 +4,8 @@ import history from './../../main/history';
 import validator from 'validator';
 import { trackMetamaskConnected, trackLedgerConnected } from 'libs/analytics';
 import { generateFilename } from './../../libs/filename';
+import { serverBaseURL, env } from 'libs/config';
+import axios from 'axios';
 
 export const user_profile_fetched = user_profile => {
   return {
@@ -35,26 +37,27 @@ export const edit_user_error_raised = error => {
   };
 };
 
-export const fetch_user_profile = () => dispatch => {
-  let user = Parse.User.current();
-  if (user === null) {
-    history.push('/login');
+export const logOut = () => dispatch => {
+  localStorage.removeItem(`please-${env}-session`);
+  dispatch(user_profile_fetched({ user_profile: {} }));
+  history.push('/');
+};
+
+export const fetch_user_profile = () => async dispatch => {
+  const localStorageUser = localStorage.getItem(`please-${env}-session`);
+  if (localStorageUser) {
+    const jsonUser = JSON.parse(localStorageUser);
+    const jwtToken = jsonUser.accessToken;
+    const user = await axios.get(
+      `${serverBaseURL}/users/me`,
+      { headers: {'Authorization': `Bearer ${jwtToken}`} }
+    ).catch( error => {
+      console.log(error);
+      //dispatch(setLoginError({code: error.response.status, message: error.response.data.error_description}));
+    });
+    dispatch(user_profile_fetched({ user_profile: user.data }));
   } else {
-    Parse.User.current()
-      .fetch()
-      .then(response => {
-        const json_response = fetch_helpers.normalizeParseResponseData(response);
-        user = json_response;
-        if (user === null) {
-          history.push('/login');
-        } else {
-          const json_user = fetch_helpers.normalizeParseResponseData(user);
-          dispatch(user_profile_fetched({ user_profile: json_user }));
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    history.push('/login');
   }
 };
 
