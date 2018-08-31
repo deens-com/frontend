@@ -109,51 +109,54 @@ export const update_user_avatar = file => {
 
 //const locales = ['ar', 'ar-AE', 'ar-BH', 'ar-DZ', 'ar-EG', 'ar-IQ', 'ar-JO', 'ar-KW', 'ar-LB', 'ar-LY', 'ar-MA', 'ar-QA', 'ar-QM', 'ar-SA', 'ar-SD', 'ar-SY', 'ar-TN', 'ar-YE', 'bg-BG', 'cs-CZ', 'da-DK', 'de-DE', 'el-GR', 'en-AU', 'en-GB', 'en-HK', 'en-IN', 'en-NZ', 'en-US', 'en-ZA', 'en-ZM', 'es-ES', 'fr-FR', 'hu-HU', 'it-IT', 'nb-NO', 'nl-NL', 'nn-NO', 'pl-PL', 'pt-BR', 'pt-PT', 'ru-RU', 'sk-SK', 'sr-RS', 'sr-RS@latin', 'sv-SE', 'tr-TR', 'uk-UA'];
 export const update_user_profile = (user_id, field_type, value) => {
-  return dispatch => {
-    let user = Parse.User.current();
-    let isUsernameValid = false;
-    let isEmailValid = false;
-    if (field_type === 'username') {
-      isUsernameValid = validator.isAlphanumeric(value, 'en-US');
-      if (!isUsernameValid) {
-        dispatch(edit_user_error_raised({ code: 203, error: 'Username should be alphanumeric.' }));
-        let json_user = user.toJSON();
-        dispatch(user_profile_fetched({ user_profile: json_user }));
-        return;
-      }
-    }
-    if (field_type === 'email') {
-      isEmailValid = validator.isEmail(value);
-      if (!isEmailValid) {
-        dispatch(
-          edit_user_error_raised({ code: 203, error: 'Please, enter a valid email address.' }),
-        );
-        let json_user = user.toJSON();
-        dispatch(user_profile_fetched({ user_profile: json_user }));
-        return;
-      }
-    }
-    user.set(field_type, value);
-    user.save(null, {
-      success: function(update) {
-        // console.log("Updated!");
-        let json_user = user.toJSON();
-        dispatch(user_profile_fetched({ user_profile: json_user }));
+  return async dispatch => {
+    const localStorageUser = localStorage.getItem(`please-${env}-session`);
+    if (localStorageUser) {
+      try {
+        const jsonUser = JSON.parse(localStorageUser);
+        const currentUser = await axios.get(
+          `${serverBaseURL}/users/me`,
+          { headers: { 'Authorization': `Bearer ${jsonUser.accessToken}`}}
+        ).catch( error => {
+          console.log(error);
+          dispatch( edit_user_error_raised({ code: 422, error: error }) );
+        });
+        let isUsernameValid = false;
+        let isEmailValid = false;
+        if (field_type === 'username') {
+          isUsernameValid = validator.isAlphanumeric(value, 'en-US');
+          if (!isUsernameValid) {
+            dispatch(edit_user_error_raised({ code: 203, error: 'Username should be alphanumeric.' }));
+            dispatch(user_profile_fetched({ user_profile: currentUser.data }));
+            return;
+          }
+        }
+        if (field_type === 'email') {
+          isEmailValid = validator.isEmail(value);
+          if (!isEmailValid) {
+            dispatch(
+              edit_user_error_raised({ code: 203, error: 'Please, enter a valid email address.' }),
+            );
+            dispatch(user_profile_fetched({ user_profile: currentUser.data }));
+            return;
+          }
+        }
+        const updatedUser = await axios.patch(
+          `${serverBaseURL}/users/me`,
+          { [field_type]: value },
+          { headers: { 'Authorization': `Bearer ${jsonUser.accessToken}`}}
+        ).catch( error => {
+          console.log(error);
+          dispatch( edit_user_error_raised({ code: 422, error: error }) );
+        });
+        dispatch(user_profile_fetched({ user_profile: updatedUser.data }));
         dispatch(edit_user_error_raised({}));
-      },
-      error: function(error) {
-        //console.log(error);
-        dispatch(
-          edit_user_error_raised({
-            code: 202,
-            error: 'Account already exists for this username or email.',
-          }),
-        );
-        let json_user = user.toJSON();
-        dispatch(user_profile_fetched({ user_profile: json_user }));
-      },
-    });
-  };
+      } catch(error) {
+        console.log(error);
+        dispatch( edit_user_error_raised({ code: 422, error: error }) );
+      }
+    }
+  }
 };
 
 export const fetch_user_services = () => async dispatch => {
