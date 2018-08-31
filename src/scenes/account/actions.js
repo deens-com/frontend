@@ -118,7 +118,6 @@ export const update_user_profile = (user_id, field_type, value) => {
           `${serverBaseURL}/users/me`,
           { headers: { 'Authorization': `Bearer ${jsonUser.accessToken}`}}
         ).catch( error => {
-          console.log(error);
           dispatch( edit_user_error_raised({ code: 422, error: error }) );
         });
         let isUsernameValid = false;
@@ -146,13 +145,11 @@ export const update_user_profile = (user_id, field_type, value) => {
           { [field_type]: value },
           { headers: { 'Authorization': `Bearer ${jsonUser.accessToken}`}}
         ).catch( error => {
-          console.log(error);
           dispatch( edit_user_error_raised({ code: 422, error: error }) );
         });
         dispatch(user_profile_fetched({ user_profile: updatedUser.data }));
         dispatch(edit_user_error_raised({}));
       } catch(error) {
-        console.log(error);
         dispatch( edit_user_error_raised({ code: 422, error: error }) );
       }
     }
