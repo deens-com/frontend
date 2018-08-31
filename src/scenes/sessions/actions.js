@@ -58,6 +58,33 @@ export const set_base_currency = currency => async dispatch => {
   });
 };
 
+export const getCurrentUser = () => async dispatch => {
+  try {
+    const localSession = localStorage.getItem(`please-${env}-session`);
+    if (localSession) {
+      const jsonUser = JSON.parse(localSession);
+      const currentUser = await axios.get(
+        `${serverBaseURL}/users/me`,
+        { headers: { 'Authorization': `Bearer ${jsonUser.accessToken}`}}
+      ).catch( error => {
+        console.log(error);
+        // if token is expired :
+        // localStorage.removeItem(`please-${env}-session`);
+        // history.push('/');
+      });
+      dispatch(sessionsFetched({session: currentUser.data}));
+    }
+  } catch(error) {
+    console.log(error);
+  }
+};
+
+export const logOut = () => dispatch => {
+  localStorage.removeItem(`please-${env}-session`);
+  dispatch(sessionsFetched({session: {}}));
+  history.push('/');
+};
+
 export const loginRequest = (email, password) => {
   return async dispatch => {
     try {

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 
+import { env } from 'libs/config';
 // COMPONENTS
 import Button from '../Button';
 import { Image } from 'semantic-ui-react';
