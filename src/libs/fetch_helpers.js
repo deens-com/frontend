@@ -42,6 +42,7 @@ const buildServicesJson = services => {
       service.reviewCount = service.reviewCount;
       service.slots = service.slots;
       service.price = service.price == null ? service.pricePerSession : service.price;
+      service.pricePerSession = service.pricePerSession || service.basePrice;
       if (service.tags && service.tags.length) {
         const tags = service.tags.map(tag => {
           const tagBg = tagsColorMatcher(tag);
