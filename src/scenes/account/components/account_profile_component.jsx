@@ -12,9 +12,7 @@ class AccountProfileComponent extends Component {
     user_profile: PropTypes.object,
   };
 
-  componentDidMount() {
-    this.props.fetch_user_profile();
-  }
+  componentDidMount() {}
 
   render() {
     return (
@@ -31,9 +29,7 @@ class AccountProfileComponent extends Component {
 }
 
 const mapStateToProps = state => {
-  return {
-    user_profile: state.AccountReducer.user_profile,
-  };
+  return {};
 };
 
 const mapDispatchToProps = dispatch => {

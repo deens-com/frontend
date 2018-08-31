@@ -4,6 +4,7 @@ import AccountTripsComponent from './../components/account_trips_component';
 import AccountServicesComponent from './../components/account_services_component';
 import AccountSettingsContainer from './AccountSettingsContainer';
 import * as account_actions from './../actions';
+import * as session_actions from 'scenes/sessions/actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Route, withRouter } from 'react-router-dom';
@@ -17,7 +18,7 @@ const StaticFooter = styled.footer`
 
 class AccountContainer extends Component {
   componentDidMount() {
-    this.props.fetch_user_profile();
+    this.props.getCurrentUser();
   }
 
   render() {
@@ -26,7 +27,7 @@ class AccountContainer extends Component {
         <Route
           path={process.env.PUBLIC_URL + '/account/trips'}
           render={props => (
-            <AccountTripsComponent {...props} user_profile={this.props.user_profile} />
+            <AccountTripsComponent {...props} user_profile={this.props.session} />
           )}
         />
         <Route
@@ -34,22 +35,22 @@ class AccountContainer extends Component {
           render={props => (
             <AccountProfileComponent
               {...props}
-              user_profile={this.props.user_profile}
+              user_profile={this.props.session}
               update_user_profile={this.props.update_user_profile}
-              editUserError={this.props.editUserError}
+              editUserError={this.props.updateError}
             />
           )}
         />
         <Route
           path={process.env.PUBLIC_URL + '/account/services'}
           render={props => (
-            <AccountServicesComponent {...props} user_profile={this.props.user_profile} />
+            <AccountServicesComponent {...props} user_profile={this.props.session} />
           )}
         />
         <Route
           path={process.env.PUBLIC_URL + '/account/settings'}
           render={props => (
-            <AccountSettingsContainer {...props} user_profile={this.props.user_profile} />
+            <AccountSettingsContainer {...props} user_profile={this.props.session} />
           )}
         />
         <StaticFooter>
@@ -62,13 +63,13 @@ class AccountContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    user_profile: state.AccountReducer.user_profile,
-    editUserError: state.AccountReducer.editUserError,
+    session: state.SessionsReducer.session,
+    updateError: state.SessionsReducer.updateError,
   };
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators(account_actions, dispatch);
+  return bindActionCreators({...account_actions, ...session_actions}, dispatch);
 };
 
 export default withRouter(

@@ -1,8 +1,9 @@
 import Parse from 'parse';
+import axios from 'axios';
+import validator from 'validator';
 import history from './../../main/history';
 import fetch_helpers from './../../libs/fetch_helpers';
 import { identifyUsingSession } from 'libs/analytics';
-import axios from 'axios';
 import { serverBaseURL, env } from 'libs/config';
 
 export const types = {
@@ -13,6 +14,7 @@ export const types = {
   LEDGER_ERROR: 'LEDGER_ERROR',
   BASE_CURRENCY_SET: 'BASE_CURRENCY_SET',
   TOGGLE_LEDGER_LOADER_DISPLAY: 'TOGGLE_LEDGER_LOADER_DISPLAY',
+  UPDATE_ERROR: 'UPDATE_ERROR',
 };
 
 export const sessionsFetched = session => {
@@ -27,6 +29,13 @@ export const displayLedgerLoader = boolDisplay => {
   return {
     type: this.types.TOGGLE_LEDGER_LOADER_DISPLAY,
     payload: boolDisplay,
+  };
+};
+
+export const displayUpdateError = error => {
+  return {
+    type: this.types.UPDATE_ERROR,
+    payload: error,
   };
 };
 
@@ -66,12 +75,13 @@ export const getCurrentUser = () => async dispatch => {
       const currentUser = await axios.get(
         `${serverBaseURL}/users/me`,
         { headers: { 'Authorization': `Bearer ${jsonUser.accessToken}`}}
-      ).catch( error => {
+      )
+      /*.catch( error => {
         console.log(error);
         // if token is expired :
         // localStorage.removeItem(`please-${env}-session`);
         // history.push('/');
-      });
+      });*/
       dispatch(sessionsFetched({session: currentUser.data}));
     }
   } catch(error) {
@@ -83,6 +93,54 @@ export const logOut = () => dispatch => {
   localStorage.removeItem(`please-${env}-session`);
   dispatch(sessionsFetched({session: {}}));
   history.push('/');
+};
+
+export const update_user_profile = (user_id, field_type, value) => {
+  return async dispatch => {
+    const localStorageUser = localStorage.getItem(`please-${env}-session`);
+    if (localStorageUser) {
+      try {
+        const jsonUser = JSON.parse(localStorageUser);
+        const currentUser = await axios.get(
+          `${serverBaseURL}/users/me`,
+          { headers: { 'Authorization': `Bearer ${jsonUser.accessToken}`}}
+        ).catch( error => {
+          dispatch( displayUpdateError({ code: 422, error: error }) );
+        });
+        let isUsernameValid = false;
+        let isEmailValid = false;
+        if (field_type === 'username') {
+          isUsernameValid = validator.isAlphanumeric(value, 'en-US');
+          if (!isUsernameValid) {
+            dispatch(displayUpdateError({ code: 203, error: 'Username should be alphanumeric.' }));
+            dispatch(sessionsFetched({ session: currentUser.data }));
+            return;
+          }
+        }
+        if (field_type === 'email') {
+          isEmailValid = validator.isEmail(value);
+          if (!isEmailValid) {
+            dispatch(
+              displayUpdateError({ code: 203, error: 'Please, enter a valid email address.' }),
+            );
+            dispatch(sessionsFetched({ session: currentUser.data }));
+            return;
+          }
+        }
+        const updatedUser = await axios.patch(
+          `${serverBaseURL}/users/me`,
+          { [field_type]: value },
+          { headers: { 'Authorization': `Bearer ${jsonUser.accessToken}`}}
+        ).catch( error => {
+          dispatch( displayUpdateError({ code: 422, error: error }) );
+        });
+        dispatch(sessionsFetched({session: updatedUser.data}));
+        dispatch(displayUpdateError({}));
+      } catch(error) {
+        dispatch( displayUpdateError({ code: 422, error: error }) );
+      }
+    }
+  }
 };
 
 export const loginRequest = (email, password) => {
