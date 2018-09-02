@@ -40,15 +40,13 @@ export const displayUpdateError = error => {
 };
 
 export const setLoginError = payload => {
-  return dispatch => {
-    dispatch({
-      type: types.LOGIN_ERROR,
-      payload: {
-        code: payload.code,
-        message: payload.message,
-      },
-    });
-  };
+  return {
+    type: types.LOGIN_ERROR,
+    payload: {
+      code: payload.code,
+      message: payload.message,
+    },
+  }
 };
 
 export const set_base_currency = currency => async dispatch => {
@@ -160,11 +158,13 @@ export const loginRequest = (email, password) => {
         ).catch( error => {
           dispatch(setLoginError({code: error.response.status, message: error.response.data.error_description}));
         });
-        const userData = user.data;
-        userData.accessToken = auth0Token;
-        dispatch(sessionsFetched({ session: userData }));
-        localStorage.setItem(`please-${env}-session`, JSON.stringify(userData));
-        history.goBack();
+        if (user) {
+          const userData = user.data;
+          userData.accessToken = auth0Token;
+          dispatch(sessionsFetched({ session: userData }));
+          localStorage.setItem(`please-${env}-session`, JSON.stringify(userData));
+          history.goBack();
+        }
       }
     } catch (error) {
       dispatch(setLoginError({code: 401, message: error}));
