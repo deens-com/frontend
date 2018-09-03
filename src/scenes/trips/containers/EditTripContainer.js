@@ -9,7 +9,9 @@ import * as trips_actions from './../actions';
 import * as selectors from '../selectors';
 import { statuses } from '../../../libs/fetch_helpers';
 
-const EditTripContext = React.createContext();
+const EditTripContext = React.createContext({
+  trip: {}
+});
 
 class EditTripContainer extends Component {
   updateTripDetails = (newDetails, showSaved) => {
