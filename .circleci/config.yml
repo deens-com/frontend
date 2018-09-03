@@ -53,7 +53,8 @@ jobs:
             curl -i -H "Authorization: token ${GIT_TOKEN}" -H "Content-Type: application/json" --request POST --data "{\"state\": \"pending\", \"description\": \"Deployment started\", \"context\": \"ci/deploy-feature\"}" https://api.github.com/repos/PleaseDotCom/frontend/statuses/${CIRCLE_SHA1}
 
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              CI=false yarn deploy;
+              # Un comment the below line when you want to auto deploy master to production
+              # CI=false yarn deploy;
             elif [ "${CIRCLE_BRANCH}" == "staging" ]; then
               CI=false npm run build:staging && \
               cd build && \
