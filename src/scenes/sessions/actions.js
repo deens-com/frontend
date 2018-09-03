@@ -83,8 +83,6 @@ export const getCurrentUser = () => async dispatch => {
       if (currentUser.data) {
         dispatch(sessionsFetched({session: currentUser.data}));
       }
-    } else {
-      dispatch(logOut());
     }
   } catch(error) {
     console.log(error);

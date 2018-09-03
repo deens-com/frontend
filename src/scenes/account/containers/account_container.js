@@ -27,14 +27,14 @@ class AccountContainer extends Component {
         <Route
           path={process.env.PUBLIC_URL + '/account/trips'}
           render={props => (
-            <AccountTripsComponent {...props} user_profile={this.props.session} />
+            <AccountTripsComponent {...this.props} user_profile={this.props.session} />
           )}
         />
         <Route
           path={process.env.PUBLIC_URL + '/account/profile'}
           render={props => (
             <AccountProfileComponent
-              {...props}
+              {...this.props}
               user_profile={this.props.session}
               update_user_profile={this.props.update_user_profile}
               editUserError={this.props.updateError}
@@ -44,13 +44,13 @@ class AccountContainer extends Component {
         <Route
           path={process.env.PUBLIC_URL + '/account/services'}
           render={props => (
-            <AccountServicesComponent {...props} user_profile={this.props.session} />
+            <AccountServicesComponent {...this.props} user_profile={this.props.session} />
           )}
         />
         <Route
           path={process.env.PUBLIC_URL + '/account/settings'}
           render={props => (
-            <AccountSettingsContainer {...props} user_profile={this.props.session} />
+            <AccountSettingsContainer {...this.props} user_profile={this.props.session} />
           )}
         />
         <StaticFooter>
