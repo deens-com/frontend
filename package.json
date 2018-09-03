@@ -75,8 +75,8 @@
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject",
     "precommit": "pretty-quick --staged",
-    "predeploy": "REACT_APP_NODE_ENV=production npm run build",
-    "deploy": "gh-pages -d build --dotfiles true",
+    "predeploy": "true || REACT_APP_NODE_ENV=production npm run build",
+    "deploy": "true || gh-pages -d build --dotfiles true",
     "prettier-all": "prettier --write '**/*.{js,json,jsx,yml,yaml,md}'"
   },
   "devDependencies": {
