@@ -74,13 +74,17 @@ export const getCurrentUser = () => async dispatch => {
         `${serverBaseURL}/users/me`,
         { headers: { 'Authorization': `Bearer ${jsonUser.accessToken}`}}
       )
-      /*.catch( error => {
+      .catch( error => {
         console.log(error);
-        // if token is expired :
-        // localStorage.removeItem(`please-${env}-session`);
-        // history.push('/');
-      });*/
-      dispatch(sessionsFetched({session: currentUser.data}));
+        if (error.response && error.response.data.message === 'jwt expired') {
+          dispatch(logOut());
+        }
+      });
+      if (currentUser.data) {
+        dispatch(sessionsFetched({session: currentUser.data}));
+      }
+    } else {
+      dispatch(logOut());
     }
   } catch(error) {
     console.log(error);
