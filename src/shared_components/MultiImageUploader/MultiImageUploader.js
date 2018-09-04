@@ -41,6 +41,14 @@ export default class MultiImageUploader extends Component {
           allowedExtensions,
           sizeLimit: 5242880, // 5MB = 5 * 1024 * 1024
         },
+        callbacks: {
+          onCancel: (id, name) => {
+            this.setState(
+              ({ fileUrls }) => ({ fileUrls: fileUrls.filter(url => !url.endsWith(name)) }),
+              () => this.props.onUploadedFilesChanged(this.state.fileUrls),
+            );
+          },
+        },
       },
     });
 
