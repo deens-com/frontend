@@ -21,6 +21,7 @@ import { media } from 'libs/styled';
 import { Page, PageContent } from '../../shared_components/layout/Page';
 import { Hr } from '../../shared_components/styledComponents/misc';
 import TripLeftPortion from './components/TripLeftPortion';
+import AddNewServiceToTrip from './components/AddNewServiceToTrip';
 
 const Wrap = styled.div`
   ${media.minMediumPlus} {
@@ -93,6 +94,7 @@ export default class TripsScene extends Component {
                   <OwnerToolBar trip={trip} />
                   <Divider horizontal>Trip itinerary</Divider>
                   <TripActionsWrap>
+                    <AddNewServiceToTrip trip={trip} />
                     <Button
                       type="button"
                       round
