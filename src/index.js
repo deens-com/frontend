@@ -30,6 +30,9 @@ if (isProd) {
   console.error = error;
 }
 
+// reads localStorage to get the user object on load
+readSession();
+
 ReactDOM.render(<App />, document.getElementById('root'));
 unregisterServiceWorker();
 
@@ -50,9 +53,6 @@ const customerId = getQueryStringValue('customer_id');
 if (customerId && window.analytics) {
   window.analytics.identify(customerId);
 }
-
-// reads localStorage to get the user object on load
-readSession();
 
 // for easier access to feature flag functions
 window.featureFlags = featureFlags;
