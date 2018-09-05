@@ -68,7 +68,7 @@ export const postRegistration = (username, email, password) => {
         }
       })
       .catch(err => {
-        dispatch(registrationFailed({ error: { message: err.response.data.message } }));
+        dispatch(registrationFailed({ error: { message: err.response.data.description } }));
       });
   };
 };
