@@ -10,21 +10,27 @@ import { Link } from 'react-router-dom';
 import history from './../../main/history';
 import { isMobile, checkRequiredFields } from 'libs/Utils';
 import i18n from './../../libs/i18n';
+import Image from 'shared_components/Image';
 import MultiImageUploader from 'shared_components/MultiImageUploader/MultiImageUploader';
-const serviceTypes = [
+
+const serviceCategories = [
   { label: i18n.t('places.singular'), value: 'place' },
   { label: i18n.t('activities.singular'), value: 'activity' },
   { label: i18n.t('foods.singular'), value: 'food' },
 ];
-const serviceTypeDropdownOptions = serviceTypes.map(text => ({
+
+const serviceTypeDropdownOptions = serviceCategories.map(text => ({
   value: text.value,
   text: text.label,
 }));
+
 const hours = Array.from({ length: 24 }, (v, k) => k);
+
 const hoursDropdownOptions = hours.map(h => ({
   value: h,
   text: h.toString().padStart(2, '0') + ':00',
 }));
+
 const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 const tagsDropdownOptions = serviceTags.map(value => ({ text: value, value }));
@@ -162,6 +168,7 @@ class ServiceForm extends Component {
       userProfile,
       service,
     } = this.props;
+
     const defaultProps = {
       onChange: handleChange,
       onBlur: handleBlur,
@@ -196,32 +203,33 @@ class ServiceForm extends Component {
           </Modal.Actions>
         </Modal>
 
-        {/* Service Type */}
+        {/* Service Categories */}
         <Form.Field required>
-          <label>Service type</label>
+          <label>Service categories</label>
           <Dropdown
-            name="type"
-            placeholder="Service Type"
+            name="categories"
+            placeholder="Service Category"
             selection
-            value={values.type}
+            multiple
+            value={values.categories}
             options={serviceTypeDropdownOptions}
             onChange={this.onDropDownChange}
-            error={!!(touched.type && errors.type)}
+            error={!!(touched.categories && errors.categories)}
           />
-          {touched.type && errors.type && <ErrorMsg>{errors.type}</ErrorMsg>}
+          {touched.categories && errors.categories && <ErrorMsg>{errors.categories}</ErrorMsg>}
         </Form.Field>
 
-        {/* Name */}
+        {/* Title */}
         <Form.Field required>
           <label>Service name</label>
           <Form.Input
-            name="name"
+            name="title"
             placeholder="Service name"
-            value={values.name}
-            error={!!(touched.name && errors.name)}
+            value={values.title}
+            error={!!(touched.title && errors.title)}
             {...defaultProps}
           />
-          {touched.name && errors.name && <ErrorMsg>{errors.name}</ErrorMsg>}
+          {touched.title && errors.title && <ErrorMsg>{errors.title}</ErrorMsg>}
         </Form.Field>
 
         {/* Description */}
@@ -241,13 +249,12 @@ class ServiceForm extends Component {
         <Form.Field required>
           <label>Price Per Day/Night</label>
           <Form.Input
-            name="pricePerSession"
-            value={values.pricePerSession}
-            error={!!(touched.pricePerSession && errors.pricePerSession)}
+            name="basePrice"
+            value={values.basePrice}
+            error={!!(touched.basePrice && errors.basePrice)}
             {...defaultProps}
           />
-          {touched.pricePerSession &&
-            errors.pricePerSession && <ErrorMsg>{errors.pricePerSession}</ErrorMsg>}
+          {touched.basePrice && errors.basePrice && <ErrorMsg>{errors.basePrice}</ErrorMsg>}
         </Form.Field>
 
         {/* Available Days */}
@@ -427,28 +434,34 @@ class ServiceForm extends Component {
 
 function validate(values) {
   const requiredFields = [
-    'type',
-    'name',
+    'categories',
+    'title',
     'description',
-    'pricePerSession',
+    'basePrice',
     'availableDays',
     'openingTime',
     'closingTime',
     'slots',
     'latlong',
   ];
+
   const errors = checkRequiredFields(values, requiredFields);
-  const numericFields = ['pricePerSession', 'slots'];
+
+  const numericFields = ['basePrice', 'slots'];
+
   for (const field of numericFields) {
     if (!errors[field] && isNaN(values[field])) {
       errors[field] = 'Invalid number';
     }
   }
+
   // exception: smart contracts doesn't accept price with a floating point, therefor we should accept round numbers only
-  if (!Number.isInteger(parseFloat(values['pricePerSession']))) {
-    errors['pricePerSession'] = 'Invalid number';
+  if (!Number.isInteger(parseFloat(values['basePrice']))) {
+    errors['basePrice'] = 'Invalid number';
   }
+
   const hourFields = ['openingTime', 'closingTime'];
+
   for (const field of hourFields) {
     if (!errors[field] && (values[field] < 0 || values[field] > 23)) {
       errors[field] = 'Invalid hour';
@@ -460,10 +473,10 @@ function validate(values) {
 
 export default withFormik({
   mapPropsToValues: ({ service }) => ({
-    type: (service && service.type) || null,
-    name: (service && service.name) || '',
+    categories: (service && service.categories) || [],
+    title: (service && service.title) || '',
     description: (service && service.description) || '',
-    pricePerSession: service && service.pricePerSession != null ? service.pricePerSession : '',
+    basePrice: service && service.basePrice != null ? service.basePrice : '',
     acceptETH: (service && service.acceptETH) || false,
     availableDays: (service && service.DayList && new Set(service.DayList)) || new Set(),
     openingTime: service && service.openingTime != null ? service.openingTime : null,
