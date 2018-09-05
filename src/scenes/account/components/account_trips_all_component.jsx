@@ -14,7 +14,7 @@ class AccountTripsAllComponent extends Component {
 
   componentDidMount() {
     if (this.props.user_profile) {
-      this.props.fetch_user_trips(this.props.user_profile.objectId, 'all');
+      this.props.fetch_user_trips();
     }
   }
 

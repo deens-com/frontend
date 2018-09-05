@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Media from 'react-media';
-import { env } from 'libs/config';
 
 // COMPONENTS
 
@@ -12,6 +11,7 @@ import { Image } from 'semantic-ui-react';
 // ACTIONS/CONFIG
 import { sizes } from '../../libs/styled';
 import ImgurAvatar from './../../assets/imgur-avatar.png';
+import { getSession } from 'libs/user-session';
 
 // STYLES
 const AvatarWithUsername = styled.div`
@@ -60,10 +60,10 @@ export default class MobileDropDownMenu extends Component {
 
   componentDidMount() {
     try {
-      const localSession = localStorage.getItem(`please-${env}-session`);
-      if (localSession) {
-        const jsonUser = JSON.parse(localSession);
-        this.setState({ logged_in: true, current_user: jsonUser });
+      const session = getSession();
+      if (session) {
+        // TODO: @jaydp the below is setting current_user to the sessionObject
+        this.setState({ logged_in: true, current_user: session });
       } else {
         this.setState({ logged_in: false });
       }

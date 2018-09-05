@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Parse from 'parse';
 import { serverBaseURL } from './config';
+import { getSession } from './user-session';
 
 const axiosInstance = axios.create({
   baseURL: serverBaseURL,
@@ -12,6 +13,12 @@ axiosInstance.interceptors.request.use(config => {
   if (currentUser) {
     const sessionToken = currentUser.getSessionToken();
     config.headers['X-Parse-Session-Token'] = sessionToken;
+  }
+
+  // auth0
+  const user = getSession();
+  if (user && user.accessToken) {
+    config.headers.Authorization = `Bearer ${user.accessToken}`;
   }
   return config;
 });

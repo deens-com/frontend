@@ -11,6 +11,7 @@ import Parse from 'parse';
 import Raven from 'raven-js';
 import { serverBaseURL, isProd, isStaging } from './libs/config';
 import * as featureFlags from './libs/feature-flags';
+import { readSession } from 'libs/user-session';
 
 Parse.initialize('myAppId');
 Parse.serverURL = `${serverBaseURL}/parse`;
@@ -49,6 +50,9 @@ const customerId = getQueryStringValue('customer_id');
 if (customerId && window.analytics) {
   window.analytics.identify(customerId);
 }
+
+// reads localStorage to get the user object on load
+readSession();
 
 // for easier access to feature flag functions
 window.featureFlags = featureFlags;
