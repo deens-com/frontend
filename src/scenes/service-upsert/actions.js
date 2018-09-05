@@ -2,6 +2,8 @@ import Parse from 'parse';
 import fetch_helpers from '../../libs/fetch_helpers';
 import history from '../../main/history';
 import { trackServiceCreated } from 'libs/analytics';
+import { env, serverBaseURL } from "../../libs/config";
+import axios from 'axios';
 
 export const types = {
   SERVICE_CREATE_STARTED: 'SERVICE_CREATE_STARTED',
@@ -108,26 +110,20 @@ export const saveServiceChanges = (serviceId, values, history) => async (dispatc
   }
 };
 
-export const fetchUserProfile = () => dispatch => {
-  let user = Parse.User.current();
-  if (user === null) {
-    history.push('/login');
+export const fetchUserProfile = () => async dispatch => {
+  const localStorageUser = localStorage.getItem(`please-${env}-session`);
+  if (localStorageUser) {
+    const jsonUser = JSON.parse(localStorageUser);
+    const jwtToken = jsonUser.accessToken;
+    const user = await axios.get(
+      `${serverBaseURL}/users/me`,
+      { headers: {'Authorization': `Bearer ${jwtToken}`} }
+    ).catch( error => {
+      console.log(error);
+    });
+    dispatch(user_profile_fetched({ user_profile: user.data }));
   } else {
-    Parse.User.current()
-      .fetch()
-      .then(response => {
-        const json_response = fetch_helpers.normalizeParseResponseData(response);
-        user = json_response;
-        if (user === null) {
-          history.push('/login');
-        } else {
-          const json_user = fetch_helpers.normalizeParseResponseData(user);
-          dispatch(user_profile_fetched({ userProfile: json_user }));
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    history.push('/login');
   }
 };
 
