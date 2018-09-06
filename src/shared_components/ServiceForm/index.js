@@ -488,9 +488,9 @@ function validate(values) {
 export default withFormik({
   mapPropsToValues: ({ service }) => ({
     categories: (service && service.categories) || [],
-    title: (service && service.title) || '',
-    subtitle: (service && service.subtitle) || '',
-    description: (service && service.description) || '',
+    title: (service && service.title['en-us']) || '',
+    subtitle: (service && service.subtitle['en-us']) || '',
+    description: (service && service.description['en-us']) || '',
     basePrice: service && service.basePrice != null ? service.basePrice : '',
     acceptETH: (service && service.acceptETH) || false,
     availableDays: (service && service.DayList && new Set(service.DayList)) || new Set(),
@@ -503,8 +503,8 @@ export default withFormik({
         service.longitude && { lat: service.latitude, lng: service.longitude }) ||
       null,
     tags: (service && service.tags) || [],
-    formattedAddress: (service && service.formattedAddress) || undefined,
     media: (service && service.media) || [],
+    formattedAddress: (service && service.location.formattedAddress) || undefined,
   }),
   validate,
   handleSubmit: (values, { props }) => {
