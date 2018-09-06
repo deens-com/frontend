@@ -11,7 +11,6 @@ import { Popup } from 'semantic-ui-react';
 
 // COMPONENTS
 import Rating from 'shared_components/Rating';
-import PriceTag from 'shared_components/Currency/PriceTag';
 import Thumb from './components/Thumb';
 import Col from 'shared_components/layout/Col';
 import { PinIcon } from 'shared_components/icons';
@@ -24,6 +23,7 @@ import CityCountry from 'shared_components/CityCountry';
 import { Cart } from './styles';
 import { cardConfig } from 'libs/config';
 import { getLargeImageFromMedia } from 'libs/Utils';
+import NewPriceTag from 'shared_components/Currency/NewPriceTag';
 
 const ContentWrap = styled.div`
   padding: 20px;
@@ -140,7 +140,7 @@ class ServiceLocationCard extends Component {
                 )}
                 <Rating marginBottom="10px" rating={item.rating} count={item.reviewCount} />
                 <Label>Starting from</Label>
-                <PriceTag price={item.price} />
+                <NewPriceTag basePrice={item.basePrice} baseCurrency={item.baseCurrency} />
               </div>,
             )}
           </ContentWrap>
