@@ -28,10 +28,11 @@ const ContentWrap = styled.div`
 // the max number of lines Title can render is 4
 // rendered a title that long and saw how many pixels it takes 😜
 const Title = styled.h3`
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 500;
-  margin-bottom: 4px;
+  margin-bottom: 0;
   height: ${cardConfig.titleHeight};
+  color: #313131;
 
   a {
     color: inherit;
@@ -48,7 +49,7 @@ const Label = styled.span`
 const Location = styled.span`
   color: #6e7885;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 5px;
   height: 44px;
 
@@ -64,6 +65,8 @@ const Location = styled.span`
 
   p {
     width: 100%;
+    font-size: 14px;
+    font-weight: 300;
   }
 `;
 
@@ -80,6 +83,13 @@ const SemanticLabelFixed = styled(SemanticLabel)`
 
 const RelativeCard = styled(Cart)`
   position: relative;
+  box-shadow: 0 10px 10px -10px rgba(141, 141, 141, 0.22);
+  transition: 0.15s all linear;
+
+  &:hover {
+    box-shadow: 0 2px 25px 0 rgba(141, 141, 141, 0.22);
+    transform: translateY(-4px);
+  }
 `;
 
 const stopEventPropogation = e => e.stopPropagation();

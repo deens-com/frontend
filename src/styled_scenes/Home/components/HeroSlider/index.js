@@ -23,6 +23,7 @@ const BGImage = styled.div`
   background-image: linear-gradient(176deg, rgba(0, 0, 0, 0.31) 0%, rgba(0, 0, 0, 0.72)),
     url(${props => props.img || '#'});
   background-size: cover;
+  transition: 0.2s all linear;
   bottom: 0;
   left: 0;
   position: absolute;

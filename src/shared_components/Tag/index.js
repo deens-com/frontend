@@ -36,7 +36,7 @@ const Wrap = styled.div`
   cursor: pointer;
   display: inline-block;
   margin-bottom: 15px;
-  margin-right: ${props => tagSizes[props.size].marginRight};
+  margin-right: 0;
   overflow: hidden;
   transition: box-shadow 0.1s ease-out, background 0.1s ease-out;
   width: ${props => tagSizes[props.size].width};

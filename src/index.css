@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Muli:200,300,400,600,700');
+
 /* body {
   margin: 0;
   padding: 0;
@@ -22,14 +24,15 @@ body,
 
 body {
   color: #3c434b;
-  font-family: "Proxima Nova", Helvetica, sans-serif;
+  /* font-family: "Proxima Nova", Helvetica, sans-serif; */
+  font-family: 'Muli', sans-serif;
   font-weight: 300;
   font-size: 16px;
   word-wrap: break-word;
   -webkit-font-kerning: normal;
   font-kerning: normal;
-  -webkit-font-feature-settings: "kern", "liga", "clig", "calt";
-  font-feature-settings: "kern", "liga", "clig", "calt", "kern";
+  -webkit-font-feature-settings: 'kern', 'liga', 'clig', 'calt';
+  font-feature-settings: 'kern', 'liga', 'clig', 'calt', 'kern';
 }
 
 h1,
@@ -55,7 +58,6 @@ p {
   line-height: 1.48;
 }
 
-
 /* This is an issue in Semantic UI's Modal */
 /* The below CSS fixes it */
 /* https://github.com/Semantic-Org/Semantic-UI/issues/6267#issuecomment-373156181 */
@@ -67,5 +69,24 @@ p {
 }
 
 .semantic-popup-wrapper::before {
-    box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+.bg-grey1 {
+  background: #f5f7fa;
+}
+
+.slick-slide {
+  text-align: center;
+}
+
+/* Issue with slick slider */
+.slick-slide:focus,
+.slick-slide > div,
+.slick-slide a {
+  outline: 0 !important;
+}
+
+.slick-list {
+  padding: 10px 0;
 }

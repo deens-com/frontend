@@ -16,8 +16,8 @@ const PriceWrap = styled.div`
 `;
 
 const Price = styled.span`
-  font-size: ${props => (props.size === 'big' ? '24px' : '18px')};
-  font-weight: 500;
+  font-size: ${props => (props.size === 'big' ? '24px' : '15px')};
+  font-weight: 600;
 `;
 
 const Unit = styled.span`

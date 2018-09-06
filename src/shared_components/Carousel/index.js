@@ -41,7 +41,7 @@ const Button = styled.button`
   justify-content: center;
   outline: none;
   position: absolute;
-  top: ${props => props.topPosition || '39%'};
+  top: ${props => props.topPosition || '45%'};
   transform: translateY(-50%);
   width: ${props => carouselSizes[props.size].btnSize};
   z-index: 1;
