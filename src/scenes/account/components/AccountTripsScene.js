@@ -39,7 +39,7 @@ class AccountTripsScene extends Component {
     return allTrips.filter(trip => {
       if (status === 'all') return true;
       const tripStatus = trip && trip.metaData && trip.metaData.status;
-      return tripStatus === 'status';
+      return tripStatus === status;
     });
   };
 
