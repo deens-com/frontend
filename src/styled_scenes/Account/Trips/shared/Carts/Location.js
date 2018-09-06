@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Label as SemanticLabel } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router';
@@ -112,84 +111,44 @@ class ServiceLocationCard extends Component {
 
   render() {
     const { item, withShadow, mdBasis, smBasis, xsBasis } = this.props;
-    return (
-      <div>
-        {this.state.truncated ? (
-          <Popup
-            trigger={
-              <Col xsBasis={xsBasis} mdBasis={smBasis} smBasis={mdBasis}>
-                <RelativeCard withShadow={withShadow} column>
-                  <ImageGridContainer>
-                    <ImageItem>
-                      {this.wrapWithLink(<Thumb url={getLargeImageFromMedia(item.media)} />)}
-                    </ImageItem>
-                  </ImageGridContainer>
-                  <ContentWrap>
-                    {this.wrapWithLink(
-                      <div>
-                        <Title>
-                          <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>
-                            <I18nText data={item.title} />
-                          </Truncate>
-                        </Title>
+    const card = (
+      <Col xsBasis={xsBasis} mdBasis={smBasis} smBasis={mdBasis}>
+        <RelativeCard withShadow={withShadow} column>
+          <ImageGridContainer>
+            <ImageItem>
+              {this.wrapWithLink(<Thumb url={getLargeImageFromMedia(item.media)} />)}
+            </ImageItem>
+          </ImageGridContainer>
+          <ContentWrap>
+            {this.wrapWithLink(
+              <div>
+                <Title>
+                  <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>
+                    <I18nText data={item.title} />
+                  </Truncate>
+                </Title>
 
-                        {item.location && (
-                          <Location>
-                            <PinIcon />
-                            <p>
-                              <Truncate lines={cardConfig.locationLines}>
-                                <CityCountry location={item.location} />
-                              </Truncate>
-                            </p>
-                          </Location>
-                        )}
-                        <Rating marginBottom="10px" rating={item.rating} count={item.reviewCount} />
-                        <Label>Starting from</Label>
-                        <PriceTag price={item.price} />
-                      </div>,
-                    )}
-                  </ContentWrap>
-                </RelativeCard>
-              </Col>
-            }
-            content={this.props.item.title}
-          />
-        ) : (
-          <Col xsBasis={xsBasis} mdBasis={smBasis} smBasis={mdBasis}>
-            <RelativeCard withShadow={withShadow} column>
-              <ImageGridContainer>
-                <ImageItem>{this.wrapWithLink(<Thumb url={item.image} />)}</ImageItem>
-              </ImageGridContainer>
-              <ContentWrap>
-                {this.wrapWithLink(
-                  <div>
-                    <Title>
-                      <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>
-                        <I18nText data={item.title} />
+                {item.location && (
+                  <Location>
+                    <PinIcon />
+                    <p>
+                      <Truncate lines={cardConfig.locationLines}>
+                        <CityCountry location={item.location} />
                       </Truncate>
-                    </Title>
-
-                    {item.location && (
-                      <Location>
-                        <PinIcon />
-                        <p>
-                          <Truncate lines={cardConfig.locationLines}>
-                            <CityCountry location={item.location} />
-                          </Truncate>
-                        </p>
-                      </Location>
-                    )}
-                    <Rating marginBottom="10px" rating={item.rating} count={item.reviewCount} />
-                    <Label>Starting from</Label>
-                    <PriceTag price={item.price} />
-                  </div>,
+                    </p>
+                  </Location>
                 )}
-              </ContentWrap>
-            </RelativeCard>
-          </Col>
-        )}
-      </div>
+                <Rating marginBottom="10px" rating={item.rating} count={item.reviewCount} />
+                <Label>Starting from</Label>
+                <PriceTag price={item.price} />
+              </div>,
+            )}
+          </ContentWrap>
+        </RelativeCard>
+      </Col>
     );
+    if (this.state.truncated) return <Popup trigger={card} content={this.props.item.title} />;
+    return card;
   }
 }
 
