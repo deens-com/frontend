@@ -12,6 +12,7 @@ import { isMobile, checkRequiredFields } from 'libs/Utils';
 import i18n from './../../libs/i18n';
 import Image from 'shared_components/Image';
 import MultiImageUploader from 'shared_components/MultiImageUploader/MultiImageUploader';
+import { weekdays } from 'moment';
 
 const serviceCategories = [
   { label: i18n.t('places.singular'), value: 'place' },
@@ -156,6 +157,7 @@ class ServiceForm extends Component {
   };
 
   render() {
+    console.log(this.props.values.availableDays);
     const {
       values,
       errors,
@@ -274,13 +276,13 @@ class ServiceForm extends Component {
         <Form.Group grouped>
           <Form.Field required>
             <label>Available Days</label>
-            {weekDays.map(weekDay => (
+            {weekDays.map((weekDay, index) => (
               <Form.Checkbox
                 id={weekDay}
                 label={weekDay}
                 key={weekDay}
                 name={weekDay}
-                checked={values.availableDays.has(weekDay)}
+                checked={values.availableDays}
                 onChange={this.onAvailableDaysChange}
               />
             ))}
@@ -488,12 +490,12 @@ function validate(values) {
 export default withFormik({
   mapPropsToValues: ({ service }) => ({
     categories: (service && service.categories) || [],
-    title: (service && service.title['en-us']) || '',
-    subtitle: (service && service.subtitle['en-us']) || '',
-    description: (service && service.description['en-us']) || '',
+    title: (service && service.title) || '',
+    subtitle: (service && service.subtitle) || '',
+    description: (service && service.description) || '',
     basePrice: service && service.basePrice != null ? service.basePrice : '',
     acceptETH: (service && service.acceptETH) || false,
-    availableDays: (service && service.DayList && new Set(service.DayList)) || new Set(),
+    availableDays: (service && service.DayList) || [],
     openingTime: service && service.openingTime != null ? service.openingTime : null,
     closingTime: service && service.closingTime != null ? service.closingTime : null,
     slots: service && service.slots != null ? service.slots : '',

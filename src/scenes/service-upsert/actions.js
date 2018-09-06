@@ -121,8 +121,8 @@ export const fetchService = serviceId => async (dispatch, getState) => {
       .catch(error => {
         console.log(error);
       });
-    const service = fetch_helpers.normalizeParseResponseData(result.data);
-    console.log(service);
+    console.log('result', result.data);
+    const service = fetch_helpers.buildService(result.data);
     dispatch({ type: types.SERVICE_FETCH_SUCCESS, payload: service });
   } catch (error) {
     // dispatch({ type: types.SERVICE_FETCH_ERROR, payload: error });
