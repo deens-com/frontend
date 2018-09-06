@@ -61,6 +61,7 @@ const Location = styled.span`
     fill: #d3d7dc;
     position: relative;
     left: -3px;
+    top: 3px;
   }
 
   p {
@@ -83,11 +84,11 @@ const SemanticLabelFixed = styled(SemanticLabel)`
 
 const RelativeCard = styled(Cart)`
   position: relative;
-  box-shadow: 0 10px 10px -10px rgba(141, 141, 141, 0.22);
+  box-shadow: 0 2px 10px 0 rgba(141, 141, 141, 0.22);
   transition: 0.15s all linear;
 
   &:hover {
-    box-shadow: 0 2px 25px 0 rgba(141, 141, 141, 0.22);
+    box-shadow: 0 5px 25px 0 rgba(141, 141, 141, 0.22);
     transform: translateY(-4px);
   }
 `;

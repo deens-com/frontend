@@ -25,7 +25,7 @@ body,
 body {
   color: #3c434b;
   /* font-family: "Proxima Nova", Helvetica, sans-serif; */
-  font-family: 'Muli', sans-serif;
+  font-family: 'Muli', sans-serif !important;
   font-weight: 300;
   font-size: 16px;
   word-wrap: break-word;
@@ -89,4 +89,21 @@ p {
 
 .slick-list {
   padding: 10px 0;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.pl-btn {
+  transition: 0.1s all linear;
+}
+.pl-btn:active,
+.pl-btn:focus {
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+
+.ui.button {
+  font-family: 'Muli', sans-serif;
+  font-weight: 400;
 }

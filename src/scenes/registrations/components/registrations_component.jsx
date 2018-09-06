@@ -1,10 +1,11 @@
 import React from 'react';
-import { Page, PageContent } from './../../../shared_components/layout/Page';
+import { Page } from './../../../shared_components/layout/Page';
 import TopBar from './../../../shared_components/TopBarWithSearch';
 import BrandFooter from './../../../shared_components/BrandFooter';
-import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
+import { Button, Form, Grid, Message, Container } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import welcomeImage from '../../../assets/login/login.svg';
 
 const StaticFooter = styled.footer`
   position: static;
@@ -12,7 +13,43 @@ const StaticFooter = styled.footer`
 `;
 
 const LoginContainer = styled.div`
-  min-height: 85vh;
+  min-height: 75vh;
+  margin-top: 40px;
+  margin-bottom: 40px;
+
+  .login-img {
+    width: 80%;
+  }
+
+  .login-img-content {
+    margin-top: 30px;
+    font-size: 25px;
+    color: #636363;
+    font-weight: 300;
+  }
+
+  .login-header {
+    font-size: 22px;
+    font-weight: 300;
+    color: #2bd49e;
+    text-align: center;
+    margin: 10px 0;
+  }
+
+  .green-btn,
+  .green-btn:hover,
+  .green-btn:focus {
+    background: #2bd49e;
+    color: white;
+  }
+
+  .login-q-text {
+    margin-top: 30px;
+    font-size: 14px;
+    a {
+      color: #1dbdbc;
+    }
+  }
 `;
 
 const RegistrationsComponent = props => {
@@ -20,22 +57,25 @@ const RegistrationsComponent = props => {
     <section>
       <Page topPush>
         <TopBar fixed withPadding />
-        <PageContent>
+        <Container>
           <LoginContainer>
-            <Grid textAlign="center" style={{ height: '100%' }} verticalAlign="middle">
-              <Grid.Column style={{ maxWidth: 450 }}>
-                <br />
-                <Header as="h2" color="teal" textAlign="center">
-                  Create your new account
-                </Header>
-                {Object.keys(props.errors).length !== 0 && (
-                  <Message style={{ color: 'red' }}>{props.errors.error.message}</Message>
-                )}
-                {Object.keys(props.stateErrors).length !== 0 && (
-                  <Message style={{ color: 'red' }}>{props.stateErrors.message}</Message>
-                )}
-                <Form size="large">
-                  <Segment stacked>
+            <br /> <br />
+            <Grid centered stackable verticalAlign="middle">
+              <Grid.Row columns={2}>
+                <Grid.Column textAlign="center" floated="left">
+                  <img src={welcomeImage} alt="welcomeImage" className="login-img" />
+                  <div className="login-img-content">Plan your next trip with us!</div>
+                </Grid.Column>
+                <Grid.Column width="6" floated="right">
+                  <div className="login-header">Create your new account</div>
+                  <br />
+                  {Object.keys(props.errors).length !== 0 && (
+                    <Message style={{ color: 'red' }}>{props.errors.error.message}</Message>
+                  )}
+                  {Object.keys(props.stateErrors).length !== 0 && (
+                    <Message style={{ color: 'red' }}>{props.stateErrors.message}</Message>
+                  )}
+                  <Form size="large">
                     <Form.Input
                       fluid
                       icon="user"
@@ -90,21 +130,27 @@ const RegistrationsComponent = props => {
                       required
                     />
 
-                    <Button color="teal" fluid size="large" onClick={props.onSubmitRegistration}>
+                    <Button
+                      className="green-btn pl-btn"
+                      fluid
+                      size="large"
+                      onClick={props.onSubmitRegistration}
+                    >
                       Register
                     </Button>
-                  </Segment>
-                </Form>
-                <Message>
-                  Already have an account ?{' '}
-                  <Link to="/login" replace>
-                    Sign In
-                  </Link>
-                </Message>
-              </Grid.Column>
+                  </Form>
+
+                  <div className="login-q-text">
+                    Already have an account ?&nbsp;&nbsp;
+                    <Link to="/login" replace>
+                      Sign In
+                    </Link>
+                  </div>
+                </Grid.Column>
+              </Grid.Row>
             </Grid>
           </LoginContainer>
-        </PageContent>
+        </Container>
         <StaticFooter>
           <BrandFooter withTopBorder withPadding />
         </StaticFooter>

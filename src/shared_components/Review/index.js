@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 // COMPONENTS
 import Stars from '../Rating/Stars';
 import Image from 'shared_components/Image';
+import placeholder from './../../assets/placeholder350x350.svg';
 
 // ACTIONS/CONFIG
 
@@ -74,9 +75,7 @@ export default function ReviewCart({ review }) {
           <Avatar>
             <Image
               src={
-                review.reviewer.profilePicture
-                  ? review.reviewer.profilePicture.url
-                  : 'https://dummyimage.com/60x40/000/fff'
+                review.reviewer.profilePicture ? review.reviewer.profilePicture.url : placeholder
               }
               alt=""
             />
