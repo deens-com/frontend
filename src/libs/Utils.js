@@ -160,3 +160,11 @@ export function reloadPage() {
     window.location.reload();
   }
 }
+
+/**
+ * Gets the large size image from the media array
+ * @returns {string | undefined}
+ */
+export function getLargeImageFromMedia(media) {
+  return media && media[0] && media[0].files && media[0].files.large && media[0].files.large.url;
+}

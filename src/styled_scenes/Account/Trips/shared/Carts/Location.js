@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Label as SemanticLabel, Icon } from 'semantic-ui-react';
+import { Label as SemanticLabel } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router';
@@ -11,17 +11,20 @@ import * as actions from './../../../../../scenes/service-upsert/actions';
 import { Popup } from 'semantic-ui-react';
 
 // COMPONENTS
-import Rating from './../../../../../shared_components/Rating';
-import PriceTag from './../../../../../shared_components/Currency/PriceTag';
+import Rating from 'shared_components/Rating';
+import PriceTag from 'shared_components/Currency/PriceTag';
 import Thumb from './components/Thumb';
-import Col from './../../../../../shared_components/layout/Col';
-import { PinIcon } from './../../../../../shared_components/icons';
+import Col from 'shared_components/layout/Col';
+import { PinIcon } from 'shared_components/icons';
+import I18nText from 'shared_components/I18nText';
+import CityCountry from 'shared_components/CityCountry';
 
 // ACTIONS/CONFIG
 
 // STYLES
 import { Cart } from './styles';
 import { cardConfig } from 'libs/config';
+import { getLargeImageFromMedia } from 'libs/Utils';
 
 const ContentWrap = styled.div`
   padding: 20px;
@@ -70,17 +73,6 @@ const Location = styled.span`
   }
 `;
 
-const SemanticLabelFixed = styled(SemanticLabel)`
-  position: absolute;
-  top: 10px;
-  z-index: 10;
-  right: 4px;
-
-  a {
-    opacity: 1 !important;
-  }
-`;
-
 const RelativeCard = styled(Cart)`
   position: relative;
 `;
@@ -95,62 +87,6 @@ const ImageItem = styled.div`
   grid-column-start: 1;
   grid-column-end: span 2;
 `;
-
-const ContractStatusItem = styled.div`
-  grid-column-start: 2;
-  grid-row-start: 1;
-  z-index: 1;
-`;
-
-const wrapInRopstenLink = (text, reservation) => (
-  <a href={`https://ropsten.etherscan.io/tx/${reservation.transactionHash}`} target="_blank">
-    {text}
-  </a>
-);
-
-const getSmartContractBookingStatus = props => {
-  if (!props.item.reservation) return null;
-  const { transactionHash, transactionStatus } = props.item.reservation;
-  const values = { pricePerSession: props.item.pricePerSession, slots: props.item.slots };
-  if (transactionHash != null) {
-    if (transactionStatus === 1) {
-      return wrapInRopstenLink(
-        <SemanticLabelFixed onClick={props.redeployContract} color="green">
-          Confirmed <Icon name="external" />
-        </SemanticLabelFixed>,
-        props.item.reservation,
-      );
-    }
-    if (transactionStatus === 0) {
-      return (
-        <div>
-          {wrapInRopstenLink(
-            <SemanticLabelFixed color="red">
-              Failed <Icon name="external" />
-            </SemanticLabelFixed>,
-            props.item.reservation,
-          )}
-          <SemanticLabelFixed
-            style={{ top: '40px' }}
-            onClick={() => props.redeployContract(values, props.item, props.history)}
-            color="green"
-          >
-            Re-deploy
-          </SemanticLabelFixed>
-        </div>
-      );
-    }
-    if (!transactionStatus) {
-      return wrapInRopstenLink(
-        <SemanticLabelFixed color="blue">
-          Pending <Icon name="external" />
-        </SemanticLabelFixed>,
-        props.item.reservation,
-      );
-    }
-  }
-  return <SemanticLabelFixed color="green">Confirmed</SemanticLabelFixed>;
-};
 
 // MODULE
 class ServiceLocationCard extends Component {
@@ -171,7 +107,7 @@ class ServiceLocationCard extends Component {
 
   wrapWithLink = element => {
     const { item } = this.props;
-    return <Link to={`/services/${item.objectId}`}>{element}</Link>;
+    return <Link to={`/services/${item._id}`}>{element}</Link>;
   };
 
   render() {
@@ -184,25 +120,26 @@ class ServiceLocationCard extends Component {
               <Col xsBasis={xsBasis} mdBasis={smBasis} smBasis={mdBasis}>
                 <RelativeCard withShadow={withShadow} column>
                   <ImageGridContainer>
-                    <ImageItem>{this.wrapWithLink(<Thumb url={item.image} />)}</ImageItem>
-                    <ContractStatusItem>
-                      {getSmartContractBookingStatus(this.props)}
-                    </ContractStatusItem>
+                    <ImageItem>
+                      {this.wrapWithLink(<Thumb url={getLargeImageFromMedia(item.media)} />)}
+                    </ImageItem>
                   </ImageGridContainer>
                   <ContentWrap>
                     {this.wrapWithLink(
                       <div>
                         <Title>
                           <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>
-                            {item.title}
+                            <I18nText data={item.title} />
                           </Truncate>
                         </Title>
 
-                        {item.type && (
+                        {item.location && (
                           <Location>
                             <PinIcon />
                             <p>
-                              <Truncate lines={cardConfig.locationLines}>{item.location}</Truncate>
+                              <Truncate lines={cardConfig.locationLines}>
+                                <CityCountry location={item.location} />
+                              </Truncate>
                             </p>
                           </Location>
                         )}
@@ -222,22 +159,23 @@ class ServiceLocationCard extends Component {
             <RelativeCard withShadow={withShadow} column>
               <ImageGridContainer>
                 <ImageItem>{this.wrapWithLink(<Thumb url={item.image} />)}</ImageItem>
-                <ContractStatusItem>{getSmartContractBookingStatus(this.props)}</ContractStatusItem>
               </ImageGridContainer>
               <ContentWrap>
                 {this.wrapWithLink(
                   <div>
                     <Title>
                       <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>
-                        {item.title}
+                        <I18nText data={item.title} />
                       </Truncate>
                     </Title>
 
-                    {item.type && (
+                    {item.location && (
                       <Location>
                         <PinIcon />
                         <p>
-                          <Truncate lines={cardConfig.locationLines}>{item.location}</Truncate>
+                          <Truncate lines={cardConfig.locationLines}>
+                            <CityCountry location={item.location} />
+                          </Truncate>
                         </p>
                       </Location>
                     )}

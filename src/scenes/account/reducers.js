@@ -1,14 +1,12 @@
 const initialState = {
   user_profile: {},
-  all_trips: [],
-  planned_trips: [],
-  completed_trips: [],
+  allTrips: [],
+  isLoadingTrips: false,
   user_services: [],
   metamaskError: {},
   ledger_error: {},
   editUserError: {},
   failedReservations: [],
-  isLoadingTrips: false,
 };
 
 export default function AccountReducer(state = initialState, action = {}) {
@@ -23,15 +21,15 @@ export default function AccountReducer(state = initialState, action = {}) {
         ...state,
         user_services: action.payload.user_services,
       };
-    case 'ACCOUNT/CATEGORIZED_TRIPS_FETCH_STARTED':
+    case 'ACCOUNT/MY_TRIPS_FETCH_STARTED':
       return {
         ...state,
         isLoadingTrips: true,
       };
-    case 'ACCOUNT/CATEGORIZED_TRIPS_FETCHED': {
+    case 'ACCOUNT/MY_TRIPS_FETCHED': {
       return {
         ...state,
-        ...action.payload,
+        allTrips: action.payload,
         isLoadingTrips: false,
       };
     }

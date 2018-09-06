@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import AccountProfileComponent from './../components/account_profile_component';
-import AccountTripsComponent from './../components/account_trips_component';
 import AccountServicesComponent from './../components/account_services_component';
 import AccountSettingsContainer from './AccountSettingsContainer';
 import * as account_actions from './../actions';
@@ -10,6 +9,7 @@ import { bindActionCreators } from 'redux';
 import { Route, withRouter } from 'react-router-dom';
 import BrandFooter from '../../../shared_components/BrandFooter';
 import styled from 'styled-components';
+import AccountTripsContainer from './AccountTripsContainer';
 
 const StaticFooter = styled.footer`
   position: static;
@@ -26,9 +26,7 @@ class AccountContainer extends Component {
       <div className="AccountContainer">
         <Route
           path={process.env.PUBLIC_URL + '/account/trips'}
-          render={props => (
-            <AccountTripsComponent {...this.props} user_profile={this.props.session} />
-          )}
+          render={props => <AccountTripsContainer {...this.props} user={this.props.session} />}
         />
         <Route
           path={process.env.PUBLIC_URL + '/account/profile'}
@@ -69,7 +67,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({...account_actions, ...session_actions}, dispatch);
+  return bindActionCreators({ ...account_actions, ...session_actions }, dispatch);
 };
 
 export default withRouter(

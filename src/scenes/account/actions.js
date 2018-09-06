@@ -21,13 +21,13 @@ export const user_services_fetched = user_services => {
   };
 };
 
-export const categorizedTripsFetched = trips => ({
-  type: 'ACCOUNT/CATEGORIZED_TRIPS_FETCHED',
+export const myTripsFetched = trips => ({
+  type: 'ACCOUNT/MY_TRIPS_FETCHED',
   payload: trips,
 });
 
-export const categorizedTripsFetchStarted = trips => ({
-  type: 'ACCOUNT/CATEGORIZED_TRIPS_FETCH_STARTED',
+export const myTripsFetchStarted = trips => ({
+  type: 'ACCOUNT/MY_TRIPS_FETCH_STARTED',
 });
 
 export const edit_user_error_raised = error => {
@@ -133,20 +133,12 @@ export const fetch_user_services = () => async dispatch => {
   }
 };
 
-export const fetch_user_trips = (owner_id, trip_state) => dispatch => {
-  dispatch(categorizedTripsFetchStarted());
-  if (trip_state === 'planned') {
-    Parse.Cloud.run('myPlannedTrips')
-      .then(fetch_helpers.normalizeParseResponseData)
-      .then(result => dispatch(categorizedTripsFetched({ planned_trips: result })));
-  } else if (trip_state === 'completed') {
-    Parse.Cloud.run('myCompletedTrips')
-      .then(fetch_helpers.normalizeParseResponseData)
-      .then(result => dispatch(categorizedTripsFetched({ completed_trips: result })));
-  } else if (trip_state === 'all') {
-    Parse.Cloud.run('myAllTrips')
-      .then(fetch_helpers.normalizeParseResponseData)
-      .then(result => dispatch(categorizedTripsFetched({ all_trips: result })));
+export const fetchUserTrips = () => async dispatch => {
+  dispatch(myTripsFetchStarted());
+  const session = getSession();
+  if (session) {
+    const { data: trips } = await axios.get('/trips', { params: { include: 'services' } });
+    dispatch(myTripsFetched(trips));
   }
 };
 

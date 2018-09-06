@@ -1,5 +1,6 @@
 import React from 'react';
 import { Grid, Icon } from 'semantic-ui-react';
+import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import CircularProfilePic from './CircularProfilePic';
 import Stars from './Stars';
@@ -164,4 +165,4 @@ const UserBasicInfo = ({ user_profile: user = {}, match, update_user_avatar, log
   );
 };
 
-export default UserBasicInfo;
+export default withRouter(UserBasicInfo);
