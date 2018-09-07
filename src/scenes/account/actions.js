@@ -38,15 +38,17 @@ export const edit_user_error_raised = error => {
 };
 
 export const fetch_user_profile = () => async dispatch => {
-  const session = getSession();
-  if (session) {
-    const user = await axios.get('/users/me').catch(error => {
-      console.log(error);
-      //dispatch(setLoginError({code: error.response.status, message: error.response.data.error_description}));
-    });
-    dispatch(user_profile_fetched({ user_profile: user.data }));
-  } else {
-    history.push('/login');
+  try {
+    const session = getSession();
+    if (session) {
+      const user = await axios.get('/users/me');
+      dispatch(user_profile_fetched({ user_profile: user.data }));
+    } else {
+      history.push('/login');
+    }
+  } catch (error) {
+    console.log(error);
+    //dispatch(setLoginError({code: error.response.status, message: error.response.data.error_description}));
   }
 };
 
