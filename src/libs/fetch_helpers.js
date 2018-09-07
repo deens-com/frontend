@@ -26,11 +26,11 @@ const get_service_image = mediaOrMainPicture => {
 
 const buildService = service => {
   const i18nLocale = 'en-us';
-  let DayList = [];
+  let dayList = [];
   for (const key in service.periods[0].daysOfWeek) {
     const selected = service.periods[0].daysOfWeek[key];
     const capitalized = key.charAt(0).toUpperCase() + key.substr(1);
-    DayList = [...DayList, { weekday: capitalized, selected }];
+    dayList = [...dayList, { weekday: capitalized, selected }];
   }
 
   try {
@@ -40,7 +40,7 @@ const buildService = service => {
     service.objectId = service._id;
     service.rating = service.rating;
     service.duration = service.duration;
-    service.DayList = DayList;
+    service.dayList = dayList;
     if (service.rules && service.rules.length) {
       const rules = service.rules.map(rule => ({
         value: rule[i18nLocale],
@@ -52,8 +52,8 @@ const buildService = service => {
     service.facebook = service.links.facebook;
     service.twitter = service.links.twitter;
     service.website = service.links.website;
-    console.log('service.facebook', service.facebook);
-
+    service.openingTime = service.periods[0].startTime;
+    service.closingTime = service.periods[0].endTime;
     service.reviewCount = service.reviewCount;
     service.slots = service.slots;
   } catch (error) {
