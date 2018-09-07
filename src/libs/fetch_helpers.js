@@ -48,8 +48,12 @@ const buildService = service => {
       service.rules = rules;
     }
     service.start = service.instructions.start[i18nLocale];
-    console.log('start', service.start);
     service.end = service.instructions.end[i18nLocale];
+    service.facebook = service.links.facebook;
+    service.twitter = service.links.twitter;
+    service.website = service.links.website;
+    console.log('service.facebook', service.facebook);
+
     service.reviewCount = service.reviewCount;
     service.slots = service.slots;
   } catch (error) {
