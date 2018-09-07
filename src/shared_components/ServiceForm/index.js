@@ -93,7 +93,6 @@ class ServiceForm extends Component {
       labelByDay.selected = false;
     }
     setFieldValue('availableDays', availableDays);
-    console.log('availableDays', availableDays);
     setFieldTouched('availableDays', true, false);
   };
 
@@ -323,21 +322,44 @@ class ServiceForm extends Component {
           {touched.latlong && errors.latlong && <ErrorMsg>{errors.latlong}</ErrorMsg>}
         </Form.Field>
 
+        {/* Instruction */}
+        <Form.Group widths="equal">
+          <Form.Field>
+            <label>Instructions Start</label>
+            <Form.Input
+              name="start"
+              value={values.start}
+              error={!!(touched.start && errors.start)}
+              {...defaultProps}
+            />
+            {touched.start && errors.start && <ErrorMsg>{errors.start}</ErrorMsg>}
+          </Form.Field>
+          <Form.Field>
+            <label>Instructions End</label>
+            <Form.Input
+              name="end"
+              value={values.end}
+              error={!!(touched.end && errors.end)}
+              {...defaultProps}
+            />
+            {touched.end && errors.end && <ErrorMsg>{errors.end}</ErrorMsg>}
+          </Form.Field>
+        </Form.Group>
+
         {/* Rules */}
         <Form.Field>
           <label>Rules</label>
           {values.rules.map((rule, index) => (
-            <div>
+            <Form.Field key={rule.value}>
               <label>{`Rule ${index + 1}`}</label>
               <Form.Input
                 name="rule"
-                key={rule.value + index}
                 value={rule.value}
                 error={!!(touched.rule && errors.rule)}
                 {...defaultProps}
               />
               {touched.rule && errors.rule && <ErrorMsg>{errors.rule}</ErrorMsg>}
-            </div>
+            </Form.Field>
           ))}
         </Form.Field>
 
@@ -493,9 +515,12 @@ function validate(values) {
     'subtitle',
     'description',
     'rules',
+    'start',
+    'end',
     'duration',
     'basePrice',
     'availableDays',
+    'instruction',
     'openingTime',
     'closingTime',
     'slots',
@@ -536,6 +561,8 @@ export default withFormik({
     description: (service && service.description) || '',
     duration: (service && service.duration) || '',
     rules: (service && service.rules) || [],
+    start: (service && service.start) || '',
+    end: (service && service.end) || '',
     basePrice: service && service.basePrice != null ? service.basePrice : '',
     acceptETH: (service && service.acceptETH) || false,
     availableDays: (service && service.DayList) || weekDays,
