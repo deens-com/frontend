@@ -25,6 +25,14 @@ const get_service_image = mediaOrMainPicture => {
 };
 
 const buildService = service => {
+  let DayList = [];
+  // got a webpack error with Object.keys went with for of loop
+  for (var key in service.periods[0].daysOfWeek) {
+    const selected = service.periods[0].daysOfWeek[key];
+    const capitalized = key.charAt(0).toUpperCase() + key.substr(1);
+    DayList = [...DayList, { weekday: capitalized, selected }];
+  }
+  console.log(DayList);
   const i18nLocale = 'en-us';
   try {
     service.title = service.title[i18nLocale];
@@ -35,6 +43,7 @@ const buildService = service => {
     service.rating = service.rating;
     service.duration = service.duration;
     service.rules = service.rules;
+    service.DayList = DayList;
     if (service.rules && service.rules.length) {
       const rules = service.rules.map(rule => {
         return { value: rule[i18nLocale] };
