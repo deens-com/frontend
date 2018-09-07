@@ -312,6 +312,24 @@ class ServiceForm extends Component {
           {touched.latlong && errors.latlong && <ErrorMsg>{errors.latlong}</ErrorMsg>}
         </Form.Field>
 
+        {/* Rules */}
+        <Form.Field>
+          <label>Rules</label>
+          {values.rules.map((rule, index) => (
+            <div>
+              <label>{`Rule ${index + 1}`}</label>
+              <Form.Input
+                name="rule"
+                key={rule.value + index}
+                value={rule.value}
+                error={!!(touched.rule && errors.rule)}
+                {...defaultProps}
+              />
+              {touched.rule && errors.rule && <ErrorMsg>{errors.rule}</ErrorMsg>}
+            </div>
+          ))}
+        </Form.Field>
+
         {/* Timings */}
         <Form.Group widths="equal">
           <Form.Field>
