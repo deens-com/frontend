@@ -5,6 +5,7 @@ import validator from 'validator';
 import history from 'main/history';
 import LoginFormComponent from './../components/login_form_component';
 import * as sessionsActions from './../actions';
+import { getSession } from 'libs/user-session';
 
 class SessionsContainer extends Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class SessionsContainer extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.isInputInvalid = this.isInputInvalid.bind(this);
     this.isLoginError = this.isLoginError.bind(this);
-    if (localStorage.getItem('please-development-session')) {
+    if (getSession()) {
       history.push('/');
     }
   }
