@@ -150,7 +150,7 @@ const UserBasicInfo = ({ user_profile: user = {}, match, update_user_avatar, log
             </Menu.Item>
           </Link>
             */}
-          <div style={{ cursor: 'pointer' }} onClick={() => logOut()}>
+          <div style={{ cursor: 'pointer' }} onClick={logOut}>
             <Menu.Item name="logout" active={activePath === 'logout'}>
               <MenuIcon disabled name="angle right" circular />
               <span>
