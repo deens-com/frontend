@@ -1,4 +1,4 @@
-import Parse, { Object } from 'parse';
+import Parse from 'parse';
 import { tagsColorMatcher } from './Utils';
 
 const normalizeParseResponseData = data => {
@@ -25,31 +25,31 @@ const get_service_image = mediaOrMainPicture => {
 };
 
 const buildService = service => {
+  const i18nLocale = 'en-us';
   let DayList = [];
-  // got a webpack error with Object.keys went with for of loop
-  for (var key in service.periods[0].daysOfWeek) {
+  for (const key in service.periods[0].daysOfWeek) {
     const selected = service.periods[0].daysOfWeek[key];
     const capitalized = key.charAt(0).toUpperCase() + key.substr(1);
     DayList = [...DayList, { weekday: capitalized, selected }];
   }
-  console.log(DayList);
-  const i18nLocale = 'en-us';
+
   try {
     service.title = service.title[i18nLocale];
     service.subtitle = service.subtitle[i18nLocale];
     service.description = service.description[i18nLocale];
     service.objectId = service._id;
-    service.instructions = service.rules;
     service.rating = service.rating;
     service.duration = service.duration;
-    service.rules = service.rules;
     service.DayList = DayList;
     if (service.rules && service.rules.length) {
-      const rules = service.rules.map(rule => {
-        return { value: rule[i18nLocale] };
-      });
+      const rules = service.rules.map(rule => ({
+        value: rule[i18nLocale],
+      }));
       service.rules = rules;
     }
+    service.start = service.instructions.start[i18nLocale];
+    console.log('start', service.start);
+    service.end = service.instructions.end[i18nLocale];
     service.reviewCount = service.reviewCount;
     service.slots = service.slots;
   } catch (error) {
