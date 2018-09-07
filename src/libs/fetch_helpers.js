@@ -34,6 +34,13 @@ const buildService = service => {
     service.instructions = service.rules;
     service.rating = service.rating;
     service.duration = service.duration;
+    service.rules = service.rules;
+    if (service.rules && service.rules.length) {
+      const rules = service.rules.map(rule => {
+        return { value: rule[i18nLocale] };
+      });
+      service.rules = rules;
+    }
     service.reviewCount = service.reviewCount;
     service.slots = service.slots;
   } catch (error) {
