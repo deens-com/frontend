@@ -409,6 +409,40 @@ class ServiceForm extends Component {
           {touched.slots && errors.slots && <ErrorMsg>{errors.slots}</ErrorMsg>}
         </Form.Field>
 
+        {/* Links */}
+        <Form.Group widths="equal">
+          <Form.Field>
+            <label>Facebook Link</label>
+            <Form.Input
+              name="facebook"
+              value={values.facebook}
+              error={!!(touched.facebook && errors.facebook)}
+              {...defaultProps}
+            />
+            {touched.facebook && errors.facebook && <ErrorMsg>{errors.facebook}</ErrorMsg>}
+          </Form.Field>
+          <Form.Field>
+            <label>Twitter Link</label>
+            <Form.Input
+              name="end"
+              value={values.twitter}
+              error={!!(touched.twitter && errors.twitter)}
+              {...defaultProps}
+            />
+            {touched.twitter && errors.twitter && <ErrorMsg>{errors.twitter}</ErrorMsg>}
+          </Form.Field>
+          <Form.Field>
+            <label>Website Link</label>
+            <Form.Input
+              name="end"
+              value={values.website}
+              error={!!(touched.website && errors.website)}
+              {...defaultProps}
+            />
+            {touched.website && errors.website && <ErrorMsg>{errors.website}</ErrorMsg>}
+          </Form.Field>
+        </Form.Group>
+
         {/* Tags */}
         <Form.Field>
           <label>Tags</label>
@@ -563,6 +597,9 @@ export default withFormik({
     rules: (service && service.rules) || [],
     start: (service && service.start) || '',
     end: (service && service.end) || '',
+    facebook: (service && service.facebook) || '',
+    twitter: (service && service.twitter) || '',
+    website: (service && service.website) || '',
     basePrice: service && service.basePrice != null ? service.basePrice : '',
     acceptETH: (service && service.acceptETH) || false,
     availableDays: (service && service.DayList) || weekDays,
