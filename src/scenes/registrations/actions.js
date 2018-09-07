@@ -29,46 +29,36 @@ export const registrationFailed = error_payload => {
   };
 };
 
-export const postRegistration = (username, email, password) => {
-  return dispatch => {
-    axios
-      .post(`${serverBaseURL}/users/signup`, {
-        username: username,
-        email: email,
-        password: password,
-      })
-      .then(async res => {
-        try {
-          const auth0Response = await axios
-            .post(`${serverBaseURL}/users/login`, { username: email, password: password })
-            .catch(error => {
-              dispatch(
-                registrationFailed({ error: { message: error.response.data.error_description } }),
-              );
-            });
-          if (auth0Response) {
-            const auth0Token = auth0Response.data.access_token;
-            const user = await axios
-              .get(`${serverBaseURL}/users/me`, {
-                headers: { Authorization: `Bearer ${auth0Token}` },
-              })
-              .catch(error => {
-                dispatch(
-                  registrationFailed({ error: { message: error.response.data.error_description } }),
-                );
-              });
-            const userData = user.data;
-            userData.accessToken = auth0Token;
-            dispatch(registrationSuccess({ session: userData }));
-            saveSession(userData);
-            history.goBack();
-          }
-        } catch (error) {
-          dispatch(registrationFailed({ error: { message: error } }));
-        }
-      })
-      .catch(err => {
-        dispatch(registrationFailed({ error: { message: err.response.data.description } }));
-      });
-  };
+export const postRegistration = (username, email, password) => async dispatch => {
+  try {
+    await axios.post('/users/signup', {
+      username: username,
+      email: email,
+      password: password,
+    });
+    const loginResponse = await axios.post('/users/login', { username: email, password: password });
+    const auth0Token = loginResponse.data.access_token;
+    const user = await axios.get('/users/me', {
+      headers: { Authorization: `Bearer ${auth0Token}` },
+    });
+    const userData = user.data;
+    userData.accessToken = auth0Token;
+    dispatch(registrationSuccess({ session: userData }));
+    saveSession(userData);
+    history.goBack();
+  } catch (error) {
+    console.error(error);
+    console.log(error.response);
+    dispatch(
+      registrationFailed({
+        error: {
+          message:
+            (error.response &&
+              error.response.data &&
+              (error.response.data.error_description || error.response.data.description)) ||
+            error.message,
+        },
+      }),
+    );
+  }
 };
