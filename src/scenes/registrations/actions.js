@@ -1,7 +1,6 @@
 import history from './../../main/history';
 import * as analytics from 'libs/analytics';
 import axios from 'libs/axios';
-import { serverBaseURL } from 'libs/config';
 import { saveSession } from 'libs/user-session';
 
 export const types = {

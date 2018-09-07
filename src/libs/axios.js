@@ -1,5 +1,4 @@
 import axios from 'axios';
-import Parse from 'parse';
 import { serverBaseURL } from './config';
 import { getSession } from './user-session';
 
