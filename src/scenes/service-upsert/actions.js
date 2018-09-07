@@ -50,32 +50,6 @@ export const registerService = (values, history) => async (dispatch, getState) =
         parseFile = await new Parse.File(filename, mainPicture).save();
       }
     }
-    console.log({
-      ...values,
-      location: {
-        line1: '123 avenue',
-        line2: 'Flat 4',
-        postcode: 'KY1-1003',
-        city: 'George Town',
-        state: 'Grand Cayman',
-        countryCode: 'KY',
-        geo: {
-          coordinates: [values.latlong.lat, values.latlong.lng],
-          type: 'Point',
-        },
-        formattedAddress: '123 avenue, Flat 4, George Town, Grand Cayman',
-        country: {
-          names: {
-            'en-us': 'Cayman Islands',
-            'fr-fr': 'Îles Caïmans',
-          },
-        },
-        id: null,
-      },
-      periods: {
-        daysOfWeek: [...values.availableDays],
-      },
-    });
     // const result = await Parse.Cloud.run('createOrUpdateService', {
     //   ...values,
     //   parseFile,
@@ -115,7 +89,7 @@ export const fetchService = serviceId => async (dispatch, getState) => {
     const result = await axios
       .get(`${serverBaseURL}/services/${serviceId}`, {
         headers: {
-          Authorization: `Bearer ${'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ik5ESXdOVUpGUVRjMFF6UTVOMFEyUmpFNFJUZEJRamxGTkVGRE5rRTFNak0zTmtJd09EWkdNQSJ9.eyJpc3MiOiJodHRwczovL3N0YWdpbmctcGxlYXNlLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw1YjhmMDU1NmM4Yzc5MDM2ODU0ODllM2MiLCJhdWQiOiJodHRwczovL3N0YWdpbmctcGxlYXNlLmV1LmF1dGgwLmNvbS9hcGkvdjIvIiwiaWF0IjoxNTM2MTk1MTgwLCJleHAiOjE1MzYyODE1ODAsImF6cCI6ImhkUDlzU3phcnRTSDJsdlIyb0FCQVdkMENxN1VVUVZ2Iiwic2NvcGUiOiJyZWFkOmN1cnJlbnRfdXNlciB1cGRhdGU6Y3VycmVudF91c2VyX21ldGFkYXRhIGRlbGV0ZTpjdXJyZW50X3VzZXJfbWV0YWRhdGEgY3JlYXRlOmN1cnJlbnRfdXNlcl9tZXRhZGF0YSBjcmVhdGU6Y3VycmVudF91c2VyX2RldmljZV9jcmVkZW50aWFscyBkZWxldGU6Y3VycmVudF91c2VyX2RldmljZV9jcmVkZW50aWFscyB1cGRhdGU6Y3VycmVudF91c2VyX2lkZW50aXRpZXMiLCJndHkiOiJwYXNzd29yZCJ9.W_9U5NUt6QNJsJsXSE2kfjCb9VmhIMX0lOH3Ls6it6vN7y3gmoOkQreove_DpI5RPLj_APDVGkqoOrOFRodvJiho6gDVKffK-ko35xgxg2havlOHkkeR7o0Gorqt0ixTtgDzaS4qiAf4uUYlOmc_RrdNTiYvN5Zk78A34hB4zsHaIjFtB2oGo_vXEDGJIbN6mQQzNf4ZaZA6LmPEmYodHq7YXsttOGNxqWI2DPmNMnDzy2-BjjMvK0XwwAmuom1WnOolTZxOhSkAyDMQAI95mrwD7DMtLcukcZLDFCGCHKUowvXNfZ5AoeAoKxp1RHZuoiWGm3XJRW5Wv4rWJN9GVw'}`,
+          Authorization: `Bearer ${'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ik5ESXdOVUpGUVRjMFF6UTVOMFEyUmpFNFJUZEJRamxGTkVGRE5rRTFNak0zTmtJd09EWkdNQSJ9.eyJpc3MiOiJodHRwczovL3N0YWdpbmctcGxlYXNlLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw1YjhmMDU1NmM4Yzc5MDM2ODU0ODllM2MiLCJhdWQiOiJodHRwczovL3N0YWdpbmctcGxlYXNlLmV1LmF1dGgwLmNvbS9hcGkvdjIvIiwiaWF0IjoxNTM2Mjc4MTYyLCJleHAiOjE1MzYzNjQ1NjIsImF6cCI6ImhkUDlzU3phcnRTSDJsdlIyb0FCQVdkMENxN1VVUVZ2Iiwic2NvcGUiOiJyZWFkOmN1cnJlbnRfdXNlciB1cGRhdGU6Y3VycmVudF91c2VyX21ldGFkYXRhIGRlbGV0ZTpjdXJyZW50X3VzZXJfbWV0YWRhdGEgY3JlYXRlOmN1cnJlbnRfdXNlcl9tZXRhZGF0YSBjcmVhdGU6Y3VycmVudF91c2VyX2RldmljZV9jcmVkZW50aWFscyBkZWxldGU6Y3VycmVudF91c2VyX2RldmljZV9jcmVkZW50aWFscyB1cGRhdGU6Y3VycmVudF91c2VyX2lkZW50aXRpZXMiLCJndHkiOiJwYXNzd29yZCJ9.vz3jmLBXgWZyzEKU3x02Q8s08qYd1KwC3HemfaAPlPB6HokiNd4REjfKwZ8nABotSn7hA2QLVlOjBDTZd1EaOTxs7WHTO41ywWU661A_gBkeOwJUkQirNaMVMmXcV0fnTr6IFEf6202LtqKJAWeX0cTGIIbiqb3UQJWJNOZvOsp3px28qIkGzzZQJ_GAtc5TQHwH7RprC-0KSYcWeJgy0yXWeqGrF2nlNHEXgkQ_-PWsS6tjB81CpeXkusZNDiqhshFPqbozK9SLwy-89Go7t-OXyVbw91EJSFOYMUIYXhVS9WHjFlBvQqfiJkkk8gwz_mMZS6Z0bHyB2Urq2FWMeA'}`,
         },
       })
       .catch(error => {
