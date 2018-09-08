@@ -56,10 +56,9 @@ const buildService = service => {
     service.closingTime = service.periods[0].endTime;
     service.reviewCount = service.reviewCount;
     if (service.categories && service.categories.length) {
-      const categories = service.categories.map(category => ({
-        name: category.names[i18nLocale].toLowerCase(),
-        value: category.names[i18nLocale],
-      }));
+      const categories = service.categories.map(category =>
+        category.names[i18nLocale].toLowerCase(),
+      );
       service.categories = categories;
     }
     service.slots = service.slots;
