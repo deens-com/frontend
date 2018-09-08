@@ -61,6 +61,10 @@ const buildService = service => {
       );
       service.categories = categories;
     }
+    if (service.tags && service.tags.length) {
+      const tags = service.tags.map(tag => tag.names[i18nLocale]);
+      service.tags = tags;
+    }
     service.slots = service.slots;
   } catch (error) {
     console.log(error);
