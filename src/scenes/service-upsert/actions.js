@@ -38,9 +38,14 @@ export const submittingStateChanged = bool => {
 
 export const registerService = (values, history) => async (dispatch, getState) => {
   const state = getState();
+  const localStorageUser = localStorage.getItem(`please-${env}-session`);
+  const jsonUser = JSON.parse(localStorageUser);
+  const jwtToken = jsonUser.accessToken;
   const { isSubmitting } = state.ServiceUpsert;
+
   if (isSubmitting) return;
   dispatch({ type: types.SERVICE_CREATE_STARTED });
+
   try {
     const { mainPicture, acceptETH } = values;
     let parseFile;
@@ -50,21 +55,31 @@ export const registerService = (values, history) => async (dispatch, getState) =
         parseFile = await new Parse.File(filename, mainPicture).save();
       }
     }
-    // const result = await Parse.Cloud.run('createOrUpdateService', {
-    //   ...values,
-    //   parseFile,
-    //   availableDays: [...values.availableDays],
-    // });
+
+    const service = await fetch_helpers.createService(values);
+    const result = await axios
+      .post(`${serverBaseURL}/services`, {
+        headers: {
+          mode: 'no-cors',
+          Authorization: `Bearer ${jwtToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ...service }),
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    console.log(result);
 
     if (acceptETH) {
-      // dispatch(deployContract(result, values, history));
+      dispatch(deployContract(result, values, history));
     } else {
       dispatch({
         type: types.SERVICE_CREATE_SUCCESS,
-        // payload: result,
-        // meta: { analytics: trackServiceCreated(result) },
+        payload: result,
+        meta: { analytics: trackServiceCreated(result) },
       });
-      // history.push(`/services/${result.id}`);
+      history.push(`/services/${result.id}`);
     }
   } catch (error) {
     if (error.errors) {
@@ -79,17 +94,15 @@ export const fetchService = serviceId => async (dispatch, getState) => {
   const { isLoading } = state.ServiceUpsert;
   if (isLoading) return;
   const localStorageUser = localStorage.getItem(`please-${env}-session`);
-  // if (localStorageUser) {
   const jsonUser = JSON.parse(localStorageUser);
   const jwtToken = jsonUser.accessToken;
 
-  // }
   dispatch({ type: types.SERVICE_FETCH_STARTED });
   try {
     const result = await axios
       .get(`${serverBaseURL}/services/${serviceId}`, {
         headers: {
-          Authorization: `Bearer ${'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ik5ESXdOVUpGUVRjMFF6UTVOMFEyUmpFNFJUZEJRamxGTkVGRE5rRTFNak0zTmtJd09EWkdNQSJ9.eyJpc3MiOiJodHRwczovL3N0YWdpbmctcGxlYXNlLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw1YjhmMDU1NmM4Yzc5MDM2ODU0ODllM2MiLCJhdWQiOiJodHRwczovL3N0YWdpbmctcGxlYXNlLmV1LmF1dGgwLmNvbS9hcGkvdjIvIiwiaWF0IjoxNTM2Mjg0NzkxLCJleHAiOjE1MzYzNzExOTEsImF6cCI6ImhkUDlzU3phcnRTSDJsdlIyb0FCQVdkMENxN1VVUVZ2Iiwic2NvcGUiOiJyZWFkOmN1cnJlbnRfdXNlciB1cGRhdGU6Y3VycmVudF91c2VyX21ldGFkYXRhIGRlbGV0ZTpjdXJyZW50X3VzZXJfbWV0YWRhdGEgY3JlYXRlOmN1cnJlbnRfdXNlcl9tZXRhZGF0YSBjcmVhdGU6Y3VycmVudF91c2VyX2RldmljZV9jcmVkZW50aWFscyBkZWxldGU6Y3VycmVudF91c2VyX2RldmljZV9jcmVkZW50aWFscyB1cGRhdGU6Y3VycmVudF91c2VyX2lkZW50aXRpZXMiLCJndHkiOiJwYXNzd29yZCJ9.Gs3sRXU3E8Xhg1zej2RhsnT9VZrLSAd5XQvqn2cQ3pY1ynZGTTjfLIuKWEC0X1M0vXoQ6gQLo-I0yh7YbOh1BqKkGC4EszpumkiH0sP2d1Yyrhpx3eAreH7XrEIeUR70NM-iSqB_mcD1P08FqP0di8jpS80zKWWIdxoNn5kf6ARj9sGx7oOS5Qwk4voqlgAtdn5X0FnSMbgu5tMlwW_KRbARUYGBXvTkA65MH6yRgGvwKJ-pFdJ9MTlCmsQ56Fe4EssXPFpvqlXWFdXiLK3OzIvy5yFlbN_nnl3L1b-sA88v-wCEoiCUWFxBOSCii1GbPs6x3aPy8mhs5dxrTy7fIA'}`,
+          Authorization: `Bearer ${jwtToken}`,
         },
       })
       .catch(error => {
@@ -105,28 +118,40 @@ export const fetchService = serviceId => async (dispatch, getState) => {
 
 export const saveServiceChanges = (serviceId, values, history) => async (dispatch, getState) => {
   if (!serviceId) return;
+  console.log(serviceId, values);
   const state = getState();
   const { isLoading } = state.ServiceUpsert;
   if (isLoading) return;
-  dispatch({ type: types.SERVICE_SAVE_STARTED });
+  // dispatch({ type: types.SERVICE_SAVE_STARTED });
   try {
-    const rawService = await fetch_helpers.build_query('Service').get(serviceId);
-    const service = fetch_helpers.normalizeParseResponseData(rawService);
-    const input = {
-      id: serviceId,
-      ...service,
-      ...values,
-      availableDays: [...values.availableDays],
-    };
-
-    const result = await Parse.Cloud.run('createOrUpdateService', input);
-
-    if (service.acceptETH) {
-      dispatch(deployContract(result, service, history));
-    } else {
-      dispatch({ type: types.SERVICE_CREATE_SUCCESS, payload: result });
-      history.push(`/services/${result.id}`);
+    const { mainPicture } = values;
+    let parseFilePromise;
+    if (mainPicture) {
+      parseFilePromise = new Parse.File(mainPicture.name, mainPicture).save();
     }
+    // const [rawService, parseFile] = await Promise.all([
+    //   fetch_helpers.build_query('Service').get(serviceId),
+    //   parseFilePromise,
+    // ]);
+    // const service = fetch_helpers.normalizeParseResponseData(rawService);
+    const service = fetch_helpers.normalizeServiceToPatch(values);
+    console.log(service);
+    // const input = {
+    //   id: serviceId,
+    //   ...service,
+    //   ...values,
+    //   availableDays: [...values.availableDays],
+    //   parseFile,
+    // };
+
+    // const result = await Parse.Cloud.run('createOrUpdateService', input);
+
+    // if (service.acceptETH) {
+    //   dispatch(deployContract(result, service, history));
+    // } else {
+    //   dispatch({ type: types.SERVICE_CREATE_SUCCESS, payload: result });
+    //   history.push(`/services/${result.id}`);
+    // }
   } catch (error) {
     if (error.errors) {
       dispatch({ type: types.SERVICE_SAVE_ERROR, payload: error.errors });

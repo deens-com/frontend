@@ -24,16 +24,116 @@ const get_service_image = mediaOrMainPicture => {
   return mediaOrMainPicture.url;
 };
 
+const createService = values => {
+  const i18nLocale = 'en-us';
+
+  try {
+    values.externalId = 'someRandomservice#131';
+    values.title = values.title;
+    values.categories = values.categories.map(category => ({
+      names: {
+        [i18nLocale]: category,
+      },
+    }));
+    values.periods = [
+      {
+        startDate: '2018-07-06T00:00:00.000Z',
+        endDate: '2019-07-06T00:00:00.000Z',
+        startTime: values.start,
+        endTime: values.end,
+        daysOfWeek: values.availableDays.reduce((accum, day) => {
+          const lowerCaseDay = day.weekday.toLowerCase();
+          if (!accum[lowerCaseDay]) {
+            accum[lowerCaseDay] = day.selected;
+          }
+          return accum;
+        }, {}),
+        price: {
+          min: 8,
+          max: 12,
+        },
+        priceCapacity: 2,
+        minCapacity: 1,
+        maxCapacity: 3,
+        cancellationPolicies: {
+          duration: 24,
+          refundAmount: 75,
+          refundType: 'fixed',
+        },
+      },
+    ];
+    values.status = 'active';
+    values.basePrice = values.basePrice;
+    values.location = {
+      line1: `${values.location.address_components[0].long_name} ${
+        values.location.address_components[1].long_name
+      }`,
+      line2: '',
+      postcode: values.location.address_components[7].long_name,
+      city: values.location.address_components[3].long_name,
+      state: values.location.address_components[5].short_name,
+      countryCode: values.location.address_components[6].short_name,
+      country: {
+        names: {
+          [i18nLocale]: values.location.address_components[6].long_name,
+        },
+      },
+      geo: {
+        coordinates: [values.latlong.lng, values.latlong.lat],
+        type: 'Point',
+      },
+      formattedAddress: values.formattedAddress,
+    };
+    values.baseCurrency = {
+      name: 'US Dollar',
+      code: 'USD',
+      symbol: '$',
+    };
+    values.description = { [i18nLocale]: values.description };
+    values.duration = values.duration;
+    values.instructions = {
+      start: { [i18nLocale]: values.start },
+      end: { [i18nLocale]: values.end },
+    };
+    values.rules = values.rules.map(rule => ({ [i18nLocale]: rule }));
+    values.subtitle = { [i18nLocale]: values.subtitle };
+    values.title = { [i18nLocale]: values.title };
+    values.links = {
+      website: values.website,
+      facebook: values.facebook,
+      twitter: values.twitter,
+    };
+    values.otherAttributes = {
+      driver_licence: {
+        type: 'private',
+        names: {
+          [i18nLocale]: '123AZERT456',
+        },
+      },
+      car_color: {
+        type: 'public',
+        names: {
+          [i18nLocale]: 'Black',
+        },
+      },
+    };
+  } catch (error) {
+    console.log(error);
+  }
+
+  return values;
+};
+
 const buildService = service => {
   const i18nLocale = 'en-us';
   let dayList = [];
-  for (const key in service.periods[0].daysOfWeek) {
-    const selected = service.periods[0].daysOfWeek[key];
-    const capitalized = key.charAt(0).toUpperCase() + key.substr(1);
-    dayList = [...dayList, { weekday: capitalized, selected }];
-  }
 
   try {
+    for (const key in service.periods[0].daysOfWeek) {
+      const selected = service.periods[0].daysOfWeek[key];
+      const capitalized = key.charAt(0).toUpperCase() + key.substr(1);
+      dayList = [...dayList, { weekday: capitalized, selected }];
+    }
     service.title = service.title[i18nLocale];
     service.subtitle = service.subtitle[i18nLocale];
     service.description = service.description[i18nLocale];
@@ -55,6 +155,7 @@ const buildService = service => {
     service.reviewCount = service.reviewCount;
     service.slots = service.periods[0].maxCapacity;
     service.formattedAddress = service.location.formattedAddress;
+    service.externalUrl = service.externalUrl[i18nLocale];
     if (service.categories && service.categories.length) {
       const categories = service.categories.map(category =>
         category.names[i18nLocale].toLowerCase(),
@@ -69,6 +170,78 @@ const buildService = service => {
     console.log(error);
   }
   return service;
+};
+
+const normalizeServiceToPatch = values => {
+  const i18nLocale = 'en-us';
+  console.log(values.location);
+  try {
+    values.acceptETH = values.acceptETH;
+    values.title = { [i18nLocale]: values.title };
+    values.description = { [i18nLocale]: values.description };
+    values.externalUrl = { [i18nLocale]: values.externalUrl };
+    values.baseCurrency = {
+      name: 'US Dollar',
+      code: 'USD',
+      symbol: '$',
+    };
+    values.location = {
+      line1: `${values.location.address_components[0].long_name} ${
+        values.location.address_components[1].long_name
+      }`,
+      line2: '',
+      postcode: values.location.address_components[7].long_name,
+      city: values.location.address_components[3].long_name,
+      state: values.location.address_components[5].short_name,
+      countryCode: values.location.address_components[6].short_name,
+      geo: {
+        coordinates: [values.latlong.lng, values.latlong.lat],
+        type: 'Point',
+      },
+    };
+    values.instructions = {
+      start: { [i18nLocale]: values.start },
+      end: { [i18nLocale]: values.end },
+    };
+    values.rules = values.rules.map(rule => ({ [i18nLocale]: rule }));
+    values.subtitle = { [i18nLocale]: values.subtitle };
+    values.links = {
+      facebook: values.facebook,
+      twitter: values.twitter,
+      website: values.website,
+    };
+    values.categories = values.categories.map(category => ({
+      names: {
+        [i18nLocale]: category,
+      },
+    }));
+    values.periods = [
+      {
+        cancellationPolicies: [],
+        startDate: '2018-07-09T18:30:00.000Z',
+        endDate: '2019-12-09T18:30:00.000Z',
+        startTime: 10,
+        endTime: 22,
+        daysOfWeek: values.availableDays.reduce((accum, day) => {
+          const lowerCaseDay = day.weekday.toLowerCase();
+          if (!accum[lowerCaseDay]) {
+            accum[lowerCaseDay] = day.selected;
+          }
+          return accum;
+        }, {}),
+        price: {
+          min: 30,
+          max: 50,
+        },
+        priceCapacity: 1,
+        minCapacity: 1,
+        maxCapacity: 2,
+      },
+    ];
+  } catch (error) {
+    console.log(error);
+  }
+  return values;
 };
 
 const buildServicesJson = services => {
@@ -212,6 +385,8 @@ export const statuses = {
 
 export default {
   normalizeParseResponseData,
+  normalizeServiceToPatch,
+  createService,
   buildService,
   getRandomInt,
   get_service_image,
