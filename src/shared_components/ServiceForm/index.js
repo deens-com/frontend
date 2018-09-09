@@ -351,11 +351,11 @@ class ServiceForm extends Component {
         <Form.Field>
           <label>Rules</label>
           {values.rules.map((rule, index) => (
-            <Form.Field key={rule.value}>
+            <Form.Field key={`rule-${index}`}>
               <label>{`Rule ${index + 1}`}</label>
               <Form.Input
-                name="rule"
-                value={rule.value}
+                name={`rules[${index}]`}
+                value={rule}
                 error={!!(touched.rule && errors.rule)}
                 {...defaultProps}
               />
@@ -549,13 +549,11 @@ function validate(values) {
     'title',
     'subtitle',
     'description',
-    'rules',
     'start',
     'end',
     'duration',
     'basePrice',
     'availableDays',
-    'instruction',
     'openingTime',
     'closingTime',
     'slots',
