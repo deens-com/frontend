@@ -61,7 +61,7 @@ const createService = values => {
         },
       },
     ];
-    values.status = 'active';
+    values.status = values.status;
     values.basePrice = values.basePrice;
     values.location = {
       line1: `${values.location.address_components[0].long_name} ${
@@ -159,9 +159,7 @@ const buildService = service => {
     service.formattedAddress = service.location.formattedAddress;
     service.externalUrl = service.externalUrl[i18nLocale];
     if (service.categories && service.categories.length) {
-      const categories = service.categories.map(category =>
-        category.names[i18nLocale].toLowerCase(),
-      );
+      const categories = service.categories.map(category => category.names[i18nLocale]);
       service.categories = categories;
     }
     if (service.tags && service.tags.length) {
@@ -212,11 +210,14 @@ const normalizeServiceToPatch = values => {
       twitter: values.twitter,
       website: values.website,
     };
-    values.categories = values.categories.map(category => ({
-      names: {
-        [i18nLocale]: category,
-      },
-    }));
+    values.categories = values.categories.map(
+      category =>
+        console.log(category) || {
+          names: {
+            [i18nLocale]: `${category.charAt(0).toUpperCase()}${category.slice(1)}`,
+          },
+        },
+    );
     values.periods = [
       {
         cancellationPolicies: [],
