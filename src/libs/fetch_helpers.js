@@ -28,7 +28,6 @@ const createService = values => {
   const i18nLocale = 'en-us';
 
   try {
-    values.externalId = 'someRandomservice#131';
     values.title = values.title;
     values.categories = values.categories.map(category => ({
       names: {
@@ -39,8 +38,8 @@ const createService = values => {
       {
         startDate: '2018-07-06T00:00:00.000Z',
         endDate: '2019-07-06T00:00:00.000Z',
-        startTime: values.start,
-        endTime: values.end,
+        startTime: values.openingTime,
+        endTime: values.closingTime,
         daysOfWeek: values.availableDays.reduce((accum, day) => {
           const lowerCaseDay = day.weekday.toLowerCase();
           if (!accum[lowerCaseDay]) {
@@ -116,6 +115,9 @@ const createService = values => {
           [i18nLocale]: 'Black',
         },
       },
+    };
+    values.externalUrl = {
+      [i18nLocale]: values.externalUrl,
     };
   } catch (error) {
     console.log(error);
