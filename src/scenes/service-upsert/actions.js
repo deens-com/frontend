@@ -5,6 +5,7 @@ import { trackServiceCreated } from 'libs/analytics';
 import { generateFilename } from 'libs/filename';
 import { env, serverBaseURL } from '../../libs/config';
 import axios from 'axios';
+// import axios from '../../libs/axios';
 
 export const types = {
   SERVICE_CREATE_STARTED: 'SERVICE_CREATE_STARTED',
@@ -57,18 +58,20 @@ export const registerService = (values, history) => async (dispatch, getState) =
     }
 
     const service = await fetch_helpers.createService(values);
-    const result = await axios
-      .post(`${serverBaseURL}/services`, {
-        headers: {
-          mode: 'no-cors',
-          Authorization: `Bearer ${jwtToken}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ ...service }),
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    // const result = axios
+    //   .post('/services', { body: JSON.stringify(service) })
+    //   .catch(error => console.log('error', error));
+    const result = await axios({
+      method: 'post',
+      url: `${serverBaseURL}/services`,
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
+        'Content-Type': 'application/json',
+      },
+      data: JSON.stringify(service),
+    }).catch(error => {
+      console.log(error);
+    });
     console.log(result);
 
     if (acceptETH) {
@@ -102,17 +105,18 @@ export const fetchService = serviceId => async (dispatch, getState) => {
     const result = await axios
       .get(`${serverBaseURL}/services/${serviceId}`, {
         headers: {
-          Authorization: `Bearer ${jwtToken}`,
+          Authorization: `Bearer ${'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ik5ESXdOVUpGUVRjMFF6UTVOMFEyUmpFNFJUZEJRamxGTkVGRE5rRTFNak0zTmtJd09EWkdNQSJ9.eyJpc3MiOiJodHRwczovL3N0YWdpbmctcGxlYXNlLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw1Yjk0NmQwYThhNzBjMzVhODUzNDQxMjQiLCJhdWQiOiJodHRwczovL3N0YWdpbmctcGxlYXNlLmV1LmF1dGgwLmNvbS9hcGkvdjIvIiwiaWF0IjoxNTM2NTgwOTIzLCJleHAiOjE1MzY2NjczMjMsImF6cCI6ImhkUDlzU3phcnRTSDJsdlIyb0FCQVdkMENxN1VVUVZ2Iiwic2NvcGUiOiJyZWFkOmN1cnJlbnRfdXNlciB1cGRhdGU6Y3VycmVudF91c2VyX21ldGFkYXRhIGRlbGV0ZTpjdXJyZW50X3VzZXJfbWV0YWRhdGEgY3JlYXRlOmN1cnJlbnRfdXNlcl9tZXRhZGF0YSBjcmVhdGU6Y3VycmVudF91c2VyX2RldmljZV9jcmVkZW50aWFscyBkZWxldGU6Y3VycmVudF91c2VyX2RldmljZV9jcmVkZW50aWFscyB1cGRhdGU6Y3VycmVudF91c2VyX2lkZW50aXRpZXMiLCJndHkiOiJwYXNzd29yZCJ9.OFcEXYepkRaPqDwrKHcTV7VVXs5iKjGHhiQYMBSMd9FWg4ybizhfEj_iXMcToM8X5JPM36Zy3_uCqhQckzzx5Ea_plnXTSmWHkOFIHSzPypFBwRmGYtQ0msPnXEhn1oO3LsDf75AnWJcGgNXJIZrVH4MbvemnK1ybswQauXvHMWJ84uzeOjIZIYK_ynQIYzVP6-GMEWm8AQywghw36r3yyHXsJmkuSVhNaBGNcb6HkNBQUI8I7HPNqoVYchwGflO_rWxCbdyi257GV8LxpMwuaQqRuGOuAWZJ5yEXnKtajamzOlXg9sfAJsgfTv_QOaYGYbWRM7oQbmFieVP4i4UaQ'}`,
         },
       })
       .catch(error => {
         console.log(error);
       });
+
     console.log('result', result.data);
     const service = fetch_helpers.buildService(result.data);
     dispatch({ type: types.SERVICE_FETCH_SUCCESS, payload: service });
   } catch (error) {
-    // dispatch({ type: types.SERVICE_FETCH_ERROR, payload: error });
+    dispatch({ type: types.SERVICE_FETCH_ERROR, payload: error });
   }
 };
 
@@ -135,7 +139,7 @@ export const saveServiceChanges = (serviceId, values, history) => async (dispatc
     // ]);
     // const service = fetch_helpers.normalizeParseResponseData(rawService);
     const service = fetch_helpers.normalizeServiceToPatch(values);
-    console.log(service);
+    console.log(JSON.stringify(service));
     // const input = {
     //   id: serviceId,
     //   ...service,
