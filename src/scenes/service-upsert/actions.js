@@ -66,9 +66,10 @@ export const registerService = (values, history) => async (dispatch, getState) =
       url: `${serverBaseURL}/services`,
       headers: {
         Authorization: `Bearer ${jwtToken}`,
-        'Content-Type': 'application/json',
+        // 'Content-Type': 'application/json',
       },
-      data: JSON.stringify(service),
+      // data: JSON.stringify(service),
+      data: service,
     }).catch(error => {
       console.log(error);
     });
@@ -82,7 +83,7 @@ export const registerService = (values, history) => async (dispatch, getState) =
         payload: result,
         meta: { analytics: trackServiceCreated(result) },
       });
-      history.push(`/services/${result.id}`);
+      history.push(`/services/${result.data._id}`);
     }
   } catch (error) {
     if (error.errors) {
@@ -92,6 +93,7 @@ export const registerService = (values, history) => async (dispatch, getState) =
 };
 
 export const fetchService = serviceId => async (dispatch, getState) => {
+  console.log(serviceId);
   if (!serviceId) return;
   const state = getState();
   const { isLoading } = state.ServiceUpsert;
@@ -99,11 +101,12 @@ export const fetchService = serviceId => async (dispatch, getState) => {
   const localStorageUser = localStorage.getItem(`please-${env}-session`);
   const jsonUser = JSON.parse(localStorageUser);
   const jwtToken = jsonUser.accessToken;
-
+  console.log(jsonUser);
   dispatch({ type: types.SERVICE_FETCH_STARTED });
   try {
     const result = await axios
-      .get(`${serverBaseURL}/services/${serviceId}`, {
+      .get({
+        url: `${serverBaseURL}/services/${serviceId}`,
         headers: {
           Authorization: `Bearer ${jwtToken}`,
         },
@@ -155,9 +158,8 @@ export const saveServiceChanges = (serviceId, values, history) => async (dispatc
       url: `${serverBaseURL}/services`,
       headers: {
         Authorization: `Bearer ${jwtToken}`,
-        'Content-Type': 'application/json',
       },
-      data: JSON.stringify(input),
+      data: input,
     }).catch(error => {
       console.log(error);
     });

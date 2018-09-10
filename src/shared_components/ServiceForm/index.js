@@ -571,6 +571,7 @@ function validate(values) {
     'closingTime',
     'slots',
     'latlong',
+    'externalUrl',
   ];
 
   const errors = checkRequiredFields(values, requiredFields);
