@@ -58,17 +58,12 @@ export const registerService = (values, history) => async (dispatch, getState) =
     }
 
     const service = await fetch_helpers.createService(values);
-    // const result = axios
-    //   .post('/services', { body: JSON.stringify(service) })
-    //   .catch(error => console.log('error', error));
     const result = await axios({
-      method: 'post',
+      method: 'POST',
       url: `${serverBaseURL}/services`,
       headers: {
         Authorization: `Bearer ${jwtToken}`,
-        // 'Content-Type': 'application/json',
       },
-      // data: JSON.stringify(service),
       data: service,
     }).catch(error => {
       console.log(error);
@@ -93,20 +88,20 @@ export const registerService = (values, history) => async (dispatch, getState) =
 };
 
 export const fetchService = serviceId => async (dispatch, getState) => {
-  console.log(serviceId);
+  const localStorageUser = localStorage.getItem(`please-${env}-session`);
+  const jsonUser = JSON.parse(localStorageUser);
+  const jwtToken = jsonUser.accessToken;
+
   if (!serviceId) return;
   const state = getState();
   const { isLoading } = state.ServiceUpsert;
   if (isLoading) return;
-  const localStorageUser = localStorage.getItem(`please-${env}-session`);
-  const jsonUser = JSON.parse(localStorageUser);
-  const jwtToken = jsonUser.accessToken;
-  console.log(jsonUser);
+
   dispatch({ type: types.SERVICE_FETCH_STARTED });
+
   try {
     const result = await axios
-      .get({
-        url: `${serverBaseURL}/services/${serviceId}`,
+      .get(`${serverBaseURL}/services/${serviceId}`, {
         headers: {
           Authorization: `Bearer ${jwtToken}`,
         },
@@ -114,25 +109,25 @@ export const fetchService = serviceId => async (dispatch, getState) => {
       .catch(error => {
         console.log(error);
       });
-
-    console.log('result', result.data);
+    console.log('result', result.data.location);
     const service = fetch_helpers.buildService(result.data);
     dispatch({ type: types.SERVICE_FETCH_SUCCESS, payload: service });
   } catch (error) {
-    dispatch({ type: types.SERVICE_FETCH_ERROR, payload: error });
+    // dispatch({ type: types.SERVICE_FETCH_ERROR, payload: error });
   }
 };
 
 export const saveServiceChanges = (serviceId, values, history) => async (dispatch, getState) => {
-  if (!serviceId) return;
-  const state = getState();
-  const { isLoading } = state.ServiceUpsert;
-  if (isLoading) return;
   const localStorageUser = localStorage.getItem(`please-${env}-session`);
   const jsonUser = JSON.parse(localStorageUser);
   const jwtToken = jsonUser.accessToken;
 
-  dispatch({ type: types.SERVICE_SAVE_STARTED });
+  if (!serviceId) return;
+  const state = getState();
+  const { isLoading } = state.ServiceUpsert;
+  if (isLoading) return;
+
+  // dispatch({ type: types.SERVICE_SAVE_STARTED });
 
   try {
     const { mainPicture } = values;
@@ -140,22 +135,18 @@ export const saveServiceChanges = (serviceId, values, history) => async (dispatc
     if (mainPicture) {
       parseFilePromise = new Parse.File(mainPicture.name, mainPicture).save();
     }
-    // const [rawService, parseFile] = await Promise.all([
-    //   fetch_helpers.build_query('Service').get(serviceId),
-    //   parseFilePromise,
-    // ]);
-    // const service = fetch_helpers.normalizeParseResponseData(rawService);
+
     const service = fetch_helpers.normalizeServiceToPatch(values);
     console.log(JSON.stringify(service));
     const input = {
       id: serviceId,
       ...service,
     };
-    console.log(input);
+    console.log('input', input);
 
     const result = await axios({
-      method: 'patch',
-      url: `${serverBaseURL}/services`,
+      method: 'PATCH',
+      url: `${serverBaseURL}/services/${serviceId}`,
       headers: {
         Authorization: `Bearer ${jwtToken}`,
       },
@@ -166,14 +157,14 @@ export const saveServiceChanges = (serviceId, values, history) => async (dispatc
     console.log(result);
 
     if (service.acceptETH) {
-      dispatch(deployContract(result, service, history));
+      // dispatch(deployContract(result, service, history));
     } else {
       dispatch({ type: types.SERVICE_CREATE_SUCCESS, payload: result });
-      history.push(`/services/${result.id}`);
+      history.push(`/services/${result.data._id}`);
     }
   } catch (error) {
     if (error.errors) {
-      dispatch({ type: types.SERVICE_SAVE_ERROR, payload: error.errors });
+      // dispatch({ type: types.SERVICE_SAVE_ERROR, payload: error.errors });
     }
   }
 };

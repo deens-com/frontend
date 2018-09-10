@@ -26,7 +26,6 @@ const get_service_image = mediaOrMainPicture => {
 
 const createService = values => {
   const i18nLocale = 'en-us';
-
   try {
     values.categories = values.categories.map(category => ({
       names: {
@@ -116,9 +115,7 @@ const createService = values => {
         },
       },
     };
-    values.externalUrl = {
-      [i18nLocale]: values.externalUrl,
-    };
+    values.externalUrl = { [i18nLocale]: values.externalUrl };
   } catch (error) {
     console.log(error);
   }
@@ -180,6 +177,7 @@ const normalizeServiceToPatch = values => {
     values.title = { [i18nLocale]: values.title };
     values.description = { [i18nLocale]: values.description };
     values.externalUrl = { [i18nLocale]: values.externalUrl };
+    values.externalId = '123abs';
     values.baseCurrency = {
       name: 'US Dollar',
       code: 'USD',
@@ -198,6 +196,7 @@ const normalizeServiceToPatch = values => {
         coordinates: [values.latlong.lng, values.latlong.lat],
         type: 'Point',
       },
+      formattedAddress: values.formattedAddress,
     };
     values.instructions = {
       start: { [i18nLocale]: values.start },
@@ -210,14 +209,11 @@ const normalizeServiceToPatch = values => {
       twitter: values.twitter,
       website: values.website,
     };
-    values.categories = values.categories.map(
-      category =>
-        console.log(category) || {
-          names: {
-            [i18nLocale]: `${category.charAt(0).toUpperCase()}${category.slice(1)}`,
-          },
-        },
-    );
+    values.categories = values.categories.map(category => ({
+      names: {
+        [i18nLocale]: `${category.charAt(0).toUpperCase()}${category.slice(1)}`,
+      },
+    }));
     values.periods = [
       {
         cancellationPolicies: [],
