@@ -38,7 +38,7 @@ export const PageContent = props => {
 };
 
 export const SectionWrap = styled.section`
-  margin-bottom: 50px;
+  margin-bottom: 100px;
 `;
 
 export const More = styled.div`

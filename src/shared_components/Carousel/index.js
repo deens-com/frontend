@@ -41,7 +41,7 @@ const Button = styled.button`
   justify-content: center;
   outline: none;
   position: absolute;
-  top: ${props => props.topPosition || '45%'};
+  top: ${props => props.topPosition || '50%'};
   transform: translateY(-50%);
   width: ${props => carouselSizes[props.size].btnSize};
   z-index: 1;
@@ -51,6 +51,11 @@ const Button = styled.button`
     css`
       ${props.position}: ${props.size === 'small' ? '-5px' : '-25px'};
     `};
+  @media screen and (max-width: 768px) {
+    top: 40%;
+    width: 35px;
+    height: 35px;
+  }
 `;
 
 const ButtonLeft = Button.extend`
@@ -145,6 +150,7 @@ const Carousel = props => {
         settings: {
           slidesToShow: props.sm_slides_nb,
           slidesToScroll: props.sm_slides_nb,
+          dots: false,
         },
       },
       {
@@ -152,6 +158,7 @@ const Carousel = props => {
         settings: {
           slidesToShow: props.md_slides_nb,
           slidesToScroll: props.md_slides_nb,
+          dots: false,
         },
       },
       {
@@ -159,6 +166,7 @@ const Carousel = props => {
         settings: {
           slidesToShow: props.lg_slides_nb,
           slidesToScroll: props.lg_slides_nb,
+          dots: false,
         },
       },
       {
