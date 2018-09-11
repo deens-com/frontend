@@ -5,7 +5,6 @@ import { trackServiceCreated } from 'libs/analytics';
 import { generateFilename } from 'libs/filename';
 import { env, serverBaseURL } from '../../libs/config';
 import axios from 'axios';
-// import axios from '../../libs/axios';
 
 export const types = {
   SERVICE_CREATE_STARTED: 'SERVICE_CREATE_STARTED',
@@ -49,13 +48,13 @@ export const registerService = (values, history) => async (dispatch, getState) =
 
   try {
     const { mainPicture, acceptETH } = values;
-    let parseFile;
-    if (mainPicture) {
-      const filename = generateFilename(mainPicture.name);
-      if (filename.length) {
-        parseFile = await new Parse.File(filename, mainPicture).save();
-      }
-    }
+    // let parseFile;
+    // if (mainPicture) {
+    //   const filename = generateFilename(mainPicture.name);
+    //   if (filename.length) {
+    //     parseFile = await new Parse.File(filename, mainPicture).save();
+    //   }
+    // }
 
     const service = await fetch_helpers.createService(values);
     const result = await axios({
@@ -82,7 +81,7 @@ export const registerService = (values, history) => async (dispatch, getState) =
     }
   } catch (error) {
     if (error.errors) {
-      dispatch({ type: types.SERVICE_CREATE_ERROR, payload: error.errors });
+      // dispatch({ type: types.SERVICE_CREATE_ERROR, payload: error.errors });
     }
   }
 };
@@ -109,8 +108,8 @@ export const fetchService = serviceId => async (dispatch, getState) => {
       .catch(error => {
         console.log(error);
       });
-    console.log('result', result.data.location);
-    const service = fetch_helpers.buildService(result.data);
+    console.log('result', result.data);
+    const service = fetch_helpers.buildServiceForView(result.data);
     dispatch({ type: types.SERVICE_FETCH_SUCCESS, payload: service });
   } catch (error) {
     // dispatch({ type: types.SERVICE_FETCH_ERROR, payload: error });
@@ -130,19 +129,14 @@ export const saveServiceChanges = (serviceId, values, history) => async (dispatc
   // dispatch({ type: types.SERVICE_SAVE_STARTED });
 
   try {
-    const { mainPicture } = values;
-    let parseFilePromise;
-    if (mainPicture) {
-      parseFilePromise = new Parse.File(mainPicture.name, mainPicture).save();
-    }
+    // const { mainPicture } = values;
+    // let parseFilePromise;
+    // if (mainPicture) {
+    //   parseFilePromise = new Parse.File(mainPicture.name, mainPicture).save();
+    // }
 
-    const service = fetch_helpers.normalizeServiceToPatch(values);
-    console.log(JSON.stringify(service));
-    const input = {
-      id: serviceId,
-      ...service,
-    };
-    console.log('input', input);
+    const updatedService = fetch_helpers.normalizeServiceToPatch(values);
+    console.log('input', JSON.stringify(updatedService));
 
     const result = await axios({
       method: 'PATCH',
@@ -150,21 +144,21 @@ export const saveServiceChanges = (serviceId, values, history) => async (dispatc
       headers: {
         Authorization: `Bearer ${jwtToken}`,
       },
-      data: input,
+      data: updatedService,
     }).catch(error => {
       console.log(error);
     });
     console.log(result);
 
-    if (service.acceptETH) {
-      // dispatch(deployContract(result, service, history));
+    if (updatedService.acceptETH) {
+      dispatch(deployContract(result, updatedService, history));
     } else {
       dispatch({ type: types.SERVICE_CREATE_SUCCESS, payload: result });
       history.push(`/services/${result.data._id}`);
     }
   } catch (error) {
     if (error.errors) {
-      // dispatch({ type: types.SERVICE_SAVE_ERROR, payload: error.errors });
+      dispatch({ type: types.SERVICE_SAVE_ERROR, payload: error.errors });
     }
   }
 };
