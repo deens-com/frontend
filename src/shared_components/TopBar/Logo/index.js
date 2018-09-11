@@ -9,7 +9,7 @@ import Media from 'react-media';
 import { Logo, DropArrow } from '../../icons';
 
 // ACTIONS/CONFIG
-import { sizes, resetButton, media } from '../../../libs/styled';
+import { sizes, resetButton } from '../../../libs/styled';
 
 // STYLES
 const Wrap = styled.div`

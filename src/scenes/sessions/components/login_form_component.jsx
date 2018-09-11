@@ -7,18 +7,18 @@ import {
   Header,
   Message,
   Segment,
-  Modal,
-  Dimmer,
-  Loader,
+  // Modal,
+  // Dimmer,
+  // Loader,
   Container,
-  Divider,
+  // Divider,
 } from 'semantic-ui-react';
 import styled from 'styled-components';
 import TopBar from './../../../shared_components/TopBarWithSearch';
 import BrandFooter from './../../../shared_components/BrandFooter';
 import { Page } from './../../../shared_components/layout/Page';
 import { Link } from 'react-router-dom';
-import { media } from '../../../libs/styled';
+// import { media } from '../../../libs/styled';
 import welcomeImage from '../../../assets/login/login.svg';
 
 const displayErrorMessage = (isLoginError, message) => {
