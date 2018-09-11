@@ -179,6 +179,7 @@ class ServiceForm extends Component {
   };
 
   render() {
+    console.log('values', this.props.values);
     const {
       values,
       errors,
@@ -632,6 +633,7 @@ export default withFormik({
     externalUrl: (service && service.externalUrl) || '',
     slots: service && service.slots != null ? service.slots : '',
     location: (service && service.location) || {},
+    postalCode: (service && service.postalCode) || '',
     latlong:
       (service &&
         service.latitude &&
