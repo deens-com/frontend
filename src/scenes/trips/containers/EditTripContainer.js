@@ -10,7 +10,7 @@ import * as selectors from '../selectors';
 import { statuses } from '../../../libs/fetch_helpers';
 
 const EditTripContext = React.createContext({
-  trip: {}
+  trip: {},
 });
 
 class EditTripContainer extends Component {
