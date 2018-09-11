@@ -124,11 +124,22 @@ class ServiceForm extends Component {
           c => c.types.includes('locality') || c.types.includes('postal_town'),
         );
         const countries = addressComponents.filter(c => c.types.includes('country'));
+        const postalCodes = addressComponents.filter(c => c.types.includes('postal_code'));
+        const state = addressComponents.filter(c =>
+          c.types.includes('"administrative_area_level_1"'),
+        )[0];
         if (countries[0] && countries[0].long_name) {
           setFieldValue('country', countries[0].long_name);
+          setFieldValue('countryCode', countries[0].short_name);
         }
         if (localities[0] && localities[0].long_name) {
           setFieldValue('city', localities[0].long_name);
+        }
+        if (postalCodes[0] && postalCodes[0].long_name) {
+          setFieldValue('postalCode', postalCodes[0].long_name);
+        }
+        if (state) {
+          setFieldValue('state', state);
         }
         return latlngPromise;
       })

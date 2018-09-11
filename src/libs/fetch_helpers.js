@@ -67,15 +67,10 @@ const createService = values => {
         values.location.address_components[1].long_name
       }`,
       line2: '',
-      postcode: values.location.address_components[7].long_name,
-      city: values.location.address_components[3].long_name,
-      state: values.location.address_components[5].short_name,
-      countryCode: values.location.address_components[6].short_name,
-      country: {
-        names: {
-          [i18nLocale]: values.location.address_components[6].long_name,
-        },
-      },
+      postcode: values.postalCode,
+      city: values.city,
+      state: values.state,
+      countryCode: values.countryCode,
       geo: {
         coordinates: [values.latlong.lng, values.latlong.lat],
         type: 'Point',
