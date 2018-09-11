@@ -67,7 +67,6 @@ export const registerService = (values, history) => async (dispatch, getState) =
     }).catch(error => {
       console.log(error);
     });
-    console.log(result);
 
     if (acceptETH) {
       dispatch(deployContract(result, values, history));
@@ -81,7 +80,7 @@ export const registerService = (values, history) => async (dispatch, getState) =
     }
   } catch (error) {
     if (error.errors) {
-      // dispatch({ type: types.SERVICE_CREATE_ERROR, payload: error.errors });
+      dispatch({ type: types.SERVICE_CREATE_ERROR, payload: error.errors });
     }
   }
 };
@@ -108,11 +107,10 @@ export const fetchService = serviceId => async (dispatch, getState) => {
       .catch(error => {
         console.log(error);
       });
-    console.log('result', result.data);
     const service = fetch_helpers.buildServiceForView(result.data);
     dispatch({ type: types.SERVICE_FETCH_SUCCESS, payload: service });
   } catch (error) {
-    // dispatch({ type: types.SERVICE_FETCH_ERROR, payload: error });
+    dispatch({ type: types.SERVICE_FETCH_ERROR, payload: error });
   }
 };
 
@@ -126,7 +124,7 @@ export const saveServiceChanges = (serviceId, values, history) => async (dispatc
   const { isLoading } = state.ServiceUpsert;
   if (isLoading) return;
 
-  // dispatch({ type: types.SERVICE_SAVE_STARTED });
+  dispatch({ type: types.SERVICE_SAVE_STARTED });
 
   try {
     // const { mainPicture } = values;
@@ -136,7 +134,6 @@ export const saveServiceChanges = (serviceId, values, history) => async (dispatc
     // }
 
     const updatedService = fetch_helpers.normalizeServiceToPatch(values);
-    console.log('input', JSON.stringify(updatedService));
 
     const result = await axios({
       method: 'PATCH',
@@ -148,7 +145,6 @@ export const saveServiceChanges = (serviceId, values, history) => async (dispatc
     }).catch(error => {
       console.log(error);
     });
-    console.log(result);
 
     if (updatedService.acceptETH) {
       dispatch(deployContract(result, updatedService, history));
