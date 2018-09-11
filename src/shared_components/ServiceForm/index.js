@@ -634,6 +634,9 @@ export default withFormik({
     slots: service && service.slots != null ? service.slots : '',
     location: (service && service.location) || {},
     postalCode: (service && service.postalCode) || '',
+    city: (service && service.city) || '',
+    state: (service && service.city) || '',
+    countryCode: (service && service.countryCode) || '',
     latlong:
       (service &&
         service.latitude &&
