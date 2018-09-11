@@ -24,6 +24,49 @@ const get_service_image = mediaOrMainPicture => {
   return mediaOrMainPicture.url;
 };
 
+const buildServicesJson = services => {
+  const i18nLocale = 'en-us';
+  return services.map(service => {
+    try {
+      service.excerpt = service.description[i18nLocale];
+      service.description = service.excerpt;
+      service.title = service.title[i18nLocale];
+      service.name = service.title;
+      service.objectId = service._id;
+      // eslint-disable-next-line
+      service.latitude = (service.location && service.location.latitude) || 1;
+      // eslint-disable-next-line
+      service.longitude = (service.location && service.location.longitude) || 1;
+      service.location = `${service.city ? service.city + ',' : ''} ${service.country}`;
+      service.rating = service.rating;
+      service.reviewCount = service.reviewCount;
+      service.slots = service.slots;
+      service.price = service.price == null ? service.pricePerSession : service.price;
+      service.pricePerSession = service.pricePerSession || service.basePrice;
+      if (service.tags && service.tags.length) {
+        const tags = service.tags.map(tag => {
+          const tagBg = tagsColorMatcher(tag);
+          return { label: tag, hoverBg: tagBg, background: tagBg };
+        });
+        service.tags = tags;
+      }
+      if (service.type === undefined) {
+        if (service.picture) {
+          if (typeof service.picture._url === 'string') service.image = service.picture._url;
+          if (typeof service.picture.url === 'string') service.image = service.picture.url;
+        }
+        service.image = service.image || 'https://dummyimage.com/600x400/000/fff';
+      } else {
+        service.image = get_service_image(service.mainPicture);
+      }
+      service.mainPicture = service.mainPicture || service.image;
+    } catch (error) {
+      console.log(error);
+    }
+    return service;
+  });
+};
+
 const mapServiceObjects = services => {
   return services.map(service => {
     try {
@@ -84,6 +127,7 @@ export default {
   getRandomInt,
   get_service_image,
   mapServiceObjects,
+  buildServicesJson,
   removeDuplicates,
   build_query,
   statuses,

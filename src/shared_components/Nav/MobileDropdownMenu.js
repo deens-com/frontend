@@ -1,9 +1,8 @@
 // NPM
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import fetch_helpers from './../../libs/fetch_helpers';
-import Parse from 'parse';
 import Media from 'react-media';
+
 // COMPONENTS
 
 // COMMENT: the homeSearch is just for the time being
@@ -12,6 +11,7 @@ import { Image } from 'semantic-ui-react';
 // ACTIONS/CONFIG
 import { sizes } from '../../libs/styled';
 import ImgurAvatar from './../../assets/imgur-avatar.png';
+import { getSession } from 'libs/user-session';
 
 // STYLES
 const AvatarWithUsername = styled.div`
@@ -59,12 +59,16 @@ export default class MobileDropDownMenu extends Component {
   }
 
   componentDidMount() {
-    let user = Parse.User.current();
-    if (user === null) {
+    try {
+      const session = getSession();
+      if (session) {
+        // TODO: @jaydp the below is setting current_user to the sessionObject
+        this.setState({ logged_in: true, current_user: session });
+      } else {
+        this.setState({ logged_in: false });
+      }
+    } catch (error) {
       this.setState({ logged_in: false });
-    } else {
-      const json_user = fetch_helpers.normalizeParseResponseData(user);
-      this.setState({ logged_in: true, current_user: json_user });
     }
   }
 

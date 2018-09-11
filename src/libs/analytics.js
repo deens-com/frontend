@@ -7,7 +7,7 @@ const commonSuffix = ' on Demo';
  * @param {ParseObject} session
  */
 export const identifyUsingSession = session => {
-  const email = session && session.get('email');
+  const email = session.email;
   if (email) {
     return {
       eventType: EventTypes.identify,
@@ -21,7 +21,7 @@ export const identifyUsingSession = session => {
 };
 
 export const trackUserRegistered = session => {
-  const email = session && session.get('email');
+  const email = session.email;
   return {
     eventType: EventTypes.track,
     eventPayload: {

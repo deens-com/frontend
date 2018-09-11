@@ -1,30 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Button,
-  Form,
-  Grid,
-  Header,
-  Message,
-  Segment,
-  Modal,
-  Dimmer,
-  Loader,
-} from 'semantic-ui-react';
+import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
 import styled from 'styled-components';
 import TopBar from './../../../shared_components/TopBarWithSearch';
 import BrandFooter from './../../../shared_components/BrandFooter';
 import { Page, PageContent } from './../../../shared_components/layout/Page';
 import { Link } from 'react-router-dom';
-import { media } from '../../../libs/styled';
 
 const displayErrorMessage = (isLoginError, message) => {
   return isLoginError ? <Message error header="Cannot login" content={message} /> : null;
 };
-
-const WithTopMargin = styled.div`
-  margin-top: 16px;
-`;
 
 const StaticFooter = styled.footer`
   position: static;
@@ -33,13 +18,6 @@ const StaticFooter = styled.footer`
 
 const LoginContainer = styled.div`
   min-height: 85vh;
-`;
-
-const MetamaskButton = styled(Button)`
-  display: none !important;
-  ${media.mobileMinSmall} {
-    display: block !important;
-  }
 `;
 
 export default class LoginFormComponent extends Component {
@@ -119,6 +97,9 @@ export default class LoginFormComponent extends Component {
                       </Button>
                     </Segment>
                   </Form>
+
+                  {/* commenting out metamask and ledger for now
+
                   <WithTopMargin>
                     {displayErrorMessage(
                       !!this.props.metaMaskError.message,
@@ -184,6 +165,8 @@ export default class LoginFormComponent extends Component {
                       Login with Ledger
                     </MetamaskButton>
                   </WithTopMargin>
+
+                  end comment */}
 
                   <Message>
                     New to us?{' '}

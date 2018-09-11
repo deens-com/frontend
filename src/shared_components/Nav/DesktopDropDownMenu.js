@@ -1,15 +1,16 @@
 // NPM
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import fetch_helpers from './../../libs/fetch_helpers';
-import Parse from 'parse';
+
 // COMPONENTS
 import Button from '../Button';
-// COMMENT: the homeSearch is just for the time being
 import { Image } from 'semantic-ui-react';
-
+// COMMENT: the homeSearch is just for the time being
+// REDUX
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { getCurrentUser, logOut } from 'scenes/sessions/actions';
 // ACTIONS/CONFIG
 import { Dropdown } from 'semantic-ui-react';
 
@@ -42,29 +43,12 @@ const AvatarWrapper = styled.div`
 
 // MODULE
 class DesktopDropDownMenu extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      logged_in: false,
-      current_user: {},
-    };
-  }
-
   componentDidMount() {
-    let user = Parse.User.current();
-    if (user === null) {
-      this.setState({ logged_in: false });
-    } else {
-      const json_user = fetch_helpers.normalizeParseResponseData(user);
-      this.setState({ logged_in: true, current_user: json_user });
-    }
+    this.props.getCurrentUser();
   }
 
   logout = () => {
-    Parse.User.logOut().then(() => {
-      this.setState({ logged_in: false, current_user: {} });
-      history.push('/');
-    });
+    this.props.logOut();
   };
 
   navigate_to = path => {
@@ -86,14 +70,12 @@ class DesktopDropDownMenu extends Component {
 
   logged_in() {
     const dpUrl =
-      (this.props.user_profile.profilePicture && this.props.user_profile.profilePicture.url) ||
-      (this.state.current_user.profilePicture && this.state.current_user.profilePicture.url) ||
-      ImgurAvatar;
+      (this.props.session.profilePicture && this.props.session.profilePicture.url) || ImgurAvatar;
     const showAddServiceButton = window.location.hash !== '#/account/services'; //this.props.history && this.props.history.location.pathname !== "/account/services"
     const truncatesUsername =
-      this.state.current_user.username.length > 13
-        ? this.state.current_user.username.substring(0, 11).concat('...')
-        : this.state.current_user.username;
+      this.props.session.username.length > 13
+        ? this.props.session.username.substring(0, 11).concat('...')
+        : this.props.session.username;
     return (
       <Wrap>
         {showAddServiceButton && (
@@ -139,23 +121,25 @@ class DesktopDropDownMenu extends Component {
   }
 
   render() {
-    if (!this.state.logged_in) {
-      return this.logged_out();
-    } else {
+    if (Object.keys(this.props.session).length) {
       return this.logged_in();
+    } else {
+      return this.logged_out();
     }
   }
 }
 
+const mapStateToProps = state => ({
+  session: state.SessionsReducer.session,
+});
 
-const mapStateToProps = state => {
-  return {
-    user_profile: state.AccountReducer.user_profile
-  };
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({ getCurrentUser, logOut }, dispatch);
 };
 
 export default withRouter(
   connect(
     mapStateToProps,
-  )(DesktopDropDownMenu)
+    mapDispatchToProps,
+  )(DesktopDropDownMenu),
 );

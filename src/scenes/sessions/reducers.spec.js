@@ -9,6 +9,7 @@ describe('sessions reducer', () => {
       ledgerError: {},
       baseCurrency: { label: '$', value: 'USD', rates: {} },
       isLedgerLoaderDisplayed: false,
+      updateError: {},
     });
   });
 
@@ -28,6 +29,7 @@ describe('sessions reducer', () => {
       ledgerError: {},
       baseCurrency: { label: '$', value: 'USD', rates: {} },
       isLedgerLoaderDisplayed: false,
+      updateError: {},
     });
   });
 
@@ -50,6 +52,7 @@ describe('sessions reducer', () => {
       ledgerError: {},
       baseCurrency: { label: '$', value: 'USD', rates: {} },
       isLedgerLoaderDisplayed: false,
+      updateError: {},
     });
   });
 

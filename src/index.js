@@ -11,6 +11,7 @@ import Parse from 'parse';
 import Raven from 'raven-js';
 import { serverBaseURL, isProd, isStaging } from './libs/config';
 import * as featureFlags from './libs/feature-flags';
+import { readSession } from 'libs/user-session';
 
 Parse.initialize('myAppId');
 Parse.serverURL = `${serverBaseURL}/parse`;
@@ -28,6 +29,9 @@ if (isProd) {
   console.warn = error;
   console.error = error;
 }
+
+// reads localStorage to get the user object on load
+readSession();
 
 ReactDOM.render(<App />, document.getElementById('root'));
 unregisterServiceWorker();

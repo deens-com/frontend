@@ -14,6 +14,7 @@ const initialState = {
   ledgerError: {},
   baseCurrency: defaultBaseCurrency,
   isLedgerLoaderDisplayed: false,
+  updateError: {},
 };
 
 export default function SessionsReducer(state = initialState, action = {}) {
@@ -38,6 +39,11 @@ export default function SessionsReducer(state = initialState, action = {}) {
       return {
         ...state,
         ledgerError: action.payload,
+      };
+    case sessions_actions.types.UPDATE_ERROR:
+      return {
+        ...state,
+        updateError: action.payload,
       };
     case sessions_actions.types.BASE_CURRENCY_SET:
       return {
