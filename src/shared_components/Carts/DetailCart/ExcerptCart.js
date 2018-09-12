@@ -5,8 +5,10 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 // COMPONENTS
-import Price from './components/Price';
 import Button from '../../Button';
+import Tag from './components/Tag';
+import I18nText from 'shared_components/I18nText';
+import NewPriceTag from 'shared_components/Currency/NewPriceTag';
 import Category from './components/Category';
 import CardDescription from './components/Description';
 import Detail from './components/Detail';
@@ -18,7 +20,6 @@ import { media } from '../../../libs/styled';
 
 // STYLES
 import { ContentWrap } from '../styles';
-import Tag from './components/Tag';
 
 const CartRow = styled.div`
   ${media.minSmall} {
@@ -66,24 +67,29 @@ const RightCol = styled.div`
 `;
 
 // MODULE
-export default function ExcerptCart({ data, toggleExpansion, hideMoreInfo, isOwner }) {
+export default function ExcerptCart({ data: service, toggleExpansion, hideMoreInfo, isOwner }) {
+  const { startTime, endTime } = service.periods[0];
   return (
     <CartContentWrap>
       <CartRow>
         <LeftCol>
-          <Category category={data.type} />
-          <Link to={`/services/${data.objectId}`}>
-            <CardDescription description={data.name} type="inline-block" />
+          <Category category={service.categories[0]} />
+          <Link to={`/services/${service._id}`}>
+            <CardDescription type="inline-block">
+              <I18nText data={service.title} />
+            </CardDescription>
           </Link>
-          <Detail
-            inline
-            icon="clock"
-            text={`${padStart(data.openingTime, 2)}:00 - ${padStart(data.closingTime, 2)}:00`}
-            showEdit={isOwner}
-          />
+          {startTime && endTime ? (
+            <Detail
+              inline
+              icon="clock"
+              text={`${padStart(startTime, 2)}:00 - ${padStart(endTime, 2)}:00`}
+              showEdit={isOwner}
+            />
+          ) : null}
         </LeftCol>
         <RightCol>
-          <Price price={data.pricePerSession} currency={data.currency} />
+          <NewPriceTag basePrice={service.basePrice} baseCurrency={service.baseCurrency} />
           {!hideMoreInfo && (
             <Button
               type="button"
@@ -96,8 +102,8 @@ export default function ExcerptCart({ data, toggleExpansion, hideMoreInfo, isOwn
           )}
         </RightCol>
       </CartRow>
-      {data.availability === true ? <Tag text="Available" backgroundColor="#4CAF50" /> : null}
-      {data.availability === false ? <Tag text="Unavailable" backgroundColor="#f44336" /> : null}
+      {service.availability === true ? <Tag text="Available" backgroundColor="#4CAF50" /> : null}
+      {service.availability === false ? <Tag text="Unavailable" backgroundColor="#f44336" /> : null}
     </CartContentWrap>
   );
 }

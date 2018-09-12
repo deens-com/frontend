@@ -21,7 +21,11 @@ const Description = styled.span`
 `;
 
 // MODULE
-export default function CartDescription({ description, type }) {
+export default function CartDescription(props) {
+  const { description, type } = props;
+  if (props.children) {
+    return <Description type={type}>{props.children}</Description>;
+  }
   return <Description type={type}>{description}</Description>;
 }
 

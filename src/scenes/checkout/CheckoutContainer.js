@@ -25,7 +25,7 @@ class CheckoutContainer extends Component {
     const { tripError, trip } = this.props;
     const isNotFound = !!(tripError && tripError.code === Parse.Error.OBJECT_NOT_FOUND);
     if (trip && trip.booked) {
-      return <Redirect to={`/trips/${trip.objectId}`} />;
+      return <Redirect to={`/trips/${trip._id}`} />;
     }
     return <CheckoutScene notFound={isNotFound} />;
   }

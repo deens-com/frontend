@@ -1,10 +1,8 @@
-import { keyBy } from '../../libs/normalizer';
-import { removeKey } from '../../libs/Utils';
-import { statuses } from '../../libs/fetch_helpers';
+import { removeKey } from 'libs/Utils';
+import { statuses } from 'libs/fetch_helpers';
 
 const initialState = {
   isPageLoading: false,
-  trip: {},
   tripError: null,
   serviceAvailabilities: {},
   cloningStatus: null,
@@ -16,16 +14,14 @@ const initialState = {
   },
   showTripStatusChanged: false,
   isImageUploadInProgress: false,
-  notes: {},
 };
 
 export default function TripsReducer(state = initialState, action = {}) {
   switch (action.type) {
     case 'TRIP_FETCH_START': {
-      const isPageLoading = Object.keys(state.trip).length === 0;
       return {
         ...state,
-        isPageLoading,
+        isPageLoading: true,
       };
     }
     case 'TRIP_FETCHED':
@@ -34,9 +30,6 @@ export default function TripsReducer(state = initialState, action = {}) {
         isPageLoading: false,
         trip: action.payload.trip,
         tripError: null,
-        tripOrganizations: keyBy(action.payload.tripOrganizations, 'objectId'),
-        services: keyBy(action.payload.services, 'objectId'),
-        notes: keyBy(action.payload.notes, 'day'),
       };
     case 'TRIP_FETCH_ERROR': {
       return {

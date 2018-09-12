@@ -19,6 +19,20 @@ export const getDaysWithFilter = (state, filter) => {
   return days;
 };
 
+// new
+export const getServicesGroupedByDay = state => {
+  const dayObjects = {};
+  const { trip } = state.TripsReducer;
+  if (!trip || !trip._id) return {};
+  for (const { day, service } of trip.services) {
+    dayObjects[day] = dayObjects[day] || { day, services: [] };
+    dayObjects[day].services.push(service);
+  }
+  return Object.values(dayObjects);
+};
+
+// TODO: remove getScheduledServices as it was used when we had Parse
+// old
 export const getScheduledServices = state => {
   const dayObjects = getDaysWithFilter(state, tOrg => tOrg.day != null && tOrg.day !== 'null');
   const { trip } = state.TripsReducer;
