@@ -146,10 +146,12 @@ export const saveServiceChanges = (serviceId, values, history) => async (dispatc
       console.log(error);
     });
 
+    console.log('result', result);
+
     if (updatedService.acceptETH) {
       dispatch(deployContract(result, updatedService, history));
     } else {
-      dispatch({ type: types.SERVICE_CREATE_SUCCESS, payload: result });
+      dispatch({ type: types.SERVICE_CREATE_SUCCESS, payload: result.data });
       history.push(`/services/${result.data._id}`);
     }
   } catch (error) {
