@@ -2,6 +2,7 @@ import Parse from 'parse';
 import fetch_helpers from './../../libs/fetch_helpers';
 import history from 'main/history';
 import { trackTripCreated } from 'libs/analytics';
+import { getSession } from './../../libs/user-session';
 
 export const trips_fetched = trips => {
   return {
@@ -173,7 +174,8 @@ export const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (dispatch
 };
 
 export const onBookNowClick = () => async (dispatch, getState) => {
-  if (Parse.User.current()) {
+  const user = getSession();
+  if (user) {
     createNewTrip({ redirectToCreatedTrip: true })(dispatch, getState);
   } else {
     history.push('/login');
