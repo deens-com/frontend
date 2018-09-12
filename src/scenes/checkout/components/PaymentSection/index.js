@@ -68,7 +68,7 @@ export default class PaymentSection extends Component {
           <Grid.Row columns={2}>
             <Grid.Column stretched>Guest(s)</Grid.Column>
             <Grid.Column textAlign="right">
-              <GuestCountStyle>{numberOfPerson} adults</GuestCountStyle>
+              <GuestCountStyle>{numberOfPerson} Adults</GuestCountStyle>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row columns={2}>
