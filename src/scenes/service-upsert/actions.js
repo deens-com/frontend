@@ -127,14 +127,8 @@ export const saveServiceChanges = (serviceId, values, history) => async (dispatc
   dispatch({ type: types.SERVICE_SAVE_STARTED });
 
   try {
-    // const { mainPicture } = values;
-    // let parseFilePromise;
-    // if (mainPicture) {
-    //   parseFilePromise = new Parse.File(mainPicture.name, mainPicture).save();
-    // }
-
     const updatedService = fetch_helpers.normalizeServiceToPatch(values);
-
+    console.log(JSON.stringify(updatedService));
     const result = await axios({
       method: 'PATCH',
       url: `${serverBaseURL}/services/${serviceId}`,
@@ -145,8 +139,6 @@ export const saveServiceChanges = (serviceId, values, history) => async (dispatc
     }).catch(error => {
       console.log(error);
     });
-
-    console.log('result', result);
 
     if (updatedService.acceptETH) {
       dispatch(deployContract(result, updatedService, history));

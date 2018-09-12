@@ -111,6 +111,35 @@ const createService = values => {
       },
     };
     values.externalUrl = { [i18nLocale]: values.externalUrl };
+    values.media = values.media.map(imageUrl => ({
+      type: 'image',
+      hero: false,
+      names: {
+        [i18nLocale]: 'View From the Kitchen',
+      },
+      files: {
+        thumbnail: {
+          url: imageUrl,
+          width: 215,
+          height: 140,
+        },
+        small: {
+          url: imageUrl,
+          width: 430,
+          height: 280,
+        },
+        large: {
+          url: imageUrl,
+          width: 860,
+          height: 560,
+        },
+        hero: {
+          url: imageUrl,
+          width: 860,
+          height: 560,
+        },
+      },
+    }));
   } catch (error) {
     console.log(error);
   }
@@ -232,6 +261,38 @@ const normalizeServiceToPatch = values => {
         maxCapacity: 2,
       },
     ];
+    if (values.media && values.media.length) {
+      values.media = values.media.map(imageUrl => ({
+        type: 'image',
+        hero: false,
+        names: {
+          [i18nLocale]: 'View From the Kitchen',
+        },
+        files: {
+          thumbnail: {
+            url: imageUrl,
+            width: 215,
+            height: 140,
+          },
+          small: {
+            url: imageUrl,
+            width: 430,
+            height: 280,
+          },
+          large: {
+            url: imageUrl,
+            width: 860,
+            height: 560,
+          },
+          hero: {
+            url: imageUrl,
+            width: 860,
+            height: 560,
+          },
+        },
+      }));
+    }
+    console.log(values.media);
   } catch (error) {
     console.log(error);
   }
