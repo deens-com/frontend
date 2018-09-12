@@ -152,7 +152,7 @@ export const loginRequest = (email, password) => {
             dispatch(
               setLoginError({
                 code: error.response.status,
-                message: error.response.data.error_description,
+                message: error.response.data.message || error.response.data.error_description,
               }),
             );
           });
