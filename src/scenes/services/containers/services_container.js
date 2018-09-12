@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router';
 import Parse from 'parse';
+import { getSession } from 'libs/user-session';
 
 class ServicesContainer extends Component {
   state = {
@@ -26,7 +27,8 @@ class ServicesContainer extends Component {
   }
 
   onAddServiceToTrip = ({ trip, day }) => {
-    if (Parse.User.current() != null) {
+    const user = getSession();
+    if (user != null) {
       this.props.addServiceToTrip({ trip, day });
     } else {
       this.props.history.push('/login');
@@ -34,7 +36,8 @@ class ServicesContainer extends Component {
   };
 
   onAddServiceToNewTrip = () => {
-    if (Parse.User.current() != null) {
+    const user = getSession();
+    if (user != null) {
       this.props.createNewTrip();
     } else {
       this.props.history.push('/login');
