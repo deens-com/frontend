@@ -1,8 +1,10 @@
 import Parse from 'parse';
-import fetch_helpers from './../../libs/fetch_helpers';
 import history from 'main/history';
+import axios from 'libs/axios';
 import { trackTripCreated } from 'libs/analytics';
+import fetch_helpers from './../../libs/fetch_helpers';
 import { getSession } from './../../libs/user-session';
+import { serverBaseURL } from 'libs/config';
 
 export const trips_fetched = trips => {
   return {
@@ -39,8 +41,25 @@ export const userUnpurchasedTripsFetchFinish = trips => ({
   payload: trips,
 });
 
-export const fetch_service = service_id => dispatch => {
+export const fetch_service = serviceId => async dispatch => {
   dispatch(serviceFetchStart());
+  try {
+    const service = await axios.get(`/services/${serviceId}`).catch(error => {
+      dispatch({ type: 'SERVICE_FETCH_ERROR', payload: error });
+    });
+    if (service) {
+      const serviceData = service.data;
+      const formattedServiceData = fetch_helpers.buildServicesJson([serviceData])[0];
+      dispatch(service_fetched({ service: formattedServiceData }));
+    }
+  } catch (e) {
+    dispatch({
+      type: 'SERVICE_FETCH_ERROR',
+      payload: error.response ? error.response.data : error,
+    });
+  }
+
+  /*
   let query = fetch_helpers.build_query('Service');
   query.equalTo('objectId', service_id);
   query.include('owner');
@@ -50,6 +69,7 @@ export const fetch_service = service_id => dispatch => {
       let trip_org_query = fetch_helpers.build_query('TripOrganization');
       trip_org_query.include('trip');
       trip_org_query.equalTo('service', response[0]);
+
       trip_org_query.find().then(
         response => {
           const trips_organization = fetch_helpers.normalizeParseResponseData(response);
@@ -108,6 +128,7 @@ export const fetch_service = service_id => dispatch => {
       dispatch({ type: 'SERVICE_FETCH_ERROR', payload: error });
     },
   );
+  */
 };
 
 export const fetchMyTrips = () => async (dispatch, getState) => {
