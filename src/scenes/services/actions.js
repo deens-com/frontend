@@ -1,8 +1,8 @@
 import Parse from 'parse';
-import axios from 'axios';
-import fetch_helpers from './../../libs/fetch_helpers';
 import history from 'main/history';
+import axios from 'libs/axios';
 import { trackTripCreated } from 'libs/analytics';
+import fetch_helpers from './../../libs/fetch_helpers';
 import { getSession } from './../../libs/user-session';
 import { serverBaseURL } from 'libs/config';
 
@@ -45,7 +45,7 @@ export const fetch_service = serviceId => async dispatch => {
   dispatch(serviceFetchStart());
   try {
     const service = await axios
-      .get(`${serverBaseURL}/services/${serviceId}`)
+      .get(`/services/${serviceId}`)
       .catch(error => {
         dispatch({ type: 'SERVICE_FETCH_ERROR', payload: error });
       });
@@ -55,9 +55,9 @@ export const fetch_service = serviceId => async dispatch => {
       dispatch(service_fetched({ service: formattedServiceData }));
     }
   } catch (e) {
-    console.log(e);
+    dispatch({ type: 'SERVICE_FETCH_ERROR', payload: error.response ? error.response.data : error });
   }
-  
+
   /*
   let query = fetch_helpers.build_query('Service');
   query.equalTo('objectId', service_id);

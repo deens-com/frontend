@@ -16,7 +16,7 @@ class ServicesContainer extends Component {
     const service_id = this.props.match.params.id;
     this.props.fetch_service(service_id);
     const user = getSession();
-    if (user !== null) {
+    if (user != null) {
       this.props.fetchMyTrips();
     }
     this.props.setAddedToTripMessage(undefined);
@@ -29,7 +29,7 @@ class ServicesContainer extends Component {
 
   onAddServiceToTrip = ({ trip, day }) => {
     const user = getSession();
-    if (user !== null) {
+    if (user != null) {
       this.props.addServiceToTrip({ trip, day });
     } else {
       this.props.history.push('/login');
@@ -38,7 +38,7 @@ class ServicesContainer extends Component {
 
   onAddServiceToNewTrip = () => {
     const user = getSession();
-    if (user !== null) {
+    if (user != null) {
       this.props.createNewTrip();
     } else {
       this.props.history.push('/login');
