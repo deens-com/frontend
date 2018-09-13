@@ -44,18 +44,19 @@ export const userUnpurchasedTripsFetchFinish = trips => ({
 export const fetch_service = serviceId => async dispatch => {
   dispatch(serviceFetchStart());
   try {
-    const service = await axios
-      .get(`/services/${serviceId}`)
-      .catch(error => {
-        dispatch({ type: 'SERVICE_FETCH_ERROR', payload: error });
-      });
+    const service = await axios.get(`/services/${serviceId}`).catch(error => {
+      dispatch({ type: 'SERVICE_FETCH_ERROR', payload: error });
+    });
     if (service) {
       const serviceData = service.data;
       const formattedServiceData = fetch_helpers.buildServicesJson([serviceData])[0];
       dispatch(service_fetched({ service: formattedServiceData }));
     }
   } catch (e) {
-    dispatch({ type: 'SERVICE_FETCH_ERROR', payload: error.response ? error.response.data : error });
+    dispatch({
+      type: 'SERVICE_FETCH_ERROR',
+      payload: error.response ? error.response.data : error,
+    });
   }
 
   /*

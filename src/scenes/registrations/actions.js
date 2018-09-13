@@ -52,7 +52,9 @@ export const postRegistration = (username, email, password) => async dispatch =>
           message:
             (error.response &&
               error.response.data &&
-              (error.response.data.message || error.response.data.error_description || error.response.data.description)) ||
+              (error.response.data.message ||
+                error.response.data.error_description ||
+                error.response.data.description)) ||
             error.message,
         },
       }),

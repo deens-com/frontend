@@ -37,7 +37,9 @@ const buildServicesJson = services => {
       service.latitude = (service.location && service.location.latitude) || 1;
       // eslint-disable-next-line
       service.longitude = (service.location && service.location.longitude) || 1;
-      service.location = `${service.location.city ? service.location.city + ',' : ''} ${service.location.state}`;
+      service.location = `${service.location.city ? service.location.city + ',' : ''} ${
+        service.location.state
+      }`;
       service.rating = service.rating;
       service.reviewCount = service.reviewCount;
       service.slots = service.slots;
