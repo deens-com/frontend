@@ -55,7 +55,7 @@ export const fetch_service = serviceId => async dispatch => {
   } catch (e) {
     dispatch({
       type: 'SERVICE_FETCH_ERROR',
-      payload: error.response ? error.response.data : error,
+      payload: e.response ? e.response.data : e,
     });
   }
 
