@@ -18,6 +18,7 @@ import MapMaker from '../../shared_components/MapMarker';
 import UserAvatar from '../../shared_components/UserAvatar';
 import ShareButton from './components/ShareButton';
 import Image from 'shared_components/Image';
+import expandCardsHoc from 'shared_components/Trip/expandCardsHoc';
 
 // ACTIONS/CONFIG
 import { media, sizes } from '../../libs/styled';
@@ -127,13 +128,12 @@ const TripActionsWrap = styled.div`
 `;
 
 // MODULE
-export default class TripsScene extends Component {
+class TripsScene extends Component {
   state = {
     details: true,
     center: { lat: 59.95, lng: 30.33 },
     zoom: 11,
     isOwner: false,
-    resultsExpanded: false,
   };
 
   componentDidMount() {
@@ -216,10 +216,6 @@ export default class TripsScene extends Component {
     const size = { width: 800, height: 450 };
     const { center, zoom } = fitBounds(newBounds, size);
     return { center, zoom };
-  };
-
-  toggleExpansion = () => {
-    this.setState(prevState => ({ resultsExpanded: !prevState.resultsExpanded }));
   };
 
   render() {
@@ -319,8 +315,12 @@ export default class TripsScene extends Component {
                   size="small"
                   iconAfter="arrowDown"
                   theme="textGreen"
-                  onClick={this.toggleExpansion}
-                  text={this.state.resultsExpanded ? 'Collapse all' : 'Expand all'}
+                  onClick={this.props.toggleExpansionAll}
+                  text={
+                    Object.keys(this.props.expandedResults).length > 0
+                      ? 'Collapse all'
+                      : 'Expand all'
+                  }
                 />
               </TripActionsWrap>
               <Results
@@ -329,7 +329,8 @@ export default class TripsScene extends Component {
                 scheduledServices={this.props.scheduledServices}
                 onServiceDragEnd={this.props.onServiceDragEnd}
                 onServiceRemoveClick={this.props.onServiceRemoveClick}
-                expanded={this.state.resultsExpanded}
+                expanded={this.props.expandedResults}
+                toggleExpansion={this.props.toggleExpansion}
               />
               <Hr />
               <Summary
@@ -361,4 +362,9 @@ TripsScene.propTypes = {
   onShareModalClose: PropTypes.func.isRequired,
   onImageSelect: PropTypes.func.isRequired,
   isImageUploadInProgress: PropTypes.bool.isRequired,
+  toggleExpansion: PropTypes.func.isRequired,
+  toggleExpansionAll: PropTypes.func.isRequired,
+  expandedResults: PropTypes.object.isRequired,
 };
+
+export default expandCardsHoc(TripsScene);

@@ -14,6 +14,8 @@ import Button from 'shared_components/Button';
 
 import OwnerToolBar from 'styled_scenes/EditTrip/components/ToolBar/OwnerToolBar';
 
+import expandCardsHoc from 'shared_components/Trip/expandCardsHoc';
+
 // ACTIONS/CONFIG
 import { media } from 'libs/styled';
 
@@ -45,11 +47,10 @@ const TripActionsWrap = styled.div`
 `;
 
 // MODULE
-export default class TripsScene extends Component {
+class TripsScene extends Component {
   state = {
     details: true,
     isOwner: false,
-    resultsExpanded: false,
   };
 
   componentDidMount() {
@@ -67,10 +68,6 @@ export default class TripsScene extends Component {
 
   toggleDetails = () => {
     this.setState({ details: !this.state.details });
-  };
-
-  toggleExpansion = () => {
-    this.setState(prevState => ({ resultsExpanded: !prevState.resultsExpanded }));
   };
 
   render() {
@@ -101,8 +98,12 @@ export default class TripsScene extends Component {
                       size="small"
                       iconAfter="arrowDown"
                       theme="textGreen"
-                      onClick={this.toggleExpansion}
-                      text={this.state.resultsExpanded ? 'Collapse all' : 'Expand all'}
+                      onClick={this.props.toggleExpansionAll}
+                      text={
+                        Object.keys(this.props.expandedResults).length > 0
+                          ? 'Collapse all'
+                          : 'Expand all'
+                      }
                     />
                   </TripActionsWrap>
                   <ModifiableDayList
@@ -111,7 +112,8 @@ export default class TripsScene extends Component {
                     scheduledServices={this.props.scheduledServices}
                     onServiceDragEnd={this.props.onServiceDragEnd}
                     onServiceRemoveClick={this.props.onServiceRemoveClick}
-                    expanded={this.state.resultsExpanded}
+                    expanded={this.props.expandedResults}
+                    toggleExpansion={this.props.toggleExpansion}
                   />
                   <Hr />
                   <Summary
@@ -140,4 +142,9 @@ TripsScene.propTypes = {
   onBookClick: PropTypes.func.isRequired,
   isCloningInProcess: PropTypes.bool.isRequired,
   serviceAvailabilityCheckInProgress: PropTypes.bool.isRequired,
+  toggleExpansion: PropTypes.func.isRequired,
+  toggleExpansionAll: PropTypes.func.isRequired,
+  expandedResults: PropTypes.object.isRequired,
 };
+
+export default expandCardsHoc(TripsScene);
