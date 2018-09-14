@@ -43,7 +43,6 @@ const InnerWrap = styled.header`
 
       ${media.minMedium} {
         border-bottom: none;
-        // box-shadow: 0 8px 25px 0 rgba(141, 141, 141, 0.22);
         box-shadow: 0 1.5px 2px 0 hsla(0, 0%, 88%, 0.5);
       }
     `} ${props =>
