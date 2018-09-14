@@ -50,6 +50,14 @@ export const fetch_service = serviceId => async dispatch => {
     if (service) {
       const serviceData = service.data;
       const formattedServiceData = fetch_helpers.buildServicesJson([serviceData])[0];
+      const trips = await axios.get(`/trips/containing-service/${serviceId}`).catch(error => {
+        dispatch({ type: 'SERVICE_FETCH_ERROR', payload: error });
+      });
+      if (trips) {
+        const tripsData = trips.data;
+        const formattedTripsData = fetch_helpers.buildServicesJson(tripsData);
+        dispatch(trips_fetched({ trips: formattedTripsData }));
+      }
       dispatch(service_fetched({ service: formattedServiceData }));
     }
   } catch (e) {
