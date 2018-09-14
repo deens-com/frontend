@@ -65,7 +65,7 @@ export default function HomeSectionCTA() {
               Customize a unique itinerary from our curated trips
             </Description>
             <ButtonContainer>
-              <Button type="link" width="180px" align="center" theme="textLightGreen" round size="medium" href="/login">
+              <Button type="link" width="180px" align="center" theme="textLightGreen" round size="medium" href="/register">
                 Sign Up
               </Button>
             </ButtonContainer>
@@ -77,7 +77,7 @@ export default function HomeSectionCTA() {
               Create a fully customized trip from scratch
             </Description>
             <ButtonContainer>
-              <Button type="link" width="180px" align="center" theme="textLightGreen" round size="medium" href="/login">
+              <Button type="link" width="180px" align="center" theme="textLightGreen" round size="medium" href="/register">
                 Sign Up
               </Button>
             </ButtonContainer>
@@ -89,7 +89,7 @@ export default function HomeSectionCTA() {
               Refer a friend, share a trip or add a service
             </Description>
             <ButtonContainer>
-              <Button type="link" width="180px" align="center" theme="textLightGreen" round size="medium" href="/login">
+              <Button type="link" width="180px" align="center" theme="textLightGreen" round size="medium" href="/register">
                 Learn More
               </Button>
             </ButtonContainer>
