@@ -16,6 +16,7 @@ import Thumb from './components/Thumb';
 import { Cart, ContentWrap } from './styles';
 import { cardConfig } from 'libs/config';
 import { PinIcon } from 'shared_components/icons';
+import I18nText from 'shared_components/I18nText';
 
 const Wrap = styled.div`
   display: inline-block;
@@ -87,6 +88,18 @@ const Author = styled.div`
   height: 75px;
 `;
 
+function formatLocation(location) {
+  let result = '';
+  if (location.city) {
+    result = location.city
+    if (location.state) {
+      result = result.concat(`, ${location.state}`)
+    }
+    return result;
+  }
+  return location.state;
+}
+
 export default class TripCart extends Component {
   constructor(props) {
     super(props);
@@ -119,14 +132,14 @@ export default class TripCart extends Component {
                   <ContentWrap>
                     <Title>
                       <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>
-                        {this.props.item.title}
+                        <I18nText data={this.props.item.title} />
                       </Truncate>
                     </Title>
                     <Location>
                       <PinIcon />
                       <p>
                         <Truncate lines={cardConfig.locationLines}>
-                          {this.props.item.location}
+                          {formatLocation(this.props.item.location)}
                         </Truncate>
                       </p>
                     </Location>
@@ -152,25 +165,27 @@ export default class TripCart extends Component {
               />
               <ContentWrap>
                 <Title>
-                  <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>
-                    {this.props.item.title}
+                  <Truncate lines={cardConfig.titleLines}>
+                    <I18nText data={this.props.item.title} />
                   </Truncate>
                 </Title>
                 <Description>
-                  <Truncate onTruncate={this.handleTruncate} lines={cardConfig.descriptionLines}>
-                    {this.props.item.excerpt}
+                  <Truncate lines={cardConfig.descriptionLines}>
+                    <I18nText data={this.props.item.description} />
                   </Truncate>
                 </Description>
                 <ContentFooter>
                   <Price>
-                    From <PriceTag unit="hidden" price={this.props.item.price}>
+                    From <PriceTag unit="hidden" price={this.props.item.basePrice}>
                       {({ symbol, convertedPrice }) => `${symbol}${convertedPrice}`}
                     </PriceTag>
                   </Price>
                   <Location>
                     <PinIcon />
                     <p>
-                      <Truncate lines={cardConfig.locationLines}>{this.props.item.location}</Truncate>
+                      <Truncate lines={cardConfig.locationLines}>
+                        {formatLocation(this.props.item.location)}
+                      </Truncate>
                     </p>
                   </Location>
                 </ContentFooter>
@@ -190,8 +205,8 @@ TripCart.propTypes = {
   item: PropTypes.shape({
     image: PropTypes.string,
     partof: PropTypes.number,
-    title: PropTypes.string,
-    excerpt: PropTypes.string,
+    title: PropTypes.object,
+    description: PropTypes.object,
     rating: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     review: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     price: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
