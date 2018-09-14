@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 import history from './../../main/history';
 import { isMobile, checkRequiredFields } from 'libs/Utils';
 import i18n from './../../libs/i18n';
-import Image from 'shared_components/Image';
+import MultiImageUploader from 'shared_components/MultiImageUploader/MultiImageUploader';
 const serviceTypes = [
   { label: i18n.t('places.singular'), value: 'place' },
   { label: i18n.t('activities.singular'), value: 'activity' },
@@ -31,10 +31,6 @@ const tagsDropdownOptions = serviceTags.map(value => ({ text: value, value }));
 
 const ErrorMsg = styled.div`
   color: red;
-`;
-
-const Flex = styled.div`
-  display: flex;
 `;
 
 class ServiceForm extends Component {
@@ -83,13 +79,13 @@ class ServiceForm extends Component {
     setFieldTouched('availableDays', true, false);
   };
 
-  onFileSelect = e => {
-    const { setFieldValue, setFieldTouched } = this.props;
-    const file = e.currentTarget.files[0];
-    if (!file) return;
-    setFieldValue('mainPicture', file);
-    setFieldTouched('mainPicture', true, false);
-  };
+  // onFileSelect = e => {
+  //   const { setFieldValue, setFieldTouched } = this.props;
+  //   const file = e.currentTarget.files[0];
+  //   if (!file) return;
+  //   setFieldValue('mainPicture', file);
+  //   setFieldTouched('mainPicture', true, false);
+  // };
 
   onLocationKeyUp = () => {
     const { setFieldValue, setFieldTouched } = this.props;
@@ -124,6 +120,12 @@ class ServiceForm extends Component {
       .then(value => {
         setFieldValue('latlong', value);
       });
+  };
+
+  onUploadedFilesChanged = mediaUrls => {
+    const { setFieldValue, setFieldTouched } = this.props;
+    setFieldTouched('media', true);
+    setFieldValue('media', mediaUrls);
   };
 
   componentWillReceiveProps(nextProps) {
@@ -340,6 +342,7 @@ class ServiceForm extends Component {
           />
         </Form.Field>
 
+        {/* Single image upload
         <Form.Field>
           <label>Service Picture</label>
           <Flex>
@@ -355,6 +358,17 @@ class ServiceForm extends Component {
               onChange={this.onFileSelect}
             />
           </Flex>
+        </Form.Field>
+        */}
+
+        {/* Multi image upload */}
+        <Form.Field>
+          <label>Service Images</label>
+          <MultiImageUploader
+            value={values.media}
+            onUploadedFilesChanged={this.onUploadedFilesChanged}
+            initialUploadedFiles={values.media}
+          />
         </Form.Field>
 
         {/* Accept Ethereum */}
@@ -462,6 +476,7 @@ export default withFormik({
       null,
     tags: (service && service.tags) || [],
     formattedAddress: (service && service.formattedAddress) || undefined,
+    media: (service && service.media) || [],
   }),
   validate,
   handleSubmit: (values, { props }) => {

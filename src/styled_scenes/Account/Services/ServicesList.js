@@ -74,11 +74,12 @@ const ServiceItem = item => {
       {showContractStatus && (
         <SmartContractStatus.Wrapper status={item.contractStatus} hash={item.hash} />
       )}
-      {item.mainPicture && (
-        <Link to={'/services/' + item.objectId} key={item.objectId}>
-          <Thumb url={item.mainPicture.url} />
-        </Link>
-      )}
+      {item.media &&
+        item.media[0] && (
+          <Link to={'/services/' + item.objectId} key={item.objectId}>
+            <Thumb url={item.media[0]} />
+          </Link>
+        )}
 
       <ContentWrap>
         <Link to={'/services/' + item.objectId} key={item.objectId}>

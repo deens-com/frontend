@@ -8,6 +8,8 @@ import { SectionContent } from 'shared_components/layout/Page';
 import { getFormattedTripDates } from 'libs/Utils';
 import Carousel from './Carousel';
 import LocationCart from './Carts/Location';
+import { Loader } from 'semantic-ui-react';
+import I18nText from 'shared_components/I18nText';
 
 const get_label_color = status => {
   switch (status) {
@@ -67,7 +69,9 @@ class Trip extends Component {
         <Divider />
         <TripTitleRow>
           <Link to={this.state.linkToViewTrip}>
-            <InlineH2>{trip.title}</InlineH2>
+            <InlineH2>
+              <I18nText data={trip.title} />
+            </InlineH2>
           </Link>
           <Button
             as={Link}
@@ -88,8 +92,8 @@ class Trip extends Component {
         <br />
         <CarouselWrapper>
           <Carousel sm_slides_nb={1} md_slides_nb={2} lg_slides_nb={4} xl_slides_nb={4}>
-            {trip.services.map((item, index) => (
-              <LocationCart item={item} index={index} key={item.objectId} />
+            {trip.services.filter(({ service }) => !!service).map(({ service }, index) => (
+              <LocationCart item={service} index={index} key={service._id} />
             ))}
           </Carousel>
         </CarouselWrapper>
@@ -103,10 +107,23 @@ class Trip extends Component {
 }
 
 const TripSectionComponent = props => {
+  if (props.isLoadingTrips) {
+    return (
+      <Loader active inline="centered" size="massive">
+        Loading
+      </Loader>
+    );
+  }
   if (!props.trips.length) {
     return <p>You don't have any {props.tripsType} trips.</p>;
   }
-  return <section>{props.trips.map(trip => <Trip key={trip.objectId} trip={trip} />)}</section>;
+  return (
+    <section>
+      {props.trips.map(trip => (
+        <Trip key={trip.objectId} trip={trip} />
+      ))}
+    </section>
+  );
 };
 
 export default TripSectionComponent;

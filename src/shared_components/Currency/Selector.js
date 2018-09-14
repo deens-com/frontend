@@ -16,6 +16,7 @@ class CurrencySelector extends Component {
     const formattedSelectedOption = {
       value: selectedOption.value,
       label: selectedOption.label.split(' ')[0],
+      stripeMultiplier: selectedOption.stripeMultiplier || 1,
     };
     this.setState({ selectedOption: formattedSelectedOption });
     this.props.set_base_currency(formattedSelectedOption);

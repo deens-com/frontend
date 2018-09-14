@@ -1,8 +1,7 @@
 const initialState = {
   user_profile: {},
-  all_trips: [],
-  planned_trips: [],
-  completed_trips: [],
+  allTrips: [],
+  isLoadingTrips: false,
   user_services: [],
   metamaskError: {},
   ledger_error: {},
@@ -12,7 +11,7 @@ const initialState = {
 
 export default function AccountReducer(state = initialState, action = {}) {
   switch (action.type) {
-    case 'USER_PROFILE_FETCHED':
+    case 'account/USER_PROFILE_FETCHED':
       return {
         ...state,
         user_profile: action.payload.user_profile,
@@ -22,10 +21,16 @@ export default function AccountReducer(state = initialState, action = {}) {
         ...state,
         user_services: action.payload.user_services,
       };
-    case 'ACCOUNT/CATEGORIZED_TRIPS_FETCHED': {
+    case 'ACCOUNT/MY_TRIPS_FETCH_STARTED':
       return {
         ...state,
-        ...action.payload,
+        isLoadingTrips: true,
+      };
+    case 'ACCOUNT/MY_TRIPS_FETCHED': {
+      return {
+        ...state,
+        allTrips: action.payload,
+        isLoadingTrips: false,
       };
     }
     case 'METAMASK_ERROR':

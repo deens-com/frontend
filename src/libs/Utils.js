@@ -1,6 +1,16 @@
 import moment from 'moment';
 import tagsData from './../data/tags';
 
+export const serverBaseURL = () => {
+  if (process.env.REACT_APP_NODE_ENV === 'production') {
+    return process.env.SERVER_BASE_URL || 'https://api.please.com';
+  } else if (process.env.REACT_APP_NODE_ENV === 'staging') {
+    return process.env.SERVER_BASE_URL || 'https://staging-api.please.com';
+  } else {
+    return process.env.SERVER_BASE_URL || 'https://api.please.docker';
+  }
+};
+
 export default class Utils {
   static getBaseSymbol(currency = 'USD') {
     switch (currency) {
@@ -140,4 +150,21 @@ export function getFormattedTripDates(trip) {
   const startMoment = moment(getISODateString(trip.beginDate));
   const endMoment = startMoment.clone().add(trip.dayCount, 'days');
   return `${startMoment.format('LL')} - ${endMoment.format('LL')}`;
+}
+
+/**
+ * reloads the page
+ */
+export function reloadPage() {
+  if (window && window.location && typeof window.location.reload === 'function') {
+    window.location.reload();
+  }
+}
+
+/**
+ * Gets the large size image from the media array
+ * @returns {string | undefined}
+ */
+export function getLargeImageFromMedia(media) {
+  return media && media[0] && media[0].files && media[0].files.large && media[0].files.large.url;
 }

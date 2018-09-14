@@ -13,7 +13,6 @@ import Summary from 'styled_scenes/EditTrip/components/Summary';
 import Button from 'shared_components/Button';
 
 import OwnerToolBar from 'styled_scenes/EditTrip/components/ToolBar/OwnerToolBar';
-import AddNewServiceToTrip from 'styled_scenes/EditTrip/components/AddNewServiceToTrip';
 
 import expandCardsHoc from 'shared_components/Trip/expandCardsHoc';
 
@@ -24,6 +23,7 @@ import { media } from 'libs/styled';
 import { Page, PageContent } from '../../shared_components/layout/Page';
 import { Hr } from '../../shared_components/styledComponents/misc';
 import TripLeftPortion from './components/TripLeftPortion';
+import AddNewServiceToTrip from './components/AddNewServiceToTrip';
 
 const Wrap = styled.div`
   ${media.minMediumPlus} {

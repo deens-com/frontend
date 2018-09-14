@@ -23,16 +23,22 @@ const AccountTripsScene = props => {
           style={{ borderBottom: '2px solid #50a189' }}
         >
           All
-        </Link>&nbsp; | &nbsp;
+        </Link>
+        &nbsp; | &nbsp;
         <Link to="/account/trips/planned" onClick={scrollDownMobileOnly}>
           Planned
-        </Link>&nbsp; | &nbsp;
+        </Link>
+        &nbsp; | &nbsp;
         <Link to="/account/trips/completed" onClick={scrollDownMobileOnly}>
           Completed
         </Link>
         <br />
         <br />
-        <TripSectionComponent trips={props.all_trips} tripsType="" />
+        <TripSectionComponent
+          isLoadingTrips={props.isLoadingTrips}
+          trips={props.all_trips}
+          tripsType=""
+        />
       </Grid.Column>
     </Grid>
   );

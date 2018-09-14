@@ -19,10 +19,12 @@ const AccountTripsScene = props => {
         <h1>My Trips</h1>
         <Link to="/account/trips/all" onClick={scrollDownMobileOnly}>
           All
-        </Link>&nbsp; | &nbsp;
+        </Link>
+        &nbsp; | &nbsp;
         <Link to="/account/trips/planned" onClick={scrollDownMobileOnly}>
           Planned
-        </Link>&nbsp; | &nbsp;
+        </Link>
+        &nbsp; | &nbsp;
         <Link
           to="/account/trips/completed"
           onClick={scrollDownMobileOnly}
@@ -32,7 +34,11 @@ const AccountTripsScene = props => {
         </Link>
         <br />
         <br />
-        <TripSectionComponent trips={props.completed_trips} tripsType="completed" />
+        <TripSectionComponent
+          isLoadingTrips={props.isLoadingTrips}
+          trips={props.completed_trips}
+          tripsType="completed"
+        />
       </Grid.Column>
     </Grid>
   );

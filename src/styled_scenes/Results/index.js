@@ -137,7 +137,9 @@ export default class ResultsScene extends Component {
                     key: 'AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc',
                   }}
                 >
-                  {markers.map(marker => <MapMaker {...marker} scale={1} color="#4fb798" />)}
+                  {markers.map(marker => (
+                    <MapMaker {...marker} scale={1} color="#4fb798" />
+                  ))}
                 </GoogleMapReact>
               </MapWrapper>
             )}

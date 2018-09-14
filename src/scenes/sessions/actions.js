@@ -1,7 +1,11 @@
 import Parse from 'parse';
+import axios from 'libs/axios';
+import validator from 'validator';
 import history from './../../main/history';
 import fetch_helpers from './../../libs/fetch_helpers';
 import { identifyUsingSession } from 'libs/analytics';
+import { serverBaseURL } from 'libs/config';
+import { saveSession, getSession, removeSession } from 'libs/user-session';
 
 export const types = {
   LOGIN_SUCCESS: 'LOGIN_SUCCESS',
@@ -11,6 +15,7 @@ export const types = {
   LEDGER_ERROR: 'LEDGER_ERROR',
   BASE_CURRENCY_SET: 'BASE_CURRENCY_SET',
   TOGGLE_LEDGER_LOADER_DISPLAY: 'TOGGLE_LEDGER_LOADER_DISPLAY',
+  UPDATE_ERROR: 'UPDATE_ERROR',
 };
 
 export const sessionsFetched = session => {
@@ -28,15 +33,20 @@ export const displayLedgerLoader = boolDisplay => {
   };
 };
 
-export const login_error = message => {
-  return dispatch => {
-    dispatch({
-      type: types.LOGIN_ERROR,
-      payload: {
-        code: '203',
-        message: message,
-      },
-    });
+export const displayUpdateError = error => {
+  return {
+    type: this.types.UPDATE_ERROR,
+    payload: error,
+  };
+};
+
+export const setLoginError = payload => {
+  return {
+    type: types.LOGIN_ERROR,
+    payload: {
+      code: payload.code,
+      message: payload.message,
+    },
   };
 };
 
@@ -56,25 +66,107 @@ export const set_base_currency = currency => async dispatch => {
   });
 };
 
-export const loginRequest = (email, password) => {
-  return dispatch => {
-    Parse.User.logIn(email, password).then(
-      user => {
-        dispatch(sessionsFetched({ session: user }));
-        history.goBack();
-      },
-      error => {
-        if (error.code === 101) {
-          dispatch({
-            type: types.LOGIN_ERROR,
-            payload: {
-              code: error.code,
-              message: 'Invalid email or password',
-            },
-          });
+export const getCurrentUser = () => async dispatch => {
+  try {
+    const session = getSession();
+    if (session) {
+      const currentUser = await axios.get('/users/me').catch(error => {
+        console.log(error);
+        if (error.response && error.response.data.message === 'jwt expired') {
+          dispatch(logOut());
         }
-      },
-    );
+      });
+      if (currentUser.data) {
+        dispatch(sessionsFetched({ session: currentUser.data }));
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const logOut = () => dispatch => {
+  removeSession();
+  dispatch(sessionsFetched({ session: {} })); // why this???
+  history.push('/');
+};
+
+export const update_user_profile = (user_id, field_type, value) => {
+  return async dispatch => {
+    const session = getSession();
+    if (session) {
+      try {
+        const currentUser = await axios.get('/users/me').catch(error => {
+          dispatch(displayUpdateError({ code: 422, error: error }));
+        });
+        let isUsernameValid = false;
+        let isEmailValid = false;
+        if (field_type === 'username') {
+          isUsernameValid = validator.isAlphanumeric(value, 'en-US');
+          if (!isUsernameValid) {
+            dispatch(displayUpdateError({ code: 203, error: 'Username should be alphanumeric.' }));
+            dispatch(sessionsFetched({ session: currentUser.data }));
+            return;
+          }
+        }
+        if (field_type === 'email') {
+          isEmailValid = validator.isEmail(value);
+          if (!isEmailValid) {
+            dispatch(
+              displayUpdateError({ code: 203, error: 'Please, enter a valid email address.' }),
+            );
+            dispatch(sessionsFetched({ session: currentUser.data }));
+            return;
+          }
+        }
+        const updatedUser = await axios.patch('/users/me', { [field_type]: value }).catch(error => {
+          dispatch(displayUpdateError({ code: 422, error: error }));
+        });
+        dispatch(sessionsFetched({ session: updatedUser.data }));
+        dispatch(displayUpdateError({}));
+      } catch (error) {
+        dispatch(displayUpdateError({ code: 422, error: error }));
+      }
+    }
+  };
+};
+
+export const loginRequest = (email, password) => {
+  return async dispatch => {
+    try {
+      const auth0Response = await axios
+        .post(`${serverBaseURL}/users/login`, { username: email, password: password })
+        .catch(error => {
+          dispatch(
+            setLoginError({
+              code: error.response.status,
+              message: error.response.data.error_description,
+            }),
+          );
+        });
+      if (auth0Response) {
+        const auth0Token = auth0Response.data.access_token;
+        const user = await axios
+          .get(`${serverBaseURL}/users/me`, { headers: { Authorization: `Bearer ${auth0Token}` } })
+          .catch(error => {
+            dispatch(
+              setLoginError({
+                code: error.response.status,
+                message: error.response.data.message || error.response.data.error_description,
+              }),
+            );
+          });
+        if (user) {
+          const userData = user.data;
+          userData.accessToken = auth0Token;
+          dispatch(sessionsFetched({ session: userData }));
+          saveSession(userData);
+          history.goBack();
+        }
+      }
+    } catch (error) {
+      dispatch(setLoginError({ code: 401, message: error }));
+    }
   };
 };
 

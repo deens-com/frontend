@@ -227,7 +227,11 @@ export default function FoodDetailScene({}) {
           render={() => <ImgSlider images={restaurant.images} />}
         />
         <DetailWrapper>
-          <TagWrap>{restaurant.tags.map(tag => <Tag key={tag.label} item={tag} />)}</TagWrap>
+          <TagWrap>
+            {restaurant.tags.map(tag => (
+              <Tag key={tag.label} item={tag} />
+            ))}
+          </TagWrap>
           <HeaderWrap>
             <h2>{restaurant.title}</h2>
             <p>{restaurant.description}</p>

@@ -6,9 +6,9 @@ import CheckoutTrip from './components/CheckoutTrip';
 
 class CheckoutTripContainer extends Component {
   render() {
-    const { trip, scheduledServices } = this.props;
-    if (!trip) return null;
-    return <CheckoutTrip trip={trip} scheduledServices={scheduledServices} />;
+    const { trip, servicesGroupedByDay } = this.props;
+    if (!trip || !trip._id) return null;
+    return <CheckoutTrip trip={trip} servicesGroupedByDay={servicesGroupedByDay} />;
   }
 }
 
@@ -16,7 +16,7 @@ const mapStateToProps = state => {
   return {
     trip: state.TripsReducer.trip,
     tripError: state.TripsReducer.tripError,
-    scheduledServices: tripSelectors.getScheduledServices(state),
+    servicesGroupedByDay: tripSelectors.getServicesGroupedByDay(state),
   };
 };
 

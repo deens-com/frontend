@@ -1,12 +1,11 @@
 import React from 'react';
 import { Grid, Icon } from 'semantic-ui-react';
+import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import CircularProfilePic from './CircularProfilePic';
 import Stars from './Stars';
 import { Link } from 'react-router-dom';
-import { Menu, Card } from 'semantic-ui-react';
-import Parse from 'parse';
-import history from './../../../main/history';
+import { Menu, Card, Button } from 'semantic-ui-react';
 import ImgurAvatar from './../../../assets/imgur-avatar.png';
 
 const AttributeTitle = styled.h6`
@@ -15,7 +14,7 @@ const AttributeTitle = styled.h6`
 `;
 
 const CenteredDiv = styled.div`
-  //text-align: center;
+  text-align: center;
 `;
 
 const Wrapper = styled.div`
@@ -35,15 +34,35 @@ const MenuIcon = styled(Icon)`
   color: #5fb79e;
 `;
 
-const UserBasicInfo = ({ user_profile: user = {}, match }) => {
+const FileInputWrapper = styled.div`
+  margin-top: 5px;
+  height: 40px;
+  overflow: hidden;
+  position: relative;
+  > input[type='file'] {
+    font-size: 200px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0;
+  }
+  > .btn-file-input {
+    display: inline-block;
+    width: 200px;
+    height: 40px;
+  }
+`;
+
+const UserBasicInfo = ({ user_profile: user = {}, match, update_user_avatar, logOut }) => {
   const name = user.fullName || user.username;
   const dpUrl = (user.profilePicture && user.profilePicture.url) || ImgurAvatar;
   let activePath = match.path.replace('/account/', '');
-  const logout = () => {
-    Parse.User.logOut().then(() => {
-      history.push('/');
-    });
-  };
+  // const logout = () => {
+  //   props.logOut();
+  //   // Parse.User.logOut().then(() => {
+  //   //   history.push('/');
+  //   // });
+  // };
   const scrollDownMobileOnly = () => {
     const currentWidth = window.innerWidth;
     if (currentWidth <= 750) {
@@ -52,15 +71,24 @@ const UserBasicInfo = ({ user_profile: user = {}, match }) => {
       }, 20);
     }
   };
+  const onFileSelect = e => {
+    const file = e.currentTarget.files[0];
+    if (!file) return;
+    update_user_avatar(file);
+  };
   return (
     <Card>
       <Wrapper>
+        <CircularProfilePic src={dpUrl} />
         <CenteredDiv>
-          <Link to={'/users/' + user.username}>
-            <CircularProfilePic src={dpUrl} />
-            {name && <NameDiv>{name}</NameDiv>}
-          </Link>
+          <FileInputWrapper>
+            <Button circular class="btn-file-input">
+              Update avatar
+            </Button>
+            <input type="file" name="file" accept=".jpg, .jpeg, .png" onChange={onFileSelect} />
+          </FileInputWrapper>
         </CenteredDiv>
+        <Link to={'/users/' + user.username}>{name && <NameDiv>{name}</NameDiv>}</Link>
 
         <Grid columns={2} divided>
           <Grid.Row>
@@ -86,7 +114,8 @@ const UserBasicInfo = ({ user_profile: user = {}, match }) => {
             <Menu.Item name="trips" active={activePath === 'trips'}>
               <MenuIcon disabled name="angle right" circular />
               <span>
-                <MenuIcon disabled name="plane" circular />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; My Trips
+                <MenuIcon disabled name="plane" circular />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; My Trips
               </span>
             </Menu.Item>
           </Link>
@@ -95,7 +124,8 @@ const UserBasicInfo = ({ user_profile: user = {}, match }) => {
             <Menu.Item name="services" active={activePath === 'services'}>
               <MenuIcon disabled name="angle right" circular />
               <span>
-                <MenuIcon disabled name="list" circular />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; My Services
+                <MenuIcon disabled name="list" circular />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; My Services
               </span>
             </Menu.Item>
           </Link>
@@ -104,25 +134,28 @@ const UserBasicInfo = ({ user_profile: user = {}, match }) => {
             <Menu.Item name="profile" active={activePath === 'profile'}>
               <MenuIcon disabled name="angle right" circular />
               <span>
-                <MenuIcon disabled name="user" circular />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Profile
+                <MenuIcon disabled name="user" circular />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Profile
               </span>
             </Menu.Item>
           </Link>
-
+          {/*
           <Link to="/account/settings" onClick={scrollDownMobileOnly}>
             <Menu.Item name="settings" active={activePath === 'settings'}>
               <MenuIcon disabled name="angle right" circular />
               <span>
-                <MenuIcon disabled name="cogs" circular />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Settings
+                <MenuIcon disabled name="cogs" circular />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Settings
               </span>
             </Menu.Item>
           </Link>
-
-          <div style={{ cursor: 'pointer' }} onClick={logout}>
+            */}
+          <div style={{ cursor: 'pointer' }} onClick={logOut}>
             <Menu.Item name="logout" active={activePath === 'logout'}>
               <MenuIcon disabled name="angle right" circular />
               <span>
-                <MenuIcon disabled name="power" circular />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Logout
+                <MenuIcon disabled name="power" circular />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Logout
               </span>
             </Menu.Item>
           </div>
@@ -132,4 +165,4 @@ const UserBasicInfo = ({ user_profile: user = {}, match }) => {
   );
 };
 
-export default UserBasicInfo;
+export default withRouter(UserBasicInfo);

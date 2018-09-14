@@ -6,6 +6,7 @@ import Parse from 'parse';
 import history from 'main/history';
 import TripsListInDropDown from './TripsListInDropDown';
 import CustomColorSemanticButton from 'shared_components/CustomColorSemanticButton';
+import { getSession } from 'libs/user-session';
 
 export default class AddToTripButton extends React.Component {
   static propTypes = {
@@ -36,7 +37,7 @@ export default class AddToTripButton extends React.Component {
     this.props.onNewTripClick();
   };
 
-  isLoggedIn = () => Parse.User.current() != null;
+  isLoggedIn = () => getSession() != null;
 
   redirectToLogin = () => history.push('/login');
 

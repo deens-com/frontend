@@ -9,29 +9,29 @@ import createHistory from 'history/createBrowserHistory';
 import { unregister as unregisterServiceWorker } from './registerServiceWorker';
 import Parse from 'parse';
 import Raven from 'raven-js';
+import { serverBaseURL, isProd, isStaging } from './libs/config';
+import * as featureFlags from './libs/feature-flags';
+import { readSession } from 'libs/user-session';
 
 Parse.initialize('myAppId');
+Parse.serverURL = `${serverBaseURL}/parse`;
+
 const history = createHistory();
 
-if (process.env.REACT_APP_NODE_ENV === 'production') {
+if (isProd || isStaging) {
   Raven.config('https://fd51482cf40f43fca379bc14417b6f2b@sentry.io/1220761').install();
-  Parse.serverURL =
-    process.env.REACT_APP_PARSE_SERVER_URL || 'https://internal-api.please.com/parse';
-} else if (process.env.REACT_APP_NODE_ENV === 'staging') {
-  Raven.config('https://fd51482cf40f43fca379bc14417b6f2b@sentry.io/1220761').install();
-  Parse.serverURL =
-    process.env.REACT_APP_PARSE_SERVER_URL || 'https://staging-internal-api.please.com/parse';
-} else {
-  Parse.serverURL = process.env.REACT_APP_PARSE_SERVER_URL || 'https://api.please.docker/parse';
 }
 
-if (process.env.NODE_ENV === 'production') {
+if (isProd) {
   const noop = () => {};
   const error = error => Raven.captureException(error);
   console.log = noop;
   console.warn = error;
   console.error = error;
 }
+
+// reads localStorage to get the user object on load
+readSession();
 
 ReactDOM.render(<App />, document.getElementById('root'));
 unregisterServiceWorker();
@@ -53,3 +53,6 @@ const customerId = getQueryStringValue('customer_id');
 if (customerId && window.analytics) {
   window.analytics.identify(customerId);
 }
+
+// for easier access to feature flag functions
+window.featureFlags = featureFlags;

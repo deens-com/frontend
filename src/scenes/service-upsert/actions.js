@@ -1,7 +1,6 @@
 import Parse from 'parse';
 import fetch_helpers from '../../libs/fetch_helpers';
 import history from '../../main/history';
-import { generateFilename } from './../../libs/filename';
 import { trackServiceCreated } from 'libs/analytics';
 
 export const types = {
@@ -22,7 +21,7 @@ export const types = {
 
 export const user_profile_fetched = userProfile => {
   return {
-    type: 'USER_PROFILE_FETCHED',
+    type: 'service-upsert/USER_PROFILE_FETCHED',
     payload: userProfile,
   };
 };
@@ -40,17 +39,9 @@ export const registerService = (values, history) => async (dispatch, getState) =
   if (isSubmitting) return;
   dispatch({ type: types.SERVICE_CREATE_STARTED });
   try {
-    const { mainPicture, acceptETH } = values;
-    let parseFile;
-    if (mainPicture) {
-      const filename = generateFilename(mainPicture.name);
-      if (filename.length) {
-        parseFile = await new Parse.File(filename, mainPicture).save();
-      }
-    }
+    const { acceptETH } = values;
     const result = await Parse.Cloud.run('createOrUpdateService', {
       ...values,
-      parseFile,
       availableDays: [...values.availableDays],
     });
 
@@ -93,22 +84,13 @@ export const saveServiceChanges = (serviceId, values, history) => async (dispatc
   if (isLoading) return;
   dispatch({ type: types.SERVICE_SAVE_STARTED });
   try {
-    const { mainPicture } = values;
-    let parseFilePromise;
-    if (mainPicture) {
-      parseFilePromise = new Parse.File(mainPicture.name, mainPicture).save();
-    }
-    const [rawService, parseFile] = await Promise.all([
-      fetch_helpers.build_query('Service').get(serviceId),
-      parseFilePromise,
-    ]);
+    const rawService = await fetch_helpers.build_query('Service').get(serviceId);
     const service = fetch_helpers.normalizeParseResponseData(rawService);
     const input = {
       id: serviceId,
       ...service,
       ...values,
       availableDays: [...values.availableDays],
-      parseFile,
     };
 
     const result = await Parse.Cloud.run('createOrUpdateService', input);

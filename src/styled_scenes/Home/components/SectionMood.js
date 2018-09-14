@@ -25,7 +25,9 @@ export default function HomeSectionMood({ tags }) {
         </SectionHeader>
         <SectionContent>
           <Carousel sm_slides_nb={2} md_slides_nb={3} lg_slides_nb={4} xl_slides_nb={5}>
-            {tags.map(item => <Tag key={item.label} size="large" item={item} />)}
+            {tags.map(item => (
+              <Tag key={item.label} size="large" item={item} />
+            ))}
           </Carousel>
         </SectionContent>
       </SectionWrap>

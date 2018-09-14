@@ -1,6 +1,7 @@
-import Parse from 'parse';
 import history from './../../main/history';
 import * as analytics from 'libs/analytics';
+import axios from 'libs/axios';
+import { saveSession } from 'libs/user-session';
 
 export const types = {
   REGISTRATION_SUCCESS: 'REGISTRATION_SUCCESS',
@@ -27,20 +28,36 @@ export const registrationFailed = error_payload => {
   };
 };
 
-export const postRegistration = (username, email, password) => {
-  return dispatch => {
-    let user = new Parse.User();
-    user.set('username', username);
-    user.set('email', email);
-    user.set('password', password);
-    user.signUp(null, {
-      success: user => {
-        dispatch(registrationSuccess({ session: user }));
-        history.push('/');
-      },
-      error: (user, error) => {
-        dispatch(registrationFailed({ user: user, error: error }));
-      },
+export const postRegistration = (username, email, password) => async dispatch => {
+  try {
+    await axios.post('/users/signup', {
+      username: username,
+      email: email,
+      password: password,
     });
-  };
+    const loginResponse = await axios.post('/users/login', { username: email, password: password });
+    const auth0Token = loginResponse.data.access_token;
+    const user = await axios.get('/users/me', {
+      headers: { Authorization: `Bearer ${auth0Token}` },
+    });
+    const userData = user.data;
+    userData.accessToken = auth0Token;
+    dispatch(registrationSuccess({ session: userData }));
+    saveSession(userData);
+    history.goBack();
+  } catch (error) {
+    dispatch(
+      registrationFailed({
+        error: {
+          message:
+            (error.response &&
+              error.response.data &&
+              (error.response.data.message ||
+                error.response.data.error_description ||
+                error.response.data.description)) ||
+            error.message,
+        },
+      }),
+    );
+  }
 };
