@@ -104,7 +104,7 @@ export default class TopBar extends Component {
     const { showMenu, showSearch, showProfileMenu } = this.state;
 
     return (
-      <div>
+      <React.Fragment>
         <InnerWrap
           // eslint-disable-next-line
           role="baner"
@@ -131,7 +131,7 @@ export default class TopBar extends Component {
           hide={showMenu}
         />
         <MobileNavProfile menuIsOpened={showProfileMenu} />
-      </div>
+      </React.Fragment>
     );
   }
 }
