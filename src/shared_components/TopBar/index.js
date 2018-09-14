@@ -19,9 +19,10 @@ import { media } from '../../libs/styled';
 const InnerWrap = styled.header`
   align-items: center;
   background: ${props => (props.home && !props.showMenu ? 'transparent' : 'white')};
+  position: ${props => (props.home && !props.showMenu && 'absolute')};
   display: flex;
+  justify-content: ${props => (props.home) ? 'space-between' : 'flext-start'};
   height: 65px;
-  padding: ${props => (props.withPadding ? '0 15px' : '0')};
   width: 100%;
   z-index: 110;
   ${props =>
@@ -117,6 +118,7 @@ export default class TopBar extends Component {
             menuIsOpened={showMenu}
             toggleMenu={this.toggleMenu}
             applyFixation={showMenu && !fixed}
+            flex={Boolean(home)}
           />
           {!noSearch && <Search menuIsOpened={showMenu} toggleSearch={this.toggleSearch} />}
           <DesktopNav home={home} theme="light" />

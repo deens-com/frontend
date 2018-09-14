@@ -24,6 +24,8 @@ const Wrap = styled.div`
   ${props =>
     props.home &&
     css`
+      flex: 1;
+      justify-content: flex-end;
       & .Select--single > .Select-control .Select-value {
         color: white;
       }
@@ -122,7 +124,6 @@ const TopBarDesktopNav = function TopBarDesktopNav({
             ))}
           </Nav>
           <ActionsWrap>
-            <CurrencySelector />
             <DesktopDropDownMenu theme={theme} history={history} />
           </ActionsWrap>
         </Wrap>

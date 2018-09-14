@@ -9,11 +9,8 @@ import HomeSearch from './../../../styled_scenes/Home/components/HomeSearch';
 import BrandFooter from './../../../shared_components/BrandFooter';
 import MobileHero from './../../../styled_scenes/Home/components/MobileHero';
 import HeroSlider from './../../../styled_scenes/Home/components/HeroSlider';
-import SectionActivities from './../../../styled_scenes/Home/components/SectionActivities';
-import SectionFood from './../../../styled_scenes/Home/components/SectionFood';
-import SectionMood from './../../../styled_scenes/Home/components/SectionMood';
-import SectionPlaces from './../../../styled_scenes/Home/components/SectionPlaces';
 import SectionTrips from './../../../styled_scenes/Home/components/SectionTrips';
+import SectionCTA from './../../../styled_scenes/Home/components/SectionCTA';
 
 // ACTIONS/CONFIG
 import { sizes, media } from './../../../libs/styled';
@@ -21,31 +18,32 @@ import { sizes, media } from './../../../libs/styled';
 // STYLES
 import { Page, PageWrapper, PageContent } from './../../../shared_components/layout/Page';
 
-const Hero = styled.div`
+const PageTop = styled.div`
+  width: 100%;
   position: relative;
-
-  & > div:first-child {
-    position: relative;
-    z-index: 2;
-  }
 `;
 
 const HomeTagLine = styled.h1`
   color: #fff;
   font-size: 40px;
   letter-spacing: 0px;
-  margin-bottom: 0px;
+  margin-top: 0px;
   margin-left: 13px;
-  margin-top: 180px;
+  padding-top: 138px;
+  padding-bottom: 47px;
   position: relative;
+  font-weight: bold;
+  text-align: center;
+  line-height: 56px;
+  width: 504px;
+  margin: auto;
 
   ${media.minSmall} {
-    font-size: 60px;
+    font-size: 44px;
   }
 
   ${media.minMedium} {
-    font-size: 113px;
-    letter-spacing: -4px;
+    font-size: 48px;
   }
 
   span {
@@ -70,35 +68,28 @@ const HomeTagLine = styled.h1`
 const HomeComponent = props => {
   return (
     <Page>
-      <Hero>
-        <PageWrapper>
-          <TopBar home noSearch />
+      <PageWrapper>
+        <TopBar home noSearch />
+        <PageTop>
+          <Media query={`(min-width: ${sizes.large})`}>
+            {matches => (matches ? <HeroSlider /> : <MobileHero />)}
+          </Media>
           <HomeTagLine>
-            <span style={{ top: '-75px' }}>Rewarding</span> Experiences
+            Book complete trips in minutes
           </HomeTagLine>
           <HomeSearch />
-        </PageWrapper>
-        <Media query={`(min-width: ${sizes.large})`}>
-          {matches => (matches ? <HeroSlider /> : <MobileHero />)}
-        </Media>
-      </Hero>
-
-      <PageContent
-        itemProp="itemList"
-        itemScope
-        itemType="http://schema.org/ItemList"
-        padding="100px 0 0"
-      >
-        {/*<SectionHappy categories={categories} />*/}
-        <SectionMood tags={props.tags} />
-        <SectionTrips trips={props.trips} />
-        <SectionPlaces trips={props.popularPlaces} />
-        <SectionActivities locations={props.exciting_activities} />
-        <SectionFood foods={props.delicious_foods} />
-        <PageWrapper>
-          <BrandFooter />
-        </PageWrapper>
-      </PageContent>
+        </PageTop>
+        <PageContent
+          itemProp="itemList"
+          itemScope
+          itemType="http://schema.org/ItemList"
+          padding="28px 0 0"
+        >
+          <SectionCTA />
+          <SectionTrips trips={props.trips} />
+        </PageContent>
+        <BrandFooter />
+      </PageWrapper>
     </Page>
   );
 };

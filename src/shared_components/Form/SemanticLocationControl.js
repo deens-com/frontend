@@ -44,7 +44,8 @@ export default class SemanticLocationControl extends Component {
   };
 
   render() {
-    const { inputProps, inputStyles } = this.props;
+    const { inputProps, inputStyles, inputComponent } = this.props;
+
     return (
       <PlacesAutocomplete
         value={this.state.address}

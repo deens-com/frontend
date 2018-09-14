@@ -120,12 +120,12 @@ const PrevButton = props => {
 // MODULE
 const Carousel = props => {
   const breakpoints = {
-    // Small devices (landscape phones, 576px and down)
-    small: 576,
-    // Medium devices (tablets, 768px and down)
-    medium: 768,
-    // Large devices (desktops, 992px and down)
-    large: 992,
+    // Small devices (landscape phones, 650px and down)
+    small: 650,
+    // Medium devices (tablets, 960px and down)
+    medium: 960,
+    // Large devices (desktops, 1300px and down)
+    large: 1300,
     // Extra large devices (large desktops, 1200px and down)
     extraLarge: 2880,
   };

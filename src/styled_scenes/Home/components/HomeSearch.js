@@ -6,6 +6,7 @@ import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import history from './../../../main/history';
 import annyang from 'annyang';
 import waveGif from './../../../assets/wave.gif';
+import { media } from './../../../libs/styled';
 
 import { Message } from 'semantic-ui-react';
 
@@ -16,7 +17,7 @@ import { bindActionCreators } from 'redux';
 import i18n from './../../../libs/i18n';
 
 // COMPONENTS
-import { SearchIcon, MicrophoneIcon, DateIcon } from '../../../shared_components/icons';
+import { SearchIcon, CrossIcon, MicrophoneIcon } from '../../../shared_components/icons';
 import FormControl from '../../../shared_components/Form/FormControl';
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
 import Button from '../../../shared_components/Button';
@@ -51,24 +52,26 @@ const Input = styled.input`
   font-size: inherit;
   font-weight: inherit;
   outline: none;
-  padding: 10px 0;
+  padding-top: 3px;
   width: 100%;
+  color: #B5B5B6;
 
   ${placeholderMixin(`
-    color: #99a9be;
+    color: #B5B5B6;
   `)};
 `;
 
 const Wrapper = styled.div`
   position: relative;
-  top: 35px;
+  width: 504px;
+  margin: auto;
+  padding-bottom: 63px;
 `;
 
 const TypeIcon = styled.div`
   align-items: center;
-  background: ${props => (props.active ? '#4eb798' : '#d3e9db')};
   border-radius: 50%;
-  color: white;
+  color: #c4c4c4;
   cursor: pointer;
   display: flex;
   font-size: 24px;
@@ -78,21 +81,11 @@ const TypeIcon = styled.div`
   margin-right: 10px;
   overflow: hidden;
   width: 40px;
-
-  svg {
-    height: 26px;
-    width: 26px;
-  }
+  margin-top: -3px;
 
   &:last-child {
     margin-right: 0;
   }
-`;
-
-const TypeWrapper = styled.div`
-  display: flex;
-  margin-bottom: 25px;
-  padding: 0 10px;
 `;
 
 const SearchBg = styled.div`
@@ -102,105 +95,61 @@ const SearchBg = styled.div`
   border-radius: 4px;
   box-shadow: 0 8px 25px 0 rgba(141, 141, 141, 0.22);
   display: flex;
-  min-height: 72px;
+  min-height: 54px;
   height: auto;
-  padding: 0 25px;
+  padding: 0 15px;
+  width: 90%;
+  margin: auto;
+
+  ${media.mobileMinSmall} {
+    width: 100%;
+  }
 `;
 
-const BGPin = styled.div`
-  position: absolute;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3e%3cpath d='M7 4.7c0-.1-.1-.2-.1-.2L2.9.6v1.9l1.8 1.8.7.7-.7.7-1.8 1.8v1.9l3.9-3.9.2-.2c.1-.2.1-.4 0-.6z' fill='white'/%3e%3cpath d='M2.9 2.5v1.8h1.8zM2.9 5.7v1.8l1.8-1.8zM6.9 5.5c0-.1.1-.2.1-.2s-.1.1-.1.2zM6.9 4.5c0 .1.1.2.1.2s-.1-.1-.1-.2zM5.4 5l-.7-.7H2.9v1.4h1.8z' fill='white'/%3e%3c/svg%3e");
-  width: 12px;
-  height: 12px;
-  top: -8px;
-  left: 0px;
-  transition: transform 0.2s;
+const RightIcon = styled.div`
+  color: #57AD7A;
+  line-height: 40px;
+  width: 40px;
+  font-size: 24px;
+  cursor: pointer;
 `;
 
-const DateWrap = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+const WaveImg = styled.img`
+  max-height: 54px;
+  max-width: 60%;
   width: 100%;
-
-  & > div {
-    border: none;
-    flex: 1;
-    position: relative;
-
-    &:first-child {
-      &:after {
-        color: red;
-        content: '';
-        display: block;
-        height: 100%;
-        position: absolute;
-        right: 10px;
-        top: 0;
-        width: 1px;
-      }
-    }
-  }
-
-  @media all and (max-width: ${sizes.medium}) {
-    flex-wrap: wrap;
-
-    & > div {
-      flex: 1 1 100%;
-    }
-  }
-
-  @media all and (max-width: ${sizes.small}) {
-    flex-wrap: wrap;
-    padding-bottom: 5%;
-
-    & > div {
-      flex: 1 1 100%;
-    }
-  }
 `;
 
-const CheckboxWrap = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  padding-top: 1%;
-  padding-bottom: 1%;
-
-  @media all and (max-width: ${sizes.small}) {
-    padding-bottom: 7%;
-  }
-`;
-
-const Checkbox = styled(SemanticCheckbox)`
-  margin-left: 1%;
-  margin-right: 1%;
-  margin-bottom: 10px;
-`;
-
-const ButtonWrap = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-  padding-top: 1%;
-  padding-bottom: 1%;
+const WaveContainer = styled.div`
+  max-height: 54px;
+  flex: 1;
+  text-align: center;
 `;
 
 // MODULE
-const searchTypes = [
-  { type: 'voice', label: 'V' },
-  { type: 'text', label: 'S' },
-  { type: 'date', label: 'D' },
-];
-
 const locationProps = {
-  inputStyles: { height: '100%' },
-  inputProps: { transparent: true },
+  inputStyles: {
+    height: '100%',
+    border: 0,
+  },
+  inputProps: {
+    placeholder: 'Where would you like to go?',
+    icon: false,
+    as: Input,
+  },
 };
+
+const LeftIcon = ({ talking, onClickTalking }) => (
+  <TypeIcon onClick={talking ? onClickTalking : null}>
+    { talking ? <CrossIcon /> : <SearchIcon style={{ stroke: '#c4c4c4' }} /> }
+  </TypeIcon>
+);
 
 class HomeSearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      type: 'voice',
+      talking: false,
       service_type: { trip: false, place: false, activity: false, food: false },
       search: '',
       address: '',
@@ -209,9 +158,10 @@ class HomeSearch extends Component {
       person_nb: undefined,
       keywords: '',
       written_speech_query: 'to use your voice and tell us about your dream stay',
-      show_wave_gif: false,
       show_banner: false,
     };
+
+    this.input = React.createRef();
 
     this.setType = this.setType.bind(this);
     this.setSearch = this.setSearch.bind(this);
@@ -224,19 +174,19 @@ class HomeSearch extends Component {
     this.handleKeywordsSearchSubmit = this.handleKeywordsSearchSubmit.bind(this);
     this.setKeyWords = this.setKeyWords.bind(this);
     this.activate_annyang = this.activate_annyang.bind(this);
-    this.render_voice_search_form = this.render_voice_search_form.bind(this);
-    this.show_gif = this.show_gif.bind(this);
+    this.handleStartTalking = this.handleStartTalking.bind(this);
+    this.handleStopTalking = this.handleStopTalking.bind(this);
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    // this.input.current.focus();
+  }
 
   activate_annyang() {
-    let that = this;
     if (annyang) {
-      this.show_gif();
+      this.handleStartTalking();
       annyang.addCallback('result', speech => {
-        annyang.abort();
-        that.hide_gif();
+        this.handleStopTalking();
         this.setState({ written_speech_query: speech[0] });
         console.log('The user may have said : ', speech);
         this.props.voiceQuery(speech);
@@ -255,18 +205,14 @@ class HomeSearch extends Component {
     }
   }
 
-  show_gif() {
-    this.setState({ show_wave_gif: true });
+  handleStartTalking() {
+    this.setState({ talking: true });
   }
 
-  hide_gif() {
-    this.setState({ show_wave_gif: false });
-  }
-
-  componentDidUpdate() {
-    if (this.state.type === 'text') {
-      this.input.focus();
-    }
+  handleStopTalking() {
+    console.log('handlea')
+    annyang.abort();
+    this.setState({ talking: false });
   }
 
   setType(type) {
@@ -303,7 +249,10 @@ class HomeSearch extends Component {
       })
       .then(results => {
         const { lat, lng } = results;
-        this.setState({ address, latitude: lat, longitude: lng });
+        this.setState(
+          { address, latitude: lat, longitude: lng },
+          this.handleSearchSubmit,
+        );
       });
   }
 
@@ -339,8 +288,7 @@ class HomeSearch extends Component {
     }
   }
 
-  handleSearchSubmit(ev) {
-    ev.preventDefault();
+  handleSearchSubmit() {
     const { startDate, endDate } = this.state.search;
 
     const service_type_obj = this.state.service_type;
@@ -354,7 +302,7 @@ class HomeSearch extends Component {
       start_date: startDate,
       end_date: endDate,
       person_nb: this.state.person_nb,
-      address: this.state.address ? this.state.address + '936ZER0378' : '',
+      address: this.state.address,
       latitude: this.state.latitude,
       longitude: this.state.longitude,
       onlySmartContracts: this.state.onlySmartContracts,
@@ -373,40 +321,23 @@ class HomeSearch extends Component {
     history.push(`/results?${query_string}`);
   }
 
-  render_voice_search_form() {
-    if (this.state.show_wave_gif) {
+  renderInputContent = () => {
+    if (this.state.talking) {
       return (
-        <div>
-          <img src={waveGif} alt="wave" style={{ maxHeight: '65px' }} />
-          <Span muted style={{ position: 'relative', bottom: '24px' }}>
-            {' '}
-            {this.state.written_speech_query ===
-            'to use your voice and tell us about your dream stay'
-              ? ''
-              : this.state.written_speech_query}
-          </Span>
-        </div>
-      );
-    } else {
-      return (
-        <div>
-          {this.state.written_speech_query ===
-          'to use your voice and tell us about your dream stay' ? (
-            <Popup
-              trigger={<ButtonLink onClick={this.activate_annyang}>Click here</ButtonLink>}
-              content="and say &quot;Trip to Paris&quot; or &quot;Looking for a trip in New York for next month with my husband&quot;"
-              position="bottom left"
-              size="huge"
-              verticalOffset={20}
-              flowing={true}
-              inverted={true}
-            />
-          ) : null}
-
-          <Span muted> {this.state.written_speech_query}</Span>
-        </div>
+        <WaveContainer>
+          <WaveImg src={waveGif} alt="wave" />
+        </WaveContainer>
       );
     }
+
+    return (
+      <form style={{ flex: 1 }} onSubmit={this.handleKeywordsSearchSubmit}>
+        <SemanticLocationControl
+          onChange={this.handleLocationChange}
+          {...locationProps}
+        />
+      </form>
+    );
   }
 
   handleDismiss = () => {
@@ -417,105 +348,15 @@ class HomeSearch extends Component {
     const startDate = this.state.search.startDate && new Date(this.state.search.startDate);
     return (
       <Wrapper>
-        <TypeWrapper>
-          {searchTypes.map(opt => (
-            <TypeIcon
-              key={opt.type}
-              active={opt.type === this.state.type}
-              onClick={ev => {
-                this.setType(opt.type);
-              }}
-            >
-              {opt.type === 'voice' && <MicrophoneIcon />}
-              {opt.type === 'text' && <SearchIcon />}
-              {opt.type === 'date' && <DateIcon />}
-            </TypeIcon>
-          ))}
-        </TypeWrapper>
         <SearchBg>
-          <BGPin
-            style={{
-              transform: `rotate(-90deg) translateY(${
-                this.state.type === 'voice' ? '24' : this.state.type === 'text' ? '72' : '122'
-              }px)`,
-            }}
+          <LeftIcon
+            talking={this.state.talking}
+            onClickTalking={this.handleStopTalking}
           />
-          {this.state.type === 'voice' && this.render_voice_search_form()}
-          {this.state.type === 'text' && (
-            <form style={{ width: '100%' }} onSubmit={this.handleKeywordsSearchSubmit}>
-              <Input
-                type="text"
-                name="search"
-                innerRef={input => {
-                  this.input = input;
-                }}
-                value={this.state.keywords}
-                onChange={this.setKeyWords}
-                placeholder="Start typing.."
-              />
-            </form>
-          )}
-          {this.state.type === 'date' && (
-            <div>
-              <DateWrap>
-                <SemanticLocationControl onChange={this.handleLocationChange} {...locationProps} />
-
-                <FormControl
-                  type="date"
-                  onChange={this.handleStartDateChange}
-                  placeholder="Start date"
-                  leftIcon="date"
-                  dayPickerProps={{ disabledDays: { before: new Date() } }}
-                  inputProps={{ readOnly: true }}
-                />
-
-                <FormControl
-                  type="date"
-                  onChange={this.handleEndDateChange}
-                  placeholder="End date"
-                  leftIcon="date"
-                  dayPickerProps={{ disabledDays: { before: startDate || new Date() } }}
-                  inputProps={{ readOnly: true }}
-                />
-
-                <FormControl
-                  type="number"
-                  onChange={this.handlePersonChange}
-                  placeholder="Persons"
-                  leftIcon="person"
-                  min={1}
-                  max={10}
-                  onKeyPress={e => (e.charCode >= 48 && e.charCode <= 57) || e.preventDefault()}
-                />
-              </DateWrap>
-
-              <CheckboxWrap>
-                <Checkbox label="Trip" value="trip" onClick={this.handleServiceTypeChange} />
-                <Checkbox
-                  label={i18n.t('places.singular')}
-                  value="place"
-                  onClick={this.handleServiceTypeChange}
-                />
-                <Checkbox
-                  label="Activity"
-                  value="activity"
-                  onClick={this.handleServiceTypeChange}
-                />
-                <Checkbox label="Food" value="food" onClick={this.handleServiceTypeChange} />
-                <Checkbox
-                  label="Decentralized"
-                  value="smart"
-                  onClick={this.handleOnlySmartContracts}
-                />
-              </CheckboxWrap>
-
-              <ButtonWrap>
-                <Button round theme="mainFilled" onClick={this.handleSearchSubmit} align="center">
-                  Search now
-                </Button>
-              </ButtonWrap>
-            </div>
-          )}
+          {this.renderInputContent()}
+          <RightIcon onClick={this.activate_annyang}>
+            <MicrophoneIcon />
+          </RightIcon>
         </SearchBg>
         {this.state.show_banner && (
           <Message
