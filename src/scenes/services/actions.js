@@ -172,19 +172,40 @@ export const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (dispatch
   }
 
   try {
-    const newTripTitle = `Trip to ${service.country}`;
-    const { trip } = await Parse.Cloud.run('addServiceToNewTrip', {
-      serviceId: service.objectId,
-      tripTitle: newTripTitle,
-    });
-    fetch_service(service.objectId)(dispatch);
-    fetchMyTrips()(dispatch, getState);
-    dispatch({ type: 'analytics', meta: { analytics: trackTripCreated(trip) } });
-    if (redirectToCreatedTrip) {
-      history.push(`/trips/${trip.objectId}`);
-    } else {
-      setAddedToTripMessage(trip)(dispatch);
+    const newTripTitle = {'en-us': `Trip to ${service.location}`};
+    const serviceOrganization = {
+      title: newTripTitle,
+      description: {'en-us': service.description},
+      basePrice: service.basePrice,
+      baseCurrency: service.baseCurrency,
+      services: [{service: service, day: 1}],
+      duration: service.duration
+    };
+
+    const newTrip = await axios
+      .post(`/trips`, serviceOrganization)
+      .catch(error => {
+        console.log(error);
+      });
+    console.log(newTrip);
+    if (newTrip) {
+      const formattedTrip = fetch_helpers.buildServicesJson([newTrip.data])[0];
+      setAddedToTripMessage(formattedTrip)(dispatch);
     }
+
+    // const { trip } = await Parse.Cloud.run('addServiceToNewTrip', {
+    //   serviceId: service.objectId,
+    //   tripTitle: newTripTitle,
+    // });
+    // fetch_service(service.objectId)(dispatch);
+    // fetchMyTrips()(dispatch, getState);
+    // dispatch({ type: 'analytics', meta: { analytics: trackTripCreated(trip) } });
+    // if (redirectToCreatedTrip) {
+    //   history.push(`/trips/${trip.objectId}`);
+    // } else {
+    //   setAddedToTripMessage(trip)(dispatch);
+    // }
+
   } catch (error) {
     console.error(error);
     if (error.code === 141) {
