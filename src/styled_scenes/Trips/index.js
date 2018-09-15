@@ -19,6 +19,7 @@ import UserAvatar from '../../shared_components/UserAvatar';
 import ShareButton from './components/ShareButton';
 import Image from 'shared_components/Image';
 import expandCardsHoc from 'shared_components/Trip/expandCardsHoc';
+import placeholder from './../../assets/placeholder350x350.svg';
 
 // ACTIONS/CONFIG
 import { media, sizes } from '../../libs/styled';
@@ -261,10 +262,7 @@ class TripsScene extends Component {
                     isImageUploadInProgress={this.props.isImageUploadInProgress}
                   />
                 </ActionsWrap>
-                <ShareBg
-                  src={(trip && trip.image) || 'https://dummyimage.com/1280x720/000/fff'}
-                  background
-                />
+                <ShareBg src={(trip && trip.image) || placeholder} background />
               </ShareWrap>
               <Media
                 query={`(min-width: ${sizes.medium})`}

@@ -1,5 +1,6 @@
 import Parse from 'parse';
 import { tagsColorMatcher } from './Utils';
+import placeholder from './../assets/placeholder350x350.svg';
 
 const normalizeParseResponseData = data => {
   let dataInJsonString = JSON.stringify(data);
@@ -17,7 +18,7 @@ const get_service_image = mediaOrMainPicture => {
     !mediaOrMainPicture ||
     (mediaOrMainPicture instanceof Array && mediaOrMainPicture.length === 0)
   ) {
-    return 'https://dummyimage.com/600x400/000/fff';
+    return placeholder;
   }
   if (typeof mediaOrMainPicture === 'string') return mediaOrMainPicture;
   if (mediaOrMainPicture instanceof Array) return mediaOrMainPicture[0];

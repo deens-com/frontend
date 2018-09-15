@@ -54,6 +54,8 @@ const HomeTagLine = styled.h1`
     letter-spacing: 0;
     position: absolute;
     top: -44px;
+    font-family: 'Muli', sans-serif !important;
+    font-weight: 200;
 
     ${media.minSmall} {
       font-size: 40px;
@@ -63,6 +65,10 @@ const HomeTagLine = styled.h1`
     ${media.minMedium} {
       font-size: 60px;
       left: 68px;
+    }
+
+    @media screen and (max-width: 768px) {
+      position: static;
     }
   }
 `;

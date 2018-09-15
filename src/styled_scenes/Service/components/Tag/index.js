@@ -34,7 +34,8 @@ const ServiceCarouselButton = styled.a``;
 const ServiceCarouselLink = styled(Link)``;
 
 const Wrap = styled.div`
-  background: ${props => props.background || '#ddd'};
+  background: #ffffff;
+  border: solid 1px ${props => props.background || '#dddddd'};
   border-radius: 4px;
   box-shadow: ${props => (props.withShadow ? '0px 8px 10px 0 rgba(0, 0, 0, 0.22)' : 'none')};
   cursor: pointer;
@@ -53,16 +54,20 @@ const Wrap = styled.div`
     background: ${props => props.hoverBg || '#dd9'};
     box-shadow: ${props => (props.withShadow ? '0 8px 40px 0px rgba(141,141,141,0.28)' : 'none')};
     opacity: 0.8;
+
+    a {
+      color: #ffffff;
+    }
   }
 
   a {
     align-items: center;
-    color: #fff;
+    color: ${props => props.background || '#000000'};
     display: flex;
     font-size: ${props => tagSizes[props.size].fontSize};
     min-height: ${props => tagSizes[props.size].minHeight};
     justify-content: center;
-    padding: ${props => (props.size === 'small' ? '6px 10px' : '0')};
+    padding: ${props => (props.size === 'small' ? '5px 15px' : '0')};
   }
 `;
 
