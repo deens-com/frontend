@@ -1,10 +1,8 @@
 import Parse from 'parse';
 import history from 'main/history';
 import axios from 'libs/axios';
-import { trackTripCreated } from 'libs/analytics';
 import fetch_helpers from './../../libs/fetch_helpers';
 import { getSession } from './../../libs/user-session';
-import { serverBaseURL } from 'libs/config';
 
 export const trips_fetched = trips => {
   return {
@@ -140,35 +138,75 @@ export const fetch_service = serviceId => async dispatch => {
 };
 
 export const fetchMyTrips = () => async (dispatch, getState) => {
+  // const state = getState();
+  // if (state.ServicesReducer.userUnpurchasedTrips.isLoading) return;
+  // dispatch(userUnpurchasedTripsFetchStart());
+  // const trips = await Parse.Cloud.run('getMyNonPurchasedTrips');
+  // const normalizedTrips = fetch_helpers.normalizeParseResponseData(trips);
+  // dispatch(userUnpurchasedTripsFetchFinish(normalizedTrips));
+
   const state = getState();
   if (state.ServicesReducer.userUnpurchasedTrips.isLoading) return;
   dispatch(userUnpurchasedTripsFetchStart());
-  const trips = await Parse.Cloud.run('getMyNonPurchasedTrips');
-  const normalizedTrips = fetch_helpers.normalizeParseResponseData(trips);
-  dispatch(userUnpurchasedTripsFetchFinish(normalizedTrips));
+  try {
+    const myTrips = await axios.get(`/trips?include=service`).catch(error => {
+      dispatch({ type: 'SERVICE_FETCH_ERROR', payload: error });
+    });
+    if (myTrips) {
+      const normalizedTrips = fetch_helpers.buildServicesJson(myTrips.data);
+      const myUnpurchasedTrips = normalizedTrips.filter(trip => !trip.booked);
+      dispatch(userUnpurchasedTripsFetchFinish(myUnpurchasedTrips));
+    }
+  } catch (error) {
+    console.log(error);
+  }
+
 };
 
 export const addServiceToTrip = ({ trip, day }) => async (dispatch, getState) => {
   const state = getState();
   const { service } = state.ServicesReducer;
+  const tripServices = trip.services.concat([{service: service._id, day: day}]);
+  const updateParams = { services: tripServices }
   try {
-    await Parse.Cloud.run('addServiceToTrip', {
-      serviceId: service.objectId,
-      tripId: trip.objectId,
-      day,
-    });
-    fetch_service(service.objectId)(dispatch);
-    setAddedToTripMessage(trip)(dispatch);
+    const updatedTrip = await axios
+      .patch(`/trips/${trip._id}`, updateParams)
+      .catch(error => {
+        console.log(error);
+      });
+    if (updatedTrip) {
+      fetch_service(service._id)(dispatch);
+      setAddedToTripMessage(trip)(dispatch);
+    }
+    // await Parse.Cloud.run('addServiceToTrip', {
+    //   serviceId: service.objectId,
+    //   tripId: trip.objectId,
+    //   day,
+    // });
+    // fetch_service(service.objectId)(dispatch);
+    // setAddedToTripMessage(trip)(dispatch);
   } catch (error) {
     console.error(error);
-    if (error.code === 141) {
-      // parse error
-      console.error('error running parse function', error.message.message);
-      if (error.message && error.message.message.includes('already added')) {
-        setAlreadyAddedToTrip(trip)(dispatch);
-      }
-    }
   }
+
+  // try {
+  //   await Parse.Cloud.run('addServiceToTrip', {
+  //     serviceId: service.objectId,
+  //     tripId: trip.objectId,
+  //     day,
+  //   });
+  //   fetch_service(service.objectId)(dispatch);
+  //   setAddedToTripMessage(trip)(dispatch);
+  // } catch (error) {
+  //   console.error(error);
+  //   if (error.code === 141) {
+  //     // parse error
+  //     console.error('error running parse function', error.message.message);
+  //     if (error.message && error.message.message.includes('already added')) {
+  //       setAlreadyAddedToTrip(trip)(dispatch);
+  //     }
+  //   }
+  // }
 };
 
 export const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (dispatch, getState) => {
@@ -181,7 +219,7 @@ export const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (dispatch
 
   try {
     const newTripTitle = {'en-us': `Trip to ${service.location}`};
-    const serviceOrganization = {
+    const serviceGroup = {
       title: newTripTitle,
       description: {'en-us': service.description},
       basePrice: service.basePrice,
@@ -191,7 +229,7 @@ export const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (dispatch
     };
 
     const newTrip = await axios
-      .post(`/trips`, serviceOrganization)
+      .post(`/trips`, serviceGroup)
       .catch(error => {
         console.log(error);
       });
