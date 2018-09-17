@@ -28,7 +28,7 @@ const buildServicesJson = services => {
   const i18nLocale = 'en-us';
   return services.map(service => {
     try {
-      service.excerpt = service.description ? service.description[i18nLocale] : "";
+      service.excerpt = service.description ? service.description[i18nLocale] : '';
       service.description = service.excerpt;
       service.title = service.title[i18nLocale];
       service.name = service.title;
@@ -37,9 +37,9 @@ const buildServicesJson = services => {
       service.latitude = (service.location && service.location.latitude) || 1;
       // eslint-disable-next-line
       service.longitude = (service.location && service.location.longitude) || 1;
-      service.location = service.location ? `${service.location.city ? service.location.city + ',' : ''} ${
-        service.location.state
-      }` : '';
+      service.location = service.location
+        ? `${service.location.city ? service.location.city + ',' : ''} ${service.location.state}`
+        : '';
       service.rating = service.rating;
       service.reviewCount = service.reviewCount;
       service.slots = service.slots;

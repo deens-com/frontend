@@ -33,7 +33,7 @@ class TripsListInDropDown extends React.Component {
 
   getTripLength = trip => {
     let label = 'day';
-    const dayCount = (trip.duration / 24) || 0;
+    const dayCount = trip.duration / 24 || 0;
     if (dayCount > 1) label += 's';
     return { count: dayCount, label };
   };

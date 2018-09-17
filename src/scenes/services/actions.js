@@ -87,14 +87,12 @@ export const fetchMyTrips = () => async (dispatch, getState) => {
 export const addServiceToTrip = ({ trip, day }) => async (dispatch, getState) => {
   const state = getState();
   const { service } = state.ServicesReducer;
-  const tripServices = trip.services.concat([{service: service._id, day: day}]);
-  const updateParams = { services: tripServices }
+  const tripServices = trip.services.concat([{ service: service._id, day: day }]);
+  const updateParams = { services: tripServices };
   try {
-    const updatedTrip = await axios
-      .patch(`/trips/${trip._id}`, updateParams)
-      .catch(error => {
-        console.log(error);
-      });
+    const updatedTrip = await axios.patch(`/trips/${trip._id}`, updateParams).catch(error => {
+      console.log(error);
+    });
     if (updatedTrip) {
       fetch_service(service._id)(dispatch);
       setAddedToTripMessage(trip)(dispatch);
@@ -112,20 +110,18 @@ export const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (dispatch
     return;
   }
   try {
-    const newTripTitle = {'en-us': `Trip to ${service.location}`};
+    const newTripTitle = { 'en-us': `Trip to ${service.location}` };
     const serviceGroup = {
       title: newTripTitle,
-      description: {'en-us': service.description},
+      description: { 'en-us': service.description },
       basePrice: service.basePrice,
       baseCurrency: service.baseCurrency,
-      services: [{service: service, day: 1}],
-      duration: service.duration
+      services: [{ service: service, day: 1 }],
+      duration: service.duration,
     };
-    const newTrip = await axios
-      .post(`/trips`, serviceGroup)
-      .catch(error => {
-        console.log(error);
-      });
+    const newTrip = await axios.post(`/trips`, serviceGroup).catch(error => {
+      console.log(error);
+    });
     if (newTrip) {
       const formattedTrip = fetch_helpers.buildServicesJson([newTrip.data])[0];
       setAddedToTripMessage(formattedTrip)(dispatch);
