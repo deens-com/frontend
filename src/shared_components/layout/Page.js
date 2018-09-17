@@ -9,7 +9,7 @@ export const Page = styled.div`
 `;
 
 export const PageWrapper = styled.div`
-  max-width: 960px;
+  max-width: 1170px;
   margin: 0 auto;
   padding: ${props => props.padding || '0 10px'};
 `;
@@ -38,7 +38,7 @@ export const PageContent = props => {
 };
 
 export const SectionWrap = styled.section`
-  margin-bottom: 50px;
+  margin-bottom: 100px;
 `;
 
 export const More = styled.div`

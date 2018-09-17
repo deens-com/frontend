@@ -21,15 +21,26 @@ const Wrap = styled.div`
   display: inline-block;
   width: 240px;
   padding: 10px;
+
+  .card-animate {
+    position: relative;
+    box-shadow: 0 2px 10px 0 rgba(141, 141, 141, 0.22);
+    transition: 0.15s all linear;
+
+    &:hover {
+      box-shadow: 0 5px 25px 0 rgba(141, 141, 141, 0.22);
+      transform: translateY(-4px);
+    }
+  }
 `;
 
 // How did we come up with height: 104px?
 // the max number of lines Title can render is 4
 // rendered a title that long and saw how many pixels it takes 😜
 const Title = styled.h3`
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 500;
-  margin-bottom: 4px;
+  margin-bottom: 0px;
   height: ${cardConfig.titleHeight};
 
   a {
@@ -48,7 +59,7 @@ const Label = styled.span`
 const Location = styled.span`
   color: #6e7885;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 5px;
   height: 44px;
 
@@ -60,10 +71,13 @@ const Location = styled.span`
     fill: #d3d7dc;
     position: relative;
     left: -3px;
+    top: 3px;
   }
 
   p {
     width: 100%;
+    font-size: 14px;
+    font-weight: 300;
   }
 `;
 
@@ -90,7 +104,7 @@ export default class TripCart extends Component {
           <Popup
             trigger={
               <Wrap>
-                <Cart column>
+                <Cart column className="card-animate">
                   <Thumb
                     url={this.props.item.image}
                     tripCount={this.props.item.partOf}
@@ -125,7 +139,7 @@ export default class TripCart extends Component {
           />
         ) : (
           <Wrap>
-            <Cart column>
+            <Cart column className="card-animate">
               <Thumb
                 url={this.props.item.image}
                 tripCount={this.props.item.partOf}

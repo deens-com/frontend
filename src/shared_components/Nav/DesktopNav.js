@@ -46,6 +46,7 @@ const NavLink = styled(Link)`
   padding: 5px;
   position: relative;
   transition: color 0.1s ease-in;
+  font-size: 15px;
 
   &:last-child {
     margin-right: 0;

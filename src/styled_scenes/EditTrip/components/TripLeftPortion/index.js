@@ -20,6 +20,7 @@ import {
 } from './styles';
 import { getFormattedTripDates } from 'libs/Utils';
 import EditTripContainer from 'scenes/trips/containers/EditTripContainer';
+import placeholder from './../../../../assets/placeholder350x350.svg';
 
 export default class TripLeftPortion extends Component {
   static propTypes = {
@@ -82,7 +83,7 @@ export default class TripLeftPortion extends Component {
 
   render() {
     const { trip } = this.props;
-    const tripImage = (trip && trip.image) || 'https://dummyimage.com/1280x720/000/fff';
+    const tripImage = (trip && trip.image) || placeholder;
     return (
       <LeftWrap>
         <ShareWrap>

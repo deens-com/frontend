@@ -71,11 +71,12 @@ const Badge = styled.div`
   font-size: 10px;
   font-weight: bold;
   top: 20px;
-  right: 20px;
+  left: 2px;
   background: #4183c4;
   color: white;
   padding: 0 5px;
-  border-radius: 4px;
+  border-radius: 3px;
+  font-weight: 300;
 `;
 
 const LoaderWithMargin = styled.section`

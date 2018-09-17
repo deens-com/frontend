@@ -10,7 +10,7 @@ import styled from 'styled-components';
 // STYLES
 const Person = styled.div`
   align-items: center;
-  bottom: 35px;
+  bottom: 50px;
   display: flex;
   position: absolute;
   right: 35px;

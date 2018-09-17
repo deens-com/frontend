@@ -1,11 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
+import {
+  Button,
+  Form,
+  Grid,
+  Header,
+  Message,
+  Segment,
+  Container,
+} from 'semantic-ui-react';
 import styled from 'styled-components';
 import TopBar from './../../../shared_components/TopBarWithSearch';
 import BrandFooter from './../../../shared_components/BrandFooter';
-import { Page, PageContent } from './../../../shared_components/layout/Page';
+import { Page } from './../../../shared_components/layout/Page';
 import { Link } from 'react-router-dom';
+import welcomeImage from '../../../assets/login/login.svg';
 
 const displayErrorMessage = (isLoginError, message) => {
   return isLoginError ? <Message error header="Cannot login" content={message} /> : null;
@@ -17,7 +26,45 @@ const StaticFooter = styled.footer`
 `;
 
 const LoginContainer = styled.div`
-  min-height: 85vh;
+  min-height: 75vh;
+  margin-top: 40px;
+  margin-bottom: 40px;
+
+  .login-img {
+    width: 80%;
+  }
+
+  .login-img-content {
+    margin-top: 30px;
+    font-size: 25px;
+    color: #636363;
+    font-weight: 300;
+  }
+
+  .login-header {
+    font-size: 22px;
+    font-weight: 300;
+    color: #2bd49e;
+    text-align: center;
+    margin: 10px 0;
+  }
+
+  .green-btn,
+  .green-btn:hover,
+  .green-btn:focus {
+    background: #2bd49e;
+    color: white;
+    &:active {
+    }
+  }
+
+  .login-q-text {
+    margin-top: 30px;
+    font-size: 14px;
+    a {
+      color: #1dbdbc;
+    }
+  }
 `;
 
 export default class LoginFormComponent extends Component {
@@ -44,146 +91,115 @@ export default class LoginFormComponent extends Component {
   }
 
   render() {
-    return (
-      <section>
+    return <section>
         <Page topPush>
           <TopBar fixed withPadding />
-          <PageContent>
+          <Container>
             <LoginContainer>
-              <Grid textAlign="center" style={{ height: '100%' }} verticalAlign="middle">
-                <Grid.Column style={{ maxWidth: 450 }}>
-                  <br />
-                  <Header as="h2" color="teal" textAlign="center">
-                    Log-in to your account
-                  </Header>
-                  <Form size="large" error={this.props.isLoginError()}>
-                    <Segment stacked>
-                      <Form.Input
-                        fluid
-                        icon="user"
-                        iconPosition="left"
-                        placeholder="E-mail address"
-                        type="email"
-                        name="email"
-                        id="email"
-                        onChange={this.props.handleInputChange}
-                        onBlur={this.props.validateInput}
-                        error={this.props.isInputInvalid('email')}
-                        autoFocus
-                        required
-                      />
-                      <Form.Input
-                        fluid
-                        icon="lock"
-                        iconPosition="left"
-                        placeholder="Password"
-                        type="password"
-                        name="password"
-                        id="password"
-                        onChange={this.props.handleInputChange}
-                        onBlur={this.props.validateInput}
-                        error={this.props.isInputInvalid('password')}
-                        minLength={6}
-                        required
-                      />
+              <br /> <br />
+              <Grid centered stackable verticalAlign="middle">
+                <Grid.Row columns={2}>
+                  <Grid.Column textAlign="center" floated="left">
+                    <img src={welcomeImage} alt="welcomeImage" className="login-img" />
+                    <div className="login-img-content">Plan your next trip with us!</div>
+                  </Grid.Column>
+                  <Grid.Column width="6" floated="right">
+                    <div className="login-header">Log-in to your account</div>
+                    <br />
+                    <Form size="large" error={this.props.isLoginError()}>
+                      <Form.Input fluid icon="user" iconPosition="left" placeholder="E-mail address" type="email" name="email" id="email" onChange={this.props.handleInputChange} onBlur={this.props.validateInput} error={this.props.isInputInvalid('email')} autoFocus required />
+                      <Form.Input fluid icon="lock" iconPosition="left" placeholder="Password" type="password" name="password" id="password" onChange={this.props.handleInputChange} onBlur={this.props.validateInput} error={this.props.isInputInvalid('password')} minLength={6} required />
 
-                      {displayErrorMessage(
-                        this.props.isLoginError(),
-                        this.props.loginError.message,
-                      )}
+                      {displayErrorMessage(this.props.isLoginError(), this.props.loginError.message)}
 
-                      <Button color="teal" fluid size="large" onClick={this.props.submitLogin}>
+                      <Button className="green-btn pl-btn" fluid size="large" onClick={this.props.submitLogin}>
                         Login
                       </Button>
-                    </Segment>
-                  </Form>
-
-                  {/* commenting out metamask and ledger for now
-
-                  <WithTopMargin>
-                    {displayErrorMessage(
-                      !!this.props.metaMaskError.message,
-                      this.props.metaMaskError.message,
-                    )}
-                    <MetamaskButton
-                      color="orange"
-                      fluid
-                      size="large"
-                      onClick={this.props.loginWithMetamask}
-                    >
-                      Login with MetaMask
-                    </MetamaskButton>
-                  </WithTopMargin>
-
-                  <WithTopMargin>
-                    {displayErrorMessage(
-                      !!this.props.ledgerError.message,
-                      this.props.ledgerError.message,
-                    )}
-
-                    {this.props.ledgerError.message && (
-                      <Modal
-                        closeIcon
-                        onClose={this.closeLedgerErrorMessage}
-                        open={this.state.isLedgerModalOpen}
-                        style={{ textAlign: 'center' }}
+                    </Form>
+                    {/* commenting out metamask and ledger for now
+                    <Divider horizontal>or</Divider>
+                    <WithTopMargin>
+                      {displayErrorMessage(
+                        !!this.props.metaMaskError.message,
+                        this.props.metaMaskError.message,
+                      )}
+                      <MetamaskButton
+                        color="orange"
+                        fluid
+                        size="large"
+                        onClick={this.props.loginWithMetamask}
                       >
-                        <Modal.Header>Ledger Connection Error</Modal.Header>
-                        <Modal.Content>
-                          <Modal.Description>
-                            <Header>An unexpected error occured</Header>
-                            <p style={{ color: 'red' }}>
-                              {this.props.ledgerError.message &&
-                                this.props.ledgerError.message.message}
-                            </p>
-                            <p>
-                              Please make sure to set "Browser support" and "Contract data" to YES
-                              on your connected Ledger device.
-                            </p>
-                          </Modal.Description>
-                        </Modal.Content>
-                      </Modal>
-                    )}
+                        Login with MetaMask
+                      </MetamaskButton>
+                    </WithTopMargin>
 
-                    {this.props.isLedgerLoaderDisplayed && (
-                      <Segment disabled={this.isLoaderActive()}>
-                        <Dimmer active>
-                          <Loader inline="centered">
-                            Please wait 6 seconds while we try to establish a connection with your
-                            ledger device.
-                          </Loader>
-                        </Dimmer>
-                      </Segment>
-                    )}
+                    <WithTopMargin>
+                      {displayErrorMessage(
+                        !!this.props.ledgerError.message,
+                        this.props.ledgerError.message,
+                      )}
 
-                    <MetamaskButton
-                      color="green"
-                      fluid
-                      size="large"
-                      onClick={this.props.loginWithLedger}
-                    >
-                      Login with Ledger
-                    </MetamaskButton>
-                  </WithTopMargin>
+                      {this.props.ledgerError.message && (
+                        <Modal
+                          closeIcon
+                          onClose={this.closeLedgerErrorMessage}
+                          open={this.state.isLedgerModalOpen}
+                          style={{ textAlign: 'center' }}
+                        >
+                          <Modal.Header>Ledger Connection Error</Modal.Header>
+                          <Modal.Content>
+                            <Modal.Description>
+                              <Header>An unexpected error occured</Header>
+                              <p style={{ color: 'red' }}>
+                                {this.props.ledgerError.message &&
+                                  this.props.ledgerError.message.message}
+                              </p>
+                              <p>
+                                Please make sure to set "Browser support" and "Contract data" to YES
+                                on your connected Ledger device.
+                              </p>
+                            </Modal.Description>
+                          </Modal.Content>
+                        </Modal>
+                      )}
 
-                  end comment */}
+                      {this.props.isLedgerLoaderDisplayed && (
+                        <Segment disabled={this.isLoaderActive()}>
+                          <Dimmer active>
+                            <Loader inline="centered">
+                              Please wait 6 seconds while we try to establish a connection with your
+                              ledger device.
+                            </Loader>
+                          </Dimmer>
+                        </Segment>
+                      )}
 
-                  <Message>
-                    New to us?{' '}
-                    <Link to="/register" replace>
-                      Sign Up
-                    </Link>
-                  </Message>
-                </Grid.Column>
+                      <MetamaskButton
+                        color="green"
+                        fluid
+                        size="large"
+                        onClick={this.props.loginWithLedger}
+                      >
+                        Login with Ledger
+                      </MetamaskButton>
+                    </WithTopMargin> */}
+
+                    <div className="login-q-text">
+                      Don't have an account?&nbsp;&nbsp;
+                      <Link to="/register" replace>
+                        Sign Up
+                      </Link>
+                    </div>
+                  </Grid.Column>
+                </Grid.Row>
               </Grid>
             </LoginContainer>
-          </PageContent>
+          </Container>
           <StaticFooter>
             <BrandFooter withTopBorder withPadding />
           </StaticFooter>
         </Page>
-      </section>
-    );
+      </section>;
   }
 }
 

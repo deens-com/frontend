@@ -9,14 +9,12 @@ import AddToTripButton from './AddToTripButton';
 
 const GridContainer = styled.div`
   display: grid;
-  grid-column-gap: 20px;
-  grid-row-gap: 12px;
   grid-template-columns: 1fr 1fr;
   justify-items: center;
   margin-bottom: 24px;
 
   ${media.minSmall} {
-    grid-template-columns: 150px 150px;
+    grid-template-columns: 160px 160px;
   }
 `;
 

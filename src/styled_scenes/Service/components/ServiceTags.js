@@ -11,6 +11,8 @@ const TagWrap = styled.div`
   flex-direction: row;
   & > div {
     margin-right: 10px;
+    margin-bottom: 10px;
+    border-radius: 50px;
 
     &:last-child {
       margin-right: 0;

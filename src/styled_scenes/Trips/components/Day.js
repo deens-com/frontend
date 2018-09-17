@@ -50,28 +50,6 @@ const DayTitle = styled.h4`
 
 // MODULE
 export default class TripDay extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      opening: false,
-      closing: false,
-    };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.expanded) {
-      this.setState({ opening: true });
-    } else {
-      this.setState({ closing: true });
-    }
-  }
-
-  componentDidUpdate() {
-    if (this.state.opening || this.state.closing) {
-      this.setState({ closing: false, opening: false });
-    }
-  }
-
   render() {
     const { day, allowServiceRearrange } = this.props;
     const dayTitle = `Day ${day.day}`;
@@ -83,8 +61,8 @@ export default class TripDay extends Component {
           <div key={item.description}>
             <DetailCart
               item={item}
-              opening={this.state.opening}
-              closing={this.state.closing}
+              isOpen={Boolean(this.props.expanded[item.tripOrganizationId])}
+              toggleExpansion={this.props.toggleExpansion}
               index={index}
               onDeleteClick={this.props.onServiceRemoveClick}
               allowServiceRearrange={allowServiceRearrange}
@@ -118,5 +96,7 @@ export default class TripDay extends Component {
 // Props Validation
 TripDay.propTypes = {
   onServiceRemoveClick: PropTypes.func.isRequired,
+  toggleExpansion: PropTypes.func.isRequired,
+  expanded: PropTypes.object.isRequired,
   allowServiceRearrange: PropTypes.bool,
 };

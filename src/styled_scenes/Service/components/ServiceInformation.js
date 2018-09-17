@@ -12,6 +12,19 @@ const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
 
+  tr {
+    height: auto;
+    &:first-child {
+      td {
+        padding-top: 0;
+      }
+    }
+    td {
+      padding: 13px 0;
+      font-size: 13px;
+    }
+  }
+
   tr:not(:last-child) {
     border-bottom: 1pt solid #e2e2e2;
   }
