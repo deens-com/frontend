@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Media from 'react-media';
 import GoogleMapReact from 'google-map-react';
+import { Container } from 'semantic-ui-react';
 
 // COMPONENTS
 import TopBar from './../../shared_components/TopBarWithSearch';
@@ -30,7 +31,7 @@ const DetailWrapper = styled.div`
   padding: 15px 15px 25px 15px;
 
   ${media.minMedium} {
-    padding: 15px 25px 25px 50px;
+    padding: 0 0 25px 50px;
   }
 
   ${media.minLarge} {
@@ -42,12 +43,9 @@ const HeaderWrap = styled.div`
   margin-bottom: 25px;
 
   h2 {
-    font-size: 48px;
+    font-size: 25px;
     margin-bottom: 15px;
-
-    ${media.minSmall} {
-      font-size: 58px;
-    }
+    font-weight: 500;
   }
 
   & > a {
@@ -88,6 +86,8 @@ const MapWrap = styled.div`
     width: 45%;
     margin-right: 5%;
     margin-bottom: 0;
+    border-radius: 5px;
+    overflow: hidden;
   }
 `;
 
@@ -96,7 +96,7 @@ const Contacts = styled.div`
   flex-direction: column;
 
   ${media.minSmall} {
-    width: 50%;
+    width: 55%;
   }
 
   a {
@@ -107,7 +107,7 @@ const Contacts = styled.div`
 const TripsWrap = styled.div`
   display: grid;
   grid-template-columns: 48px 1fr;
-  margin-bottom: 50px;
+  padding: 50px 0;
 
   & > span {
     margin-bottom: 35px;
@@ -162,55 +162,72 @@ class FoodDetailScene extends Component {
     return (
       <Page topPush>
         <TopBar fixed withPadding />
-        <PageContent flex loading={this.props.isPageLoading}>
-          <Media
-            query={`(min-width: ${sizes.large})`}
-            render={() => <ImgSlider images={this.props.service.pictures} />}
-          />
-          <DetailWrapper>
-            <HeaderWrap>
-              <h2>{this.props.service.title}</h2>
-              <ServiceTags service={this.props.service} />
-              <PreserveWhiteSpace>{this.props.service.description}</PreserveWhiteSpace>
-            </HeaderWrap>
+
+        <Container>
+          <br />
+          <PageContent flex loading={this.props.isPageLoading}>
             <Media
-              query={`(max-width: ${sizes.large})`}
+              query={`(min-width: ${sizes.large})`}
               render={() => <ImgSlider images={this.props.service.pictures} />}
             />
-            <ServiceActionButtons
-              myUnpurchasedTrips={this.props.myUnpurchasedTrips}
-              onAddServiceToTrip={this.props.onAddServiceToTrip}
-              onAddServiceToNewTrip={this.props.onAddServiceToNewTrip}
-              serviceRecentlyAddedToTrip={this.props.serviceRecentlyAddedToTrip}
-              serviceAlreadyAddedToTrip={this.props.serviceAlreadyAddedToTrip}
-              onBookNowClick={this.props.onBookNowClick}
-            />
-            <ContactWrap>
-              <MapWrap>
-                <GoogleMapReact
-                  center={{
-                    lat: this.props.service.latitude || 0,
-                    lng: this.props.service.longitude || 0,
-                  }}
-                  defaultZoom={11}
-                  bootstrapURLKeys={{
-                    key: 'AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc',
-                  }}
-                >
-                  <MapMaker
-                    lat={this.props.service.latitude || 0}
-                    lng={this.props.service.longitude || 0}
-                    scale={1}
-                    color="#4fb798"
-                  />
-                </GoogleMapReact>
-              </MapWrap>
-              <Contacts>
-                <ServiceInformation service={this.props.service} />
-              </Contacts>
-            </ContactWrap>
+            <DetailWrapper>
+              <HeaderWrap>
+                <h2>{this.props.service.title}</h2>
+                <ServiceTags service={this.props.service} />
+                <PreserveWhiteSpace>{this.props.service.description}</PreserveWhiteSpace>
+              </HeaderWrap>
+              <Media
+                query={`(max-width: ${sizes.large})`}
+                render={() => <ImgSlider images={this.props.service.pictures} />}
+              />
+              <ServiceActionButtons
+                myUnpurchasedTrips={this.props.myUnpurchasedTrips}
+                onAddServiceToTrip={this.props.onAddServiceToTrip}
+                onAddServiceToNewTrip={this.props.onAddServiceToNewTrip}
+                serviceRecentlyAddedToTrip={this.props.serviceRecentlyAddedToTrip}
+                serviceAlreadyAddedToTrip={this.props.serviceAlreadyAddedToTrip}
+                onBookNowClick={this.props.onBookNowClick}
+              />
+              <ContactWrap>
+                <MapWrap>
+                  <GoogleMapReact
+                    center={{
+                      lat: this.props.service.latitude || 0,
+                      lng: this.props.service.longitude || 0,
+                    }}
+                    defaultZoom={11}
+                    bootstrapURLKeys={{ key: 'AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc' }}
+                  >
+                    <MapMaker
+                      lat={this.props.service.latitude || 0}
+                      lng={this.props.service.longitude || 0}
+                      scale={1}
+                      color="#4fb798"
+                    />
+                  </GoogleMapReact>
+                </MapWrap>
+                <Contacts>
+                  <ServiceInformation service={this.props.service} />
+                </Contacts>
+              </ContactWrap>
+              <div>
+                {this.props.reviews.length ? <h2>Reviews</h2> : null}
+                {this.props.reviews.map(review => (
+                  <Review key={review.objectId} review={review} />
+                ))}
+              </div>
+              <SmartContractDetails
+                address={this.props.service.contractAddress}
+                abi={this.props.abi}
+              />
+            </DetailWrapper>
+          </PageContent>
+        </Container>
+
+        <div className="bg-grey1">
+          <Container>
             {this.props.trips.length ? (
-              <TripsWrap>
+              <TripsWrap className="service-trips">
                 <Badge>
                   <BadgeIcon />
                 </Badge>
@@ -230,18 +247,9 @@ class FoodDetailScene extends Component {
                 </CarouselColumnSpan>
               </TripsWrap>
             ) : null}
-            <div>
-              {this.props.reviews.length ? <h2>Reviews</h2> : null}
-              {this.props.reviews.map(review => (
-                <Review key={review.objectId} review={review} />
-              ))}
-            </div>
-            <SmartContractDetails
-              address={this.props.service.contractAddress}
-              abi={this.props.abi}
-            />
-          </DetailWrapper>
-        </PageContent>
+          </Container>
+        </div>
+
         <BrandFooter withTopBorder withPadding />
       </Page>
     );

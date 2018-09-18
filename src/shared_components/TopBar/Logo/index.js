@@ -22,6 +22,10 @@ const LogoWrap = styled.span`
   display: inline-block;
   height: 50px;
   width: 90px;
+  @media screen and (max-width: 768px) {
+    width: auto;
+    height: auto;
+  }
 `;
 
 const ArrowWrap = styled.span`

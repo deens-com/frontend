@@ -26,6 +26,10 @@ const Wrap = styled.div`
     min-width: 37px;
   }
 
+  > div {
+    margin-top: 5px;
+  }
+
   > div:first-child {
     margin-right: 15px;
   }
@@ -33,6 +37,10 @@ const Wrap = styled.div`
   > div:nth-child(3) {
     margin-left: 15px;
     margin-right: 15px;
+  }
+
+  a {
+    font-size: 14px;
   }
 `;
 

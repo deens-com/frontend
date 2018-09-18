@@ -13,6 +13,8 @@ const EditTripContext = React.createContext({
   trip: {},
 });
 
+const ContextProvider = EditTripContext.Provider;
+
 class EditTripContainer extends Component {
   updateTripDetails = (newDetails, showSaved) => {
     if (newDetails.status && newDetails.status !== this.props.trip.status) {
@@ -83,7 +85,7 @@ class EditTripContainer extends Component {
       // If there's a way to avoid creating the value object every time we render
       // Please do let me know
       // - jaydp
-      <EditTripContext.Provider
+      <ContextProvider
         value={{
           ...this.state,
           ...this.props,
@@ -97,7 +99,7 @@ class EditTripContainer extends Component {
           onServiceRemoveClick={this.onServiceRemoveClick}
           onBookClick={this.onBookClick}
         />
-      </EditTripContext.Provider>
+      </ContextProvider>
     );
   }
 }

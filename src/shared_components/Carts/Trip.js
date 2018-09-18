@@ -33,7 +33,6 @@ const Title = styled.h3`
   font-weight: bold;
   margin-bottom: 12px;
   max-height: ${cardConfig.titleHeight};
-
   a {
     color: inherit;
   }
@@ -55,7 +54,7 @@ const Price = styled.span`
 const Location = styled.span`
   color: #787878;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 5px;
   height: 44px;
   font-size: 12px;
@@ -69,10 +68,13 @@ const Location = styled.span`
     fill: #d3d7dc;
     position: relative;
     left: -3px;
+    top: 3px;
   }
 
   p {
     width: 100%;
+    font-size: 14px;
+    font-weight: 300;
   }
 `;
 
@@ -123,7 +125,7 @@ export default class TripCart extends Component {
           <Popup
             trigger={
               <Wrap>
-                <Cart column>
+                <Cart column className="card-animate">
                   <Thumb
                     url={this.props.item.image || "https://please-com.imgix.net/7a7b798deb8064c64f57bff9ffeaa53a_1531363432782-4561574624.jpg?auto=format&dpr=1&crop=faces&fit=crop&w=800&h=500&ixlib=react-7.2.0"}
                     tripCount={this.props.item.partOf}
@@ -157,7 +159,7 @@ export default class TripCart extends Component {
           />
         ) : (
           <Wrap>
-            <Cart column>
+            <Cart column className="card-animate">
               <Thumb
                 url={this.props.item.image || "https://please-com.imgix.net/7a7b798deb8064c64f57bff9ffeaa53a_1531363432782-4561574624.jpg?auto=format&dpr=1&crop=faces&fit=crop&w=800&h=500&ixlib=react-7.2.0"}
                 tripCount={this.props.item.partOf}

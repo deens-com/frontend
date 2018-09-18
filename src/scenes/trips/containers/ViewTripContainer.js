@@ -9,10 +9,16 @@ import * as trips_actions from './../actions';
 import * as selectors from '../selectors';
 import { statuses } from '../../../libs/fetch_helpers';
 
+const ViewTripContext = React.createContext('trip-view');
+
+const ContextProvider = ViewTripContext.Provider;
+
 class TripsContainer extends Component {
   state = {
     isLoggedIn: false,
   };
+
+  static ContextConsumer = ViewTripContext.Consumer;
 
   componentDidMount() {
     this.props.resetTripData();
@@ -63,14 +69,21 @@ class TripsContainer extends Component {
       return <NotFound />;
     }
     return (
-      <TripsComponent
-        {...this.props}
-        onServiceDragEnd={this.onDragReOrderChange}
-        onServiceRemoveClick={this.onServiceRemoveClick}
-        updateTripDetails={this.updateTripDetails}
-        onBookClick={this.onBookClick}
-        onShareModalClose={this.onShareModalClose}
-      />
+      <ContextProvider
+        value={{
+          ...this.state,
+          ...this.props,
+          updateTripDetails: this.updateTripDetails,
+          onShareModalClose: this.onShareModalClose,
+        }}
+      >
+        <TripsComponent
+          {...this.props}
+          onServiceDragEnd={this.onDragReOrderChange}
+          onServiceRemoveClick={this.onServiceRemoveClick}
+          onBookClick={this.onBookClick}
+        />
+      </ContextProvider>
     );
   }
 }

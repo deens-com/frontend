@@ -16,23 +16,11 @@ import { Cart } from '../styles';
 export default class DetailCart extends Component {
   constructor() {
     super();
-    this.state = {
-      expanded: false,
-    };
     this.toggleExpansion = this.toggleExpansion.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.opening) {
-      this.setState({ expanded: true });
-    }
-    if (nextProps.closing) {
-      this.setState({ expanded: false });
-    }
-  }
-
   toggleExpansion() {
-    this.setState({ expanded: !this.state.expanded });
+    this.props.toggleExpansion(this.props.item.tripOrganizationId);
   }
 
   onDeleteClick = () => {
@@ -48,7 +36,7 @@ export default class DetailCart extends Component {
     };
     const serviceCard = (
       <Cart withShadow column>
-        {this.state.expanded ? (
+        {this.props.isOpen ? (
           <FullCart {...serviceCardProps} onDeleteClick={this.onDeleteClick} />
         ) : (
           <ExcerptCart {...serviceCardProps} />
@@ -80,5 +68,7 @@ DetailCart.propTypes = {
   index: PropTypes.number.isRequired,
   item: PropTypes.object.isRequired,
   onDeleteClick: PropTypes.func.isRequired,
+  toggleExpansion: PropTypes.func.isRequired,
+  isOpen: PropTypes.bool.isRequired,
   allowServiceRearrange: PropTypes.bool,
 };

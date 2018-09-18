@@ -52,6 +52,20 @@ const InnerList = styled.ul`
     margin-bottom: 15px;
   }
 
+  @media screen and (max-width: 768px) {
+    .Select,
+    .Select div,
+    .Select input,
+    .Select span {
+      font-size: 14px;
+      padding: 4px;
+    }
+
+    .Select-control {
+      margin-bottom: 0;
+    }
+  }
+
   .Select-placeholder,
   .Select--single > .Select-control .Select-value {
     padding: 12px 0;
@@ -91,6 +105,11 @@ const NavLink = styled(Link)`
 
   &.is-active {
     color: #4fb798;
+  }
+
+  @media screen and (max-width: 768px) {
+    font-size: 14px;
+    padding: 4px;
   }
 `;
 

@@ -21,7 +21,7 @@ const InnerWrap = styled.header`
   align-items: center;
   background: ${props => (props.home && !props.showMenu ? 'transparent' : 'white')};
   display: flex;
-  height: 65px;
+  height: 50px;
   padding: ${props => (props.withPadding ? '0 15px' : '0')};
   width: 100%;
   z-index: 110;
@@ -32,7 +32,7 @@ const InnerWrap = styled.header`
       position: fixed;
       top: 0;
     `} ${media.minMedium} {
-    height: 95px;
+    height: 70px;
     padding: ${props => (props.withPadding ? '0 25px' : '0')};
   }
 
@@ -43,7 +43,7 @@ const InnerWrap = styled.header`
 
       ${media.minMedium} {
         border-bottom: none;
-        box-shadow: 0 8px 25px 0 rgba(141, 141, 141, 0.22);
+        box-shadow: 0 1.5px 2px 0 hsla(0, 0%, 88%, 0.5);
       }
     `} ${props =>
     props.fixed &&
