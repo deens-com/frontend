@@ -1,4 +1,4 @@
-import { types as actions} from './actions';
+import { types as actions } from './actions';
 
 const initialState = {
   user_profile: {},

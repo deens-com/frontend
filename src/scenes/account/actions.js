@@ -11,7 +11,7 @@ export const types = {
   PROFILE_FETCHED: 'account/USER_PROFILE_FETCHED',
   SERVICES_FETCH_SUCCESS: 'ACCOUNT/MY_SERVICES_FETCH_SUCCESS',
   SERVICES_FETCH_START: 'ACCOUNT/MY_SERVICES_FETCH_START',
-}
+};
 
 export const user_profile_fetched = user_profile => {
   return {
@@ -139,7 +139,7 @@ export const fetch_user_services = () => async dispatch => {
     dispatch(myServicesFetch());
     const userServices = await axios.get(`/services`);
     const services = fetch_helpers.buildServicesJson(userServices.data);
-    console.log('servo', services)
+    console.log('servo', services);
     dispatch(myServicesFetched(services));
   } else {
     history.push('/');

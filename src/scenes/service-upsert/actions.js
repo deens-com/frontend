@@ -90,8 +90,7 @@ export const fetchService = serviceId => async (dispatch, getState) => {
 
   dispatch({ type: types.SERVICE_FETCH_STARTED });
   try {
-    const result = await axios
-      .get(`${serverBaseURL}/services/${serviceId}`);
+    const result = await axios.get(`${serverBaseURL}/services/${serviceId}`);
 
     const service = fetch_helpers.buildServiceForView(result.data);
     dispatch({ type: types.SERVICE_FETCH_SUCCESS, payload: service });
@@ -131,11 +130,10 @@ export const saveServiceChanges = (serviceId, values, history) => async (dispatc
 
 export const fetchUserProfile = () => async dispatch => {
   try {
-    const user = await axios
-      .get(`${serverBaseURL}/users/me`)
+    const user = await axios.get(`${serverBaseURL}/users/me`);
 
     dispatch(user_profile_fetched({ user_profile: user.data }));
-  } catch(e) {
+  } catch (e) {
     history.push('/login');
   }
 };

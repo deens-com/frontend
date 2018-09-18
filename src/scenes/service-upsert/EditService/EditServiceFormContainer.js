@@ -46,9 +46,7 @@ class EditServiceFormContainer extends Component {
       return <NotFound showScene={false} />;
     }
     if (isLoading) {
-      return (
-        <Loader active inline="centered" size="massive" />
-      );
+      return <Loader active inline="centered" size="massive" />;
     }
     return (
       <React.Fragment>

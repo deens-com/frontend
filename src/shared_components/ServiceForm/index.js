@@ -117,17 +117,17 @@ class ServiceForm extends Component {
     setFieldTouched('latlong', true, false);
   };
 
-  handleStartDateChange = (date) => {
+  handleStartDateChange = date => {
     const { setFieldValue, setFieldTouched } = this.props;
     setFieldTouched('startDate', true);
     setFieldValue('startDate', date);
-  }
+  };
 
-  handleEndDateChange = (date) => {
+  handleEndDateChange = date => {
     const { setFieldValue, setFieldTouched } = this.props;
     setFieldTouched('endDate', true);
     setFieldValue('endDate', date);
-  }
+  };
 
   onLocationSelect = (address, placeId) => {
     const { setFieldValue, setFieldTouched } = this.props;
@@ -197,15 +197,15 @@ class ServiceForm extends Component {
     this.props.onRedeployContract(values, serviceId);
   };
 
-  addRule = (e) => {
+  addRule = e => {
     e.preventDefault();
     this.props.setFieldValue('rules', [...this.props.values.rules, '']);
-  }
+  };
 
   removeRule = (index, e) => {
     e.preventDefault();
     this.props.setFieldValue('rules', this.props.values.rules.filter((_, i) => i !== index));
-  }
+  };
 
   render() {
     const {
@@ -394,7 +394,7 @@ class ServiceForm extends Component {
           <RulesLabel>Rules</RulesLabel>
           {values.rules.map((rule, index) => (
             <Form.Group key={`rule-${index}`}>
-              <Form.Field style={{flex: 1}}>
+              <Form.Field style={{ flex: 1 }}>
                 <label>{`Rule ${index + 1}`}</label>
                 <Form.Input
                   name={`rules[${index}]`}
@@ -419,9 +419,10 @@ class ServiceForm extends Component {
             </Form.Group>
           ))}
           <AddRuleContainer>
-            <Button color="green" size="small" onClick={this.addRule}>Add rule</Button>
+            <Button color="green" size="small" onClick={this.addRule}>
+              Add rule
+            </Button>
           </AddRuleContainer>
-
         </React.Fragment>
 
         {/* Period date */}
@@ -443,7 +444,7 @@ class ServiceForm extends Component {
           </Form.Field>
 
           <Form.Field required>
-          <label>End date</label>
+            <label>End date</label>
             <DateInput
               onChange={this.handleEndDateChange}
               placeholder="End date"
@@ -693,10 +694,13 @@ export default withFormik({
     closingTime: service && service.closingTime != null ? service.closingTime : null,
     externalUrl: (service && service.externalUrl) || '',
     slots: service && service.slots != null ? service.slots : '',
-    location: (service && service.location && {
-      ...service.location,
-      address_components: [{ long_name: service.location.line1 }],
-    }) || {},
+    location:
+      (service &&
+        service.location && {
+          ...service.location,
+          address_components: [{ long_name: service.location.line1 }],
+        }) ||
+      {},
     postalCode: (service && service.location && service.location.postalCode) || '',
     city: (service && service.location && service.location.city) || '',
     state: (service && service.location && service.location.state) || '',
@@ -705,7 +709,10 @@ export default withFormik({
       (service &&
         service.location &&
         service.location.geo &&
-        service.location.geo.coordinates && { lat: service.location.geo.coordinates[1], lng: service.location.geo.coordinates[0] }) ||
+        service.location.geo.coordinates && {
+          lat: service.location.geo.coordinates[1],
+          lng: service.location.geo.coordinates[0],
+        }) ||
       null,
     tags: (service && service.tags && service.tags.map(tag => tag.type)) || [],
     media: (service && service.media) || [],

@@ -24,12 +24,14 @@ const get_service_image = mediaOrMainPicture => {
   return mediaOrMainPicture.url;
 };
 
-const formatAddressLine = (location) => {
+const formatAddressLine = location => {
   if (location.address_components[1]) {
-    return `${location.address_components[0].long_name} ${location.address_components[1].long_name}`;
+    return `${location.address_components[0].long_name} ${
+      location.address_components[1].long_name
+    }`;
   }
   return `${location.address_components[0].long_name}`;
-}
+};
 
 const createService = values => {
   const i18nLocale = 'en-us';
@@ -39,20 +41,22 @@ const createService = values => {
         [i18nLocale]: category,
       },
     })),
-    periods: [{
-      startDate: new Date(values.startDate.setHours(0,0,0,0)),
-      endDate: new Date(values.endDate.setHours(0,0,0,0)),
-      startTime: values.openingTime,
-      endTime: values.closingTime,
-      maxCapacity: values.slots,
-      daysOfWeek: values.availableDays.reduce((accum, day) => {
-        const lowerCaseDay = day.weekday.toLowerCase();
-        if (!accum[lowerCaseDay]) {
-          accum[lowerCaseDay] = day.selected;
-        }
-        return accum;
-      }, {}),
-    }],
+    periods: [
+      {
+        startDate: new Date(values.startDate.setHours(0, 0, 0, 0)),
+        endDate: new Date(values.endDate.setHours(0, 0, 0, 0)),
+        startTime: values.openingTime,
+        endTime: values.closingTime,
+        maxCapacity: values.slots,
+        daysOfWeek: values.availableDays.reduce((accum, day) => {
+          const lowerCaseDay = day.weekday.toLowerCase();
+          if (!accum[lowerCaseDay]) {
+            accum[lowerCaseDay] = day.selected;
+          }
+          return accum;
+        }, {}),
+      },
+    ],
     basePrice: values.basePrice,
     location: {
       line1: formatAddressLine(values.location),
@@ -88,36 +92,39 @@ const createService = values => {
       facebook: values.facebook,
       twitter: values.twitter,
     },
-    media: values.media.map((image, i) => (typeof image === 'object' && image) || ({
-      type: 'image',
-      hero: false,
-      names: {
-        [i18nLocale]: `Image ${i}`,
-      },
-      files: {
-        thumbnail: {
-          url: image,
-          width: 215,
-          height: 140,
+    media: values.media.map(
+      (image, i) =>
+        (typeof image === 'object' && image) || {
+          type: 'image',
+          hero: false,
+          names: {
+            [i18nLocale]: `Image ${i}`,
+          },
+          files: {
+            thumbnail: {
+              url: image,
+              width: 215,
+              height: 140,
+            },
+            small: {
+              url: image,
+              width: 430,
+              height: 280,
+            },
+            large: {
+              url: image,
+              width: 860,
+              height: 560,
+            },
+            hero: {
+              url: image,
+              width: 860,
+              height: 560,
+            },
+          },
         },
-        small: {
-          url: image,
-          width: 430,
-          height: 280,
-        },
-        large: {
-          url: image,
-          width: 860,
-          height: 560,
-        },
-        hero: {
-          url: image,
-          width: 860,
-          height: 560,
-        },
-      },
-    })),
-  }
+    ),
+  };
 };
 
 const buildServiceForView = service => {

@@ -59,7 +59,7 @@ const ServiceItem = item => {
   const isActivated = item.serviceStatus !== 'disabled';
 
   const showContractStatus = item.contractAddress != null;
-  console.log(item)
+  console.log(item);
   return (
     <Cart column>
       {showContractStatus && (
@@ -78,7 +78,9 @@ const ServiceItem = item => {
 
           <Rating marginBottom="25px" rating={item.rating} count={item.reviewCount} />
 
-          <Label><I18nText data={item.categories[0].names} /></Label>
+          <Label>
+            <I18nText data={item.categories[0].names} />
+          </Label>
 
           <br />
           <br />

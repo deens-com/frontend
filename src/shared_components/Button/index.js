@@ -85,7 +85,7 @@ export const theme = {
     borderHover: '#bd2130',
     color: colors.white,
     colorHover: colors.white,
-  }
+  },
 };
 
 export const Wrap = styled.div`

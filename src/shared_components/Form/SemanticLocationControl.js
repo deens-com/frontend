@@ -53,7 +53,7 @@ export default class SemanticLocationControl extends Component {
         onChange={this.onAddressChange}
         onSelect={this.onSelect}
         searchOptions={{
-          ...(onlyCities ? {types: ['(cities)']} : null)
+          ...(onlyCities ? { types: ['(cities)'] } : null),
         }}
       >
         {({ getInputProps, suggestions, getSuggestionItemProps }) => (
