@@ -24,50 +24,40 @@ const get_service_image = mediaOrMainPicture => {
   return mediaOrMainPicture.url;
 };
 
+const formatAddressLine = (location) => {
+  if (location.address_components[1]) {
+    return `${location.address_components[0].long_name} ${location.address_components[1].long_name}`;
+  }
+  return `${location.address_components[0].long_name}`;
+}
+
 const createService = values => {
   const i18nLocale = 'en-us';
-  try {
-    values.categories = values.categories.map(category => ({
+  return {
+    categories: values.categories.map(category => ({
       names: {
         [i18nLocale]: category,
       },
-    }));
-    values.externalId = '123abs';
-    values.periods = [
-      {
-        startDate: '2018-07-06T00:00:00.000Z',
-        endDate: '2019-07-06T00:00:00.000Z',
-        startTime: values.openingTime,
-        endTime: values.closingTime,
-        daysOfWeek: values.availableDays.reduce((accum, day) => {
-          const lowerCaseDay = day.weekday.toLowerCase();
-          if (!accum[lowerCaseDay]) {
-            accum[lowerCaseDay] = day.selected;
-          }
-          return accum;
-        }, {}),
-        price: {
-          min: 8,
-          max: 12,
-        },
-        priceCapacity: 2,
-        minCapacity: 1,
-        maxCapacity: 3,
-        cancellationPolicies: {
-          duration: 24,
-          refundAmount: 75,
-          refundType: 'fixed',
-        },
-      },
-    ];
-    values.status = values.status;
-    values.basePrice = values.basePrice;
-    values.location = {
-      line1: `${values.location.address_components[0].long_name} ${
-        values.location.address_components[1].long_name
-      }`,
+    })),
+    periods: [{
+      startDate: new Date(values.startDate.setHours(0,0,0,0)),
+      endDate: new Date(values.endDate.setHours(0,0,0,0)),
+      startTime: values.openingTime,
+      endTime: values.closingTime,
+      maxCapacity: values.slots,
+      daysOfWeek: values.availableDays.reduce((accum, day) => {
+        const lowerCaseDay = day.weekday.toLowerCase();
+        if (!accum[lowerCaseDay]) {
+          accum[lowerCaseDay] = day.selected;
+        }
+        return accum;
+      }, {}),
+    }],
+    basePrice: values.basePrice,
+    location: {
+      line1: formatAddressLine(values.location),
       line2: '',
-      postcode: values.postalCode,
+      postcode: values.postCode,
       city: values.city,
       state: values.state,
       countryCode: values.countryCode,
@@ -76,75 +66,58 @@ const createService = values => {
         type: 'Point',
       },
       formattedAddress: values.formattedAddress,
-    };
-    values.baseCurrency = {
+      id: values.location.place_id,
+    },
+    baseCurrency: {
       name: 'US Dollar',
       code: 'USD',
       symbol: '$',
-    };
-    values.description = { [i18nLocale]: values.description };
-    values.duration = values.duration;
-    values.instructions = {
+    },
+    description: { [i18nLocale]: values.description },
+    duration: values.duration,
+    instructions: {
       start: { [i18nLocale]: values.start },
       end: { [i18nLocale]: values.end },
-    };
-    values.rules = values.rules.map(rule => ({ [i18nLocale]: rule }));
-    values.subtitle = { [i18nLocale]: values.subtitle };
-    values.title = { [i18nLocale]: values.title };
-    values.links = {
+    },
+    rules: values.rules.map(rule => ({ [i18nLocale]: rule })),
+    tags: values.tags.map(tag => ({ type: tag, names: { [i18nLocale]: tag } })),
+    subtitle: { [i18nLocale]: values.subtitle },
+    title: { [i18nLocale]: values.title },
+    links: {
       website: values.website,
       facebook: values.facebook,
       twitter: values.twitter,
-    };
-    values.otherAttributes = {
-      driver_licence: {
-        type: 'private',
-        names: {
-          [i18nLocale]: '123AZERT456',
-        },
-      },
-      car_color: {
-        type: 'public',
-        names: {
-          [i18nLocale]: 'Black',
-        },
-      },
-    };
-    values.externalUrl = { [i18nLocale]: values.externalUrl };
-    values.media = values.media.map(imageUrl => ({
+    },
+    media: values.media.map((image, i) => (typeof image === 'object' && image) || ({
       type: 'image',
       hero: false,
       names: {
-        [i18nLocale]: 'View From the Kitchen',
+        [i18nLocale]: `Image ${i}`,
       },
       files: {
         thumbnail: {
-          url: imageUrl,
+          url: image,
           width: 215,
           height: 140,
         },
         small: {
-          url: imageUrl,
+          url: image,
           width: 430,
           height: 280,
         },
         large: {
-          url: imageUrl,
+          url: image,
           width: 860,
           height: 560,
         },
         hero: {
-          url: imageUrl,
+          url: image,
           width: 860,
           height: 560,
         },
       },
-    }));
-  } catch (error) {
-    console.log(error);
+    })),
   }
-
-  return values;
 };
 
 const buildServiceForView = service => {
@@ -157,7 +130,6 @@ const buildServiceForView = service => {
       const capitalized = key.charAt(0).toUpperCase() + key.substr(1);
       dayList = [...dayList, { weekday: capitalized, selected }];
     }
-    service.externalId = '123abs';
     service.title = service.title[i18nLocale];
     service.subtitle = service.subtitle[i18nLocale];
     service.description = service.description[i18nLocale];
@@ -174,6 +146,8 @@ const buildServiceForView = service => {
     service.facebook = service.links.facebook;
     service.twitter = service.links.twitter;
     service.website = service.links.website;
+    service.startDate = new Date(service.periods[0].startDate);
+    service.endDate = new Date(service.periods[0].endDate);
     service.openingTime = service.periods[0].startTime;
     service.closingTime = service.periods[0].endTime;
     service.reviewCount = service.reviewCount;
@@ -184,120 +158,13 @@ const buildServiceForView = service => {
       const categories = service.categories.map(category => category.names[i18nLocale]);
       service.categories = categories;
     }
-    if (service.tags && service.tags.length) {
-      const tags = service.tags.map(tag => tag.names[i18nLocale]);
-      service.tags = tags;
-    }
   } catch (error) {
     console.log(error);
   }
   return service;
 };
 
-const normalizeServiceToPatch = values => {
-  const i18nLocale = 'en-us';
-  try {
-    values.acceptETH = values.acceptETH;
-    values.title = { [i18nLocale]: values.title };
-    values.description = { [i18nLocale]: values.description };
-    values.externalUrl = { [i18nLocale]: values.externalUrl };
-    values.externalId = '123abs';
-    values.baseCurrency = {
-      name: 'US Dollar',
-      code: 'USD',
-      symbol: '$',
-    };
-    values.location = {
-      line1: `${values.location.address_components[0].long_name} ${
-        values.location.address_components[1].long_name
-      }`,
-      line2: '',
-      postcode: values.postalCode,
-      city: values.city,
-      state: values.state,
-      countryCode: values.countryCode,
-      geo: {
-        coordinates: [values.latlong.lng, values.latlong.lat],
-        type: 'Point',
-      },
-      formattedAddress: values.formattedAddress,
-    };
-    values.instructions = {
-      start: { [i18nLocale]: values.start },
-      end: { [i18nLocale]: values.end },
-    };
-    values.rules = values.rules.map(rule => ({ [i18nLocale]: rule }));
-    values.subtitle = { [i18nLocale]: values.subtitle };
-    values.links = {
-      facebook: values.facebook,
-      twitter: values.twitter,
-      website: values.website,
-    };
-    values.categories = values.categories.map(category => ({
-      names: {
-        [i18nLocale]: `${category.charAt(0).toUpperCase()}${category.slice(1)}`,
-      },
-    }));
-    values.periods = [
-      {
-        cancellationPolicies: [],
-        startDate: '2018-07-09T18:30:00.000Z',
-        endDate: '2019-12-09T18:30:00.000Z',
-        startTime: 10,
-        endTime: 22,
-        daysOfWeek: values.availableDays.reduce((accum, day) => {
-          const lowerCaseDay = day.weekday.toLowerCase();
-          if (!accum[lowerCaseDay]) {
-            accum[lowerCaseDay] = day.selected;
-          }
-          return accum;
-        }, {}),
-        price: {
-          min: 30,
-          max: 50,
-        },
-        priceCapacity: 1,
-        minCapacity: 1,
-        maxCapacity: 2,
-      },
-    ];
-    if (values.media && values.media.length) {
-      values.media = values.media.map(imageUrl => ({
-        type: 'image',
-        hero: false,
-        names: {
-          [i18nLocale]: 'View From the Kitchen',
-        },
-        files: {
-          thumbnail: {
-            url: imageUrl,
-            width: 215,
-            height: 140,
-          },
-          small: {
-            url: imageUrl,
-            width: 430,
-            height: 280,
-          },
-          large: {
-            url: imageUrl,
-            width: 860,
-            height: 560,
-          },
-          hero: {
-            url: imageUrl,
-            width: 860,
-            height: 560,
-          },
-        },
-      }));
-    }
-    console.log(values.media);
-  } catch (error) {
-    console.log(error);
-  }
-  return values;
-};
+const normalizeServiceToPatch = createService;
 
 const buildServicesJson = services => {
   const i18nLocale = 'en-us';
@@ -342,6 +209,7 @@ const buildServicesJson = services => {
   });
 };
 
+// This function should be rewritten when redesigning the service page
 const mapServiceObjects = services => {
   return services.map(service => {
     try {

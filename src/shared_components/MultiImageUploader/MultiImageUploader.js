@@ -43,8 +43,6 @@ export default class MultiImageUploader extends Component {
         },
         callbacks: {
           onCancel: (id, name) => {
-            console.log('id', id);
-            console.log('name', name);
             this.setState(
               ({ fileUrls }) => ({
                 fileUrls: fileUrls.filter((url, index) => index !== id),

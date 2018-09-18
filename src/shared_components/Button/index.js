@@ -78,6 +78,14 @@ export const theme = {
     color: colors.gray,
     colorHover: colors.gray,
   },
+  danger: {
+    background: '#dc3545',
+    backgroundHover: '#c82333',
+    border: '#dc3545',
+    borderHover: '#bd2130',
+    color: colors.white,
+    colorHover: colors.white,
+  }
 };
 
 export const Wrap = styled.div`

@@ -27,8 +27,12 @@ export default (state = initialState, action) => {
         isSubmitting: false,
         isLoading: false,
       };
-    case actionTypes.SERVICE_FETCH_STARTED:
     case actionTypes.SERVICE_SAVE_STARTED:
+      return {
+        ...state,
+        isSubmitting: true,
+      };
+    case actionTypes.SERVICE_FETCH_STARTED:
       return {
         ...state,
         isLoading: true,
@@ -39,10 +43,10 @@ export default (state = initialState, action) => {
         isLoading: false,
         service: action.payload,
       };
-    case actionTypes.SERVICE_SAVE_SUCCCESS:
+    case actionTypes.SERVICE_SAVE_SUCCESS:
       return {
         ...state,
-        isLoading: false,
+        isSubmitting: false,
       };
     case actionTypes.SERVICE_FETCH_ERROR:
     case actionTypes.SERVICE_SAVE_ERROR:

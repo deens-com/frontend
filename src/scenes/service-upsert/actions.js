@@ -4,7 +4,7 @@ import history from '../../main/history';
 import { trackServiceCreated } from 'libs/analytics';
 import { generateFilename } from 'libs/filename';
 import { env, serverBaseURL } from '../../libs/config';
-import axios from 'axios';
+import axios from 'libs/axios';
 
 export const types = {
   SERVICE_CREATE_STARTED: 'SERVICE_CREATE_STARTED',
@@ -56,13 +56,10 @@ export const registerService = (values, history) => async (dispatch, getState) =
     //   }
     // }
 
-    const service = await fetch_helpers.createService(values);
+    const service = fetch_helpers.createService(values);
     const result = await axios({
       method: 'POST',
       url: `${serverBaseURL}/services`,
-      headers: {
-        Authorization: `Bearer ${jwtToken}`,
-      },
       data: service,
     }).catch(error => {
       console.log(error);
@@ -86,27 +83,16 @@ export const registerService = (values, history) => async (dispatch, getState) =
 };
 
 export const fetchService = serviceId => async (dispatch, getState) => {
-  const localStorageUser = localStorage.getItem(`please-${env}-session`);
-  const jsonUser = JSON.parse(localStorageUser);
-  const jwtToken = jsonUser.accessToken;
-
   if (!serviceId) return;
   const state = getState();
-  const { isLoading } = state.ServiceUpsert;
-  if (isLoading) return;
+  const { isSubmitting } = state.ServiceUpsert;
+  if (isSubmitting) return;
 
   dispatch({ type: types.SERVICE_FETCH_STARTED });
-
   try {
     const result = await axios
-      .get(`${serverBaseURL}/services/${serviceId}`, {
-        headers: {
-          Authorization: `Bearer ${jwtToken}`,
-        },
-      })
-      .catch(error => {
-        console.log(error);
-      });
+      .get(`${serverBaseURL}/services/${serviceId}`);
+
     const service = fetch_helpers.buildServiceForView(result.data);
     dispatch({ type: types.SERVICE_FETCH_SUCCESS, payload: service });
   } catch (error) {
@@ -115,35 +101,25 @@ export const fetchService = serviceId => async (dispatch, getState) => {
 };
 
 export const saveServiceChanges = (serviceId, values, history) => async (dispatch, getState) => {
-  const localStorageUser = localStorage.getItem(`please-${env}-session`);
-  const jsonUser = JSON.parse(localStorageUser);
-  const jwtToken = jsonUser.accessToken;
-
   if (!serviceId) return;
   const state = getState();
-  const { isLoading } = state.ServiceUpsert;
-  if (isLoading) return;
+  const { isSubmitting } = state.ServiceUpsert;
+  if (isSubmitting) return;
 
   dispatch({ type: types.SERVICE_SAVE_STARTED });
 
   try {
     const updatedService = fetch_helpers.normalizeServiceToPatch(values);
-    console.log(JSON.stringify(updatedService));
     const result = await axios({
       method: 'PATCH',
       url: `${serverBaseURL}/services/${serviceId}`,
-      headers: {
-        Authorization: `Bearer ${jwtToken}`,
-      },
       data: updatedService,
-    }).catch(error => {
-      console.log(error);
     });
 
     if (updatedService.acceptETH) {
       dispatch(deployContract(result, updatedService, history));
     } else {
-      dispatch({ type: types.SERVICE_CREATE_SUCCESS, payload: result.data });
+      dispatch({ type: types.SERVICE_SAVE_SUCCESS, payload: result.data });
       history.push(`/services/${result.data._id}`);
     }
   } catch (error) {
@@ -154,17 +130,12 @@ export const saveServiceChanges = (serviceId, values, history) => async (dispatc
 };
 
 export const fetchUserProfile = () => async dispatch => {
-  const localStorageUser = localStorage.getItem(`please-${env}-session`);
-  if (localStorageUser) {
-    const jsonUser = JSON.parse(localStorageUser);
-    const jwtToken = jsonUser.accessToken;
+  try {
     const user = await axios
-      .get(`${serverBaseURL}/users/me`, { headers: { Authorization: `Bearer ${jwtToken}` } })
-      .catch(error => {
-        console.log(error);
-      });
+      .get(`${serverBaseURL}/users/me`)
+
     dispatch(user_profile_fetched({ user_profile: user.data }));
-  } else {
+  } catch(e) {
     history.push('/login');
   }
 };

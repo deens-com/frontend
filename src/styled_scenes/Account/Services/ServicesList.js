@@ -1,13 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Divider, Label, Button, Icon } from 'semantic-ui-react';
+import { Divider, Label, Button, Icon, Loader } from 'semantic-ui-react';
 import styled from 'styled-components';
 import Rating from 'shared_components/Rating';
 import * as SmartContractStatus from 'shared_components/SmartContract/Status';
 import PriceTag from '../../../shared_components/Currency/PriceTag';
 import Thumb from '../../../shared_components/Carts/components/Thumb';
 import { Cart, ContentWrap } from '../../../shared_components/Carts/styles';
-import i18n from './../../../libs/i18n';
+import I18nText from '../../../shared_components/I18nText';
 
 const EmptyServicesText = styled.p`
   font-style: italic;
@@ -51,24 +51,15 @@ const PriceTitle = styled.span`
   text-transform: uppercase;
 `;
 
-const getItemType = type => {
-  switch (type) {
-    case 'place':
-      return i18n.t('places.singular');
-    case 'activity':
-      return i18n.t('activities.singular');
-    case 'food':
-      return i18n.t('foods.singular');
-    default:
-      return '';
-  }
-};
+const LoaderContainer = styled.div`
+  margin-top: 50px;
+`;
 
 const ServiceItem = item => {
   const isActivated = item.serviceStatus !== 'disabled';
 
   const showContractStatus = item.contractAddress != null;
-
+  console.log(item)
   return (
     <Cart column>
       {showContractStatus && (
@@ -77,7 +68,7 @@ const ServiceItem = item => {
       {item.media &&
         item.media[0] && (
           <Link to={'/services/' + item.objectId} key={item.objectId}>
-            <Thumb url={item.media[0]} />
+            <Thumb url={item.media[0].files.thumbnail.url} />
           </Link>
         )}
 
@@ -87,7 +78,7 @@ const ServiceItem = item => {
 
           <Rating marginBottom="25px" rating={item.rating} count={item.reviewCount} />
 
-          <Label>{getItemType(item.type)}</Label>
+          <Label><I18nText data={item.categories[0].names} /></Label>
 
           <br />
           <br />
@@ -132,6 +123,13 @@ const ServiceItem = item => {
 };
 
 const ServicesList = props => {
+  if (props.isLoading) {
+    return (
+      <LoaderContainer>
+        <Loader active inline="centered" size="big" />
+      </LoaderContainer>
+    );
+  }
   return (
     <section>
       <br />

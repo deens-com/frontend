@@ -10,9 +10,8 @@ import { Link } from 'react-router-dom';
 import history from './../../main/history';
 import { isMobile, checkRequiredFields } from 'libs/Utils';
 import i18n from './../../libs/i18n';
-import Image from 'shared_components/Image';
 import MultiImageUploader from 'shared_components/MultiImageUploader/MultiImageUploader';
-import { weekdays } from 'moment';
+import DateInput from '../Form/DateInput';
 
 const serviceCategories = [
   { label: i18n.t('places.singular'), value: 'Accommodation' },
@@ -46,6 +45,14 @@ const tagsDropdownOptions = serviceTags.map(value => ({ text: value, value }));
 
 const ErrorMsg = styled.div`
   color: red;
+`;
+
+const AddRuleContainer = styled.div`
+  margin-bottom: 15px;
+`;
+
+const RulesLabel = styled.label`
+  font-weight: bold;
 `;
 
 class ServiceForm extends Component {
@@ -109,6 +116,18 @@ class ServiceForm extends Component {
     setFieldValue('latlong', null);
     setFieldTouched('latlong', true, false);
   };
+
+  handleStartDateChange = (date) => {
+    const { setFieldValue, setFieldTouched } = this.props;
+    setFieldTouched('startDate', true);
+    setFieldValue('startDate', date);
+  }
+
+  handleEndDateChange = (date) => {
+    const { setFieldValue, setFieldTouched } = this.props;
+    setFieldTouched('endDate', true);
+    setFieldValue('endDate', date);
+  }
 
   onLocationSelect = (address, placeId) => {
     const { setFieldValue, setFieldTouched } = this.props;
@@ -177,6 +196,16 @@ class ServiceForm extends Component {
     this.setState({ showGlobalError: false });
     this.props.onRedeployContract(values, serviceId);
   };
+
+  addRule = (e) => {
+    e.preventDefault();
+    this.props.setFieldValue('rules', [...this.props.values.rules, '']);
+  }
+
+  removeRule = (index, e) => {
+    e.preventDefault();
+    this.props.setFieldValue('rules', this.props.values.rules.filter((_, i) => i !== index));
+  }
 
   render() {
     const {
@@ -331,13 +360,14 @@ class ServiceForm extends Component {
             defaultAddress={values.formattedAddress}
             onKeyUp={this.onLocationKeyUp}
             onChange={this.onLocationSelect}
+            onlyCities
           />
           {touched.latlong && errors.latlong && <ErrorMsg>{errors.latlong}</ErrorMsg>}
         </Form.Field>
 
         {/* Instruction */}
         <Form.Group widths="equal">
-          <Form.Field>
+          <Form.Field required>
             <label>Instructions Start</label>
             <Form.Input
               name="start"
@@ -347,7 +377,7 @@ class ServiceForm extends Component {
             />
             {touched.start && errors.start && <ErrorMsg>{errors.start}</ErrorMsg>}
           </Form.Field>
-          <Form.Field>
+          <Form.Field required>
             <label>Instructions End</label>
             <Form.Input
               name="end"
@@ -360,21 +390,73 @@ class ServiceForm extends Component {
         </Form.Group>
 
         {/* Rules */}
-        <Form.Field>
-          <label>Rules</label>
+        <React.Fragment>
+          <RulesLabel>Rules</RulesLabel>
           {values.rules.map((rule, index) => (
-            <Form.Field key={`rule-${index}`}>
-              <label>{`Rule ${index + 1}`}</label>
-              <Form.Input
-                name={`rules[${index}]`}
-                value={rule}
-                error={!!(touched.rule && errors.rule)}
-                {...defaultProps}
-              />
-              {touched.rule && errors.rule && <ErrorMsg>{errors.rule}</ErrorMsg>}
-            </Form.Field>
+            <Form.Group key={`rule-${index}`}>
+              <Form.Field style={{flex: 1}}>
+                <label>{`Rule ${index + 1}`}</label>
+                <Form.Input
+                  name={`rules[${index}]`}
+                  value={rule}
+                  error={!!(touched.rule && errors.rule)}
+                  {...defaultProps}
+                />
+                {touched.rule && errors.rule && <ErrorMsg>{errors.rule}</ErrorMsg>}
+              </Form.Field>
+              <Button
+                color="red"
+                size="mini"
+                onClick={this.removeRule.bind(this, index)}
+                style={{
+                  marginBottom: '3px',
+                  alignSelf: 'flex-end',
+                  height: '3em',
+                }}
+              >
+                Remove
+              </Button>
+            </Form.Group>
           ))}
-        </Form.Field>
+          <AddRuleContainer>
+            <Button color="green" size="small" onClick={this.addRule}>Add rule</Button>
+          </AddRuleContainer>
+
+        </React.Fragment>
+
+        {/* Period date */}
+        <Form.Group widths="equal">
+          <Form.Field required>
+            <label>Start date</label>
+            <DateInput
+              onChange={this.handleStartDateChange}
+              placeholder="Start date"
+              label="Start date"
+              leftIcon="date"
+              value={values.startDate}
+              innerRef={input => {
+                this.startDateInput = input;
+              }}
+              dayPickerProps={{ disabledDays: { before: new Date() } }}
+            />
+            {touched.startDate && errors.startDate && <ErrorMsg>{errors.startDate}</ErrorMsg>}
+          </Form.Field>
+
+          <Form.Field required>
+          <label>End date</label>
+            <DateInput
+              onChange={this.handleEndDateChange}
+              placeholder="End date"
+              leftIcon="date"
+              value={values.endDate}
+              dayPickerProps={{ disabledDays: { before: values.startDate || new Date() } }}
+              innerRef={input => {
+                this.endDateInput = input;
+              }}
+            />
+            {touched.endDate && errors.endDate && <ErrorMsg>{errors.endDate}</ErrorMsg>}
+          </Form.Field>
+        </Form.Group>
 
         {/* Timings */}
         <Form.Group widths="equal">
@@ -384,7 +466,6 @@ class ServiceForm extends Component {
               label="Opening time"
               placeholder="Select opening time"
               selection
-              required
               value={values.openingTime}
               options={hoursDropdownOptions}
               onChange={this.onDropDownChange}
@@ -398,7 +479,6 @@ class ServiceForm extends Component {
               label="Closing time"
               placeholder="Select closing time"
               selection
-              required
               value={values.closingTime}
               options={hoursDropdownOptions}
               onChange={this.onDropDownChange}
@@ -456,18 +536,6 @@ class ServiceForm extends Component {
           </Form.Field>
         </Form.Group>
 
-        {/* External Url */}
-        <Form.Field>
-          <label>External Url</label>
-          <Form.Input
-            name="externalUrl"
-            value={values.externalUrl}
-            error={!!(touched.externalUrl && errors.externalUrl)}
-            {...defaultProps}
-          />
-          {touched.externalUrl && errors.externalUrl && <ErrorMsg>{errors.externalUrl}</ErrorMsg>}
-        </Form.Field>
-
         {/* Tags */}
         <Form.Field>
           <label>Tags</label>
@@ -483,25 +551,6 @@ class ServiceForm extends Component {
             onChange={this.onDropDownChange}
           />
         </Form.Field>
-
-        {/* Single image upload
-        <Form.Field>
-          <label>Service Picture</label>
-          <Flex>
-            {!values.mainPicture &&
-              service &&
-              service.mainPicture && (
-                <Image src={service.mainPicture.url} alt="service" height="43px" />
-              )}
-            <input
-              type="file"
-              name="mainPicture"
-              accept=".jpg, .jpeg, .png"
-              onChange={this.onFileSelect}
-            />
-          </Flex>
-        </Form.Field>
-        */}
 
         {/* Multi image upload */}
         <Form.Field>
@@ -578,11 +627,10 @@ function validate(values) {
     'duration',
     'basePrice',
     'availableDays',
-    'openingTime',
-    'closingTime',
+    'startDate',
+    'endDate',
     'slots',
     'latlong',
-    'externalUrl',
   ];
 
   const errors = checkRequiredFields(values, requiredFields);
@@ -608,6 +656,18 @@ function validate(values) {
     }
   }
 
+  const dateFields = ['startDate', 'endDate'];
+
+  for (const field of dateFields) {
+    if (!errors[field]) {
+      if (!(values[field] instanceof Date)) {
+        errors[field] = 'Invalid date';
+      } else if (field === 'endDate' && values.endDate < values.startDate) {
+        errors[field] = 'End date should be later than start date';
+      }
+    }
+  }
+
   return errors;
 }
 
@@ -627,21 +687,27 @@ export default withFormik({
     basePrice: service && service.basePrice != null ? service.basePrice : '',
     acceptETH: (service && service.acceptETH) || false,
     availableDays: (service && service.dayList) || weekDays,
+    startDate: (service && service.startDate) || '',
+    endDate: (service && service.endDate) || '',
     openingTime: service && service.openingTime != null ? service.openingTime : null,
     closingTime: service && service.closingTime != null ? service.closingTime : null,
     externalUrl: (service && service.externalUrl) || '',
     slots: service && service.slots != null ? service.slots : '',
-    location: (service && service.location) || {},
-    postalCode: (service && service.postalCode) || '',
-    city: (service && service.city) || '',
-    state: (service && service.city) || '',
-    countryCode: (service && service.countryCode) || '',
+    location: (service && service.location && {
+      ...service.location,
+      address_components: [{ long_name: service.location.line1 }],
+    }) || {},
+    postalCode: (service && service.location && service.location.postalCode) || '',
+    city: (service && service.location && service.location.city) || '',
+    state: (service && service.location && service.location.state) || '',
+    countryCode: (service && service.location && service.location.countryCode) || '',
     latlong:
       (service &&
-        service.latitude &&
-        service.longitude && { lat: service.latitude, lng: service.longitude }) ||
+        service.location &&
+        service.location.geo &&
+        service.location.geo.coordinates && { lat: service.location.geo.coordinates[1], lng: service.location.geo.coordinates[0] }) ||
       null,
-    tags: (service && service.tags) || [],
+    tags: (service && service.tags && service.tags.map(tag => tag.type)) || [],
     media: (service && service.media) || [],
     formattedAddress: (service && service.location.formattedAddress) || undefined,
   }),
