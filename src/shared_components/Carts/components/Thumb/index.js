@@ -31,7 +31,7 @@ const Wrap = styled.div`
 
 const Thumb = styled(Image)`
   padding-top: 65%;
-  background: #d3d7dc;
+  background: #f7f7f7;
   background-size: cover;
   background-position: center;
   height: 100%;

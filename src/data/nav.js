@@ -1,16 +1,6 @@
 import i18n from 'libs/i18n';
-import { isCryptoCurrenciesDisabled } from 'libs/feature-flags';
 
-export const mainNav = [
-  { label: i18n.t('trips.label'), href: '/results?service_types=trip', service_type: 'trip' },
-  { label: i18n.t('places.singular'), href: '/results?service_types=place', service_type: 'place' },
-  {
-    label: i18n.t('activities.label'),
-    href: '/results?service_types=activity',
-    service_type: 'activity',
-  },
-  { label: i18n.t('foods.label'), href: '/results?service_types=food', service_type: 'food' },
-];
+export const mainNav = [{ label: i18n.t('earnMoney.label'), href: 'ASK THIS' }];
 
 export const languages = [
   { value: 'eng', label: 'ENG' },
@@ -25,13 +15,10 @@ export const fiatCurrencies = [
   { value: 'GBP', label: '£ (GBP)', stripeMultiplier: 100 },
 ];
 
-export const cryptoCurrencies = [
-  { value: 'BTC', label: 'Ƀ (BTC)' },
-  { value: 'ETH', label: 'Ξ (ETH)' },
-  { value: 'PLS', label: '🄿 (PLS)' },
-];
+// export const cryptoCurrencies = [
+//   { value: 'BTC', label: 'Ƀ (BTC)' },
+//   { value: 'ETH', label: 'Ξ (ETH)' },
+//   { value: 'PLS', label: '🄿 (PLS)' },
+// ];
 
-export const currencies = [
-  ...fiatCurrencies,
-  ...(isCryptoCurrenciesDisabled() ? [] : cryptoCurrencies),
-];
+export const currencies = fiatCurrencies;

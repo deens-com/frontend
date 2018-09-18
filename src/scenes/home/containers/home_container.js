@@ -7,7 +7,6 @@ import GlobalTeaser from 'shared_components/GlobalTeaser';
 
 class HomeContainer extends Component {
   componentDidMount() {
-    this.props.fetch_services();
     this.props.fetch_trips();
   }
 

@@ -21,10 +21,14 @@ const LogoWrap = styled.span`
   display: inline-block;
   height: 50px;
   width: 90px;
+  @media screen and (max-width: 768px) {
+    width: auto;
+    height: auto;
+  }
 `;
 
 const ArrowWrap = styled.span`
-  color: ${props => (props.menuIsOpened ? '#62B69E' : 'white')};
+  color: ${props => (props.menuIsOpened ? '#62B69E' : '#62B69E')};
   display: inline-block;
   font-size: 12px;
   transform: rotate(${props => (props.menuIsOpened ? '180deg' : '0deg')});

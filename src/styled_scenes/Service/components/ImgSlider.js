@@ -5,6 +5,7 @@ import styled from 'styled-components';
 // COMPONENTS
 import { ArrowIcon } from '../../../shared_components/icons';
 import Image from 'shared_components/Image';
+import placeholder from './../../../assets/placeholder350x350.svg';
 
 // ACTIONS/CONFIG
 import { media } from '../../../libs/styled';
@@ -13,7 +14,7 @@ import { media } from '../../../libs/styled';
 const Wrap = styled.div`
   max-height: 400px;
   margin-bottom: 50px;
-  background: #eee;
+  background: #ffffff;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -26,13 +27,16 @@ const Wrap = styled.div`
   }
 
   ${media.minLarge} {
+    width: 50vw;
     height: 100vh;
-    width: 42vw;
-    max-height: 800px;
+    max-height: 600px;
+    border-radius: 5px;
 
     img {
       max-height: 100%;
-      max-width: fit-content;
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
     }
   }
 `;
@@ -133,10 +137,11 @@ export default class FoodImgSlider extends Component {
             (this.props.images &&
               this.props.images.length &&
               this.props.images[this.state.index]) ||
-            'https://dummyimage.com/600x400/000/fff'
+            placeholder
           }
           sizes="42vw"
           alt="service main picture"
+          className="service-img"
         />
       </Wrap>
     );

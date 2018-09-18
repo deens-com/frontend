@@ -1,9 +1,8 @@
 import Parse from 'parse';
-import moment from 'moment';
 import fetch_helpers from './../../libs/fetch_helpers';
-import { getISODateString } from 'libs/Utils';
 import { generateFilename } from 'libs/filename';
 import { trackTripCloned } from 'libs/analytics';
+import axios from 'libs/axios';
 
 export const tripFetchStart = () => ({ type: 'TRIP_FETCH_START' });
 export const trip_fetched = trip => ({
@@ -30,11 +29,6 @@ export const serviceAvailabilitiesSuccess = obj => ({
 });
 export const setTripCloningStatus = status => ({ type: 'CLONING_STATUS', payload: status });
 
-const isCurrentUser = userObject => {
-  const currentUser = Parse.User.current();
-  return (userObject && (userObject.objectId || userObject.id)) === (currentUser && currentUser.id);
-};
-
 export const fetchTrip = tripId => async (dispatch, getState) => {
   if (!tripId) {
     console.error(new Error("can't fetch trip without TripId"));
@@ -42,43 +36,14 @@ export const fetchTrip = tripId => async (dispatch, getState) => {
   }
   try {
     dispatch(tripFetchStart());
-    const { trip: originalTrip, tripOrganizationMappings, services, notes } = await Parse.Cloud.run(
-      'fetchTrip',
-      {
-        id: tripId,
-        includes: ['services', 'notes'],
-      },
-    );
-    const trip = fetch_helpers.mapServiceObjects([
-      fetch_helpers.normalizeParseResponseData(originalTrip),
-    ])[0];
-    dispatch(trip_fetched({ trip, tripOrganizations: tripOrganizationMappings, services, notes }));
-    postFetchTripActions(trip, dispatch, getState);
+    const response = await axios.get(`/trips/${tripId}`, { params: { include: 'services' } });
+    dispatch(trip_fetched({ trip: response.data }));
   } catch (error) {
-    if (error.code === Parse.Error.OBJECT_NOT_FOUND) dispatch(tripFetchError(error));
+    if (error.response && error.response.status === 404)
+      dispatch(tripFetchError(error.response.data));
+    else dispatch(tripFetchError(error));
   }
 };
-
-function postFetchTripActions(trip, dispatch, getState) {
-  const { title, numberOfPerson: peopleCount, formattedAddress, tags } = trip;
-  const isOwner = isCurrentUser(trip.owner);
-  let startDate = new Date(getISODateString(trip.beginDate));
-  if (!isOwner) {
-    const newStartDate = moment()
-      .utc()
-      .add(1, 'day')
-      .startOf('day');
-    startDate = newStartDate.toDate();
-  }
-  updateTripQuery({
-    person: { label: peopleCount, value: peopleCount },
-    formattedAddress,
-    title,
-    startDate,
-    tags,
-  })(dispatch, getState);
-  checkAvailability(startDate, peopleCount)(dispatch, getState);
-}
 
 export const changeServiceDay = (tripOrganizationId, newDay) => async (dispatch, getState) => {
   if (!tripOrganizationId) {

@@ -41,7 +41,7 @@ const Button = styled.button`
   justify-content: center;
   outline: none;
   position: absolute;
-  top: ${props => props.topPosition || '39%'};
+  top: ${props => props.topPosition || '50%'};
   transform: translateY(-50%);
   width: ${props => carouselSizes[props.size].btnSize};
   z-index: 1;
@@ -51,6 +51,11 @@ const Button = styled.button`
     css`
       ${props.position}: ${props.size === 'small' ? '-5px' : '-25px'};
     `};
+  @media screen and (max-width: 768px) {
+    top: 40%;
+    width: 35px;
+    height: 35px;
+  }
 `;
 
 const ButtonLeft = Button.extend`
@@ -120,12 +125,12 @@ const PrevButton = props => {
 // MODULE
 const Carousel = props => {
   const breakpoints = {
-    // Small devices (landscape phones, 576px and down)
-    small: 576,
-    // Medium devices (tablets, 768px and down)
-    medium: 768,
-    // Large devices (desktops, 992px and down)
-    large: 992,
+    // Small devices (landscape phones, 650px and down)
+    small: 650,
+    // Medium devices (tablets, 960px and down)
+    medium: 960,
+    // Large devices (desktops, 1300px and down)
+    large: 1300,
     // Extra large devices (large desktops, 1200px and down)
     extraLarge: 2880,
   };
@@ -145,6 +150,7 @@ const Carousel = props => {
         settings: {
           slidesToShow: props.sm_slides_nb,
           slidesToScroll: props.sm_slides_nb,
+          dots: false,
         },
       },
       {
@@ -152,6 +158,7 @@ const Carousel = props => {
         settings: {
           slidesToShow: props.md_slides_nb,
           slidesToScroll: props.md_slides_nb,
+          dots: false,
         },
       },
       {
@@ -159,6 +166,7 @@ const Carousel = props => {
         settings: {
           slidesToShow: props.lg_slides_nb,
           slidesToScroll: props.lg_slides_nb,
+          dots: false,
         },
       },
       {

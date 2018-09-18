@@ -31,7 +31,8 @@ const size = {
 };
 
 const colors = {
-  green: '#5FB79E',
+  green: '#4FB798',
+  lightGreen: '#38D39F',
   greenActive: '#4ac4a1',
   white: '#fff',
   gray: '#d3d7dc',
@@ -69,6 +70,14 @@ export const theme = {
     borderHover: colors.white,
     color: colors.green,
     colorHover: colors.greenActive,
+  },
+  textLightGreen: {
+    background: colors.white,
+    backgroundHover: colors.greenActive,
+    border: colors.lightGreen,
+    borderHover: colors.greenActive,
+    color: colors.lightGreen,
+    colorHover: colors.white,
   },
   icon: {
     background: 'transparent',

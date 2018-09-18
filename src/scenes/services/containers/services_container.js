@@ -4,7 +4,6 @@ import * as services_actions from './../actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router';
-import Parse from 'parse';
 import { getSession } from 'libs/user-session';
 
 class ServicesContainer extends Component {
@@ -15,11 +14,12 @@ class ServicesContainer extends Component {
   componentDidMount() {
     const service_id = this.props.match.params.id;
     this.props.fetch_service(service_id);
-    if (Parse.User.current() != null) {
+    const user = getSession();
+    if (user != null) {
       this.props.fetchMyTrips();
     }
     this.props.setAddedToTripMessage(undefined);
-    if (!this.props.abi) this.props.fetchServiceContractABI();
+    //if (!this.props.abi) this.props.fetchServiceContractABI();
   }
 
   componentWillUnmount() {

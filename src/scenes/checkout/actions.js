@@ -36,9 +36,8 @@ export const chargeStripeToken = (token, complete = () => {}) => async (dispatch
   if (!token || !token.id) return;
   const state = getState();
   const { trip } = state.TripsReducer;
-  const currency =
-    (state.SessionsReducer.baseCurrency && state.SessionsReducer.baseCurrency.value) || 'usd';
-  const tripId = trip.objectId;
+  const currency = 'usd';
+  const tripId = trip._id;
   try {
     dispatch({
       type: types.MARK_TRIP_BOOKED_STATUS,

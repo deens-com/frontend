@@ -23,20 +23,3 @@ export const disableCryptoCurrencies = boolValue => {
   Cookies.set(keys.cryptoCurrencies, !!boolValue);
   reloadPage();
 };
-
-/**
- * Based on the cookies returns true/false
- * @returns {boolean}
- */
-export const isStripeIntegrationEnabled = () => convertToBool(Cookies.get(keys.stripeIntegration));
-
-/**
- * Enables/Disables stripe integration
- * NOTE: while doing so it also disables crypto-currencies
- * @param {boolean} boolValue true to enable and false to disable
- */
-export const enableStripeIntegration = boolValue => {
-  Cookies.set(keys.stripeIntegration, !!boolValue);
-  disableCryptoCurrencies(!!boolValue);
-  reloadPage();
-};

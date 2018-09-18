@@ -46,8 +46,8 @@ class PaymentContainer extends React.Component {
 
   render() {
     const { trip, markTripBooked, isLoading } = this.props;
-    if (!trip || !trip.objectId) return null;
-    const totalPrice = trip.price * (trip.numberOfPerson || 1);
+    if (!trip || !trip._id) return null;
+    const totalPrice = trip.basePrice * (trip.numberOfPerson || 1);
     return (
       <PaymentContext.Provider
         value={{
@@ -58,7 +58,7 @@ class PaymentContainer extends React.Component {
       >
         <PaymentSection
           numberOfPerson={trip.numberOfPerson}
-          pricePerPerson={trip.price}
+          pricePerPerson={trip.basePrice}
           totalPrice={totalPrice}
           onPaymentClick={markTripBooked}
           isLoading={isLoading}

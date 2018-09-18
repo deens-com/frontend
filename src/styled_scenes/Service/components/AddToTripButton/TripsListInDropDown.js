@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Image, List, Popup } from 'semantic-ui-react';
 import moment from 'moment';
 import styled from 'styled-components';
-import placeholder from './../../../../assets/placeholder350x350.png';
+import placeholder from './../../../../assets/placeholder350x350.svg';
 window.moment = moment;
 
 const getTripImage = trip => {
@@ -33,8 +33,9 @@ class TripsListInDropDown extends React.Component {
 
   getTripLength = trip => {
     let label = 'day';
-    if (trip.dayCount > 1) label += 's';
-    return { count: trip.dayCount, label };
+    const dayCount = trip.duration / 24 || 0;
+    if (dayCount > 1) label += 's';
+    return { count: dayCount, label };
   };
 
   renderItem = (trip, description) => {

@@ -7,11 +7,14 @@ import PropTypes from 'prop-types';
  * Later we can use this component to render the user selected language
  */
 function I18nText({ data }) {
+  if (!data) {
+    return '';
+  }
   return <React.Fragment>{data['en-us']}</React.Fragment>;
 }
 
 I18nText.propTypes = {
-  data: PropTypes.object.isRequired,
+  data: PropTypes.object,
 };
 
 export default I18nText;

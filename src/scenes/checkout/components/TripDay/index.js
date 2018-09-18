@@ -6,7 +6,6 @@ import ExcerptCart from '../../../../shared_components/Carts/DetailCart/ExcerptC
 import { Wrap, Header, DayTitle, DayTag, Mute } from './styles';
 import { Cart as ServiceCard } from '../../../../shared_components/Carts/styles';
 import EmptyTripDay from '../../../../styled_scenes/Trips/components/EmptyTripDay';
-import { getISODateString } from '../../../../libs/Utils';
 
 const TripDay = ({ dayIndex, services, tripBeginDate }) => {
   return (
@@ -15,14 +14,14 @@ const TripDay = ({ dayIndex, services, tripBeginDate }) => {
         <DayTitle>
           <DayTag>Day {dayIndex}</DayTag>
           <Mute>
-            {moment(getISODateString(tripBeginDate))
+            {moment(tripBeginDate)
               .add(dayIndex - 1, 'days')
               .format('Do MMM YYYY')}
           </Mute>
         </DayTitle>
       </Header>
       {services.map(service => (
-        <ServiceCard withShadow column key={service.objectId}>
+        <ServiceCard withShadow column key={service._id}>
           <ExcerptCart data={service} hideMoreInfo isOwner={false} />
         </ServiceCard>
       ))}
@@ -32,8 +31,7 @@ const TripDay = ({ dayIndex, services, tripBeginDate }) => {
 };
 
 TripDay.propTypes = {
-  tripBeginDate: PropTypes.oneOfType([PropTypes.string, PropTypes.shape({ iso: PropTypes.string })])
-    .isRequired,
+  tripBeginDate: PropTypes.string,
   dayIndex: PropTypes.number.isRequired,
   services: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

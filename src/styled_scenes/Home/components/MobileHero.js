@@ -11,7 +11,8 @@ import back from './HeroSlider/img/back.jpg';
 const Wrap = styled.div`
   position: absolute;
   top: 0;
-  left: 0;
+  left: calc(-50vw - -50%);
+  width: 100vw;
   right: 0;
   bottom: 0;
   z-index: 0;
