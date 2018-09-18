@@ -4,7 +4,6 @@ import * as services_actions from './../actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router';
-import Parse from 'parse';
 import { getSession } from 'libs/user-session';
 
 class ServicesContainer extends Component {

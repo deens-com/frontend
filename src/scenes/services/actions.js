@@ -1,10 +1,8 @@
 import Parse from 'parse';
 import history from 'main/history';
 import axios from 'libs/axios';
-import { trackTripCreated } from 'libs/analytics';
 import fetch_helpers from './../../libs/fetch_helpers';
 import { getSession } from './../../libs/user-session';
-import { serverBaseURL } from 'libs/config';
 
 export const trips_fetched = trips => {
   return {
@@ -50,6 +48,14 @@ export const fetch_service = serviceId => async dispatch => {
     if (service) {
       const serviceData = service.data;
       const formattedServiceData = fetch_helpers.buildServicesJson([serviceData])[0];
+      const trips = await axios.get(`/trips/containing-service/${serviceId}`).catch(error => {
+        dispatch({ type: 'SERVICE_FETCH_ERROR', payload: error });
+      });
+      if (trips) {
+        const tripsData = trips.data;
+        const formattedTripsData = fetch_helpers.buildServicesJson(tripsData);
+        dispatch(trips_fetched({ trips: formattedTripsData }));
+      }
       dispatch(service_fetched({ service: formattedServiceData }));
     }
   } catch (e) {
@@ -58,108 +64,41 @@ export const fetch_service = serviceId => async dispatch => {
       payload: e.response ? e.response.data : e,
     });
   }
-
-  /*
-  let query = fetch_helpers.build_query('Service');
-  query.equalTo('objectId', service_id);
-  query.include('owner');
-  query.find().then(
-    response => {
-      // Associated Trips
-      let trip_org_query = fetch_helpers.build_query('TripOrganization');
-      trip_org_query.include('trip');
-      trip_org_query.equalTo('service', response[0]);
-
-      trip_org_query.find().then(
-        response => {
-          const trips_organization = fetch_helpers.normalizeParseResponseData(response);
-          const tripsMap = trips_organization.reduce((tripsMap, tripOrg) => {
-            if (tripOrg.trip) tripsMap[tripOrg.trip.objectId] = tripOrg.trip;
-            return tripsMap;
-          }, {});
-          const trips = Object.values(tripsMap);
-          const serialized_trips = fetch_helpers.mapServiceObjects(trips);
-          dispatch(trips_fetched({ trips: serialized_trips }));
-        },
-        error => {
-          // TODO dispatch the error to error handler
-          console.log(error);
-        },
-      );
-
-      // Associated Reviews
-      let reviews_query = fetch_helpers.build_query('Review');
-      reviews_query.include('reviewer');
-      reviews_query.equalTo('service', response[0]);
-      reviews_query.find().then(
-        response => {
-          const reviews = fetch_helpers.normalizeParseResponseData(response);
-          const serialized_reviews = reviews.map(review => {
-            delete review.service;
-            return review;
-          });
-          dispatch(reviews_fetched({ reviews: serialized_reviews }));
-        },
-        error => {
-          // TODO dispatch the error to error handler
-          console.log(error);
-        },
-      );
-
-      const json_service = fetch_helpers.normalizeParseResponseData(response);
-      const serialized_services = fetch_helpers.mapServiceObjects(json_service);
-
-      // Associated Pictures
-      let pics_query = fetch_helpers.build_query('ServicePicture');
-      pics_query.equalTo('service', response[0]);
-
-      pics_query.find().then(service_pictures => {
-        const service_pics = fetch_helpers.normalizeParseResponseData(service_pictures);
-        let pics = service_pics.map(sp => sp.picture);
-        pics.unshift(serialized_services[0].media && serialized_services[0].media[0]);
-        let service_with_pictures = serialized_services[0];
-        service_with_pictures.pictures = pics;
-        dispatch(service_fetched({ service: service_with_pictures }));
-      });
-    },
-    error => {
-      // TODO dispatch the error to error handler
-      console.log(error);
-      dispatch({ type: 'SERVICE_FETCH_ERROR', payload: error });
-    },
-  );
-  */
 };
 
 export const fetchMyTrips = () => async (dispatch, getState) => {
   const state = getState();
   if (state.ServicesReducer.userUnpurchasedTrips.isLoading) return;
   dispatch(userUnpurchasedTripsFetchStart());
-  const trips = await Parse.Cloud.run('getMyNonPurchasedTrips');
-  const normalizedTrips = fetch_helpers.normalizeParseResponseData(trips);
-  dispatch(userUnpurchasedTripsFetchFinish(normalizedTrips));
+  try {
+    const myTrips = await axios.get(`/trips?include=service`).catch(error => {
+      dispatch({ type: 'SERVICE_FETCH_ERROR', payload: error });
+    });
+    if (myTrips) {
+      const normalizedTrips = fetch_helpers.buildServicesJson(myTrips.data);
+      const myUnpurchasedTrips = normalizedTrips.filter(trip => !trip.booked);
+      dispatch(userUnpurchasedTripsFetchFinish(myUnpurchasedTrips));
+    }
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const addServiceToTrip = ({ trip, day }) => async (dispatch, getState) => {
   const state = getState();
   const { service } = state.ServicesReducer;
+  const tripServices = trip.services.concat([{ service: service._id, day: day }]);
+  const updateParams = { services: tripServices };
   try {
-    await Parse.Cloud.run('addServiceToTrip', {
-      serviceId: service.objectId,
-      tripId: trip.objectId,
-      day,
+    const updatedTrip = await axios.patch(`/trips/${trip._id}`, updateParams).catch(error => {
+      console.log(error);
     });
-    fetch_service(service.objectId)(dispatch);
-    setAddedToTripMessage(trip)(dispatch);
+    if (updatedTrip) {
+      fetch_service(service._id)(dispatch);
+      setAddedToTripMessage(trip)(dispatch);
+    }
   } catch (error) {
     console.error(error);
-    if (error.code === 141) {
-      // parse error
-      console.error('error running parse function', error.message.message);
-      if (error.message && error.message.message.includes('already added')) {
-        setAlreadyAddedToTrip(trip)(dispatch);
-      }
-    }
   }
 };
 
@@ -170,27 +109,25 @@ export const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (dispatch
     console.error('No service found');
     return;
   }
-
   try {
-    const newTripTitle = `Trip to ${service.country}`;
-    const { trip } = await Parse.Cloud.run('addServiceToNewTrip', {
-      serviceId: service.objectId,
-      tripTitle: newTripTitle,
+    const newTripTitle = { 'en-us': `Trip to ${service.location}` };
+    const serviceGroup = {
+      title: newTripTitle,
+      description: { 'en-us': service.description },
+      basePrice: service.basePrice,
+      baseCurrency: service.baseCurrency,
+      services: [{ service: service, day: 1 }],
+      duration: service.duration,
+    };
+    const newTrip = await axios.post(`/trips`, serviceGroup).catch(error => {
+      console.log(error);
     });
-    fetch_service(service.objectId)(dispatch);
-    fetchMyTrips()(dispatch, getState);
-    dispatch({ type: 'analytics', meta: { analytics: trackTripCreated(trip) } });
-    if (redirectToCreatedTrip) {
-      history.push(`/trips/${trip.objectId}`);
-    } else {
-      setAddedToTripMessage(trip)(dispatch);
+    if (newTrip) {
+      const formattedTrip = fetch_helpers.buildServicesJson([newTrip.data])[0];
+      setAddedToTripMessage(formattedTrip)(dispatch);
     }
   } catch (error) {
     console.error(error);
-    if (error.code === 141) {
-      // parse error
-      console.error('error running parse function', error.message.message);
-    }
   }
 };
 

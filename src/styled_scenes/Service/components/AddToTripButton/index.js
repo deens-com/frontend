@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Popup } from 'semantic-ui-react';
-import Parse from 'parse';
 
 import history from 'main/history';
 import TripsListInDropDown from './TripsListInDropDown';
