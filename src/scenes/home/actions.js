@@ -1,6 +1,8 @@
 import Parse from 'parse';
 import fetch_helpers from './../../libs/fetch_helpers';
 import { tagsColorMatcher } from './../../libs/Utils';
+import { serverBaseURL } from 'libs/config';
+import axios from 'libs/axios';
 
 export const services_fetched = services => {
   return {
@@ -82,23 +84,14 @@ export const fetch_services = () => {
 };
 
 export const fetch_trips = () => {
-  return dispatch => {
-    let Trip = Parse.Object.extend('Trip');
-    let query = new Parse.Query(Trip);
-    query.descending('createdAt');
-    query.equalTo('status', 'public');
-    query.limit(16);
-    query.find().then(
-      response => {
-        const convertedResponse = fetch_helpers.normalizeParseResponseData(response);
-        const responseWithPlaceholderImage = fetch_helpers.mapServiceObjects(convertedResponse);
-        dispatch(trips_fetched(responseWithPlaceholderImage));
-      },
-      error => {
-        // TODO dispatch the error to error handler and retry the request
-        console.log(error);
-      },
-    );
+  return async dispatch => {
+    try {
+      const res = await axios
+        .get(`${serverBaseURL}/search?include=owner`);
+      dispatch(trips_fetched(res.data.trips));
+    } catch (e) {
+      console.error(e);
+    }
   };
 };
 

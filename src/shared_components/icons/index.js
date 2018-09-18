@@ -7,11 +7,13 @@ export const SvgWithProps = ComposedComponent => {
       ariaHidden: PropTypes.bool,
       focusable: PropTypes.string,
       role: PropTypes.string,
+      style: PropTypes.object,
     };
     static defaultProps = {
       ariaHidden: true,
       focusable: 'false',
       role: 'presentation',
+      style: {},
     };
     render() {
       const style = {
@@ -19,6 +21,7 @@ export const SvgWithProps = ComposedComponent => {
         width: '1em',
         display: 'block',
         fill: 'currentColor',
+        ...this.props.style,
       };
       return <ComposedComponent {...this.props} style={style} />;
     }
@@ -74,7 +77,7 @@ export const MicrophoneIcon = SvgWithProps(({ ariaHidden, focusable, role, style
     role={role}
     style={style}
   >
-    <path d="M10.6 15v2.8h2c.3 0 .6.3.6.6s-.3.6-.6.6h-5c-.3 0-.6-.3-.6-.6s.3-.6.6-.6h2V15C6.9 14.7 5 12.6 5 10c0-.3.3-.6.6-.6s.5.3.5.6c0 2.1 1.8 3.9 3.9 3.9s3.9-1.8 3.9-3.9c0-.3.3-.6.6-.6s.5.3.5.6c0 2.6-1.9 4.7-4.4 5zm-3.4-5V3.9c0-1.5 1.3-2.8 2.8-2.8s2.8 1.3 2.8 2.8V10c0 1.5-1.3 2.8-2.8 2.8S7.2 11.5 7.2 10zm1.1 0c0 .9.8 1.7 1.7 1.7s1.7-.8 1.7-1.7V3.9c0-.9-.8-1.7-1.7-1.7S8.3 3 8.3 3.9V10z" />
+    <path d="M12,2A3,3 0 0,1 15,5V11A3,3 0 0,1 12,14A3,3 0 0,1 9,11V5A3,3 0 0,1 12,2M19,11C19,14.53 16.39,17.44 13,17.93V21H11V17.93C7.61,17.44 5,14.53 5,11H7A5,5 0 0,0 12,16A5,5 0 0,0 17,11H19Z" />
   </svg>
 ));
 
@@ -88,6 +91,19 @@ export const SearchIcon = SvgWithProps(({ ariaHidden, focusable, role, style }) 
     style={style}
   >
     <path d="M12.7 3.6a6.42 6.42 0 0 0-4.6-1.9c-1.7 0-3.3.7-4.6 1.9-1.2 1.2-1.8 2.8-1.8 4.5 0 1.7.7 3.3 1.9 4.6 1.2 1.2 2.8 1.9 4.6 1.9s3.3-.7 4.6-1.9c2.4-2.5 2.4-6.6-.1-9.1zm-.9 8.2c-1 1-2.3 1.5-3.7 1.5-1.4 0-2.7-.5-3.7-1.5S2.9 9.5 2.9 8.1s.5-2.7 1.5-3.7 2.3-1.5 3.7-1.5 2.7.5 3.7 1.5c2 2.1 2 5.4 0 7.4zm6.3 5.4l-3.6-3.6c-.2-.2-.7-.2-.9 0-.2.2-.2.7 0 .9l3.6 3.6c.1.1.3.2.4.2s.3-.1.4-.2c.4-.2.4-.6.1-.9z" />
+  </svg>
+));
+
+export const CrossIcon = SvgWithProps(({ ariaHidden, focusable, role, style }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 20 20"
+    aria-hidden={ariaHidden}
+    focusable={focusable.toString()}
+    role={role}
+    style={style}
+  >
+    <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
   </svg>
 ));
 

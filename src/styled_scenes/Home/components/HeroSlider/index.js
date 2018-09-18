@@ -12,7 +12,8 @@ import { resetButton } from '../../../../libs/styled';
 // STYLES
 const Wrap = styled.div`
   bottom: 0;
-  left: 0;
+  left: calc(-50vw - -50%);
+  width: 100vw;
   position: absolute;
   right: 0;
   top: 0;
@@ -20,10 +21,10 @@ const Wrap = styled.div`
 `;
 
 const BGImage = styled.div`
-  background-image: linear-gradient(176deg, rgba(0, 0, 0, 0.31) 0%, rgba(0, 0, 0, 0.72)),
+  background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.5)),
     url(${props => props.img || '#'});
   background-size: cover;
-  transition: 0.2s all linear;
+  background-position: 50% 50%;
   bottom: 0;
   left: 0;
   position: absolute;

@@ -66,7 +66,7 @@ class DesktopDropDownMenu extends Component {
   logged_out() {
     return (
       <Wrap>
-        <Button type="link" theme="white" round size="small" href="/login">
+        <Button type="link" theme="whiteTransparent" round size="small" href="/login">
           Login
         </Button>
         <Button type="link" theme="mainFilled" round size="small" href="/register">
@@ -129,7 +129,7 @@ class DesktopDropDownMenu extends Component {
   }
 
   render() {
-    if (Object.keys(this.props.session).length) {
+    if (this.props.session.username) {
       return this.logged_in();
     } else {
       return this.logged_out();
