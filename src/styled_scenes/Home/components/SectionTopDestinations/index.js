@@ -1,6 +1,7 @@
 // NPM
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 import { media } from 'libs/styled';
 
@@ -12,11 +13,7 @@ import newYorkImg from './images/new-york.jpg';
 // ACTIONS/CONFIG
 
 // STYLES
-import {
-  PageWrapper,
-  SectionWrap,
-  SectionHeader,
-} from '../../../../shared_components/layout/Page';
+import { PageWrapper, SectionWrap, SectionHeader } from '../../../../shared_components/layout/Page';
 
 const SectionContent = styled.div`
   display: flex;
@@ -49,7 +46,6 @@ const Row = styled.div`
   background-position: center;
   display: flex;
   border-radius: 10px;
-  color: white;
   font-size: 36px;
   line-height: 42px;
   font-weight: bold;
@@ -59,8 +55,28 @@ const Row = styled.div`
     margin: 0;
     width: auto;
   }
-  ${media.minMedium} {
-    height: 400px;
+`;
+
+const FlexLink = styled(Link)`
+  flex: 1;
+  ${media.minSmall} {
+    margin-bottom: 20px;
+    height: 190px;
+    width: calc(50% - 10px);
+  }
+`;
+
+const NewYorkLink = FlexLink.extend`
+  ${media.minSmall} {
+    margin-bottom: 0;
+    order: 2;
+  }
+`;
+
+const SFLink = styled(Link)`
+  margin-bottom: 10px;
+  ${media.minSmall} {
+    margin-bottom: 20px;
   }
 `;
 
@@ -86,7 +102,6 @@ const Paris = Row.extend`
   margin-bottom: 10px;
   ${media.minSmall} {
     height: 190px;
-    width: calc(50% - 10px);
     margin-bottom: 20px;
   }
   ${media.minMedium} {
@@ -101,14 +116,12 @@ const NewYork = Row.extend`
   background-image: url(${newYorkImg});
   margin-bottom: 10px;
   ${media.minSmall} {
-    order: 2;
     height: 190px;
-    width: calc(50% - 10px);
     margin-bottom: 0;
   }
   ${media.minMedium} {
     height: 400px;
-    width: 0;
+    width: auto;
     flex: 1;
   }
 `;
@@ -116,10 +129,6 @@ const NewYork = Row.extend`
 const SanFrancisco = Row.extend`
   background-image: url(${sanFranciscoImg});
   height: 190px;
-  margin-bottom: 10px;
-  ${media.minSmall} {
-    margin-bottom: 20px;
-  }
 `;
 
 const London = Row.extend`
@@ -129,7 +138,14 @@ const London = Row.extend`
 
 const InnerText = styled.div`
   margin: auto auto 18px 26px;
+  color: white;
 `;
+
+const parisParams = 'latitude=48.856614&longitude=2.3522219000000177&address=Paris,%20France';
+const newYorkParams = 'latitude=40.7127753&longitude=-74.0059728&address=New%20York,%20NY,%20USA';
+const londonParams = 'latitude=51.5073509&longitude=-0.12775829999998223&address=London,%20UK';
+const sanFranciscoParams =
+  'latitude=37.7749295&longitude=-122.41941550000001&address=San%20Francisco,%20CA,%20USA';
 
 export default function HomeSectionTopDestinations() {
   return (
@@ -139,11 +155,27 @@ export default function HomeSectionTopDestinations() {
           <h3>Top Destinations</h3>
         </SectionHeader>
         <SectionContent>
-          <Paris><InnerText>Paris</InnerText></Paris>
-          <NewYork><InnerText>New York</InnerText></NewYork>
+          <FlexLink to={`/results?${parisParams}`}>
+            <Paris>
+              <InnerText>Paris</InnerText>
+            </Paris>
+          </FlexLink>
+          <NewYorkLink to={`/results?${newYorkParams}`}>
+            <NewYork>
+              <InnerText>New York</InnerText>
+            </NewYork>
+          </NewYorkLink>
           <CenterContainer>
-            <SanFrancisco><InnerText>San Francisco</InnerText></SanFrancisco>
-            <London><InnerText>London</InnerText></London>
+            <SFLink to={`/results?${sanFranciscoParams}`}>
+              <SanFrancisco>
+                <InnerText>San Francisco</InnerText>
+              </SanFrancisco>
+            </SFLink>
+            <Link to={`/results?${londonParams}`}>
+              <London>
+                <InnerText>London</InnerText>
+              </London>
+            </Link>
           </CenterContainer>
         </SectionContent>
       </SectionWrap>

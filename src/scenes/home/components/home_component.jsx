@@ -89,8 +89,8 @@ const HomeComponent = props => {
           itemType="http://schema.org/ItemList"
           padding="28px 0 0"
         >
-          <SectionCTA />
-          <SectionTrips trips={props.trips} />
+          <SectionCTA loggedIn={Boolean(props.session.username)} />
+          <SectionTrips trips={props.trips} isLoading={props.isLoadingTrips} />
           <SectionTopDestinations />
         </PageContent>
         <BrandFooter />

@@ -7,7 +7,7 @@ import GlobalTeaser from 'shared_components/GlobalTeaser';
 
 class HomeContainer extends Component {
   componentDidMount() {
-    this.props.fetch_trips();
+    this.props.fetchTrips();
   }
 
   render() {
@@ -18,9 +18,11 @@ class HomeContainer extends Component {
           tags={this.props.tags}
           services={this.props.services}
           trips={this.props.trips}
+          isLoadingTrips={this.props.isLoadingTrips}
           popularPlaces={this.props.popularPlaces}
           exciting_activities={this.props.exciting_activities}
           delicious_foods={this.props.delicious_foods}
+          session={this.props.session}
         />
       </div>
     );
@@ -32,9 +34,11 @@ const mapStateToProps = state => {
     services: state.HomeReducer.services,
     tags: state.HomeReducer.tags,
     trips: state.HomeReducer.trips.filter(item => !!item),
+    isLoadingTrips: state.HomeReducer.isLoadingTrips,
     popularPlaces: state.HomeReducer.popularPlaces,
     exciting_activities: state.HomeReducer.exciting_activities,
     delicious_foods: state.HomeReducer.delicious_foods,
+    session: state.SessionsReducer.session,
   };
 };
 

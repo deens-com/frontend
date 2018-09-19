@@ -6,10 +6,7 @@ import styled from 'styled-components';
 
 // STYLES
 import { media } from 'libs/styled';
-import {
-  PageWrapper,
-  SectionWrap,
-} from '../../../../shared_components/layout/Page';
+import { PageWrapper, SectionWrap } from '../../../../shared_components/layout/Page';
 
 import Button from '../../../../shared_components/Button';
 
@@ -27,7 +24,7 @@ const Container = styled.div`
   border: 1px solid #ececec;
   flex: 1;
   max-width: 400px;
-  min-width: 275px;
+  min-width: 230px;
   margin: 10px 10px 0;
   text-align: center;
   padding: 35px;
@@ -41,23 +38,31 @@ const Container = styled.div`
 const Title = styled.div`
   margin-top: 16px;
   color: #3c434b;
-  font-size: 24px;
-  line-height: 28px;
+  font-size: 18px;
+  line-height: 21px;
+  ${media.minMediumPlus} {
+    font-size: 24px;
+    line-height: 28px;
+  }
 `;
 
 const Description = styled.div`
   margin-top: 18px;
   color: #787878;
-  font-size: 18px;
-  line-height: 21px;
+  font-size: 14px;
+  line-height: 16px;
   height: 78px;
+  ${media.minMediumPlus} {
+    font-size: 18px;
+    line-height: 21px;
+  }
 `;
 
 const ButtonContainer = styled.div`
   margin-bottom: 27px;
 `;
 
-export default function HomeSectionCTA() {
+export default function HomeSectionCTA({ loggedIn }) {
   return (
     <PageWrapper>
       <SectionWrap>
@@ -74,9 +79,9 @@ export default function HomeSectionCTA() {
                 theme="textLightGreen"
                 round
                 size="medium"
-                href="/register"
+                href={loggedIn ? '/results' : '/register'}
               >
-                Sign Up
+                {loggedIn ? 'See Trips' : 'Sign Up'}
               </Button>
             </ButtonContainer>
           </Container>
@@ -92,9 +97,9 @@ export default function HomeSectionCTA() {
                 theme="textLightGreen"
                 round
                 size="medium"
-                href="/register"
+                href={loggedIn ? '/results' : '/register'}
               >
-                Sign Up
+                {loggedIn ? 'Create' : 'Sign Up'}
               </Button>
             </ButtonContainer>
           </Container>
@@ -110,7 +115,7 @@ export default function HomeSectionCTA() {
                 theme="textLightGreen"
                 round
                 size="medium"
-                href="/register"
+                href="/earn-money"
               >
                 Learn More
               </Button>
