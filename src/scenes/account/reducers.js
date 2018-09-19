@@ -1,8 +1,11 @@
+import { types as actions } from './actions';
+
 const initialState = {
   user_profile: {},
   allTrips: [],
   isLoadingTrips: false,
   user_services: [],
+  isLoadingServices: false,
   metamaskError: {},
   ledger_error: {},
   editUserError: {},
@@ -16,10 +19,17 @@ export default function AccountReducer(state = initialState, action = {}) {
         ...state,
         user_profile: action.payload.user_profile,
       };
-    case 'USER_SERVICES_FETCHED':
+    case actions.SERVICES_FETCH_START:
       return {
         ...state,
-        user_services: action.payload.user_services,
+        user_services: [],
+        isLoadingServices: true,
+      };
+    case actions.SERVICES_FETCH_SUCCESS:
+      return {
+        ...state,
+        user_services: action.payload,
+        isLoadingServices: false,
       };
     case 'ACCOUNT/MY_TRIPS_FETCH_STARTED':
       return {

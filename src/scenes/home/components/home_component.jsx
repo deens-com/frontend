@@ -80,9 +80,7 @@ const HomeComponent = props => {
           <Media query={`(min-width: ${sizes.large})`}>
             {matches => (matches ? <HeroSlider /> : <MobileHero />)}
           </Media>
-          <HomeTagLine>
-            Book complete trips in minutes
-          </HomeTagLine>
+          <HomeTagLine>Book complete trips in minutes</HomeTagLine>
           <HomeSearch />
         </PageTop>
         <PageContent

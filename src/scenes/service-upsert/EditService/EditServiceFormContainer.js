@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter, Link } from 'react-router-dom';
 import Parse from 'parse';
+import { Loader } from 'semantic-ui-react';
 import history from '../../../main/history';
 
 import * as actions from '../actions';
@@ -13,9 +14,9 @@ class EditServiceFormContainer extends Component {
   getServiceId = () => this.props.match.params.id;
 
   componentDidMount() {
+    this.props.resetErrors();
     this.props.fetchUserProfile();
     this.props.fetchService(this.getServiceId());
-    this.props.resetErrors();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -40,9 +41,12 @@ class EditServiceFormContainer extends Component {
   };
 
   render() {
-    const { service, isLoading, fetchError } = this.props;
+    const { service, isLoading, fetchError, isSubmitting } = this.props;
     if (fetchError && fetchError.code === Parse.Error.OBJECT_NOT_FOUND) {
       return <NotFound showScene={false} />;
+    }
+    if (isLoading) {
+      return <Loader active inline="centered" size="massive" />;
     }
     return (
       <React.Fragment>
@@ -53,7 +57,7 @@ class EditServiceFormContainer extends Component {
         </h2>
         <ServiceForm
           onSubmit={this.onSubmit}
-          submitInFlight={isLoading}
+          submitInFlight={isSubmitting}
           globalError={this.props.error}
           onRedeployContract={this.redeployFailedContract}
           submitButtonText="Save"
@@ -66,6 +70,7 @@ class EditServiceFormContainer extends Component {
 
 const mapStateToProps = state => ({
   isLoading: state.ServiceUpsert.isLoading,
+  isSubmitting: state.ServiceUpsert.isSubmitting,
   service: state.ServiceUpsert.service,
   error: state.ServiceUpsert.error,
   fetchError: state.ServiceUpsert.error,

@@ -25,6 +25,155 @@ const get_service_image = mediaOrMainPicture => {
   return mediaOrMainPicture.url;
 };
 
+const formatAddressLine = location => {
+  if (location.address_components[1]) {
+    return `${location.address_components[0].long_name} ${
+      location.address_components[1].long_name
+    }`;
+  }
+  return `${location.address_components[0].long_name}`;
+};
+
+const createService = values => {
+  const i18nLocale = 'en-us';
+  return {
+    categories: values.categories.map(category => ({
+      names: {
+        [i18nLocale]: category,
+      },
+    })),
+    periods: [
+      {
+        startDate: new Date(values.startDate.setHours(0, 0, 0, 0)),
+        endDate: new Date(values.endDate.setHours(0, 0, 0, 0)),
+        startTime: values.openingTime,
+        endTime: values.closingTime,
+        maxCapacity: values.slots,
+        daysOfWeek: values.availableDays.reduce((accum, day) => {
+          const lowerCaseDay = day.weekday.toLowerCase();
+          if (!accum[lowerCaseDay]) {
+            accum[lowerCaseDay] = day.selected;
+          }
+          return accum;
+        }, {}),
+      },
+    ],
+    basePrice: values.basePrice,
+    location: {
+      line1: formatAddressLine(values.location),
+      line2: '',
+      postcode: values.postCode,
+      city: values.city,
+      state: values.state,
+      countryCode: values.countryCode,
+      geo: {
+        coordinates: [values.latlong.lng, values.latlong.lat],
+        type: 'Point',
+      },
+      formattedAddress: values.formattedAddress,
+      id: values.location.place_id,
+    },
+    baseCurrency: {
+      name: 'US Dollar',
+      code: 'USD',
+      symbol: '$',
+    },
+    description: { [i18nLocale]: values.description },
+    duration: values.duration,
+    instructions: {
+      start: { [i18nLocale]: values.start },
+      end: { [i18nLocale]: values.end },
+    },
+    rules: values.rules.map(rule => ({ [i18nLocale]: rule })),
+    tags: values.tags.map(tag => ({ type: tag, names: { [i18nLocale]: tag } })),
+    subtitle: { [i18nLocale]: values.subtitle },
+    title: { [i18nLocale]: values.title },
+    links: {
+      website: values.website,
+      facebook: values.facebook,
+      twitter: values.twitter,
+    },
+    media: values.media.map(
+      (image, i) =>
+        (typeof image === 'object' && image) || {
+          type: 'image',
+          hero: false,
+          names: {
+            [i18nLocale]: `Image ${i}`,
+          },
+          files: {
+            thumbnail: {
+              url: image,
+              width: 215,
+              height: 140,
+            },
+            small: {
+              url: image,
+              width: 430,
+              height: 280,
+            },
+            large: {
+              url: image,
+              width: 860,
+              height: 560,
+            },
+            hero: {
+              url: image,
+              width: 860,
+              height: 560,
+            },
+          },
+        },
+    ),
+  };
+};
+
+const buildServiceForView = service => {
+  const i18nLocale = 'en-us';
+  let dayList = [];
+
+  try {
+    for (const key in service.periods[0].daysOfWeek) {
+      const selected = service.periods[0].daysOfWeek[key];
+      const capitalized = key.charAt(0).toUpperCase() + key.substr(1);
+      dayList = [...dayList, { weekday: capitalized, selected }];
+    }
+    service.title = service.title[i18nLocale];
+    service.subtitle = service.subtitle[i18nLocale];
+    service.description = service.description[i18nLocale];
+    service.objectId = service._id;
+    service.rating = service.rating;
+    service.duration = service.duration;
+    service.dayList = dayList;
+    if (service.rules && service.rules.length) {
+      const rules = service.rules.map(rule => rule[i18nLocale]);
+      service.rules = rules;
+    }
+    service.start = service.instructions.start[i18nLocale];
+    service.end = service.instructions.end[i18nLocale];
+    service.facebook = service.links.facebook;
+    service.twitter = service.links.twitter;
+    service.website = service.links.website;
+    service.startDate = new Date(service.periods[0].startDate);
+    service.endDate = new Date(service.periods[0].endDate);
+    service.openingTime = service.periods[0].startTime;
+    service.closingTime = service.periods[0].endTime;
+    service.reviewCount = service.reviewCount;
+    service.slots = service.periods[0].maxCapacity;
+    service.formattedAddress = service.location.formattedAddress;
+    service.externalUrl = service.externalUrl[i18nLocale];
+    if (service.categories && service.categories.length) {
+      const categories = service.categories.map(category => category.names[i18nLocale]);
+      service.categories = categories;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+  return service;
+};
+
+const normalizeServiceToPatch = createService;
+
 const buildServicesJson = services => {
   const i18nLocale = 'en-us';
   return services.map(service => {
@@ -70,6 +219,7 @@ const buildServicesJson = services => {
   });
 };
 
+// This function should be rewritten when redesigning the service page
 const mapServiceObjects = services => {
   return services.map(service => {
     try {
@@ -127,6 +277,9 @@ export const statuses = {
 
 export default {
   normalizeParseResponseData,
+  normalizeServiceToPatch,
+  createService,
+  buildServiceForView,
   getRandomInt,
   get_service_image,
   mapServiceObjects,

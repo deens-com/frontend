@@ -19,9 +19,9 @@ import { media } from '../../libs/styled';
 const InnerWrap = styled.header`
   align-items: center;
   background: ${props => (props.home && !props.showMenu ? 'transparent' : 'white')};
-  position: ${props => (props.home && !props.showMenu && 'absolute')};
+  position: ${props => props.home && !props.showMenu && 'absolute'};
   display: flex;
-  justify-content: ${props => (props.home) ? 'space-between' : 'flext-start'};
+  justify-content: ${props => (props.home ? 'space-between' : 'flext-start')};
   height: 65px;
   width: 100%;
   z-index: 110;

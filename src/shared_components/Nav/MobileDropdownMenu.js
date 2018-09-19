@@ -22,24 +22,19 @@ const AvatarWithUsername = styled.div`
   text-align: center;
   cursor: pointer;
   z-index: 23;
-
   &.dark {
     color: #3c434b;
   }
-
   &.hidden {
     display: none;
   }
-
   &.avatar-only {
     right: 65px;
     top: 18px;
   }
-
   @media all and (min-width: ${sizes.medium}) {
     top: 30px;
   }
-
   img.image {
     display: inline-block;
     height: 30px;

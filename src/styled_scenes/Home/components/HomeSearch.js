@@ -54,7 +54,7 @@ const Input = styled.input`
   outline: none;
   padding-top: 3px;
   width: 100%;
-  color: #B5B5B6;
+  color: #b5b5b6;
 
   ${placeholderMixin(`
     color: #B5B5B6;
@@ -107,7 +107,7 @@ const SearchBg = styled.div`
 `;
 
 const RightIcon = styled.div`
-  color: #57AD7A;
+  color: #57ad7a;
   line-height: 40px;
   width: 40px;
   font-size: 24px;
@@ -141,7 +141,7 @@ const locationProps = {
 
 const LeftIcon = ({ talking, onClickTalking }) => (
   <TypeIcon onClick={talking ? onClickTalking : null}>
-    { talking ? <CrossIcon /> : <SearchIcon style={{ stroke: '#c4c4c4' }} /> }
+    {talking ? <CrossIcon /> : <SearchIcon style={{ stroke: '#c4c4c4' }} />}
   </TypeIcon>
 );
 
@@ -210,7 +210,7 @@ class HomeSearch extends Component {
   }
 
   handleStopTalking() {
-    console.log('handlea')
+    console.log('handlea');
     annyang.abort();
     this.setState({ talking: false });
   }
@@ -249,10 +249,7 @@ class HomeSearch extends Component {
       })
       .then(results => {
         const { lat, lng } = results;
-        this.setState(
-          { address, latitude: lat, longitude: lng },
-          this.handleSearchSubmit,
-        );
+        this.setState({ address, latitude: lat, longitude: lng }, this.handleSearchSubmit);
       });
   }
 
@@ -332,13 +329,10 @@ class HomeSearch extends Component {
 
     return (
       <form style={{ flex: 1 }} onSubmit={this.handleKeywordsSearchSubmit}>
-        <SemanticLocationControl
-          onChange={this.handleLocationChange}
-          {...locationProps}
-        />
+        <SemanticLocationControl onChange={this.handleLocationChange} {...locationProps} />
       </form>
     );
-  }
+  };
 
   handleDismiss = () => {
     this.setState({ show_banner: false });
@@ -349,10 +343,7 @@ class HomeSearch extends Component {
     return (
       <Wrapper>
         <SearchBg>
-          <LeftIcon
-            talking={this.state.talking}
-            onClickTalking={this.handleStopTalking}
-          />
+          <LeftIcon talking={this.state.talking} onClickTalking={this.handleStopTalking} />
           {this.renderInputContent()}
           <RightIcon onClick={this.activate_annyang}>
             <MicrophoneIcon />

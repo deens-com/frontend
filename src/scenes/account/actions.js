@@ -7,17 +7,29 @@ import validator from 'validator';
 import axios from 'libs/axios';
 import { getSession } from 'libs/user-session';
 
+export const types = {
+  PROFILE_FETCHED: 'account/USER_PROFILE_FETCHED',
+  SERVICES_FETCH_SUCCESS: 'ACCOUNT/MY_SERVICES_FETCH_SUCCESS',
+  SERVICES_FETCH_START: 'ACCOUNT/MY_SERVICES_FETCH_START',
+};
+
 export const user_profile_fetched = user_profile => {
   return {
-    type: 'account/USER_PROFILE_FETCHED',
+    type: types.PROFILE_FETCHED,
     payload: user_profile,
   };
 };
 
-export const user_services_fetched = user_services => {
+export const myServicesFetched = user_services => {
   return {
-    type: 'USER_SERVICES_FETCHED',
+    type: types.SERVICES_FETCH_SUCCESS,
     payload: user_services,
+  };
+};
+
+export const myServicesFetch = () => {
+  return {
+    type: types.SERVICES_FETCH_START,
   };
 };
 
@@ -124,12 +136,11 @@ export const update_user_profile = (user_id, field_type, value) => {
 export const fetch_user_services = () => async dispatch => {
   const session = getSession();
   if (session) {
+    dispatch(myServicesFetch());
     const userServices = await axios.get(`/services`);
     const services = fetch_helpers.buildServicesJson(userServices.data);
-    dispatch({
-      type: 'USER_SERVICES_FETCHED',
-      payload: { user_services: services },
-    });
+    console.log('servo', services);
+    dispatch(myServicesFetched(services));
   } else {
     history.push('/');
   }

@@ -118,7 +118,6 @@ export default class FoodImgSlider extends Component {
     this.setState({ index });
   }
   render() {
-    console.log('images', this.props.images);
     return (
       <Wrap>
         {this.props.images &&

@@ -21,7 +21,6 @@ const Wrap = styled.div`
   align-items: center;
   display: flex;
   padding-left: 15px;
-
   .Select-multi-value-wrapper {
     min-width: 37px;
   }
@@ -29,11 +28,9 @@ const Wrap = styled.div`
   > div {
     margin-top: 5px;
   }
-
   > div:first-child {
     margin-right: 15px;
   }
-
   > div:nth-child(3) {
     margin-left: 15px;
     margin-right: 15px;

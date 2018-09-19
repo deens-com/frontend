@@ -86,8 +86,7 @@ export const fetch_services = () => {
 export const fetch_trips = () => {
   return async dispatch => {
     try {
-      const res = await axios
-        .get(`${serverBaseURL}/search?include=owner`);
+      const res = await axios.get(`${serverBaseURL}/search?include=owner`);
       dispatch(trips_fetched(res.data.trips));
     } catch (e) {
       console.error(e);

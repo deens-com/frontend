@@ -1,8 +1,6 @@
 import i18n from 'libs/i18n';
 
-export const mainNav = [
-  { label: i18n.t('earnMoney.label'), href: 'ASK THIS' },
-];
+export const mainNav = [{ label: i18n.t('earnMoney.label'), href: 'ASK THIS' }];
 
 export const languages = [
   { value: 'eng', label: 'ENG' },

@@ -17,12 +17,14 @@ export default class SemanticLocationControl extends Component {
     onKeyUp: PropTypes.func,
     inputProps: PropTypes.object,
     inputStyles: PropTypes.object,
+    onlyCities: PropTypes.bool,
   };
 
   static defaultProps = {
     defaultAddress: '',
     inputProps: {},
     inputStyles: {},
+    onlyCities: false,
   };
 
   state = {
@@ -44,13 +46,16 @@ export default class SemanticLocationControl extends Component {
   };
 
   render() {
-    const { inputProps, inputStyles, inputComponent } = this.props;
+    const { inputProps, inputStyles, inputComponent, onlyCities } = this.props;
 
     return (
       <PlacesAutocomplete
         value={this.state.address}
         onChange={this.onAddressChange}
         onSelect={this.onSelect}
+        searchOptions={{
+          ...(onlyCities ? { types: ['(cities)'] } : null),
+        }}
       >
         {({ getInputProps, suggestions, getSuggestionItemProps }) => (
           <Popup
