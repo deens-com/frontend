@@ -5,14 +5,21 @@ import styled from 'styled-components';
 // ACTIONS/CONFIG
 
 // STYLES
-import { PageWrapper, SectionWrap } from '../../../../shared_components/layout/Page';
+import { media } from 'libs/styled';
+import {
+  PageWrapper,
+  SectionWrap,
+} from '../../../../shared_components/layout/Page';
 
 import Button from '../../../../shared_components/Button';
 
 const SectionContent = styled.div`
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
+  display: none;
+  ${media.minMedium} {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+  }
 `;
 
 const Container = styled.div`

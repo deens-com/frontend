@@ -39,7 +39,7 @@ export const PageContent = props => {
 };
 
 export const SectionWrap = styled.section`
-  margin-bottom: 100px;
+  margin-bottom: 50px;
 `;
 
 export const More = styled.div`

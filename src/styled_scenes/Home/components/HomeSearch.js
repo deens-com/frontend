@@ -63,7 +63,7 @@ const Input = styled.input`
 
 const Wrapper = styled.div`
   position: relative;
-  width: 504px;
+  max-width: 504px;
   margin: auto;
   padding-bottom: 63px;
 `;
