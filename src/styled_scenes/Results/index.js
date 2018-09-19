@@ -9,7 +9,7 @@ import { fitBounds } from 'google-map-react/utils';
 import TopBar from './../../shared_components/TopBarWithSearch';
 
 import BrandFooter from './../../shared_components/BrandFooter';
-import SearchFilters from './components/SearchFilters';
+import Filters from './components/Filters';
 import Results from './components/Results';
 import MapMaker from './../../shared_components/MapMarker';
 
@@ -120,10 +120,13 @@ export default class ResultsScene extends Component {
     return (
       <Page topPush>
         <TopBar {...props} fixed withPadding />
+        <span>
+        <Filters {...props} />
+        </span>
         <PageContent flex>
           <ServicesWrapper>
             <br />
-            <SearchFilters {...props} />
+            {/* <SearchFilters {...props} /> */}
             <Results {...props} data={props.service_data} />
           </ServicesWrapper>
           <Media

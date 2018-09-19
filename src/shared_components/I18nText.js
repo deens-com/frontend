@@ -10,11 +10,11 @@ function I18nText({ data }) {
   if (!data) {
     return '';
   }
-  return <React.Fragment>{data['en-us']}</React.Fragment>;
+  return <React.Fragment>{data['en-us'] || data}</React.Fragment>;
 }
 
-I18nText.propTypes = {
-  data: PropTypes.object,
-};
+// I18nText.propTypes = {
+//   data: PropTypes.object,
+// };
 
 export default I18nText;

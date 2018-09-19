@@ -1,12 +1,12 @@
 // NPM
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { Popup, Dropdown } from 'semantic-ui-react';
 
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
 import FormControl from '../../../shared_components/Form/FormControl';
 import Button from '../../../shared_components/Button';
 import CarouselPicker from './CarouselPicker';
-
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import moment from 'moment';
 
@@ -79,8 +79,22 @@ const WrapTrigger = styled.div`
   }
 `;
 
+const SentenceWrapper = styled.span`
+  display: inline-flex;
+  padding: 10px 20px;
+`;
+
+const EditableElement = styled.div`
+  margin-left: 5px;
+  color: blue;
+  font-weight: bold;
+  text-decoration: dashed underline;
+  text-underline-position: under;
+  cursor: pointer;
+`;
+
 // MODULE
-class SearchFilters extends Component {
+class Filters extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -97,6 +111,8 @@ class SearchFilters extends Component {
       service_type: props.search_query.type || [],
       tags: [],
       showFilters: false,
+      isCategoryPopupOpen: false,
+      isLocationPopupOpen: false,
       //service_type: { trip: false, place: false, activity: false, food: false }
     };
     this.handleLocationChange = this.handleLocationChange.bind(this);
@@ -220,16 +236,16 @@ class SearchFilters extends Component {
   }
 
   handleServiceTypeChange(event, data) {
-    const service_types = [...this.props.search_query.type];
-    let types = service_types;
+    // const service_types = [...this.props.search_query.type];
+    // let types = service_types;
     const type = data.value;
-    if (types.includes(type)) {
-      types = types.filter(st => st !== type);
-    } else {
-      types = types.concat(type);
-    }
-    this.setState({ service_type: types });
-    this.refetch_results({ type: types });
+    // if (types.includes(type)) {
+    //   types = types.filter(st => st !== type);
+    // } else {
+    //   types = types.concat(type);
+    // }
+    this.setState({ service_type: [type] });
+    this.refetch_results({ type: [type] });
   }
 
   handleOnlySmartContracts = () => {
@@ -269,6 +285,49 @@ class SearchFilters extends Component {
   toggleFilters() {
     this.setState({ showFilters: !this.state.showFilters });
   }
+
+  handleCategoryPopupClose = () => {
+    this.setState({ isCategoryPopupOpen: false });
+  };
+
+  handleLocationPopupClose = () => {
+    this.setState({ isLocationPopupOpen: false });
+  };
+
+  handleCategoryPopupOpen = () => {
+    this.setState({ isCategoryPopupOpen: true });
+  };
+
+  handleLocationPopupOpen = () => {
+    this.setState({ isLocationPopupOpen: true });
+  };
+
+  categoryPopupSelect = (service_types) => {
+    //const service_types = this.props.search_query.type ;
+    const serviceOptions = [
+      {text: 'Accomodation', value: 'accomodation'},
+      {text: 'Trip', value: 'trip'},
+      {text: 'Food', value: 'food'},
+      {text: 'Activity', value: 'activity'},
+    ];
+    return (
+      <div style={{textTransform: 'capitalize'}}>
+        <Dropdown
+          placeholder={service_types && service_types[0]}
+          options={serviceOptions}
+          onChange={this.handleServiceTypeChange}
+          fluid
+          selection
+        />
+      </div>
+    );
+  };
+
+  locationPopupSelect = () => {
+    return (
+      <h1>hh</h1>
+    )
+  };
 
   render() {
     let start_date = this.props.search_query.start_date;
@@ -373,12 +432,68 @@ class SearchFilters extends Component {
           ) : (
             <section>
               <Wrap>
-                <SemanticLocationControl
-                  key={address}
-                  defaultAddress={address}
-                  onChange={this.handleLocationChange}
-                />
-                <ClearInputIcon onClick={this.clear_address} link name="close" />
+
+                <SentenceWrapper>
+
+                  <div>
+                    <p>I want
+                      {
+                        service_types &&
+                        ( service_types.includes('activity') || service_types.includes('accomodation') )
+                        ?
+                          ' an'
+                        :
+                          service_types &&
+                          service_types.includes('food') ? ' ' : ' a'
+                      }
+                    </p>
+                  </div>
+
+                  <EditableElement>
+                    <Popup
+                      trigger={
+                        <p style={{textTransform: 'capitalize'}}>
+                          { service_types && service_types[0] }
+                        </p>
+                      }
+                      content={ this.categoryPopupSelect(service_types) }
+                      on='click'
+                      open={this.state.isCategoryPopupOpen}
+                      onClose={this.handleCategoryPopupClose}
+                      onOpen={this.handleCategoryPopupOpen}
+                      position='bottom center'
+
+                    />
+                  </EditableElement>
+
+                  <div> <p> &nbsp; in  &nbsp; </p> </div>
+
+                  <EditableElement>
+                    <Popup
+                      trigger={
+                        <p>
+                          {address || 'City Name'}
+                        </p>
+                      }
+                      content={
+                        <div>
+                          <SemanticLocationControl
+                            key={address}
+                            defaultAddress={address}
+                            onChange={this.handleLocationChange}
+                          />
+                          <Icon style={{position: 'relative', left: '178px', bottom: '34px'}} name='close' onClick={this.clear_address}/>
+                        </div>
+                      }
+                      on='click'
+                      open={this.state.isLocationPopupOpen}
+                      onClose={this.handleLocationPopupClose}
+                      onOpen={this.handleLocationPopupOpen}
+                      position='bottom center'
+                    />
+                  </EditableElement>
+
+                </SentenceWrapper>
 
                 <FormControl
                   type="date"
@@ -466,4 +581,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(SearchFilters);
+)(Filters);
