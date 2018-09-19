@@ -1,14 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Button,
-  Form,
-  Grid,
-  Header,
-  Message,
-  Segment,
-  Container,
-} from 'semantic-ui-react';
+import { Button, Form, Grid, Header, Message, Segment, Container } from 'semantic-ui-react';
 import styled from 'styled-components';
 import TopBar from './../../../shared_components/TopBarWithSearch';
 import BrandFooter from './../../../shared_components/BrandFooter';
@@ -91,7 +83,8 @@ export default class LoginFormComponent extends Component {
   }
 
   render() {
-    return <section>
+    return (
+      <section>
         <Page topPush>
           <TopBar fixed withPadding />
           <Container>
@@ -107,12 +100,46 @@ export default class LoginFormComponent extends Component {
                     <div className="login-header">Log-in to your account</div>
                     <br />
                     <Form size="large" error={this.props.isLoginError()}>
-                      <Form.Input fluid icon="user" iconPosition="left" placeholder="E-mail address" type="email" name="email" id="email" onChange={this.props.handleInputChange} onBlur={this.props.validateInput} error={this.props.isInputInvalid('email')} autoFocus required />
-                      <Form.Input fluid icon="lock" iconPosition="left" placeholder="Password" type="password" name="password" id="password" onChange={this.props.handleInputChange} onBlur={this.props.validateInput} error={this.props.isInputInvalid('password')} minLength={6} required />
+                      <Form.Input
+                        fluid
+                        icon="user"
+                        iconPosition="left"
+                        placeholder="E-mail address"
+                        type="email"
+                        name="email"
+                        id="email"
+                        onChange={this.props.handleInputChange}
+                        onBlur={this.props.validateInput}
+                        error={this.props.isInputInvalid('email')}
+                        autoFocus
+                        required
+                      />
+                      <Form.Input
+                        fluid
+                        icon="lock"
+                        iconPosition="left"
+                        placeholder="Password"
+                        type="password"
+                        name="password"
+                        id="password"
+                        onChange={this.props.handleInputChange}
+                        onBlur={this.props.validateInput}
+                        error={this.props.isInputInvalid('password')}
+                        minLength={6}
+                        required
+                      />
 
-                      {displayErrorMessage(this.props.isLoginError(), this.props.loginError.message)}
+                      {displayErrorMessage(
+                        this.props.isLoginError(),
+                        this.props.loginError.message,
+                      )}
 
-                      <Button className="green-btn pl-btn" fluid size="large" onClick={this.props.submitLogin}>
+                      <Button
+                        className="green-btn pl-btn"
+                        fluid
+                        size="large"
+                        onClick={this.props.submitLogin}
+                      >
                         Login
                       </Button>
                     </Form>
@@ -199,7 +226,8 @@ export default class LoginFormComponent extends Component {
             <BrandFooter withTopBorder withPadding />
           </StaticFooter>
         </Page>
-      </section>;
+      </section>
+    );
   }
 }
 

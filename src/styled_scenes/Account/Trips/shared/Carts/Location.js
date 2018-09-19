@@ -37,7 +37,6 @@ const Title = styled.h3`
   font-weight: 500;
   margin-bottom: 4px;
   height: ${cardConfig.titleHeight};
-
   a {
     color: inherit;
   }
@@ -56,7 +55,6 @@ const Location = styled.span`
   align-items: center;
   margin-bottom: 5px;
   height: 44px;
-
   svg {
     display: inline-block;
     width: 17px;
@@ -66,7 +64,6 @@ const Location = styled.span`
     position: relative;
     left: -3px;
   }
-
   p {
     width: 100%;
   }

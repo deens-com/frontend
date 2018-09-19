@@ -11,5 +11,5 @@ export const BadgeDecentralized = styled.div`
   color: white;
   padding: 0 5px;
   border-radius: 3px;
-  font-weight: 300;`
-;
+  font-weight: 300;
+`;

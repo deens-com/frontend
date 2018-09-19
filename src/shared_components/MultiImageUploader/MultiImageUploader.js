@@ -10,7 +10,7 @@ const allowedExtensions = ['jpeg', 'jpg', 'gif', 'png'];
 export default class MultiImageUploader extends Component {
   static propTypes = {
     onUploadedFilesChanged: PropTypes.func.isRequired,
-    initialUploadedFiles: PropTypes.arrayOf(PropTypes.string),
+    initialUploadedFiles: PropTypes.arrayOf(PropTypes.object),
   };
 
   static defaultProps = {
@@ -44,7 +44,9 @@ export default class MultiImageUploader extends Component {
         callbacks: {
           onCancel: (id, name) => {
             this.setState(
-              ({ fileUrls }) => ({ fileUrls: fileUrls.filter(url => !url.endsWith(name)) }),
+              ({ fileUrls }) => ({
+                fileUrls: fileUrls.filter((url, index) => index !== id),
+              }),
               () => this.props.onUploadedFilesChanged(this.state.fileUrls),
             );
           },
@@ -73,10 +75,12 @@ export default class MultiImageUploader extends Component {
   }
 
   componentDidMount() {
+    const i18nLocale = 'en-us';
     const initialFilesWithMeta = this.props.initialUploadedFiles.map((url, index) => ({
       id: index,
-      name: url.substring(url.lastIndexOf('/') + 1),
-      thumbnailUrl: url,
+      name: url.names[i18nLocale],
+      thumbnailUrl: url.files.thumbnail.url,
+      //url.substring(url.lastIndexOf('/') + 1)
       // thumbnailUrl: `https://please-staging.imgix.net/${url.substring(url.lastIndexOf('/') + 1)}`,
     }));
     this.uploader.methods.addInitialFiles(initialFilesWithMeta);

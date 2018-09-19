@@ -15,7 +15,7 @@ import { sizes, resetButton } from '../../../libs/styled';
 const Wrap = styled.div`
   margin-right: 25px;
   z-index: 21;
-  flex: ${props => (props.flex) ? 1 : 'auto'};
+  flex: ${props => (props.flex ? 1 : 'auto')};
 `;
 
 const LogoWrap = styled.span`

@@ -2,6 +2,9 @@ import Parse from 'parse';
 import fetch_helpers from '../../libs/fetch_helpers';
 import history from '../../main/history';
 import { trackServiceCreated } from 'libs/analytics';
+import { generateFilename } from 'libs/filename';
+import { env, serverBaseURL } from '../../libs/config';
+import axios from 'libs/axios';
 
 export const types = {
   SERVICE_CREATE_STARTED: 'SERVICE_CREATE_STARTED',
@@ -13,7 +16,7 @@ export const types = {
   SERVICE_FETCH_ERROR: 'EDIT/SERVICE_FETCH_ERROR',
 
   SERVICE_SAVE_STARTED: 'EDIT/SERVICE_SAVE_STARTED',
-  SERVICE_SAVE_SUCCCESS: 'EDIT/SERVICE_SAVE_SUCCCESS',
+  SERVICE_SAVE_SUCCESS: 'EDIT/SERVICE_SAVE_SUCCESS',
   SERVICE_SAVE_ERROR: 'EDIT/SERVICE_SAVE_ERROR',
 
   TOGGLE_SUBMITTING_STATE: 'TOGGLE_SUBMITTING_STATE',
@@ -35,14 +38,31 @@ export const submittingStateChanged = bool => {
 
 export const registerService = (values, history) => async (dispatch, getState) => {
   const state = getState();
+  const localStorageUser = localStorage.getItem(`please-${env}-session`);
+  const jsonUser = JSON.parse(localStorageUser);
+  const jwtToken = jsonUser.accessToken;
   const { isSubmitting } = state.ServiceUpsert;
+
   if (isSubmitting) return;
   dispatch({ type: types.SERVICE_CREATE_STARTED });
+
   try {
-    const { acceptETH } = values;
-    const result = await Parse.Cloud.run('createOrUpdateService', {
-      ...values,
-      availableDays: [...values.availableDays],
+    const { mainPicture, acceptETH } = values;
+    // let parseFile;
+    // if (mainPicture) {
+    //   const filename = generateFilename(mainPicture.name);
+    //   if (filename.length) {
+    //     parseFile = await new Parse.File(filename, mainPicture).save();
+    //   }
+    // }
+
+    const service = fetch_helpers.createService(values);
+    const result = await axios({
+      method: 'POST',
+      url: `${serverBaseURL}/services`,
+      data: service,
+    }).catch(error => {
+      console.log(error);
     });
 
     if (acceptETH) {
@@ -53,7 +73,7 @@ export const registerService = (values, history) => async (dispatch, getState) =
         payload: result,
         meta: { analytics: trackServiceCreated(result) },
       });
-      history.push(`/services/${result.id}`);
+      history.push(`/services/${result.data._id}`);
     }
   } catch (error) {
     if (error.errors) {
@@ -65,12 +85,14 @@ export const registerService = (values, history) => async (dispatch, getState) =
 export const fetchService = serviceId => async (dispatch, getState) => {
   if (!serviceId) return;
   const state = getState();
-  const { isLoading } = state.ServiceUpsert;
-  if (isLoading) return;
+  const { isSubmitting } = state.ServiceUpsert;
+  if (isSubmitting) return;
+
   dispatch({ type: types.SERVICE_FETCH_STARTED });
   try {
-    const result = await fetch_helpers.build_query('Service').get(serviceId);
-    const service = fetch_helpers.normalizeParseResponseData(result);
+    const result = await axios.get(`${serverBaseURL}/services/${serviceId}`);
+
+    const service = fetch_helpers.buildServiceForView(result.data);
     dispatch({ type: types.SERVICE_FETCH_SUCCESS, payload: service });
   } catch (error) {
     dispatch({ type: types.SERVICE_FETCH_ERROR, payload: error });
@@ -80,26 +102,24 @@ export const fetchService = serviceId => async (dispatch, getState) => {
 export const saveServiceChanges = (serviceId, values, history) => async (dispatch, getState) => {
   if (!serviceId) return;
   const state = getState();
-  const { isLoading } = state.ServiceUpsert;
-  if (isLoading) return;
+  const { isSubmitting } = state.ServiceUpsert;
+  if (isSubmitting) return;
+
   dispatch({ type: types.SERVICE_SAVE_STARTED });
+
   try {
-    const rawService = await fetch_helpers.build_query('Service').get(serviceId);
-    const service = fetch_helpers.normalizeParseResponseData(rawService);
-    const input = {
-      id: serviceId,
-      ...service,
-      ...values,
-      availableDays: [...values.availableDays],
-    };
+    const updatedService = fetch_helpers.normalizeServiceToPatch(values);
+    const result = await axios({
+      method: 'PATCH',
+      url: `${serverBaseURL}/services/${serviceId}`,
+      data: updatedService,
+    });
 
-    const result = await Parse.Cloud.run('createOrUpdateService', input);
-
-    if (service.acceptETH) {
-      dispatch(deployContract(result, service, history));
+    if (updatedService.acceptETH) {
+      dispatch(deployContract(result, updatedService, history));
     } else {
-      dispatch({ type: types.SERVICE_CREATE_SUCCESS, payload: result });
-      history.push(`/services/${result.id}`);
+      dispatch({ type: types.SERVICE_SAVE_SUCCESS, payload: result.data });
+      history.push(`/services/${result.data._id}`);
     }
   } catch (error) {
     if (error.errors) {
@@ -108,26 +128,13 @@ export const saveServiceChanges = (serviceId, values, history) => async (dispatc
   }
 };
 
-export const fetchUserProfile = () => dispatch => {
-  let user = Parse.User.current();
-  if (user === null) {
+export const fetchUserProfile = () => async dispatch => {
+  try {
+    const user = await axios.get(`${serverBaseURL}/users/me`);
+
+    dispatch(user_profile_fetched({ user_profile: user.data }));
+  } catch (e) {
     history.push('/login');
-  } else {
-    Parse.User.current()
-      .fetch()
-      .then(response => {
-        const json_response = fetch_helpers.normalizeParseResponseData(response);
-        user = json_response;
-        if (user === null) {
-          history.push('/login');
-        } else {
-          const json_user = fetch_helpers.normalizeParseResponseData(user);
-          dispatch(user_profile_fetched({ userProfile: json_user }));
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
   }
 };
 

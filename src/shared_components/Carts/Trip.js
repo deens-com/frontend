@@ -29,7 +29,7 @@ const Wrap = styled.div`
 const Title = styled.h3`
   font-size: 18px;
   font-height: 21px;
-  color: #3C434B;
+  color: #3c434b;
   font-weight: bold;
   margin-bottom: 12px;
   max-height: ${cardConfig.titleHeight};
@@ -45,7 +45,7 @@ const Description = styled.div`
 `;
 
 const Price = styled.span`
-  color: #3C434B;
+  color: #3c434b;
   font-size: 14px;
   line-height: 16px;
   font-weight: bold;
@@ -85,7 +85,7 @@ const ContentFooter = styled.div`
 `;
 
 const Author = styled.div`
-  border-top: 1px solid #E5E5E5;
+  border-top: 1px solid #e5e5e5;
   margin: 0 22px;
   height: 75px;
 `;
@@ -93,9 +93,9 @@ const Author = styled.div`
 function formatLocation(location) {
   let result = '';
   if (location.city) {
-    result = location.city
+    result = location.city;
     if (location.state) {
-      result = result.concat(`, ${location.state}`)
+      result = result.concat(`, ${location.state}`);
     }
     return result;
   }
@@ -127,7 +127,10 @@ export default class TripCart extends Component {
               <Wrap>
                 <Cart column className="card-animate">
                   <Thumb
-                    url={this.props.item.image || "https://please-com.imgix.net/7a7b798deb8064c64f57bff9ffeaa53a_1531363432782-4561574624.jpg?auto=format&dpr=1&crop=faces&fit=crop&w=800&h=500&ixlib=react-7.2.0"}
+                    url={
+                      this.props.item.image ||
+                      'https://please-com.imgix.net/7a7b798deb8064c64f57bff9ffeaa53a_1531363432782-4561574624.jpg?auto=format&dpr=1&crop=faces&fit=crop&w=800&h=500&ixlib=react-7.2.0'
+                    }
                     tripCount={this.props.item.partOf}
                     withTooltip={this.props.withTooltip}
                   />
@@ -161,7 +164,10 @@ export default class TripCart extends Component {
           <Wrap>
             <Cart column className="card-animate">
               <Thumb
-                url={this.props.item.image || "https://please-com.imgix.net/7a7b798deb8064c64f57bff9ffeaa53a_1531363432782-4561574624.jpg?auto=format&dpr=1&crop=faces&fit=crop&w=800&h=500&ixlib=react-7.2.0"}
+                url={
+                  this.props.item.image ||
+                  'https://please-com.imgix.net/7a7b798deb8064c64f57bff9ffeaa53a_1531363432782-4561574624.jpg?auto=format&dpr=1&crop=faces&fit=crop&w=800&h=500&ixlib=react-7.2.0'
+                }
                 tripCount={this.props.item.partOf}
                 withTooltip={this.props.withTooltip}
               />
@@ -178,7 +184,8 @@ export default class TripCart extends Component {
                 </Description>
                 <ContentFooter>
                   <Price>
-                    From <PriceTag unit="hidden" price={this.props.item.basePrice}>
+                    From{' '}
+                    <PriceTag unit="hidden" price={this.props.item.basePrice}>
                       {({ symbol, convertedPrice }) => `${symbol}${convertedPrice}`}
                     </PriceTag>
                   </Price>
@@ -192,8 +199,7 @@ export default class TripCart extends Component {
                   </Location>
                 </ContentFooter>
               </ContentWrap>
-              <Author>
-              </Author>
+              <Author />
             </Cart>
           </Wrap>
         )}
