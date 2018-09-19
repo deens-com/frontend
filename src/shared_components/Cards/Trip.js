@@ -107,9 +107,9 @@ function formatLocation(location) {
   return location;
 }
 
-const duration = (minutes) => {
-  return (minutes / 60 / 24) + ' days';
-}
+const duration = minutes => {
+  return minutes / 60 / 24 + ' days';
+};
 
 export default class TripCard extends Component {
   constructor(props) {
@@ -144,9 +144,7 @@ export default class TripCard extends Component {
                     withTooltip={this.props.withTooltip}
                   />
                   <ContentWrap>
-                    <Duration>
-                      {duration(this.props.item.duration)}
-                    </Duration>
+                    <Duration>{duration(this.props.item.duration)}</Duration>
                     <Title>
                       <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>
                         <I18nText data={this.props.item.title} />
@@ -184,9 +182,7 @@ export default class TripCard extends Component {
                 withTooltip={this.props.withTooltip}
               />
               <ContentWrap>
-                <Duration>
-                  {duration(this.props.item.duration)}
-                </Duration>
+                <Duration>{duration(this.props.item.duration)}</Duration>
                 <Title>
                   <Truncate lines={cardConfig.titleLines}>
                     <I18nText data={this.props.item.title} />

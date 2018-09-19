@@ -302,16 +302,16 @@ class Filters extends Component {
     this.setState({ isLocationPopupOpen: true });
   };
 
-  categoryPopupSelect = (service_types) => {
+  categoryPopupSelect = service_types => {
     //const service_types = this.props.search_query.type ;
     const serviceOptions = [
-      {text: 'Accomodation', value: 'accomodation'},
-      {text: 'Trip', value: 'trip'},
-      {text: 'Food', value: 'food'},
-      {text: 'Activity', value: 'activity'},
+      { text: 'Accomodation', value: 'accomodation' },
+      { text: 'Trip', value: 'trip' },
+      { text: 'Food', value: 'food' },
+      { text: 'Activity', value: 'activity' },
     ];
     return (
-      <div style={{textTransform: 'capitalize'}}>
+      <div style={{ textTransform: 'capitalize' }}>
         <Dropdown
           placeholder={service_types && service_types[0]}
           options={serviceOptions}
@@ -324,9 +324,7 @@ class Filters extends Component {
   };
 
   locationPopupSelect = () => {
-    return (
-      <h1>hh</h1>
-    )
+    return <h1>hh</h1>;
   };
 
   render() {
@@ -432,49 +430,43 @@ class Filters extends Component {
           ) : (
             <section>
               <Wrap>
-
                 <SentenceWrapper>
-
                   <div>
-                    <p>I want
-                      {
-                        service_types &&
-                        ( service_types.includes('activity') || service_types.includes('accomodation') )
-                        ?
-                          ' an'
-                        :
-                          service_types &&
-                          service_types.includes('food') ? ' ' : ' a'
-                      }
+                    <p>
+                      I want
+                      {service_types &&
+                      (service_types.includes('activity') || service_types.includes('accomodation'))
+                        ? ' an'
+                        : service_types && service_types.includes('food')
+                          ? ' '
+                          : ' a'}
                     </p>
                   </div>
 
                   <EditableElement>
                     <Popup
                       trigger={
-                        <p style={{textTransform: 'capitalize'}}>
-                          { service_types && service_types[0] }
+                        <p style={{ textTransform: 'capitalize' }}>
+                          {service_types && service_types[0]}
                         </p>
                       }
-                      content={ this.categoryPopupSelect(service_types) }
-                      on='click'
+                      content={this.categoryPopupSelect(service_types)}
+                      on="click"
                       open={this.state.isCategoryPopupOpen}
                       onClose={this.handleCategoryPopupClose}
                       onOpen={this.handleCategoryPopupOpen}
-                      position='bottom center'
-
+                      position="bottom center"
                     />
                   </EditableElement>
 
-                  <div> <p> &nbsp; in  &nbsp; </p> </div>
+                  <div>
+                    {' '}
+                    <p> &nbsp; in &nbsp; </p>{' '}
+                  </div>
 
                   <EditableElement>
                     <Popup
-                      trigger={
-                        <p>
-                          {address || 'City Name'}
-                        </p>
-                      }
+                      trigger={<p>{address || 'City Name'}</p>}
                       content={
                         <div>
                           <SemanticLocationControl
@@ -482,17 +474,20 @@ class Filters extends Component {
                             defaultAddress={address}
                             onChange={this.handleLocationChange}
                           />
-                          <Icon style={{position: 'relative', left: '178px', bottom: '34px'}} name='close' onClick={this.clear_address}/>
+                          <Icon
+                            style={{ position: 'relative', left: '178px', bottom: '34px' }}
+                            name="close"
+                            onClick={this.clear_address}
+                          />
                         </div>
                       }
-                      on='click'
+                      on="click"
                       open={this.state.isLocationPopupOpen}
                       onClose={this.handleLocationPopupClose}
                       onOpen={this.handleLocationPopupOpen}
-                      position='bottom center'
+                      position="bottom center"
                     />
                   </EditableElement>
-
                 </SentenceWrapper>
 
                 <FormControl

@@ -121,7 +121,7 @@ export default class ResultsScene extends Component {
       <Page topPush>
         <TopBar {...props} fixed withPadding />
         <span>
-        <Filters {...props} />
+          <Filters {...props} />
         </span>
         <PageContent flex>
           <ServicesWrapper>

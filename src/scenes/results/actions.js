@@ -90,7 +90,7 @@ export const update_path = search_params => {
   };
 };
 
-const composeQuery = (search_params) => {
+const composeQuery = search_params => {
   const query_params = {
     service_types: !search_params.type.length ? undefined : search_params.type.join('+'),
     start_date: search_params.start_date || undefined,
@@ -112,9 +112,9 @@ const composeQuery = (search_params) => {
   });
   const query_string = query_arr.join('&');
   return query_string;
-}
+};
 
-const composeFetchQuery = (search_params) => {
+const composeFetchQuery = search_params => {
   const query_params = {
     category: !search_params.type.length ? undefined : search_params.type.join('+'),
     start_date: search_params.start_date || undefined,
@@ -136,7 +136,7 @@ const composeFetchQuery = (search_params) => {
   });
   const query_string = query_arr.join('&');
   return query_string;
-}
+};
 
 /* called from componentWillUpdate of results_container */
 /* is triggered whenever service_types or tags props have changed */
@@ -179,12 +179,10 @@ export const fetch_results = results_search_query => {
   return async dispatch => {
     try {
       const query = composeFetchQuery(results_search_query);
-      const searchPath = query ? ('?' + query) : '';
-      const results = await axios
-        .get('/search' + searchPath)
-        .catch(error => {
-          console.log(error);
-        })
+      const searchPath = query ? '?' + query : '';
+      const results = await axios.get('/search' + searchPath).catch(error => {
+        console.log(error);
+      });
       if (results) {
         const data = fetch_helpers.buildServicesJson(results.data.trips);
         const resultsData = { results: data };
