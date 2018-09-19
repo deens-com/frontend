@@ -244,6 +244,7 @@ class Filters extends Component {
     // } else {
     //   types = types.concat(type);
     // }
+    this.handleCategoryPopupClose();
     this.setState({ service_type: [type] });
     this.refetch_results({ type: [type] });
   }
