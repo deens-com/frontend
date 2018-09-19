@@ -63,7 +63,13 @@ class DesktopDropDownMenu extends Component {
   logged_out() {
     return (
       <Wrap>
-        <Button type="link" theme="whiteTransparent" round size="small" href="/login">
+        <Button
+          type="link"
+          theme={this.props.isBackgroundWhite ? 'whiteTransparent' : 'white'}
+          round
+          size="small"
+          href="/login"
+        >
           Login
         </Button>
         <Button type="link" theme="mainFilled" round size="small" href="/register">

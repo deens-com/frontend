@@ -1,50 +1,28 @@
 const initialState = {
-  services: {},
   trips: [],
-  tags: [],
-  popularPlaces: [],
-  exciting_activities: [],
-  delicious_foods: [],
+  isLoadingTrips: false,
 };
 
 export default function homeReducer(state = initialState, action = {}) {
   switch (action.type) {
-    case 'SERVICES_FETCHED':
+    case 'TRIPS_FETCH_STARTED':
       return {
         ...state,
-        services: action.payload.services,
+        isLoadingTrips: true,
+        trips: [],
       };
-    case 'TRIPS_FETCHED':
+    case 'TRIPS_FETCH_SUCCESS':
       return {
         ...state,
-        trips: action.payload.trips,
+        isLoadingTrips: false,
+        trips: action.payload,
       };
-    case 'POPULAR_TAGS_RETRIEVED':
+    case 'TRIPS_FETCH_ERROR':
       return {
         ...state,
-        tags: action.payload,
+        isLoadingTrips: false,
+        trips: [],
       };
-    case 'POPULAR_PLACES_RETRIEVED':
-      return {
-        ...state,
-        popularPlaces: action.payload.popularPlaces,
-      };
-    case 'SERVICE_PICTURES_FETCHED':
-      return {
-        ...state,
-        services: action.payload.services,
-      };
-    case 'EXCITING_ACTIVITIES_RETRIEVED':
-      return {
-        ...state,
-        exciting_activities: action.payload.exciting_activities,
-      };
-    case 'DELICIOUS_FOOD_RETRIEVED':
-      return {
-        ...state,
-        delicious_foods: action.payload.delicious_foods,
-      };
-
     default:
       return state;
   }

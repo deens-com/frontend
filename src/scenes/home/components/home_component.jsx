@@ -11,7 +11,7 @@ import MobileHero from './../../../styled_scenes/Home/components/MobileHero';
 import HeroSlider from './../../../styled_scenes/Home/components/HeroSlider';
 import SectionTrips from './../../../styled_scenes/Home/components/SectionTrips';
 import SectionCTA from './../../../styled_scenes/Home/components/SectionCTA';
-
+import SectionTopDestinations from './../../../styled_scenes/Home/components/SectionTopDestinations';
 // ACTIONS/CONFIG
 import { sizes, media } from './../../../libs/styled';
 
@@ -35,7 +35,7 @@ const HomeTagLine = styled.h1`
   font-weight: bold;
   text-align: center;
   line-height: 56px;
-  width: 504px;
+  max-width: 504px;
   margin: auto;
 
   ${media.minSmall} {
@@ -89,8 +89,9 @@ const HomeComponent = props => {
           itemType="http://schema.org/ItemList"
           padding="28px 0 0"
         >
-          <SectionCTA />
-          <SectionTrips trips={props.trips} />
+          <SectionCTA loggedIn={Boolean(props.session.username)} />
+          <SectionTrips trips={props.trips} isLoading={props.isLoadingTrips} />
+          <SectionTopDestinations />
         </PageContent>
         <BrandFooter />
       </PageWrapper>

@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Truncate from 'react-truncate';
-import { Popup } from 'semantic-ui-react';
+import { Popup, Image } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 
 // COMPONENTS
 import Rating from '../Rating';
@@ -17,6 +18,8 @@ import { Cart, ContentWrap } from './styles';
 import { cardConfig } from 'libs/config';
 import { PinIcon } from 'shared_components/icons';
 import I18nText from 'shared_components/I18nText';
+
+import ImgurAvatar from './../../assets/imgur-avatar.png';
 
 const Wrap = styled.div`
   display: inline-block;
@@ -88,6 +91,31 @@ const Author = styled.div`
   border-top: 1px solid #e5e5e5;
   margin: 0 22px;
   height: 75px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const AvatarWrapper = styled.div`
+  height: 43px;
+  width: 43px;
+`;
+
+const AuthorText = styled.div`
+  margin-left: 10px;
+  color: #3c434b;
+`;
+
+const Created = styled.p`
+  font-size: 10px;
+  line-height: 12px;
+  margin-bottom: 0;
+`;
+
+const Username = styled.p`
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-weight: bold;
 `;
 
 function formatLocation(location) {
@@ -119,6 +147,8 @@ export default class TripCart extends Component {
   };
 
   render() {
+    const { owner } = this.props.item;
+    const avatar = (owner.profilePicture && owner.profilePicture.url) || ImgurAvatar;
     return (
       <div>
         {this.state.truncated ? (
@@ -163,43 +193,55 @@ export default class TripCart extends Component {
         ) : (
           <Wrap>
             <Cart column className="card-animate">
-              <Thumb
-                url={
-                  this.props.item.image ||
-                  'https://please-com.imgix.net/7a7b798deb8064c64f57bff9ffeaa53a_1531363432782-4561574624.jpg?auto=format&dpr=1&crop=faces&fit=crop&w=800&h=500&ixlib=react-7.2.0'
-                }
-                tripCount={this.props.item.partOf}
-                withTooltip={this.props.withTooltip}
-              />
-              <ContentWrap>
-                <Title>
-                  <Truncate lines={cardConfig.titleLines}>
-                    <I18nText data={this.props.item.title} />
-                  </Truncate>
-                </Title>
-                <Description>
-                  <Truncate lines={cardConfig.descriptionLines}>
-                    <I18nText data={this.props.item.description} />
-                  </Truncate>
-                </Description>
-                <ContentFooter>
-                  <Price>
-                    From{' '}
-                    <PriceTag unit="hidden" price={this.props.item.basePrice}>
-                      {({ symbol, convertedPrice }) => `${symbol}${convertedPrice}`}
-                    </PriceTag>
-                  </Price>
-                  <Location>
-                    <PinIcon />
-                    <p>
-                      <Truncate lines={cardConfig.locationLines}>
-                        {formatLocation(this.props.item.location)}
-                      </Truncate>
-                    </p>
-                  </Location>
-                </ContentFooter>
-              </ContentWrap>
-              <Author />
+              <Link to={'/trips/' + this.props.item._id}>
+                <Thumb
+                  url={
+                    this.props.item.image ||
+                    'https://please-com.imgix.net/7a7b798deb8064c64f57bff9ffeaa53a_1531363432782-4561574624.jpg?auto=format&dpr=1&crop=faces&fit=crop&w=800&h=500&ixlib=react-7.2.0'
+                  }
+                  tripCount={this.props.item.partOf}
+                  withTooltip={this.props.withTooltip}
+                />
+                <ContentWrap>
+                  <Title>
+                    <Truncate lines={cardConfig.titleLines}>
+                      <I18nText data={this.props.item.title} />
+                    </Truncate>
+                  </Title>
+                  <Description>
+                    <Truncate lines={cardConfig.descriptionLines}>
+                      <I18nText data={this.props.item.description} />
+                    </Truncate>
+                  </Description>
+                  <ContentFooter>
+                    <Price>
+                      From{' '}
+                      <PriceTag unit="hidden" price={this.props.item.basePrice}>
+                        {({ symbol, convertedPrice }) => `${symbol}${convertedPrice}`}
+                      </PriceTag>
+                    </Price>
+                    <Location>
+                      <PinIcon />
+                      <p>
+                        <Truncate lines={cardConfig.locationLines}>
+                          {formatLocation(this.props.item.location)}
+                        </Truncate>
+                      </p>
+                    </Location>
+                  </ContentFooter>
+                </ContentWrap>
+              </Link>
+              <Link to={`/users/${owner.username}`}>
+                <Author>
+                  <AvatarWrapper>
+                    <Image src={avatar} circular />
+                  </AvatarWrapper>
+                  <AuthorText>
+                    <Created>Created by</Created>
+                    <Username>{owner.username}</Username>
+                  </AuthorText>
+                </Author>
+              </Link>
             </Cart>
           </Wrap>
         )}
@@ -218,6 +260,7 @@ TripCart.propTypes = {
     rating: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     review: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     price: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    owner: PropTypes.object,
   }),
   withTooltip: PropTypes.bool,
   href: PropTypes.string,
