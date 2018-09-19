@@ -1,6 +1,8 @@
 import Parse from 'parse';
+import axios from 'libs/axios';
 import history from './../../main/history';
 import { tagsColorMatcher } from './../../libs/Utils';
+import fetch_helpers from 'libs/fetch_helpers';
 import { trackVoiceUsage } from 'libs/analytics';
 
 export const results_fetched = results => {
@@ -62,29 +64,78 @@ export const toggle_tag_from_search_query = (current_search_query, item_tag) => 
 
 export const update_path = search_params => {
   return dispatch => {
-    const query_params = {
-      service_types: !search_params.type.length ? undefined : search_params.type.join('+'),
-      start_date: search_params.start_date || undefined,
-      end_date: search_params.end_date || undefined,
-      person_nb: search_params.person_nb || undefined,
-      //address: this.state.address,
-      latitude: search_params.latitude || undefined,
-      longitude: search_params.longitude || undefined,
-      address: search_params.address || undefined,
-      tags: !search_params.tags.length ? undefined : search_params.tags.join('+'),
-      onlySmartContracts: search_params.onlySmartContracts || undefined,
-    };
-    let query_arr = [];
-    Object.entries(query_params).forEach(([key, value]) => {
-      if (value) {
-        let to_concat = key + '=' + value;
-        query_arr = query_arr.concat(to_concat);
-      }
-    });
-    let query_string = query_arr.join('&');
+    // const query_params = {
+    //   service_types: !search_params.type.length ? undefined : search_params.type.join('+'),
+    //   start_date: search_params.start_date || undefined,
+    //   end_date: search_params.end_date || undefined,
+    //   person_nb: search_params.person_nb || undefined,
+    //   //address: this.state.address,
+    //   latitude: search_params.latitude || undefined,
+    //   longitude: search_params.longitude || undefined,
+    //   address: search_params.address || undefined,
+    //   tags: !search_params.tags.length ? undefined : search_params.tags.join('+'),
+    //   onlySmartContracts: search_params.onlySmartContracts || undefined,
+    // };
+    // let query_arr = [];
+    // Object.entries(query_params).forEach(([key, value]) => {
+    //   if (value) {
+    //     let to_concat = key + '=' + value;
+    //     query_arr = query_arr.concat(to_concat);
+    //   }
+    // });
+    // let query_string = query_arr.join('&');
+    const query_string = composeQuery(search_params);
     history.push('/results?' + query_string);
     // will trigger update_search_query from results_container
   };
+};
+
+const composeQuery = search_params => {
+  const query_params = {
+    service_types: !search_params.type.length ? undefined : search_params.type.join('+'),
+    start_date: search_params.start_date || undefined,
+    end_date: search_params.end_date || undefined,
+    person_nb: search_params.person_nb || undefined,
+    //address: this.state.address,
+    latitude: search_params.latitude || undefined,
+    longitude: search_params.longitude || undefined,
+    address: search_params.address || undefined,
+    tags: !search_params.tags.length ? undefined : search_params.tags.join('+'),
+    onlySmartContracts: search_params.onlySmartContracts || undefined,
+  };
+  let query_arr = [];
+  Object.entries(query_params).forEach(([key, value]) => {
+    if (value) {
+      let to_concat = key + '=' + value;
+      query_arr = query_arr.concat(to_concat);
+    }
+  });
+  const query_string = query_arr.join('&');
+  return query_string;
+};
+
+const composeFetchQuery = search_params => {
+  const query_params = {
+    category: !search_params.type.length ? undefined : search_params.type.join('+'),
+    start_date: search_params.start_date || undefined,
+    end_date: search_params.end_date || undefined,
+    person_nb: search_params.person_nb || undefined,
+    //address: this.state.address,
+    latitude: search_params.latitude || undefined,
+    longitude: search_params.longitude || undefined,
+    address: search_params.address || undefined,
+    tags: !search_params.tags.length ? undefined : search_params.tags.join('+'),
+    onlySmartContracts: search_params.onlySmartContracts || undefined,
+  };
+  let query_arr = [];
+  Object.entries(query_params).forEach(([key, value]) => {
+    if (value) {
+      let to_concat = key + '=' + value;
+      query_arr = query_arr.concat(to_concat);
+    }
+  });
+  const query_string = query_arr.join('&');
+  return query_string;
 };
 
 /* called from componentWillUpdate of results_container */
@@ -97,29 +148,50 @@ export const update_search_query = search_params => {
   };
 };
 
+// export const fetch_results = results_search_query => {
+//   return dispatch => {
+//     if (results_search_query.speech_query) {
+//       const speech_query_params = results_search_query.speech_query;
+//       //console.log(speech_query_params);
+//       Parse.Cloud.run('fetch_speech_query', { message: speech_query_params }).then(
+//         search_query_object => {
+//           let search_query = search_query_object.search_query;
+//           dispatch(update_path(search_query));
+//           dispatch(search_query_updated({ search_query: search_query }));
+//         },
+//         error => {
+//           console.log(error);
+//         },
+//       );
+//     } else {
+//       Parse.Cloud.run('fetch_results_search_query', {
+//         search_query: results_search_query,
+//       }).then(results => {
+//         dispatch(results_fetched(results));
+//         dispatch(search_query_updated({ search_query: results_search_query }));
+//         dispatch(carousel_tags_fetched(results));
+//       });
+//     }
+//   };
+// };
+
 export const fetch_results = results_search_query => {
-  return dispatch => {
-    if (results_search_query.speech_query) {
-      const speech_query_params = results_search_query.speech_query;
-      //console.log(speech_query_params);
-      Parse.Cloud.run('fetch_speech_query', { message: speech_query_params }).then(
-        search_query_object => {
-          let search_query = search_query_object.search_query;
-          dispatch(update_path(search_query));
-          dispatch(search_query_updated({ search_query: search_query }));
-        },
-        error => {
-          console.log(error);
-        },
-      );
-    } else {
-      Parse.Cloud.run('fetch_results_search_query', {
-        search_query: results_search_query,
-      }).then(results => {
-        dispatch(results_fetched(results));
-        dispatch(search_query_updated({ search_query: results_search_query }));
-        dispatch(carousel_tags_fetched(results));
+  return async dispatch => {
+    try {
+      const query = composeFetchQuery(results_search_query);
+      const searchPath = query ? '?' + query : '';
+      const results = await axios.get('/search' + searchPath).catch(error => {
+        console.log(error);
       });
+      if (results) {
+        const data = fetch_helpers.buildServicesJson(results.data.trips);
+        const resultsData = { results: data };
+        dispatch(results_fetched(resultsData));
+        dispatch(search_query_updated({ search_query: results_search_query }));
+        dispatch(carousel_tags_fetched(resultsData));
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
 };

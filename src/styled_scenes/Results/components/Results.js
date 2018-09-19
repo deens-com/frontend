@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 // COMPONENTS
 import Row from '../../../shared_components/layout/Row';
-import TripCart from '../../../shared_components/Carts/Trip';
+import TripCard from '../../../shared_components/Cards/Trip';
 import ReactPaginate from 'react-paginate';
 import { media } from '../../../libs/styled';
 import { Loader } from 'semantic-ui-react';
@@ -59,9 +59,9 @@ const PaginationWrap = styled.div`
 const ResultItem = styled.div`
   position: relative;
   display: inline-block;
-  margin-left: 12%;
+  margin-left: 8%;
   ${media.minSmall} {
-    margin-left: 0px;
+    //margin-left: 0px;
   }
 `;
 
@@ -148,7 +148,7 @@ export default class Results extends Component {
               <ResultItem key={result.objectId}>
                 <Link to={(result.type ? '/services/' : '/trips/') + result.objectId}>
                   {result.contractAddress && <Badge>Decentralized</Badge>}
-                  <TripCart key={result.label} withTooltip withShadow item={result} />
+                  <TripCard key={result.label} withTooltip withShadow item={result} />
                 </Link>
               </ResultItem>
             ))
