@@ -4,9 +4,10 @@ import { Divider, Label, Button, Icon, Loader } from 'semantic-ui-react';
 import styled from 'styled-components';
 import Rating from 'shared_components/Rating';
 import * as SmartContractStatus from 'shared_components/SmartContract/Status';
+import { media } from 'libs/styled';
 import PriceTag from '../../../shared_components/Currency/PriceTag';
 import Thumb from '../../../shared_components/Carts/components/Thumb';
-import { Cart, ContentWrap } from '../../../shared_components/Carts/styles';
+import { Cart } from '../../../shared_components/Carts/styles';
 import I18nText from '../../../shared_components/I18nText';
 
 const EmptyServicesText = styled.p`
@@ -55,11 +56,23 @@ const LoaderContainer = styled.div`
   margin-top: 50px;
 `;
 
+const ContentWrap = styled.div`
+  padding: 15px;
+
+  ${media.minSmall} {
+    padding: 20px;
+  }
+
+  ${media.minMedium} {
+    padding: 25px;
+  }
+`;
+
 const ServiceItem = item => {
   const isActivated = item.serviceStatus !== 'disabled';
 
   const showContractStatus = item.contractAddress != null;
-  console.log(item);
+
   return (
     <Cart column>
       {showContractStatus && (

@@ -37,11 +37,13 @@ const formatAddressLine = location => {
 const createService = values => {
   const i18nLocale = 'en-us';
   return {
-    categories: values.categories.map(category => ({
-      names: {
-        [i18nLocale]: category,
+    categories: [
+      {
+        names: {
+          [i18nLocale]: values.category,
+        },
       },
-    })),
+    ],
     periods: [
       {
         startDate: new Date(values.startDate.setHours(0, 0, 0, 0)),
@@ -161,10 +163,10 @@ const buildServiceForView = service => {
     service.reviewCount = service.reviewCount;
     service.slots = service.periods[0].maxCapacity;
     service.formattedAddress = service.location.formattedAddress;
-    service.externalUrl = service.externalUrl[i18nLocale];
+    service.externalUrl = service.externalUrl && service.externalUrl[i18nLocale];
     if (service.categories && service.categories.length) {
       const categories = service.categories.map(category => category.names[i18nLocale]);
-      service.categories = categories;
+      service.category = categories[0];
     }
   } catch (error) {
     console.log(error);
