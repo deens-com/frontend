@@ -12,6 +12,7 @@ import { isMobile, checkRequiredFields } from 'libs/Utils';
 import i18n from './../../libs/i18n';
 import MultiImageUploader from 'shared_components/MultiImageUploader/MultiImageUploader';
 import DateInput from '../Form/DateInput';
+import DurationInput from './DurationInput';
 
 const serviceCategories = [
   { label: i18n.t('places.singular'), value: 'Accommodation' },
@@ -191,6 +192,12 @@ class ServiceForm extends Component {
     this.props.resetErrors();
   };
 
+  changeDuration = duration => {
+    const { setFieldValue, setFieldTouched } = this.props;
+    setFieldTouched('duration', true);
+    setFieldValue('duration', duration);
+  };
+
   redeploy = (values, serviceId) => {
     this.props.resetErrors();
     this.setState({ showGlobalError: false });
@@ -294,20 +301,19 @@ class ServiceForm extends Component {
           {touched.description && errors.description && <ErrorMsg>{errors.description}</ErrorMsg>}
         </Form.Field>
 
-        {/* Service Categories */}
+        {/* Service Category */}
         <Form.Field required>
-          <label>Service categories</label>
+          <label>Service category</label>
           <Dropdown
-            name="categories"
+            name="category"
             placeholder="Service Category"
             selection
-            multiple
-            value={values.categories.map(name => name)}
+            value={values.category}
             options={serviceTypeDropdownOptions}
             onChange={this.onDropDownChange}
-            error={!!(touched.categories && errors.categories)}
+            error={!!(touched.category && errors.category)}
           />
-          {touched.categories && errors.categories && <ErrorMsg>{errors.categories}</ErrorMsg>}
+          {touched.category && errors.category && <ErrorMsg>{errors.category}</ErrorMsg>}
         </Form.Field>
 
         {/* Price */}
@@ -342,16 +348,14 @@ class ServiceForm extends Component {
         </Form.Group>
 
         {/* Duration */}
-        <Form.Field required>
-          <label>Duration in Minutes</label>
-          <Form.Input
-            name="duration"
-            value={values.duration}
-            error={!!(touched.duration && errors.duration)}
-            {...defaultProps}
-          />
-          {touched.duration && errors.duration && <ErrorMsg>{errors.duration}</ErrorMsg>}
-        </Form.Field>
+        <DurationInput
+          onChange={this.changeDuration}
+          onTouch={this.handleDurationTouch}
+          defaultValue={Number(values.duration) || undefined}
+          touched={touched.duration}
+          error={errors.duration}
+          ErrorComponent={ErrorMsg}
+        />
 
         {/* Location search */}
         <Form.Field required>
@@ -368,7 +372,7 @@ class ServiceForm extends Component {
         {/* Instruction */}
         <Form.Group widths="equal">
           <Form.Field required>
-            <label>Instructions Start</label>
+            <label>Instructions Before Service</label>
             <Form.Input
               name="start"
               value={values.start}
@@ -378,7 +382,7 @@ class ServiceForm extends Component {
             {touched.start && errors.start && <ErrorMsg>{errors.start}</ErrorMsg>}
           </Form.Field>
           <Form.Field required>
-            <label>Instructions End</label>
+            <label>Instructions After Service</label>
             <Form.Input
               name="end"
               value={values.end}
@@ -619,7 +623,7 @@ class ServiceForm extends Component {
 
 function validate(values) {
   const requiredFields = [
-    'categories',
+    'category',
     'title',
     'subtitle',
     'description',
@@ -644,9 +648,16 @@ function validate(values) {
     }
   }
 
-  // exception: smart contracts doesn't accept price with a floating point, therefor we should accept round numbers only
-  if (!Number.isInteger(parseFloat(values['basePrice']))) {
-    errors['basePrice'] = 'Invalid number';
+  if (Number(values['basePrice']) < 0) {
+    errors['basePrice'] = 'Price must be at least 0';
+  }
+
+  if (!isNaN(parseFloat(values['slots'])) && parseFloat(values['slots']) < 1) {
+    errors['slots'] = 'Slots must be at least 1';
+  }
+
+  if (!isNaN(parseFloat(values['duration'])) && parseFloat(values['duration']) < 1) {
+    errors['duration'] = 'Must be at least 1 minute';
   }
 
   const hourFields = ['openingTime', 'closingTime'];
@@ -674,11 +685,11 @@ function validate(values) {
 
 export default withFormik({
   mapPropsToValues: ({ service }) => ({
-    categories: (service && service.categories) || [],
+    category: (service && service.category) || '',
     title: (service && service.title) || '',
     subtitle: (service && service.subtitle) || '',
     description: (service && service.description) || '',
-    duration: (service && service.duration) || '',
+    duration: (service && service.duration) || '30',
     rules: (service && service.rules) || [],
     start: (service && service.start) || '',
     end: (service && service.end) || '',

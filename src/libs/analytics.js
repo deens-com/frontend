@@ -101,7 +101,6 @@ export const trackLedgerConnected = () => {
 };
 
 export const trackHeaderCategoryClick = category => {
-  console.log('category', category);
   return {
     eventType: EventTypes.track,
     eventPayload: {

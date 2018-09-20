@@ -61,8 +61,6 @@ export const registerService = (values, history) => async (dispatch, getState) =
       method: 'POST',
       url: `${serverBaseURL}/services`,
       data: service,
-    }).catch(error => {
-      console.log(error);
     });
 
     if (acceptETH) {

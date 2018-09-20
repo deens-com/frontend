@@ -139,7 +139,7 @@ export const fetch_user_services = () => async dispatch => {
     dispatch(myServicesFetch());
     const userServices = await axios.get(`/services`);
     const services = fetch_helpers.buildServicesJson(userServices.data);
-    console.log('servo', services);
+
     dispatch(myServicesFetched(services));
   } else {
     history.push('/');
