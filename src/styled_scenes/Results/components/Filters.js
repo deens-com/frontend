@@ -202,7 +202,7 @@ class Filters extends Component {
 
   categoryPopupSelect = service_types => {
     const serviceOptions = [
-      { text: 'Accomodation', value: 'accomodation' },
+      { text: 'Accommodation', value: 'accommodation' },
       { text: 'Trip', value: 'trip' },
       { text: 'Food', value: 'food' },
       { text: 'Activity', value: 'activity' },

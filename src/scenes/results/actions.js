@@ -95,7 +95,7 @@ const composeQuery = search_params => {
 
 const composeFetchQuery = search_params => {
   const query_params = {
-    category: !search_params.type.length ? undefined : search_params.type.join('+'),
+    category: !search_params.type.length ? undefined : search_params.type.map( a => a.charAt(0).toUpperCase() + a.substr(1) ).join('+'),
     start_date: search_params.start_date || undefined,
     end_date: search_params.end_date || undefined,
     person_nb: search_params.person_nb || undefined,
