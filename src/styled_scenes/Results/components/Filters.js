@@ -147,9 +147,9 @@ class Filters extends Component {
     this.handleGuestsPopupClose();
     this.setState({ person_nb: nb });
     this.refetch_results({ person_nb: nb });
-  }
+  };
 
-  handleDatesChange = (dateRange) => {
+  handleDatesChange = dateRange => {
     const start = dateRange.startDate; // && dateRange.startDate._d.getTime();
     const end = dateRange.endDate; // && dateRange.endDate._d.getTime();
     this.setState({ startDate: start, endDate: end });
@@ -223,16 +223,15 @@ class Filters extends Component {
     let formatted_start_date =
       start_date && start_date.length ? moment(parseInt(start_date)).format('YYYY-M-D') : '';
     let end_date = this.props.search_query.end_date;
-    let formatted_end_date = end_date && end_date.length ? moment(parseInt(end_date)).format('YYYY-M-D') : '';
+    let formatted_end_date =
+      end_date && end_date.length ? moment(parseInt(end_date)).format('YYYY-M-D') : '';
     let person_nb = this.props.search_query.person_nb;
     let service_types = this.props.search_query.type;
     let address = this.props.search_query.address;
     return (
       <section>
         <Wrap>
-
           <SentenceWrapper>
-
             <div>
               <p>
                 I want
@@ -248,9 +247,7 @@ class Filters extends Component {
             <EditableElement>
               <Popup
                 trigger={
-                  <p style={{ textTransform: 'capitalize' }}>
-                    {service_types && service_types[0]}
-                  </p>
+                  <p style={{ textTransform: 'capitalize' }}>{service_types && service_types[0]}</p>
                 }
                 content={this.categoryPopupSelect(service_types)}
                 on="click"
@@ -296,7 +293,12 @@ class Filters extends Component {
 
             <EditableElement>
               <Popup
-                trigger={<p>{ (formatted_start_date && (formatted_start_date + ' / ' + formatted_end_date)) || 'Dates'}</p>}
+                trigger={
+                  <p>
+                    {(formatted_start_date && formatted_start_date + ' / ' + formatted_end_date) ||
+                      'Dates'}
+                  </p>
+                }
                 content={
                   <div>
                     <DateRangePicker
@@ -304,9 +306,13 @@ class Filters extends Component {
                       endDateId="endDate"
                       startDate={this.state.startDate}
                       endDate={this.state.endDate}
-                      onDatesChange={({ startDate, endDate }) => { this.handleDatesChange({ startDate, endDate })}}
+                      onDatesChange={({ startDate, endDate }) => {
+                        this.handleDatesChange({ startDate, endDate });
+                      }}
                       focusedInput={this.state.focusedInput}
-                      onFocusChange={(focusedInput) => { this.setState({ focusedInput })}}
+                      onFocusChange={focusedInput => {
+                        this.setState({ focusedInput });
+                      }}
                     />
                     <Icon
                       style={{ position: 'relative', left: '265px', bottom: '44px' }}
@@ -320,7 +326,7 @@ class Filters extends Component {
                 onClose={this.handleDatesPopupClose}
                 onOpen={this.handleDatesPopupOpen}
                 position="bottom center"
-                style={{minWidth: '316px'}}
+                style={{ minWidth: '316px' }}
               />
             </EditableElement>
 
@@ -334,7 +340,13 @@ class Filters extends Component {
                 content={
                   <Dropdown
                     placeholder={person_nb || 0 + ' Guests'}
-                    options={[{text: 1, value: 1}, {text: 2, value: 2}, {text: 3, value: 3}, {text: 4, value: 4}, {text: 5, value: 5}]}
+                    options={[
+                      { text: 1, value: 1 },
+                      { text: 2, value: 2 },
+                      { text: 3, value: 3 },
+                      { text: 4, value: 4 },
+                      { text: 5, value: 5 },
+                    ]}
                     onChange={this.handleGuestsNbChange}
                     fluid
                     selection
@@ -347,13 +359,10 @@ class Filters extends Component {
                 position="bottom center"
               />
             </EditableElement>
-
           </SentenceWrapper>
-
         </Wrap>
-
       </section>
-    )
+    );
   }
 }
 
