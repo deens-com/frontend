@@ -132,11 +132,9 @@ export const fetch_results = results_search_query => {
     try {
       const query = composeFetchQuery(results_search_query);
       const searchPath = query ? '?' + query : '';
-      const pathPrefix = (results_search_query.type.includes('trip'))
-        ?
-          '/search'
-        :
-          '/search/services';
+      const pathPrefix = results_search_query.type.includes('trip')
+        ? '/search'
+        : '/search/services';
       const results = await axios.get(pathPrefix + searchPath).catch(error => {
         console.log(error);
       });
