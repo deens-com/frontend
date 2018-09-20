@@ -1,9 +1,10 @@
 // NPM
 import React, { Component } from 'react';
-import Media from 'react-media';
+//import Media from 'react-media';
 import styled from 'styled-components';
 import GoogleMapReact from 'google-map-react';
 import { fitBounds } from 'google-map-react/utils';
+import { Checkbox } from 'semantic-ui-react';
 
 // COMPONENTS
 import TopBar from './../../shared_components/TopBarWithSearch';
@@ -14,18 +15,21 @@ import Results from './components/Results';
 import MapMaker from './../../shared_components/MapMarker';
 
 // ACTIONS/CONFIG
-import { media, sizes } from '../../libs/styled';
+import { media } from '../../libs/styled';
 // import { foodList } from "../../data/food";
 
 // STYLES
 import { Page, PageContent } from './../../shared_components/layout/Page';
 
 const MapWrapper = styled.div`
-  width: 42%;
+  // width: 42%;
+  width: 100%;
   background: #5cb89e;
   display: flex;
   align-items: center;
   justify-content: center;
+  max-height: 900px;
+  margin-top: 1.8em;
 
   h3 {
     color: #fff;
@@ -40,8 +44,15 @@ const ServicesWrapper = styled.div`
   min-height: 90vh;
 
   ${media.minLarge} {
-    width: 58%;
+    // width: 58%;
   }
+`;
+
+const MapToggle = styled.div`
+  display: flex;
+  flex-flow: row-reverse;
+  padding-right: 1em;
+  //padding-bottom: 1em;
 `;
 
 const defaultCenter = {
@@ -55,6 +66,7 @@ export default class ResultsScene extends Component {
     center: defaultCenter,
     zoom: defaultZoom,
     markers: [],
+    showMap: false,
   };
 
   static propTypes = {};
@@ -114,6 +126,10 @@ export default class ResultsScene extends Component {
     this.setState({ center, zoom, markers: [] });
   }
 
+  toggleMap = () => {
+    this.setState({ showMap: !this.state.showMap });
+  };
+
   render() {
     const { props } = this;
     const { center, zoom, markers } = this.state;
@@ -122,31 +138,33 @@ export default class ResultsScene extends Component {
         <TopBar {...props} fixed withPadding />
         <span>
           <Filters {...props} />
+          <MapToggle>
+            <Checkbox color="green" toggle onClick={this.toggleMap} /> &nbsp;&nbsp;
+            <div>
+              <h3 onClick={this.toggleMap}>Show Map</h3>
+            </div>
+          </MapToggle>
         </span>
         <PageContent flex>
           <ServicesWrapper>
-            <br />
             {/* <SearchFilters {...props} /> */}
-            <Results {...props} data={props.service_data} />
+            <Results {...props} data={props.service_data} showMap={this.state.showMap} />
           </ServicesWrapper>
-          <Media
-            query={`(min-width: ${sizes.large})`}
-            render={() => (
-              <MapWrapper>
-                <GoogleMapReact
-                  center={center}
-                  zoom={zoom}
-                  bootstrapURLKeys={{
-                    key: 'AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc',
-                  }}
-                >
-                  {markers.map(marker => (
-                    <MapMaker {...marker} scale={1} color="#4fb798" />
-                  ))}
-                </GoogleMapReact>
-              </MapWrapper>
-            )}
-          />
+
+          <MapWrapper style={{ display: this.state.showMap ? 'flex' : 'none' }}>
+            <br />
+            <GoogleMapReact
+              center={center}
+              zoom={zoom}
+              bootstrapURLKeys={{
+                key: 'AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc',
+              }}
+            >
+              {markers.map(marker => (
+                <MapMaker {...marker} scale={1} color="#4fb798" />
+              ))}
+            </GoogleMapReact>
+          </MapWrapper>
         </PageContent>
         <BrandFooter withTopBorder withPadding />
       </Page>

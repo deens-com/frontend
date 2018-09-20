@@ -19,8 +19,8 @@ import { PinIcon } from 'shared_components/icons';
 import I18nText from 'shared_components/I18nText';
 
 const Wrap = styled.div`
-  display: inline-block;
-  width: 300px;
+  // display: inline-block;
+  // width: 300px;
 `;
 
 // How did we come up with height: 104px?

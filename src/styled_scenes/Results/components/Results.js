@@ -8,7 +8,7 @@ import Row from '../../../shared_components/layout/Row';
 import TripCard from '../../../shared_components/Cards/Trip';
 import ReactPaginate from 'react-paginate';
 import { media } from '../../../libs/styled';
-import { Loader } from 'semantic-ui-react';
+import { Loader, Grid } from 'semantic-ui-react';
 
 // STYLES
 const Wrap = styled.div`
@@ -57,9 +57,9 @@ const PaginationWrap = styled.div`
 `;
 
 const ResultItem = styled.div`
-  position: relative;
-  display: inline-block;
-  margin-left: 8%;
+  // position: relative;
+  // display: inline-block;
+  // margin-left: 8%;
   ${media.minSmall} {
     //margin-left: 0px;
   }
@@ -144,14 +144,18 @@ export default class Results extends Component {
               </Loader>
             </LoaderWithMargin>
           ) : (
-            this.state.filteredData.map((result, i) => (
-              <ResultItem key={result.objectId}>
-                <Link to={(result.type ? '/services/' : '/trips/') + result.objectId}>
-                  {result.contractAddress && <Badge>Decentralized</Badge>}
-                  <TripCard key={result.label} withTooltip withShadow item={result} />
-                </Link>
-              </ResultItem>
-            ))
+            <Grid columns={this.props.showMap ? 2 : 4} doubling stackable>
+              {this.state.filteredData.map((result, i) => (
+                <Grid.Column>
+                  <ResultItem key={result.objectId}>
+                    <Link to={(result.type ? '/services/' : '/trips/') + result.objectId}>
+                      {result.contractAddress && <Badge>Decentralized</Badge>}
+                      <TripCard key={result.label} withTooltip withShadow item={result} />
+                    </Link>
+                  </ResultItem>
+                </Grid.Column>
+              ))}
+            </Grid>
           )}
         </Row>
         <Row>

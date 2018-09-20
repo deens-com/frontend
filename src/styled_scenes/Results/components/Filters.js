@@ -22,15 +22,17 @@ const Wrap = styled.div`
 
 const SentenceWrapper = styled.span`
   display: inline-flex;
-  padding: 10px 20px;
+  //padding: 10px 20px;
   font-weight: bold;
   color: grey;
-  padding-top: 1em;
+  //padding-top: 1em;
+  position: relative;
+  top: 1.3em;
 `;
 
 const EditableElement = styled.div`
   margin-left: 5px;
-  color: blue;
+  color: #4fb798;
   font-weight: bold;
   text-decoration: dashed underline;
   text-underline-position: under;
