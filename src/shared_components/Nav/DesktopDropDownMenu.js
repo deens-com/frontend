@@ -104,6 +104,11 @@ class DesktopDropDownMenu extends Component {
         >
           <Dropdown.Menu>
             <Dropdown.Item
+              icon="dollar"
+              text="Earn Money"
+              onClick={() => this.navigate_to('/earn-money')}
+            />
+            <Dropdown.Item
               icon="plane"
               text="My Trips"
               onClick={() => this.navigate_to('/account/trips/all')}

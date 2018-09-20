@@ -79,6 +79,14 @@ export const theme = {
     color: colors.lightGreen,
     colorHover: colors.white,
   },
+  fillLightGreen: {
+    background: colors.lightGreen,
+    backgroundHover: colors.greenActive,
+    border: colors.lightGreen,
+    borderHover: colors.greenActive,
+    color: colors.white,
+    colorHover: colors.white,
+  },
   icon: {
     background: 'transparent',
     backgroundHover: 'transparent',
@@ -112,6 +120,7 @@ export const Wrap = styled.div`
     text-align: ${props => props.align};
     transition: all 0.1s ease-out;
     width: ${props => props.width};
+    font-weight: ${props => (props.bold ? 'bold' : 'normal')};
 
     svg {
       font-size: ${props => (props.size ? size[props.size].iconSize : '12px')};
@@ -217,6 +226,7 @@ export default class Button extends Component {
         size={this.props.size}
         align={this.props.align}
         width={this.props.width}
+        bold={this.props.bold}
       >
         <El>
           {this.props.iconBefore && <IconBefore>{this.getIcon(this.props.iconBefore)}</IconBefore>}
@@ -240,6 +250,7 @@ Button.propTypes = {
   iconAfter: PropTypes.string,
   text: PropTypes.string,
   children: PropTypes.node,
+  bold: PropTypes.bool,
 };
 
 Button.defaultProps = {
@@ -252,4 +263,5 @@ Button.defaultProps = {
   iconBefore: '',
   iconAfter: '',
   text: '',
+  bold: false,
 };

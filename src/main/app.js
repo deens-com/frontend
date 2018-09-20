@@ -6,6 +6,7 @@ import store from './store';
 import withSegmentTracker from './middlewares/with_segment_tracker';
 import withErrorBoundary from './middlewares/WithErrorBoundary';
 import Home from './../scenes/home/home';
+import EarnMoney from './../scenes/earn-money';
 import Account from './../scenes/account/account';
 import Sessions from './../scenes/sessions/sessions';
 import Results from './../scenes/results/results';
@@ -37,6 +38,10 @@ const App = () => {
             <Route
               path={process.env.PUBLIC_URL + '/register'}
               component={commonHOCs(Registrations)}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + '/earn-money'}
+              component={commonHOCs(EarnMoney)}
             />
             <Route path={process.env.PUBLIC_URL + '/results'} component={commonHOCs(Results)} />
             <Route
