@@ -186,8 +186,8 @@ const buildServicesJson = services => {
       service.name = service.title;
       service.objectId = service._id;
       service.geo = {
-        lat: service.location.geo.coordinates[1] || 1,
-        lng: service.location.geo.coordinates[0] || 1,
+        lat: (service.location && service.location.geo && service.location.geo.coordinates[1]) || 1,
+        lng: (service.location && service.location.geo && service.location.geo.coordinates[0]) || 1,
       };
       // eslint-disable-next-line
       service.latitude = (service.location && service.location.latitude) || 1;
