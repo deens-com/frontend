@@ -76,8 +76,8 @@ export default class ResultsScene extends Component {
       .filter(({ latitude, longitude }) => latitude && longitude)
       .map(service => ({
         key: service.objectId,
-        lat: parseFloat(service.latitude),
-        lng: parseFloat(service.longitude),
+        lat: parseFloat(service.geo.lat),
+        lng: parseFloat(service.geo.lng),
       }));
   };
 
