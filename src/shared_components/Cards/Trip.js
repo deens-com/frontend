@@ -108,7 +108,8 @@ function formatLocation(location) {
 }
 
 const duration = minutes => {
-  return minutes / 60 / 24 + ' days';
+  const dayNb = minutes / 60 / 24 || 0;
+  return (dayNb).toFixed() + ' days';
 };
 
 export default class TripCard extends Component {

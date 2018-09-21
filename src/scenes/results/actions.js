@@ -98,12 +98,12 @@ const composeFetchQuery = search_params => {
     category: !search_params.type.length
       ? undefined
       : search_params.type.map(a => a.charAt(0).toUpperCase() + a.substr(1)).join('+'),
-    start_date: search_params.start_date || undefined,
-    end_date: search_params.end_date || undefined,
-    person_nb: search_params.person_nb || undefined,
+    startDate: search_params.start_date || undefined,
+    endDate: search_params.end_date || undefined,
+    guestNb: search_params.person_nb || undefined,
     //address: this.state.address,
-    latitude: search_params.latitude || undefined,
-    longitude: search_params.longitude || undefined,
+    lat: search_params.latitude || undefined,
+    lng: search_params.longitude || undefined,
     address: search_params.address || undefined,
     tags: !search_params.tags.length ? undefined : search_params.tags.join('+'),
     onlySmartContracts: search_params.onlySmartContracts || undefined,

@@ -144,11 +144,11 @@ export default class Results extends Component {
               </Loader>
             </LoaderWithMargin>
           ) : (
-            <Grid columns={this.props.showMap ? 2 : 4} doubling stackable>
+            <Grid columns={this.props.showMap ? 2 : 5} doubling stackable>
               {this.state.filteredData.map((result, i) => (
                 <Grid.Column>
                   <ResultItem key={result.objectId}>
-                    <Link to={(result.type ? '/services/' : '/trips/') + result.objectId}>
+                    <Link to={(result.categories[0].names['en-us'] === 'Trip' ? '/trips/' : '/services/') + result.objectId}>
                       {result.contractAddress && <Badge>Decentralized</Badge>}
                       <TripCard key={result.label} withTooltip withShadow item={result} />
                     </Link>
