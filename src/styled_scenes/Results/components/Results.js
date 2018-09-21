@@ -148,7 +148,13 @@ export default class Results extends Component {
               {this.state.filteredData.map((result, i) => (
                 <Grid.Column>
                   <ResultItem key={result.objectId}>
-                    <Link to={(result.categories[0].names['en-us'] === 'Trip' ? '/trips/' : '/services/') + result.objectId}>
+                    <Link
+                      to={
+                        (result.categories[0].names['en-us'] === 'Trip'
+                          ? '/trips/'
+                          : '/services/') + result.objectId
+                      }
+                    >
                       {result.contractAddress && <Badge>Decentralized</Badge>}
                       <TripCard key={result.label} withTooltip withShadow item={result} />
                     </Link>
