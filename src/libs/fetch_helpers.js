@@ -199,8 +199,8 @@ const buildServicesJson = services => {
       service.pricePerSession = service.pricePerSession || service.basePrice;
       if (service.tags && service.tags.length) {
         const tags = service.tags.map(tag => {
-          const tagBg = tagsColorMatcher(tag);
-          return { label: tag, hoverBg: tagBg, background: tagBg };
+          const tagBg = tagsColorMatcher(tag.type.toLowerCase());
+          return { label: tag.type, hoverBg: tagBg, background: tagBg };
         });
         service.tags = tags;
       }
