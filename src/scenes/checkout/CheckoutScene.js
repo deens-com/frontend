@@ -3,7 +3,7 @@ import { Grid } from 'semantic-ui-react';
 import { Elements, StripeProvider } from 'react-stripe-elements';
 
 import { Page, PageContent } from '../../shared_components/layout/Page';
-import TopBar from '../../shared_components/TopBarWithSearch';
+import TopBar from '../../shared_components/TopBar';
 import CheckoutTripContainer from './CheckoutTripContainer';
 import PaymentContainer from './PaymentContainer';
 
@@ -13,7 +13,7 @@ import PaymentContainer from './PaymentContainer';
 const CheckoutScene = props => {
   return (
     <Page topPush>
-      <TopBar fixed withPadding />
+      <TopBar fixed />
       <PageContent padding="32px">
         <Grid stackable celled>
           <Grid.Column width={8}>

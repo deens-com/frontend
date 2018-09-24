@@ -7,10 +7,7 @@ import styled, { css } from 'styled-components';
 import DesktopNav from '../Nav/DesktopNav';
 import MobileNav from '../Nav/MobileNav';
 import Logo from './Logo';
-import Search from './Search';
-import MobileSearch from './Search/MobileSearch';
 import MobileDropdownMenu from '../Nav/MobileDropdownMenu';
-import MobileNavProfile from '../Nav/MobileNavProfile';
 
 // ACTIONS/CONFIG
 import { media } from '../../libs/styled';
@@ -23,6 +20,7 @@ const InnerWrap = styled.header`
   display: flex;
   justify-content: ${props => (props.home ? 'space-between' : 'flext-start')};
   height: 65px;
+  padding: ${props => (props.home ? '0' : '10px')};
   width: 100%;
   z-index: 110;
   ${props =>
@@ -31,8 +29,8 @@ const InnerWrap = styled.header`
       position: fixed;
       top: 0;
     `} ${media.minMedium} {
-    height: 95px;
-    padding: ${props => (props.withPadding ? '0 25px' : '0')};
+    height: ${props => (props.home ? 95 : 70)}px;
+    padding: ${props => (props.fixed ? '0 25px' : '0')};
   }
 
   ${props =>
@@ -51,6 +49,11 @@ const InnerWrap = styled.header`
       position: fixed;
       top: 0;
     `};
+`;
+
+// So we don't need to add a margin to each page
+const FixedPlaceholder = styled.div`
+  margin-top: 85px;
 `;
 
 // MODULE
@@ -100,8 +103,8 @@ export default class TopBar extends Component {
   }
 
   render() {
-    const { home, fixed, noSearch, withPadding } = this.props;
-    const { showMenu, showSearch, showProfileMenu } = this.state;
+    const { home, fixed } = this.props;
+    const { showMenu } = this.state;
 
     return (
       <React.Fragment>
@@ -110,7 +113,6 @@ export default class TopBar extends Component {
           role="baner"
           showShadow={fixed && !showMenu}
           showMenu={showMenu}
-          withPadding={withPadding}
           home={home}
           fixed={fixed}
         >
@@ -120,17 +122,11 @@ export default class TopBar extends Component {
             applyFixation={showMenu && !fixed}
             flex={Boolean(home)}
           />
-          {!noSearch && <Search menuIsOpened={showMenu} toggleSearch={this.toggleSearch} />}
           <DesktopNav home={home} theme="light" />
+          <MobileDropdownMenu isMenuOpen={showMenu} toggleMenu={this.toggleMenu} dark={!home} />
         </InnerWrap>
-        <MobileSearch searchIsHidden={!showSearch} toggleSearch={this.toggleSearch} />
-        <MobileNav toggleProfileMenu={this.toggleMenu} showProfileMenu={showMenu} />
-        <MobileDropdownMenu
-          toggleProfileMenu={this.toggleProfileMenu}
-          dark={showProfileMenu}
-          hide={showMenu}
-        />
-        <MobileNavProfile menuIsOpened={showProfileMenu} />
+        <MobileNav toggleMenu={this.toggleMenu} showProfileMenu={showMenu} />
+        {fixed && <FixedPlaceholder />}
       </React.Fragment>
     );
   }
@@ -140,13 +136,11 @@ export default class TopBar extends Component {
 TopBar.propTypes = {
   home: PropTypes.bool,
   fixed: PropTypes.bool,
-  noSearch: PropTypes.bool,
   withPadding: PropTypes.bool,
 };
 
 TopBar.defaultProps = {
   home: false,
   fixed: false,
-  noSearch: false,
   withPadding: false,
 };

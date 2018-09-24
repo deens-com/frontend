@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import AccountServicesScene from './../../../styled_scenes/Account/Services';
 import { Page, PageContent } from './../../../shared_components/layout/Page';
-import TopBar from '../../../shared_components/TopBarWithSearch';
+import TopBar from '../../../shared_components/TopBar';
 import * as account_actions from './../actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -15,7 +15,7 @@ class AccountServicesComponent extends Component {
     return (
       <section>
         <Page topPush>
-          <TopBar fixed withPadding {...this.props} />
+          <TopBar fixed {...this.props} />
           <PageContent padding="24px">
             <AccountServicesScene {...this.props} />
           </PageContent>

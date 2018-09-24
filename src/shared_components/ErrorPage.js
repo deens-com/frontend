@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Page, PageContent } from 'shared_components/layout/Page';
-import TopBar from 'shared_components/TopBarWithSearch';
+import TopBar from 'shared_components/TopBar';
 import BrandFooter from 'shared_components/BrandFooter';
 
 const Title = styled.h1`
@@ -21,7 +21,7 @@ const PageContainer = styled.div`
 const ErrorPage = () => {
   return (
     <Page topPush>
-      <TopBar fixed withPadding />
+      <TopBar fixed />
       <PageContent>
         <PageContainer>
           <Title>Something went wrong :-(</Title>

@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import moment from 'moment';
 import { Divider, Message } from 'semantic-ui-react';
 // COMPONENTS
-import TopBar from 'shared_components/TopBarWithSearch';
+import TopBar from 'shared_components/TopBar';
 import ModifiableDayList from 'styled_scenes/EditTrip/components/ModifiableDayList';
 import Summary from 'styled_scenes/EditTrip/components/Summary';
 
@@ -75,7 +75,7 @@ class TripsScene extends Component {
 
     return (
       <Page topPush>
-        <TopBar fixed withPadding />
+        <TopBar fixed />
         <PageContent loading={this.props.isPageLoading}>
           {trip &&
             trip.objectId && (
