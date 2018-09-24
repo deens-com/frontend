@@ -150,9 +150,9 @@ export default class Results extends Component {
                   <ResultItem key={result.objectId}>
                     <Link
                       to={
-                        (result.categories[0].names['en-us'] === 'Trip'
-                          ? '/trips/'
-                          : '/services/') + result.objectId
+                        (result.categories && result.categories.length)
+                          ? ('/services/') + result.objectId
+                          : '/trips/'
                       }
                     >
                       {result.contractAddress && <Badge>Decentralized</Badge>}
