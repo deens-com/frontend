@@ -168,7 +168,7 @@ class FoodDetailScene extends Component {
           <PageContent flex loading={this.props.isPageLoading}>
             <Media
               query={`(min-width: ${sizes.large})`}
-              render={() => <ImgSlider images={this.props.service.pictures} />}
+              render={() => <ImgSlider images={this.props.service.media} />}
             />
             <DetailWrapper>
               <HeaderWrap>
@@ -178,7 +178,7 @@ class FoodDetailScene extends Component {
               </HeaderWrap>
               <Media
                 query={`(max-width: ${sizes.large})`}
-                render={() => <ImgSlider images={this.props.service.pictures} />}
+                render={() => <ImgSlider images={this.props.service.media} />}
               />
               <ServiceActionButtons
                 myUnpurchasedTrips={this.props.myUnpurchasedTrips}
