@@ -39,11 +39,22 @@ const Wrap = styled.div`
   a {
     font-size: 14px;
   }
+
+  > div > i {
+    order: 1;
+  }
+
+  .dropdown {
+    display: flex;
+  }
 `;
 
 const AvatarWrapper = styled.div`
   height: 30px;
   width: 30px;
+  margin-left: 15px;
+  margin-top: -5px;
+  order: 2;
 `;
 
 // MODULE
@@ -60,12 +71,26 @@ class DesktopDropDownMenu extends Component {
     history.push(path);
   };
 
+  trigger = () => (
+    <AvatarWrapper>
+      <Image
+        src={
+          (this.props.session.profilePicture && this.props.session.profilePicture.url) ||
+          ImgurAvatar
+        }
+        circular
+        width={30}
+        height={30}
+      />
+    </AvatarWrapper>
+  );
+
   logged_out() {
     return (
       <Wrap>
         <Button
           type="link"
-          theme={this.props.isBackgroundWhite ? 'whiteTransparent' : 'white'}
+          theme={this.props.isBackgroundWhite ? 'textLightGreen' : 'whiteTransparent'}
           round
           size="small"
           href="/login"
@@ -80,13 +105,8 @@ class DesktopDropDownMenu extends Component {
   }
 
   logged_in() {
-    const dpUrl =
-      (this.props.session.profilePicture && this.props.session.profilePicture.url) || ImgurAvatar;
     const showAddServiceButton = window.location.hash !== '#/account/services'; //this.props.history && this.props.history.location.pathname !== "/account/services"
-    const truncatesUsername =
-      this.props.session.username.length > 13
-        ? this.props.session.username.substring(0, 11).concat('...')
-        : this.props.session.username;
+
     return (
       <Wrap>
         {showAddServiceButton && (
@@ -94,13 +114,10 @@ class DesktopDropDownMenu extends Component {
             Add Service
           </Button>
         )}
-        <AvatarWrapper>
-          <Image src={dpUrl} circular onClick={() => this.navigate_to('/account/profile')} />
-        </AvatarWrapper>
         <Dropdown
+          trigger={this.trigger()}
           direction="left"
-          text={truncatesUsername}
-          style={this.props.theme === 'light' ? { color: 'white' } : { color: 'inherit' }}
+          style={this.props.isBackgroundWhite ? { color: 'inherit' } : { color: 'white' }}
         >
           <Dropdown.Menu>
             <Dropdown.Item

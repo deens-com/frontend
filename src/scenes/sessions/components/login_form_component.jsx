@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, Grid, Header, Message, Segment, Container } from 'semantic-ui-react';
 import styled from 'styled-components';
-import TopBar from './../../../shared_components/TopBarWithSearch';
+import TopBar from './../../../shared_components/TopBar';
 import BrandFooter from './../../../shared_components/BrandFooter';
 import { Page } from './../../../shared_components/layout/Page';
 import { Link } from 'react-router-dom';
@@ -86,7 +86,7 @@ export default class LoginFormComponent extends Component {
     return (
       <section>
         <Page topPush>
-          <TopBar fixed withPadding />
+          <TopBar fixed />
           <Container>
             <LoginContainer>
               <br /> <br />

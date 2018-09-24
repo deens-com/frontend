@@ -7,7 +7,7 @@ import GoogleMapReact from 'google-map-react';
 import { Container } from 'semantic-ui-react';
 
 // COMPONENTS
-import TopBar from './../../shared_components/TopBarWithSearch';
+import TopBar from './../../shared_components/TopBar';
 import BrandFooter from '../../shared_components/BrandFooter';
 import { BadgeIcon } from './icons';
 import TripCart from '../../shared_components/Carts/Location';
@@ -161,7 +161,7 @@ class FoodDetailScene extends Component {
   render() {
     return (
       <Page topPush>
-        <TopBar fixed withPadding />
+        <TopBar fixed />
 
         <Container>
           <br />

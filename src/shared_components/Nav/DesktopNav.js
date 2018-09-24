@@ -125,7 +125,7 @@ const TopBarDesktopNav = function TopBarDesktopNav({
             ))}
           </Nav>
           <ActionsWrap>
-            <DesktopDropDownMenu isBackgroundWhite={home} theme={theme} history={history} />
+            <DesktopDropDownMenu isBackgroundWhite={!home} history={history} />
           </ActionsWrap>
         </Wrap>
       )}

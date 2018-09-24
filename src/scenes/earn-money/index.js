@@ -127,7 +127,7 @@ const EarnMoney = ({ loggedIn }) => {
       <PageWrapper>
         <PageTop>
           <Header />
-          <TopBar home noSearch />
+          <TopBar home />
           <HeaderText>
             <Title>Earn Money</Title>
             <Subtitle>

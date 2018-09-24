@@ -12,7 +12,12 @@ import CurrencySelector from '../Currency/Selector';
 // ACTIONS/CONFIG
 import { sizes } from '../../libs/styled';
 import { mainNav } from '../../data/nav';
+import Button from '../Button';
+import { Briefcase, Folder, AccountCircle, Settings } from '../icons';
+import { getSession } from 'libs/user-session';
 import { trackHeaderCategoryClick } from 'libs/analytics';
+import { bindActionCreators } from 'redux';
+import { logOut } from 'scenes/sessions/actions';
 
 // STYLES
 const Wrap = styled.div`
@@ -37,7 +42,7 @@ const InnerList = styled.ul`
   list-style-type: none;
   overflow-x: hidden;
   overflow-y: auto;
-  padding: 95px 25px 25px;
+  padding: 55px 25px 25px;
 
   .Select,
   .Select div,
@@ -48,8 +53,7 @@ const InnerList = styled.ul`
   }
 
   .Select-control {
-    padding: 12px 0;
-    margin-bottom: 15px;
+    padding: 10px 0;
   }
 
   @media screen and (max-width: 768px) {
@@ -68,7 +72,7 @@ const InnerList = styled.ul`
 
   .Select-placeholder,
   .Select--single > .Select-control .Select-value {
-    padding: 12px 0;
+    padding: 10px 0;
   }
 
   .Select-menu-outer {
@@ -76,7 +80,7 @@ const InnerList = styled.ul`
   }
 
   .flag-select {
-    padding: 12px 0;
+    padding: 10px 0;
     width: 100%;
 
     .selected--flag--option {
@@ -98,10 +102,9 @@ const InnerList = styled.ul`
 `;
 
 const NavLink = styled(Link)`
-  display: block;
+  display: flex;
   font-size: 24px;
-  margin-bottom: 15px;
-  padding: 12px 0;
+  padding: 10px 0;
 
   &.is-active {
     color: #4fb798;
@@ -110,6 +113,9 @@ const NavLink = styled(Link)`
   @media screen and (max-width: 768px) {
     font-size: 14px;
     padding: 4px;
+  }
+  svg {
+    margin-right: 20px;
   }
 `;
 
@@ -120,28 +126,94 @@ const Divider = styled.hr`
   background: #efeff0;
 `;
 
+const LoggedInItem = styled.li`
+  font-weight: bold;
+`;
+
+const SessionButtons = styled.li`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  > div {
+    margin-bottom: 14px;
+  }
+`;
+
 // MODULE
 class MobileNav extends Component {
   componentDidMount() {
-    if (Parse.User.current() === null) {
+    try {
+      const session = getSession();
+      if (session) {
+        this.setState({ logged_in: true });
+      } else {
+        this.setState({ logged_in: false });
+      }
+    } catch (error) {
       this.setState({ logged_in: false });
-    } else {
-      this.setState({ logged_in: true });
     }
   }
 
-  guestDropdown() {
+  logout = () => {
+    this.props.logOut();
+    this.props.toggleMenu();
+  };
+
+  renderSessionButtons() {
+    if (this.state.logged_in) {
+      return (
+        <Button theme="textLightGreen" size="medium" onClick={this.logout}>
+          Log out
+        </Button>
+      );
+    }
     return (
-      <span>
-        <li>
-          <NavLink to="/register">Sign up</NavLink>
-        </li>
-        <li>
-          <NavLink to="/login">Login</NavLink>
-        </li>
-      </span>
+      <React.Fragment>
+        <Button type="link" href="/register" size="medium">
+          Sign up
+        </Button>
+        <Button type="link" href="/login" theme="textLightGreen" size="medium">
+          Login
+        </Button>
+      </React.Fragment>
     );
   }
+
+  renderLoggedInMenu = () => {
+    if (!this.state.logged_in) {
+      return null;
+    }
+    return (
+      <React.Fragment>
+        <Divider />
+        <LoggedInItem>
+          <NavLink to="/account/trips/all">
+            <Briefcase />
+            My Trips
+          </NavLink>
+        </LoggedInItem>
+        <LoggedInItem>
+          <NavLink to="/account/services">
+            <Folder />
+            My Services
+          </NavLink>
+        </LoggedInItem>
+        <LoggedInItem>
+          <NavLink to="/account/profile">
+            <AccountCircle />
+            Profile
+          </NavLink>
+        </LoggedInItem>
+        <LoggedInItem>
+          <NavLink to="/account/settings">
+            <Settings />
+            Settings
+          </NavLink>
+        </LoggedInItem>
+        <Divider />
+      </React.Fragment>
+    );
+  };
 
   render() {
     if (!this.props.showProfileMenu) return null;
@@ -153,6 +225,7 @@ class MobileNav extends Component {
         render={() => (
           <Wrap>
             <InnerList>
+              {this.renderLoggedInMenu()}
               <li aria-hidden="false">
                 <NavLink to="/">Home</NavLink>
               </li>
@@ -160,7 +233,7 @@ class MobileNav extends Component {
                 <Divider />
               </li>
               {mainNav.map(item => (
-                <li aria-hidden="false" key={item.label} onClick={this.props.toggleProfileMenu}>
+                <li aria-hidden="false" key={item.label} onClick={this.props.toggleMenu}>
                   <NavLink
                     activeclassname="is-active"
                     to={item.href}
@@ -173,13 +246,7 @@ class MobileNav extends Component {
               <li aria-hidden="true">
                 <Divider />
               </li>
-              <li>
-                <CurrencySelector />
-              </li>
-              <li aria-hidden="true">
-                <Divider />
-              </li>
-              {!this.state.logged_in && this.guestDropdown()}
+              <SessionButtons>{this.renderSessionButtons()}</SessionButtons>
             </InnerList>
           </Wrap>
         )}
@@ -192,6 +259,7 @@ const mapDispatchToProps = dispatch => {
   return {
     analytics: analyticsPayload =>
       dispatch({ type: 'analytics', meta: { analytics: analyticsPayload } }),
+    ...bindActionCreators({ logOut }, dispatch),
   };
 };
 export default connect(
