@@ -152,7 +152,7 @@ export default class Results extends Component {
                       to={
                         result.categories && result.categories.length
                           ? '/services/' + result.objectId
-                          : '/trips/'
+                          : '/trips/' + result.objectId
                       }
                     >
                       {result.contractAddress && <Badge>Decentralized</Badge>}
