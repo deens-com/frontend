@@ -7,7 +7,7 @@ import { fitBounds } from 'google-map-react/utils';
 import { Checkbox } from 'semantic-ui-react';
 
 // COMPONENTS
-import TopBar from './../../shared_components/TopBarWithSearch';
+import TopBar from './../../shared_components/TopBar';
 
 import BrandFooter from './../../shared_components/BrandFooter';
 import Filters from './components/Filters';
@@ -135,7 +135,7 @@ export default class ResultsScene extends Component {
     const { center, zoom, markers } = this.state;
     return (
       <Page topPush>
-        <TopBar {...props} fixed withPadding />
+        <TopBar {...props} fixed />
         <span>
           <Filters {...props} />
           <MapToggle>

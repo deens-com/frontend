@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import AccountTripsPlannedScene from './../../../styled_scenes/Account/Trips/Planned';
 import { Page, PageContent } from './../../../shared_components/layout/Page';
-import TopBar from '../../../shared_components/TopBarWithSearch';
+import TopBar from '../../../shared_components/TopBar';
 import * as account_actions from './../actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -38,7 +38,7 @@ class AccountTripsPlannedComponent extends Component {
     return (
       <section>
         <Page topPush>
-          <TopBar fixed withPadding />
+          <TopBar fixed />
           <PageContent padding="24px">
             <AccountTripsPlannedScene
               {...this.props}

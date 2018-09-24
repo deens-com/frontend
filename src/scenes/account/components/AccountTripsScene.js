@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 
 import { Page, PageContent } from 'shared_components/layout/Page';
-import TopBar from 'shared_components/TopBarWithSearch';
+import TopBar from 'shared_components/TopBar';
 import { SectionWrap } from 'shared_components/layout/Page';
 import UserBasicInfo from 'styled_scenes/Account/components/UserBasicInfo';
 import { scrollDownMobileOnly } from 'styled_scenes/Account/Trips/shared/scrollDownMobileOnly';
@@ -49,7 +49,7 @@ class AccountTripsScene extends Component {
     return (
       <div>
         <Page topPush>
-          <TopBar fixed withPadding />
+          <TopBar fixed />
           <PageContent padding="24px">
             <Grid centered columns={2}>
               <Grid.Column mobile={16} tablet={5} computer={4}>

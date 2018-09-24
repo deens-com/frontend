@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // COMPONENTS
-import TopBar from '../../shared_components/TopBarWithSearch';
+import TopBar from '../../shared_components/TopBar';
 import Logo from '../../shared_components/TopBar/Logo';
 import BrandFooter from '../../shared_components/BrandFooter';
 import { Divider } from 'semantic-ui-react';

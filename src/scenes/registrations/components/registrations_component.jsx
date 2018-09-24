@@ -1,6 +1,6 @@
 import React from 'react';
 import { Page } from './../../../shared_components/layout/Page';
-import TopBar from './../../../shared_components/TopBarWithSearch';
+import TopBar from './../../../shared_components/TopBar';
 import BrandFooter from './../../../shared_components/BrandFooter';
 import { Button, Form, Grid, Message, Container } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
@@ -56,7 +56,7 @@ const RegistrationsComponent = props => {
   return (
     <section>
       <Page topPush>
-        <TopBar fixed withPadding />
+        <TopBar fixed />
         <Container>
           <LoginContainer>
             <br /> <br />

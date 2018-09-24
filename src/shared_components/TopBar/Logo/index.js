@@ -15,17 +15,7 @@ import { sizes, resetButton } from '../../../libs/styled';
 const Wrap = styled.div`
   margin-right: 25px;
   z-index: 21;
-  flex: ${props => (props.flex ? 1 : 'auto')};
-`;
-
-const LogoWrap = styled.span`
-  display: inline-block;
-  height: 50px;
-  width: 90px;
-  @media screen and (max-width: 768px) {
-    width: auto;
-    height: auto;
-  }
+  flex-grow: 0;
 `;
 
 const ArrowWrap = styled.span`
@@ -35,18 +25,6 @@ const ArrowWrap = styled.span`
   transform: rotate(${props => (props.menuIsOpened ? '180deg' : '0deg')});
   transition: transform 0.2s ease-out, color 0.1s ease-out;
   width: 15px;
-`;
-
-const LogoButton = styled.button`
-  ${resetButton()} display: flex;
-  align-items: center;
-  outline: none;
-
-  &:hover {
-    ${ArrowWrap} {
-      color: #62b69e;
-    }
-  }
 `;
 
 const LogoLink = styled(Link)`
@@ -65,28 +43,11 @@ const LogoLink = styled(Link)`
 // MODULE
 export default function TopBarLogo({ menuIsOpened, toggleMenu, applyFixation }) {
   return (
-    <Media query={`(max-width: ${sizes.large})`}>
-      {matches =>
-        matches ? (
-          <Wrap applyFixation={applyFixation}>
-            <LogoButton aria-label="Main navigation menu" aria-haspopup={true} onClick={toggleMenu}>
-              <LogoWrap>
-                <Logo />
-              </LogoWrap>
-              <ArrowWrap menuIsOpened={menuIsOpened}>
-                <DropArrow />
-              </ArrowWrap>
-            </LogoButton>
-          </Wrap>
-        ) : (
-          <Wrap>
-            <LogoLink to="/" aria-label="Please homepage">
-              <Logo />
-            </LogoLink>
-          </Wrap>
-        )
-      }
-    </Media>
+    <Wrap>
+      <LogoLink to="/" aria-label="Please homepage">
+        <Logo />
+      </LogoLink>
+    </Wrap>
   );
 }
 
