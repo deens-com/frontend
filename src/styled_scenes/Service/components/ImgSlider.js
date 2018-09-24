@@ -120,9 +120,9 @@ export default class FoodImgSlider extends Component {
   render() {
     return (
       <Wrap>
-        {(this.props.images &&
+        {this.props.images &&
           this.props.images.length > 0 &&
-          this.props.images.length !== 1) && (
+          this.props.images.length !== 1 && (
             <span>
               <LeftArrow onClick={this.goToPrevious}>
                 <ArrowIcon />
