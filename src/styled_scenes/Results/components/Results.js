@@ -150,8 +150,8 @@ export default class Results extends Component {
                   <ResultItem key={result.objectId}>
                     <Link
                       to={
-                        (result.categories && result.categories.length)
-                          ? ('/services/') + result.objectId
+                        result.categories && result.categories.length
+                          ? '/services/' + result.objectId
                           : '/trips/'
                       }
                     >
