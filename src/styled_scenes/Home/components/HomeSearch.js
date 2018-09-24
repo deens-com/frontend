@@ -121,8 +121,7 @@ class HomeSearch extends Component {
     this.setKeyWords = this.setKeyWords.bind(this);
   }
 
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
   setSearch(ev) {
     this.setState({ search: ev.target.value });
@@ -153,7 +152,6 @@ class HomeSearch extends Component {
   }
 
   handleSearchSubmit() {
-
     const query_params = {
       address: this.state.address,
       latitude: this.state.latitude,
@@ -189,7 +187,7 @@ class HomeSearch extends Component {
     return (
       <Wrapper>
         <SearchBg>
-          <LeftIcon  />
+          <LeftIcon />
           {this.renderInputContent()}
         </SearchBg>
         {this.state.show_banner && (
