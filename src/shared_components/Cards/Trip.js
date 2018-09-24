@@ -160,11 +160,7 @@ export default class TripCard extends Component {
                         </Truncate>
                       </p>
                     </Location>
-                    <Rating
-                      marginBottom="10px"
-                      rating={item.rating}
-                      count={item.reviews}
-                    />
+                    <Rating marginBottom="10px" rating={item.rating} count={item.reviews} />
                     From <PriceTag unit="hidden" price={item.price} />
                   </ContentWrap>
                 </Cart>
