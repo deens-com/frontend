@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { Container } from 'semantic-ui-react';
 
 import { Page, PageContent } from '../../shared_components/layout/Page';
-import TopBar from '../../shared_components/TopBarWithSearch';
+import TopBar from '../../shared_components/TopBar';
 import NewServiceFormContainer from './NewService';
 import EditServiceContainer from './EditService';
 
@@ -13,7 +13,7 @@ const NewServiceScene = ({ location }) => {
   const isEditService = location.pathname.startsWith('/services/edit/');
   return (
     <Page topPush>
-      <TopBar fixed withPadding />
+      <TopBar fixed />
       <PageContent padding="24px">
         <Container text>
           {isNewService && (

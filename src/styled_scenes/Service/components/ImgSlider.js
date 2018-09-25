@@ -121,7 +121,7 @@ export default class FoodImgSlider extends Component {
     return (
       <Wrap>
         {this.props.images &&
-          this.props.images.length &&
+          this.props.images.length > 0 &&
           this.props.images.length !== 1 && (
             <span>
               <LeftArrow onClick={this.goToPrevious}>
@@ -136,7 +136,7 @@ export default class FoodImgSlider extends Component {
           src={
             (this.props.images &&
               this.props.images.length &&
-              this.props.images[this.state.index]) ||
+              this.props.images[this.state.index].files.hero.url) ||
             placeholder
           }
           sizes="42vw"

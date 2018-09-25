@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Media from 'react-media';
+import { connect } from 'react-redux';
 
 // COMPONENTS
 
@@ -11,22 +12,19 @@ import { Image } from 'semantic-ui-react';
 // ACTIONS/CONFIG
 import { sizes } from '../../libs/styled';
 import ImgurAvatar from './../../assets/imgur-avatar.png';
-import { getSession } from 'libs/user-session';
+import { Menu, CrossIcon } from 'shared_components/icons';
 
 // STYLES
 const AvatarWithUsername = styled.div`
-  position: absolute;
-  top: 16px;
-  right: 16px;
   color: white;
   text-align: center;
   cursor: pointer;
   z-index: 23;
+  display: flex;
+  justify-content: flex-end;
+  flex: 1;
   &.dark {
     color: #3c434b;
-  }
-  &.hidden {
-    display: none;
   }
   &.avatar-only {
     right: 65px;
@@ -39,54 +37,46 @@ const AvatarWithUsername = styled.div`
     display: inline-block;
     height: 30px;
     width: 30px;
-    margin-right: 10px;
+    margin-left: 10px;
   }
+  ${props =>
+    props.isMenuOpen &&
+    `svg {
+      fill: #38D39F;
+      margin-right: 25px;
+    }`};
 `;
 
 // MODULE
-export default class MobileDropDownMenu extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      logged_in: false,
-      current_user: {},
-    };
-  }
-
-  componentDidMount() {
-    try {
-      const session = getSession();
-      if (session) {
-        // TODO: @jaydp the below is setting current_user to the sessionObject
-        this.setState({ logged_in: true, current_user: session });
-      } else {
-        this.setState({ logged_in: false });
-      }
-    } catch (error) {
-      this.setState({ logged_in: false });
-    }
-  }
-
+class MobileDropDownMenu extends Component {
   render() {
     const dpUrl =
-      (this.state.current_user.profilePicture && this.state.current_user.profilePicture.url) ||
-      ImgurAvatar;
-
-    if (!this.state.logged_in) {
-      return null;
-    }
+      (this.props.session.profilePicture && this.props.profilePicture.url) || ImgurAvatar;
 
     return (
       <Media query={`(max-width: ${sizes.large})`}>
         <AvatarWithUsername
-          onClick={this.props.toggleProfileMenu}
-          className={`${this.props.dark && 'dark'} ${this.props.hide && 'hidden'} ${this.props
-            .avatarOnly && 'avatar-only'}`}
+          onClick={this.props.toggleMenu}
+          isMenuOpen={this.props.isMenuOpen}
+          className={`${this.props.dark && 'dark'} ${this.props.avatarOnly && 'avatar-only'}`}
         >
-          <Image src={dpUrl} circular />
-          {!this.props.avatarOnly && this.state.current_user.username}
+          {this.props.isMenuOpen ? (
+            <CrossIcon style={{ height: '20px', width: '20px', color: '38D39F' }} />
+          ) : (
+            <Menu style={{ height: '30px', width: '30px' }} />
+          )}
+          {this.props.session.username && !this.props.isMenuOpen && <Image src={dpUrl} circular />}
         </AvatarWithUsername>
       </Media>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  session: state.SessionsReducer.session,
+});
+
+export default connect(
+  mapStateToProps,
+  null,
+)(MobileDropDownMenu);

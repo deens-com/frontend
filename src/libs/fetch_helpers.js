@@ -183,6 +183,10 @@ const buildServicesJson = services => {
       service.title = service.title[i18nLocale];
       service.name = service.title;
       service.objectId = service._id;
+      service.geo = {
+        lat: (service.location && service.location.geo && service.location.geo.coordinates[1]) || 1,
+        lng: (service.location && service.location.geo && service.location.geo.coordinates[0]) || 1,
+      };
       // eslint-disable-next-line
       service.latitude = (service.location && service.location.latitude) || 1;
       // eslint-disable-next-line
@@ -195,10 +199,10 @@ const buildServicesJson = services => {
       service.slots = service.slots;
       service.price = service.price == null ? service.pricePerSession : service.price;
       service.pricePerSession = service.pricePerSession || service.basePrice;
-      if (service.tags && service.tags.length) {
+      if (service.tags && service.tags.length && service.tags[0].type) {
         const tags = service.tags.map(tag => {
-          const tagBg = tagsColorMatcher(tag);
-          return { label: tag, hoverBg: tagBg, background: tagBg };
+          const tagBg = tagsColorMatcher(tag.type.toLowerCase());
+          return { label: tag.type, hoverBg: tagBg, background: tagBg };
         });
         service.tags = tags;
       }

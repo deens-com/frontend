@@ -220,7 +220,7 @@ const ActionWrap = styled.div`
 export default function FoodDetailScene({}) {
   return (
     <Page topPush>
-      <TopBar fixed withPadding />
+      <TopBar fixed />
       <PageContent flex>
         <Media
           query={`(min-width: ${sizes.large})`}

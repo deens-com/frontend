@@ -19,8 +19,8 @@ import { PinIcon } from 'shared_components/icons';
 import I18nText from 'shared_components/I18nText';
 
 const Wrap = styled.div`
-  display: inline-block;
-  width: 300px;
+  // display: inline-block;
+  // width: 300px;
 `;
 
 // How did we come up with height: 104px?
@@ -108,7 +108,8 @@ function formatLocation(location) {
 }
 
 const duration = minutes => {
-  return minutes / 60 / 24 + ' days';
+  const dayNb = minutes / 60 / 24 || 0;
+  return dayNb.toFixed() + ' days';
 };
 
 export default class TripCard extends Component {
@@ -128,6 +129,7 @@ export default class TripCard extends Component {
   };
 
   render() {
+    const { item } = this.props;
     return (
       <div>
         {this.state.truncated ? (
@@ -137,66 +139,62 @@ export default class TripCard extends Component {
                 <Cart column className="card-animate">
                   <Thumb
                     url={
-                      this.props.item.image ||
+                      (item.media.length && item.media[0].files.thumbnail.url) ||
                       'https://please-com.imgix.net/7a7b798deb8064c64f57bff9ffeaa53a_1531363432782-4561574624.jpg?auto=format&dpr=1&crop=faces&fit=crop&w=800&h=500&ixlib=react-7.2.0'
                     }
-                    tripCount={this.props.item.partOf}
+                    tripCount={item.partOf}
                     withTooltip={this.props.withTooltip}
                   />
                   <ContentWrap>
-                    <Duration>{duration(this.props.item.duration)}</Duration>
+                    <Duration>{duration(item.duration)}</Duration>
                     <Title>
                       <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>
-                        <I18nText data={this.props.item.title} />
+                        <I18nText data={item.title} />
                       </Truncate>
                     </Title>
                     <Location>
                       <PinIcon />
                       <p>
                         <Truncate lines={cardConfig.locationLines}>
-                          {formatLocation(this.props.item.location)}
+                          {formatLocation(item.location)}
                         </Truncate>
                       </p>
                     </Location>
-                    <Rating
-                      marginBottom="10px"
-                      rating={this.props.item.rating}
-                      count={this.props.item.reviews}
-                    />
-                    From <PriceTag unit="hidden" price={this.props.item.price} />
+                    <Rating marginBottom="10px" rating={item.rating} count={item.reviews} />
+                    From <PriceTag unit="hidden" price={item.price} />
                   </ContentWrap>
                 </Cart>
               </Wrap>
             }
-            content={this.props.item.title}
+            content={item.title}
           />
         ) : (
           <Wrap>
             <Cart column className="card-animate">
               <Thumb
                 url={
-                  this.props.item.image ||
+                  (item.media.length && item.media[0].files.thumbnail.url) ||
                   'https://please-com.imgix.net/7a7b798deb8064c64f57bff9ffeaa53a_1531363432782-4561574624.jpg?auto=format&dpr=1&crop=faces&fit=crop&w=800&h=500&ixlib=react-7.2.0'
                 }
-                tripCount={this.props.item.partOf}
+                tripCount={item.partOf}
                 withTooltip={this.props.withTooltip}
               />
               <ContentWrap>
-                <Duration>{duration(this.props.item.duration)}</Duration>
+                <Duration>{duration(item.duration)}</Duration>
                 <Title>
                   <Truncate lines={cardConfig.titleLines}>
-                    <I18nText data={this.props.item.title} />
+                    <I18nText data={item.title} />
                   </Truncate>
                 </Title>
                 <Description>
                   <Truncate lines={cardConfig.descriptionLines}>
-                    <I18nText data={this.props.item.description} />
+                    <I18nText data={item.description} />
                   </Truncate>
                 </Description>
                 <ContentFooter>
                   <Price>
                     From{' '}
-                    <PriceTag unit="hidden" price={this.props.item.basePrice}>
+                    <PriceTag unit="hidden" price={item.basePrice}>
                       {({ symbol, convertedPrice }) => `${symbol}${convertedPrice}`}
                     </PriceTag>
                   </Price>
@@ -204,7 +202,7 @@ export default class TripCard extends Component {
                     <PinIcon />
                     <p>
                       <Truncate lines={cardConfig.locationLines}>
-                        {formatLocation(this.props.item.location)}
+                        {formatLocation(item.location)}
                       </Truncate>
                     </p>
                   </Location>
