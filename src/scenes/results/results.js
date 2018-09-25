@@ -18,6 +18,9 @@ const Results = props => {
   let speech_query = search_params.speech_query || '';
   let address = search_params.address || '';
   let onlySmartContracts = search_params.onlySmartContracts || false;
+  let page = search_params.page || 1;
+  let resultsCount = search_params.resultsCount || 0;
+  let limit = search_params.limit || 10;
 
   return (
     <div className="Home">
@@ -34,6 +37,9 @@ const Results = props => {
         speech_query={speech_query}
         address={address}
         onlySmartContracts={onlySmartContracts}
+        page={page}
+        resultsCount={resultsCount}
+        limit={limit}
       />
     </div>
   );

@@ -9,6 +9,7 @@ import TripCard from '../../../shared_components/Cards/Trip';
 import ReactPaginate from 'react-paginate';
 import { media } from '../../../libs/styled';
 import { Loader, Grid } from 'semantic-ui-react';
+import moment from 'moment';
 
 // STYLES
 const Wrap = styled.div`
@@ -83,8 +84,6 @@ const LoaderWithMargin = styled.section`
   margin-top: 40px;
 `;
 
-const limit_per_page = 12;
-
 // MODULE
 export default class Results extends Component {
   constructor(props) {
@@ -93,35 +92,59 @@ export default class Results extends Component {
     this.state = {
       filteredData: [],
       totalItems: 0,
+      address: props.search_query.address || undefined,
+      latitude: props.search_query.latitude || undefined,
+      longitude: props.search_query.longitude || undefined,
+      start_date: props.search_query.start_date ? props.search_query.start_date : moment().format(),
+      end_date: props.search_query.end_date
+        ? props.search_query.end_date
+        : moment()
+            .add(1, 'days')
+            .format(),
+      person_nb: props.search_query.person_nb || undefined,
+      service_type: props.search_query.type || [],
+      tags: [],
+      startDate: null,
+      endDate: null,
+      page: props.search_query.page || 0,
+      resultsCount: props.search_query.resultsCount || 0,
+      limit: props.search_query.limit || 0,
     };
   }
 
   componentWillReceiveProps() {
     this.loadData();
-    this.setState({ totalItems: this.props.data.length });
+    //this.setState({ totalItems: this.props.data.length });
+  }
+
+  get_query_params() {
+    return {
+      type: this.props.search_query.type,
+      start_date: this.props.search_query.start_date,
+      end_date: this.props.search_query.end_date,
+      person_nb: this.props.search_query.person_nb,
+      latitude: this.props.search_query.latitude,
+      longitude: this.props.search_query.longitude,
+      address: this.props.search_query.address,
+      tags: this.props.search_query.tags,
+      onlySmartContracts: this.props.search_query.onlySmartContracts,
+      page: this.props.search_query.page || 0,
+      resultsCount: this.props.search_query.resultsCount || 0,
+      limit: this.props.search_query.limit || 0,
+    };
+  }
+
+  refetch_results(param_object) {
+    const query_params = this.get_query_params();
+    query_params[Object.keys(param_object)[0]] = param_object[Object.keys(param_object)[0]];
+    this.props.update_path(query_params);
   }
 
   loadData = item => {
-    let data = [];
-    let skip = 0;
-    let selected = 0;
-
-    if (item) {
-      selected = item.selected;
+    if (item !== undefined) {
+      const selectedPage = item.selected + 1;
+      this.refetch_results({ page: selectedPage });
     }
-
-    this.props.data.forEach((result, i) => {
-      if (i < selected * limit_per_page) {
-        skip++;
-        return;
-      }
-
-      if (i < skip + limit_per_page) {
-        data.push(result);
-      }
-    });
-
-    this.setState({ filteredData: data });
   };
 
   render() {
@@ -129,7 +152,7 @@ export default class Results extends Component {
       <Wrap>
         <Row>
           {!this.props.isLoadingResults &&
-            this.state.filteredData.length === 0 && (
+            this.props.data.length === 0 && (
               <section>
                 <h4 style={{ textAlign: 'center', color: 'grey' }}>
                   There are no search results for given search criteria.
@@ -145,7 +168,7 @@ export default class Results extends Component {
             </LoaderWithMargin>
           ) : (
             <Grid columns={this.props.showMap ? 2 : 5} doubling stackable>
-              {this.state.filteredData.map((result, i) => (
+              {this.props.data.map((result, i) => (
                 <Grid.Column>
                   <ResultItem key={result.objectId}>
                     <Link
@@ -164,14 +187,16 @@ export default class Results extends Component {
             </Grid>
           )}
         </Row>
-        <Row>
-          <PaginationWrap>
-            {!this.props.isLoadingResults && this.state.filteredData.length ? (
+        <Row style={{display: this.props.isLoadingResults ? 'hidden' : 'visible'}}>
+          <PaginationWrap >
+            {this.props.data.length ? (
               <ReactPaginate
-                pageCount={Math.ceil(this.state.totalItems / limit_per_page)}
+                pageCount={Math.ceil(this.props.search_query.resultsCount / this.props.search_query.limit)}
                 marginPagesDisplayed={1}
                 pageRangeDisplayed={2}
                 onPageChange={this.loadData}
+                previousClassName='previousButton'
+                nextClassName='nextButton'
               />
             ) : null}
           </PaginationWrap>

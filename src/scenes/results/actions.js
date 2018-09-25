@@ -81,6 +81,8 @@ const composeQuery = search_params => {
     address: search_params.address || undefined,
     tags: !search_params.tags.length ? undefined : search_params.tags.join('+'),
     onlySmartContracts: search_params.onlySmartContracts || undefined,
+    page: search_params.page || 1,
+    limit: search_params.limit || 10,
   };
   let query_arr = [];
   Object.entries(query_params).forEach(([key, value]) => {
@@ -107,6 +109,8 @@ const composeFetchQuery = search_params => {
     address: search_params.address || undefined,
     tags: !search_params.tags.length ? undefined : search_params.tags.join('+'),
     onlySmartContracts: search_params.onlySmartContracts || undefined,
+    page: search_params.page || 1,
+    limit: search_params.limit || 1,
   };
   let query_arr = [];
   Object.entries(query_params).forEach(([key, value]) => {
@@ -145,6 +149,7 @@ export const fetch_results = results_search_query => {
         const data = fetch_helpers.buildServicesJson(resultsArr);
         const resultsData = { results: data };
         dispatch(results_fetched(resultsData));
+        results_search_query['resultsCount'] = results.data.count;
         dispatch(search_query_updated({ search_query: results_search_query }));
         dispatch(carousel_tags_fetched(resultsData));
       }

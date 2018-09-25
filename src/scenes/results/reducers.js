@@ -3,6 +3,8 @@ const initialState = {
   search_query: {
     service_types: [],
     tags: [],
+    resultsCount: 0,
+    page: 0,
   },
   carousel_tags: [],
   isLoadingResults: false,
