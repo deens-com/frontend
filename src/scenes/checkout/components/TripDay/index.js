@@ -5,7 +5,7 @@ import moment from 'moment';
 import ExcerptCart from '../../../../shared_components/Carts/DetailCart/ExcerptCart';
 import { Wrap, Header, DayTitle, DayTag, Mute } from './styles';
 import { Cart as ServiceCard } from '../../../../shared_components/Carts/styles';
-import EmptyTripDay from '../../../../styled_scenes/Trips/components/EmptyTripDay';
+// import EmptyTripDay from '../../../../styled_scenes/Trips/components/EmptyTripDay';
 
 const TripDay = ({ dayIndex, services, tripBeginDate }) => {
   return (
@@ -25,7 +25,7 @@ const TripDay = ({ dayIndex, services, tripBeginDate }) => {
           <ExcerptCart data={service} hideMoreInfo isOwner={false} />
         </ServiceCard>
       ))}
-      {services.length !== 0 ? null : <EmptyTripDay allowServiceRearrange={false} />}
+      {/*services.length !== 0 ? null : <EmptyTripDay allowServiceRearrange={false} />*/}
     </Wrap>
   );
 };

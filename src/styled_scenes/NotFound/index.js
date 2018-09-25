@@ -47,7 +47,7 @@ export default function NotFoundScene({ showScene }) {
   if (!showScene) return innerElements;
   return (
     <Page>
-      <TopBar>
+      <TopBar fixed>
         <Logo />
         <span>Links</span>
       </TopBar>
