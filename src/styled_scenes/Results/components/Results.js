@@ -187,16 +187,18 @@ export default class Results extends Component {
             </Grid>
           )}
         </Row>
-        <Row style={{display: this.props.isLoadingResults ? 'hidden' : 'visible'}}>
-          <PaginationWrap >
+        <Row style={{ display: this.props.isLoadingResults ? 'hidden' : 'visible' }}>
+          <PaginationWrap>
             {this.props.data.length ? (
               <ReactPaginate
-                pageCount={Math.ceil(this.props.search_query.resultsCount / this.props.search_query.limit)}
+                pageCount={Math.ceil(
+                  this.props.search_query.resultsCount / this.props.search_query.limit,
+                )}
                 marginPagesDisplayed={1}
                 pageRangeDisplayed={2}
                 onPageChange={this.loadData}
-                previousClassName='previousButton'
-                nextClassName='nextButton'
+                previousClassName="previousButton"
+                nextClassName="nextButton"
               />
             ) : null}
           </PaginationWrap>
