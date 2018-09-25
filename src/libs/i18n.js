@@ -10,7 +10,7 @@ i18next.init({
   resources: {
     en: {
       translation: {
-        places: { label: 'Accomodations', singular: 'Accomodation' },
+        places: { label: 'Accommodations', singular: 'Accommodation' },
         activities: { label: 'Activities', singular: 'Activity' },
         foods: { label: 'Food', singular: 'Food' },
         trips: { label: 'Trips', singular: 'Trip' },

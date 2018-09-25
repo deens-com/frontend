@@ -306,7 +306,7 @@ class Filters extends Component {
   categoryPopupSelect = service_types => {
     //const service_types = this.props.search_query.type ;
     const serviceOptions = [
-      { text: 'Accomodation', value: 'accomodation' },
+      { text: 'Accommodation', value: 'accommodation' },
       { text: 'Trip', value: 'trip' },
       { text: 'Food', value: 'food' },
       { text: 'Activity', value: 'activity' },
@@ -436,7 +436,8 @@ class Filters extends Component {
                     <p>
                       I want
                       {service_types &&
-                      (service_types.includes('activity') || service_types.includes('accomodation'))
+                      (service_types.includes('activity') ||
+                        service_types.includes('accommodation'))
                         ? ' an'
                         : service_types && service_types.includes('food')
                           ? ' '

@@ -34,6 +34,8 @@ const formatAddressLine = location => {
   return `${location.address_components[0].long_name}`;
 };
 
+const weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+
 const createService = values => {
   const i18nLocale = 'en-us';
   return {
@@ -51,13 +53,13 @@ const createService = values => {
         startTime: values.openingTime,
         endTime: values.closingTime,
         maxCapacity: values.slots,
-        daysOfWeek: values.availableDays.reduce((accum, day) => {
-          const lowerCaseDay = day.weekday.toLowerCase();
-          if (!accum[lowerCaseDay]) {
-            accum[lowerCaseDay] = day.selected;
-          }
-          return accum;
-        }, {}),
+        daysOfWeek: weekdays.reduce(
+          (prev, day) => ({
+            ...prev,
+            [day]: values.availableDays.includes(day),
+          }),
+          {},
+        ),
       },
     ],
     basePrice: values.basePrice,
@@ -132,21 +134,17 @@ const createService = values => {
 
 const buildServiceForView = service => {
   const i18nLocale = 'en-us';
-  let dayList = [];
 
   try {
-    for (const key in service.periods[0].daysOfWeek) {
-      const selected = service.periods[0].daysOfWeek[key];
-      const capitalized = key.charAt(0).toUpperCase() + key.substr(1);
-      dayList = [...dayList, { weekday: capitalized, selected }];
-    }
     service.title = service.title[i18nLocale];
     service.subtitle = service.subtitle[i18nLocale];
     service.description = service.description[i18nLocale];
     service.objectId = service._id;
     service.rating = service.rating;
     service.duration = service.duration;
-    service.dayList = dayList;
+    service.dayList = Object.keys(service.periods[0].daysOfWeek).filter(
+      k => service.periods[0].daysOfWeek[k],
+    );
     if (service.rules && service.rules.length) {
       const rules = service.rules.map(rule => rule[i18nLocale]);
       service.rules = rules;
