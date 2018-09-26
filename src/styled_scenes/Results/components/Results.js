@@ -187,7 +187,7 @@ export default class Results extends Component {
             </Grid>
           )}
         </Row>
-        <Row style={{ display: this.props.isLoadingResults ? 'hidden' : 'visible' }}>
+        <Row style={{ visibility: this.props.isLoadingResults ? 'hidden' : 'visible' }}>
           <PaginationWrap>
             {this.props.data.length ? (
               <ReactPaginate
