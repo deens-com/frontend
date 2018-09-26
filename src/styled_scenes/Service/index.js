@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Media from 'react-media';
 import GoogleMapReact from 'google-map-react';
-import { Container } from 'semantic-ui-react';
+import { Container, Grid } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+import Row from './../../shared_components/layout/Row';
 
 // COMPONENTS
 import TopBar from './../../shared_components/TopBar';
@@ -259,17 +261,33 @@ class FoodDetailScene extends Component {
                 </Badge>
                 <SelfAlignCenter>Part of trips</SelfAlignCenter>
                 <CarouselColumnSpan>
-                  <Carousel sm_slides_nb={1} md_slides_nb={2} lg_slides_nb={4} xl_slides_nb={4}>
-                    {this.props.trips.map(trip => (
-                      <TripCart
-                        item={trip}
-                        withShadow
-                        key={trip.title}
-                        size="small"
-                        href={'/trips/' + trip.objectId}
-                      />
-                    ))}
-                  </Carousel>
+
+                  <Row>
+                    <Grid columns={4} doubling stackable>
+                      {this.props.trips.map(trip => (
+                        <Grid.Column>
+                            <Link to={ '/trips/' + trip.objectId } >
+                              <TripCart key={trip.objectId} withTooltip withShadow item={trip} />
+                            </Link>
+                        </Grid.Column>
+                      ))}
+                    </Grid>
+                  </Row>
+
+                  {/*
+                    <Carousel sm_slides_nb={1} md_slides_nb={2} lg_slides_nb={4} xl_slides_nb={4}>
+                      {/*this.props.trips.map(trip => (
+                        <TripCart
+                          item={trip}
+                          withShadow
+                          key={trip.title}
+                          size="small"
+                          href={'/trips/' + trip.objectId}
+                        />
+                      ))}
+                    </Carousel>
+                  */}
+
                 </CarouselColumnSpan>
               </TripsWrap>
             ) : null}
