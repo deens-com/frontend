@@ -193,7 +193,8 @@ const buildServicesJson = services => {
       service.longitude = (service.location && service.location.longitude) || 1;
       const country = service.location.country && service.location.country.names[i18nLocale];
       service.location = service.location
-        ? `${service.location.city ? service.location.city + ',' : ''} ${country || service.location.state}`
+        ? `${service.location.city ? service.location.city + ',' : ''} ${country ||
+            service.location.state}`
         : '';
       service.rating = service.rating;
       service.reviewCount = service.reviewCount;
