@@ -11,6 +11,13 @@ export const trips_fetched = trips => {
   };
 };
 
+export const tripCreated = trip => {
+  return {
+    type: 'TRIP_CREATED',
+    payload: trip,
+  };
+};
+
 export const reviews_fetched = reviews => {
   return {
     type: 'REVIEWS_FETCHED',
@@ -125,6 +132,7 @@ export const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (dispatch
     if (newTrip) {
       const formattedTrip = fetch_helpers.buildServicesJson([newTrip.data])[0];
       setAddedToTripMessage(formattedTrip)(dispatch);
+      dispatch(tripCreated({ trip: formattedTrip }));
     }
   } catch (error) {
     console.error(error);

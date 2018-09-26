@@ -27,6 +27,11 @@ export default function ServicesReducer(state = initialState, action = {}) {
         isPageLoading: false,
         service: action.payload.service,
       };
+    case 'TRIP_CREATED':
+      return {
+        ...state,
+        trips: [...state.trips, action.payload.trip]
+      }
     case 'SERVICE_FETCH_ERROR':
       return {
         ...state,
