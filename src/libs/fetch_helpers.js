@@ -182,13 +182,13 @@ const buildServicesJson = services => {
       service.description = service.excerpt;
       service.title = service.title[i18nLocale];
       service.subtitle = service.subtitle ? service.subtitle[i18nLocale] : '';
-      service.startInstructions = service.instructions.start
+      service.startInstructions = service.instructions && service.instructions.start
         ? service.instructions.start[i18nLocale]
         : '';
-      service.endInstructions = service.instructions.end
+      service.endInstructions = service.instructions && service.instructions.end
         ? service.instructions.end[i18nLocale]
         : '';
-      service.rules = service.rules.map(rule => rule[i18nLocale]);
+      service.rules = service.rules && service.rules.map(rule => rule[i18nLocale]);
       service.name = service.title;
       service.objectId = service._id;
       service.geo = {
@@ -199,7 +199,7 @@ const buildServicesJson = services => {
       service.latitude = (service.location && service.location.latitude) || 1;
       // eslint-disable-next-line
       service.longitude = (service.location && service.location.longitude) || 1;
-      const country = service.location.country && service.location.country.names[i18nLocale];
+      const country = service.location && service.location.country && service.location.country.names[i18nLocale];
       service.location = service.location
         ? `${service.location.city ? service.location.city + ',' : ''} ${country ||
             service.location.state}`
@@ -209,8 +209,8 @@ const buildServicesJson = services => {
       service.slots = service.slots;
       service.price = service.price == null ? service.pricePerSession : service.price;
       service.pricePerSession = service.pricePerSession || service.basePrice;
-      service.openingTime = service.periods[0].startTime;
-      service.closingTime = service.periods[0].endTime;
+      service.openingTime = (service.periods && service.periods[0].startTime) || '00';
+      service.closingTime = (service.periods && service.periods[0].endTime) || '23';
       if (service.tags && service.tags.length && service.tags[0].type) {
         const tags = service.tags.map(tag => {
           const tagBg = tagsColorMatcher(tag.type.toLowerCase());
