@@ -29,19 +29,15 @@ const ImageElement = styled.div`
 const Avatar = ({ user, usernameColor }) => {
   if (!user) return null;
   const dpUrl = (user.profilePicture && user.profilePicture.url) || ImgurAvatar;
-  const userProfilePageUrl = `/users/${user.username}`;
+  //const userProfilePageUrl = `/users/${user.username}`;
   return (
     <GridContainer>
       <ImageElement>
-        <Link to={userProfilePageUrl}>
-          <AvatarWrapper>
-            <Image src={dpUrl} circular />
-          </AvatarWrapper>
-        </Link>
+        <AvatarWrapper>
+          <Image src={dpUrl} circular />
+        </AvatarWrapper>
       </ImageElement>
-      <Link to={userProfilePageUrl}>
         <WhiteText usernameColor={usernameColor}>{user.username}</WhiteText>
-      </Link>
       <Rating rating={user.rating} />
     </GridContainer>
   );
