@@ -13,14 +13,17 @@ const Wrapper = styled.div`
   background-position: center;
   text-align: center;
   color: white;
+  height: 350px;
+  margin-top: -20px;
   ${media.minMedium} {
-    margin-top: -15px;
     height: 450px;
+    margin-top: -15px;
   }
 `;
 
 const Title = styled.h1`
   font-weight: bold;
+  padding-top: 45px;
   ${media.minMedium} {
     padding-top: 90px;
     font-size: 36px;

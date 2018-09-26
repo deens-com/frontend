@@ -19,7 +19,10 @@ export default function ResultsReducer(state = initialState, action = {}) {
     case 'SEARCH_QUERY_UPDATED':
       return {
         ...state,
-        search_query: action.payload.search_query,
+        search_query: {
+          ...state.search_query,
+          ...action.payload.search_query,
+        },
       };
     case 'CAROUSEL_TAGS_FETCHED':
       return {
