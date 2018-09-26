@@ -42,7 +42,7 @@ export const userUnpurchasedTripsFetchFinish = trips => ({
 export const fetch_service = serviceId => async dispatch => {
   dispatch(serviceFetchStart());
   try {
-    const service = await axios.get(`/services/${serviceId}`).catch(error => {
+    const service = await axios.get(`/services/${serviceId}?include=owner`).catch(error => {
       dispatch({ type: 'SERVICE_FETCH_ERROR', payload: error });
     });
     if (service) {
