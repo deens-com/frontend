@@ -261,14 +261,13 @@ class FoodDetailScene extends Component {
                 </Badge>
                 <SelfAlignCenter>Part of trips</SelfAlignCenter>
                 <CarouselColumnSpan>
-
                   <Row>
                     <Grid columns={4} doubling stackable>
                       {this.props.trips.map(trip => (
                         <Grid.Column>
-                            <Link to={ '/trips/' + trip.objectId } >
-                              <TripCart key={trip.objectId} withTooltip withShadow item={trip} />
-                            </Link>
+                          <Link to={'/trips/' + trip.objectId}>
+                            <TripCart key={trip.objectId} withTooltip withShadow item={trip} />
+                          </Link>
                         </Grid.Column>
                       ))}
                     </Grid>
@@ -287,7 +286,6 @@ class FoodDetailScene extends Component {
                       ))}
                     </Carousel>
                   */}
-
                 </CarouselColumnSpan>
               </TripsWrap>
             ) : null}
