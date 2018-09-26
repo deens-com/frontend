@@ -37,7 +37,7 @@ const Avatar = ({ user, usernameColor }) => {
           <Image src={dpUrl} circular />
         </AvatarWrapper>
       </ImageElement>
-        <WhiteText usernameColor={usernameColor}>{user.username}</WhiteText>
+      <WhiteText usernameColor={usernameColor}>{user.username}</WhiteText>
       <Rating rating={user.rating} />
     </GridContainer>
   );
