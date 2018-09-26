@@ -33,13 +33,13 @@ const hoursDropdownOptions = hours.map(h => ({
 }));
 
 const weekDays = [
-  { weekday: 'Monday', selected: false },
-  { weekday: 'Tuesday', selected: false },
-  { weekday: 'Wednesday', selected: false },
-  { weekday: 'Thursday', selected: false },
-  { weekday: 'Friday', selected: false },
-  { weekday: 'Saturday', selected: false },
-  { weekday: 'Sunday', selected: false },
+  { text: 'Monday', value: 'monday' },
+  { text: 'Tuesday', value: 'tuesday' },
+  { text: 'Wednesday', value: 'wednesday' },
+  { text: 'Thursday', value: 'thursday' },
+  { text: 'Friday', value: 'friday' },
+  { text: 'Saturday', value: 'saturday' },
+  { text: 'Sunday', value: 'sunday' },
 ];
 
 const tagsDropdownOptions = serviceTags.map(value => ({ text: value, value }));
@@ -55,6 +55,10 @@ const AddRuleContainer = styled.div`
 const RulesLabel = styled.label`
   font-weight: bold;
 `;
+
+const facebookUrl = /^(?:(?:https?):\/\/)?(?:www.)?((facebook\.com)|(fb\.me))\/(#?\/?[a-zA-Z0-9#]+)+\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/;
+const twitterUrl = /^(?:(?:https?):\/\/)?(?:www.)?((twitter\.com))\/(#?\/?[a-zA-Z0-9#]+)+\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/;
+const websiteUrl = /^(?:(?:https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/;
 
 class ServiceForm extends Component {
   constructor(props) {
@@ -87,30 +91,6 @@ class ServiceForm extends Component {
     setFieldValue(name, value);
     setFieldTouched(name, true, false);
   };
-
-  onAvailableDaysChange = (e, { label, checked }) => {
-    const { values, setFieldValue, setFieldTouched } = this.props;
-    const availableDays = values.availableDays;
-    const labelByDay = availableDays.find(day => day.weekday === label);
-
-    if (checked) {
-      // checked
-      labelByDay.selected = true;
-    } else {
-      // unchecked
-      labelByDay.selected = false;
-    }
-    setFieldValue('availableDays', availableDays);
-    setFieldTouched('availableDays', true, false);
-  };
-
-  // onFileSelect = e => {
-  //   const { setFieldValue, setFieldTouched } = this.props;
-  //   const file = e.currentTarget.files[0];
-  //   if (!file) return;
-  //   setFieldValue('mainPicture', file);
-  //   setFieldTouched('mainPicture', true, false);
-  // };
 
   onLocationKeyUp = () => {
     const { setFieldValue, setFieldTouched } = this.props;
@@ -318,7 +298,7 @@ class ServiceForm extends Component {
 
         {/* Price */}
         <Form.Field required>
-          <label>Price Per Day/Night</label>
+          <label>Price Per {values.category === 'Accommodation' ? 'Night' : 'Day'}</label>
           <Form.Input
             name="basePrice"
             value={values.basePrice}
@@ -332,16 +312,16 @@ class ServiceForm extends Component {
         <Form.Group grouped>
           <Form.Field required>
             <label>Available Days</label>
-            {values.availableDays.map(availableDay => (
-              <Form.Checkbox
-                id={availableDay.weekday}
-                label={availableDay.weekday}
-                key={availableDay.weekday}
-                name={availableDay.weekday}
-                checked={availableDay.selected}
-                onChange={this.onAvailableDaysChange}
-              />
-            ))}
+            <Dropdown
+              name="availableDays"
+              placeholder="Select davailable days"
+              selection
+              multiple
+              value={values.availableDays}
+              options={weekDays}
+              onChange={this.onDropDownChange}
+              error={!!(touched.availableDays && errors.availableDays)}
+            />
             {touched.availableDays &&
               errors.availableDays && <ErrorMsg>{errors.availableDays}</ErrorMsg>}
           </Form.Field>
@@ -454,7 +434,10 @@ class ServiceForm extends Component {
               placeholder="End date"
               leftIcon="date"
               value={values.endDate}
-              dayPickerProps={{ disabledDays: { before: values.startDate || new Date() } }}
+              dayPickerProps={{
+                disabledDays: { before: values.startDate || new Date() },
+                month: values.startDate,
+              }}
               innerRef={input => {
                 this.endDateInput = input;
               }}
@@ -495,7 +478,9 @@ class ServiceForm extends Component {
 
         {/* Slots in a Day */}
         <Form.Field required>
-          <label>Number of slots available per Day/Night</label>
+          <label>
+            Number of slots available per {values.category === 'Accommodation' ? 'Night' : 'Day'}
+          </label>
           <Form.Input
             name="slots"
             type="number"
@@ -680,6 +665,16 @@ function validate(values) {
     }
   }
 
+  if (values.website && !websiteUrl.test(values.website)) {
+    errors.website = 'Must be a valid URL';
+  }
+  if (values.facebook && !facebookUrl.test(values.facebook)) {
+    errors.facebook = 'Must be a valid Facebook URL';
+  }
+  if (values.twitter && !twitterUrl.test(values.twitter)) {
+    errors.twitter = 'Must be a valid Twitter URL';
+  }
+
   return errors;
 }
 
@@ -698,7 +693,7 @@ export default withFormik({
     website: (service && service.website) || '',
     basePrice: service && service.basePrice != null ? service.basePrice : '',
     acceptETH: (service && service.acceptETH) || false,
-    availableDays: (service && service.dayList) || weekDays,
+    availableDays: (service && service.dayList) || [],
     startDate: (service && service.startDate) || '',
     endDate: (service && service.endDate) || '',
     openingTime: service && service.openingTime != null ? service.openingTime : null,
@@ -727,7 +722,8 @@ export default withFormik({
       null,
     tags: (service && service.tags && service.tags.map(tag => tag.type)) || [],
     media: (service && service.media) || [],
-    formattedAddress: (service && service.location.formattedAddress) || undefined,
+    formattedAddress:
+      (service && service.location && service.location.formattedAddress) || undefined,
   }),
   validate,
   handleSubmit: (values, { props }) => {
