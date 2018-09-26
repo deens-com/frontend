@@ -182,12 +182,14 @@ const buildServicesJson = services => {
       service.description = service.excerpt;
       service.title = service.title[i18nLocale];
       service.subtitle = service.subtitle ? service.subtitle[i18nLocale] : '';
-      service.startInstructions = service.instructions && service.instructions.start
-        ? service.instructions.start[i18nLocale]
-        : '';
-      service.endInstructions = service.instructions && service.instructions.end
-        ? service.instructions.end[i18nLocale]
-        : '';
+      service.startInstructions =
+        service.instructions && service.instructions.start
+          ? service.instructions.start[i18nLocale]
+          : '';
+      service.endInstructions =
+        service.instructions && service.instructions.end
+          ? service.instructions.end[i18nLocale]
+          : '';
       service.rules = service.rules && service.rules.map(rule => rule[i18nLocale]);
       service.name = service.title;
       service.objectId = service._id;
@@ -199,7 +201,8 @@ const buildServicesJson = services => {
       service.latitude = (service.location && service.location.latitude) || 1;
       // eslint-disable-next-line
       service.longitude = (service.location && service.location.longitude) || 1;
-      const country = service.location && service.location.country && service.location.country.names[i18nLocale];
+      const country =
+        service.location && service.location.country && service.location.country.names[i18nLocale];
       service.location = service.location
         ? `${service.location.city ? service.location.city + ',' : ''} ${country ||
             service.location.state}`
