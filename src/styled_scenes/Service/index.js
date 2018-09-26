@@ -190,6 +190,7 @@ class FoodDetailScene extends Component {
                       <li>On departure : {this.props.service.endInstructions}</li>
                     )}
                 </ul>
+                <br />
                 {this.props.service.rules &&
                   this.props.service.rules.length > 0 && (
                     <section>
