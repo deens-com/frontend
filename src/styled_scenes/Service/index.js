@@ -10,7 +10,7 @@ import { Container } from 'semantic-ui-react';
 import TopBar from './../../shared_components/TopBar';
 import BrandFooter from '../../shared_components/BrandFooter';
 import { BadgeIcon } from './icons';
-import TripCart from '../../shared_components/Carts/Location';
+import TripCart from '../../shared_components/Cards/Trip';
 import Review from '../../shared_components/Review';
 import Carousel from '../../shared_components/Carousel';
 import ImgSlider from './components/ImgSlider';
