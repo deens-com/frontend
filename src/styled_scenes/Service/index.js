@@ -173,8 +173,23 @@ class FoodDetailScene extends Component {
             <DetailWrapper>
               <HeaderWrap>
                 <h2>{this.props.service.title}</h2>
+                <PreserveWhiteSpace>{this.props.service.subtitle}</PreserveWhiteSpace>
                 <ServiceTags service={this.props.service} />
                 <PreserveWhiteSpace>{this.props.service.description}</PreserveWhiteSpace>
+                <h4>Instructions : </h4>
+                <ul>
+                  {this.props.service.startInstructions && (
+                    <li>On arrival : {this.props.service.startInstructions}</li>
+                  )}
+                  {this.props.service.endInstructions && (
+                    <li>On departure : {this.props.service.endInstructions}</li>
+                  )}
+                </ul>
+                <h4>Rules : </h4>
+                <ul>
+                  {this.props.service.rules &&
+                    this.props.service.rules.map(rule => <li>{rule}</li>)}
+                </ul>
               </HeaderWrap>
               <Media
                 query={`(max-width: ${sizes.large})`}
