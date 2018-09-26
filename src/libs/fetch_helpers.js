@@ -181,6 +181,10 @@ const buildServicesJson = services => {
       service.excerpt = service.description ? service.description[i18nLocale] : '';
       service.description = service.excerpt;
       service.title = service.title[i18nLocale];
+      service.subtitle = service.subtitle ? service.subtitle[i18nLocale] : '';
+      service.startInstructions = service.instructions.start ? service.instructions.start[i18nLocale] : '';
+      service.endInstructions = service.instructions.end ? service.instructions.end[i18nLocale] : '';
+      service.rules = service.rules.map(rule => rule[i18nLocale]);
       service.name = service.title;
       service.objectId = service._id;
       service.geo = {
