@@ -178,22 +178,17 @@ class FoodDetailScene extends Component {
                 <PreserveWhiteSpace>{this.props.service.description}</PreserveWhiteSpace>
                 <h4>Instructions : </h4>
                 <ul>
-                  {
-                    this.props.service.startInstructions &&
+                  {this.props.service.startInstructions && (
                     <li>On arrival : {this.props.service.startInstructions}</li>
-                  }
-                  {
-                    this.props.service.endInstructions &&
+                  )}
+                  {this.props.service.endInstructions && (
                     <li>On departure : {this.props.service.endInstructions}</li>
-                  }
+                  )}
                 </ul>
                 <h4>Rules : </h4>
                 <ul>
-                  {
-                    this.props.service.rules && this.props.service.rules.map(rule => (
-                      <li>{rule}</li>
-                    ))
-                  }
+                  {this.props.service.rules &&
+                    this.props.service.rules.map(rule => <li>{rule}</li>)}
                 </ul>
               </HeaderWrap>
               <Media
