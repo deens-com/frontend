@@ -30,8 +30,8 @@ export default function ServicesReducer(state = initialState, action = {}) {
     case 'TRIP_CREATED':
       return {
         ...state,
-        trips: [...state.trips, action.payload.trip]
-      }
+        trips: [...state.trips, action.payload.trip],
+      };
     case 'SERVICE_FETCH_ERROR':
       return {
         ...state,
