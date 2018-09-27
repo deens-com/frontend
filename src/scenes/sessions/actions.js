@@ -132,21 +132,26 @@ export const update_user_profile = (user_id, field_type, value) => {
   };
 };
 
-export const update_user_avatar = (file) => {
+export const update_user_avatar = file => {
   return async dispatch => {
     const session = getSession();
     if (session) {
       try {
         let formData = new FormData();
         formData.append('profilePicture', file);
-        const uploadedFile = await axiosOriginal.post(`${serverBaseURL}/media`, formData, { });
+        const uploadedFile = await axiosOriginal.post(`${serverBaseURL}/media`, formData, {});
         if (uploadedFile) {
           const pictureUrl = uploadedFile.data.url;
           const updatedUser = await axiosOriginal
             .patch(
               `${serverBaseURL}/users/me`,
-              { 'metamaskPublicAddress': pictureUrl },
-              { headers: { Authorization: `Bearer ${session.accessToken}`, 'Content-Type': 'application-json' } },
+              { metamaskPublicAddress: pictureUrl },
+              {
+                headers: {
+                  Authorization: `Bearer ${session.accessToken}`,
+                  'Content-Type': 'application-json',
+                },
+              },
             )
             .catch(error => {
               dispatch(displayUpdateError({ code: 422, error: error }));
@@ -161,7 +166,7 @@ export const update_user_avatar = (file) => {
         console.log(error);
       }
     }
-  }
+  };
 };
 
 export const loginRequest = (email, password) => {

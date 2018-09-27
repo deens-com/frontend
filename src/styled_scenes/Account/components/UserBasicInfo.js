@@ -55,7 +55,8 @@ const FileInputWrapper = styled.div`
 
 const UserBasicInfo = ({ user_profile: user = {}, match, update_user_avatar, logOut }) => {
   const name = user.fullName || user.username;
-  const dpUrl = (user.profilePicture && user.profilePicture.url) || user.metamaskPublicAddress || ImgurAvatar;
+  const dpUrl =
+    (user.profilePicture && user.profilePicture.url) || user.metamaskPublicAddress || ImgurAvatar;
   let activePath = match.path.replace('/account/', '');
   // const logout = () => {
   //   props.logOut();
