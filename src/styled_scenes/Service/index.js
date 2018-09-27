@@ -228,12 +228,7 @@ class FoodDetailScene extends Component {
                     defaultZoom={11}
                     bootstrapURLKeys={{ key: 'AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc' }}
                   >
-                    <MapMaker
-                      lat={latitude}
-                      lng={longitude}
-                      scale={1}
-                      color="#4fb798"
-                    />
+                    <MapMaker lat={latitude} lng={longitude} scale={1} color="#4fb798" />
                   </GoogleMapReact>
                 </MapWrap>
                 <Contacts>
