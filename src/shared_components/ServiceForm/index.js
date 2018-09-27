@@ -328,14 +328,16 @@ class ServiceForm extends Component {
         </Form.Group>
 
         {/* Duration */}
-        <DurationInput
-          onChange={this.changeDuration}
-          onTouch={this.handleDurationTouch}
-          defaultValue={Number(values.duration) || undefined}
-          touched={touched.duration}
-          error={errors.duration}
-          ErrorComponent={ErrorMsg}
-        />
+        {values.category !== 'Accommodation' && (
+          <DurationInput
+            onChange={this.changeDuration}
+            onTouch={this.handleDurationTouch}
+            defaultValue={Number(values.duration) || undefined}
+            touched={touched.duration}
+            error={errors.duration}
+            ErrorComponent={ErrorMsg}
+          />
+        )}
 
         {/* Location search */}
         <Form.Field required>
