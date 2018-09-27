@@ -54,7 +54,10 @@ const Username = styled.p`
 
 const Header = ({ trip, owner }) => {
   const hero = trip.media.find(media => media.hero) || trip.media[0];
-  const img = hero.files.hero ? hero.files.hero.url : trip.media.files.large.url;
+  let img;
+  if (hero && hero.files) {
+    img = hero.files.hero ? hero.files.hero.url : trip.media.files.large.url;
+  }
 
   return (
     <Wrapper img={img}>
