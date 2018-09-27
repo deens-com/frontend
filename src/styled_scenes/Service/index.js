@@ -161,6 +161,8 @@ class FoodDetailScene extends Component {
   };
 
   render() {
+    const latitude = (this.props.service.geo && this.props.service.geo.lat) || 0;
+    const longitude = (this.props.service.geo && this.props.service.geo.lng) || 0;
     return (
       <Page topPush>
         <TopBar fixed />
@@ -220,15 +222,15 @@ class FoodDetailScene extends Component {
                 <MapWrap>
                   <GoogleMapReact
                     center={{
-                      lat: this.props.service.latitude || 0,
-                      lng: this.props.service.longitude || 0,
+                      lat: latitude,
+                      lng: longitude,
                     }}
                     defaultZoom={11}
                     bootstrapURLKeys={{ key: 'AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc' }}
                   >
                     <MapMaker
-                      lat={this.props.service.latitude || 0}
-                      lng={this.props.service.longitude || 0}
+                      lat={latitude}
+                      lng={longitude}
                       scale={1}
                       color="#4fb798"
                     />
