@@ -76,6 +76,7 @@ class DesktopDropDownMenu extends Component {
       <Image
         src={
           (this.props.session.profilePicture && this.props.session.profilePicture.url) ||
+          this.props.session.metamaskPublicAddress ||
           ImgurAvatar
         }
         circular
