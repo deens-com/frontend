@@ -83,7 +83,7 @@ const createService = values => {
       symbol: '$',
     },
     description: { [i18nLocale]: values.description },
-    duration: values.duration,
+    duration: values.category === 'Accommodation' ? 1 : values.duration,
     instructions: {
       start: { [i18nLocale]: values.start },
       end: { [i18nLocale]: values.end },
