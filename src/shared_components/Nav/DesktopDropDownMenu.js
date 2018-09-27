@@ -141,11 +141,11 @@ class DesktopDropDownMenu extends Component {
               text="Profile"
               onClick={() => this.navigate_to('/account/profile')}
             />
-            <Dropdown.Item
+            {/*<Dropdown.Item
               icon="cogs"
               text="Settings"
               onClick={() => this.navigate_to('/account/settings')}
-            />
+            />*/}
             <Dropdown.Divider />
             <Dropdown.Item icon="power" text="Logout" onClick={this.logout} />
           </Dropdown.Menu>
