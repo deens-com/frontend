@@ -1,5 +1,5 @@
 export const cardConfig = {
-  titleLines: 3,
+  titleLines: 2,
   titleHeight: '70px',
   descriptionLines: 2,
   locationLines: 2,
