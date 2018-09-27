@@ -11,6 +11,7 @@ import Account from './../scenes/account/account';
 import Sessions from './../scenes/sessions/sessions';
 import Results from './../scenes/results/results';
 import Trip from './../scenes/trip';
+import TripOrganizer from './../scenes/trip-organizer';
 import Users from './../scenes/users/users';
 import Services from './../scenes/services/services';
 import Registrations from './../scenes/registrations/registrations';
@@ -49,6 +50,10 @@ const App = () => {
             <Route
               path={process.env.PUBLIC_URL + '/services/:id'}
               component={commonHOCs(Services)}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + '/trips/organize/:id'}
+              component={commonHOCs(TripOrganizer)}
             />
             <Route path={process.env.PUBLIC_URL + '/trips/:id'} component={commonHOCs(Trip)} />
             <Route

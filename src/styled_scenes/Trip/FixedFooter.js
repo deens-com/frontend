@@ -22,13 +22,18 @@ const Text = styled.span`
   margin-right: 50px;
 `;
 
-const FixedFooter = ({ price, peopleNumber }) => {
+const FixedFooter = ({ price, peopleNumber, onCustomizeClick, startDate, endDate }) => {
   return (
     <Wrapper>
       <Text>
-        Maximum price for {peopleNumber} Persons: ${price}
+        Minimum price for {peopleNumber} Persons: ${price}
       </Text>
-      <Button theme="fillLightGreen" size="medium">
+      <Button
+        disabled={!peopleNumber || !(startDate && endDate)}
+        theme="fillLightGreen"
+        size="medium"
+        onClick={onCustomizeClick}
+      >
         Customize this trip
       </Button>
     </Wrapper>

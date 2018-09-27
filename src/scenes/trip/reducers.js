@@ -5,6 +5,13 @@ const initialState = {
   isLoading: false,
   error: null,
   owner: null,
+  availability: {
+    data: null,
+    isChecking: false,
+    timestamp: null, // To check for race conditions
+    error: null,
+  },
+  isCloning: false,
 };
 
 export default function TripsReducer(state = initialState, action = {}) {
@@ -33,6 +40,24 @@ export default function TripsReducer(state = initialState, action = {}) {
         error: action.payload,
       };
     }
+    case types.CLONE_TRIP_START: {
+      return {
+        ...state,
+        isCloning: true,
+      };
+    }
+    case types.CLONE_TRIP_SUCCESS: {
+      return {
+        ...state,
+        isCloning: false,
+      };
+    }
+    case types.CLONE_TRIP_ERROR: {
+      return {
+        ...state,
+        isCloning: false,
+      };
+    }
     case types.FETCH_OWNER_START: {
       return {
         ...state,
@@ -43,6 +68,48 @@ export default function TripsReducer(state = initialState, action = {}) {
       return {
         ...state,
         owner: action.payload,
+      };
+    }
+    case types.CHECK_AVAILABILITY_START: {
+      return {
+        ...state,
+        availability: {
+          ...initialState.availability,
+          isChecking: true,
+          timestamp: action.timestamp,
+        },
+      };
+    }
+    case types.CHECK_AVAILABILITY_SUCCESS: {
+      if (action.timestamp !== state.availability.timestamp) {
+        return state;
+      }
+
+      return {
+        ...state,
+        availability: {
+          ...state.availability,
+          data: action.payload.data.reduce((prev, service) => {
+            return {
+              ...prev,
+              [service.serviceId]: service.isAvailable,
+            };
+          }, {}),
+          isChecking: false,
+        },
+      };
+    }
+    case types.CHECK_AVAILABILITY_ERROR: {
+      if (action.timestamp !== state.availability.timestamp) {
+        return state;
+      }
+
+      return {
+        ...state,
+        availability: {
+          ...initialState.availability,
+          error: action.payload,
+        },
       };
     }
     default:

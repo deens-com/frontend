@@ -10,7 +10,11 @@ import { update_search_query_without_search } from '../../../scenes/results/acti
 class TripContainer extends Component {
   constructor(props) {
     super(props);
-    props.fetchTrip(this.props.match.params.id);
+    props.fetchTrip(props.match.params.id);
+
+    if (props.startDate && props.numberOfPeople) {
+      props.checkAvailability(props.match.params.id, props.startDate, props.numberOfPeople);
+    }
   }
 
   render() {
@@ -23,6 +27,10 @@ class TripContainer extends Component {
       startDate,
       endDate,
       changeDates,
+      checkAvailability,
+      availability,
+      isCloning,
+      cloneTrip,
     } = this.props;
 
     if (error) {
@@ -38,6 +46,11 @@ class TripContainer extends Component {
         startDate={startDate}
         endDate={endDate}
         changeDates={changeDates}
+        checkAvailability={checkAvailability}
+        availability={availability.data}
+        isCheckingAvailability={availability.isChecking}
+        isCloning={isCloning}
+        cloneTrip={cloneTrip}
       />
     );
   }
@@ -50,9 +63,11 @@ const mapStateToProps = state => {
     error: state.TripReducer.error,
     isLoading: state.TripReducer.isLoading,
     owner: state.TripReducer.owner,
-    numberOfPeople: state.ResultsReducer.search_query.person_nb,
+    numberOfPeople: state.ResultsReducer.search_query.person_nb || 1,
     startDate: state.ResultsReducer.search_query.start_date,
     endDate: state.ResultsReducer.search_query.end_date,
+    availability: state.TripReducer.availability,
+    isCloning: state.TripReducer.isCloning,
   };
 };
 
