@@ -9,9 +9,9 @@ import Col from 'shared_components/layout/Col';
 import Row from 'shared_components/layout/Row';
 import TripCart from 'shared_components/Carts/Trip';
 import Button from 'shared_components/Button';
-import Day, { Header } from '../../Trips/components/Day';
+import Day, { Header } from '../../Trip/components/Day';
 import NotesEditor from './NotesEditor';
-import EditTripContainer from 'scenes/trips/containers/EditTripContainer';
+import EditTripContainer from 'scenes/trip/containers/EditTripContainer';
 import AddNotesButton from './AddNotesButton';
 
 // ACTIONS/CONFIG

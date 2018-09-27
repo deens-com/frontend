@@ -4,7 +4,7 @@ import AccountReducer from '../scenes/account/reducers';
 import SessionsReducer from '../scenes/sessions/reducers';
 import RegistrationsReducer from '../scenes/registrations/reducers';
 import ResultsReducer from '../scenes/results/reducers';
-import TripsReducer from '../scenes/trips/reducers';
+import TripReducer from '../scenes/trip/reducers';
 import ServicesReducer from '../scenes/services/reducers';
 import UsersReducer from '../scenes/users/reducers';
 import ServiceUpsert from '../scenes/service-upsert/reducers';
@@ -18,7 +18,7 @@ const allReducers = combineReducers({
   SessionsReducer,
   RegistrationsReducer,
   ResultsReducer,
-  TripsReducer: combineFlat([TripsReducer, CheckoutReducer]),
+  TripReducer,
   ServicesReducer,
   UsersReducer,
   AccountReducer,

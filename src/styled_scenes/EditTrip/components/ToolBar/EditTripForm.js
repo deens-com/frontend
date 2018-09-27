@@ -12,7 +12,7 @@ import { formatDate } from 'react-day-picker/moment';
 // import Form from 'shared_components/Form';
 import { checkRequiredFields, getISODateString } from 'libs/Utils';
 import TripLengthFormInput from './TripLengthFormInput';
-import EditTripContainer from 'scenes/trips/containers/EditTripContainer';
+import EditTripContainer from 'scenes/trip/containers/EditTripContainer';
 
 const tagsDropdownOptions = tagsData.map(value => ({ text: value.label, value: value.label }));
 

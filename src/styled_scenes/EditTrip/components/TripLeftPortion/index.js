@@ -19,7 +19,7 @@ import {
   MapWrapper,
 } from './styles';
 import { getFormattedTripDates } from 'libs/Utils';
-import EditTripContainer from 'scenes/trips/containers/EditTripContainer';
+import EditTripContainer from 'scenes/trip/containers/EditTripContainer';
 import placeholder from './../../../../assets/placeholder350x350.svg';
 
 export default class TripLeftPortion extends Component {

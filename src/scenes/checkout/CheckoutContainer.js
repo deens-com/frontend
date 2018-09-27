@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { withRouter, Redirect } from 'react-router-dom';
 import Parse from 'parse';
 
-import * as tripActions from '../trips/actions';
+import * as tripActions from '../trip/actions';
 import CheckoutScene from './CheckoutScene';
 
 /**

@@ -10,7 +10,8 @@ import EarnMoney from './../scenes/earn-money';
 import Account from './../scenes/account/account';
 import Sessions from './../scenes/sessions/sessions';
 import Results from './../scenes/results/results';
-import Trips from './../scenes/trips/trips';
+import Trip from './../scenes/trip';
+import TripOrganizer from './../scenes/trip-organizer';
 import Users from './../scenes/users/users';
 import Services from './../scenes/services/services';
 import Registrations from './../scenes/registrations/registrations';
@@ -20,12 +21,6 @@ import ServiceUpsert from '../scenes/service-upsert';
 import Checkout from '../scenes/checkout';
 
 const commonHOCs = comp => withErrorBoundary(withSegmentTracker(comp));
-
-const TripsWithSegment = commonHOCs(Trips);
-// when the url param changes React Router doesn't unmount & remount the component
-// instead it just changes the props
-// by applying a key, React will unmount and remount the component on key change
-const renderTrips = props => <TripsWithSegment {...props} key={props.location.pathname} />;
 
 const App = () => {
   return (
@@ -56,7 +51,11 @@ const App = () => {
               path={process.env.PUBLIC_URL + '/services/:id'}
               component={commonHOCs(Services)}
             />
-            <Route path={process.env.PUBLIC_URL + '/trips/:id'} render={renderTrips} />
+            <Route
+              path={process.env.PUBLIC_URL + '/trips/organize/:id'}
+              component={commonHOCs(TripOrganizer)}
+            />
+            <Route path={process.env.PUBLIC_URL + '/trips/:id'} component={commonHOCs(Trip)} />
             <Route
               path={process.env.PUBLIC_URL + '/checkout/:id'}
               component={commonHOCs(Checkout)}

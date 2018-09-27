@@ -7,6 +7,7 @@ import I18nText from './I18nText';
  * and prints out `City, Country`
  */
 function CityCountry({ location }) {
+  if (!location.country || !location.city) return false;
   return (
     <React.Fragment>
       {location.city}, <I18nText data={location.country.names} />

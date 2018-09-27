@@ -1,0 +1,137 @@
+import axios from 'libs/axios';
+import { serverBaseURL } from 'libs/config';
+import history from './../../main/history';
+
+export const types = {
+  FETCH_TRIP_START: 'FETCH_TRIP_START',
+  FETCH_TRIP_SUCCESS: 'FETCH_TRIP_SUCCESS',
+  FETCH_TRIP_ERROR: 'FETCH_TRIP_ERROR',
+  FETCH_OWNER_START: 'FETCH_OWNER_START',
+  FETCH_OWNER_SUCCESS: 'FETCH_OWNER_SUCCESS',
+  CHECK_AVAILABILITY_START: 'CHECK_AVAILABILITY_START',
+  CHECK_AVAILABILITY_SUCCESS: 'CHECK_AVAILABILITY_SUCCESS',
+  CHECK_AVAILABILITY_ERROR: 'CHECK_AVAILABILITY_ERROR',
+  CLONE_TRIP_START: 'CLONE_TRIP_START',
+  CLONE_TRIP_SUCCESS: 'CLONE_TRIP_SUCCESS',
+  CLONE_TRIP_ERROR: 'CLONE_TRIP_ERROR',
+};
+
+export const fetchTripStart = () => {
+  return {
+    type: types.FETCH_TRIP_START,
+  };
+};
+
+export const fetchTripError = error => {
+  return {
+    type: types.FETCH_TRIP_ERROR,
+    payload: error.response.data,
+  };
+};
+
+export const fetchTripSuccess = trip => {
+  return {
+    type: types.FETCH_TRIP_SUCCESS,
+    payload: trip.data,
+  };
+};
+
+export const fetchOwnerStart = () => {
+  return {
+    type: types.FETCH_OWNER_START,
+  };
+};
+
+export const fetchOwnerSuccess = owner => {
+  return {
+    type: types.FETCH_OWNER_SUCCESS,
+    payload: owner.data,
+  };
+};
+
+export const checkAvailabilityStart = timestamp => {
+  return {
+    type: types.CHECK_AVAILABILITY_START,
+    timestamp,
+  };
+};
+
+export const checkAvailabilitySuccess = (payload, timestamp) => {
+  return {
+    type: types.CHECK_AVAILABILITY_SUCCESS,
+    payload,
+    timestamp,
+  };
+};
+
+export const checkAvailabilityError = (e, timestamp) => {
+  return {
+    type: types.CHECK_AVAILABILITY_ERROR,
+    payload: e,
+    timestamp,
+  };
+};
+
+export const cloneTripStart = () => {
+  return {
+    type: types.CLONE_TRIP_START,
+  };
+};
+
+export const cloneTripSuccess = () => {
+  return {
+    type: types.CLONE_TRIP_SUCCESS,
+  };
+};
+
+export const cloneTripError = e => {
+  return {
+    type: types.CLONE_TRIP_ERROR,
+    payload: e,
+  };
+};
+
+export const fetchTrip = id => async dispatch => {
+  dispatch(fetchTripStart());
+  try {
+    const trip = await axios.get(`${serverBaseURL}/trips/${id}?include=services`);
+    dispatch(fetchTripSuccess(trip));
+
+    try {
+      dispatch(fetchOwnerStart());
+      const owner = await axios.get(`${serverBaseURL}/users/${trip.data.owner}`);
+      dispatch(fetchOwnerSuccess(owner));
+    } catch (e) {
+      console.error(e);
+    }
+  } catch (e) {
+    dispatch(fetchTripError(e));
+  }
+};
+
+export const checkAvailability = (id, startDate, peopleCount) => async dispatch => {
+  const timestamp = new Date().getTime();
+  dispatch(checkAvailabilityStart(timestamp));
+  try {
+    const availability = await axios.get(
+      `${serverBaseURL}/trips/${id}/availability?bookingDate=${startDate.format(
+        'YYYY-MM-DD',
+      )}&peopleCount=${peopleCount}`,
+    );
+    dispatch(checkAvailabilitySuccess(availability, timestamp));
+  } catch (e) {
+    dispatch(checkAvailabilityError(e, timestamp));
+  }
+};
+
+export const cloneTrip = id => async dispatch => {
+  dispatch(cloneTripStart());
+  try {
+    const newTrip = await axios.post(`${serverBaseURL}/trips/copy/${id}`);
+    dispatch(cloneTripSuccess());
+    history.push(`/trips/customize/${newTrip.data._id}`);
+  } catch (e) {
+    dispatch(cloneTripError());
+    console.error(e);
+  }
+};

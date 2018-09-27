@@ -103,6 +103,14 @@ export const theme = {
     color: colors.white,
     colorHover: colors.white,
   },
+  disabled: {
+    background: '#e0e1e2',
+    backgroundHover: '#e0e1e2',
+    border: '#e0e1e2',
+    borderHover: '#e0e1e2',
+    color: 'rgba(0,0,0,0.6)',
+    colorHover: 'rgba(0,0,0,0.6)',
+  },
 };
 
 export const Wrap = styled.div`
@@ -111,7 +119,7 @@ export const Wrap = styled.div`
   > button,
   > a {
     border-radius: ${props => (props.round ? '25px' : '0')};
-    cursor: pointer;
+    cursor: ${props => (props.theme === 'disabled' ? 'default' : 'pointer')};
     display: inline-block;
     font-size: ${props => (props.size ? size[props.size].fontSize : 'inherit')};
     height: auto;
@@ -214,6 +222,7 @@ export default class Button extends Component {
           }}
           type={this.props.type}
           onClick={this.onClick}
+          disabled={this.props.disabled}
           {...props}
         />
       );
@@ -221,7 +230,7 @@ export default class Button extends Component {
 
     return (
       <Wrap
-        theme={this.props.theme}
+        theme={this.props.disabled ? 'disabled' : this.props.theme}
         round={this.props.round}
         size={this.props.size}
         align={this.props.align}

@@ -133,6 +133,16 @@ export const update_search_query = search_params => {
   };
 };
 
+export const update_search_query_without_search = search_params => {
+  return dispatch => {
+    dispatch(
+      search_query_updated({
+        search_query: search_params,
+      }),
+    );
+  };
+};
+
 export const fetch_results = results_search_query => {
   return async dispatch => {
     try {
