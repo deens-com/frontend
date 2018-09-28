@@ -81,18 +81,15 @@ class AccountProfileScene extends Component {
           </SectionWrap>
         </Grid.Column>
         <Grid.Column mobile={16} tablet={11} computer={12}>
-          {
-            this.props.isUploadingAvatar &&
-            (
-              <Message icon>
-                <Icon name='circle notched' loading />
-                <Message.Content>
-                  <Message.Header>Just one second</Message.Header>
-                  Avatar is being uploaded.
-                </Message.Content>
-              </Message>
-            )
-          }
+          {this.props.isUploadingAvatar && (
+            <Message icon>
+              <Icon name="circle notched" loading />
+              <Message.Content>
+                <Message.Header>Just one second</Message.Header>
+                Avatar is being uploaded.
+              </Message.Content>
+            </Message>
+          )}
           <h2>Profile Scene</h2>
           {this.props.editUserError ? (
             <h6 style={{ color: 'red' }}>{this.props.editUserError.error}</h6>
