@@ -89,7 +89,7 @@ const createService = values => {
       end: { [i18nLocale]: values.end },
     },
     rules: values.rules.map(rule => ({ [i18nLocale]: rule })),
-    tags: values.tags.map(tag => ({ type: tag, names: { [i18nLocale]: tag } })),
+    tags: values.tags.map(tag => ({ type: tag, names: { [i18nLocale]: tag.toLowerCase() } })),
     subtitle: { [i18nLocale]: values.subtitle },
     title: { [i18nLocale]: values.title },
     links: {
