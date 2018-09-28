@@ -6,6 +6,7 @@ import fetch_helpers from './../../libs/fetch_helpers';
 import { identifyUsingSession } from 'libs/analytics';
 import { serverBaseURL } from 'libs/config';
 import { saveSession, getSession, removeSession } from 'libs/user-session';
+import axiosOriginal from 'axios';
 
 export const types = {
   LOGIN_SUCCESS: 'LOGIN_SUCCESS',
@@ -126,6 +127,43 @@ export const update_user_profile = (user_id, field_type, value) => {
         dispatch(displayUpdateError({}));
       } catch (error) {
         dispatch(displayUpdateError({ code: 422, error: error }));
+      }
+    }
+  };
+};
+
+export const update_user_avatar = file => {
+  return async dispatch => {
+    const session = getSession();
+    if (session) {
+      try {
+        let formData = new FormData();
+        formData.append('profilePicture', file);
+        const uploadedFile = await axiosOriginal.post(`${serverBaseURL}/media`, formData, {});
+        if (uploadedFile) {
+          const pictureUrl = uploadedFile.data.url;
+          const updatedUser = await axiosOriginal
+            .patch(
+              `${serverBaseURL}/users/me`,
+              { metamaskPublicAddress: pictureUrl },
+              {
+                headers: {
+                  Authorization: `Bearer ${session.accessToken}`,
+                  'Content-Type': 'application-json',
+                },
+              },
+            )
+            .catch(error => {
+              dispatch(displayUpdateError({ code: 422, error: error }));
+            });
+          if (updatedUser) {
+            dispatch(sessionsFetched({ session: updatedUser.data }));
+            dispatch(displayUpdateError({}));
+          }
+        }
+      } catch (error) {
+        dispatch(displayUpdateError({ code: 422, error: error }));
+        console.log(error);
       }
     }
   };
