@@ -17,6 +17,8 @@ export const types = {
   BASE_CURRENCY_SET: 'BASE_CURRENCY_SET',
   TOGGLE_LEDGER_LOADER_DISPLAY: 'TOGGLE_LEDGER_LOADER_DISPLAY',
   UPDATE_ERROR: 'UPDATE_ERROR',
+  AVATAR_UPLOAD_START: 'AVATAR_UPLOAD_START',
+  AVATAR_UPLOAD_FINISH: 'AVATAR_UPLOAD_FINISH'
 };
 
 export const sessionsFetched = session => {
@@ -139,6 +141,7 @@ export const update_user_avatar = file => {
       try {
         let formData = new FormData();
         formData.append('profilePicture', file);
+        dispatch({ type: 'AVATAR_UPLOAD_START' });
         const uploadedFile = await axiosOriginal.post(`${serverBaseURL}/media`, formData, {});
         if (uploadedFile) {
           const pictureUrl = uploadedFile.data.url;
@@ -159,6 +162,7 @@ export const update_user_avatar = file => {
           if (updatedUser) {
             dispatch(sessionsFetched({ session: updatedUser.data }));
             dispatch(displayUpdateError({}));
+            dispatch({ type: 'AVATAR_UPLOAD_FINISH' });
           }
         }
       } catch (error) {
