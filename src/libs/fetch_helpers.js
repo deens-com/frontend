@@ -216,8 +216,12 @@ const buildServicesJson = services => {
       service.closingTime = (service.periods && service.periods[0].endTime) || '23';
       if (service.tags && service.tags.length && service.tags[0].type) {
         const tags = service.tags.map(tag => {
-          const tagBg = tagsColorMatcher(tag.type.toLowerCase());
-          return { label: tag.type, hoverBg: tagBg, background: tagBg };
+          const tagBg = tagsColorMatcher(tag.names);
+          return {
+            label: tag.names[i18nLocale].charAt(0).toUpperCase() + tag.names[i18nLocale].slice(1),
+            hoverBg: tagBg,
+            background: tagBg,
+          };
         });
         service.tags = tags;
       }
