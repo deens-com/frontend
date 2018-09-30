@@ -15,6 +15,7 @@ const initialState = {
   baseCurrency: defaultBaseCurrency,
   isLedgerLoaderDisplayed: false,
   updateError: {},
+  isUploadingAvatar: false,
 };
 
 export default function SessionsReducer(state = initialState, action = {}) {
@@ -54,6 +55,16 @@ export default function SessionsReducer(state = initialState, action = {}) {
       return {
         ...state,
         isLedgerLoaderDisplayed: action.payload,
+      };
+    case sessions_actions.types.AVATAR_UPLOAD_START:
+      return {
+        ...state,
+        isUploadingAvatar: true,
+      };
+    case sessions_actions.types.AVATAR_UPLOAD_FINISH:
+      return {
+        ...state,
+        isUploadingAvatar: false,
       };
     default:
       return state;

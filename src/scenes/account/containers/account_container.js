@@ -62,6 +62,7 @@ class AccountContainer extends Component {
 const mapStateToProps = state => {
   return {
     session: state.SessionsReducer.session,
+    isUploadingAvatar: state.SessionsReducer.isUploadingAvatar,
     updateError: state.SessionsReducer.updateError,
   };
 };

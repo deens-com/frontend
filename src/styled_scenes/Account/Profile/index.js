@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Divider, Icon, Input, Button } from 'semantic-ui-react';
+import { Grid, Divider, Icon, Input, Button, Message } from 'semantic-ui-react';
 import styled from 'styled-components';
 import { SectionWrap } from './../../../shared_components/layout/Page';
 import UserBasicInfo from './../components/UserBasicInfo';
@@ -81,6 +81,15 @@ class AccountProfileScene extends Component {
           </SectionWrap>
         </Grid.Column>
         <Grid.Column mobile={16} tablet={11} computer={12}>
+          {this.props.isUploadingAvatar && (
+            <Message icon>
+              <Icon name="circle notched" loading />
+              <Message.Content>
+                <Message.Header>Just one second</Message.Header>
+                Avatar is being uploaded.
+              </Message.Content>
+            </Message>
+          )}
           <h2>Profile Scene</h2>
           {this.props.editUserError ? (
             <h6 style={{ color: 'red' }}>{this.props.editUserError.error}</h6>
