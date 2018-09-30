@@ -204,8 +204,9 @@ const buildServicesJson = services => {
       const country =
         service.location && service.location.country && service.location.country.names[i18nLocale];
       service.location = service.location
-        ? `${service.location.city ? service.location.city + ',' : ''} ${country ||
-            service.location.state}`
+        ? `${service.location.city ? service.location.city + ',' : ''} ${
+            service.location.countryCode
+          }`
         : '';
       service.rating = service.rating;
       service.reviewCount = service.reviewCount;
