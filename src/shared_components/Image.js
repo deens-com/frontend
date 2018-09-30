@@ -10,7 +10,11 @@ import Imgix from 'react-imgix';
 const Image = props => {
   const translatedProps = {};
   if (props.background) translatedProps.type = 'bg';
-  return <Imgix {...props} {...translatedProps} />;
+  /**
+   * crop=true is set below as we are having a conflict with Coral images that's expecting that param to be true,
+   *by default it's value is 'faces' and that will throw 505 for Coral images once the URL has been generated
+   */
+  return <Imgix {...props} {...translatedProps} crop={true} />;
 };
 
 Image.propTypes = {
