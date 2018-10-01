@@ -140,23 +140,19 @@ export default class ResultsScene extends Component {
         <span>
           <Filters {...props} />
           <Media query={`(min-width: 600px)`}>
-            {
-              matches => ( matches
-                ?
-                (
-                  <MapToggle>
-                    <Checkbox color="green" toggle onClick={this.toggleMap} /> &nbsp;&nbsp;
-                    <div>
-                      <h3 onClick={this.toggleMap}>Show Map</h3>
-                    </div>
-                  </MapToggle>
-                )
-                :
-                (<span></span>)
+            {matches =>
+              matches ? (
+                <MapToggle>
+                  <Checkbox color="green" toggle onClick={this.toggleMap} /> &nbsp;&nbsp;
+                  <div>
+                    <h3 onClick={this.toggleMap}>Show Map</h3>
+                  </div>
+                </MapToggle>
+              ) : (
+                <span />
               )
             }
           </Media>
-
         </span>
         <PageContent flex>
           <ServicesWrapper>
