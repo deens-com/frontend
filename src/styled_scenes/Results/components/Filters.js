@@ -14,6 +14,9 @@ import 'react-dates/lib/css/_datepicker.css';
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
 import * as results_actions from './../../../scenes/results/actions';
 
+import serviceTags from 'shared_components/ServiceForm/service-tags';
+const tagsDropdownOptions = serviceTags.map(value => ({ text: value, value }));
+
 const Wrap = styled.div`
   display: flex;
   flex-direction: row;
@@ -54,12 +57,13 @@ class Filters extends Component {
             .format(),
       person_nb: props.search_query.person_nb || undefined,
       service_type: props.search_query.type || [],
-      tags: [],
+      tags: props.search_query.tags || [],
       showFilters: false,
       isCategoryPopupOpen: false,
       isLocationPopupOpen: false,
       isDatesPopupOpen: false,
       isGuestsPopupOpen: false,
+      isMoodPopupOpen: false,
       startDate: null,
       endDate: null,
       focusedInput: null,
@@ -184,6 +188,10 @@ class Filters extends Component {
     this.setState({ isGuestsPopupOpen: false });
   };
 
+  handleMoodPopupClose = () => {
+    this.setState({ isMoodPopupOpen: false });
+  };
+
   handleCategoryPopupOpen = () => {
     this.setState({ isCategoryPopupOpen: true });
   };
@@ -198,6 +206,16 @@ class Filters extends Component {
 
   handleGuestsPopupOpen = () => {
     this.setState({ isGuestsPopupOpen: true });
+  };
+
+  handleMoodPopupOpen = () => {
+    this.setState({ isMoodPopupOpen: true });
+  };
+
+  onDropDownChange = (event, object) => {
+    const tags = object.value.map(tag => tag.toLowerCase());
+    this.setState({ tags: tags });
+    this.refetch_results({ tags: tags });
   };
 
   categoryPopupSelect = service_types => {
@@ -230,6 +248,7 @@ class Filters extends Component {
     let person_nb = this.props.search_query.person_nb;
     let service_types = this.props.search_query.type;
     let address = this.props.search_query.address;
+    let tags = this.props.search_query.tags || [];
     return (
       <section>
         <Wrap>
@@ -361,6 +380,36 @@ class Filters extends Component {
                 position="bottom center"
               />
             </EditableElement>
+
+            <div>
+              <p> &nbsp; &nbsp; </p>
+            </div>
+
+            <EditableElement>
+              <Popup
+                trigger={<p><Icon name='plus' />{'Mood'}</p>}
+                content={
+                  <Dropdown
+                    name="tags"
+                    options={tagsDropdownOptions}
+                    placeholder="Add tags"
+                    search
+                    selection
+                    fluid
+                    multiple
+                    value={this.props.tags.map( tag => tag.charAt(0).toUpperCase() + tag.substr(1) )}
+                    onChange={this.onDropDownChange}
+                    style={{ minWidth: '250px' }}
+                  />
+                }
+                on="click"
+                open={this.state.isMoodPopupOpen}
+                onClose={this.handleMoodPopupClose}
+                onOpen={this.handleMoodPopupOpen}
+                position="bottom center"
+              />
+            </EditableElement>
+
           </SentenceWrapper>
         </Wrap>
       </section>
