@@ -387,7 +387,12 @@ class Filters extends Component {
 
             <EditableElement>
               <Popup
-                trigger={<p><Icon name='plus' />{'Mood'}</p>}
+                trigger={
+                  <p>
+                    <Icon name="plus" />
+                    {'Mood'}
+                  </p>
+                }
                 content={
                   <Dropdown
                     name="tags"
@@ -397,7 +402,7 @@ class Filters extends Component {
                     selection
                     fluid
                     multiple
-                    value={this.props.tags.map( tag => tag.charAt(0).toUpperCase() + tag.substr(1) )}
+                    value={this.props.tags.map(tag => tag.charAt(0).toUpperCase() + tag.substr(1))}
                     onChange={this.onDropDownChange}
                     style={{ minWidth: '250px' }}
                   />
@@ -409,7 +414,6 @@ class Filters extends Component {
                 position="bottom center"
               />
             </EditableElement>
-
           </SentenceWrapper>
         </Wrap>
       </section>
