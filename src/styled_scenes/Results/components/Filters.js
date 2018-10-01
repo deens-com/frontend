@@ -3,11 +3,11 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { Popup, Dropdown } from 'semantic-ui-react';
+import { Popup, Dropdown, Icon } from 'semantic-ui-react';
 import { DateRangePicker } from 'react-dates';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import moment from 'moment';
-import { Icon } from 'semantic-ui-react';
+import Media from 'react-media';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 
@@ -18,19 +18,33 @@ import serviceTags from 'shared_components/ServiceForm/service-tags';
 const tagsDropdownOptions = serviceTags.map(value => ({ text: value, value }));
 
 const Wrap = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin-left: 20px;
+  //margin-left: 20px;
 `;
 
 const SentenceWrapper = styled.span`
   display: inline-flex;
-  //padding: 10px 20px;
   font-weight: bold;
   color: grey;
-  //padding-top: 1em;
   position: relative;
   top: 1.3em;
+  margin-left: 20px;
+`;
+
+const MobileSentenceWrapper = styled.div`
+  margin: 0 auto;
+  text-align: center;
+  font-weight: bold;
+  color: grey;
+  margin-top: 1em;
+`;
+
+const MobileSentence = styled.div`
+  display: inline-flex;
+  padding-bottom: 1em;
+`;
+
+const CenteredSection = styled.section`
+  text-align: center;
 `;
 
 const EditableElement = styled.div`
@@ -218,6 +232,10 @@ class Filters extends Component {
     this.refetch_results({ tags: tags });
   };
 
+  displayFilters = () => {
+    this.setState({ showFilters: !this.state.showFilters });
+  }
+
   categoryPopupSelect = service_types => {
     const serviceOptions = [
       { text: 'Accommodation', value: 'accommodation' },
@@ -252,169 +270,367 @@ class Filters extends Component {
     return (
       <section>
         <Wrap>
-          <SentenceWrapper>
-            <div>
-              <p>
-                I want
-                {service_types &&
-                (service_types.includes('activity') || service_types.includes('accommodation'))
-                  ? ' an'
-                  : service_types && service_types.includes('food')
-                    ? ' '
-                    : ' a'}
-              </p>
-            </div>
+          <Media query={`(min-width: 600px)`}>
+            {
+              matches => ( matches
+                ?
+                (
+                  <SentenceWrapper>
+                    <div>
+                      <p>
+                        I want
+                        {service_types &&
+                        (service_types.includes('activity') || service_types.includes('accommodation'))
+                          ? ' an'
+                          : service_types && service_types.includes('food')
+                            ? ' '
+                            : ' a'}
+                      </p>
+                    </div>
 
-            <EditableElement>
-              <Popup
-                trigger={
-                  <p style={{ textTransform: 'capitalize' }}>{service_types && service_types[0]}</p>
-                }
-                content={this.categoryPopupSelect(service_types)}
-                on="click"
-                open={this.state.isCategoryPopupOpen}
-                onClose={this.handleCategoryPopupClose}
-                onOpen={this.handleCategoryPopupOpen}
-                position="bottom center"
-              />
-            </EditableElement>
+                    <EditableElement>
+                      <Popup
+                        trigger={
+                          <p style={{ textTransform: 'capitalize' }}>{service_types && service_types[0]}</p>
+                        }
+                        content={this.categoryPopupSelect(service_types)}
+                        on="click"
+                        open={this.state.isCategoryPopupOpen}
+                        onClose={this.handleCategoryPopupClose}
+                        onOpen={this.handleCategoryPopupOpen}
+                        position="bottom center"
+                      />
+                    </EditableElement>
 
-            <div>
-              <p> &nbsp; {'in '} </p>
-            </div>
+                    <div>
+                      <p> &nbsp; {'in '} </p>
+                    </div>
 
-            <EditableElement>
-              <Popup
-                trigger={<p>{address || 'City Name'}</p>}
-                content={
-                  <div>
-                    <SemanticLocationControl
-                      key={address}
-                      defaultAddress={address}
-                      onChange={this.handleLocationChange}
-                    />
-                    <Icon
-                      style={{ position: 'relative', left: '178px', bottom: '34px' }}
-                      name="close"
-                      onClick={this.clear_address}
-                    />
-                  </div>
-                }
-                on="click"
-                open={this.state.isLocationPopupOpen}
-                onClose={this.handleLocationPopupClose}
-                onOpen={this.handleLocationPopupOpen}
-                position="bottom center"
-              />
-            </EditableElement>
+                    <EditableElement>
+                      <Popup
+                        trigger={<p>{address || 'City Name'}</p>}
+                        content={
+                          <div>
+                            <SemanticLocationControl
+                              key={address}
+                              defaultAddress={address}
+                              onChange={this.handleLocationChange}
+                            />
+                            <Icon
+                              style={{ position: 'relative', left: '178px', bottom: '34px' }}
+                              name="close"
+                              onClick={this.clear_address}
+                            />
+                          </div>
+                        }
+                        on="click"
+                        open={this.state.isLocationPopupOpen}
+                        onClose={this.handleLocationPopupClose}
+                        onOpen={this.handleLocationPopupOpen}
+                        position="bottom center"
+                      />
+                    </EditableElement>
 
-            <div>
-              <p> &nbsp; {'on '} </p>
-            </div>
+                    <div>
+                      <p> &nbsp; {'on '} </p>
+                    </div>
 
-            <EditableElement>
-              <Popup
-                trigger={
-                  <p>
-                    {(formatted_start_date && formatted_start_date + ' / ' + formatted_end_date) ||
-                      'Dates'}
-                  </p>
-                }
-                content={
-                  <div>
-                    <DateRangePicker
-                      startDateId="startDate"
-                      endDateId="endDate"
-                      startDate={this.state.startDate}
-                      endDate={this.state.endDate}
-                      onDatesChange={({ startDate, endDate }) => {
-                        this.handleDatesChange({ startDate, endDate });
-                      }}
-                      focusedInput={this.state.focusedInput}
-                      onFocusChange={focusedInput => {
-                        this.setState({ focusedInput });
-                      }}
-                    />
-                    <Icon
-                      style={{ position: 'relative', left: '265px', bottom: '44px' }}
-                      name="close"
-                      onClick={this.clearDates}
-                    />
-                  </div>
-                }
-                on="click"
-                open={this.state.isDatesPopupOpen}
-                onClose={this.handleDatesPopupClose}
-                onOpen={this.handleDatesPopupOpen}
-                position="bottom center"
-                style={{ minWidth: '316px' }}
-              />
-            </EditableElement>
+                    <EditableElement>
+                      <Popup
+                        trigger={
+                          <p>
+                            {(formatted_start_date && formatted_start_date + ' / ' + formatted_end_date) ||
+                              'Dates'}
+                          </p>
+                        }
+                        content={
+                          <div>
+                            <DateRangePicker
+                              startDateId="startDate"
+                              endDateId="endDate"
+                              startDate={this.state.startDate}
+                              endDate={this.state.endDate}
+                              onDatesChange={({ startDate, endDate }) => {
+                                this.handleDatesChange({ startDate, endDate });
+                              }}
+                              focusedInput={this.state.focusedInput}
+                              onFocusChange={focusedInput => {
+                                this.setState({ focusedInput });
+                              }}
+                            />
+                            <Icon
+                              style={{ position: 'relative', left: '265px', bottom: '44px' }}
+                              name="close"
+                              onClick={this.clearDates}
+                            />
+                          </div>
+                        }
+                        on="click"
+                        open={this.state.isDatesPopupOpen}
+                        onClose={this.handleDatesPopupClose}
+                        onOpen={this.handleDatesPopupOpen}
+                        position="bottom center"
+                        style={{ minWidth: '316px' }}
+                      />
+                    </EditableElement>
 
-            <div>
-              <p> &nbsp; {'for '} </p>
-            </div>
+                    <div>
+                      <p> &nbsp; {'for '} </p>
+                    </div>
 
-            <EditableElement>
-              <Popup
-                trigger={<p>{person_nb + ' Guests' || 'Guests Nb'}</p>}
-                content={
-                  <Dropdown
-                    placeholder={person_nb || 0 + ' Guests'}
-                    options={[
-                      { text: 1, value: 1 },
-                      { text: 2, value: 2 },
-                      { text: 3, value: 3 },
-                      { text: 4, value: 4 },
-                      { text: 5, value: 5 },
-                    ]}
-                    onChange={this.handleGuestsNbChange}
-                    fluid
-                    selection
-                  />
-                }
-                on="click"
-                open={this.state.isGuestsPopupOpen}
-                onClose={this.handleGuestsPopupClose}
-                onOpen={this.handleGuestsPopupOpen}
-                position="bottom center"
-              />
-            </EditableElement>
+                    <EditableElement>
+                      <Popup
+                        trigger={<p>{person_nb + ' Guests' || 'Guests Nb'}</p>}
+                        content={
+                          <Dropdown
+                            placeholder={person_nb || 0 + ' Guests'}
+                            options={[
+                              { text: 1, value: 1 },
+                              { text: 2, value: 2 },
+                              { text: 3, value: 3 },
+                              { text: 4, value: 4 },
+                              { text: 5, value: 5 },
+                            ]}
+                            onChange={this.handleGuestsNbChange}
+                            fluid
+                            selection
+                          />
+                        }
+                        on="click"
+                        open={this.state.isGuestsPopupOpen}
+                        onClose={this.handleGuestsPopupClose}
+                        onOpen={this.handleGuestsPopupOpen}
+                        position="bottom center"
+                      />
+                    </EditableElement>
 
-            <div>
-              <p> &nbsp; &nbsp; </p>
-            </div>
+                    <div>
+                      <p> &nbsp; &nbsp; </p>
+                    </div>
 
-            <EditableElement>
-              <Popup
-                trigger={
-                  <p>
-                    <Icon name="plus" />
-                    {'Mood'}
-                  </p>
-                }
-                content={
-                  <Dropdown
-                    name="tags"
-                    options={tagsDropdownOptions}
-                    placeholder="Add tags"
-                    search
-                    selection
-                    fluid
-                    multiple
-                    value={this.props.tags.map(tag => tag.charAt(0).toUpperCase() + tag.substr(1))}
-                    onChange={this.onDropDownChange}
-                    style={{ minWidth: '250px' }}
-                  />
-                }
-                on="click"
-                open={this.state.isMoodPopupOpen}
-                onClose={this.handleMoodPopupClose}
-                onOpen={this.handleMoodPopupOpen}
-                position="bottom center"
-              />
-            </EditableElement>
-          </SentenceWrapper>
+                    <EditableElement>
+                      <Popup
+                        trigger={
+                          <p>
+                            <Icon name="plus" />
+                            {'Mood'}
+                          </p>
+                        }
+                        content={
+                          <Dropdown
+                            name="tags"
+                            options={tagsDropdownOptions}
+                            placeholder="Add tags"
+                            search
+                            selection
+                            fluid
+                            multiple
+                            value={this.props.tags.map(tag => tag.charAt(0).toUpperCase() + tag.substr(1))}
+                            onChange={this.onDropDownChange}
+                            style={{ minWidth: '250px' }}
+                          />
+                        }
+                        on="click"
+                        open={this.state.isMoodPopupOpen}
+                        onClose={this.handleMoodPopupClose}
+                        onOpen={this.handleMoodPopupOpen}
+                        position="bottom center"
+                      />
+                    </EditableElement>
+                  </SentenceWrapper>
+                )
+                :
+                (
+                  <section>
+                  {
+                    this.state.showFilters
+                      ?
+                      (<CenteredSection>
+
+                        <Icon name='close' bordered onClick={this.displayFilters} style={{paddingBottom: '2em'}} />
+
+                        <MobileSentenceWrapper>
+
+                          <MobileSentence>
+
+                          <div>
+                            <p>
+                              I want
+                              {service_types &&
+                              (service_types.includes('activity') || service_types.includes('accommodation'))
+                                ? ' an'
+                                : service_types && service_types.includes('food')
+                                  ? ' '
+                                  : ' a'}
+                            </p>
+                          </div>
+
+                          <EditableElement>
+                            <Popup
+                              trigger={
+                                <p style={{ textTransform: 'capitalize' }}>{service_types && service_types[0]}</p>
+                              }
+                              content={this.categoryPopupSelect(service_types)}
+                              on="click"
+                              open={this.state.isCategoryPopupOpen}
+                              onClose={this.handleCategoryPopupClose}
+                              onOpen={this.handleCategoryPopupOpen}
+                              position="bottom center"
+                            />
+                          </EditableElement>
+
+                          <div>
+                            <p> &nbsp; {'in '} </p>
+                          </div>
+
+                          <EditableElement>
+                            <Popup
+                              trigger={<p>{address || 'City Name'}</p>}
+                              content={
+                                <div>
+                                  <SemanticLocationControl
+                                    key={address}
+                                    defaultAddress={address}
+                                    onChange={this.handleLocationChange}
+                                  />
+                                  <Icon
+                                    style={{ position: 'relative', left: '178px', bottom: '34px' }}
+                                    name="close"
+                                    onClick={this.clear_address}
+                                  />
+                                </div>
+                              }
+                              on="click"
+                              open={this.state.isLocationPopupOpen}
+                              onClose={this.handleLocationPopupClose}
+                              onOpen={this.handleLocationPopupOpen}
+                              position="bottom center"
+                            />
+                          </EditableElement>
+
+                          </MobileSentence>
+                          <br/>
+                          <MobileSentence>
+
+                          <div>
+                            <p> &nbsp; {'on '} </p>
+                          </div>
+
+                          <EditableElement>
+                            <Popup
+                              trigger={
+                                <p>
+                                  {(formatted_start_date && formatted_start_date + ' / ' + formatted_end_date) ||
+                                    'Dates'}
+                                </p>
+                              }
+                              content={
+                                <div>
+                                  <DateRangePicker
+                                    startDateId="startDate"
+                                    endDateId="endDate"
+                                    startDate={this.state.startDate}
+                                    endDate={this.state.endDate}
+                                    onDatesChange={({ startDate, endDate }) => {
+                                      this.handleDatesChange({ startDate, endDate });
+                                    }}
+                                    focusedInput={this.state.focusedInput}
+                                    onFocusChange={focusedInput => {
+                                      this.setState({ focusedInput });
+                                    }}
+                                  />
+                                  <Icon
+                                    style={{ position: 'relative', left: '265px', bottom: '44px' }}
+                                    name="close"
+                                    onClick={this.clearDates}
+                                  />
+                                </div>
+                              }
+                              on="click"
+                              open={this.state.isDatesPopupOpen}
+                              onClose={this.handleDatesPopupClose}
+                              onOpen={this.handleDatesPopupOpen}
+                              position="bottom center"
+                              style={{ minWidth: '316px' }}
+                            />
+                          </EditableElement>
+
+                          <div>
+                            <p> &nbsp; {'for '} </p>
+                          </div>
+
+                          <EditableElement>
+                            <Popup
+                              trigger={<p>{person_nb + ' Guests' || 'Guests Nb'}</p>}
+                              content={
+                                <Dropdown
+                                  placeholder={person_nb || 0 + ' Guests'}
+                                  options={[
+                                    { text: 1, value: 1 },
+                                    { text: 2, value: 2 },
+                                    { text: 3, value: 3 },
+                                    { text: 4, value: 4 },
+                                    { text: 5, value: 5 },
+                                  ]}
+                                  onChange={this.handleGuestsNbChange}
+                                  fluid
+                                  selection
+                                />
+                              }
+                              on="click"
+                              open={this.state.isGuestsPopupOpen}
+                              onClose={this.handleGuestsPopupClose}
+                              onOpen={this.handleGuestsPopupOpen}
+                              position="bottom center"
+                            />
+                          </EditableElement>
+
+                          </MobileSentence>
+
+                          <EditableElement>
+                            <Popup
+                              trigger={
+                                <p>
+                                  <Icon name="plus" />
+                                  {'Mood'}
+                                </p>
+                              }
+                              content={
+                                <Dropdown
+                                  name="tags"
+                                  options={tagsDropdownOptions}
+                                  placeholder="Add tags"
+                                  search
+                                  selection
+                                  fluid
+                                  multiple
+                                  value={this.props.tags.map(tag => tag.charAt(0).toUpperCase() + tag.substr(1))}
+                                  onChange={this.onDropDownChange}
+                                  style={{ minWidth: '250px' }}
+                                />
+                              }
+                              on="click"
+                              open={this.state.isMoodPopupOpen}
+                              onClose={this.handleMoodPopupClose}
+                              onOpen={this.handleMoodPopupOpen}
+                              position="bottom center"
+                            />
+                          </EditableElement>
+                        </MobileSentenceWrapper>
+                      </CenteredSection>)
+                      :
+                      (
+                        <CenteredSection>
+                          <Icon name='sliders horizontal' bordered onClick={this.displayFilters} />
+                        </CenteredSection>
+                      )
+                  }
+                  </section>
+                )
+              )
+
+            }
+          </Media>
         </Wrap>
       </section>
     );

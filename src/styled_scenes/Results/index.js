@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import GoogleMapReact from 'google-map-react';
 import { fitBounds } from 'google-map-react/utils';
 import { Checkbox } from 'semantic-ui-react';
+import Media from 'react-media';
 
 // COMPONENTS
 import TopBar from './../../shared_components/TopBar';
@@ -138,12 +139,24 @@ export default class ResultsScene extends Component {
         <TopBar {...props} fixed />
         <span>
           <Filters {...props} />
-          <MapToggle>
-            <Checkbox color="green" toggle onClick={this.toggleMap} /> &nbsp;&nbsp;
-            <div>
-              <h3 onClick={this.toggleMap}>Show Map</h3>
-            </div>
-          </MapToggle>
+          <Media query={`(min-width: 600px)`}>
+            {
+              matches => ( matches
+                ?
+                (
+                  <MapToggle>
+                    <Checkbox color="green" toggle onClick={this.toggleMap} /> &nbsp;&nbsp;
+                    <div>
+                      <h3 onClick={this.toggleMap}>Show Map</h3>
+                    </div>
+                  </MapToggle>
+                )
+                :
+                (<span></span>)
+              )
+            }
+          </Media>
+
         </span>
         <PageContent flex>
           <ServicesWrapper>
