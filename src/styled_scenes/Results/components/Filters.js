@@ -415,7 +415,7 @@ class Filters extends Component {
                       trigger={
                         <p>
                           <Icon name="plus" />
-                          {'Mood'}
+                          {this.props.tags.length + ' Mood'}
                         </p>
                       }
                       content={
@@ -449,6 +449,7 @@ class Filters extends Component {
                       <Icon
                         name="close"
                         bordered
+                        circular
                         onClick={this.displayFilters}
                         style={{ paddingBottom: '2em' }}
                       />
@@ -595,7 +596,7 @@ class Filters extends Component {
                             trigger={
                               <p>
                                 <Icon name="plus" />
-                                {'Mood'}
+                                {this.props.tags.length + ' Mood'}
                               </p>
                             }
                             content={
@@ -625,7 +626,7 @@ class Filters extends Component {
                     </CenteredSection>
                   ) : (
                     <CenteredSection>
-                      <Icon name="sliders horizontal" bordered onClick={this.displayFilters} />
+                      <Icon name="sliders horizontal" bordered circular onClick={this.displayFilters} />
                     </CenteredSection>
                   )}
                 </section>
