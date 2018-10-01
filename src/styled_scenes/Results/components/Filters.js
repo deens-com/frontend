@@ -626,7 +626,12 @@ class Filters extends Component {
                     </CenteredSection>
                   ) : (
                     <CenteredSection>
-                      <Icon name="sliders horizontal" bordered circular onClick={this.displayFilters} />
+                      <Icon
+                        name="sliders horizontal"
+                        bordered
+                        circular
+                        onClick={this.displayFilters}
+                      />
                     </CenteredSection>
                   )}
                 </section>
