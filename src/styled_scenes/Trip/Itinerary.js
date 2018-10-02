@@ -117,7 +117,8 @@ export default class Itinerary extends Component {
       <DayTitle>{day.title}</DayTitle>
       {day.data.map(dayData => (
         <Service key={dayData.service._id}>
-          {dayData.service.media[0] && <Image url={dayData.service.media[0].files.small.url} />}
+          {dayData.service.media &&
+            dayData.service.media[0] && <Image url={dayData.service.media[0].files.small.url} />}
           <ServiceData>
             <CategoryWrapper>
               <Category>
@@ -145,7 +146,7 @@ export default class Itinerary extends Component {
 
 Itinerary.propTypes = {
   trip: PropTypes.object.isRequired,
-  availability: PropTypes.object,
+  availability: PropTypes.array,
   numberOfPeople: PropTypes.number,
   startDate: PropTypes.number,
   assignRefsToParent: PropTypes.func.isRequired,

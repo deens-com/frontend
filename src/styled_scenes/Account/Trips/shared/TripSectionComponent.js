@@ -58,7 +58,7 @@ class Trip extends Component {
 
   state = {
     linkToViewTrip: `/trips/${this.props.trip._id}`,
-    linkToEditTrip: `/trips/${this.props.trip._id}/edit`,
+    linkToEditTrip: `/trips/organize/${this.props.trip._id}`,
     tripDates: getFormattedTripDates(this.props.trip),
   };
 
