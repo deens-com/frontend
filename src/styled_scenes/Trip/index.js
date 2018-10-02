@@ -18,6 +18,7 @@ import TripDescription from './TripDescription';
 import FixedFooter from './FixedFooter';
 import Itinerary from './Itinerary';
 import DaySelector from './DaySelector';
+import mapServicesToDays from './mapServicesToDays';
 
 const Wrapper = styled.div``;
 const TripData = styled.div`
@@ -211,10 +212,12 @@ export default class Trip extends Component {
       return null;
     }
 
+    const days = mapServicesToDays(trip.services);
+
     return (
       <Page>
         <TopBar fixed />
-        <DaySelector trip={trip} goToDay={this.goToDay} />
+        <DaySelector days={days} trip={trip} goToDay={this.goToDay} />
         <PageContent>{this.renderPageContent()}</PageContent>
         <BrandFooter withTopBorder withPadding />
         <FixedFooter

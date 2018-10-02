@@ -60,56 +60,75 @@ const FormInput = styled.div`
 
 const Required = () => <span style={{ color: 'red' }}>*</span>;
 
+function createTripState(props, state) {
+  const optionsSelected = {};
+
+  props.trip.otherAttributes.selectedServiceOptions.forEach(selected => {
+    if (!optionsSelected[selected.day]) {
+      optionsSelected[selected.day] = {
+        [selected.serviceId]: selected.availabilityCode,
+      };
+      return;
+    }
+    optionsSelected[selected.day][selected.serviceId] = selected.availabilityCode;
+  });
+
+  const daysByService = props.trip.services.reduce((prev, service) => {
+    const id = service.service._id;
+    if (!prev[id]) {
+      return {
+        ...prev,
+        [id]: [service.day],
+      };
+    }
+
+    return {
+      ...prev,
+      [id]: [...prev[id], service.day],
+    };
+  }, {});
+
+  return {
+    ...state,
+    trip: props.trip,
+    days: mapServicesToDays(props.trip.services),
+    optionsSelected,
+    daysByService,
+  };
+}
+
+const emptyTrip = {
+  title: '',
+  services: [],
+  media: [],
+  location: {},
+  basePrice: 1,
+};
 export default class TripOrganizer extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      trip: props.trip,
-      days: [],
-      optionsSelected: {},
-      availability: {},
-      daysByService: {},
-    };
+    if (!props.isCreating && props.id === (props.trip && props.trip._id)) {
+      this.state = createTripState(props, {});
+    } else {
+      this.state = {
+        trip: props.trip || emptyTrip,
+        days: [],
+        optionsSelected: {},
+        availability: {},
+        daysByService: {},
+      };
+    }
   }
 
   static getDerivedStateFromProps(props, state) {
     let newState = {};
-    if (props.trip && !state.trip) {
-      const optionsSelected = {};
-
-      props.trip.otherAttributes.selectedServiceOptions.forEach(selected => {
-        if (!optionsSelected[selected.day]) {
-          optionsSelected[selected.day] = {
-            [selected.serviceId]: selected.availabilityCode,
-          };
-          return;
-        }
-        optionsSelected[selected.day][selected.serviceId] = selected.availabilityCode;
-      });
-
-      const daysByService = props.trip.services.reduce((prev, service) => {
-        const id = service.service._id;
-        if (!prev[id]) {
-          return {
-            ...prev,
-            [id]: [service.day],
-          };
-        }
-
-        return {
-          ...prev,
-          [id]: [...prev[id], service.day],
-        };
-      }, {});
-
-      newState = {
-        ...newState,
-        trip: props.trip,
-        days: mapServicesToDays(props.trip.services),
-        optionsSelected,
-        daysByService,
-      };
+    if (
+      (props.trip && !state.trip) ||
+      (props.tripId !== (state.trip && state.trip._id) &&
+        props.tripId === (props.trip && props.trip._id))
+    ) {
+      newState = createTripState(props, state);
     }
 
     if (
@@ -149,10 +168,14 @@ export default class TripOrganizer extends Component {
       services: this.state.days.reduce((prev, day) => [...prev, ...day.data], []),
     };
 
-    await axios.patch(`/trips/${trip._id}`, trip);
+    if (this.props.isCreating) {
+      await axios.post(`/trips`, trip);
+    } else {
+      await axios.patch(`/trips/${trip._id}`, trip);
+    }
   };
 
-  selectOption = (day, serviceId, optionCode) => {
+  selectOption = (day, serviceId, optionCode, price) => {
     this.setState(prevState => ({
       optionsSelected: {
         ...prevState.optionsSelected,
@@ -181,10 +204,10 @@ export default class TripOrganizer extends Component {
             availability: {
               ...prevState.availability,
               data: [
-                ...prevState.availability.data,
+                ...(prevState.availability.data || {}),
                 {
                   isAvailable: availability.data.isAvailable,
-                  options: availability.data.groupedOptions,
+                  groupedOptions: availability.data.groupedOptions,
                   serviceId: service._id,
                   day: day,
                 },
@@ -340,15 +363,23 @@ export default class TripOrganizer extends Component {
     this.setState(prevState => ({
       days: [
         ...prevState.days,
-        {
-          title: `Day ${prevState.days[prevState.days.length - 1].day + 1}`,
-          day: prevState.days[prevState.days.length - 1].day + 1,
-          data: [],
-        },
+        prevState.days.length > 0
+          ? {
+              title: `Day ${prevState.days[prevState.days.length - 1].day + 1}`,
+              day: prevState.days[prevState.days.length - 1].day + 1,
+              data: [],
+            }
+          : {
+              title: 'Day 1',
+              day: 1,
+              data: [],
+            },
       ],
       optionsSelected: {
         ...prevState.optionsSelected,
-        [prevState.days[prevState.days.length - 1].day + 1]: {},
+        ...(prevState.days.length > 0
+          ? { [prevState.days[prevState.days.length - 1].day + 1]: {} }
+          : { 1: {} }),
       },
     }));
   };
@@ -510,14 +541,14 @@ export default class TripOrganizer extends Component {
   };
 
   render() {
-    const { isLoading, availability } = this.props;
+    const { isLoading, availability, tripId, isCreating } = this.props;
     const { trip } = this.state;
 
     return (
       <Page>
         <TopBar fixed />
         <PageContent>
-          {isLoading || !trip || !availability ? (
+          {!isCreating && (isLoading || (!trip || trip._id !== tripId) || !availability) ? (
             <Loader inline="centered" active size="massive" />
           ) : (
             this.renderPageContent()
