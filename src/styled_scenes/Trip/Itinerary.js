@@ -100,9 +100,14 @@ export default class Itinerary extends Component {
       return null;
     }
 
+    const isAvailable =
+      this.props.availability &&
+      this.props.availability[id] &&
+      this.props.availability[id].isAvailable;
+
     return (
-      <Availability available={this.props.availability && this.props.availability[id]}>
-        {this.props.availability && this.props.availability[id] ? 'Available' : 'Unavailable'}
+      <Availability available={isAvailable}>
+        {isAvailable ? 'Available' : 'Unavailable'}
       </Availability>
     );
   };

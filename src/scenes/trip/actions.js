@@ -14,6 +14,10 @@ export const types = {
   CLONE_TRIP_START: 'CLONE_TRIP_START',
   CLONE_TRIP_SUCCESS: 'CLONE_TRIP_SUCCESS',
   CLONE_TRIP_ERROR: 'CLONE_TRIP_ERROR',
+  PATCH_TRIP_START: 'PATCH_TRIP_START',
+  PATCH_TRIP_SUCCESS: 'PATCH_TRIP_SUCCESS',
+  PATCH_TRIP_ERROR: 'PATCH_TRIP_ERROR',
+  SELECT_OPTION: 'SELECT_OPTION',
 };
 
 export const fetchTripStart = () => {
@@ -91,6 +95,32 @@ export const cloneTripError = e => {
   };
 };
 
+export const selectOptionAction = payload => {
+  return {
+    type: types.SELECT_OPTION,
+    payload,
+  };
+};
+
+export const patchTripStart = () => {
+  return {
+    type: types.PATCH_TRIP_START,
+  };
+};
+
+export const patchTripSuccess = () => {
+  return {
+    type: types.PATCH_TRIP_SUCCESS,
+  };
+};
+
+export const patchTripError = e => {
+  return {
+    type: types.PATCH_TRIP_ERROR,
+    payload: e,
+  };
+};
+
 export const fetchTrip = id => async dispatch => {
   dispatch(fetchTripStart());
   try {
@@ -129,9 +159,28 @@ export const cloneTrip = id => async dispatch => {
   try {
     const newTrip = await axios.post(`${serverBaseURL}/trips/copy/${id}`);
     dispatch(cloneTripSuccess());
-    history.push(`/trips/customize/${newTrip.data._id}`);
+    history.push(`/trips/organize/${newTrip.data._id}`);
   } catch (e) {
     dispatch(cloneTripError());
     console.error(e);
+  }
+};
+
+export const selectOption = (serviceId, optionCode) => async dispatch => {
+  dispatch(
+    selectOptionAction({
+      serviceId,
+      code: optionCode,
+    }),
+  );
+};
+
+export const patchTrip = trip => async dispatch => {
+  dispatch(patchTripStart());
+  try {
+    await axios.post(`/trips/${trip._id}`, trip);
+    dispatch(patchTripSuccess());
+  } catch (e) {
+    dispatch(patchTripError(e));
   }
 };

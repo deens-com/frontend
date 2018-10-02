@@ -97,7 +97,7 @@ export default function HomeSectionCTA({ loggedIn }) {
                 theme="textLightGreen"
                 round
                 size="medium"
-                href={loggedIn ? '/results' : '/register'}
+                href={loggedIn ? '/trips/create' : '/register'}
               >
                 {loggedIn ? 'Create' : 'Sign Up'}
               </Button>
