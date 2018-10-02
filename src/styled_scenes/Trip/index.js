@@ -209,7 +209,14 @@ export default class Trip extends Component {
     const { trip, numberOfPeople } = this.props;
 
     if (!trip) {
-      return null;
+      return (
+        <Page>
+          <TopBar fixed />
+          <PageContent>
+            <Loader inline="centered" active />
+          </PageContent>
+        </Page>
+      );
     }
 
     const days = mapServicesToDays(trip.services);

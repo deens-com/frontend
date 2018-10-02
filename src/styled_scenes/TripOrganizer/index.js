@@ -108,7 +108,7 @@ export default class TripOrganizer extends Component {
   constructor(props) {
     super(props);
 
-    if (!props.isCreating && props.id === (props.trip && props.trip._id)) {
+    if (!props.isCreating && props.tripId === (props.trip && props.trip._id)) {
       this.state = createTripState(props, {});
     } else {
       this.state = {
