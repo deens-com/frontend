@@ -22,6 +22,7 @@ class TripOrganizerContainer extends Component {
       <TripOrganizer
         availability={this.props.availability}
         trip={this.props.trip}
+        tripId={this.props.match.params.id}
         startDate={moment(this.props.startDate)}
         numberOfPeople={this.props.numberOfPeople}
         changeDates={this.props.changeDates}

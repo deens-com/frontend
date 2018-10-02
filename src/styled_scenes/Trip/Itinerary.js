@@ -25,14 +25,14 @@ const DayTitle = styled.div`
 `;
 
 const Day = styled.div`
-  margin: 20px 0;
+  margin: 25px 0;
 `;
 
 const Service = styled.div`
-  margin: 10px 0;
+  margin: 15px 0;
   border: 1px solid #f8f8f8;
   border-radius: 5px;
-  height: 200px;
+  min-height: 200px;
   display: flex;
 `;
 
@@ -91,7 +91,7 @@ export default class Itinerary extends Component {
     this.props.changeDates({ start_date: start, end_date: end });
   };
 
-  renderAvailability = id => {
+  renderAvailability = (day, id) => {
     if (this.props.isCheckingAvailability) {
       return <CheckingAvailability>Checking availability...</CheckingAvailability>;
     }
@@ -100,10 +100,10 @@ export default class Itinerary extends Component {
       return null;
     }
 
-    const isAvailable =
+    const thisAvailability =
       this.props.availability &&
-      this.props.availability[id] &&
-      this.props.availability[id].isAvailable;
+      this.props.availability.find(elem => elem.day === day && elem.serviceId === id);
+    const isAvailable = thisAvailability && thisAvailability.isAvailable;
 
     return (
       <Availability available={isAvailable}>
@@ -123,7 +123,7 @@ export default class Itinerary extends Component {
               <Category>
                 <I18nText data={dayData.service.categories[0].names} />
               </Category>
-              {this.renderAvailability(dayData.service._id)}
+              {this.renderAvailability(day.day, dayData.service._id)}
             </CategoryWrapper>
             <I18nText data={dayData.service.title} />
             <I18nText data={dayData.service.description} />

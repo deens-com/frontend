@@ -73,6 +73,7 @@ export default class Options extends Component {
           value: option.otherAttributes.availabilityCode.code,
           content: renderOption(option, props.basePrice),
           text: renderOption(option, props.basePrice),
+          price: getPrice(props.basePrice, option.price),
         })),
         groupName: props.options.groupName,
       },
