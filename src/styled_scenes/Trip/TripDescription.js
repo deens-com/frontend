@@ -1,9 +1,9 @@
 // NPM
 import React, { Component } from 'react';
-import moment from 'moment';
+// import moment from 'moment';
 import styled from 'styled-components';
 
-import { MapMarker, Map, Calendar } from 'shared_components/icons';
+// import { MapMarker, Map, Calendar } from 'shared_components/icons';
 import I18nText from 'shared_components/I18nText';
 
 const Wrapper = styled.div`
@@ -23,10 +23,6 @@ const Description = styled.div`
 `;
 
 export default class ResultsScene extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   static getDerivedStateFromProps(props, state) {
     return null;
   }

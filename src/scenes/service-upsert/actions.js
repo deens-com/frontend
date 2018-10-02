@@ -2,8 +2,7 @@ import Parse from 'parse';
 import fetch_helpers from '../../libs/fetch_helpers';
 import history from '../../main/history';
 import { trackServiceCreated } from 'libs/analytics';
-import { generateFilename } from 'libs/filename';
-import { env, serverBaseURL } from '../../libs/config';
+import { serverBaseURL } from '../../libs/config';
 import axios from 'libs/axios';
 
 export const types = {
@@ -38,16 +37,16 @@ export const submittingStateChanged = bool => {
 
 export const registerService = (values, history) => async (dispatch, getState) => {
   const state = getState();
-  const localStorageUser = localStorage.getItem(`please-${env}-session`);
-  const jsonUser = JSON.parse(localStorageUser);
-  const jwtToken = jsonUser.accessToken;
+  // const localStorageUser = localStorage.getItem(`please-${env}-session`);
+  // const jsonUser = JSON.parse(localStorageUser);
+  // const jwtToken = jsonUser.accessToken;
   const { isSubmitting } = state.ServiceUpsert;
 
   if (isSubmitting) return;
   dispatch({ type: types.SERVICE_CREATE_STARTED });
 
   try {
-    const { mainPicture, acceptETH } = values;
+    const { acceptETH } = values;
     // let parseFile;
     // if (mainPicture) {
     //   const filename = generateFilename(mainPicture.name);

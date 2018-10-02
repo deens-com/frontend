@@ -82,7 +82,7 @@ const UserBasicInfo = ({ user_profile: user = {}, match, update_user_avatar, log
         <CircularProfilePic src={dpUrl} />
         <CenteredDiv>
           <FileInputWrapper>
-            <Button circular class="btn-file-input">
+            <Button circular className="btn-file-input">
               Update avatar
             </Button>
             <input type="file" name="file" accept=".jpg, .jpeg, .png" onChange={onFileSelect} />

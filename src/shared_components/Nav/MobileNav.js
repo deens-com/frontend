@@ -3,11 +3,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Media from 'react-media';
-import Parse from 'parse';
 import { connect } from 'react-redux';
-
-// COMPONENTS
-import CurrencySelector from '../Currency/Selector';
 
 // ACTIONS/CONFIG
 import { sizes } from '../../libs/styled';

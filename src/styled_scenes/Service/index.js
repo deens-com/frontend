@@ -14,7 +14,7 @@ import BrandFooter from '../../shared_components/BrandFooter';
 import { BadgeIcon } from './icons';
 import TripCart from '../../shared_components/Cards/Trip';
 import Review from '../../shared_components/Review';
-import Carousel from '../../shared_components/Carousel';
+// import Carousel from '../../shared_components/Carousel';
 import ImgSlider from './components/ImgSlider';
 import MapMaker from '../../shared_components/MapMarker';
 

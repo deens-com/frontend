@@ -90,7 +90,7 @@ const locationProps = {
   },
   inputProps: {
     placeholder: 'Where would you like to go?',
-    icon: false,
+    icon: 'false',
     as: Input,
   },
 };

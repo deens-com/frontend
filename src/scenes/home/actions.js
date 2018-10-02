@@ -1,6 +1,3 @@
-import Parse from 'parse';
-import fetch_helpers from './../../libs/fetch_helpers';
-import { tagsColorMatcher } from './../../libs/Utils';
 import { serverBaseURL } from 'libs/config';
 import axios from 'libs/axios';
 

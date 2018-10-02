@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 
 // COMPONENTS
 import DesktopDropDownMenu from './DesktopDropDownMenu';
-import CurrencySelector from '../Currency/Selector';
+// import CurrencySelector from '../Currency/Selector';
 
 // ACTIONS/CONFIG
 import { sizes } from '../../libs/styled';

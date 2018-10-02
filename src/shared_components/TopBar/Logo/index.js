@@ -3,13 +3,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import Media from 'react-media';
 
 // COMPONENTS
-import { Logo, DropArrow } from '../../icons';
+import { Logo } from '../../icons';
 
 // ACTIONS/CONFIG
-import { sizes, resetButton } from '../../../libs/styled';
+// import { sizes, resetButton } from '../../../libs/styled';
 
 // STYLES
 const Wrap = styled.div`
@@ -18,14 +17,14 @@ const Wrap = styled.div`
   flex-grow: 0;
 `;
 
-const ArrowWrap = styled.span`
-  color: ${props => (props.menuIsOpened ? '#62B69E' : 'white')};
-  display: inline-block;
-  font-size: 12px;
-  transform: rotate(${props => (props.menuIsOpened ? '180deg' : '0deg')});
-  transition: transform 0.2s ease-out, color 0.1s ease-out;
-  width: 15px;
-`;
+// const ArrowWrap = styled.span`
+//   color: ${props => (props.menuIsOpened ? '#62B69E' : 'white')};
+//   display: inline-block;
+//   font-size: 12px;
+//   transform: rotate(${props => (props.menuIsOpened ? '180deg' : '0deg')});
+//   transition: transform 0.2s ease-out, color 0.1s ease-out;
+//   width: 15px;
+// `;
 
 const LogoLink = styled(Link)`
   display: inline-block;

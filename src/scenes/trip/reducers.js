@@ -1,5 +1,4 @@
 import { types } from './actions';
-import I18nText from 'shared_components/I18nText';
 
 const initialState = {
   trip: null,

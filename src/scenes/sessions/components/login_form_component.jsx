@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Form, Grid, Header, Message, Segment, Container } from 'semantic-ui-react';
+import { Button, Form, Grid, Message, Container } from 'semantic-ui-react';
 import styled from 'styled-components';
 import TopBar from './../../../shared_components/TopBar';
 import BrandFooter from './../../../shared_components/BrandFooter';

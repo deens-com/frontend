@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Image } from 'semantic-ui-react';
 import { media } from 'libs/styled';

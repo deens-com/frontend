@@ -21,7 +21,7 @@ const AutoLink = styled(Link)`
 class AccountTripsScene extends Component {
   static propTypes = {
     allTrips: PropTypes.array,
-    isLoadingTrips: PropTypes.bool.isRequired,
+    //isLoadingTrips: PropTypes.bool.isRequired,
   };
 
   static defaultProps = {
