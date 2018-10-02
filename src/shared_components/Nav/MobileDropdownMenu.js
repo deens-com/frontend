@@ -50,8 +50,7 @@ const AvatarWithUsername = styled.div`
 // MODULE
 class MobileDropDownMenu extends Component {
   render() {
-    const dpUrl =
-      (this.props.session.profilePicture && this.props.profilePicture.url) || ImgurAvatar;
+    const dpUrl = this.props.session.profilePicture || ImgurAvatar;
 
     return (
       <Media query={`(max-width: ${sizes.large})`}>

@@ -74,11 +74,7 @@ class DesktopDropDownMenu extends Component {
   trigger = () => (
     <AvatarWrapper>
       <Image
-        src={
-          (this.props.session.profilePicture && this.props.session.profilePicture.url) ||
-          this.props.session.metamaskPublicAddress ||
-          ImgurAvatar
-        }
+        src={this.props.session.profilePicture || ImgurAvatar}
         circular
         width={30}
         height={30}

@@ -148,7 +148,7 @@ export const update_user_avatar = file => {
           const updatedUser = await axiosOriginal
             .patch(
               `${serverBaseURL}/users/me`,
-              { metamaskPublicAddress: pictureUrl },
+              { profilePicture: pictureUrl },
               {
                 headers: {
                   Authorization: `Bearer ${session.accessToken}`,
