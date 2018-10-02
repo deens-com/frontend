@@ -1,4 +1,5 @@
 import { types } from './actions';
+import I18nText from 'shared_components/I18nText';
 
 const initialState = {
   trip: null,
@@ -89,15 +90,46 @@ export default function TripsReducer(state = initialState, action = {}) {
         ...state,
         availability: {
           ...state.availability,
+          isChecking: false,
+          data: action.payload.data,
+        },
+      };
+
+      /*return {
+        ...state,
+        availability: {
+          ...state.availability,
           data: action.payload.data.reduce((prev, service) => {
+            if (!prev[service.serviceId]) {
+              return {
+                ...prev,
+                [service.serviceId]: {
+                  isAvailable: service.isAvailable,
+                  options: service.groupedOptions,
+                },
+              };
+            }
+
             return {
               ...prev,
-              [service.serviceId]: service.isAvailable,
+              [service.serviceId]: (service.isAvailable && prev[service.serviceId].isAvailable) ?
+                {
+                  isAvailable: true,
+                  options: prev[service.serviceId].options.filter(option => service.groupedOptions.options.find(elem => (
+                    elem.price.value === option.price.value
+                    && elem.price.operator === option.price.operator
+                    && I18nText.translate(elem.title) === I18nText.translate(option.title)
+                  ))),
+                }
+                : {
+                  isAvailable: false,
+                  options: null,
+                },
             };
           }, {}),
           isChecking: false,
         },
-      };
+      };*/
     }
     case types.CHECK_AVAILABILITY_ERROR: {
       if (action.timestamp !== state.availability.timestamp) {

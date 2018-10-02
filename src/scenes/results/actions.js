@@ -95,7 +95,7 @@ const composeQuery = search_params => {
   return query_string;
 };
 
-const composeFetchQuery = search_params => {
+export const composeFetchQuery = search_params => {
   const query_params = {
     category: !search_params.type.length
       ? undefined

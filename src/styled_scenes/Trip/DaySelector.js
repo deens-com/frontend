@@ -17,17 +17,20 @@ const Wrapper = styled.div`
 class DaySelector extends React.Component {
   constructor(props) {
     super(props);
-    this.days = mapServicesToDays(props.trip.services);
+    if (props.trips) {
+      this.days = mapServicesToDays(props.trip.services);
+    }
   }
 
   render() {
     return (
       <Wrapper>
-        {this.days.map((day, index) => (
+        {(this.props.days || this.days).map((day, index) => (
           <Button key={day.title} onClick={() => this.props.goToDay(index)}>
             {day.title}
           </Button>
         ))}
+        {this.props.onAddDay && <Button onClick={this.props.onAddDay}>+</Button>}
       </Wrapper>
     );
   }

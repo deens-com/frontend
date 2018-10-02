@@ -12,6 +12,7 @@ export default function mapServicesToDays(services) {
     .sort()
     .map(key => ({
       title: `Day ${key}`,
+      day: parseInt(key, 10),
       data: servicesByDay[key],
     }));
 }

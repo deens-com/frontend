@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 // COMPONENTS
 import { ArrowIcon } from '../icons';
-import { DropArrow, PlusIcon } from '../icons';
+import { DropArrow, PlusIcon, Camera } from '../icons';
 
 // ACTIONS/CONFIG
 import { resetButton } from '../../libs/styled';
@@ -63,6 +63,14 @@ export const theme = {
     color: colors.white,
     colorHover: colors.white,
   },
+  allWhite: {
+    background: 'transparent',
+    backgroundHover: 'transparent',
+    border: colors.white,
+    borderHover: colors.greenActive,
+    color: colors.white,
+    colorHover: colors.greenActive,
+  },
   textGreen: {
     background: colors.white,
     backgroundHover: colors.white,
@@ -116,6 +124,8 @@ export const theme = {
 export const Wrap = styled.div`
   display: inline-block;
 
+  > div,
+  > label,
   > button,
   > a {
     border-radius: ${props => (props.round ? '25px' : '0')};
@@ -198,6 +208,9 @@ export default class Button extends Component {
       case 'plus': {
         return <PlusIcon />;
       }
+      case 'camera': {
+        return <Camera />;
+      }
       default:
         return null;
     }
@@ -210,7 +223,9 @@ export default class Button extends Component {
 
   render() {
     let El;
-    if (this.props.type === 'link') {
+    if (this.props.element) {
+      El = this.props.element;
+    } else if (this.props.type === 'link') {
       El = props => (
         <Link to={this.props.href} target={this.props.target} children={this.props.children} />
       );

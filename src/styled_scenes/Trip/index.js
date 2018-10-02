@@ -46,16 +46,6 @@ const Sentence = styled.div`
   }
 `;
 
-const LoaderWrapper = styled.div`
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  top: -20px;
-  z-index: 10;
-  background-color: rgba(0, 0, 0, 0.4);
-`;
-
 export default class Trip extends Component {
   constructor(props) {
     super(props);
