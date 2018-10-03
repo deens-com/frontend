@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Truncate from 'react-truncate';
 import { Popup } from 'semantic-ui-react';
-// import * as queryString from 'query-string';
 
 import { withRouter } from 'react-router-dom';
 
@@ -20,7 +19,9 @@ import { Cart, ContentWrap } from './styles';
 import { cardConfig } from 'libs/config';
 import { PinIcon } from 'shared_components/icons';
 import I18nText from 'shared_components/I18nText';
-const queryString = { parse: () => '' };
+
+const queryString = require('qs');
+
 const Wrap = styled.div`
   // display: inline-block;
   // width: 300px;
@@ -132,7 +133,7 @@ class TripCard extends Component {
   };
 
   isViewTypeOf = type => {
-    const param = queryString.parse(this.props.location.search);
+    const param = queryString.parse(this.props.location.search, { ignoreQueryPrefix: true });
 
     if (param.service_types === type) {
       return true;

@@ -29,6 +29,7 @@
     "now": "^11.2.4",
     "parse": "^1.11.1",
     "prop-types": "^15.6.1",
+    "qs": "^6.5.2",
     "raven-js": "^3.25.2",
     "react": "^16.2.0",
     "react-app-rewire-styled-components": "^3.0.2",
