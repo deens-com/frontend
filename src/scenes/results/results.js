@@ -1,9 +1,10 @@
 import React from 'react';
 import ResultsContainer from './containers/results_container';
-// import queryString from 'query-string';
-const queryString = { parse: () => '' };
+import queryString from 'qs';
+
 const Results = props => {
-  let search_params = queryString.parse(props.location.search);
+  let search_params = queryString.parse(props.location.search, { ignoreQueryPrefix: true });
+
   // does not properly parse '+'.
   let service_types = (search_params.service_types && search_params.service_types.split(' ')) || [
     'trip',
