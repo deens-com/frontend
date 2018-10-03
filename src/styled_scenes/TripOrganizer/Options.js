@@ -29,7 +29,7 @@ const DropdownWrapper = styled.span`
   flex-grow: 1;
 `;
 
-function getPrice(base, price) {
+export function getPrice(base, price) {
   if (price.operator === '+') {
     return price.value + base;
   }

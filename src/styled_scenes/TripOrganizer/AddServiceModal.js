@@ -99,7 +99,7 @@ export default class AddServiceModal extends Component {
     this.setState(
       {
         city: place[0].formatted_address,
-        location: getLatLng(place[0]),
+        location: await getLatLng(place[0]),
       },
       this.search,
     );

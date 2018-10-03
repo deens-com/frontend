@@ -8,6 +8,7 @@ import { geocodeByPlaceId } from 'react-places-autocomplete';
 import { serverBaseURL } from 'libs/config';
 import axios from 'libs/axios';
 import axiosOriginal from 'axios';
+import history from '../../main/history';
 
 import TopBar from 'shared_components/TopBar';
 import BrandFooter from 'shared_components/BrandFooter';
@@ -21,6 +22,7 @@ import DaySelector from '../Trip/DaySelector';
 import CheckoutBox from './CheckoutBox';
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
 import Button from 'shared_components/Button';
+import { getPrice } from './Options';
 
 const PageContent = styled.div`
   width: 825px;
@@ -145,7 +147,7 @@ export default class TripOrganizer extends Component {
     return newState;
   }
 
-  patchOrCreateTrip = async (action = 'patch') => {
+  patchOrCreateTrip = async (action = 'book') => {
     let selectedServiceOptions = [];
 
     Object.keys(this.state.optionsSelected).forEach(key => {
@@ -162,29 +164,74 @@ export default class TripOrganizer extends Component {
 
     const trip = {
       ...this.state.trip,
+      ...(action === 'share' ? { privacy: 'public' } : {}),
       otherAttributes: {
         selectedServiceOptions,
       },
       services: this.state.days.reduce((prev, day) => [...prev, ...day.data], []),
     };
 
+    let id;
     if (this.props.isCreating) {
-      await axios.post(`/trips`, trip);
+      const response = await axios.post(`/trips`, trip);
+      id = response.data._id;
     } else {
       await axios.patch(`/trips/${trip._id}`, trip);
+      id = trip._id;
     }
+
+    if (action === 'share') {
+      history.push(`/trips/${id}`);
+      return;
+    }
+    history.push(`/trips/checkout/${id}`);
   };
 
   selectOption = (day, serviceId, optionCode, price) => {
-    this.setState(prevState => ({
-      optionsSelected: {
-        ...prevState.optionsSelected,
-        [day]: {
-          ...prevState.optionsSelected[day],
-          [serviceId]: optionCode,
+    this.setState(
+      prevState => ({
+        optionsSelected: {
+          ...prevState.optionsSelected,
+          [day]: {
+            ...prevState.optionsSelected[day],
+            [serviceId]: optionCode,
+          },
         },
+      }),
+      () => {
+        this.setState(prevState => ({
+          trip: {
+            ...prevState.trip,
+            basePrice: prevState.availability.data.reduce((price, elem) => {
+              if (
+                prevState.optionsSelected[elem.day] &&
+                prevState.optionsSelected[elem.day][elem.serviceId]
+              ) {
+                const selectedElement = elem.groupedOptions.options.find(
+                  option =>
+                    option.otherAttributes &&
+                    option.otherAttributes.availabilityCode &&
+                    option.otherAttributes.availabilityCode.code ===
+                      prevState.optionsSelected[elem.day][elem.serviceId],
+                );
+                if (selectedElement) {
+                  return (
+                    price +
+                    getPrice(
+                      prevState.trip.services.find(
+                        service => selectedElement.serviceId === service._id,
+                      ).basePrice,
+                      selectedElement.price,
+                    )
+                  );
+                }
+              }
+              return price;
+            }, 0),
+          },
+        }));
       },
-    }));
+    );
   };
 
   addService = async (day, service) => {
@@ -489,6 +536,7 @@ export default class TripOrganizer extends Component {
           changeGuests={this.changeGuests}
           startDate={startDate}
           numberOfPeople={numberOfPeople}
+          price={trip.basePrice || 0}
         />
         <CoverImage url={img}>
           <Button
