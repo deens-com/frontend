@@ -54,6 +54,14 @@ export default class CheckoutBox extends React.Component {
     });
   };
 
+  book = () => {
+    this.props.action('book');
+  };
+
+  share = () => {
+    this.props.action('share');
+  };
+
   render() {
     const { startDate, numberOfPeople } = this.props;
     const formattedStartDate = startDate ? startDate.format('LL') : 'Select date';
@@ -88,41 +96,13 @@ export default class CheckoutBox extends React.Component {
             selection
           />
         </Field>
-        <Button size="medium" type="button" theme="fillLightGreen" onClick={this.props.action}>
+        <Button size="medium" type="button" theme="fillLightGreen" onClick={this.book}>
           Book
         </Button>
-        <Button size="medium" type="button" theme="white" onClick={() => {}}>
+        <Button size="medium" type="button" theme="white" onClick={this.share}>
           Share and earn rewards
         </Button>
       </Wrapper>
     );
   }
 }
-
-/*
-<EditableElement>
-          <Popup
-            trigger={<span>{numberOfPeople + ' Guests'}</span>}
-            content={
-              <Dropdown
-                placeholder={numberOfPeople + ' Guests'}
-                options={[
-                  { text: 1, value: 1 },
-                  { text: 2, value: 2 },
-                  { text: 3, value: 3 },
-                  { text: 4, value: 4 },
-                  { text: 5, value: 5 },
-                ]}
-                onChange={this.handleGuestsChange}
-                fluid
-                selection
-              />
-            }
-            on="click"
-            open={this.state.isGuestsPopupOpen}
-            onClose={this.handleGuestsPopupClose}
-            onOpen={this.handleGuestsPopupOpen}
-            position="bottom center"
-          />
-        </EditableElement>
-        */

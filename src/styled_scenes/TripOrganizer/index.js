@@ -8,6 +8,7 @@ import { geocodeByPlaceId } from 'react-places-autocomplete';
 import { serverBaseURL } from 'libs/config';
 import axios from 'libs/axios';
 import axiosOriginal from 'axios';
+import history from '../../main/history';
 
 import TopBar from 'shared_components/TopBar';
 import BrandFooter from 'shared_components/BrandFooter';
@@ -145,7 +146,7 @@ export default class TripOrganizer extends Component {
     return newState;
   }
 
-  patchOrCreateTrip = async (action = 'patch') => {
+  patchOrCreateTrip = async (action = 'book') => {
     let selectedServiceOptions = [];
 
     Object.keys(this.state.optionsSelected).forEach(key => {
@@ -162,17 +163,27 @@ export default class TripOrganizer extends Component {
 
     const trip = {
       ...this.state.trip,
+      ...(action === 'share' ? { privacy: 'public' } : {}),
       otherAttributes: {
         selectedServiceOptions,
       },
       services: this.state.days.reduce((prev, day) => [...prev, ...day.data], []),
     };
 
+    let id;
     if (this.props.isCreating) {
-      await axios.post(`/trips`, trip);
+      const response = await axios.post(`/trips`, trip);
+      id = response.data._id;
     } else {
       await axios.patch(`/trips/${trip._id}`, trip);
+      id = trip._id;
     }
+
+    if (action === 'share') {
+      history.push(`/trips/${id}`);
+      return;
+    }
+    history.push(`/trips/checkout/${id}`);
   };
 
   selectOption = (day, serviceId, optionCode, price) => {
