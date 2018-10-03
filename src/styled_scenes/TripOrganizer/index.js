@@ -150,15 +150,13 @@ export default class TripOrganizer extends Component {
   patchOrCreateTrip = async (action = 'book') => {
     let selectedServiceOptions = [];
 
-    Object.keys(this.state.optionsSelected).forEach(key => {
-      this.state.days.forEach((day, index) => {
-        if (day.data.some(data => data.service._id === key)) {
-          selectedServiceOptions.push({
-            serviceId: key,
-            day: day.day,
-            availabilityCode: this.state.optionsSelected[day.day][key],
-          });
-        }
+    Object.keys(this.state.optionsSelected).forEach(day => {
+      Object.keys(this.state.optionsSelected[day]).forEach(serviceId => {
+        selectedServiceOptions.push({
+          day,
+          serviceId,
+          availabilityCode: this.state.optionsSelected[day][serviceId],
+        });
       });
     });
 
