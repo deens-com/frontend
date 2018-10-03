@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Truncate from 'react-truncate';
 import { Popup } from 'semantic-ui-react';
-import * as queryString from 'query-string';
+// import * as queryString from 'query-string';
+
 import { withRouter } from 'react-router-dom';
 
 // COMPONENTS
@@ -19,7 +20,7 @@ import { Cart, ContentWrap } from './styles';
 import { cardConfig } from 'libs/config';
 import { PinIcon } from 'shared_components/icons';
 import I18nText from 'shared_components/I18nText';
-
+const queryString = { parse: () => '' };
 const Wrap = styled.div`
   // display: inline-block;
   // width: 300px;

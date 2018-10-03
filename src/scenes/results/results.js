@@ -1,7 +1,7 @@
 import React from 'react';
 import ResultsContainer from './containers/results_container';
-import queryString from 'query-string';
-
+// import queryString from 'query-string';
+const queryString = { parse: () => '' };
 const Results = props => {
   let search_params = queryString.parse(props.location.search);
   // does not properly parse '+'.
