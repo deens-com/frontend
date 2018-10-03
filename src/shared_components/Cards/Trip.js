@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Truncate from 'react-truncate';
 import { Popup } from 'semantic-ui-react';
+import * as queryString from 'query-string';
+import { withRouter } from 'react-router-dom';
 
 // COMPONENTS
 import Rating from '../Rating';
@@ -112,17 +114,7 @@ const duration = minutes => {
   return dayNb.toFixed() + ' min';
 };
 
-const isServiceTypeOf = (service, type) => {
-  const i18nLocale = 'en-us';
-
-  if (service.categories && service.categories[0].names[i18nLocale] === type) {
-    return true;
-  }
-
-  return false;
-};
-
-export default class TripCard extends Component {
+class TripCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -138,9 +130,18 @@ export default class TripCard extends Component {
     }
   };
 
+  isViewTypeOf = type => {
+    const param = queryString.parse(this.props.location.search);
+
+    if (param.service_types === type) {
+      return true;
+    }
+
+    return false;
+  };
+
   render() {
     const { item } = this.props;
-    console.log(item);
 
     return (
       <div>
@@ -191,18 +192,14 @@ export default class TripCard extends Component {
                 tripCount={item.partOf}
                 withTooltip={this.props.withTooltip}
               />
-              <ContentWrap
-                small={isServiceTypeOf(item, 'Accommodation') || isServiceTypeOf(item, 'Food')}
-              >
-                {isServiceTypeOf(item, 'Activity') && (
-                  <Duration>{duration(item.duration)}</Duration>
-                )}
+              <ContentWrap small={this.isViewTypeOf('accommodation') || this.isViewTypeOf('food')}>
+                {this.isViewTypeOf('activity') && <Duration>{duration(item.duration)}</Duration>}
                 <Title>
                   <Truncate lines={cardConfig.titleLines}>
                     <I18nText data={item.title} />
                   </Truncate>
                 </Title>
-                {(isServiceTypeOf(item, 'Accommodation') || isServiceTypeOf(item, 'Activity')) && (
+                {(this.isViewTypeOf('accommodation') || this.isViewTypeOf('activity')) && (
                   <Description>
                     <Truncate lines={cardConfig.descriptionLines}>
                       <I18nText data={item.description} />
@@ -210,9 +207,9 @@ export default class TripCard extends Component {
                   </Description>
                 )}
                 <ContentFooter>
-                  {(isServiceTypeOf(item, 'Food') || isServiceTypeOf(item, 'Activity')) && (
+                  {(this.isViewTypeOf('food') || this.isViewTypeOf('activity')) && (
                     <Price>
-                      {isServiceTypeOf(item, 'Food') ? 'Average ' : 'From '}
+                      {this.isViewTypeOf('food') ? 'Average ' : 'From '}
                       <PriceTag unit="hidden" price={item.basePrice}>
                         {({ symbol, convertedPrice }) => `${symbol}${convertedPrice}`}
                       </PriceTag>
@@ -259,3 +256,5 @@ TripCard.defaultProps = {
   withShadow: false,
   href: '/',
 };
+
+export default withRouter(TripCard);
