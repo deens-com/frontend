@@ -108,8 +108,18 @@ function formatLocation(location) {
 }
 
 const duration = minutes => {
-  const dayNb = minutes / 60 / 24 || 0;
-  return dayNb.toFixed() + ' days';
+  const dayNb = minutes || 0;
+  return dayNb.toFixed() + ' min';
+};
+
+const isServiceTypeOf = (service, type) => {
+  const i18nLocale = 'en-us';
+
+  if (service.categories && service.categories[0].names[i18nLocale] === type) {
+    return true;
+  }
+
+  return false;
 };
 
 export default class TripCard extends Component {
@@ -130,6 +140,8 @@ export default class TripCard extends Component {
 
   render() {
     const { item } = this.props;
+    console.log(item);
+
     return (
       <div>
         {this.state.truncated ? (
@@ -179,25 +191,33 @@ export default class TripCard extends Component {
                 tripCount={item.partOf}
                 withTooltip={this.props.withTooltip}
               />
-              <ContentWrap>
-                <Duration>{duration(item.duration)}</Duration>
+              <ContentWrap
+                small={isServiceTypeOf(item, 'Accommodation') || isServiceTypeOf(item, 'Food')}
+              >
+                {isServiceTypeOf(item, 'Activity') && (
+                  <Duration>{duration(item.duration)}</Duration>
+                )}
                 <Title>
                   <Truncate lines={cardConfig.titleLines}>
                     <I18nText data={item.title} />
                   </Truncate>
                 </Title>
-                <Description>
-                  <Truncate lines={cardConfig.descriptionLines}>
-                    <I18nText data={item.description} />
-                  </Truncate>
-                </Description>
+                {(isServiceTypeOf(item, 'Accommodation') || isServiceTypeOf(item, 'Activity')) && (
+                  <Description>
+                    <Truncate lines={cardConfig.descriptionLines}>
+                      <I18nText data={item.description} />
+                    </Truncate>
+                  </Description>
+                )}
                 <ContentFooter>
-                  <Price>
-                    From{' '}
-                    <PriceTag unit="hidden" price={item.basePrice}>
-                      {({ symbol, convertedPrice }) => `${symbol}${convertedPrice}`}
-                    </PriceTag>
-                  </Price>
+                  {(isServiceTypeOf(item, 'Food') || isServiceTypeOf(item, 'Activity')) && (
+                    <Price>
+                      {isServiceTypeOf(item, 'Food') ? 'Average ' : 'From '}
+                      <PriceTag unit="hidden" price={item.basePrice}>
+                        {({ symbol, convertedPrice }) => `${symbol}${convertedPrice}`}
+                      </PriceTag>
+                    </Price>
+                  )}
                   <Location>
                     <PinIcon />
                     <p>
