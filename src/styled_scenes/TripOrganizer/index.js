@@ -22,6 +22,7 @@ import DaySelector from '../Trip/DaySelector';
 import CheckoutBox from './CheckoutBox';
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
 import Button from 'shared_components/Button';
+import { getPrice } from './Options';
 
 const PageContent = styled.div`
   width: 825px;
@@ -187,15 +188,50 @@ export default class TripOrganizer extends Component {
   };
 
   selectOption = (day, serviceId, optionCode, price) => {
-    this.setState(prevState => ({
-      optionsSelected: {
-        ...prevState.optionsSelected,
-        [day]: {
-          ...prevState.optionsSelected[day],
-          [serviceId]: optionCode,
+    this.setState(
+      prevState => ({
+        optionsSelected: {
+          ...prevState.optionsSelected,
+          [day]: {
+            ...prevState.optionsSelected[day],
+            [serviceId]: optionCode,
+          },
         },
+      }),
+      () => {
+        this.setState(prevState => ({
+          trip: {
+            ...prevState.trip,
+            basePrice: prevState.availability.data.reduce((price, elem) => {
+              if (
+                prevState.optionsSelected[elem.day] &&
+                prevState.optionsSelected[elem.day][elem.serviceId]
+              ) {
+                const selectedElement = elem.groupedOptions.options.find(
+                  option =>
+                    option.otherAttributes &&
+                    option.otherAttributes.availabilityCode &&
+                    option.otherAttributes.availabilityCode.code ===
+                      prevState.optionsSelected[elem.day][elem.serviceId],
+                );
+                if (selectedElement) {
+                  return (
+                    price +
+                    getPrice(
+                      prevState.trip.services.find(
+                        service => selectedElement.serviceId === service._id,
+                      ).basePrice,
+                      selectedElement.price,
+                    )
+                  );
+                }
+              }
+              return price;
+            }, 0),
+          },
+        }));
       },
-    }));
+    );
   };
 
   addService = async (day, service) => {
@@ -500,6 +536,7 @@ export default class TripOrganizer extends Component {
           changeGuests={this.changeGuests}
           startDate={startDate}
           numberOfPeople={numberOfPeople}
+          price={trip.basePrice || 0}
         />
         <CoverImage url={img}>
           <Button

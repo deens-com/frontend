@@ -29,6 +29,10 @@ const Label = styled.label`
   display: block;
 `;
 
+const Price = styled.div`
+  font-weight: bold;
+`;
+
 export default class CheckoutBox extends React.Component {
   constructor(props) {
     super(props);
@@ -96,6 +100,7 @@ export default class CheckoutBox extends React.Component {
             selection
           />
         </Field>
+        <Price>${this.props.price * numberOfPeople}</Price>
         <Button size="medium" type="button" theme="fillLightGreen" onClick={this.book}>
           Book
         </Button>
