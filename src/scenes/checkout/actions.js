@@ -1,6 +1,6 @@
-import Parse from 'parse';
 import axios from 'libs/axios';
 import fetch_helpers from 'libs/fetch_helpers';
+import history from './../../main/history';
 import { trackTripBooked } from 'libs/analytics';
 
 export const types = {
@@ -39,6 +39,7 @@ export const chargeStripeToken = (token, guests, complete = () => {}) => async (
       payload: statuses.SUCCESS,
       meta: { analytics: trackTripBooked(tripId) },
     });
+    history.push('/account/trips/planned');
   } catch (error) {
     console.error('charge failed', error);
     complete('fail');

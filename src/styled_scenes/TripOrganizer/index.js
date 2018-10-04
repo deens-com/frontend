@@ -153,7 +153,7 @@ export default class TripOrganizer extends Component {
     Object.keys(this.state.optionsSelected).forEach(day => {
       Object.keys(this.state.optionsSelected[day]).forEach(serviceId => {
         selectedServiceOptions.push({
-          day,
+          day: parseInt(day, 10),
           serviceId,
           availabilityCode: this.state.optionsSelected[day][serviceId],
         });
@@ -205,13 +205,15 @@ export default class TripOrganizer extends Component {
                 prevState.optionsSelected[elem.day] &&
                 prevState.optionsSelected[elem.day][elem.serviceId]
               ) {
-                const selectedElement = elem.groupedOptions.options.find(
-                  option =>
-                    option.otherAttributes &&
-                    option.otherAttributes.availabilityCode &&
-                    option.otherAttributes.availabilityCode.code ===
-                      prevState.optionsSelected[elem.day][elem.serviceId],
-                );
+                const selectedElement =
+                  elem.groupedOptions &&
+                  elem.groupedOptions.options.find(
+                    option =>
+                      option.otherAttributes &&
+                      option.otherAttributes.availabilityCode &&
+                      option.otherAttributes.availabilityCode.code ===
+                        prevState.optionsSelected[elem.day][elem.serviceId],
+                  );
                 if (selectedElement) {
                   return (
                     price +
