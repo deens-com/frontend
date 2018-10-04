@@ -439,6 +439,7 @@ export default class TripOrganizer extends Component {
       );
       const countries = addressComponents.filter(c => c.types.includes('country'));
       const state = addressComponents.filter(c => c.types.includes('administrative_area_level_1'));
+      const { lat: latFn, lng: lngFn } = currentResult.geometry.location;
 
       this.setState(prevState => ({
         trip: {
@@ -447,6 +448,10 @@ export default class TripOrganizer extends Component {
             city: localities[0].long_name,
             state: state[0].long_name,
             countryCode: countries[0].short_name,
+            geo: {
+              type: 'Point',
+              coordinates: [lngFn(), latFn()],
+            },
           },
         },
       }));
