@@ -57,14 +57,14 @@ const App = () => {
               component={commonHOCs(TripOrganizer)}
             />
             <Route
+              path={process.env.PUBLIC_URL + '/trips/checkout/:id'}
+              component={commonHOCs(Checkout)}
+            />
+            <Route
               path={process.env.PUBLIC_URL + '/trips/create'}
               component={commonHOCs(TripCreator)}
             />
             <Route path={process.env.PUBLIC_URL + '/trips/:id'} component={commonHOCs(Trip)} />
-            <Route
-              path={process.env.PUBLIC_URL + '/checkout/:id'}
-              component={commonHOCs(Checkout)}
-            />
             <Route
               path={process.env.PUBLIC_URL + '/users/:userName'}
               component={commonHOCs(Users)}

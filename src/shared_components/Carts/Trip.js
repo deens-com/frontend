@@ -118,7 +118,7 @@ const Username = styled.p`
   font-weight: bold;
 `;
 
-function formatLocation(location) {
+export function formatLocation(location) {
   let result = '';
   if (location.city) {
     result = location.city;
