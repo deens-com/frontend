@@ -48,7 +48,7 @@ class BookedSuccessfullyPopup extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  bookingStatus: state.TripsReducer.bookingStatus,
+  bookingStatus: state.TripReducer.bookingStatus,
 });
 
 export default connect(

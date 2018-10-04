@@ -135,7 +135,7 @@ export default class TripOrganizer extends Component {
 
     if (
       props.availability &&
-      (!state.availability.timestamp ||
+      (!(state.availability && state.availability.timestamp) ||
         props.availability.timestamp === state.availability.timestamp)
     ) {
       newState = {

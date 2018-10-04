@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { CardElement } from 'react-stripe-elements';
 import styled from 'styled-components';
 import CustomColorSemanticButton from 'shared_components/CustomColorSemanticButton';
-import { PaymentContextConsumer } from '../PaymentContainer';
+import { PaymentContextConsumer } from './Payment';
 
 const Wrapper = styled.div`
   border-style: none;

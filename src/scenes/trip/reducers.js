@@ -12,6 +12,7 @@ const initialState = {
     error: null,
   },
   isCloning: false,
+  bookingStatus: null,
 };
 
 export default function TripsReducer(state = initialState, action = {}) {
