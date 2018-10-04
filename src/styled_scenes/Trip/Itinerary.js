@@ -40,7 +40,7 @@ const Image = styled.div`
   background-image: url(${props => props.url});
   background-size: cover;
   background-position: center;
-  height: 100%;
+  height: 200px;
   width: 200px;
 `;
 

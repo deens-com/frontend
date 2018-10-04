@@ -19,4 +19,4 @@ export const serverBaseURL = (() => {
   return process.env.REACT_APP_PARSE_SERVER_URL || 'https://api.please.docker';
 })();
 
-export const stripeKey = process.env.STRIPE_KEY || '';
+export const stripeKey = process.env.REACT_APP_STRIPE_KEY || '';
