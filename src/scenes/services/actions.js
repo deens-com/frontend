@@ -105,6 +105,7 @@ export const addServiceToTrip = ({ trip, day }) => async (dispatch, getState) =>
       setAddedToTripMessage(trip)(dispatch);
     }
   } catch (error) {
+    setAlreadyAddedToTrip(trip)(dispatch);
     console.error(error);
   }
 };
@@ -133,6 +134,9 @@ export const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (dispatch
       const formattedTrip = fetch_helpers.buildServicesJson([newTrip.data])[0];
       setAddedToTripMessage(formattedTrip)(dispatch);
       dispatch(tripCreated({ trip: formattedTrip }));
+      if (redirectToCreatedTrip) {
+        history.push(`/trips/${newTrip.data._id}`);
+      }
     }
   } catch (error) {
     console.error(error);
@@ -153,12 +157,10 @@ export const onBookNowClick = () => async (dispatch, getState) => {
  */
 export const setAddedToTripMessage = trip => dispatch => {
   dispatch({ type: 'SERVICE_RECENTLY_ADDED_TO_TRIP', payload: trip });
-  setTimeout(() => dispatch({ type: 'SERVICE_RECENTLY_ADDED_TO_TRIP', payload: undefined }), 10000); // 10 s
 };
 
 export const setAlreadyAddedToTrip = trip => dispatch => {
   dispatch({ type: 'SERVICE_ALREADY_ADDED_TO_TRIP', payload: trip });
-  setTimeout(() => dispatch({ type: 'SERVICE_ALREADY_ADDED_TO_TRIP', payload: undefined }), 10000); // 10 s
 };
 
 export const toggleServiceAvailabilitymodal = bool => {

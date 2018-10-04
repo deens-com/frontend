@@ -21,6 +21,8 @@ const GridContainer = styled.div`
 const ErrorMsgDiv = styled.div`
   grid-column: span 2;
   justify-self: start;
+  margin-top: 1em;
+  font-weight: bold;
 `;
 
 const SuccessMessage = styled(Link)`
@@ -57,13 +59,13 @@ function ServiceActionButtons(props) {
       </Button>
       <ErrorMsgDiv>
         {props.serviceRecentlyAddedToTrip && (
-          <SuccessMessage to={`/trips/${props.serviceRecentlyAddedToTrip.objectId}/edit`}>
+          <SuccessMessage to={`/trips/organize/${props.serviceRecentlyAddedToTrip.objectId}`}>
             Added to <b>{props.serviceRecentlyAddedToTrip.title}</b>
             <Icon name="check circle outline" />
           </SuccessMessage>
         )}
         {props.serviceAlreadyAddedToTrip && (
-          <WarningMessage to={`/trips/${props.serviceAlreadyAddedToTrip.objectId}/edit`}>
+          <WarningMessage to={`/trips/organize/${props.serviceAlreadyAddedToTrip.objectId}`}>
             Already added to <b>{props.serviceAlreadyAddedToTrip.title}</b>
           </WarningMessage>
         )}
