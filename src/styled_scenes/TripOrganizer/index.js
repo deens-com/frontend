@@ -65,7 +65,9 @@ const Required = () => <span style={{ color: 'red' }}>*</span>;
 function createTripState(props, state) {
   const optionsSelected = {};
 
-  props.trip.otherAttributes.selectedServiceOptions.forEach(selected => {
+  const selectedServiceOptions =
+    (props.trip.otherAttributes && props.trip.otherAttributes.selectedServiceOptions) || [];
+  selectedServiceOptions.forEach(selected => {
     if (!optionsSelected[selected.day]) {
       optionsSelected[selected.day] = {
         [selected.serviceId]: selected.availabilityCode,
