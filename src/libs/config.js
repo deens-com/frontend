@@ -18,3 +18,5 @@ export const serverBaseURL = (() => {
     return process.env.REACT_APP_PARSE_SERVER_URL || 'https://staging-api.please.com';
   return process.env.REACT_APP_PARSE_SERVER_URL || 'https://api.please.docker';
 })();
+
+export const stripeKey = process.env.STRIPE_KEY || '';

@@ -57,13 +57,13 @@ function ServiceActionButtons(props) {
       </Button>
       <ErrorMsgDiv>
         {props.serviceRecentlyAddedToTrip && (
-          <SuccessMessage to={`/trips/${props.serviceRecentlyAddedToTrip.objectId}/edit`}>
+          <SuccessMessage to={`/trips/organize/${props.serviceRecentlyAddedToTrip.objectId}`}>
             Added to <b>{props.serviceRecentlyAddedToTrip.title}</b>
             <Icon name="check circle outline" />
           </SuccessMessage>
         )}
         {props.serviceAlreadyAddedToTrip && (
-          <WarningMessage to={`/trips/${props.serviceAlreadyAddedToTrip.objectId}/edit`}>
+          <WarningMessage to={`/trips/organize/${props.serviceAlreadyAddedToTrip.objectId}`}>
             Already added to <b>{props.serviceAlreadyAddedToTrip.title}</b>
           </WarningMessage>
         )}

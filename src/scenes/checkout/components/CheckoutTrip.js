@@ -53,17 +53,14 @@ export class CheckoutTrip extends React.Component {
                 .add(day.day - 1, 'days')
                 .format('LLLL')}
             </Title>
-            {day.data.map(
-              service =>
-                console.log(service) || (
-                  <Service key={`${day.day}-${service.service._id}`}>
-                    <ServiceTitle>
-                      <I18nText data={service.service.title} />
-                    </ServiceTitle>
-                    <Price>${service.service.basePrice}</Price>
-                  </Service>
-                ),
-            )}
+            {day.data.map(service => (
+              <Service key={`${day.day}-${service.service._id}`}>
+                <ServiceTitle>
+                  <I18nText data={service.service.title} />
+                </ServiceTitle>
+                <Price>${service.service.basePrice}</Price>
+              </Service>
+            ))}
           </Day>
         ))}
       </React.Fragment>

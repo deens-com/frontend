@@ -15,7 +15,8 @@ import PaymentContainer from './PaymentContainer';
 import CheckoutTrip from './components/CheckoutTrip';
 import * as actions from './actions';
 import * as tripActions from '../trip/actions';
-import { Button } from 'shared_components/Form/PersonInput/styles';
+import Button from 'shared_components/Button';
+import GuestsData from './components/GuestsData';
 
 function formatDate(date, days) {
   const startDate = moment(date);
@@ -42,6 +43,7 @@ const Summary = styled.div`
 const SummaryData = styled.div`
   flex: 1;
   color: #3c434b;
+  margin-bottom: 20px;
 `;
 
 const PriceLine = styled.div`
@@ -79,7 +81,7 @@ const Guests = styled.div`
 const Footer = styled.div`
   position: fixed;
   bottom: 0;
-  width: 100%
+  width: 100%;
   display: flex;
   justify-content: center;
 `;
@@ -92,6 +94,7 @@ class CheckoutContainer extends React.Component {
     this.state = {
       step: 1,
       days: null,
+      guests: [],
     };
   }
 
@@ -99,6 +102,7 @@ class CheckoutContainer extends React.Component {
     if (props.trip && !state.days) {
       return {
         days: props.trip.services.reduce((set, service) => set.add(service.day), new Set()).size,
+        guests: Array.from({ length: props.trip.peopleCount }),
       };
     }
     return null;
@@ -118,14 +122,26 @@ class CheckoutContainer extends React.Component {
     }));
   };
 
+  handleGuestsDataChange = (event, data) => {
+    this.setState(prevState => ({
+      guests: prevState.guests.map(
+        guest => (guest === data.guest ? { ...guest, [data.name]: data.value } : guest),
+      ),
+    }));
+  };
+
   renderStep() {
-    const { step } = this.state;
+    const { step, guests } = this.state;
     const { trip } = this.props;
-    console.log(this.state);
+
     if (step === 3) {
-      return <PaymentContainer trip={trip} />;
+      return <PaymentContainer guests={guests} trip={trip} />;
     }
-    return step === 1 ? <CheckoutTrip trip={trip} /> : <div>step 2</div>;
+    return step === 1 ? (
+      <CheckoutTrip trip={trip} />
+    ) : (
+      <GuestsData number={trip.peopleCount} onChange={this.handleGuestsDataChange} />
+    );
   }
 
   render() {
@@ -150,7 +166,7 @@ class CheckoutContainer extends React.Component {
                     {formatLocation(trip.location)}
                   </Location>
                   <Dates>{formatDate(trip.startDate, days)}</Dates>
-                  <Guests>{trip.numberOfPeople}</Guests>
+                  <Guests>{trip.peopleCount} Guests</Guests>
                 </SummaryData>
                 <TotalPrice>
                   <PriceLine>Total Price Booked Items ${trip.basePrice}</PriceLine>

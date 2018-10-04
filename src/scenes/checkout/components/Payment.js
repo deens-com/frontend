@@ -18,9 +18,9 @@ const PaymentContext = React.createContext();
 export const PaymentContextConsumer = PaymentContext.Consumer;
 
 class PaymentContainer extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+  onStripeTokenReceived = (token, complete) => {
+    this.props.chargeStripeToken(token, this.props.guests, complete);
+  };
 
   onSubmitWithCardDetails = async () => {
     this.setState({ isPaymentProcessing: true });
@@ -39,7 +39,7 @@ class PaymentContainer extends React.Component {
   };
 
   render() {
-    const { trip, markTripBooked, isLoading } = this.props;
+    const { trip } = this.props;
     if (!trip || !trip._id) return null;
     const totalPrice = trip.basePrice * (trip.numberOfPerson || 1);
     return (
@@ -51,11 +51,10 @@ class PaymentContainer extends React.Component {
         }}
       >
         <PaymentSection
-          numberOfPerson={trip.numberOfPerson}
+          numberOfPerson={trip.peopleCount}
           pricePerPerson={trip.basePrice}
           totalPrice={totalPrice}
-          onPaymentClick={markTripBooked}
-          isLoading={isLoading}
+          onPaymentClick={() => {}}
           onStripeTokenReceived={this.onStripeTokenReceived}
           paymentError={this.props.paymentError}
         />
@@ -64,20 +63,9 @@ class PaymentContainer extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  trip: state.TripReducer.trip,
-  isLoading: state.TripReducer.isLoading,
-});
-
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      ...actions,
-    },
-    dispatch,
-  );
+const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps,
 )(injectStripe(PaymentContainer));
