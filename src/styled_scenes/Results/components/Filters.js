@@ -415,7 +415,9 @@ class Filters extends Component {
                       trigger={
                         <p>
                           <Icon name="plus" />
-                          {this.props.tags.length + ' Mood'}
+                          {this.props.tags.length > 0
+                            ? `${this.props.tags.length} Mood`
+                            : `Select Mood`}
                         </p>
                       }
                       content={
