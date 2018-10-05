@@ -3,7 +3,6 @@ import HomeComponent from './../components/home_component';
 import * as home_actions from './../actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import GlobalTeaser from 'shared_components/GlobalTeaser';
 
 class HomeContainer extends Component {
   componentDidMount() {
@@ -13,7 +12,6 @@ class HomeContainer extends Component {
   render() {
     return (
       <div className="HomeContainer">
-        <GlobalTeaser />
         <HomeComponent
           tags={this.props.tags}
           services={this.props.services}
