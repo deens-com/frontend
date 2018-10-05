@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { media } from 'libs/styled';
 import Button from 'shared_components/Button';
 
 const Wrapper = styled.div`
@@ -10,23 +11,42 @@ const Wrapper = styled.div`
   align-items: center;
   bottom: 0;
   justify-content: flex-end;
-  padding-right: 55px;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
   background-color: white;
+  padding: 0 10px;
+  ${media.minSmall} {
+    padding-right: 55px;
+  }
+
+  button {
+    font-size: 12px;
+  }
 `;
 
-const Text = styled.span`
+const Text = styled.p`
   color: #3c434b;
   font-size: 16px;
   font-weight: bold;
-  margin-right: 50px;
+  margin: auto;
+  margin-bottom: 0;
+  ${media.minSmall} {
+    margin-right: 50px;
+  }
+`;
+
+const Sentence = styled.span`
+  display: block;
+  font-size: 10px;
+  ${media.minSmall} {
+    display: inline-block;
+  }
 `;
 
 const FixedFooter = ({ price, peopleNumber, onCustomizeClick, startDate, endDate }) => {
   return (
     <Wrapper>
       <Text>
-        Minimum price for {peopleNumber} Persons: ${price}
+        <Sentence>Estimated price for {peopleNumber} people:</Sentence> ${price}
       </Text>
       <Button
         disabled={!peopleNumber || !(startDate && endDate)}

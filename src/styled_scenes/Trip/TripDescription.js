@@ -43,7 +43,9 @@ export default class ResultsScene extends Component {
           <I18nText data={trip.description} />
         </Description>
         {trip.tags.map(tag => (
-          <span key={tag}>{tag}</span>
+          <span key={I18nText.translate(tag.names)}>
+            <I18nText data={tag.names} />
+          </span>
         ))}
       </Wrapper>
     );

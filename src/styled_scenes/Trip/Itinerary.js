@@ -2,8 +2,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { media } from 'libs/styled';
+import { getCategory } from 'libs/categories';
+import { parseLocation } from 'libs/fetch_helpers';
 
 import I18nText from 'shared_components/I18nText';
+import { MapMarker } from 'shared_components/icons';
 
 import mapServicesToDays from './mapServicesToDays';
 
@@ -22,6 +26,7 @@ const Title = styled.div`
 
 const DayTitle = styled.div`
   font-size: 18px;
+  font-weight: bold;
 `;
 
 const Day = styled.div`
@@ -29,34 +34,87 @@ const Day = styled.div`
 `;
 
 const Service = styled.div`
-  margin: 15px 0;
+  margin: 15px 20px;
   border: 1px solid #f8f8f8;
   border-radius: 5px;
+  text-align: left;
   min-height: 200px;
-  display: flex;
+  ${media.minSmall} {
+    display: flex;
+  }
 `;
 
 const Image = styled.div`
+  display: block;
   background-image: url(${props => props.url});
   background-size: cover;
   background-position: center;
+  width: 100%;
   height: 200px;
-  width: 200px;
+  ${media.minSmall} {
+    width: 200px;
+  }
 `;
 
 const ServiceData = styled.div`
   flex: 1;
+  margin: 0 5px;
+  padding-bottom: 15px;
+`;
+
+const ServiceTitle = styled.h3`
+  font-size: 18px;
+  color: #3c434b;
+  font-weight: bold;
+  margin: 10px 0 5px;
+`;
+
+const ServiceTags = styled.p`
+  font-size: 12px;
+  color: #6e7885;
+`;
+
+const ServicePrice = styled.p`
+  font-size: 14px;
+  font-weight: bold;
+  color: #3c434b;
+`;
+
+const ServiceLocation = styled.p`
+  color: #787878;
+  font-size: 12px;
+  display: flex;
+  svg {
+    path: {
+      fill: #c4c4c4;
+    }
+    margin-right: 5px;
+  }
 `;
 
 const CategoryWrapper = styled.div`
   display: flex;
-  margin: 10px 10px 0;
+  margin: 10px 5px 5px;
+  align-items: center;
 `;
 
 const Category = styled.div`
   flex: 1;
   display: flex;
+  font-size: 12px;
+  color: #6e7885;
+  letter-spacing: 1.2px;
   justify-content: flex-start;
+  text-transform: uppercase;
+  font-weight: bold;
+  svg {
+    font-size: 16px;
+    margin-top: 2px;
+    margin-right: 5px;
+    path {
+      fill: ${props => props.color};
+    }
+  }
 `;
 
 const AvailabilityBox = styled.div`
@@ -121,13 +179,30 @@ export default class Itinerary extends Component {
             dayData.service.media[0] && <Image url={dayData.service.media[0].files.small.url} />}
           <ServiceData>
             <CategoryWrapper>
-              <Category>
+              <Category color={getCategory(dayData.service.categories[0]).color}>
+                {getCategory(dayData.service.categories[0]).icon}
                 <I18nText data={dayData.service.categories[0].names} />
               </Category>
               {this.renderAvailability(day.day, dayData.service._id)}
             </CategoryWrapper>
-            <I18nText data={dayData.service.title} />
-            <I18nText data={dayData.service.description} />
+            <ServiceTitle>
+              <I18nText data={dayData.service.title} />
+            </ServiceTitle>
+            {dayData.service.tags.length > 0 && (
+              <ServiceTags>
+                {dayData.service.tags
+                  .slice(0, 5)
+                  .map(tag => I18nText.translate(tag.names))
+                  .join(', ')}
+              </ServiceTags>
+            )}
+            <ServiceLocation>
+              <MapMarker />
+              {parseLocation(dayData.service.location)}
+            </ServiceLocation>
+            {dayData.service.basePrice !== 0 && (
+              <ServicePrice>From ${dayData.service.basePrice}</ServicePrice>
+            )}
           </ServiceData>
         </Service>
       ))}

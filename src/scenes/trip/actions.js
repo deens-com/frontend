@@ -124,7 +124,7 @@ export const patchTripError = e => {
 export const fetchTrip = id => async dispatch => {
   dispatch(fetchTripStart());
   try {
-    const trip = await axios.get(`${serverBaseURL}/trips/${id}?include=services`);
+    const trip = await axios.get(`${serverBaseURL}/trips/${id}?include=services,tags`);
     dispatch(fetchTripSuccess(trip));
 
     try {
