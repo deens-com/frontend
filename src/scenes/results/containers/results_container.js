@@ -23,6 +23,7 @@ class ResultsContainer extends Component {
       limit: this.props.limit,
     };
     this.props.update_search_query(search_query);
+    this.props.fetchTagsOptions();
   }
 
   componentWillUpdate(next_props) {
@@ -76,6 +77,7 @@ const mapStateToProps = state => {
     search_query: state.ResultsReducer.search_query,
     carousel_tags: state.ResultsReducer.carousel_tags,
     isLoadingResults: state.ResultsReducer.isLoadingResults,
+    tagsOptions: state.ResultsReducer.tagsOptions,
   };
 };
 

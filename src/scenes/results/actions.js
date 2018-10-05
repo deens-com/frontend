@@ -11,6 +11,13 @@ export const results_fetched = results => {
   };
 };
 
+export const tagsOptionsFetched = tags => {
+  return {
+    type: 'TAGS_FETCHED',
+    payload: tags,
+  };
+};
+
 export const results_fetch_started = () => {
   return {
     type: 'RESULTS_FETCH_STARTED',
@@ -165,6 +172,26 @@ export const fetch_results = results_search_query => {
       }
     } catch (e) {
       console.log(e);
+    }
+  };
+};
+
+export const fetchTagsOptions = () => {
+  return async dispatch => {
+    try {
+      const tags = await axios.get('/tags');
+      if (tags) {
+        const tagsOptions = tags.data.map(tag => {
+          return tag.names['en-us'].charAt(0).toUpperCase() + tag.names['en-us'].substr(1);
+        });
+        const uniqTagItems = [...(new Set(tagsOptions))];
+        const uniqTagsOptions = uniqTagItems.map(item => {
+          return {text: item, value: item};
+        });
+        dispatch(tagsOptionsFetched(uniqTagsOptions));
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 };
