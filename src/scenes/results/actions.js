@@ -184,9 +184,9 @@ export const fetchTagsOptions = () => {
         const tagsOptions = tags.data.map(tag => {
           return tag.names['en-us'].charAt(0).toUpperCase() + tag.names['en-us'].substr(1);
         });
-        const uniqTagItems = [...(new Set(tagsOptions))];
+        const uniqTagItems = [...new Set(tagsOptions)];
         const uniqTagsOptions = uniqTagItems.map(item => {
-          return {text: item, value: item};
+          return { text: item, value: item };
         });
         dispatch(tagsOptionsFetched(uniqTagsOptions));
       }

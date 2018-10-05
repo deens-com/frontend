@@ -41,7 +41,7 @@ export default function ResultsReducer(state = initialState, action = {}) {
       return {
         ...state,
         tagsOptions: action.payload,
-      }
+      };
     default:
       return state;
   }
