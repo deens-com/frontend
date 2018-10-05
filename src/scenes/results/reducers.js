@@ -8,6 +8,7 @@ const initialState = {
   },
   carousel_tags: [],
   isLoadingResults: false,
+  tagsOptions: [],
 };
 
 export default function ResultsReducer(state = initialState, action = {}) {
@@ -35,6 +36,11 @@ export default function ResultsReducer(state = initialState, action = {}) {
       return {
         ...state,
         isLoadingResults: true,
+      };
+    case 'TAGS_FETCHED':
+      return {
+        ...state,
+        tagsOptions: action.payload,
       };
     default:
       return state;

@@ -14,9 +14,6 @@ import 'react-dates/lib/css/_datepicker.css';
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
 import * as results_actions from './../../../scenes/results/actions';
 
-import serviceTags from 'shared_components/ServiceForm/service-tags';
-const tagsDropdownOptions = serviceTags.map(value => ({ text: value, value }));
-
 const Wrap = styled.div`
   //margin-left: 20px;
 `;
@@ -423,7 +420,7 @@ class Filters extends Component {
                       content={
                         <Dropdown
                           name="tags"
-                          options={tagsDropdownOptions}
+                          options={this.props.tagsOptions}
                           placeholder="Add tags"
                           search
                           selection
@@ -604,7 +601,7 @@ class Filters extends Component {
                             content={
                               <Dropdown
                                 name="tags"
-                                options={tagsDropdownOptions}
+                                options={this.props.tagsOptions}
                                 placeholder="Add tags"
                                 search
                                 selection
