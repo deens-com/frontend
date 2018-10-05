@@ -14,7 +14,6 @@ const Group = styled.div`
  * Builds up the higher level blocks of the page
  */
 const GuestsData = ({ number, onChange }) => {
-  console.log(number);
   return (
     <Form>
       {Array.from({ length: number }).map((_, i) => (

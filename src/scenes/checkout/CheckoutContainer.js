@@ -102,7 +102,7 @@ class CheckoutContainer extends React.Component {
     if (props.trip && !state.days) {
       return {
         days: props.trip.services.reduce((set, service) => set.add(service.day), new Set()).size,
-        guests: Array.from({ length: props.trip.peopleCount }),
+        guests: Array.from({ length: props.trip.peopleCount }).map(_ => ({})),
       };
     }
     return null;
@@ -125,7 +125,7 @@ class CheckoutContainer extends React.Component {
   handleGuestsDataChange = (event, data) => {
     this.setState(prevState => ({
       guests: prevState.guests.map(
-        guest => (guest === data.guest ? { ...guest, [data.name]: data.value } : guest),
+        (guest, i) => (i === data.guest ? { ...guest, [data.name]: data.value } : guest),
       ),
     }));
   };
