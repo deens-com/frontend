@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 import { media } from 'libs/styled';
 
-import parisImg from './images/paris.jpg';
+import rioImg from './images/rio.jpg';
 import sanFranciscoImg from './images/san-francisco.jpg';
 import londonImg from './images/london.jpg';
 import newYorkImg from './images/new-york.jpg';
@@ -96,8 +96,8 @@ const CenterContainer = Column.extend`
   }
 `;
 
-const Paris = Row.extend`
-  background-image: url(${parisImg});
+const Rio = Row.extend`
+  background-image: url(${rioImg});
   flex: 1;
   margin-bottom: 10px;
   ${media.minSmall} {
@@ -141,7 +141,8 @@ const InnerText = styled.div`
   color: white;
 `;
 
-const parisParams = 'latitude=48.856614&longitude=2.3522219000000177&address=Paris,%20France';
+const rioParams =
+  'latitude=-22.9068467&longitude=-43.17289649999998&address=Rio%20de%20Janeiro,%20Brazil';
 const newYorkParams = 'latitude=40.7127753&longitude=-74.0059728&address=New%20York,%20NY,%20USA';
 const londonParams = 'latitude=51.5073509&longitude=-0.12775829999998223&address=London,%20UK';
 const sanFranciscoParams =
@@ -155,10 +156,10 @@ export default function HomeSectionTopDestinations() {
           <h3>Top Destinations</h3>
         </SectionHeader>
         <SectionContent>
-          <FlexLink to={`/results?${parisParams}`}>
-            <Paris>
-              <InnerText>Paris</InnerText>
-            </Paris>
+          <FlexLink to={`/results?${rioParams}`}>
+            <Rio>
+              <InnerText>Rio de Janeiro</InnerText>
+            </Rio>
           </FlexLink>
           <NewYorkLink to={`/results?${newYorkParams}`}>
             <NewYork>
