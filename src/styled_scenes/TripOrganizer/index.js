@@ -543,7 +543,7 @@ export default class TripOrganizer extends Component {
     }
 
     let location = '';
-    if (trip.location.city) {
+    if (trip.location && trip.location.city) {
       location = trip.location.city;
       if (trip.location.state) {
         location = location.concat(`, ${trip.location.state}`);

@@ -16,7 +16,6 @@ const emptyTrip = {
   },
   services: [],
   media: [],
-  location: {},
   basePrice: 0,
   duration: 1,
 };
