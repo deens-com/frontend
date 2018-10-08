@@ -306,4 +306,43 @@ export const Camera = SvgWithProps(({ ariaHidden, focusable, role, style }) => (
   </svg>
 ));
 
+export const Moon = SvgWithProps(({ ariaHidden, focusable, role, style }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden={ariaHidden}
+    focusable={focusable.toString()}
+    role={role}
+    style={style}
+    viewBox="0 0 24 24"
+  >
+    <path d="M17.75,4.09L15.22,6.03L16.13,9.09L13.5,7.28L10.87,9.09L11.78,6.03L9.25,4.09L12.44,4L13.5,1L14.56,4L17.75,4.09M21.25,11L19.61,12.25L20.2,14.23L18.5,13.06L16.8,14.23L17.39,12.25L15.75,11L17.81,10.95L18.5,9L19.19,10.95L21.25,11M18.97,15.95C19.8,15.87 20.69,17.05 20.16,17.8C19.84,18.25 19.5,18.67 19.08,19.07C15.17,23 8.84,23 4.94,19.07C1.03,15.17 1.03,8.83 4.94,4.93C5.34,4.53 5.76,4.17 6.21,3.85C6.96,3.32 8.14,4.21 8.06,5.04C7.79,7.9 8.75,10.87 10.95,13.06C13.14,15.26 16.1,16.22 18.97,15.95M17.33,17.97C14.5,17.81 11.7,16.64 9.53,14.5C7.36,12.31 6.2,9.5 6.04,6.68C3.23,9.82 3.34,14.64 6.35,17.66C9.37,20.67 14.19,20.78 17.33,17.97Z" />
+  </svg>
+));
+
+export const SilverWare = SvgWithProps(({ ariaHidden, focusable, role, style }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden={ariaHidden}
+    focusable={focusable.toString()}
+    role={role}
+    style={style}
+    viewBox="0 0 24 24"
+  >
+    <path d="M11,9H9V2H7V9H5V2H3V9C3,11.12 4.66,12.84 6.75,12.97V22H9.25V12.97C11.34,12.84 13,11.12 13,9V2H11V9M16,6V14H18.5V22H21V2C18.24,2 16,4.24 16,6Z" />
+  </svg>
+));
+
+export const RunningPerson = SvgWithProps(({ ariaHidden, focusable, role, style }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden={ariaHidden}
+    focusable={focusable.toString()}
+    role={role}
+    style={style}
+    viewBox="0 0 24 24"
+  >
+    <path d="M13.5,5.5C14.59,5.5 15.5,4.58 15.5,3.5C15.5,2.38 14.59,1.5 13.5,1.5C12.39,1.5 11.5,2.38 11.5,3.5C11.5,4.58 12.39,5.5 13.5,5.5M9.89,19.38L10.89,15L13,17V23H15V15.5L12.89,13.5L13.5,10.5C14.79,12 16.79,13 19,13V11C17.09,11 15.5,10 14.69,8.58L13.69,7C13.29,6.38 12.69,6 12,6C11.69,6 11.5,6.08 11.19,6.08L6,8.28V13H8V9.58L9.79,8.88L8.19,17L3.29,16L2.89,18L9.89,19.38Z" />
+  </svg>
+));
+
 export const Logo = ({ style }) => <img src="/please-logo.svg" width="90%" style={style} alt="" />;

@@ -1,17 +1,30 @@
 import React from 'react';
 import styled from 'styled-components';
 import Button from 'shared_components/Button';
+import { media } from 'libs/styled';
 
 import mapServicesToDays from './mapServicesToDays';
 
 const Wrapper = styled.div`
   position: fixed;
-  left: -15px;
-  z-index: 100;
-  height: 100vw;
-  padding-top: 250px;
+  z-index: 10;
   display: flex;
-  flex-direction: column;
+  bottom: 65px;
+  background-color: #f2f2f2;
+  width: 100%;
+  height: 60px;
+  align-items: center;
+  overflow-x: auto;
+  ${media.minMedium} {
+    flex-direction: column;
+    height: 100vh;
+    width: auto;
+    padding-top: 250px;
+    left: -15px;
+    align-items: flex-start;
+    justify-content: center;
+    background: transparent;
+  }
 `;
 
 class DaySelector extends React.Component {

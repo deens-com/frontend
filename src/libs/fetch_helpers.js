@@ -7,6 +7,9 @@ const normalizeParseResponseData = data => {
   return JSON.parse(dataInJsonString);
 };
 
+export const parseLocation = location =>
+  location ? `${location.city ? location.city + ',' : ''} ${location.countryCode}` : '';
+
 const getRandomInt = (min, max) => {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -203,11 +206,7 @@ const buildServicesJson = services => {
       service.longitude = (service.location && service.location.longitude) || 1;
       // const country =
       //   service.location && service.location.country && service.location.country.names[i18nLocale];
-      service.location = service.location
-        ? `${service.location.city ? service.location.city + ',' : ''} ${
-            service.location.countryCode
-          }`
-        : '';
+      service.location = parseLocation(service.location);
       service.rating = service.rating;
       service.reviewCount = service.reviewCount;
       service.slots = service.slots;
