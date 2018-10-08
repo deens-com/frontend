@@ -471,24 +471,20 @@ class Filters extends Component {
                   </EditableElement>
 
                   <Sorting>
-
                     <div>
                       <p> &nbsp; &nbsp; Sort by </p>
                     </div>
 
                     <EditableElement>
                       <Popup
-                        trigger={
-                          <p>
-                            {this.props.sortBy
-                              ? `${this.props.sortBy}`
-                              : `Relevance`}
-                          </p>
-                        }
+                        trigger={<p>{this.props.sortBy ? `${this.props.sortBy}` : `Relevance`}</p>}
                         content={
                           <Dropdown
                             name="sort"
-                            options={[{text: 'Ascending Price', value: 'price:asc'}, {text: 'Descending Price', value: 'price:desc'}]}
+                            options={[
+                              { text: 'Ascending Price', value: 'price:asc' },
+                              { text: 'Descending Price', value: 'price:desc' },
+                            ]}
                             placeholder="Sort By"
                             search
                             selection
@@ -505,9 +501,7 @@ class Filters extends Component {
                         position="bottom center"
                       />
                     </EditableElement>
-
                   </Sorting>
-
                 </SentenceWrapper>
               ) : (
                 <section>
@@ -691,7 +685,6 @@ class Filters extends Component {
                         </EditableElement>
 
                         <MobileSorting>
-
                           <div>
                             <p> &nbsp; &nbsp; Sort by </p>
                           </div>
@@ -699,16 +692,15 @@ class Filters extends Component {
                           <EditableElement>
                             <Popup
                               trigger={
-                                <p>
-                                  {this.props.sortBy
-                                    ? `${this.props.sortBy}`
-                                    : `Relevance`}
-                                </p>
+                                <p>{this.props.sortBy ? `${this.props.sortBy}` : `Relevance`}</p>
                               }
                               content={
                                 <Dropdown
                                   name="sort"
-                                  options={[{text: 'Ascending Price', value: 'price:asc'}, {text: 'Descending Price', value: 'price:desc'}]}
+                                  options={[
+                                    { text: 'Ascending Price', value: 'price:asc' },
+                                    { text: 'Descending Price', value: 'price:desc' },
+                                  ]}
                                   placeholder="Sort By"
                                   search
                                   selection
@@ -725,9 +717,7 @@ class Filters extends Component {
                               position="bottom center"
                             />
                           </EditableElement>
-
                         </MobileSorting>
-
                       </MobileSentenceWrapper>
                     </CenteredSection>
                   ) : (
