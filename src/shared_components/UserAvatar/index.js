@@ -27,7 +27,7 @@ const ImageElement = styled.div`
 
 const Avatar = ({ user, usernameColor }) => {
   if (!user) return null;
-  const dpUrl = (user.profilePicture && user.profilePicture.url) || ImgurAvatar;
+  const dpUrl = user.profilePicture || ImgurAvatar;
   //const userProfilePageUrl = `/users/${user.username}`;
   return (
     <GridContainer>
