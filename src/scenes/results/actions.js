@@ -114,7 +114,7 @@ export const composeFetchQuery = search_params => {
     lat: search_params.latitude || undefined,
     lng: search_params.longitude || undefined,
     address: search_params.address || undefined,
-    tags: !search_params.tags.length ? undefined : search_params.tags.join('+'),
+    tags: !search_params.tags.length ? undefined : search_params.tags.join(','),
     onlySmartContracts: search_params.onlySmartContracts || undefined,
     page: search_params.page || 1,
     limit: search_params.limit || 1,
