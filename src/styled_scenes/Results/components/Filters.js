@@ -25,6 +25,7 @@ const SentenceWrapper = styled.span`
   position: relative;
   top: 1.3em;
   margin-left: 20px;
+  width: 100%;
 `;
 
 const MobileSentenceWrapper = styled.div`
@@ -53,6 +54,17 @@ const EditableElement = styled.div`
   cursor: pointer;
 `;
 
+const Sorting = styled.span`
+  position: absolute;
+  right: 13em;
+  display: inherit;
+`;
+
+const MobileSorting = styled.span`
+  display: inline-flex;
+  margin-top: 0.9em;
+`;
+
 class Filters extends Component {
   constructor(props) {
     super(props);
@@ -75,9 +87,11 @@ class Filters extends Component {
       isDatesPopupOpen: false,
       isGuestsPopupOpen: false,
       isMoodPopupOpen: false,
+      isSortingPopupOpen: false,
       startDate: null,
       endDate: null,
       focusedInput: null,
+      sortBy: props.search_query.sortBy || null,
     };
     this.handleLocationChange = this.handleLocationChange.bind(this);
     this.handleStartDateChange = this.handleStartDateChange.bind(this);
@@ -99,6 +113,7 @@ class Filters extends Component {
       address: this.props.search_query.address,
       tags: this.props.search_query.tags,
       onlySmartContracts: this.props.search_query.onlySmartContracts,
+      sortBy: this.props.search_query.sortBy,
     };
   }
 
@@ -203,6 +218,10 @@ class Filters extends Component {
     this.setState({ isMoodPopupOpen: false });
   };
 
+  handleSortingPopupClose = () => {
+    this.setState({ isSortingPopupOpen: false });
+  };
+
   handleCategoryPopupOpen = () => {
     this.setState({ isCategoryPopupOpen: true });
   };
@@ -223,10 +242,20 @@ class Filters extends Component {
     this.setState({ isMoodPopupOpen: true });
   };
 
+  handleSortingPopupOpen = () => {
+    this.setState({ isSortingPopupOpen: true });
+  };
+
   onDropDownChange = (event, object) => {
     const tags = object.value.map(tag => tag.toLowerCase());
     this.setState({ tags: tags });
     this.refetch_results({ tags: tags });
+  };
+
+  onSortingDropDownChange = (event, object) => {
+    const sortValue = object.value;
+    this.setState({ sortBy: sortValue });
+    this.refetch_results({ sortBy: sortValue });
   };
 
   displayFilters = () => {
@@ -267,7 +296,7 @@ class Filters extends Component {
     return (
       <section>
         <Wrap>
-          <Media query={`(min-width: 600px)`}>
+          <Media query={`(min-width: 968px)`}>
             {matches =>
               matches ? (
                 <SentenceWrapper>
@@ -440,6 +469,39 @@ class Filters extends Component {
                       position="bottom center"
                     />
                   </EditableElement>
+
+                  <Sorting>
+                    <div>
+                      <p> &nbsp; &nbsp; Sort by </p>
+                    </div>
+
+                    <EditableElement>
+                      <Popup
+                        trigger={<p>{this.props.sortBy ? `${this.props.sortBy}` : `Relevance`}</p>}
+                        content={
+                          <Dropdown
+                            name="sort"
+                            options={[
+                              { text: 'Ascending Price', value: 'price:asc' },
+                              { text: 'Descending Price', value: 'price:desc' },
+                            ]}
+                            placeholder="Sort By"
+                            search
+                            selection
+                            fluid
+                            value={this.props.sortBy}
+                            onChange={this.onSortingDropDownChange}
+                            style={{ minWidth: '250px' }}
+                          />
+                        }
+                        on="click"
+                        open={this.state.isSortingPopupOpen}
+                        onClose={this.handleSortingPopupClose}
+                        onOpen={this.handleSortingPopupOpen}
+                        position="bottom center"
+                      />
+                    </EditableElement>
+                  </Sorting>
                 </SentenceWrapper>
               ) : (
                 <section>
@@ -621,6 +683,41 @@ class Filters extends Component {
                             position="bottom center"
                           />
                         </EditableElement>
+
+                        <MobileSorting>
+                          <div>
+                            <p> &nbsp; &nbsp; Sort by </p>
+                          </div>
+
+                          <EditableElement>
+                            <Popup
+                              trigger={
+                                <p>{this.props.sortBy ? `${this.props.sortBy}` : `Relevance`}</p>
+                              }
+                              content={
+                                <Dropdown
+                                  name="sort"
+                                  options={[
+                                    { text: 'Ascending Price', value: 'price:asc' },
+                                    { text: 'Descending Price', value: 'price:desc' },
+                                  ]}
+                                  placeholder="Sort By"
+                                  search
+                                  selection
+                                  fluid
+                                  value={this.props.sortBy}
+                                  onChange={this.onSortingDropDownChange}
+                                  style={{ minWidth: '250px' }}
+                                />
+                              }
+                              on="click"
+                              open={this.state.isSortingPopupOpen}
+                              onClose={this.handleSortingPopupClose}
+                              onOpen={this.handleSortingPopupOpen}
+                              position="bottom center"
+                            />
+                          </EditableElement>
+                        </MobileSorting>
                       </MobileSentenceWrapper>
                     </CenteredSection>
                   ) : (
