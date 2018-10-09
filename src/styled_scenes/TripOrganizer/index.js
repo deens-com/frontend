@@ -174,6 +174,7 @@ export default class TripOrganizer extends Component {
       },
       services: this.state.days.reduce((prev, day) => [...prev, ...day.data], []),
       ...(this.props.startDate ? { startDate: this.props.startDate } : {}),
+      ...(this.props.numberOfPeople ? { peopleCount: this.props.numberOfPeople } : {}),
       duration: daysToMinutes(this.state.days.length) || 1,
     };
 
@@ -190,7 +191,7 @@ export default class TripOrganizer extends Component {
     history.push(`/trips/checkout/${trip._id}`);
   }, 2000);
 
-  selectOption = (day, serviceId, optionCode, price) => {
+  selectOption = (day, serviceId, optionCode) => {
     this.setState(
       prevState => ({
         optionsSelected: {
@@ -517,7 +518,7 @@ export default class TripOrganizer extends Component {
       value =>
         !(this.state.optionsSelected[value.day] && this.state.optionsSelected[value.day][value.id]),
     );
-    console.log(options, this.state.optionsSelected);
+
     if (notSelected) {
       return 'You must select the options for each service to book';
     }

@@ -41,24 +41,30 @@ export class CheckoutTrip extends React.Component {
     };
   }
   render() {
-    const { trip } = this.props;
+    const { trip, provision } = this.props;
 
     return (
       <React.Fragment>
         <ItineraryTitle>Trip Itinerary</ItineraryTitle>
-        {this.state.days.map(day => (
+        {this.state.days.map((day, dayIndex) => (
           <Day key={day.day}>
             <Title>
               {moment(trip.startDate)
                 .add(day.day - 1, 'days')
                 .format('LLLL')}
             </Title>
-            {day.data.map(service => (
+            {day.data.map((service, serviceIndex) => (
               <Service key={`${day.day}-${service.service._id}`}>
                 <ServiceTitle>
                   <I18nText data={service.service.title} />
                 </ServiceTitle>
-                <Price>${service.service.basePrice}</Price>
+                <Price>
+                  $
+                  {provision[dayIndex + serviceIndex] &&
+                  provision[dayIndex + serviceIndex].serviceId === service.service._id
+                    ? provision[dayIndex + serviceIndex].price
+                    : service.service.basePrice}
+                </Price>
               </Service>
             ))}
           </Day>

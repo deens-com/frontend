@@ -38,7 +38,7 @@ export function getPrice(base, price) {
     return price.value * base;
   }
 
-  return price.value;
+  return Number(price.value);
 }
 
 const Wrapper = styled.div`
