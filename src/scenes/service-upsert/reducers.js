@@ -70,7 +70,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         serviceFormTagsOptions: action.payload,
-      }
+      };
     default:
       return state;
   }

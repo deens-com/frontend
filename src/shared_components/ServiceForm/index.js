@@ -533,13 +533,15 @@ class ServiceForm extends Component {
           <label>Tags</label>
           <Dropdown
             name="tags"
-            options={tagsDropdownOptions}
+            options={this.props.serviceFormTagsOptions.map(tag => {
+              return { text: tag.names['en-us'], value: tag._id };
+            })}
             placeholder="Add tags"
             search
             selection
             fluid
             multiple
-            value={values.tags.map(tag => tag)}
+            value={(this.props.service && this.props.service.tags) || values.tags.map(tag => tag)}
             onChange={this.onDropDownChange}
           />
         </Form.Field>
@@ -722,7 +724,7 @@ export default withFormik({
           lng: service.location.geo.coordinates[0],
         }) ||
       null,
-    tags: (service && service.tags && service.tags.map(tag => tag.type)) || [],
+    tags: (service && service.tags.map(tag => tag._id)) || [],
     media: (service && service.media) || [],
     formattedAddress:
       (service && service.location && service.location.formattedAddress) || undefined,
