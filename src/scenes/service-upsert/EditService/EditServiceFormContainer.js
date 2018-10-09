@@ -17,6 +17,7 @@ class EditServiceFormContainer extends Component {
     this.props.resetErrors();
     this.props.fetchUserProfile();
     this.props.fetchService(this.getServiceId());
+    this.props.fetchServiceFormTagsOptions();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -75,6 +76,7 @@ const mapStateToProps = state => ({
   error: state.ServiceUpsert.error,
   fetchError: state.ServiceUpsert.error,
   userProfile: state.ServiceUpsert.userProfile,
+  serviceFormTagsOptions: state.ServiceUpsert.serviceFormTagsOptions,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);

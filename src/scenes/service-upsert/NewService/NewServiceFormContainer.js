@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router';
 
 import * as actions from '../actions';
+
 import ServiceForm from '../../../shared_components/ServiceForm';
 
 class NewServiceFormContainer extends Component {
@@ -18,6 +19,7 @@ class NewServiceFormContainer extends Component {
   componentDidMount() {
     this.props.fetchUserProfile();
     this.props.resetErrors();
+    this.props.fetchServiceFormTagsOptions();
   }
 
   render() {
@@ -37,6 +39,7 @@ const mapStateToProps = state => ({
   isSubmitting: state.ServiceUpsert.isSubmitting,
   error: state.ServiceUpsert.error,
   userProfile: state.ServiceUpsert.userProfile,
+  serviceFormTagsOptions: state.ServiceUpsert.serviceFormTagsOptions,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
