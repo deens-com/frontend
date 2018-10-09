@@ -181,6 +181,7 @@ export default class TripOrganizer extends Component {
         ...(this.props.startDate ? { startDate: this.props.startDate } : {}),
         ...(this.props.numberOfPeople ? { peopleCount: this.props.numberOfPeople } : {}),
         duration: daysToMinutes(this.state.days.length) || 1,
+        tags: this.state.trip.tags ? this.state.trip.tags.map(tag => tag._id) : [], // This could be done when loading the trip to avoid executing each time we save
       };
 
       await axios.patch(`/trips/${trip._id}`, trip);
