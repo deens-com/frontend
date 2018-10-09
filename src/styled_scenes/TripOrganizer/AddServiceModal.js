@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Button, Modal, Popup } from 'semantic-ui-react';
+import { Input, Button, Modal, Popup, Dropdown } from 'semantic-ui-react';
 import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete';
 import I18nText from 'shared_components/I18nText';
 import axios from 'libs/axios';
@@ -8,6 +8,7 @@ import SemanticLocationControl from 'shared_components/Form/SemanticLocationCont
 import CustomButton from 'shared_components/Button';
 import TripCard from 'shared_components/Cards/Trip';
 import { composeFetchQuery } from 'scenes/results/actions';
+import throttle from 'lodash.throttle';
 
 const TypeSelector = styled.div`
   display: flex;
@@ -37,6 +38,12 @@ const Service = styled.div`
   cursor: pointer;
 `;
 
+const SearchBy = styled.div`
+  font-weight: bold;
+  margin-top 5px;
+  display: flex;
+`;
+
 export default class AddServiceModal extends Component {
   constructor(props) {
     super(props);
@@ -45,6 +52,8 @@ export default class AddServiceModal extends Component {
       selectedType: 'Accommodation',
       city: null,
       location: null,
+      searchType: 'city',
+      text: null,
       isSearching: false,
       results: null,
     };
@@ -52,8 +61,8 @@ export default class AddServiceModal extends Component {
   }
 
   search() {
-    const { selectedType, location } = this.state;
-    if (location) {
+    const { selectedType, location, text } = this.state;
+    if (location || text) {
       const searchNumber = ++this.latestSearchNumber; // Avoid race condition
       this.setState(
         {
@@ -62,10 +71,11 @@ export default class AddServiceModal extends Component {
         async () => {
           const query = composeFetchQuery({
             type: [selectedType],
-            latitude: location.lat,
-            longitude: location.lng,
+            latitude: location && location.lat,
+            longitude: location && location.lng,
             tags: [],
             limit: 10,
+            text,
           });
 
           const results = await axios.get(`/search/services?${query}`);
@@ -79,6 +89,19 @@ export default class AddServiceModal extends Component {
       );
     }
   }
+
+  handleTextChange = throttle(
+    (event, data) => {
+      this.setState(
+        {
+          text: data.value,
+        },
+        this.search,
+      );
+    },
+    1000,
+    { leading: false },
+  );
 
   selectType = (event, data) => {
     if (data.name === this.state.selectedType) {
@@ -108,6 +131,12 @@ export default class AddServiceModal extends Component {
   selectService = async service => {
     this.props.onServiceSelect(this.props.day, service);
     this.handleClose();
+  };
+
+  selectSearchType = (event, data) => {
+    this.setState({
+      searchType: data.value,
+    });
   };
 
   handleOpen = () => {
@@ -178,12 +207,34 @@ export default class AddServiceModal extends Component {
               Food
             </Button>
           </TypeSelector>
-          <Popup
-            trigger={<EditableElement>{city || 'Select city'}</EditableElement>}
-            content={<SemanticLocationControl onChange={this.handleLocationChange} />}
-            on="click"
-            position="bottom left"
-          />
+          <SearchBy>
+            <span>Search by</span>
+            <Dropdown
+              options={[
+                {
+                  text: 'Text',
+                  value: 'text',
+                },
+                {
+                  text: 'City',
+                  value: 'city',
+                },
+              ]}
+              onChange={this.selectSearchType}
+              defaultValue="city"
+              selection
+            />
+            {this.state.searchType === 'text' ? (
+              <Input onChange={this.handleTextChange} />
+            ) : (
+              <Popup
+                trigger={<EditableElement>{city || 'Select city'}</EditableElement>}
+                content={<SemanticLocationControl onChange={this.handleLocationChange} />}
+                on="click"
+                position="bottom left"
+              />
+            )}
+          </SearchBy>
           {isSearching && <p>Fetching services</p>}
           {this.renderResults()}
         </Modal.Content>

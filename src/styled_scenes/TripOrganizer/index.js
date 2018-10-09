@@ -23,6 +23,7 @@ import CheckoutBox from './CheckoutBox';
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
 import Button from 'shared_components/Button';
 import { getPrice } from './Options';
+import debounce from 'lodash.debounce';
 
 const PageContent = styled.div`
   width: 825px;
@@ -61,6 +62,8 @@ const FormInput = styled.div`
 `;
 
 const Required = () => <span style={{ color: 'red' }}>*</span>;
+
+const daysToMinutes = days => days * 60 * 24;
 
 function createTripState(props, state) {
   const optionsSelected = {};
@@ -106,13 +109,14 @@ const emptyTrip = {
   services: [],
   media: [],
   location: {},
-  basePrice: 1,
+  basePrice: 0,
+  duration: 1,
 };
 export default class TripOrganizer extends Component {
   constructor(props) {
     super(props);
 
-    if (!props.isCreating && props.tripId === (props.trip && props.trip._id)) {
+    if (props.tripId === (props.trip && props.trip._id)) {
       this.state = createTripState(props, {});
     } else {
       this.state = {
@@ -149,7 +153,7 @@ export default class TripOrganizer extends Component {
     return newState;
   }
 
-  patchOrCreateTrip = async (action = 'book') => {
+  patchTrip = debounce(async (action = 'autosave') => {
     let selectedServiceOptions = [];
 
     Object.keys(this.state.optionsSelected).forEach(day => {
@@ -169,23 +173,22 @@ export default class TripOrganizer extends Component {
         selectedServiceOptions,
       },
       services: this.state.days.reduce((prev, day) => [...prev, ...day.data], []),
+      ...(this.props.startDate ? { startDate: this.props.startDate } : {}),
+      duration: daysToMinutes(this.state.days.length) || 1,
     };
 
-    let id;
-    if (this.props.isCreating) {
-      const response = await axios.post(`/trips`, trip);
-      id = response.data._id;
-    } else {
-      await axios.patch(`/trips/${trip._id}`, trip);
-      id = trip._id;
+    await axios.patch(`/trips/${trip._id}`, trip);
+
+    if (action === 'autosave') {
+      return;
     }
 
     if (action === 'share') {
-      history.push(`/trips/${id}`);
+      history.push(`/trips/${trip._id}`);
       return;
     }
-    history.push(`/trips/checkout/${id}`);
-  };
+    history.push(`/trips/checkout/${trip._id}`);
+  }, 2000);
 
   selectOption = (day, serviceId, optionCode, price) => {
     this.setState(
@@ -199,140 +202,147 @@ export default class TripOrganizer extends Component {
         },
       }),
       () => {
-        this.setState(prevState => ({
-          trip: {
-            ...prevState.trip,
-            basePrice: prevState.availability.data.reduce((price, elem) => {
-              if (
-                prevState.optionsSelected[elem.day] &&
-                prevState.optionsSelected[elem.day][elem.serviceId]
-              ) {
-                const selectedElement =
-                  elem.groupedOptions &&
-                  elem.groupedOptions.options.find(
-                    option =>
-                      option.otherAttributes &&
-                      option.otherAttributes.availabilityCode &&
-                      option.otherAttributes.availabilityCode.code ===
-                        prevState.optionsSelected[elem.day][elem.serviceId],
-                  );
-                if (selectedElement) {
-                  return (
-                    price +
-                    getPrice(
-                      prevState.trip.services.find(
-                        service => selectedElement.serviceId === service._id,
-                      ).basePrice,
-                      selectedElement.price,
-                    )
-                  );
+        this.setState(
+          prevState => ({
+            trip: {
+              ...prevState.trip,
+              basePrice: prevState.availability.data.reduce((price, elem) => {
+                if (
+                  prevState.optionsSelected[elem.day] &&
+                  prevState.optionsSelected[elem.day][elem.serviceId]
+                ) {
+                  const selectedElement =
+                    elem.groupedOptions &&
+                    elem.groupedOptions.options.find(
+                      option =>
+                        option.otherAttributes &&
+                        option.otherAttributes.availabilityCode &&
+                        option.otherAttributes.availabilityCode.code ===
+                          prevState.optionsSelected[elem.day][elem.serviceId],
+                    );
+                  if (selectedElement) {
+                    return (
+                      price +
+                      getPrice(
+                        prevState.trip.services.find(
+                          service => selectedElement.serviceId === service._id,
+                        ).basePrice,
+                        selectedElement.price,
+                      )
+                    );
+                  }
                 }
-              }
-              return price;
-            }, 0),
-          },
-        }));
+                return price;
+              }, 0),
+            },
+          }),
+          this.patchTrip,
+        );
       },
     );
   };
 
   addService = async (day, service) => {
-    const availability =
-      this.props.startDate &&
-      (await axios.post(`${serverBaseURL}/services/${service._id}/availability`, {
-        bookingDate: this.props.startDate
-          .clone()
-          .add(day - 1, 'days')
-          .format('YYYY-MM-DD'),
-        peopleCount: this.props.numberOfPeople,
-      }));
-
-    this.setState(prevState => ({
-      ...(this.props.startDate
-        ? {
-            availability: {
-              ...prevState.availability,
-              data: [
-                ...(prevState.availability.data || {}),
-                {
-                  isAvailable: availability.data.isAvailable,
-                  groupedOptions: availability.data.groupedOptions,
-                  serviceId: service._id,
-                  day: day,
-                },
-              ],
-              timestamp: new Date().getTime(),
-            },
-          }
-        : null),
-      days: prevState.days.map(elem => {
-        if (elem.day !== day) {
-          return elem;
-        }
-        return {
-          ...elem,
-          data: [
-            ...elem.data,
-            {
-              day,
-              priority: 1,
-              notes: [],
-              service,
-            },
-          ],
-        };
-      }),
-      daysByService: {
-        ...prevState.daysByService,
-        [service._id]: [...(prevState.daysByService[service._id] || []), day],
-      },
-    }));
-  };
-
-  removeService = async (day, serviceId) => {
     this.setState(
-      prevState => {
-        return {
-          availability: {
-            ...prevState.availability,
-            data: prevState.availability.data.filter(
-              elem => elem.serviceId !== serviceId || elem.day !== day,
-            ),
-            timestamp: new Date().getTime(),
-          },
-          days: prevState.days.map(elem => {
-            if (elem.day !== day) {
-              return elem;
-            }
-
-            return {
-              ...elem,
-              data: elem.data.filter(elemData => elemData.service._id !== serviceId),
-            };
-          }),
-          daysByService: {
-            ...prevState.daysByService,
-            [serviceId]: prevState.daysByService[serviceId].filter(
-              dayByService => dayByService !== day,
-            ),
-          },
-        };
-      },
-      () => {
-        // Promise.all(this.state.days.filter(se))
+      prevState => ({
+        daysByService: {
+          ...prevState.daysByService,
+          [service._id]: [...(prevState.daysByService[service._id] || []), day],
+        },
+        days: prevState.days.map(elem => {
+          if (elem.day !== day) {
+            return elem;
+          }
+          return {
+            ...elem,
+            data: [
+              ...elem.data,
+              {
+                day,
+                priority: 1,
+                notes: [],
+                service,
+              },
+            ],
+          };
+        }),
+      }),
+      async () => {
+        this.patchTrip();
+        const availability =
+          this.props.startDate &&
+          (await axios.post(`${serverBaseURL}/services/${service._id}/availability`, {
+            bookingDate: this.props.startDate
+              .clone()
+              .add(day - 1, 'days')
+              .format('YYYY-MM-DD'),
+            peopleCount: this.props.numberOfPeople,
+          }));
+        this.setState(prevState => ({
+          ...(this.props.startDate
+            ? {
+                availability: {
+                  ...prevState.availability,
+                  data: [
+                    ...(prevState.availability.data || {}),
+                    {
+                      isAvailable: availability.data.isAvailable,
+                      groupedOptions: availability.data.groupedOptions,
+                      serviceId: service._id,
+                      day: day,
+                    },
+                  ],
+                  timestamp: new Date().getTime(),
+                },
+              }
+            : null),
+        }));
       },
     );
   };
 
-  changeTripName = (_, data) => {
-    this.setState(prevState => ({
-      trip: {
-        ...prevState.trip,
-        title: {
-          ['en-us']: data.value,
+  removeService = async (day, serviceId) => {
+    this.setState(prevState => {
+      return {
+        availability: {
+          ...prevState.availability,
+          data: prevState.availability.data.filter(
+            elem => elem.serviceId !== serviceId || elem.day !== day,
+          ),
+          timestamp: new Date().getTime(),
         },
-      },
-    }));
+        days: prevState.days.map(elem => {
+          if (elem.day !== day) {
+            return elem;
+          }
+
+          return {
+            ...elem,
+            data: elem.data.filter(elemData => elemData.service._id !== serviceId),
+          };
+        }),
+        daysByService: {
+          ...prevState.daysByService,
+          [serviceId]: prevState.daysByService[serviceId].filter(
+            dayByService => dayByService !== day,
+          ),
+        },
+      };
+    }, this.patchTrip);
+  };
+
+  changeTripName = (_, data) => {
+    this.setState(
+      prevState => ({
+        trip: {
+          ...prevState.trip,
+          title: {
+            ['en-us']: data.value,
+          },
+        },
+      }),
+      this.patchTrip,
+    );
   };
 
   goToDay = index => {
@@ -397,6 +407,7 @@ export default class TripOrganizer extends Component {
       guests: this.props.numberOfPeople,
     });
     this.props.changeDates(dates);
+    this.patchTrip();
   };
 
   changeGuests = data => {
@@ -406,31 +417,39 @@ export default class TripOrganizer extends Component {
     });
 
     this.props.changeDates(data);
+    this.patchTrip();
   };
 
   handleAddDay = () => {
-    this.setState(prevState => ({
-      days: [
-        ...prevState.days,
-        prevState.days.length > 0
-          ? {
-              title: `Day ${prevState.days[prevState.days.length - 1].day + 1}`,
-              day: prevState.days[prevState.days.length - 1].day + 1,
-              data: [],
-            }
-          : {
-              title: 'Day 1',
-              day: 1,
-              data: [],
-            },
-      ],
-      optionsSelected: {
-        ...prevState.optionsSelected,
-        ...(prevState.days.length > 0
-          ? { [prevState.days[prevState.days.length - 1].day + 1]: {} }
-          : { 1: {} }),
-      },
-    }));
+    this.setState(
+      prevState => ({
+        trip: {
+          ...prevState.trip,
+          duration: prevState.trip + daysToMinutes(1),
+        },
+        days: [
+          ...prevState.days,
+          prevState.days.length > 0
+            ? {
+                title: `Day ${prevState.days[prevState.days.length - 1].day + 1}`,
+                day: prevState.days[prevState.days.length - 1].day + 1,
+                data: [],
+              }
+            : {
+                title: 'Day 1',
+                day: 1,
+                data: [],
+              },
+        ],
+        optionsSelected: {
+          ...prevState.optionsSelected,
+          ...(prevState.days.length > 0
+            ? { [prevState.days[prevState.days.length - 1].day + 1]: {} }
+            : { 1: {} }),
+        },
+      }),
+      this.patchTrip,
+    );
   };
 
   handleLocationChange = async (address, placeId) => {
@@ -445,23 +464,77 @@ export default class TripOrganizer extends Component {
       const state = addressComponents.filter(c => c.types.includes('administrative_area_level_1'));
       const { lat: latFn, lng: lngFn } = currentResult.geometry.location;
 
-      this.setState(prevState => ({
-        trip: {
-          ...prevState.trip,
-          location: {
-            city: localities[0].long_name,
-            state: state[0].long_name,
-            countryCode: countries[0].short_name,
-            geo: {
-              type: 'Point',
-              coordinates: [lngFn(), latFn()],
+      this.setState(
+        prevState => ({
+          trip: {
+            ...prevState.trip,
+            location: {
+              city: localities[0].long_name,
+              state: state[0].long_name,
+              countryCode: countries[0].short_name,
+              geo: {
+                type: 'Point',
+                coordinates: [lngFn(), latFn()],
+              },
             },
           },
-        },
-      }));
+        }),
+        this.patchTrip,
+      );
     } catch (e) {
       console.error(e);
     }
+  };
+
+  getBookError = () => {
+    if (!this.props.startDate) {
+      return 'You need to select a start date';
+    }
+
+    if (!this.props.numberOfPeople) {
+      return 'You need to select a number of guests';
+    }
+
+    const options = [];
+    const servicesAreAvailable =
+      this.state.availability.data &&
+      this.state.availability.data.some(value => {
+        if (value.groupedOptions) {
+          options.push({
+            day: value.day,
+            id: value.serviceId,
+          });
+        }
+
+        return !value.isAvailable;
+      });
+
+    if (servicesAreAvailable) {
+      return 'Please check that all services are available in selected dates';
+    }
+
+    const notSelected = options.some(
+      value =>
+        !(this.state.optionsSelected[value.day] && this.state.optionsSelected[value.day][value.id]),
+    );
+    console.log(options, this.state.optionsSelected);
+    if (notSelected) {
+      return 'You must select the options for each service to book';
+    }
+
+    return null;
+  };
+
+  getShareError = () => {
+    if (!this.state.trip.location) {
+      return 'You need to add a location';
+    }
+
+    if (!this.state.trip.media || this.state.trip.media.length === 0) {
+      return 'You need to add an image';
+    }
+
+    return null;
   };
 
   onFileSelect = async e => {
@@ -472,42 +545,45 @@ export default class TripOrganizer extends Component {
     const uploadedFile = await axiosOriginal.post(`${serverBaseURL}/media`, formData, {});
 
     const url = uploadedFile.data.url;
-    this.setState(prev => ({
-      trip: {
-        ...prev.trip,
-        media: [
-          {
-            type: 'image',
-            hero: true,
-            names: {
-              ['en-us']: 'Trip image',
+    this.setState(
+      prev => ({
+        trip: {
+          ...prev.trip,
+          media: [
+            {
+              type: 'image',
+              hero: true,
+              names: {
+                ['en-us']: 'Trip image',
+              },
+              files: {
+                thumbnail: {
+                  url,
+                  width: 215,
+                  height: 140,
+                },
+                small: {
+                  url,
+                  width: 430,
+                  height: 280,
+                },
+                large: {
+                  url,
+                  width: 860,
+                  height: 560,
+                },
+                hero: {
+                  url,
+                  width: 860,
+                  height: 560,
+                },
+              },
             },
-            files: {
-              thumbnail: {
-                url,
-                width: 215,
-                height: 140,
-              },
-              small: {
-                url,
-                width: 430,
-                height: 280,
-              },
-              large: {
-                url,
-                width: 860,
-                height: 560,
-              },
-              hero: {
-                url,
-                width: 860,
-                height: 560,
-              },
-            },
-          },
-        ],
-      },
-    }));
+          ],
+        },
+      }),
+      this.patchTrip,
+    );
   };
 
   renderPageContent = () => {
@@ -522,7 +598,7 @@ export default class TripOrganizer extends Component {
     }
 
     let location = '';
-    if (trip.location.city) {
+    if (trip.location && trip.location.city) {
       location = trip.location.city;
       if (trip.location.state) {
         location = location.concat(`, ${trip.location.state}`);
@@ -538,12 +614,14 @@ export default class TripOrganizer extends Component {
         <CheckoutBox
           trip={trip}
           days={days}
-          action={this.patchOrCreateTrip}
+          action={this.patchTrip}
           changeDates={this.changeDates}
           changeGuests={this.changeGuests}
           startDate={startDate}
           numberOfPeople={numberOfPeople}
           price={trip.basePrice || 0}
+          bookError={this.getBookError()}
+          shareError={this.getShareError()}
         />
         <CoverImage url={img}>
           <Button
@@ -596,14 +674,14 @@ export default class TripOrganizer extends Component {
   };
 
   render() {
-    const { isLoading, availability, tripId, isCreating } = this.props;
+    const { isLoading, availability, tripId } = this.props;
     const { trip } = this.state;
 
     return (
       <Page>
         <TopBar fixed />
         <PageContent>
-          {!isCreating && (isLoading || (!trip || trip._id !== tripId) || !availability) ? (
+          {isLoading || (!trip || trip._id !== tripId) || !availability ? (
             <Loader inline="centered" active size="massive" />
           ) : (
             this.renderPageContent()

@@ -1,0 +1,15 @@
+{
+  "name": "please-frontend",
+  "env": {
+    "REACT_APP_NODE_ENV": "staging"
+  },
+  "type": "static",
+  "static": {
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

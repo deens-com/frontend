@@ -130,6 +130,13 @@ export function formatLocation(location) {
   return location.state;
 }
 
+function getTripImage(item) {
+  if (!item.media || item.media.length === 0) {
+    return 'https://please-com.imgix.net/7a7b798deb8064c64f57bff9ffeaa53a_1531363432782-4561574624.jpg?auto=format&dpr=1&crop=faces&fit=crop&w=800&h=500&ixlib=react-7.2.0';
+  }
+  return item.media[0].files.thumbnail.url;
+}
+
 export default class TripCart extends Component {
   constructor(props) {
     super(props);
@@ -157,10 +164,7 @@ export default class TripCart extends Component {
               <Wrap>
                 <Cart column className="card-animate">
                   <Thumb
-                    url={
-                      this.props.item.image ||
-                      'https://please-com.imgix.net/7a7b798deb8064c64f57bff9ffeaa53a_1531363432782-4561574624.jpg?auto=format&dpr=1&crop=faces&fit=crop&w=800&h=500&ixlib=react-7.2.0'
-                    }
+                    url={getTripImage(this.props.item)}
                     tripCount={this.props.item.partOf}
                     withTooltip={this.props.withTooltip}
                   />
@@ -195,10 +199,7 @@ export default class TripCart extends Component {
             <Cart column className="card-animate">
               <Link to={'/trips/' + this.props.item._id}>
                 <Thumb
-                  url={
-                    this.props.item.image ||
-                    'https://please-com.imgix.net/7a7b798deb8064c64f57bff9ffeaa53a_1531363432782-4561574624.jpg?auto=format&dpr=1&crop=faces&fit=crop&w=800&h=500&ixlib=react-7.2.0'
-                  }
+                  url={getTripImage(this.props.item)}
                   tripCount={this.props.item.partOf}
                   withTooltip={this.props.withTooltip}
                 />

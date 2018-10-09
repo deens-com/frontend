@@ -57,16 +57,6 @@ p {
   line-height: 1.48;
 }
 
-/* This is an issue in Semantic UI's Modal */
-/* The below CSS fixes it */
-/* https://github.com/Semantic-Org/Semantic-UI/issues/6267#issuecomment-373156181 */
-.visible.transition {
-  margin-top: auto !important;
-  display: inline-block !important;
-  position: relative;
-  top: 20%;
-}
-
 .semantic-popup-wrapper::before {
   box-shadow: none !important;
 }

@@ -119,6 +119,7 @@ export const composeFetchQuery = search_params => {
     onlySmartContracts: search_params.onlySmartContracts || undefined,
     page: search_params.page || 1,
     limit: search_params.limit || 1,
+    text: search_params.text || undefined,
     sortBy: search_params.sortBy || undefined,
   };
   let query_arr = [];

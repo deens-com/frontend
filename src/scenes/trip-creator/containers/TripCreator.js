@@ -2,27 +2,48 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Loader } from 'semantic-ui-react';
 import { update_search_query_without_search } from '../../../scenes/results/actions';
-import moment from 'moment';
-import TripOrganizer from '../../../styled_scenes/TripOrganizer';
+import axios from 'libs/axios';
+import TopBar from 'shared_components/TopBar';
+import BrandFooter from 'shared_components/BrandFooter';
+import { Page } from 'shared_components/layout/Page';
+import history from 'main/history';
+
+const emptyTrip = {
+  title: {
+    'en-us': 'New Trip',
+  },
+  services: [],
+  media: [],
+  basePrice: 0,
+  duration: 1,
+};
 
 class TripCreatorContainer extends Component {
+  componentDidMount() {
+    if (this.props.session.username) {
+      axios.post(`/trips`, emptyTrip).then(response => {
+        history.push(`/trips/organize/${response.data._id}`);
+      });
+    } else {
+      history.push('/login');
+    }
+  }
   render() {
     return (
-      <TripOrganizer
-        isCreating
-        startDate={moment(this.props.startDate)}
-        numberOfPeople={this.props.numberOfPeople}
-        changeDates={this.props.changeDates}
-      />
+      <Page>
+        <TopBar fixed />
+        <Loader inline="centered" active size="massive" />
+        <BrandFooter withTopBorder withPadding />
+      </Page>
     );
   }
 }
 
 const mapStateToProps = state => {
   return {
-    numberOfPeople: state.ResultsReducer.search_query.person_nb || 1,
-    startDate: state.ResultsReducer.search_query.start_date || moment().add(1, 'days'),
+    session: state.SessionsReducer.session,
   };
 };
 
