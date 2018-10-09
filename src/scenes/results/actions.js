@@ -90,6 +90,7 @@ const composeQuery = search_params => {
     onlySmartContracts: search_params.onlySmartContracts || undefined,
     page: search_params.page || 1,
     limit: search_params.limit || 10,
+    sortBy: search_params.sortBy || undefined,
   };
   let query_arr = [];
   Object.entries(query_params).forEach(([key, value]) => {
@@ -119,6 +120,7 @@ export const composeFetchQuery = search_params => {
     page: search_params.page || 1,
     limit: search_params.limit || 1,
     text: search_params.text || undefined,
+    sortBy: search_params.sortBy || undefined,
   };
   let query_arr = [];
   Object.entries(query_params).forEach(([key, value]) => {

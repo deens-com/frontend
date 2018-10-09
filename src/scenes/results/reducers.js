@@ -5,6 +5,7 @@ const initialState = {
     tags: [],
     resultsCount: 0,
     page: 0,
+    sortBy: '',
   },
   carousel_tags: [],
   isLoadingResults: false,

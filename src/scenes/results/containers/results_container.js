@@ -21,6 +21,7 @@ class ResultsContainer extends Component {
       resultsCount: this.props.resultsCount,
       page: this.props.page,
       limit: this.props.limit,
+      sortBy: this.props.sortBy,
     };
     this.props.update_search_query(search_query);
     this.props.fetchTagsOptions();
@@ -43,6 +44,7 @@ class ResultsContainer extends Component {
         resultsCount: next_props.resultsCount,
         page: next_props.page,
         limit: next_props.limit,
+        sortBy: next_props.sortBy,
       });
     }
   }
@@ -62,6 +64,7 @@ class ResultsContainer extends Component {
       current_props.resultsCount !== next_props.resultsCount ||
       current_props.page !== next_props.page ||
       current_props.limit !== next_props.limit ||
+      current_props.sortBy !== next_props.sortBy ||
       current_props.onlySmartContracts !== next_props.onlySmartContracts
     );
   };

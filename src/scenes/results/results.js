@@ -22,6 +22,7 @@ const Results = props => {
   let page = search_params.page || 1;
   let resultsCount = search_params.resultsCount || 0;
   let limit = search_params.limit || 10;
+  let sortBy = search_params.sortBy || '';
 
   return (
     <div className="Home">
@@ -41,6 +42,7 @@ const Results = props => {
         page={page}
         resultsCount={resultsCount}
         limit={limit}
+        sortBy={sortBy}
       />
     </div>
   );
