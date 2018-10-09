@@ -19,6 +19,7 @@ export const types = {
   UPDATE_ERROR: 'UPDATE_ERROR',
   AVATAR_UPLOAD_START: 'AVATAR_UPLOAD_START',
   AVATAR_UPLOAD_FINISH: 'AVATAR_UPLOAD_FINISH',
+  NOT_LOGGED_IN: 'NOT_LOGGED_IN',
 };
 
 export const sessionsFetched = session => {
@@ -82,7 +83,9 @@ export const getCurrentUser = () => async dispatch => {
       if (currentUser.data) {
         dispatch(sessionsFetched({ session: currentUser.data }));
       }
+      return;
     }
+    dispatch({ type: types.NOT_LOGGED_IN });
   } catch (error) {
     console.log(error);
   }

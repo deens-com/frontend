@@ -5,6 +5,7 @@ describe('sessions reducer', () => {
     expect(reducers(undefined, {})).toEqual({
       session: {},
       loginError: {},
+      loggedIn: null,
       metaMaskError: {},
       ledgerError: {},
       baseCurrency: { label: '$', value: 'USD', rates: {} },
@@ -25,6 +26,7 @@ describe('sessions reducer', () => {
       }),
     ).toEqual({
       loginError: { code: 111, message: 'Network error' },
+      loggedIn: false,
       session: {},
       metaMaskError: {},
       ledgerError: {},
@@ -50,6 +52,7 @@ describe('sessions reducer', () => {
       session: {
         hello: 'world',
       },
+      loggedIn: true,
       metaMaskError: {},
       ledgerError: {},
       baseCurrency: { label: '$', value: 'USD', rates: {} },
@@ -74,6 +77,7 @@ describe('sessions reducer', () => {
         },
       }),
     ).toEqual({
+      loggedIn: true,
       loginError: {},
       session: {
         hello: 'world',

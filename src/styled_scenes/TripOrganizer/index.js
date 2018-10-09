@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import moment from 'moment';
 import styled from 'styled-components';
-import { Input, Loader } from 'semantic-ui-react';
+import { Input, Loader, Dimmer } from 'semantic-ui-react';
 import { geocodeByPlaceId } from 'react-places-autocomplete';
 
 import { serverBaseURL } from 'libs/config';
@@ -153,43 +153,51 @@ export default class TripOrganizer extends Component {
     return newState;
   }
 
-  patchTrip = debounce(async (action = 'autosave') => {
-    let selectedServiceOptions = [];
+  patchTrip = (action = 'autosave') => {
+    if (action === 'autosave' && this.state.isSaving) {
+      return;
+    }
 
-    Object.keys(this.state.optionsSelected).forEach(day => {
-      Object.keys(this.state.optionsSelected[day]).forEach(serviceId => {
-        selectedServiceOptions.push({
-          day: parseInt(day, 10),
-          serviceId,
-          availabilityCode: this.state.optionsSelected[day][serviceId],
+    this.setState(action === 'autosave' ? {} : { isSaving: true }, async () => {
+      let selectedServiceOptions = [];
+
+      Object.keys(this.state.optionsSelected).forEach(day => {
+        Object.keys(this.state.optionsSelected[day]).forEach(serviceId => {
+          selectedServiceOptions.push({
+            day: parseInt(day, 10),
+            serviceId,
+            availabilityCode: this.state.optionsSelected[day][serviceId],
+          });
         });
       });
+
+      const trip = {
+        ...this.state.trip,
+        ...(action === 'share' ? { privacy: 'public' } : {}),
+        otherAttributes: {
+          selectedServiceOptions,
+        },
+        services: this.state.days.reduce((prev, day) => [...prev, ...day.data], []),
+        ...(this.props.startDate ? { startDate: this.props.startDate } : {}),
+        ...(this.props.numberOfPeople ? { peopleCount: this.props.numberOfPeople } : {}),
+        duration: daysToMinutes(this.state.days.length) || 1,
+      };
+
+      await axios.patch(`/trips/${trip._id}`, trip);
+
+      if (action === 'autosave') {
+        return;
+      }
+
+      if (action === 'share') {
+        history.push(`/trips/${trip._id}`);
+        return;
+      }
+      history.push(`/trips/checkout/${trip._id}`);
     });
+  };
 
-    const trip = {
-      ...this.state.trip,
-      ...(action === 'share' ? { privacy: 'public' } : {}),
-      otherAttributes: {
-        selectedServiceOptions,
-      },
-      services: this.state.days.reduce((prev, day) => [...prev, ...day.data], []),
-      ...(this.props.startDate ? { startDate: this.props.startDate } : {}),
-      ...(this.props.numberOfPeople ? { peopleCount: this.props.numberOfPeople } : {}),
-      duration: daysToMinutes(this.state.days.length) || 1,
-    };
-
-    await axios.patch(`/trips/${trip._id}`, trip);
-
-    if (action === 'autosave') {
-      return;
-    }
-
-    if (action === 'share') {
-      history.push(`/trips/${trip._id}`);
-      return;
-    }
-    history.push(`/trips/checkout/${trip._id}`);
-  }, 2000);
+  autoPatchTrip = debounce(this.patchTrip, 2000);
 
   selectOption = (day, serviceId, optionCode) => {
     this.setState(
@@ -237,7 +245,7 @@ export default class TripOrganizer extends Component {
               }, 0),
             },
           }),
-          this.patchTrip,
+          this.autoPatchTrip,
         );
       },
     );
@@ -269,7 +277,7 @@ export default class TripOrganizer extends Component {
         }),
       }),
       async () => {
-        this.patchTrip();
+        this.autoPatchTrip();
         const availability =
           this.props.startDate &&
           (await axios.post(`${serverBaseURL}/services/${service._id}/availability`, {
@@ -329,7 +337,7 @@ export default class TripOrganizer extends Component {
           ),
         },
       };
-    }, this.patchTrip);
+    }, this.autoPatchTrip);
   };
 
   changeTripName = (_, data) => {
@@ -342,7 +350,7 @@ export default class TripOrganizer extends Component {
           },
         },
       }),
-      this.patchTrip,
+      this.autoPatchTrip,
     );
   };
 
@@ -408,7 +416,7 @@ export default class TripOrganizer extends Component {
       guests: this.props.numberOfPeople,
     });
     this.props.changeDates(dates);
-    this.patchTrip();
+    this.autoPatchTrip();
   };
 
   changeGuests = data => {
@@ -418,7 +426,7 @@ export default class TripOrganizer extends Component {
     });
 
     this.props.changeDates(data);
-    this.patchTrip();
+    this.autoPatchTrip();
   };
 
   handleAddDay = () => {
@@ -449,7 +457,7 @@ export default class TripOrganizer extends Component {
             : { 1: {} }),
         },
       }),
-      this.patchTrip,
+      this.autoPatchTrip,
     );
   };
 
@@ -480,7 +488,7 @@ export default class TripOrganizer extends Component {
             },
           },
         }),
-        this.patchTrip,
+        this.autoPatchTrip,
       );
     } catch (e) {
       console.error(e);
@@ -583,7 +591,7 @@ export default class TripOrganizer extends Component {
           ],
         },
       }),
-      this.patchTrip,
+      this.autoPatchTrip,
     );
   };
 
@@ -676,11 +684,14 @@ export default class TripOrganizer extends Component {
 
   render() {
     const { isLoading, availability, tripId } = this.props;
-    const { trip } = this.state;
+    const { trip, isSaving } = this.state;
 
     return (
       <Page>
         <TopBar fixed />
+        <Dimmer active={isSaving} page>
+          <Loader size="massive" />
+        </Dimmer>
         <PageContent>
           {isLoading || (!trip || trip._id !== tripId) || !availability ? (
             <Loader inline="centered" active size="massive" />
