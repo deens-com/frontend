@@ -63,6 +63,8 @@ const FormInput = styled.div`
 
 const Required = () => <span style={{ color: 'red' }}>*</span>;
 
+const daysToMinutes = days => days * 60 * 24;
+
 function createTripState(props, state) {
   const optionsSelected = {};
 
@@ -171,6 +173,8 @@ export default class TripOrganizer extends Component {
         selectedServiceOptions,
       },
       services: this.state.days.reduce((prev, day) => [...prev, ...day.data], []),
+      ...(this.props.startDate ? { startDate: this.props.startDate } : {}),
+      duration: daysToMinutes(this.state.days.length) || 1,
     };
 
     await axios.patch(`/trips/${trip._id}`, trip);
@@ -421,7 +425,7 @@ export default class TripOrganizer extends Component {
       prevState => ({
         trip: {
           ...prevState.trip,
-          duration: prevState.trip + 1,
+          duration: prevState.trip + daysToMinutes(1),
         },
         days: [
           ...prevState.days,
@@ -480,6 +484,57 @@ export default class TripOrganizer extends Component {
     } catch (e) {
       console.error(e);
     }
+  };
+
+  getBookError = () => {
+    if (!this.props.startDate) {
+      return 'You need to select a start date';
+    }
+
+    if (!this.props.numberOfPeople) {
+      return 'You need to select a number of guests';
+    }
+
+    const options = [];
+    const servicesAreAvailable =
+      this.state.availability.data &&
+      this.state.availability.data.some(value => {
+        if (value.groupedOptions) {
+          options.push({
+            day: value.day,
+            id: value.serviceId,
+          });
+        }
+
+        return !value.isAvailable;
+      });
+
+    if (servicesAreAvailable) {
+      return 'Please check that all services are available in selected dates';
+    }
+
+    const notSelected = options.some(
+      value =>
+        !(this.state.optionsSelected[value.day] && this.state.optionsSelected[value.day][value.id]),
+    );
+    console.log(options, this.state.optionsSelected);
+    if (notSelected) {
+      return 'You must select the options for each service to book';
+    }
+
+    return null;
+  };
+
+  getShareError = () => {
+    if (!this.state.trip.location) {
+      return 'You need to add a location';
+    }
+
+    if (!this.state.trip.media || this.state.trip.media.length === 0) {
+      return 'You need to add an image';
+    }
+
+    return null;
   };
 
   onFileSelect = async e => {
@@ -565,6 +620,8 @@ export default class TripOrganizer extends Component {
           startDate={startDate}
           numberOfPeople={numberOfPeople}
           price={trip.basePrice || 0}
+          bookError={this.getBookError()}
+          shareError={this.getShareError()}
         />
         <CoverImage url={img}>
           <Button

@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
-import { Dropdown } from 'semantic-ui-react';
+import { Dropdown, Popup } from 'semantic-ui-react';
 import { SingleDatePicker } from 'react-dates';
 import Button from 'shared_components/Button';
 
@@ -66,8 +66,15 @@ export default class CheckoutBox extends React.Component {
     this.props.action('share');
   };
 
+  renderButtonWithPopup(button, content) {
+    if (content) {
+      return <Popup trigger={button} content={content} position="bottom left" hideOnScroll />;
+    }
+    return button;
+  }
+
   render() {
-    const { startDate, numberOfPeople } = this.props;
+    const { startDate, numberOfPeople, bookError, shareError } = this.props;
     const formattedStartDate = startDate ? startDate.format('LL') : 'Select date';
 
     return (
@@ -96,17 +103,40 @@ export default class CheckoutBox extends React.Component {
               { text: '5 Guests', value: 5 },
             ]}
             onChange={this.handleGuestsChange}
+            defaultValue={numberOfPeople}
             fluid
             selection
           />
         </Field>
         <Price>${this.props.price * numberOfPeople}</Price>
-        <Button size="medium" type="button" theme="fillLightGreen" onClick={this.book}>
-          Book
-        </Button>
-        <Button size="medium" type="button" theme="white" onClick={this.share}>
-          Share and earn rewards
-        </Button>
+        {this.renderButtonWithPopup(
+          <div>
+            <Button
+              disableClick={Boolean(bookError)}
+              size="medium"
+              type="button"
+              theme="fillLightGreen"
+              onClick={this.book}
+            >
+              Book
+            </Button>
+          </div>,
+          bookError,
+        )}
+        {this.renderButtonWithPopup(
+          <div>
+            <Button
+              disableClick={Boolean(shareError)}
+              size="medium"
+              type="button"
+              theme="white"
+              onClick={this.share}
+            >
+              Share and earn rewards
+            </Button>
+          </div>,
+          shareError,
+        )}
       </Wrapper>
     );
   }

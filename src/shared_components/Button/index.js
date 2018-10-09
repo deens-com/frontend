@@ -217,6 +217,11 @@ export default class Button extends Component {
   }
 
   onClick(ev) {
+    // props.disableClick allows to disable the button but keep hover behaviour
+    if (this.props.disableClick) {
+      return;
+    }
+
     this.props.onClick(ev);
     this.button.blur();
   }
@@ -245,7 +250,7 @@ export default class Button extends Component {
 
     return (
       <Wrap
-        theme={this.props.disabled ? 'disabled' : this.props.theme}
+        theme={this.props.disabled || this.props.disableClick ? 'disabled' : this.props.theme}
         round={this.props.round}
         size={this.props.size}
         align={this.props.align}
