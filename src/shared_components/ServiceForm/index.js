@@ -541,7 +541,7 @@ class ServiceForm extends Component {
             selection
             fluid
             multiple
-            value={(this.props.service && this.props.service.tags) || values.tags.map(tag => tag)}
+            value={values.tags}
             onChange={this.onDropDownChange}
           />
         </Form.Field>
@@ -724,7 +724,7 @@ export default withFormik({
           lng: service.location.geo.coordinates[0],
         }) ||
       null,
-    tags: (service && service.tags.map(tag => tag._id)) || [],
+    tags: (service && service.tags.map(tag => tag._id || tag)) || [],
     media: (service && service.media) || [],
     formattedAddress:
       (service && service.location && service.location.formattedAddress) || undefined,
