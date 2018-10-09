@@ -95,6 +95,7 @@ class CheckoutContainer extends React.Component {
       step: 1,
       days: null,
       guests: [],
+      provision: [],
     };
   }
 
@@ -113,7 +114,10 @@ class CheckoutContainer extends React.Component {
   }
 
   async getProvisionCodes() {
-    await axios.post(`/trips/${this.tripId}/provision`);
+    const provision = await axios.post(`/trips/${this.tripId}/provision`);
+    this.setState({
+      provision: provision.data,
+    });
   }
 
   nextStep = () => {
@@ -131,14 +135,14 @@ class CheckoutContainer extends React.Component {
   };
 
   renderStep() {
-    const { step, guests } = this.state;
+    const { step, guests, provision } = this.state;
     const { trip } = this.props;
 
     if (step === 3) {
       return <PaymentContainer guests={guests} trip={trip} />;
     }
     return step === 1 ? (
-      <CheckoutTrip trip={trip} />
+      <CheckoutTrip trip={trip} provision={provision} />
     ) : (
       <GuestsData number={trip.peopleCount} onChange={this.handleGuestsDataChange} />
     );
