@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch } from 'react-router';
-import { Route, HashRouter } from 'react-router-dom';
+import { Route, BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store';
 import withSegmentTracker from './middlewares/with_segment_tracker';
@@ -26,7 +26,7 @@ const commonHOCs = comp => withErrorBoundary(withSegmentTracker(comp));
 const App = () => {
   return (
     <Provider store={store}>
-      <HashRouter>
+      <BrowserRouter>
         <ScrollToTop>
           <Switch>
             <Route exact path={process.env.PUBLIC_URL + '/'} component={commonHOCs(Home)} />
@@ -73,7 +73,7 @@ const App = () => {
             <Route component={withErrorBoundary(Notfound)} />
           </Switch>
         </ScrollToTop>
-      </HashRouter>
+      </BrowserRouter>
     </Provider>
   );
 };
