@@ -67,12 +67,7 @@ const Header = ({ trip, owner }) => {
       {owner && (
         <React.Fragment>
           <AvatarWrapper>
-            <Image
-              src={(owner.profilePicture && owner.profilePicture.url) || ImgurAvatar}
-              circular
-              width={45}
-              height={45}
-            />
+            <Image src={owner.profilePicture || ImgurAvatar} circular width={45} height={45} />
           </AvatarWrapper>
           <CreatedBy>Created by</CreatedBy>
           <Username>{owner.username}</Username>

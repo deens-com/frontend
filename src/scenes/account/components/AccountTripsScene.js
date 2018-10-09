@@ -54,7 +54,7 @@ class AccountTripsScene extends Component {
             <Grid centered columns={2}>
               <Grid.Column mobile={16} tablet={5} computer={4}>
                 <SectionWrap>
-                  <UserBasicInfo />
+                  <UserBasicInfo user_profile={this.props.user} />
                 </SectionWrap>
               </Grid.Column>
               <Grid.Column mobile={16} tablet={11} computer={12}>
