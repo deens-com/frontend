@@ -17,6 +17,7 @@ import * as actions from './actions';
 import * as tripActions from '../trip/actions';
 import Button from 'shared_components/Button';
 import GuestsData from './components/GuestsData';
+import history from 'main/history';
 
 function formatDate(date, days) {
   const startDate = moment(date);
@@ -109,8 +110,13 @@ class CheckoutContainer extends React.Component {
     return null;
   }
 
-  componentDidMount() {
-    this.getProvisionCodes();
+  componentDidUpdate() {
+    if (this.props.trip) {
+      if (!this.props.trip.startDate || !this.props.trip.peopleCount) {
+        history.replace(`/trips/organize/${this.tripId}`);
+        return null;
+      }
+    }
   }
 
   async getProvisionCodes() {
@@ -121,9 +127,16 @@ class CheckoutContainer extends React.Component {
   }
 
   nextStep = () => {
-    this.setState(prevState => ({
-      step: prevState.step + 1,
-    }));
+    this.setState(
+      prevState => ({
+        step: prevState.step + 1,
+      }),
+      () => {
+        if (this.state.step === 3) {
+          this.getProvisionCodes();
+        }
+      },
+    );
   };
 
   handleGuestsDataChange = (event, data) => {
@@ -196,6 +209,7 @@ class CheckoutContainer extends React.Component {
 const mapStateToProps = state => ({
   trip: state.TripReducer.trip,
   isLoading: state.TripReducer.isLoading,
+  session: state.SessionsReducer.session,
 });
 
 const mapDispatchToProps = dispatch =>

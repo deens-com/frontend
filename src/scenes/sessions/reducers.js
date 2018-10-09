@@ -16,6 +16,7 @@ const initialState = {
   isLedgerLoaderDisplayed: false,
   updateError: {},
   isUploadingAvatar: false,
+  loggedIn: null,
 };
 
 export default function SessionsReducer(state = initialState, action = {}) {
@@ -24,12 +25,20 @@ export default function SessionsReducer(state = initialState, action = {}) {
       return {
         ...state,
         session: action.payload.session,
+        loggedIn: true,
         loginError: {},
       };
     case sessions_actions.types.LOGIN_ERROR:
       return {
         ...state,
         loginError: action.payload,
+        loggedIn: false,
+      };
+    case sessions_actions.types.NOT_LOGGED_IN:
+      return {
+        ...state,
+        session: {},
+        loggedIn: false,
       };
     case sessions_actions.types.METAMASK_ERROR:
       return {
