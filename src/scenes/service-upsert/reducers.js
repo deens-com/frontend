@@ -5,6 +5,7 @@ const initialState = {
   isSubmitting: false,
   service: null,
   error: {},
+  serviceFormTagsOptions: [],
 };
 
 export default (state = initialState, action) => {
@@ -65,6 +66,11 @@ export default (state = initialState, action) => {
         ...state,
         isSubmitting: action.payload,
       };
+    case actionTypes.SERVICE_FORM_TAGS_FETCHED:
+      return {
+        ...state,
+        serviceFormTagsOptions: action.payload,
+      }
     default:
       return state;
   }

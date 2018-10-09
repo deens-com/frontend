@@ -19,6 +19,7 @@ export const types = {
   SERVICE_SAVE_ERROR: 'EDIT/SERVICE_SAVE_ERROR',
 
   TOGGLE_SUBMITTING_STATE: 'TOGGLE_SUBMITTING_STATE',
+  SERVICE_FORM_TAGS_FETCHED: 'SERVICE_FORM_TAGS_FETCHED',
 };
 
 export const user_profile_fetched = userProfile => {
@@ -32,6 +33,13 @@ export const submittingStateChanged = bool => {
   return {
     type: 'TOGGLE_SUBMITTING_STATE',
     payload: bool,
+  };
+};
+
+export const serviceFormTagsOptionsFetched = payload => {
+  return {
+    type: 'SERVICE_FORM_TAGS_FETCHED',
+    payload: payload,
   };
 };
 
@@ -94,6 +102,19 @@ export const fetchService = serviceId => async (dispatch, getState) => {
   } catch (error) {
     dispatch({ type: types.SERVICE_FETCH_ERROR, payload: error });
   }
+};
+
+export const fetchServiceFormTagsOptions = () => {
+  return async dispatch => {
+    try {
+      const tags = await axios.get('/tags');
+      if (tags) {
+        dispatch(serviceFormTagsOptionsFetched(tags.data));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 };
 
 export const saveServiceChanges = (serviceId, values, history) => async (dispatch, getState) => {
