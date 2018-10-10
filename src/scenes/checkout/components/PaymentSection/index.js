@@ -8,6 +8,7 @@ import { media } from 'libs/styled';
 import BookedSuccessfullyPopup from '../BookedSuccessfullyPopup';
 import StripeAutoPaymentButton from '../StripeAutoPaymentButton';
 import StripeCardDetails from '../StripeCardDetails';
+import CoinbaseButtonContainer from '../../CoinbaseButtonContainer';
 
 const Wrap = styled.div`
   ${media.minSmall} {
@@ -32,14 +33,20 @@ const ErrorMessage = styled.p`
   color: red;
 `;
 
+const CoinbaseButtonWrapper = styled.div`
+  margin-top: 20px;
+`;
+
 export default class PaymentSection extends Component {
   static propTypes = {
+    tripId: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
     pricePerPerson: PropTypes.number.isRequired,
     totalPrice: PropTypes.number.isRequired,
     onPaymentClick: PropTypes.func.isRequired,
     numberOfPerson: PropTypes.number.isRequired,
     onStripeTokenReceived: PropTypes.func.isRequired,
+    guests: PropTypes.array.isRequired,
   };
 
   state = {
@@ -52,12 +59,14 @@ export default class PaymentSection extends Component {
 
   render() {
     const {
+      tripId,
       pricePerPerson,
       totalPrice,
       numberOfPerson,
       isLoading,
       onStripeTokenReceived,
       paymentError,
+      guests,
     } = this.props;
     return (
       <Wrap>
@@ -108,6 +117,9 @@ export default class PaymentSection extends Component {
                             symbol={symbol}
                             showOrInText={this.state.canMakeAutoPayment}
                           />
+                          <CoinbaseButtonWrapper>
+                            <CoinbaseButtonContainer tripId={tripId} guests={guests} />
+                          </CoinbaseButtonWrapper>
                         </React.Fragment>
                       );
                     }}
