@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import * as SmartContractStatus from 'shared_components/SmartContract/Status';
 
-import Tag from './Tag';
+import Tag from 'shared_components/Tag';
 
 const TagWrap = styled.div`
   display: flex;

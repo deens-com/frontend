@@ -3,8 +3,9 @@ import React, { Component } from 'react';
 // import moment from 'moment';
 import styled from 'styled-components';
 
-// import { MapMarker, Map, Calendar } from 'shared_components/icons';
+import { MapMarker, Map, Calendar } from 'shared_components/icons';
 import I18nText from 'shared_components/I18nText';
+import Tag from 'shared_components/Tag';
 
 const Wrapper = styled.div`
   margin-top: 40px;
@@ -22,6 +23,28 @@ const Description = styled.div`
   margin: 20px 0;
 `;
 
+const Tags = styled.div`
+  > div {
+    border-radius: 50px;
+  }
+`;
+
+const TripData = styled.div`
+  display: flex;
+  justify-content: flex-around;
+`;
+
+const DataChunk = styled.div`
+  display: flex;
+  flex: 1;
+  color: #6e7885;
+  font-size: 12px;
+  font-weight: bold;
+  > svg {
+    fill: #6e7885;
+  }
+`;
+
 export default class ResultsScene extends Component {
   static getDerivedStateFromProps(props, state) {
     return null;
@@ -35,18 +58,28 @@ export default class ResultsScene extends Component {
 
   render() {
     const { trip } = this.props;
-
+    console.log(trip.tags);
     return (
       <Wrapper>
         <About>About this trip</About>
+        <TripData>
+          <DataChunk>
+            <Calendar />
+            <span>Days</span>
+          </DataChunk>
+        </TripData>
         <Description>
           <I18nText data={trip.description} />
         </Description>
-        {trip.tags.map(tag => (
-          <span key={I18nText.translate(tag.names)}>
-            <I18nText data={tag.names} />
-          </span>
-        ))}
+        <Tags>
+          {trip.tags.map(tag => (
+            <Tag
+              key={tag.label}
+              item={tag}
+              href={`/results?service_types=trip&tags=${tag.label}`}
+            />
+          ))}
+        </Tags>
       </Wrapper>
     );
   }

@@ -1,5 +1,6 @@
 import axios from 'libs/axios';
 import { serverBaseURL } from 'libs/config';
+import { parseTags } from 'libs/fetch_helpers';
 import history from './../../main/history';
 
 export const types = {
@@ -36,7 +37,7 @@ export const fetchTripError = error => {
 export const fetchTripSuccess = trip => {
   return {
     type: types.FETCH_TRIP_SUCCESS,
-    payload: trip.data,
+    payload: trip,
   };
 };
 
@@ -125,7 +126,12 @@ export const fetchTrip = id => async dispatch => {
   dispatch(fetchTripStart());
   try {
     const trip = await axios.get(`${serverBaseURL}/trips/${id}?include=services,tags`);
-    dispatch(fetchTripSuccess(trip));
+    dispatch(
+      fetchTripSuccess({
+        ...trip.data,
+        tags: parseTags(trip.data.tags),
+      }),
+    );
 
     try {
       dispatch(fetchOwnerStart());
