@@ -4,6 +4,7 @@ import { Button } from 'semantic-ui-react';
 import CoinbaseCommerceButton from 'react-coinbase-commerce';
 import 'react-coinbase-commerce/dist/coinbase-commerce-button.css';
 import axios from 'libs/axios';
+import history from 'main/history';
 
 const buttonStates = {
   ready: 'ready',
@@ -38,6 +39,16 @@ class CoinbaseButtonContainer extends Component {
     });
   };
 
+  onModalClosed = () => {
+    if (this.state.chargeSuccess) {
+      history.push('/account/trips/planned');
+    }
+  };
+
+  onChargeSuccess = _msgData => {
+    this.setState({ chargeSuccess: true });
+  };
+
   handleClick = () => {
     this.setState({ buttonState: buttonStates.loading });
     this.getCoinbaseChargeCode();
@@ -54,15 +65,15 @@ class CoinbaseButtonContainer extends Component {
             this.state.buttonState === buttonStates.error
           }
         >
-          Pay Using Coinbase
+          Pay with CryptoCurrency
         </Button>
         <CoinbaseCommerceButton
           style={displayNone}
           id={coinbaseButtonDomID}
           chargeId={this.state.chargeId}
-          onChargeSuccess={msgData => console.log('onChargeSuccess', msgData)}
+          onChargeSuccess={this.onChargeSuccess}
           onChargeFailure={msgData => console.log('onChargeFailure', msgData)}
-          onPaymentDetected={msgData => console.log('onPaymentDetected', msgData)}
+          onModalClosed={this.onModalClosed}
         />
       </div>
     );
