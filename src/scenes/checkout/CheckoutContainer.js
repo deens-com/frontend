@@ -120,10 +120,14 @@ class CheckoutContainer extends React.Component {
   }
 
   async getProvisionCodes() {
-    const provision = await axios.post(`/trips/${this.tripId}/provision`);
-    this.setState({
-      provision: provision.data,
-    });
+    try {
+      const provision = await axios.post(`/trips/${this.tripId}/provision`);
+      this.setState({
+        provision: provision.data,
+      });
+    } catch (error) {
+      console.error('provision failed', error.response.data);
+    }
   }
 
   nextStep = () => {

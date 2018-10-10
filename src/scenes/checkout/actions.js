@@ -41,7 +41,7 @@ export const chargeStripeToken = (token, guests, complete = () => {}) => async (
     });
     history.push('/account/trips/planned');
   } catch (error) {
-    console.error('charge failed', error);
+    console.error('charge failed', error.response ? error.response.data : error);
     complete('fail');
     setPaymentError(error);
   }
