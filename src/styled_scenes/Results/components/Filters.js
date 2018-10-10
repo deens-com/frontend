@@ -455,9 +455,9 @@ class Filters extends Component {
                           selection
                           fluid
                           multiple
-                          value={this.props.tags.map(
-                            tag => tag.charAt(0).toUpperCase() + tag.substr(1),
-                          )}
+                          value={this.props.tags
+                            .map(tag => tag.replace('%20', ' '))
+                            .map(tag => tag.charAt(0).toUpperCase() + tag.substr(1))}
                           onChange={this.onDropDownChange}
                           style={{ minWidth: '250px' }}
                         />

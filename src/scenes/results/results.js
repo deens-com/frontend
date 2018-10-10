@@ -9,7 +9,14 @@ const Results = props => {
   let service_types = (search_params.service_types && search_params.service_types.split(' ')) || [
     'trip',
   ];
-  let tags_arr = (search_params.tags && search_params.tags.split(' ')) || [];
+  let tags_arr =
+    (props.location.search.match(/(tags.+)/) &&
+      props.location.search
+        .match(/(tags.+)/)[0]
+        .split('&')[0]
+        .replace('tags=', '')
+        .split('+')) ||
+    [];
   let latitude = search_params.latitude || '';
   let longitude = search_params.longitude || '';
   let person_nb = search_params.person_nb || '';
