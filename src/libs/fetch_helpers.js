@@ -143,7 +143,7 @@ const buildServiceForView = service => {
     service.subtitle = service.subtitle[i18nLocale];
     service.description = service.description[i18nLocale];
     service.objectId = service._id;
-    service.rating = service.rating;
+    service.ratings = service.ratings;
     service.duration = service.duration;
     service.dayList = Object.keys(service.periods[0].daysOfWeek).filter(
       k => service.periods[0].daysOfWeek[k],
@@ -161,7 +161,6 @@ const buildServiceForView = service => {
     service.endDate = new Date(service.periods[0].endDate);
     service.openingTime = service.periods[0].startTime;
     service.closingTime = service.periods[0].endTime;
-    service.reviewCount = service.reviewCount;
     service.slots = service.periods[0].maxCapacity;
     service.formattedAddress = service.location.formattedAddress;
     service.externalUrl = service.externalUrl && service.externalUrl[i18nLocale];
@@ -207,8 +206,7 @@ const buildServicesJson = services => {
       // const country =
       //   service.location && service.location.country && service.location.country.names[i18nLocale];
       service.location = parseLocation(service.location);
-      service.rating = service.rating;
-      service.reviewCount = service.reviewCount;
+      service.ratings = service.ratings;
       service.slots = service.slots;
       service.price = service.price == null ? service.pricePerSession : service.price;
       service.pricePerSession = service.pricePerSession || service.basePrice;
@@ -253,8 +251,7 @@ const mapServiceObjects = services => {
       // eslint-disable-next-line
       service.longitude = (service.location && service.location.longitude) || 1;
       service.location = `${service.city ? service.city + ',' : ''} ${service.country}`;
-      service.rating = service.rating;
-      service.reviewCount = service.reviewCount;
+      service.ratings = service.ratings;
       service.slots = service.slots;
       service.price = service.price == null ? service.pricePerSession : service.price;
       if (service.tags && service.tags.length) {

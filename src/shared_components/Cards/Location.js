@@ -173,8 +173,8 @@ export default class LocationCart extends Component {
           </Location>
           <Rating
             marginBottom="10px"
-            rating={this.props.item.rating}
-            count={this.props.item.reviewCount}
+            rating={this.props.item.ratings.average}
+            count={this.props.item.ratings.count}
           />
           <Label>Starting from</Label>
           <PriceTag price={this.props.item.price} />

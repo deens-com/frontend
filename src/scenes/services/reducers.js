@@ -6,6 +6,7 @@ const initialState = {
     isLoading: false,
     data: [],
   },
+  ratings: [],
   reviews: [],
   serviceRecentlyAddedToTrip: null,
   serviceAlreadyAddedToTrip: null,

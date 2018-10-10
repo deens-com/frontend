@@ -135,7 +135,11 @@ class ServiceLocationCard extends Component {
                     </p>
                   </Location>
                 )}
-                <Rating marginBottom="10px" rating={item.rating} count={item.reviewCount} />
+                <Rating
+                  marginBottom="10px"
+                  rating={item.ratings.average}
+                  count={item.ratings.count}
+                />
                 <Label>Starting from</Label>
                 <NewPriceTag basePrice={item.basePrice} baseCurrency={item.baseCurrency} />
               </div>,

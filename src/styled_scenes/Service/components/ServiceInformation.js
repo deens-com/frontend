@@ -35,7 +35,7 @@ const Row = styled.tr`
 `;
 
 const ServiceInformation = ({ service }) => {
-  if (!service) return null;
+  if (!service || !service.ratings) return null;
   return (
     <Table>
       <tbody>
@@ -65,7 +65,7 @@ const ServiceInformation = ({ service }) => {
         <Row>
           <td>Rating</td>
           <td>
-            <Rating rating={service.rating} count={service.reviewCount} />
+            <Rating rating={service.ratings.average} count={service.ratings.count} />
           </td>
         </Row>
       </tbody>

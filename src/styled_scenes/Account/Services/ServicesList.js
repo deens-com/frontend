@@ -89,7 +89,7 @@ const ServiceItem = item => {
         <Link to={'/services/' + item.objectId} key={item.objectId}>
           <Title>{item.name}</Title>
 
-          <Rating marginBottom="25px" rating={item.rating} count={item.reviewCount} />
+          <Rating marginBottom="25px" rating={item.ratings.average} count={item.ratings.count} />
 
           <Label>
             <I18nText data={item.categories[0].names} />
