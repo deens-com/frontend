@@ -4,7 +4,7 @@ import Button from 'shared_components/Button';
 
 const Wrapper = styled.div`
   flex: 1;
-  order: 1;
+  order: -1;
   text-align: center;
   margin-bottom: 15px;
 `;
@@ -18,7 +18,7 @@ const SecondLine = styled.div`
 `;
 
 const Print = styled.span`
-  order: 3;
+  order: 1;
   margin: auto;
   margin-top: 15px;
 `;
