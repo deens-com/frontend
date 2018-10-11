@@ -73,11 +73,17 @@ function createTripState(props, state) {
   selectedServiceOptions.forEach(selected => {
     if (!optionsSelected[selected.day]) {
       optionsSelected[selected.day] = {
-        [selected.serviceId]: selected.availabilityCode,
+        [selected.serviceId]: {
+          availabilityCode: selected.availabilityCode,
+          price: selected.price,
+        },
       };
       return;
     }
-    optionsSelected[selected.day][selected.serviceId] = selected.availabilityCode;
+    optionsSelected[selected.day][selected.serviceId] = {
+      availabilityCode: selected.availabilityCode,
+      price: selected.price,
+    };
   });
 
   const daysByService = props.trip.services.reduce((prev, service) => {
@@ -166,7 +172,14 @@ export default class TripOrganizer extends Component {
           selectedServiceOptions.push({
             day: parseInt(day, 10),
             serviceId,
-            availabilityCode: this.state.optionsSelected[day][serviceId],
+            availabilityCode:
+              this.state.optionsSelected[day] &&
+              this.state.optionsSelected[day][serviceId] &&
+              (this.state.optionsSelected[day][serviceId].availabilityCode ||
+                this.state.optionsSelected[day][serviceId]),
+            price:
+              this.state.optionsSelected[day][serviceId] &&
+              this.state.optionsSelected[day][serviceId].price,
           });
         });
       });
@@ -200,14 +213,17 @@ export default class TripOrganizer extends Component {
 
   autoPatchTrip = debounce(this.patchTrip, 2000);
 
-  selectOption = (day, serviceId, optionCode) => {
+  selectOption = (day, serviceId, optionCode, price) => {
     this.setState(
       prevState => ({
         optionsSelected: {
           ...prevState.optionsSelected,
           [day]: {
             ...prevState.optionsSelected[day],
-            [serviceId]: optionCode,
+            [serviceId]: {
+              availabilityCode: optionCode,
+              price,
+            },
           },
         },
       }),
@@ -221,26 +237,13 @@ export default class TripOrganizer extends Component {
                   prevState.optionsSelected[elem.day] &&
                   prevState.optionsSelected[elem.day][elem.serviceId]
                 ) {
-                  const selectedElement =
-                    elem.groupedOptions &&
-                    elem.groupedOptions.options.find(
-                      option =>
-                        option.otherAttributes &&
-                        option.otherAttributes.availabilityCode &&
-                        option.otherAttributes.availabilityCode.code ===
-                          prevState.optionsSelected[elem.day][elem.serviceId],
-                    );
-                  if (selectedElement) {
-                    return (
-                      price +
-                      getPrice(
-                        prevState.trip.services.find(
-                          service => selectedElement.serviceId === service._id,
-                        ).basePrice,
-                        selectedElement.price,
-                      )
-                    );
-                  }
+                  return (
+                    price +
+                    (prevState.optionsSelected[elem.day][elem.serviceId].price ||
+                      prevState.days
+                        .find(day => day.day === elem.day)
+                        .data.find(day => day.service._id === elem.serviceId).basePrice)
+                  );
                 }
                 return price;
               }, 0),

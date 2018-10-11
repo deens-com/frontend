@@ -81,7 +81,8 @@ export default class Options extends Component {
   }
 
   onDropdownChange = (event, data) => {
-    this.props.onChange(this.props.day, this.props.serviceId, data.value);
+    const price = data.options.find(option => option.value === data.value).price;
+    this.props.onChange(this.props.day, this.props.serviceId, data.value, price);
   };
 
   render() {

@@ -141,7 +141,10 @@ export default class Itinerary extends Component {
           options={availability.groupedOptions}
           onChange={this.props.selectOption}
           value={
-            (this.props.optionsSelected[day] && this.props.optionsSelected[day][service._id]) || ''
+            (this.props.optionsSelected[day] &&
+              this.props.optionsSelected[day][service._id] &&
+              this.props.optionsSelected[day][service._id].availabilityCode) ||
+            ''
           }
           serviceId={service._id}
           day={day}
