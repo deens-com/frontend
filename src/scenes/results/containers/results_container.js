@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux';
 class ResultsContainer extends Component {
   componentDidMount() {
     let search_query = {
-      type: this.props.service_types,
+      type: this.props.serviceTypes,
       tags: this.props.tags,
       latitude: this.props.latitude,
       longitude: this.props.longitude,
@@ -30,7 +30,7 @@ class ResultsContainer extends Component {
   componentWillUpdate(next_props) {
     if (this.did_search_query_changed(this.props, next_props)) {
       this.props.update_search_query({
-        type: next_props.service_types,
+        type: next_props.serviceTypes,
         tags: next_props.tags,
         latitude: next_props.latitude,
         longitude: next_props.longitude,
@@ -51,7 +51,7 @@ class ResultsContainer extends Component {
 
   did_search_query_changed = (current_props, next_props) => {
     return (
-      current_props.service_types !== next_props.service_types ||
+      current_props.serviceTypes !== next_props.serviceTypes ||
       current_props.tags !== next_props.tags ||
       current_props.latitude !== next_props.latitude ||
       current_props.longitude !== next_props.longitude ||

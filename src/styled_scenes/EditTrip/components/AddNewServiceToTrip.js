@@ -65,7 +65,7 @@ export default class AddNewServiceToTrip extends Component {
     const queryParams = {
       person_nb: this.props.trip.numberOfPerson,
       start_date: this.props.trip.beginDate && this.props.trip.beginDate.iso,
-      service_types: serviceType,
+      serviceTypes: serviceType,
       latitude: this.props.trip.latitude,
       longitude: this.props.trip.longitude,
       address: this.props.trip.formattedAddress,

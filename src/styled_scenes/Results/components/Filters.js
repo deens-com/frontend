@@ -262,7 +262,7 @@ class Filters extends Component {
     this.setState({ showFilters: !this.state.showFilters });
   };
 
-  categoryPopupSelect = service_types => {
+  categoryPopupSelect = serviceTypes => {
     const serviceOptions = [
       { text: 'Accommodation', value: 'accommodation' },
       { text: 'Trip', value: 'trip' },
@@ -272,7 +272,7 @@ class Filters extends Component {
     return (
       <div style={{ textTransform: 'capitalize' }}>
         <Dropdown
-          placeholder={service_types && service_types[0]}
+          placeholder={serviceTypes && serviceTypes[0]}
           options={serviceOptions}
           onChange={this.handleServiceTypeChange}
           fluid
@@ -290,7 +290,7 @@ class Filters extends Component {
     let formatted_end_date =
       end_date && end_date.length ? moment(parseInt(end_date, 10)).format('YYYY-M-D') : '';
     let person_nb = this.props.search_query.person_nb;
-    let service_types = this.props.search_query.type;
+    let serviceTypes = this.props.search_query.type;
     let address = this.props.search_query.address;
     // let tags = this.props.search_query.tags || [];
     return (
@@ -303,11 +303,11 @@ class Filters extends Component {
                   <div>
                     <p>
                       I want
-                      {service_types &&
-                      (service_types.includes('activity') ||
-                        service_types.includes('accommodation'))
+                      {serviceTypes &&
+                      (serviceTypes.includes('activity') ||
+                        serviceTypes.includes('accommodation'))
                         ? ' an'
-                        : service_types && service_types.includes('food')
+                        : serviceTypes && serviceTypes.includes('food')
                           ? ' '
                           : ' a'}
                     </p>
@@ -317,10 +317,10 @@ class Filters extends Component {
                     <Popup
                       trigger={
                         <p style={{ textTransform: 'capitalize' }}>
-                          {service_types && service_types[0]}
+                          {serviceTypes && serviceTypes[0]}
                         </p>
                       }
-                      content={this.categoryPopupSelect(service_types)}
+                      content={this.categoryPopupSelect(serviceTypes)}
                       on="click"
                       open={this.state.isCategoryPopupOpen}
                       onClose={this.handleCategoryPopupClose}
@@ -520,11 +520,11 @@ class Filters extends Component {
                           <div>
                             <p>
                               I want
-                              {service_types &&
-                              (service_types.includes('activity') ||
-                                service_types.includes('accommodation'))
+                              {serviceTypes &&
+                              (serviceTypes.includes('activity') ||
+                                serviceTypes.includes('accommodation'))
                                 ? ' an'
-                                : service_types && service_types.includes('food')
+                                : serviceTypes && serviceTypes.includes('food')
                                   ? ' '
                                   : ' a'}
                             </p>
@@ -534,10 +534,10 @@ class Filters extends Component {
                             <Popup
                               trigger={
                                 <p style={{ textTransform: 'capitalize' }}>
-                                  {service_types && service_types[0]}
+                                  {serviceTypes && serviceTypes[0]}
                                 </p>
                               }
-                              content={this.categoryPopupSelect(service_types)}
+                              content={this.categoryPopupSelect(serviceTypes)}
                               on="click"
                               open={this.state.isCategoryPopupOpen}
                               onClose={this.handleCategoryPopupClose}

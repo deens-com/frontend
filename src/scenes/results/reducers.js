@@ -1,7 +1,7 @@
 const initialState = {
   results: [],
   search_query: {
-    service_types: [],
+    serviceTypes: [],
     tags: [],
     resultsCount: 0,
     page: 0,

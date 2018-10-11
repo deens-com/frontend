@@ -220,8 +220,8 @@ class SearchFilters extends Component {
   }
 
   handleServiceTypeChange(event, data) {
-    const service_types = [...this.props.search_query.type];
-    let types = service_types;
+    const serviceTypes = [...this.props.search_query.type];
+    let types = serviceTypes;
     const type = data.value;
     if (types.includes(type)) {
       types = types.filter(st => st !== type);
@@ -277,7 +277,7 @@ class SearchFilters extends Component {
     let end_date = this.props.search_query.end_date;
     let formatted_end_date = end_date && end_date.length ? moment(end_date).format('YYYY-M-D') : '';
     let person_nb = this.props.search_query.person_nb;
-    let service_types = this.props.search_query.type;
+    let serviceTypes = this.props.search_query.type;
     const onlySmartContracts = this.props.search_query.onlySmartContracts;
     let address = this.props.search_query.address; // || this.state.address; //|| this.props.address;
     //let address = this.state.address || this.props.address;
@@ -340,25 +340,25 @@ class SearchFilters extends Component {
                       label="Trip"
                       value="trip"
                       onClick={this.handleServiceTypeChange}
-                      checked={service_types && service_types.includes('trip')}
+                      checked={serviceTypes && serviceTypes.includes('trip')}
                     />
                     <Checkbox
                       label={i18n.t('places.singular')}
                       value="place"
                       onClick={this.handleServiceTypeChange}
-                      checked={service_types && service_types.includes('place')}
+                      checked={serviceTypes && serviceTypes.includes('place')}
                     />
                     <Checkbox
                       label="Activity"
                       value="activity"
                       onClick={this.handleServiceTypeChange}
-                      checked={service_types && service_types.includes('activity')}
+                      checked={serviceTypes && serviceTypes.includes('activity')}
                     />
                     <Checkbox
                       label="Food"
                       value="food"
                       onClick={this.handleServiceTypeChange}
-                      checked={service_types && service_types.includes('food')}
+                      checked={serviceTypes && serviceTypes.includes('food')}
                     />
                     <Checkbox
                       label="Decentralized"
@@ -416,25 +416,25 @@ class SearchFilters extends Component {
                   label="Trip"
                   value="trip"
                   onClick={this.handleServiceTypeChange}
-                  checked={service_types && service_types.includes('trip')}
+                  checked={serviceTypes && serviceTypes.includes('trip')}
                 />
                 <Checkbox
                   label={i18n.t('places.singular')}
                   value="place"
                   onClick={this.handleServiceTypeChange}
-                  checked={service_types && service_types.includes('place')}
+                  checked={serviceTypes && serviceTypes.includes('place')}
                 />
                 <Checkbox
                   label="Activity"
                   value="activity"
                   onClick={this.handleServiceTypeChange}
-                  checked={service_types && service_types.includes('activity')}
+                  checked={serviceTypes && serviceTypes.includes('activity')}
                 />
                 <Checkbox
                   label="Food"
                   value="food"
                   onClick={this.handleServiceTypeChange}
-                  checked={service_types && service_types.includes('food')}
+                  checked={serviceTypes && serviceTypes.includes('food')}
                 />
                 <Checkbox
                   label="Decentralized"

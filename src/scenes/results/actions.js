@@ -78,7 +78,7 @@ export const update_path = search_params => {
 
 const composeQuery = search_params => {
   const query_params = {
-    service_types: !search_params.type.length ? undefined : search_params.type.join('+'),
+    serviceTypes: !search_params.type.length ? undefined : search_params.type.join('+'),
     start_date: search_params.start_date || undefined,
     end_date: search_params.end_date || undefined,
     person_nb: search_params.person_nb || undefined,
@@ -134,7 +134,7 @@ export const composeFetchQuery = search_params => {
 };
 
 /* called from componentWillUpdate of results_container */
-/* is triggered whenever service_types or tags props have changed */
+/* is triggered whenever serviceTypes or tags props have changed */
 export const update_search_query = search_params => {
   return dispatch => {
     dispatch(search_query_updated({ search_query: search_params }));
