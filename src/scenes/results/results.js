@@ -6,7 +6,7 @@ const Results = props => {
   let search_params = queryString.parse(props.location.search, { ignoreQueryPrefix: true });
 
   // does not properly parse '+'.
-  let service_types = (search_params.service_types && search_params.service_types.split(' ')) || [
+  let serviceTypes = (search_params.serviceTypes && search_params.serviceTypes.split(' ')) || [
     'trip',
   ];
   let tags_arr =
@@ -35,7 +35,7 @@ const Results = props => {
     <div className="Home">
       <ResultsContainer
         {...props}
-        service_types={service_types}
+        serviceTypes={serviceTypes}
         tags={tags_arr}
         latitude={latitude}
         longitude={longitude}

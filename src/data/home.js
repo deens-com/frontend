@@ -3,22 +3,22 @@ export const categories = [
   {
     img: 'https://please-com.imgix.net/static/categories/trips.png',
     label: i18n.t('trips.label'),
-    href: '/results?service_types=trip',
+    href: '/results?serviceTypes=trip',
   },
   {
     img: 'https://please-com.imgix.net/static/categories/places.png',
     label: i18n.t('places.singular'),
-    href: '/results?service_types=place',
+    href: '/results?serviceTypes=place',
   },
   {
     img: 'https://please-com.imgix.net/static/categories/activities.png',
     label: i18n.t('activities.label'),
-    href: '/results?service_types=activity',
+    href: '/results?serviceTypes=activity',
   },
   {
     img: 'https://please-com.imgix.net/static/categories/food.png',
     label: i18n.t('foods.label'),
-    href: '/results?service_types=food',
+    href: '/results?serviceTypes=food',
   },
 ];
 

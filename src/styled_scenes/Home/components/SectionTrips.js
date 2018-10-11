@@ -31,7 +31,7 @@ export default function HomeSectionTrips({ trips, isLoading }) {
         <SectionHeader>
           <h3>Featured Trips</h3>
           <More>
-            <Link to="/results?service_types=trip">See All Trips</Link>
+            <Link to="/results?serviceTypes=trip">See All Trips</Link>
           </More>
         </SectionHeader>
         <SectionContent>

@@ -131,6 +131,7 @@ export default class Results extends Component {
       page: this.props.search_query.page || 0,
       resultsCount: this.props.search_query.resultsCount || 0,
       limit: this.props.search_query.limit || 0,
+      sortBy: this.props.search_query.sortBy,
     };
   }
 
