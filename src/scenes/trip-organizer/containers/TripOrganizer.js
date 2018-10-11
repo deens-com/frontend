@@ -32,6 +32,18 @@ class TripOrganizerContainer extends Component {
 }
 
 const mapStateToProps = state => {
+  let startDate = state.ResultsReducer.search_query.start_date;
+  if (!startDate) {
+    const tomorrow = moment()
+      .add(1, 'days')
+      .startOf('day');
+    if (!state.TripReducer.trip) {
+      startDate = tomorrow;
+    } else {
+      const tripDate = moment(state.TripReducer.trip.startDate).startOf('day');
+      startDate = tripDate.diff(tomorrow, 'days') >= 0 ? tripDate : tomorrow;
+    }
+  }
   return {
     session: state.SessionsReducer.session,
     trip: state.TripReducer.trip,
@@ -39,7 +51,7 @@ const mapStateToProps = state => {
     isLoading: state.TripReducer.isLoading,
     owner: state.TripReducer.owner,
     numberOfPeople: state.ResultsReducer.search_query.person_nb || 1,
-    startDate: state.ResultsReducer.search_query.start_date || moment().add(1, 'days'),
+    startDate,
     endDate: state.ResultsReducer.search_query.end_date,
     availability: state.TripReducer.availability,
   };

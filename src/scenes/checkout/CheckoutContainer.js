@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import moment from 'moment';
 import axios from 'libs/axios';
 import { Loader } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 
 import { Page } from 'shared_components/layout/Page';
 import TopBar from 'shared_components/TopBar';
@@ -12,6 +13,7 @@ import I18nText from 'shared_components/I18nText';
 import { formatLocation } from 'shared_components/Carts/Trip';
 import { MapMarker } from 'shared_components/icons';
 import PaymentContainer from './PaymentContainer';
+import BookingDone from './components/BookingDone';
 import CheckoutTrip from './components/CheckoutTrip';
 import * as actions from './actions';
 import * as tripActions from '../trip/actions';
@@ -30,6 +32,8 @@ function formatDate(date, days) {
 const Wrapper = styled.div`
   max-width: 700px;
   margin: auto;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Location = styled.div`
@@ -39,6 +43,7 @@ const Location = styled.div`
 
 const Summary = styled.div`
   display: flex;
+  order: 2;
 `;
 
 const SummaryData = styled.div`
@@ -87,6 +92,14 @@ const Footer = styled.div`
   justify-content: center;
 `;
 
+const BackButton = styled(Link)`
+  position: relative;
+  left: -250px;
+  top: 20px;
+  font-size: 14px;
+  color: #38d39f;
+`;
+
 class CheckoutContainer extends React.Component {
   constructor(props) {
     super(props);
@@ -132,7 +145,7 @@ class CheckoutContainer extends React.Component {
         step: prevState.step + 1,
       }),
       () => {
-        if (this.state.step === 3) {
+        if (this.state.step === 3 && this.state.provision.length === 0) {
           this.getProvisionCodes();
         }
       },
@@ -151,8 +164,11 @@ class CheckoutContainer extends React.Component {
     const { step, guests, provision } = this.state;
     const { trip } = this.props;
 
+    if (step === 4) {
+      return <BookingDone guests={guests} trip={trip} />;
+    }
     if (step === 3) {
-      return <PaymentContainer guests={guests} trip={trip} />;
+      return <PaymentContainer nextStep={this.nextStep} guests={guests} trip={trip} />;
     }
     return step === 1 ? (
       <CheckoutTrip trip={trip} provision={provision} />
@@ -173,6 +189,11 @@ class CheckoutContainer extends React.Component {
         ) : (
           <React.Fragment>
             <Wrapper>
+              {step < 4 && (
+                <BackButton to={`/trips/organize/${this.tripId}`} replace>
+                  Back to customization
+                </BackButton>
+              )}
               <Summary>
                 <SummaryData>
                   <Title>

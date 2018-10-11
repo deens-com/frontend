@@ -17,23 +17,37 @@ const PaymentContext = React.createContext();
  */
 export const PaymentContextConsumer = PaymentContext.Consumer;
 
-class PaymentContainer extends React.Component {
+class Payment extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isPaymentProcessing: false,
+      paymentError: null,
+    };
+  }
+
   onStripeTokenReceived = (token, complete) => {
     this.props.chargeStripeToken(token, this.props.guests, complete);
   };
 
   onSubmitWithCardDetails = async () => {
-    this.setState({ isPaymentProcessing: true });
+    this.setState({ isPaymentProcessing: true, paymentError: null });
     try {
       // TODO: @jaydp use the customer's name in the below line
       const { token, error } = await this.props.stripe.createToken({ name: 'Customer name' });
       if (error) {
-        this.props.setPaymentError(error);
+        alert(error);
         this.setState({ isPaymentProcessing: false });
         return;
       }
-      this.onStripeTokenReceived(token, () => this.setState({ isPaymentProcessing: false }));
+      this.onStripeTokenReceived(token, status => {
+        this.setState({ isPaymentProcessing: false });
+        if (status === 'success') {
+          this.props.nextStep();
+        }
+      });
     } catch (error) {
+      alert(error);
       this.setState({ isPaymentProcessing: false });
     }
   };
@@ -56,16 +70,20 @@ class PaymentContainer extends React.Component {
           totalPrice={totalPrice}
           onPaymentClick={() => {}}
           onStripeTokenReceived={this.onStripeTokenReceived}
-          paymentError={this.props.paymentError}
+          paymentError={this.props.paymentError || this.state.paymentError}
         />
       </PaymentContext.Provider>
     );
   }
 }
 
+const mapStateToProps = state => ({
+  paymentError: state.CheckoutReducer.paymentError,
+});
+
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
-)(injectStripe(PaymentContainer));
+)(injectStripe(Payment));

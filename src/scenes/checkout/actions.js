@@ -43,16 +43,9 @@ export const chargeStripeToken = (token, guests, complete = () => {}) => async (
   } catch (error) {
     console.error('charge failed', error);
     complete('fail');
-    setPaymentError(error);
+    dispatch({
+      type: types.PAYMENT_ERROR,
+      payload: error.response.data,
+    });
   }
-};
-
-export const setPaymentError = error => dispatch => {
-  if (!error) return;
-  let payload = error;
-  if (error.response && error.response.data) payload = error.response.data;
-  dispatch({
-    type: types.PAYMENT_ERROR,
-    payload,
-  });
 };
