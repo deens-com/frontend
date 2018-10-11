@@ -304,8 +304,7 @@ class Filters extends Component {
                     <p>
                       I want
                       {serviceTypes &&
-                      (serviceTypes.includes('activity') ||
-                        serviceTypes.includes('accommodation'))
+                      (serviceTypes.includes('activity') || serviceTypes.includes('accommodation'))
                         ? ' an'
                         : serviceTypes && serviceTypes.includes('food')
                           ? ' '
