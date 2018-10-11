@@ -288,7 +288,7 @@ class Filters extends Component {
   };
 
   sortingText = sortBy => {
-    switch (sortBy){
+    switch (sortBy) {
       case 'price:asc':
         return '↑ Price';
       case 'price:desc':
@@ -296,7 +296,7 @@ class Filters extends Component {
       case 'rating:desc':
         return 'Rating';
       default:
-        return 'none'
+        return 'none';
     }
   };
 
@@ -494,13 +494,19 @@ class Filters extends Component {
 
                     <EditableElement>
                       <Popup
-                        trigger={<p>{this.props.sortBy ? `${this.sortingText(this.props.sortBy)}` : `Relevance`}</p>}
+                        trigger={
+                          <p>
+                            {this.props.sortBy
+                              ? `${this.sortingText(this.props.sortBy)}`
+                              : `Relevance`}
+                          </p>
+                        }
                         content={
                           <Dropdown
                             name="sort"
                             options={[
-                              { text: "", value: "" },
-                              { text: "↑ Price", value: "price:asc" },
+                              { text: '', value: '' },
+                              { text: '↑ Price', value: 'price:asc' },
                               { text: '↓ Price', value: 'price:desc' },
                               { text: 'Rating', value: 'rating:desc' },
                               { text: 'Relevance', value: 'relevance:desc' },
@@ -712,14 +718,18 @@ class Filters extends Component {
                           <EditableElement>
                             <Popup
                               trigger={
-                                <p>{this.props.sortBy ? `${this.sortingText(this.props.sortBy)}` : `Relevance`}</p>
+                                <p>
+                                  {this.props.sortBy
+                                    ? `${this.sortingText(this.props.sortBy)}`
+                                    : `Relevance`}
+                                </p>
                               }
                               content={
                                 <Dropdown
                                   name="sort"
                                   options={[
-                                    { text: "", value: "" },
-                                    { text: "↑ Price", value: "price:asc" },
+                                    { text: '', value: '' },
+                                    { text: '↑ Price', value: 'price:asc' },
                                     { text: '↓ Price', value: 'price:desc' },
                                     { text: 'Rating', value: 'rating:desc' },
                                     { text: 'Relevance', value: 'relevance:desc' },
