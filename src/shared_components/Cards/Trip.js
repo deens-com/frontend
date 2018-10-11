@@ -144,6 +144,7 @@ class TripCard extends Component {
 
   render() {
     const { item } = this.props;
+    const { average: rating, count } = (item && item.ratings) || 0;
 
     return (
       <div>
@@ -175,7 +176,7 @@ class TripCard extends Component {
                         </Truncate>
                       </p>
                     </Location>
-                    <Rating marginBottom="10px" rating={item.rating} count={item.reviews} />
+                    <Rating rating={rating} count={count} marginBottom="10px" />
                     From <PriceTag unit="hidden" price={item.price} />
                   </ContentWrap>
                 </Cart>
@@ -200,6 +201,7 @@ class TripCard extends Component {
                   <Truncate lines={cardConfig.titleLines}>
                     <I18nText data={item.title} />
                   </Truncate>
+                  <Rating rating={rating} count={count} marginBottom="10px" />
                 </Title>
                 {(this.isViewTypeOf('accommodation') || this.isViewTypeOf('activity')) && (
                   <Description>
