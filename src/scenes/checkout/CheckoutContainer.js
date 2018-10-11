@@ -165,7 +165,7 @@ class CheckoutContainer extends React.Component {
   };
 
   renderStep() {
-    const { step, guests, provision } = this.state;
+    const { step, guests } = this.state;
     const { trip } = this.props;
 
     if (step === 4) {
@@ -175,7 +175,7 @@ class CheckoutContainer extends React.Component {
       return <PaymentContainer nextStep={this.nextStep} guests={guests} trip={trip} />;
     }
     return step === 1 ? (
-      <CheckoutTrip trip={trip} provision={provision} />
+      <CheckoutTrip trip={trip} />
     ) : (
       <GuestsData number={trip.peopleCount} onChange={this.handleGuestsDataChange} />
     );

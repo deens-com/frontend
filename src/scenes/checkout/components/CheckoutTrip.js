@@ -33,6 +33,16 @@ const ServiceTitle = styled.div`
   font-size: 18px;
 `;
 
+function getPrice(trip, day, service) {
+  const selected =
+    trip.otherAttributes &&
+    trip.otherAttributes.selectedServiceOptions &&
+    trip.otherAttributes.selectedServiceOptions.find(
+      option => option.day === day.day && option.serviceId === service.service._id,
+    );
+  return selected ? selected.price : service.service.basePrice;
+}
+
 export class CheckoutTrip extends React.Component {
   constructor(props) {
     super(props);
@@ -41,7 +51,7 @@ export class CheckoutTrip extends React.Component {
     };
   }
   render() {
-    const { trip, provision } = this.props;
+    const { trip } = this.props;
 
     return (
       <React.Fragment>
@@ -58,13 +68,7 @@ export class CheckoutTrip extends React.Component {
                 <ServiceTitle>
                   <I18nText data={service.service.title} />
                 </ServiceTitle>
-                <Price>
-                  $
-                  {provision[dayIndex + serviceIndex] &&
-                  provision[dayIndex + serviceIndex].serviceId === service.service._id
-                    ? provision[dayIndex + serviceIndex].price
-                    : service.service.basePrice}
-                </Price>
+                <Price>${getPrice(trip, day, service)}</Price>
               </Service>
             ))}
           </Day>
