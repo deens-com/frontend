@@ -209,15 +209,13 @@ class TripCard extends Component {
                   </Description>
                 )}
                 <ContentFooter>
-                  {(this.isViewTypeOf('food') || this.isViewTypeOf('activity')) && (
-                    <Price>
-                      {this.isViewTypeOf('food') ? 'Average ' : 'From '}
-                      <PriceTag unit="hidden" price={item.basePrice}>
-                        {({ symbol, convertedPrice }) => `${symbol}${convertedPrice}`}
-                      </PriceTag>{' '}
-                      per person
-                    </Price>
-                  )}
+                  <Price>
+                    {this.isViewTypeOf('food') ? 'Average ' : 'From '}
+                    <PriceTag unit="hidden" price={item.basePrice}>
+                      {({ symbol, convertedPrice }) => `${symbol}${convertedPrice}`}
+                    </PriceTag>{' '}
+                    per person
+                  </Price>
                   <Location>
                     <PinIcon />
                     <p>
