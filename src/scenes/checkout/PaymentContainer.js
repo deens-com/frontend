@@ -10,7 +10,7 @@ const PaymentContainer = props => {
   return (
     <StripeProvider apiKey={stripeKey}>
       <Elements>
-        <Payment guests={props.guests} trip={props.trip} />
+        <Payment nextStep={this.props.nextStep} guests={props.guests} trip={props.trip} />
       </Elements>
     </StripeProvider>
   );

@@ -19,7 +19,7 @@ const GuestsData = ({ number, onChange }) => {
       {Array.from({ length: number }).map((_, i) => (
         <Guest key={i}>
           <Group>
-            <Label for="title">Title</Label>
+            <Label htmlFor="title">Title</Label>
             <Dropdown
               name="title"
               options={[
@@ -32,11 +32,11 @@ const GuestsData = ({ number, onChange }) => {
             />
           </Group>
           <Group>
-            <Label for="firstName">First Name</Label>
+            <Label htmlFor="firstName">First Name</Label>
             <Input guest={i} name="firstName" onChange={onChange} />
           </Group>
           <Group>
-            <Label for="lastName">Last Name</Label>
+            <Label htmlFor="lastName">Last Name</Label>
             <Input guest={i} name="lastName" onChange={onChange} />
           </Group>
         </Guest>
