@@ -43,7 +43,7 @@ const Location = styled.div`
 
 const Summary = styled.div`
   display: flex;
-  order: 2;
+  order: 0;
 `;
 
 const SummaryData = styled.div`
