@@ -21,6 +21,8 @@ const Wrapper = styled.div`
 const Count = styled.span`
   font-size: 14px;
   color: #3c434b;
+  position: relative;
+  top: 0.2em;
 `;
 
 // MODULE
@@ -28,7 +30,7 @@ export default function Rating({ rating, count, marginBottom }) {
   return (
     <Wrapper marginBottom={marginBottom}>
       <Stars rating={rating} />
-      <Count>{count}</Count>
+      <Count>{count > 0 ? count : ''}</Count>
     </Wrapper>
   );
 }
