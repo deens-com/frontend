@@ -120,6 +120,10 @@ const Username = styled.p`
 
 export function formatLocation(location) {
   let result = '';
+  if (!location) {
+    return result;
+  }
+
   if (location.city) {
     result = location.city;
     if (location.state) {

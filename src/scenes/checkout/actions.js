@@ -6,9 +6,16 @@ import { trackTripBooked } from 'libs/analytics';
 export const types = {
   MARK_TRIP_BOOKED_STATUS: 'MARK_TRIP_BOOKED_STATUS',
   PAYMENT_ERROR: 'PAYMENT_ERROR',
+  CLEAN_PAYMENT_STATUS: 'CLEAN_PAYMENT_STATUS',
 };
 
 const { statuses } = fetch_helpers;
+
+export const cleanPaymentStatus = () => dispatch => {
+  dispatch({
+    type: types.CLEAN_PAYMENT_STATUS,
+  });
+};
 
 export const chargeStripeToken = (token, guests, complete = () => {}) => async (
   dispatch,

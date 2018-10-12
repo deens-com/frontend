@@ -17,13 +17,16 @@ const getErrorMessageFromStripeCode = code => {
   }
 };
 
-const intialState = {
+const initialState = {
   bookingStatus: null,
   paymentError: null,
 };
 
-export default (state = intialState, action = {}) => {
+export default (state = initialState, action = {}) => {
   switch (action.type) {
+    case types.CLEAN_PAYMENT_STATUS: {
+      return initialState;
+    }
     case types.MARK_TRIP_BOOKED_STATUS: {
       return {
         ...state,
