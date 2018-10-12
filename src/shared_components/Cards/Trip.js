@@ -177,7 +177,8 @@ class TripCard extends Component {
                       </p>
                     </Location>
                     <Rating rating={rating} count={count} marginBottom="10px" />
-                    From <PriceTag unit="hidden" price={item.price} />
+                    {this.isViewTypeOf('food') ? 'Average ' : 'From '}{' '}
+                    <PriceTag unit="hidden" price={item.price} />
                   </ContentWrap>
                 </Cart>
               </Wrap>
@@ -195,8 +196,7 @@ class TripCard extends Component {
                 tripCount={item.partOf}
                 withTooltip={this.props.withTooltip}
               />
-              <ContentWrap small={this.isViewTypeOf('accommodation') || this.isViewTypeOf('food')}>
-                {this.isViewTypeOf('activity') && <Duration>{duration(item.duration)}</Duration>}
+              <ContentWrap small={this.isViewTypeOf('food')}>
                 <Title>
                   <Truncate lines={cardConfig.titleLines}>
                     <I18nText data={item.title} />
