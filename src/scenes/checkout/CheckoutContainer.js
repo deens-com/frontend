@@ -124,6 +124,10 @@ class CheckoutContainer extends React.Component {
     return null;
   }
 
+  componentDidMount() {
+    this.props.cleanPaymentStatus();
+  }
+
   componentDidUpdate() {
     if (this.props.trip) {
       if (!this.props.trip.startDate || !this.props.trip.peopleCount) {
