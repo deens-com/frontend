@@ -164,7 +164,7 @@ class TripCard extends Component {
                   <ContentWrap>
                     <Duration>{duration(item.duration)}</Duration>
                     <Title>
-                      <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>
+                      <Truncate lines={cardConfig.titleLines}>
                         <I18nText data={item.title} />
                       </Truncate>
                     </Title>
@@ -198,7 +198,7 @@ class TripCard extends Component {
               <ContentWrap small={this.isViewTypeOf('accommodation') || this.isViewTypeOf('food')}>
                 {this.isViewTypeOf('activity') && <Duration>{duration(item.duration)}</Duration>}
                 <Title>
-                  <Truncate lines={cardConfig.titleLines}>
+                  <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>
                     <I18nText data={item.title} />
                   </Truncate>
                   <Rating rating={rating} count={count} marginBottom="10px" />
