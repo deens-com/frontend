@@ -110,6 +110,7 @@ class CheckoutContainer extends React.Component {
       days: null,
       guests: [],
       provision: [],
+      nextDisabled: false,
     };
   }
 
@@ -147,6 +148,7 @@ class CheckoutContainer extends React.Component {
     this.setState(
       prevState => ({
         step: prevState.step + 1,
+        nextDisabled: prevState.step + 1 === 2,
       }),
       () => {
         if (this.state.step === 3 && this.state.provision.length === 0) {
@@ -156,12 +158,34 @@ class CheckoutContainer extends React.Component {
     );
   };
 
+  nextEnable = () => {
+    this.setState({
+      nextDisabled: false,
+    });
+  };
+
+  nextDisable = () => {
+    this.setState({
+      nextDisabled: true,
+    });
+  };
+
   handleGuestsDataChange = (event, data) => {
-    this.setState(prevState => ({
-      guests: prevState.guests.map(
-        (guest, i) => (i === data.guest ? { ...guest, [data.name]: data.value } : guest),
-      ),
-    }));
+    console.log(this.state.guests.length);
+    this.setState(
+      prevState => ({
+        guests: prevState.guests.map(
+          (guest, i) => (i === data.guest ? { ...guest, [data.name]: data.value } : guest),
+        ),
+      }),
+      () => {
+        this.setState(prevState => ({
+          nextDisabled: prevState.guests.some(
+            guest => !guest.title || !guest.firstName || !guest.lastName,
+          ),
+        }));
+      },
+    );
   };
 
   renderStep() {
@@ -177,7 +201,12 @@ class CheckoutContainer extends React.Component {
     return step === 1 ? (
       <CheckoutTrip trip={trip} />
     ) : (
-      <GuestsData number={trip.peopleCount} onChange={this.handleGuestsDataChange} />
+      <GuestsData
+        number={trip.peopleCount}
+        onChange={this.handleGuestsDataChange}
+        nextDisable={this.nextDisable}
+        nextEnable={this.nextEnable}
+      />
     );
   }
 
@@ -219,7 +248,12 @@ class CheckoutContainer extends React.Component {
             </Wrapper>
             {step < 3 && (
               <Footer>
-                <Button size="medium" theme="fillLightGreen" onClick={this.nextStep}>
+                <Button
+                  disabled={this.state.nextDisabled}
+                  size="medium"
+                  theme="fillLightGreen"
+                  onClick={this.nextStep}
+                >
                   Next
                 </Button>
               </Footer>
