@@ -10,6 +10,14 @@ const Group = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
+const TitleSelection = Group.extend`
+  min-width: 75px;
+  > div {
+    width: 100%;
+  }
+`;
+
 /**
  * Builds up the higher level blocks of the page
  */
@@ -18,7 +26,7 @@ const GuestsData = ({ number, onChange }) => {
     <Form>
       {Array.from({ length: number }).map((_, i) => (
         <Guest key={i}>
-          <Group>
+          <TitleSelection>
             <Label htmlFor="title">Title</Label>
             <Dropdown
               name="title"
@@ -30,7 +38,7 @@ const GuestsData = ({ number, onChange }) => {
               guest={i}
               onChange={onChange}
             />
-          </Group>
+          </TitleSelection>
           <Group>
             <Label htmlFor="firstName">First Name</Label>
             <Input guest={i} name="firstName" onChange={onChange} />

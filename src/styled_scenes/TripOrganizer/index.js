@@ -22,7 +22,6 @@ import DaySelector from '../Trip/DaySelector';
 import CheckoutBox from './CheckoutBox';
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
 import Button from 'shared_components/Button';
-import { getPrice } from './Options';
 import debounce from 'lodash.debounce';
 
 const PageContent = styled.div`
