@@ -33,6 +33,7 @@ const size = {
 const colors = {
   green: '#4FB798',
   lightGreen: '#38D39F',
+  lighterGreen: '#B9FFE7',
   greenActive: '#4ac4a1',
   white: '#fff',
   gray: '#d3d7dc',
@@ -95,6 +96,14 @@ export const theme = {
     color: colors.white,
     colorHover: colors.white,
   },
+  fillLighterGreen: {
+    background: colors.lighterGreen,
+    backgroundHover: colors.lightGreen,
+    border: colors.lighterGreen,
+    borderHover: colors.lightGreen,
+    color: colors.lightGreen,
+    colorHover: colors.white,
+  },
   icon: {
     background: 'transparent',
     backgroundHover: 'transparent',
@@ -123,6 +132,7 @@ export const theme = {
 
 export const Wrap = styled.div`
   display: inline-block;
+  width: ${props => props.width};
 
   > div,
   > label,
@@ -137,8 +147,8 @@ export const Wrap = styled.div`
     padding: ${props => (props.size ? size[props.size].padding : '0')};
     text-align: ${props => props.align};
     transition: all 0.1s ease-out;
-    width: ${props => props.width};
     font-weight: ${props => (props.bold ? 'bold' : 'normal')};
+    width: ${props => props.width};
 
     svg {
       font-size: ${props => (props.size ? size[props.size].iconSize : '12px')};
@@ -288,7 +298,7 @@ Button.defaultProps = {
   round: true,
   size: 'small',
   align: 'left',
-  width: '100%',
+  width: 'auto',
   iconBefore: '',
   iconAfter: '',
   text: '',

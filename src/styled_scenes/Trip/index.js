@@ -251,12 +251,12 @@ export default class Trip extends Component {
       );
     }
 
-    const days = mapServicesToDays(trip.services);
+    const days = mapServicesToDays(trip.services, trip.duration);
 
     return (
       <CustomPage>
         <TopBar fixed />
-        <DaySelector days={days} trip={trip} goToDay={this.goToDay} />
+        <DaySelector bottom={65} days={days} trip={trip} goToDay={this.goToDay} />
         <PageContent>{this.renderPageContent()}</PageContent>
         <FixedFooter
           price={trip.basePrice}

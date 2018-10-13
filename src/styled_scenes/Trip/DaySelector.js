@@ -9,12 +9,16 @@ const Wrapper = styled.div`
   position: fixed;
   z-index: 10;
   display: flex;
-  bottom: 65px;
+  bottom: ${props => props.bottom || 0}px;
   background-color: #f2f2f2;
   width: 100%;
   height: 60px;
   align-items: center;
   overflow-x: auto;
+  padding: 0 15px;
+  > div {
+    margin-right: 10px;
+  }
   ${media.minMedium} {
     flex-direction: column;
     height: 100vh;
@@ -31,19 +35,27 @@ class DaySelector extends React.Component {
   constructor(props) {
     super(props);
     if (props.trips) {
-      this.days = mapServicesToDays(props.trip.services);
+      this.days = mapServicesToDays(props.trip.services, props.trip.duration);
     }
   }
 
   render() {
     return (
-      <Wrapper>
+      <Wrapper bottom={this.props.bottom}>
         {(this.props.days || this.days).map((day, index) => (
-          <Button key={day.title} onClick={() => this.props.goToDay(index)}>
-            {day.title}
+          <Button
+            theme="fillLighterGreen"
+            key={day.title}
+            onClick={() => this.props.goToDay(index)}
+          >
+            Day {day.day}
           </Button>
         ))}
-        {this.props.onAddDay && <Button onClick={this.props.onAddDay}>+</Button>}
+        {this.props.onAddDay && (
+          <Button theme="fillLighterGreen" onClick={this.props.onAddDay}>
+            +
+          </Button>
+        )}
       </Wrapper>
     );
   }

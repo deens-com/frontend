@@ -2,10 +2,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Popup, Checkbox } from 'semantic-ui-react';
-import Options from './Options';
+import { Popup, Checkbox, Loader } from 'semantic-ui-react';
+import { getCategory } from 'libs/categories';
+import { media } from 'libs/styled';
 import I18nText from 'shared_components/I18nText';
 import { Settings } from 'shared_components/icons';
+import Category from 'shared_components/Category';
+import Options from './Options';
 import AddServiceModal from './AddServiceModal';
 
 const Wrapper = styled.div`
@@ -13,14 +16,10 @@ const Wrapper = styled.div`
   color: #3c434b;
 `;
 
-const Title = styled.div`
-  font-weight: bold;
-  text-transform: uppercase;
-  font-size: 18px;
-`;
-
 const DayTitle = styled.div`
   font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
 `;
 
 const Day = styled.div`
@@ -29,6 +28,13 @@ const Day = styled.div`
 
 const DayListItem = styled.li`
   list-style-type: none;
+  display: flex;
+  margin: 5px 0;
+  align-items: center;
+
+  > div {
+    margin-right: 5px;
+  }
 `;
 
 const PopupTrigger = styled.div`
@@ -44,6 +50,10 @@ const Service = styled.div`
 const ServiceBody = styled.div`
   min-height: 200px;
   display: flex;
+  flex-direction: column;
+  ${media.minMedium} {
+    flex-direction: row;
+  }
 `;
 
 const ServiceTitle = styled.h3`
@@ -60,23 +70,21 @@ const Image = styled.div`
   background-image: url(${props => props.url});
   background-size: cover;
   background-position: center;
+  width: 100%;
   height: 200px;
-  width: 200px;
+  ${media.minMedium} {
+    width: 200px;
+  }
 `;
 
 const ServiceData = styled.div`
   flex: 1;
+  margin: 10px 10px;
 `;
 
 const CategoryWrapper = styled.div`
   display: flex;
-  margin: 10px 10px 0;
-`;
-
-const Category = styled.div`
-  flex: 1;
-  display: flex;
-  justify-content: flex-start;
+  align-items: center;
 `;
 
 const AvailabilityBox = styled.div`
@@ -84,7 +92,9 @@ const AvailabilityBox = styled.div`
   display: flex;
   justify-content: flex-end;
   border-radius: 5px;
-  padding: 5px;
+  padding: 2px 10px;
+  font-size: 12px;
+  font-weight: 700;
 `;
 
 const CheckingAvailability = AvailabilityBox.extend`
@@ -99,6 +109,19 @@ const Availability = AvailabilityBox.extend`
 
 const AvailabilityWrapper = styled.div`
   display: flex;
+`;
+
+const LastLine = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-weight: bold;
+`;
+
+const StartingPrice = styled.div`
+  flex: 1;
+  color: #3c434b;
+  font-size: 14px;
 `;
 
 export default class Itinerary extends Component {
@@ -155,7 +178,11 @@ export default class Itinerary extends Component {
 
   renderAvailability = (day, id) => {
     if (this.props.isCheckingAvailability) {
-      return <CheckingAvailability>Checking availability...</CheckingAvailability>;
+      return (
+        <CheckingAvailability>
+          <Loader inline="centered" size="mini" active />
+        </CheckingAvailability>
+      );
     }
 
     if (!this.props.startDate || !this.props.numberOfPeople || !this.props.availability) {
@@ -188,46 +215,54 @@ export default class Itinerary extends Component {
             {dayData.service.media[0] && <Image url={dayData.service.media[0].files.small.url} />}
             <ServiceData>
               <CategoryWrapper>
-                <Category>
-                  <I18nText data={dayData.service.categories[0].names} />
-                </Category>
+                <Category
+                  color={getCategory(dayData.service.categories[0]).color}
+                  icon={getCategory(dayData.service.categories[0]).icon}
+                  name={dayData.service.categories[0].names}
+                  fontSize="11px"
+                  iconSize="13px"
+                  lineHeight="17px"
+                />
                 <AvailabilityWrapper>
                   {this.renderAvailability(day.day, dayData.service._id)}
-                  <Popup
-                    trigger={
-                      <PopupTrigger>
-                        <Settings />
-                      </PopupTrigger>
-                    }
-                    content={
-                      <ul>
-                        {this.props.days.map(checkboxDay => (
-                          <DayListItem key={checkboxDay.day}>
-                            {checkboxDay.title}
-                            <Checkbox
-                              name={dayData.service._id}
-                              day={checkboxDay.day}
-                              service={dayData.service}
-                              checked={
-                                this.props.daysByService[dayData.service._id] &&
-                                this.props.daysByService[dayData.service._id].includes(
-                                  checkboxDay.day,
-                                )
-                              }
-                              onChange={this.handleServiceDayChange}
-                            />
-                          </DayListItem>
-                        ))}
-                      </ul>
-                    }
-                    on="click"
-                    position="bottom left"
-                  />
                 </AvailabilityWrapper>
               </CategoryWrapper>
               <ServiceTitle>
                 <I18nText data={dayData.service.title} />
               </ServiceTitle>
+              <LastLine>
+                <StartingPrice>Starts from ${dayData.service.basePrice}</StartingPrice>
+                <Popup
+                  trigger={
+                    <PopupTrigger>
+                      <Settings />
+                    </PopupTrigger>
+                  }
+                  content={
+                    <ul>
+                      {this.props.days.map(checkboxDay => (
+                        <DayListItem key={checkboxDay.day}>
+                          <Checkbox
+                            name={dayData.service._id}
+                            day={checkboxDay.day}
+                            service={dayData.service}
+                            checked={
+                              this.props.daysByService[dayData.service._id] &&
+                              this.props.daysByService[dayData.service._id].includes(
+                                checkboxDay.day,
+                              )
+                            }
+                            onChange={this.handleServiceDayChange}
+                          />
+                          {checkboxDay.title}
+                        </DayListItem>
+                      ))}
+                    </ul>
+                  }
+                  on="click"
+                  position="bottom left"
+                />
+              </LastLine>
             </ServiceData>
           </ServiceBody>
           {this.renderServiceFooter(day.day, dayData.service)}
@@ -242,12 +277,7 @@ export default class Itinerary extends Component {
       this.props.assignRefsToParent(this.r);
     }
 
-    return (
-      <Wrapper>
-        <Title>Your Itinerary</Title>
-        {this.props.days && this.props.days.map(this.renderDay)}
-      </Wrapper>
-    );
+    return <Wrapper>{this.props.days && this.props.days.map(this.renderDay)}</Wrapper>;
   }
 }
 

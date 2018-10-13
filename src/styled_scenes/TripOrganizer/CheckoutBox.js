@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
+import { media } from 'libs/styled';
 import { Dropdown, Popup } from 'semantic-ui-react';
 import { SingleDatePicker } from 'react-dates';
 import Button from 'shared_components/Button';
@@ -9,28 +10,79 @@ const now = moment().add(1, 'days');
 const isDayBlocked = date => date.valueOf() <= now.valueOf();
 
 const Wrapper = styled.div`
-  position: fixed;
-  right: 15px;
   border: 1px solid #dfdfdf;
-  z-index: 100;
-  margin-top: 250px;
-  width: 300px;
   border-radius: 5px;
-  padding: 40px 14px 24px;
+  padding: 30px 50px 24px;
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
+  ${media.minMedium} {
+    position: fixed;
+    width: 300px;
+    margin-top: 250px;
+    z-index: 100;
+    right: 15px;
+  }
 `;
 
-const Field = styled.div``;
+const Divider = styled.div`
+  border-bottom: 1px solid #c4c4c4;
+  margin: 15px 0;
+  ${media.minSmall} {
+    margin-left: -50px;
+    width: calc(100% + 100px);
+  }
+`;
+
+const Field = styled.div`
+  > div {
+    font-weight: bold !important;
+    border: 1px solid #eaeaea !important;
+    background-color: #f8f8f8 !important;
+  }
+`;
+
+const DropdownField = Field.extend`
+  > div {
+    color: #38d39f !important;
+  }
+`;
+
+const Date = styled.div`
+  input {
+    font-weight: bold;
+    color: #38d39f;
+    border: 1px solid #eaeaea;
+    background-color: #f8f8f8;
+    padding: 0;
+    border: 0;
+    padding-bottom: 4px;
+    padding-left: 5px;
+    max-width: 85px;
+    font-size: 15px;
+  }
+  div {
+    background-color: #f8f8f8;
+  }
+  color: #3c434b;
+  display: flex;
+  padding: 10px 5px;
+  border-radius: 5px;
+`;
+
+const ButtonWrap = styled.div`
+  margin-top: 20px;
+`;
 
 const Label = styled.label`
   font-weight: bold;
-  font-size: 14px;
+  font-size: 12px;
   display: block;
 `;
 
 const Price = styled.div`
   font-weight: bold;
+  font-size: 16px;
 `;
 
 export default class CheckoutBox extends React.Component {
@@ -74,24 +126,42 @@ export default class CheckoutBox extends React.Component {
   }
 
   render() {
-    const { startDate, numberOfPeople, bookError, shareError } = this.props;
-    const formattedStartDate = startDate ? startDate.format('LL') : 'Select date';
+    const { startDate, numberOfPeople, bookError, shareError, numberOfDays } = this.props;
+    const formattedStartDate = startDate ? startDate.format('MM/DD/YY') : 'Select date';
+    const endDate = startDate
+      ? startDate
+          .clone()
+          .add(numberOfDays, 'days')
+          .format('MM/DD/YY')
+      : '';
 
     return (
       <Wrapper>
+        <Price>Total Price Booked ${this.props.price * numberOfPeople}</Price>
+        <Divider />
         <Field>
           <Label>Start Date</Label>
-          <SingleDatePicker
-            id="startDate"
-            date={startDate}
-            onDateChange={this.handleDateChange}
-            focused={this.state.dateFocused}
-            onFocusChange={this.onDateFocusChange}
-            placeholder={formattedStartDate}
-            isDayBlocked={isDayBlocked}
-          />
+          <Date onClick={() => this.onDateFocusChange({ focused: true })}>
+            <span>Start</span>
+            <SingleDatePicker
+              id="startDate"
+              date={startDate}
+              onDateChange={this.handleDateChange}
+              focused={this.state.dateFocused}
+              onFocusChange={this.onDateFocusChange}
+              placeholder={formattedStartDate}
+              isDayBlocked={isDayBlocked}
+              numberOfMonths={1}
+              small
+              noBorder
+              withPortal
+              displayFormat="MM/DD/YY"
+            />
+            <span>End</span>
+            <input disabled value={endDate} style={{ paddingBottom: '2px' }} />
+          </Date>
         </Field>
-        <Field>
+        <DropdownField>
           <Label>Number of Guests</Label>
           <Dropdown
             placeholder={numberOfPeople + ' Guests'}
@@ -107,34 +177,38 @@ export default class CheckoutBox extends React.Component {
             fluid
             selection
           />
-        </Field>
-        <Price>${this.props.price * numberOfPeople}</Price>
+        </DropdownField>
         {this.renderButtonWithPopup(
-          <div>
+          <ButtonWrap>
             <Button
               disableClick={Boolean(bookError)}
               size="medium"
               type="button"
               theme="fillLightGreen"
               onClick={this.book}
+              width="100%"
+              align="center"
+              bold
             >
               Book
             </Button>
-          </div>,
+          </ButtonWrap>,
           bookError,
         )}
         {this.renderButtonWithPopup(
-          <div>
+          <ButtonWrap>
             <Button
               disableClick={Boolean(shareError)}
               size="medium"
               type="button"
               theme="white"
               onClick={this.share}
+              width="100%"
+              bold
             >
               Share and earn rewards
             </Button>
-          </div>,
+          </ButtonWrap>,
           shareError,
         )}
       </Wrapper>
