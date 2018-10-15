@@ -21,13 +21,19 @@ const Wrapper = styled.div`
   }
   ${media.minMedium} {
     flex-direction: column;
-    height: 100vh;
+    max-height: calc(100vh - 80px);
+    height: auto;
+    bottom: 0;
     width: auto;
-    padding-top: 250px;
-    left: -15px;
+    left: -18px;
+    padding: 0;
+    top: 80px;
     align-items: flex-start;
-    justify-content: center;
     background: transparent;
+    > div {
+      margin-bottom: 10px;
+      margin-right: 0;
+    }
   }
 `;
 
@@ -40,19 +46,22 @@ class DaySelector extends React.Component {
   }
 
   render() {
+    const days = this.props.days || this.days;
     return (
       <Wrapper bottom={this.props.bottom}>
-        {(this.props.days || this.days).map((day, index) => (
+        {days.map((day, index) => (
           <Button
             theme="fillLighterGreen"
             key={day.title}
             onClick={() => this.props.goToDay(index)}
+            bold
+            size="medium"
           >
-            Day {day.day}
+            {day.shortTitle}
           </Button>
         ))}
         {this.props.onAddDay && (
-          <Button theme="fillLighterGreen" onClick={this.props.onAddDay}>
+          <Button bold fontSize="22px" theme="fillLighterGreen" onClick={this.props.onAddDay}>
             +
           </Button>
         )}

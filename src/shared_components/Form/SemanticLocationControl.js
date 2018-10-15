@@ -48,7 +48,8 @@ export default class SemanticLocationControl extends Component {
     });
   };
 
-  openMenu = () => {
+  openMenu = event => {
+    event.target.select();
     this.setState({
       isOpen: true,
     });
@@ -83,7 +84,7 @@ export default class SemanticLocationControl extends Component {
                     ...inputProps,
                     placeholder: inputProps.placeholder || 'Enter location ...',
                   })}
-                  leftContent={<MapMarker />}
+                  leftContent={<MapMarker style={{ fill: '#6E7885' }} />}
                   onFocus={this.openMenu}
                   onBlur={this.closeMenu}
                 />

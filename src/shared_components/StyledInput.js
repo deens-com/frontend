@@ -8,6 +8,8 @@ const Wrapper = styled.div`
   border-radius: 5px 5px 0 0;
   flex: 1;
   color: #3c434b;
+  display: flex;
+  align-items: center;
 
   &:focus-within {
     border-color: #38d39f;
@@ -15,9 +17,10 @@ const Wrapper = styled.div`
 
   input {
     outline: none;
-    padding: 8px 7px;
+    padding: 10px 7px;
     font-weight: 550;
     border: 0;
+    flex: 1;
   }
 `;
 
@@ -28,7 +31,7 @@ const Input = styled.input`
 export default ({ leftContent, rightContent, children, ...props }) => (
   <Wrapper>
     {leftContent}
-    {children || <Input props={props} />}
+    {children || <Input {...props} />}
     {rightContent}
   </Wrapper>
 );

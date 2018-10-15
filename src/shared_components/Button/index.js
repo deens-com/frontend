@@ -141,7 +141,7 @@ export const Wrap = styled.div`
     border-radius: ${props => (props.round ? '25px' : '0')};
     cursor: ${props => (props.theme === 'disabled' ? 'default' : 'pointer')};
     display: inline-block;
-    font-size: ${props => (props.size ? size[props.size].fontSize : 'inherit')};
+    font-size: ${props => props.fontSize || (props.size ? size[props.size].fontSize : 'inherit')};
     height: auto;
     overflow: hidden;
     padding: ${props => (props.size ? size[props.size].padding : '0')};
@@ -149,8 +149,11 @@ export const Wrap = styled.div`
     transition: all 0.1s ease-out;
     font-weight: ${props => (props.bold ? 'bold' : 'normal')};
     width: ${props => props.width};
-
-    svg {
+    ${props =>
+      props.align === 'center'
+        ? `padding-right: 0;
+    padding-left: 0;`
+        : ''} svg {
       font-size: ${props => (props.size ? size[props.size].iconSize : '12px')};
     }
 
@@ -266,6 +269,7 @@ export default class Button extends Component {
         align={this.props.align}
         width={this.props.width}
         bold={this.props.bold}
+        fontSize={this.props.fontSize}
       >
         <El>
           {this.props.iconBefore && <IconBefore>{this.getIcon(this.props.iconBefore)}</IconBefore>}

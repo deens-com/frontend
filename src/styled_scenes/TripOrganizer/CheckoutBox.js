@@ -18,8 +18,11 @@ const Wrapper = styled.div`
   flex-direction: column;
   ${media.minMedium} {
     position: fixed;
-    width: 300px;
-    margin-top: 250px;
+    min-width: 350px;
+    top: 80px;
+    bottom: 0;
+    margin: auto;
+    height: 450px;
     z-index: 100;
     right: 15px;
   }
@@ -60,6 +63,7 @@ const Date = styled.div`
     padding-left: 5px;
     max-width: 85px;
     font-size: 15px;
+    overflow: hidden;
   }
   div {
     background-color: #f8f8f8;
@@ -204,6 +208,7 @@ export default class CheckoutBox extends React.Component {
               theme="white"
               onClick={this.share}
               width="100%"
+              align="center"
               bold
             >
               Share and earn rewards

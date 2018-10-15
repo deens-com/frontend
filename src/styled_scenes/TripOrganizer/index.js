@@ -29,7 +29,7 @@ import debounce from 'lodash.debounce';
 const PageContent = styled.div`
   max-width: 825px;
   margin: auto 20px;
-  ${media.minSmall} {
+  ${media.minMedium} {
     margin: auto;
     width: 100%;
   }
@@ -61,7 +61,9 @@ const Label = styled.label`
   display: block;
 `;
 
-const FormInput = styled.div``;
+const FormInput = styled.div`
+  margin-top: 20px;
+`;
 
 const TripItineraryTitle = styled.div`
   font-weight: bold;

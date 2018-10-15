@@ -22,6 +22,11 @@ export default function mapServicesToDays(services, duration, date) {
           .add(i, 'days')
           .format('MMM DD, dddd')
       : `Day ${i + 1}`,
+    shortTitle: date
+      ? moment(date)
+          .add(i, 'days')
+          .format('MMM DD')
+      : `Day ${i + 1}`,
     day: i + 1,
     data: servicesByDay[i + 1] || [],
   }));

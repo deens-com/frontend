@@ -12,6 +12,12 @@ import throttle from 'lodash.throttle';
 
 const TypeSelector = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  margin-top: -5px;
+  justify-content: center;
+  > * {
+    margin-top: 5px !important;
+  }
 `;
 
 const EditableElement = styled.div`
@@ -28,10 +34,10 @@ const EditableElement = styled.div`
 const Services = styled.div`
   display: flex;
   flex-wrap: wrap;
+  flex-direction: column;
 `;
 
 const Service = styled.div`
-  max-width: 30%;
   flex-shrink: 0;
   flex-grow: 1;
   margin: 10px;
@@ -42,6 +48,12 @@ const SearchBy = styled.div`
   font-weight: bold;
   margin-top 5px;
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  > * {
+    margin-top: 5px;
+  }
 `;
 
 export default class AddServiceModal extends Component {
@@ -174,7 +186,7 @@ export default class AddServiceModal extends Component {
         open={open}
         onClose={this.handleClose}
         trigger={
-          <CustomButton theme="fillLightGreen" onClick={this.handleOpen}>
+          <CustomButton iconBefore="plus" theme="fillLightGreen" onClick={this.handleOpen}>
             Add Service
           </CustomButton>
         }
