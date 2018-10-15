@@ -109,6 +109,7 @@ class RegistrationsContainer extends Component {
           session={this.props.session}
           username={this.state.username}
           email={this.state.email}
+          isLoading={this.props.isLoading}
           password={this.state.password}
           password_confirmation={this.state.password_confirmation}
           errors={this.props.errors}
@@ -128,6 +129,7 @@ const mapStateToProps = state => {
   return {
     session: state.RegistrationsReducer.session,
     errors: state.RegistrationsReducer.errors,
+    isLoading: state.RegistrationsReducer.isLoading,
   };
 };
 
