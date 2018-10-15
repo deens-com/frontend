@@ -27,11 +27,18 @@ import Input from 'shared_components/StyledInput';
 import debounce from 'lodash.debounce';
 
 const PageContent = styled.div`
-  max-width: 825px;
   margin: auto 20px;
-  ${media.minMedium} {
+  ${media.minLarge} {
+    max-width: 650px;
     margin: auto;
     width: 100%;
+    margin-left: 150px;
+  }
+  ${media.minLargePlus} {
+    max-width: 775px;
+  }
+  @media only screen and (min-width: 1400px) {
+    margin: auto;
   }
 `;
 

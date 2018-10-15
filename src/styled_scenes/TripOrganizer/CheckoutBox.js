@@ -10,21 +10,23 @@ const now = moment().add(1, 'days');
 const isDayBlocked = date => date.valueOf() <= now.valueOf();
 
 const Wrapper = styled.div`
+  background-color: white;
   border: 1px solid #dfdfdf;
   border-radius: 5px;
   padding: 30px 50px 24px;
   margin-top: 30px;
   display: flex;
   flex-direction: column;
-  ${media.minMedium} {
+  ${media.minLarge} {
     position: fixed;
-    min-width: 350px;
     top: 80px;
     bottom: 0;
     margin: auto;
     height: 450px;
     z-index: 100;
     right: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
   }
 `;
 
@@ -34,6 +36,10 @@ const Divider = styled.div`
   ${media.minSmall} {
     margin-left: -50px;
     width: calc(100% + 100px);
+  }
+  ${media.minSmall} {
+    margin-left: -15px;
+    width: calc(100% + 30px);
   }
 `;
 

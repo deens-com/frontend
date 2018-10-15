@@ -1,0 +1,25 @@
+.add-service-modal {
+  height: 100vh;
+  width: 100vw !important;
+  border-radius: 0 !important;
+  background-color: #F7F7F7 !important;
+}
+.add-service-modal > div {
+  background-color: #F7F7F7 !important;
+}
+
+@media only screen and (min-width: 70em) {
+  .add-service-modal {
+    position: fixed;
+    right: 0;
+    max-width: 800px;
+  }
+}
+
+.add-service-modal-header {
+  border: 0 !important;
+  color: #6E7885 !important;
+  font-size: 14px !important;
+  font-weight: normal !important;
+  margin-top: 15px !important;
+}

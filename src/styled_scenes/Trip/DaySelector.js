@@ -19,7 +19,7 @@ const Wrapper = styled.div`
   > div {
     margin-right: 10px;
   }
-  ${media.minMedium} {
+  ${media.minLarge} {
     flex-direction: column;
     max-height: calc(100vh - 80px);
     height: auto;
