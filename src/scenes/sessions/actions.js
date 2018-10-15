@@ -9,6 +9,7 @@ import { saveSession, getSession, removeSession } from 'libs/user-session';
 import axiosOriginal from 'axios';
 
 export const types = {
+  LOGIN_STARTS: 'LOGIN_STARTS',
   LOGIN_SUCCESS: 'LOGIN_SUCCESS',
   VALIDATION_ERROR: 'VALIDATION_ERROR',
   LOGIN_ERROR: 'LOGIN_ERROR',
@@ -20,6 +21,12 @@ export const types = {
   AVATAR_UPLOAD_START: 'AVATAR_UPLOAD_START',
   AVATAR_UPLOAD_FINISH: 'AVATAR_UPLOAD_FINISH',
   NOT_LOGGED_IN: 'NOT_LOGGED_IN',
+};
+
+export const loginStarts = () => {
+  return {
+    type: this.types.LOGIN_STARTS,
+  };
 };
 
 export const sessionsFetched = session => {
@@ -178,6 +185,7 @@ export const update_user_avatar = file => {
 
 export const loginRequest = (email, password) => {
   return async dispatch => {
+    dispatch(loginStarts());
     try {
       const auth0Response = await axios
         .post(`${serverBaseURL}/users/login`, { username: email, password: password })

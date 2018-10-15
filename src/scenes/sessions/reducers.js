@@ -17,22 +17,27 @@ const initialState = {
   updateError: {},
   isUploadingAvatar: false,
   loggedIn: null,
+  isLoading: false,
 };
 
 export default function SessionsReducer(state = initialState, action = {}) {
   switch (action.type) {
+    case sessions_actions.types.LOGIN_STARTS:
+      return { ...state, isLoading: true };
     case sessions_actions.types.LOGIN_SUCCESS:
       return {
         ...state,
         session: action.payload.session,
         loggedIn: true,
         loginError: {},
+        isLoading: false,
       };
     case sessions_actions.types.LOGIN_ERROR:
       return {
         ...state,
         loginError: action.payload,
         loggedIn: false,
+        isLoading: false,
       };
     case sessions_actions.types.NOT_LOGGED_IN:
       return {
