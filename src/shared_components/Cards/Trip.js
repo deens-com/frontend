@@ -200,7 +200,7 @@ class TripCard extends Component {
 
   render() {
     const { item } = this.props;
-    console.log(item.title);
+
     return (
       <div>
         {this.state.truncated ? (

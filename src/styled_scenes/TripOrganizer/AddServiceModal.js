@@ -5,6 +5,8 @@ import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete';
 import I18nText from 'shared_components/I18nText';
 import axios from 'libs/axios';
 import fetchHelpers from 'libs/fetch_helpers';
+import ReactPaginate from 'react-paginate';
+import PaginationWrap from 'shared_components/PaginationWrap';
 import { media } from 'libs/styled';
 import { getFromCoordinates } from 'libs/Utils';
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
@@ -46,6 +48,8 @@ const Services = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
     margin-right: 100px;
+    position: relative;
+    overflow: auto;
   }
 `;
 
@@ -78,11 +82,11 @@ const SearchBy = styled.div`
 
 const SearchSettings = styled.div``;
 
-const SearchResults = styled.div``;
-
 const ModalContent = styled.div`
-  height: 80vh;
+  height: calc(100vh - 100px);
   background-color: #f7f7f7;
+  display: flex;
+  flex-direction: column;
 `;
 
 const TripName = styled.span`
@@ -95,11 +99,17 @@ const IconWrapper = styled.div`
   right: 15px;
 `;
 
+const Pagination = PaginationWrap.extend`
+  margin-top: 15px;
+`;
+
 const CloseIcon = ({ onClick }) => (
   <IconWrapper onClick={onClick}>
     <CrossIcon style={{ width: '20px', height: '20px', fill: '#38D39F' }} />
   </IconWrapper>
 );
+
+const searchLimit = 10;
 
 export default class AddServiceModal extends Component {
   constructor(props) {
@@ -114,11 +124,12 @@ export default class AddServiceModal extends Component {
       isSearching: false,
       results: null,
       services: [],
+      page: 1,
     };
     this.latestSearchNumber = 0;
   }
 
-  search() {
+  search(page) {
     const { selectedType, location, text, searchType } = this.state;
     if (location || text) {
       const searchNumber = ++this.latestSearchNumber; // Avoid race condition
@@ -134,10 +145,11 @@ export default class AddServiceModal extends Component {
               longitude: location && location.lng,
             }),
             tags: [],
-            limit: 10,
+            limit: searchLimit,
             ...(searchType === 'text' && {
               text,
             }),
+            page: page || 1,
           });
 
           const results = await axios.get(`/search/services?${query}`);
@@ -221,6 +233,10 @@ export default class AddServiceModal extends Component {
 
   handleClose = () => {
     this.setState({ open: false });
+  };
+
+  handlePageChange = item => {
+    this.search(item.selected + 1);
   };
 
   renderResults = () => {
@@ -328,9 +344,20 @@ export default class AddServiceModal extends Component {
                 )}
               </SearchBy>
             </SearchSettings>
-            <SearchResults>
-              {isSearching ? 'Fetching results...' : this.renderResults()}
-            </SearchResults>
+            {isSearching ? 'Fetching results...' : this.renderResults()}
+            {this.state.services &&
+              this.state.services.length > 0 && (
+                <Pagination>
+                  <ReactPaginate
+                    pageCount={Math.ceil(this.state.results.count / searchLimit)}
+                    marginPagesDisplayed={1}
+                    pageRangeDisplayed={2}
+                    onPageChange={this.handlePageChange}
+                    previousClassName="previousButton"
+                    nextClassName="nextButton"
+                  />
+                </Pagination>
+              )}
           </ModalContent>
         </Modal.Content>
       </Modal>
