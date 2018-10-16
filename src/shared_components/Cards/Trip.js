@@ -162,24 +162,38 @@ class TripCard extends Component {
                     withTooltip={this.props.withTooltip}
                   />
                   <ContentWrap>
-                    <Duration>{duration(item.duration)}</Duration>
                     <Title>
                       <Truncate lines={cardConfig.titleLines}>
                         <I18nText data={item.title} />
                       </Truncate>
+                      <Rating rating={rating} count={count} marginBottom="10px" />
                     </Title>
-                    <Location>
-                      <PinIcon />
-                      <p>
-                        <Truncate lines={cardConfig.locationLines}>
-                          {formatLocation(item.location)}
+                    {(this.isViewTypeOf('accommodation') || this.isViewTypeOf('activity')) && (
+                      <Description>
+                        <Truncate lines={cardConfig.descriptionLines}>
+                          <I18nText data={item.description} />
                         </Truncate>
-                      </p>
-                    </Location>
-                    <Rating rating={rating} count={count} marginBottom="10px" />
-                    {this.isViewTypeOf('food') ? 'Average ' : 'From '}{' '}
-                    <PriceTag unit="hidden" price={item.price} />
+                      </Description>
+                    )}
+                    <ContentFooter>
+                      <Price>
+                        {this.isViewTypeOf('food') ? 'Average ' : 'From '}
+                        <PriceTag unit="hidden" price={item.basePrice}>
+                          {({ symbol, convertedPrice }) => `${symbol}${convertedPrice}`}
+                        </PriceTag>{' '}
+                        per person
+                      </Price>
+                      <Location>
+                        <PinIcon />
+                        <p>
+                          <Truncate lines={cardConfig.locationLines}>
+                            {formatLocation(item.location)}
+                          </Truncate>
+                        </p>
+                      </Location>
+                    </ContentFooter>
                   </ContentWrap>
+                  <Author />
                 </Cart>
               </Wrap>
             }
