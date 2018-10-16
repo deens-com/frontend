@@ -5,6 +5,7 @@ import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete';
 import I18nText from 'shared_components/I18nText';
 import axios from 'libs/axios';
 import { media } from 'libs/styled';
+import { getFromCoordinates } from 'libs/Utils';
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
 import CustomButton from 'shared_components/Button';
 import TripCard from 'shared_components/Cards/Trip';
@@ -17,7 +18,7 @@ const TypeSelector = styled.div`
   display: flex;
   flex-wrap: wrap;
   margin-top: -5px;
-  justify-content: center;
+  justify-content: flex-start;
   > * {
     margin-top: 5px !important;
   }
@@ -39,9 +40,11 @@ const Services = styled.div`
   flex-direction: column;
   height: 80vh;
   overflow-y: scroll;
+  margin-top: 15px;
   ${media.minMedium} {
     flex-direction: row;
     flex-wrap: wrap;
+    margin-right: 100px;
   }
 `;
 
@@ -54,9 +57,8 @@ const Service = styled.div`
   margin: auto;
   ${media.minMedium} {
     width: 35%;
-    :nth-child(2) {
+    :nth-child(2n) {
       margin-left: 20px;
-      background-color: green;
     }
   }
 `;
@@ -66,7 +68,7 @@ const SearchBy = styled.div`
   margin-top 5px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   > * {
     margin-top: 5px;
@@ -198,7 +200,20 @@ export default class AddServiceModal extends Component {
   };
 
   handleOpen = () => {
-    this.setState({ open: true });
+    const { trip } = this.props;
+
+    const city = trip.location && trip.location.city;
+    const location =
+      trip.location && trip.location.geo && getFromCoordinates(trip.location.geo.coordinates);
+
+    this.setState(
+      prevState => ({
+        open: true,
+        city: prevState.city || city,
+        location: prevState.location || location,
+      }),
+      this.search,
+    );
   };
 
   handleClose = () => {

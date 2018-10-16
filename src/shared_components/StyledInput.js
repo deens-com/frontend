@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const Wrapper = styled.div`
   border: 1px solid #ebebeb;
-  border-bottom: 1px solid #38d39f;
+  border-bottom: 1px solid ${props => (props.error ? '#D98181' : '#38d39f')};
   padding: 0 7px;
   border-radius: 5px 5px 0 0;
   flex: 1;
@@ -28,10 +28,10 @@ const Input = styled.input`
   font-size: 14px;
 `;
 
-export default ({ leftContent, rightContent, children, ...props }) => (
-  <Wrapper>
+export default ({ error, leftContent, rightContent, children, ...props }) => (
+  <Wrapper error={error}>
     {leftContent}
-    {children || <Input {...props} />}
+    {children || <Input innerRef={props.innerRef} {...props} />}
     {rightContent}
   </Wrapper>
 );

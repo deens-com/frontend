@@ -4,6 +4,21 @@ export function minutesToDays(duration) {
   return Math.ceil(duration / (60 * 24)); // Duration is in minutes
 }
 
+export function dayTitles(dayNumber, date) {
+  return {
+    title: date
+      ? moment(date)
+          .add(dayNumber - 1, 'days')
+          .format('MMM DD, dddd')
+      : `Day ${dayNumber}`,
+    shortTitle: date
+      ? moment(date)
+          .add(dayNumber - 1, 'days')
+          .format('MMM DD')
+      : `Day ${dayNumber}`,
+  };
+}
+
 export default function mapServicesToDays(services, duration, date) {
   const numberOfDays = minutesToDays(duration);
   const daysArray = Array.from({ length: numberOfDays });
@@ -17,16 +32,7 @@ export default function mapServicesToDays(services, duration, date) {
   }, {});
 
   return daysArray.map((_, i) => ({
-    title: date
-      ? moment(date)
-          .add(i, 'days')
-          .format('MMM DD, dddd')
-      : `Day ${i + 1}`,
-    shortTitle: date
-      ? moment(date)
-          .add(i, 'days')
-          .format('MMM DD')
-      : `Day ${i + 1}`,
+    ...dayTitles(i + 1, date),
     day: i + 1,
     data: servicesByDay[i + 1] || [],
   }));

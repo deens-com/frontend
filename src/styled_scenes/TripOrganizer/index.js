@@ -10,6 +10,7 @@ import axios from 'libs/axios';
 import { media } from 'libs/styled';
 import axiosOriginal from 'axios';
 import history from '../../main/history';
+import { dayTitles } from '../Trip/mapServicesToDays';
 
 import TopBar from 'shared_components/TopBar';
 import BrandFooter from 'shared_components/BrandFooter';
@@ -27,10 +28,10 @@ import Input from 'shared_components/StyledInput';
 import debounce from 'lodash.debounce';
 
 const PageContent = styled.div`
-  margin: auto 20px;
+  margin: 0 20px auto;
   ${media.minLarge} {
     max-width: 650px;
-    margin: auto;
+    margin: 0 auto auto;
     width: 100%;
     margin-left: 150px;
   }
@@ -38,7 +39,7 @@ const PageContent = styled.div`
     max-width: 775px;
   }
   @media only screen and (min-width: 1400px) {
-    margin: auto;
+    margin: 0 auto auto;
   }
 `;
 
@@ -114,6 +115,10 @@ function createTripState(props, state) {
   });
 
   const daysByService = props.trip.services.reduce((prev, service) => {
+    if (!service.service) {
+      return prev;
+    }
+
     const id = service.service._id;
     if (!prev[id]) {
       return {
@@ -213,7 +218,6 @@ export default class TripOrganizer extends Component {
 
       const trip = {
         ...this.state.trip,
-        ...(action === 'share' ? { privacy: 'public' } : {}),
         otherAttributes: {
           selectedServiceOptions,
         },
@@ -231,7 +235,7 @@ export default class TripOrganizer extends Component {
       }
 
       if (action === 'share') {
-        history.push(`/trips/${trip._id}`);
+        history.push(`/trips/share/${trip._id}`);
         return;
       }
       history.push(`/trips/checkout/${trip._id}`);
@@ -471,12 +475,15 @@ export default class TripOrganizer extends Component {
           ...prevState.days,
           prevState.days.length > 0
             ? {
-                title: `Day ${prevState.days[prevState.days.length - 1].day + 1}`,
+                ...dayTitles(
+                  prevState.days[prevState.days.length - 1].day + 1,
+                  this.props.startDate,
+                ),
                 day: prevState.days[prevState.days.length - 1].day + 1,
                 data: [],
               }
             : {
-                title: 'Day 1',
+                ...dayTitles(1, this.props.startDate),
                 day: 1,
                 data: [],
               },

@@ -22,11 +22,13 @@ const Wrapper = styled.div`
     top: 80px;
     bottom: 0;
     margin: auto;
-    height: 450px;
+    height: 400px;
     z-index: 100;
     right: 15px;
     padding-left: 15px;
     padding-right: 15px;
+    min-width: 300px;
+    width: calc(100vw - 80%);
   }
 `;
 

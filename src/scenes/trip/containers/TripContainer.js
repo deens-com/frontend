@@ -31,6 +31,7 @@ class TripContainer extends Component {
       availability,
       isCloning,
       cloneTrip,
+      session,
     } = this.props;
 
     if (error) {
@@ -51,6 +52,7 @@ class TripContainer extends Component {
         isCheckingAvailability={availability.isChecking}
         isCloning={isCloning}
         cloneTrip={cloneTrip}
+        currentUserId={session._id}
       />
     );
   }
