@@ -135,6 +135,7 @@ export const fetchTrip = id => async dispatch => {
       console.error(e);
     }
   } catch (e) {
+    console.log(e);
     dispatch(fetchTripError(e));
   }
 };

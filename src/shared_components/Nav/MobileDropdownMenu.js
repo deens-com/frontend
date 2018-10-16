@@ -25,6 +25,11 @@ const AvatarWithUsername = styled.div`
   flex: 1;
   &.dark {
     color: #3c434b;
+    svg {
+      path {
+        fill: #38d39f;
+      }
+    }
   }
   &.avatar-only {
     right: 65px;

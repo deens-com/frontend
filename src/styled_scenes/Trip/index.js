@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import moment from 'moment';
 import styled from 'styled-components';
+import history from 'main/history';
 import { Loader, Popup, Icon, Dropdown, Dimmer } from 'semantic-ui-react';
 import { DayPicker } from 'react-dates';
 
@@ -123,6 +124,10 @@ export default class Trip extends Component {
   };
 
   handleCustomizeClick = () => {
+    if (this.props.trip.owner === this.props.currentUserId) {
+      history.push(`/trips/organize/${this.props.trip._id}`);
+      return;
+    }
     this.props.cloneTrip(this.props.trip._id);
   };
 
@@ -251,12 +256,12 @@ export default class Trip extends Component {
       );
     }
 
-    const days = mapServicesToDays(trip.services);
+    const days = mapServicesToDays(trip.services, trip.duration);
 
     return (
       <CustomPage>
         <TopBar fixed />
-        <DaySelector days={days} trip={trip} goToDay={this.goToDay} />
+        <DaySelector bottom={65} days={days} trip={trip} goToDay={this.goToDay} />
         <PageContent>{this.renderPageContent()}</PageContent>
         <FixedFooter
           price={trip.basePrice}

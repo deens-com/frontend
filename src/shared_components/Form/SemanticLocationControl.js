@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import PlacesAutocomplete from 'react-places-autocomplete';
 import { Form, List, Popup } from 'semantic-ui-react';
+import Input from 'shared_components/StyledInput';
+import { MapMarker } from 'shared_components/icons';
 
 /**
  * A more advanced version of LocationControl
@@ -25,6 +27,7 @@ export default class SemanticLocationControl extends Component {
     inputProps: {},
     inputStyles: {},
     onlyCities: false,
+    useStyledInput: false,
   };
 
   state = {
@@ -40,13 +43,27 @@ export default class SemanticLocationControl extends Component {
 
   onSelect = (address, placeId) => {
     const { onChange } = this.props;
-    this.setState({ address }, () => {
+    this.setState({ address, isOpen: undefined }, () => {
       if (onChange) onChange(address, placeId);
     });
   };
 
+  openMenu = event => {
+    event.target.select();
+    this.setState({
+      isOpen: true,
+    });
+  };
+
+  closeMenu = () => {
+    this.setState({
+      isOpen: false,
+    });
+  };
+
   render() {
-    const { inputProps, inputStyles, onlyCities } = this.props;
+    const { inputProps, inputStyles, onlyCities, useStyledInput } = this.props;
+    const { isOpen } = this.state;
 
     return (
       <PlacesAutocomplete
@@ -61,18 +78,32 @@ export default class SemanticLocationControl extends Component {
           <Popup
             basic
             trigger={
-              <Form.Input
-                icon="map pin"
-                iconPosition="left"
-                type="text"
-                {...getInputProps({
-                  ...inputProps,
-                  placeholder: inputProps.placeholder || 'Enter location ...',
-                })}
-                style={inputStyles}
-              />
+              useStyledInput ? (
+                <Input
+                  {...getInputProps({
+                    ...inputProps,
+                    placeholder: inputProps.placeholder || 'Enter location ...',
+                  })}
+                  leftContent={<MapMarker style={{ fill: '#6E7885' }} />}
+                  onFocus={this.openMenu}
+                  onBlur={this.closeMenu}
+                />
+              ) : (
+                <Form.Input
+                  icon="map pin"
+                  iconPosition="left"
+                  type="text"
+                  {...getInputProps({
+                    ...inputProps,
+                    placeholder: inputProps.placeholder || 'Enter location ...',
+                  })}
+                  style={inputStyles}
+                  onFocus={this.openMenu}
+                  onBlur={this.closeMenu}
+                />
+              )
             }
-            open={suggestions.length > 0}
+            open={suggestions.length > 0 && isOpen}
             onClose={this.handleClose}
             onOpen={this.handleOpen}
             position="bottom left"

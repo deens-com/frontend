@@ -8,6 +8,7 @@ import { parseLocation } from 'libs/fetch_helpers';
 
 import I18nText from 'shared_components/I18nText';
 import { MapMarker } from 'shared_components/icons';
+import Category from 'shared_components/Category';
 
 import mapServicesToDays from './mapServicesToDays';
 
@@ -98,25 +99,6 @@ const CategoryWrapper = styled.div`
   align-items: center;
 `;
 
-const Category = styled.div`
-  flex: 1;
-  display: flex;
-  font-size: 12px;
-  color: #6e7885;
-  letter-spacing: 1.2px;
-  justify-content: flex-start;
-  text-transform: uppercase;
-  font-weight: bold;
-  svg {
-    font-size: 16px;
-    margin-top: 2px;
-    margin-right: 5px;
-    path {
-      fill: ${props => props.color};
-    }
-  }
-`;
-
 const AvailabilityBox = styled.div`
   flex-shrink: 1;
   display: flex;
@@ -138,7 +120,7 @@ const Availability = AvailabilityBox.extend`
 export default class Itinerary extends Component {
   constructor(props) {
     super(props);
-    this.days = mapServicesToDays(props.trip.services);
+    this.days = mapServicesToDays(props.trip.services, props.trip.duration);
     this.r = this.days.map(_ => React.createRef());
     props.assignRefsToParent(this.r);
   }
@@ -179,10 +161,11 @@ export default class Itinerary extends Component {
             dayData.service.media[0] && <Image url={dayData.service.media[0].files.small.url} />}
           <ServiceData>
             <CategoryWrapper>
-              <Category color={getCategory(dayData.service.categories[0]).color}>
-                {getCategory(dayData.service.categories[0]).icon}
-                <I18nText data={dayData.service.categories[0].names} />
-              </Category>
+              <Category
+                color={getCategory(dayData.service.categories[0]).color}
+                icon={getCategory(dayData.service.categories[0]).icon}
+                name={dayData.service.categories[0].names}
+              />
               {this.renderAvailability(day.day, dayData.service._id)}
             </CategoryWrapper>
             <ServiceTitle>

@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import moment from 'moment';
 import styled from 'styled-components';
-import { Input, Loader, Dimmer } from 'semantic-ui-react';
+import { Loader, Dimmer } from 'semantic-ui-react';
 import { geocodeByPlaceId } from 'react-places-autocomplete';
 
 import { serverBaseURL } from 'libs/config';
 import axios from 'libs/axios';
+import { media } from 'libs/styled';
 import axiosOriginal from 'axios';
 import history from '../../main/history';
 
@@ -17,16 +18,28 @@ import { Page } from 'shared_components/layout/Page';
 import I18nText from 'shared_components/I18nText';
 
 import Itinerary from './Itinerary';
-import mapServicesToDays from '../Trip/mapServicesToDays';
+import mapServicesToDays, { minutesToDays, dayTitles } from '../Trip/mapServicesToDays';
 import DaySelector from '../Trip/DaySelector';
 import CheckoutBox from './CheckoutBox';
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
 import Button from 'shared_components/Button';
+import Input from 'shared_components/StyledInput';
 import debounce from 'lodash.debounce';
 
 const PageContent = styled.div`
-  width: 825px;
-  margin: auto;
+  margin: 0 20px auto;
+  ${media.minLarge} {
+    max-width: 650px;
+    margin: 0 auto auto;
+    width: 100%;
+    margin-left: 150px;
+  }
+  ${media.minLargePlus} {
+    max-width: 775px;
+  }
+  @media only screen and (min-width: 1400px) {
+    margin: 0 auto auto;
+  }
 `;
 
 const CoverImage = styled.div`
@@ -40,6 +53,7 @@ const CoverImage = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 30px;
   > input[type='file'] {
     display: none;
   }
@@ -55,8 +69,22 @@ const Label = styled.label`
 `;
 
 const FormInput = styled.div`
-  > div {
-    width: 80%;
+  margin-top: 20px;
+`;
+
+const TripItineraryTitle = styled.div`
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: #c4c4c4;
+  border-bottom: 1px solid #c4c4c4;
+  text-align: center;
+  margin-top: 50px;
+  line-height: 0.1em;
+
+  > span {
+    background: white;
+    padding: 0 10px;
   }
 `;
 
@@ -86,6 +114,10 @@ function createTripState(props, state) {
   });
 
   const daysByService = props.trip.services.reduce((prev, service) => {
+    if (!service.service) {
+      return prev;
+    }
+
     const id = service.service._id;
     if (!prev[id]) {
       return {
@@ -103,7 +135,7 @@ function createTripState(props, state) {
   return {
     ...state,
     trip: props.trip,
-    days: mapServicesToDays(props.trip.services),
+    days: mapServicesToDays(props.trip.services, props.trip.duration, props.trip.startDate),
     optionsSelected,
     daysByService,
   };
@@ -185,7 +217,6 @@ export default class TripOrganizer extends Component {
 
       const trip = {
         ...this.state.trip,
-        ...(action === 'share' ? { privacy: 'public' } : {}),
         otherAttributes: {
           selectedServiceOptions,
         },
@@ -203,7 +234,7 @@ export default class TripOrganizer extends Component {
       }
 
       if (action === 'share') {
-        history.push(`/trips/${trip._id}`);
+        history.push(`/trips/share/${trip._id}`);
         return;
       }
       history.push(`/trips/checkout/${trip._id}`);
@@ -349,7 +380,7 @@ export default class TripOrganizer extends Component {
         trip: {
           ...prevState.trip,
           title: {
-            ['en-us']: data.value,
+            'en-us': data.value,
           },
         },
       }),
@@ -414,12 +445,18 @@ export default class TripOrganizer extends Component {
   };
 
   changeDates = dates => {
+    console.log(
+      mapServicesToDays(this.props.trip.services, this.props.trip.duration, dates.start_date),
+    );
     this.checkAllServicesAvailability({
       startDate: moment(dates.start_date),
       guests: this.props.numberOfPeople,
     });
     this.props.changeDates(dates);
     this.autoPatchTrip();
+    this.setState({
+      days: mapServicesToDays(this.props.trip.services, this.props.trip.duration, dates.start_date),
+    });
   };
 
   changeGuests = data => {
@@ -443,12 +480,15 @@ export default class TripOrganizer extends Component {
           ...prevState.days,
           prevState.days.length > 0
             ? {
-                title: `Day ${prevState.days[prevState.days.length - 1].day + 1}`,
+                ...dayTitles(
+                  prevState.days[prevState.days.length - 1].day + 1,
+                  this.props.startDate,
+                ),
                 day: prevState.days[prevState.days.length - 1].day + 1,
                 data: [],
               }
             : {
-                title: 'Day 1',
+                ...dayTitles(1, this.props.startDate),
                 day: 1,
                 data: [],
               },
@@ -566,7 +606,7 @@ export default class TripOrganizer extends Component {
               type: 'image',
               hero: true,
               names: {
-                ['en-us']: 'Trip image',
+                'en-us': 'Trip image',
               },
               files: {
                 thumbnail: {
@@ -622,19 +662,6 @@ export default class TripOrganizer extends Component {
 
     return (
       <React.Fragment>
-        <DaySelector days={days} goToDay={this.goToDay} onAddDay={this.handleAddDay} />
-        <CheckoutBox
-          trip={trip}
-          days={days}
-          action={this.patchTrip}
-          changeDates={this.changeDates}
-          changeGuests={this.changeGuests}
-          startDate={startDate}
-          numberOfPeople={numberOfPeople}
-          price={trip.basePrice || 0}
-          bookError={this.getBookError()}
-          shareError={this.getShareError()}
-        />
         <CoverImage url={img}>
           <Button
             element={({ children }) => <label htmlFor="cover-image">{children}</label>}
@@ -665,8 +692,25 @@ export default class TripOrganizer extends Component {
             defaultAddress={location}
             onChange={this.handleLocationChange}
             onlyCities
+            useStyledInput
           />
         </FormInput>
+        <TripItineraryTitle>
+          <span>Trip Itinerary</span>
+        </TripItineraryTitle>
+        <CheckoutBox
+          trip={trip}
+          days={days}
+          action={this.patchTrip}
+          changeDates={this.changeDates}
+          changeGuests={this.changeGuests}
+          startDate={startDate}
+          numberOfPeople={numberOfPeople}
+          price={trip.basePrice || 0}
+          bookError={this.getBookError()}
+          shareError={this.getShareError()}
+          numberOfDays={minutesToDays(trip.duration)}
+        />
         <Itinerary
           isCheckingAvailability={availability.isChecking}
           availability={availability.data}
@@ -687,7 +731,9 @@ export default class TripOrganizer extends Component {
 
   render() {
     const { isLoading, availability, tripId } = this.props;
-    const { trip, isSaving } = this.state;
+    const { trip, isSaving, days } = this.state;
+
+    const loading = isLoading || (!trip || trip._id !== tripId) || !availability;
 
     return (
       <Page>
@@ -695,12 +741,11 @@ export default class TripOrganizer extends Component {
         <Dimmer active={isSaving} page>
           <Loader size="massive" />
         </Dimmer>
+        {!loading && (
+          <DaySelector days={days} goToDay={this.goToDay} onAddDay={this.handleAddDay} />
+        )}
         <PageContent>
-          {isLoading || (!trip || trip._id !== tripId) || !availability ? (
-            <Loader inline="centered" active size="massive" />
-          ) : (
-            this.renderPageContent()
-          )}
+          {loading ? <Loader inline="centered" active size="massive" /> : this.renderPageContent()}
         </PageContent>
         <BrandFooter withTopBorder withPadding />
       </Page>
