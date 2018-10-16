@@ -24,7 +24,6 @@ class ResultsContainer extends Component {
       sortBy: this.props.sortBy,
     };
     this.props.update_search_query(search_query);
-    this.props.fetchTagsOptions();
   }
 
   componentWillUpdate(next_props) {
