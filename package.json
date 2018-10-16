@@ -36,6 +36,7 @@
     "react": "^16.2.0",
     "react-app-rewire-styled-components": "^3.0.2",
     "react-beautiful-dnd": "7.1.2",
+    "react-coinbase-commerce": "^1.2.0",
     "react-dates": "^18.1.0",
     "react-day-picker": "^7.1.4",
     "react-dom": "^16.2.0",

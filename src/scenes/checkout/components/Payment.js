@@ -65,12 +65,14 @@ class Payment extends React.Component {
         }}
       >
         <PaymentSection
+          tripId={trip._id}
           numberOfPerson={trip.peopleCount}
           pricePerPerson={trip.basePrice}
           totalPrice={totalPrice}
           onPaymentClick={() => {}}
           onStripeTokenReceived={this.onStripeTokenReceived}
           paymentError={this.props.paymentError || this.state.paymentError}
+          guests={this.props.guests}
         />
       </PaymentContext.Provider>
     );

@@ -8655,6 +8655,10 @@ react-beautiful-dnd@7.1.2:
     reselect "^3.0.1"
     tiny-invariant "^0.0.3"
 
+react-coinbase-commerce@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-coinbase-commerce/-/react-coinbase-commerce-1.2.0.tgz#7069e201fa47738a9eabcfae0f3ad1cafd8a14c7"
+
 react-dates@^18.1.0:
   version "18.1.0"
   resolved "https://registry.yarnpkg.com/react-dates/-/react-dates-18.1.0.tgz#85deabb78ae13aff833355d2f35dc5db922dd79c"
