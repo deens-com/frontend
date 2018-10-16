@@ -1,5 +1,5 @@
 // NPM
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
@@ -114,11 +114,6 @@ class Filters extends Component {
     this.get_query_params = this.get_query_params.bind(this);
     this.handleServiceTypeChange = this.handleServiceTypeChange.bind(this);
     this.clear_address = this.clear_address.bind(this);
-  }
-
-  componentDidMount() {
-    console.log(this.state);
-    console.log(this.props);
   }
 
   get_query_params() {
@@ -488,7 +483,7 @@ class Filters extends Component {
                         </p>
                       }
                       content={
-                        <Fragment>
+                        <React.Fragment>
                           {this.props.tags.length > 0 && (
                             <ClearTagsWrapper>
                               <ClearTagsLink onClick={this.clearTags}>Clear tags</ClearTagsLink>
@@ -508,7 +503,7 @@ class Filters extends Component {
                             onChange={this.onDropDownChange}
                             style={{ minWidth: '250px' }}
                           />
-                        </Fragment>
+                        </React.Fragment>
                       }
                       on="click"
                       open={this.state.isMoodPopupOpen}
