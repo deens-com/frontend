@@ -1,5 +1,5 @@
 // NPM
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
@@ -65,6 +65,20 @@ const MobileSorting = styled.span`
   margin-top: 0.9em;
 `;
 
+const ClearTagsWrapper = styled.div`
+  margin-top: -10px;
+  margin-right: 5px;
+  display: flex;
+  justify-content: flex-end;
+`;
+
+const ClearTagsLink = styled.span`
+  color: red;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+`;
+
 class Filters extends Component {
   constructor(props) {
     super(props);
@@ -100,6 +114,11 @@ class Filters extends Component {
     this.get_query_params = this.get_query_params.bind(this);
     this.handleServiceTypeChange = this.handleServiceTypeChange.bind(this);
     this.clear_address = this.clear_address.bind(this);
+  }
+
+  componentDidMount() {
+    console.log(this.state);
+    console.log(this.props);
   }
 
   get_query_params() {
@@ -265,6 +284,11 @@ class Filters extends Component {
 
   displayFilters = () => {
     this.setState({ showFilters: !this.state.showFilters });
+  };
+
+  clearTags = () => {
+    this.setState({ tags: [] });
+    this.refetch_results({ tags: [] });
   };
 
   categoryPopupSelect = serviceTypes => {
@@ -464,20 +488,27 @@ class Filters extends Component {
                         </p>
                       }
                       content={
-                        <Dropdown
-                          name="tags"
-                          options={this.props.tagsOptions}
-                          placeholder="Add tags"
-                          search
-                          selection
-                          fluid
-                          multiple
-                          value={this.props.tags
-                            .map(tag => tag.replace('%20', ' '))
-                            .map(tag => tag.charAt(0).toUpperCase() + tag.substr(1))}
-                          onChange={this.onDropDownChange}
-                          style={{ minWidth: '250px' }}
-                        />
+                        <Fragment>
+                          {this.props.tags.length > 0 && (
+                            <ClearTagsWrapper>
+                              <ClearTagsLink onClick={this.clearTags}>Clear tags</ClearTagsLink>
+                            </ClearTagsWrapper>
+                          )}
+                          <Dropdown
+                            name="tags"
+                            options={this.props.tagsOptions}
+                            placeholder="Add tags"
+                            search
+                            selection
+                            fluid
+                            multiple
+                            value={this.props.tags
+                              .map(tag => tag.replace('%20', ' '))
+                              .map(tag => tag.charAt(0).toUpperCase() + tag.substr(1))}
+                            onChange={this.onDropDownChange}
+                            style={{ minWidth: '250px' }}
+                          />
+                        </Fragment>
                       }
                       on="click"
                       open={this.state.isMoodPopupOpen}
