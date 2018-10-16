@@ -125,7 +125,7 @@ class RegistrationsContainer extends Component {
   }
 }
 
-const mapStateToProps = ( {RegistrationsReducer} ) => {
+const mapStateToProps = ({ RegistrationsReducer }) => {
   return {
     registrationSession: RegistrationsReducer.session,
     errors: RegistrationsReducer.errors,

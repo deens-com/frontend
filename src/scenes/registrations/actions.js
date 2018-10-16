@@ -29,7 +29,7 @@ export const registrationFailed = error_payload => {
   };
 };
 
-export const setLoading = (payload) => {
+export const setLoading = payload => {
   return {
     type: this.types.SET_LOADING,
     payload,

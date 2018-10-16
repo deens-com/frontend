@@ -131,7 +131,9 @@ const RegistrationsComponent = props => {
                     />
 
                     <Button
-                      className={`green-btn pl-btn ${props.isLoading?'loading':''}`}
+                      className="green-btn pl-btn"
+                      loading={props.isLoading}
+                      disabled={props.isLoading}
                       fluid
                       size="large"
                       onClick={props.onSubmitRegistration}
