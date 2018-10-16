@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { Popup, Checkbox, Loader } from 'semantic-ui-react';
 import { getCategory } from 'libs/categories';
 import { media } from 'libs/styled';
@@ -228,7 +229,9 @@ export default class Itinerary extends Component {
                 </AvailabilityWrapper>
               </CategoryWrapper>
               <ServiceTitle>
-                <I18nText data={dayData.service.title} />
+                <Link to={`/services/${dayData.service._id}`}>
+                  <I18nText data={dayData.service.title} />
+                </Link>
               </ServiceTitle>
               <LastLine>
                 <StartingPrice>Starts from ${dayData.service.basePrice}</StartingPrice>

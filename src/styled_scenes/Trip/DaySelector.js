@@ -7,7 +7,7 @@ import mapServicesToDays from './mapServicesToDays';
 
 const Wrapper = styled.div`
   position: fixed;
-  z-index: 10;
+  z-index: 1;
   display: flex;
   bottom: ${props => props.bottom || 0}px;
   background-color: #f2f2f2;
@@ -40,7 +40,7 @@ const Wrapper = styled.div`
 class DaySelector extends React.Component {
   constructor(props) {
     super(props);
-    if (props.trips) {
+    if (props.trip) {
       this.days = mapServicesToDays(props.trip.services, props.trip.duration);
     }
   }

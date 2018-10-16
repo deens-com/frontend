@@ -4,6 +4,7 @@ import { Input, Button, Modal, Popup, Dropdown } from 'semantic-ui-react';
 import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete';
 import I18nText from 'shared_components/I18nText';
 import axios from 'libs/axios';
+import fetchHelpers from 'libs/fetch_helpers';
 import { media } from 'libs/styled';
 import { getFromCoordinates } from 'libs/Utils';
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
@@ -112,6 +113,7 @@ export default class AddServiceModal extends Component {
       text: null,
       isSearching: false,
       results: null,
+      services: [],
     };
     this.latestSearchNumber = 0;
   }
@@ -142,6 +144,7 @@ export default class AddServiceModal extends Component {
           if (searchNumber === this.latestSearchNumber) {
             this.setState({
               results: results.data,
+              services: fetchHelpers.buildServicesJson(results.data.services),
               isSearching: false,
             });
           }
@@ -221,19 +224,19 @@ export default class AddServiceModal extends Component {
   };
 
   renderResults = () => {
-    const { results, selectedType } = this.state;
+    const { results, services, selectedType } = this.state;
 
     if (!results) {
       return null;
     }
 
-    if (results.services.length === 0) {
+    if (services.length === 0) {
       return 'No results found';
     }
 
     return (
       <Services>
-        {this.state.results.services.map((service, index) => (
+        {this.state.services.map((service, index) => (
           <Service key={index} onClick={() => this.selectService(service)}>
             <TripCard
               type={selectedType.toLowerCase()}

@@ -10,7 +10,6 @@ import axios from 'libs/axios';
 import { media } from 'libs/styled';
 import axiosOriginal from 'axios';
 import history from '../../main/history';
-import { dayTitles } from '../Trip/mapServicesToDays';
 
 import TopBar from 'shared_components/TopBar';
 import BrandFooter from 'shared_components/BrandFooter';
@@ -19,7 +18,7 @@ import { Page } from 'shared_components/layout/Page';
 import I18nText from 'shared_components/I18nText';
 
 import Itinerary from './Itinerary';
-import mapServicesToDays, { minutesToDays } from '../Trip/mapServicesToDays';
+import mapServicesToDays, { minutesToDays, dayTitles } from '../Trip/mapServicesToDays';
 import DaySelector from '../Trip/DaySelector';
 import CheckoutBox from './CheckoutBox';
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
@@ -446,12 +445,18 @@ export default class TripOrganizer extends Component {
   };
 
   changeDates = dates => {
+    console.log(
+      mapServicesToDays(this.props.trip.services, this.props.trip.duration, dates.start_date),
+    );
     this.checkAllServicesAvailability({
       startDate: moment(dates.start_date),
       guests: this.props.numberOfPeople,
     });
     this.props.changeDates(dates);
     this.autoPatchTrip();
+    this.setState({
+      days: mapServicesToDays(this.props.trip.services, this.props.trip.duration, dates.start_date),
+    });
   };
 
   changeGuests = data => {
