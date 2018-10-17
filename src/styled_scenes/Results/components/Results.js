@@ -160,6 +160,7 @@ export default class Results extends Component {
                 onPageChange={this.loadData}
                 previousClassName="previousButton"
                 nextClassName="nextButton"
+                forcePage={parseInt(this.props.page, 0) - 1}
               />
             ) : null}
           </PaginationWrap>
