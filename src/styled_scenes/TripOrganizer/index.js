@@ -374,19 +374,24 @@ export default class TripOrganizer extends Component {
     }, this.autoPatchTrip);
   };
 
-  changeTripName = (_, data) => {
+  changeTripName = event => {
+    const title = event.target.value;
+    this.changeTripNameDebounced(title);
+  };
+
+  changeTripNameDebounced = debounce(title => {
     this.setState(
       prevState => ({
         trip: {
           ...prevState.trip,
           title: {
-            'en-us': data.value,
+            'en-us': title,
           },
         },
       }),
       this.autoPatchTrip,
     );
-  };
+  }, 500);
 
   goToDay = index => {
     const domNode = ReactDOM.findDOMNode(this.childRefs[index].current);
