@@ -153,36 +153,39 @@ export default class CheckoutBox extends React.Component {
         <Divider />
         <Field>
           <Label>Start Date</Label>
-          <Date onClick={() => this.onDateFocusChange({ focused: true })}>
-            <span>Start</span>
-            <SingleDatePicker
-              id="startDate"
-              date={startDate}
-              onDateChange={this.handleDateChange}
-              focused={this.state.dateFocused}
-              onFocusChange={this.onDateFocusChange}
-              placeholder={formattedStartDate}
-              isDayBlocked={isDayBlocked}
-              numberOfMonths={1}
-              small
-              noBorder
-              withPortal
-              displayFormat="MM/DD/YY"
-            />
+          <Date>
+            <span onClick={() => this.onDateFocusChange({ focused: true })}>
+              <span>Start</span>
+              <SingleDatePicker
+                id="startDate"
+                date={startDate}
+                onDateChange={this.handleDateChange}
+                focused={this.state.dateFocused}
+                onFocusChange={this.onDateFocusChange}
+                placeholder={formattedStartDate}
+                isDayBlocked={isDayBlocked}
+                numberOfMonths={1}
+                small
+                noBorder
+                /*withPortal*/
+                anchorDirection="right"
+                displayFormat="MM/DD/YY"
+              />
+            </span>
             <span>End</span>
-            <input disabled value={endDate} style={{ paddingBottom: '2px' }} />
+            <input disabled value={endDate} style={{ color: 'gray', paddingBottom: '2px' }} />
           </Date>
         </Field>
         <DropdownField>
           <Label>Number of Guests</Label>
           <Dropdown
-            placeholder={numberOfPeople + ' Guests'}
+            placeholder={numberOfPeople + ' Adults'}
             options={[
-              { text: '1 Guest', value: 1 },
-              { text: '2 Guests', value: 2 },
-              { text: '3 Guests', value: 3 },
-              { text: '4 Guests', value: 4 },
-              { text: '5 Guests', value: 5 },
+              { text: '1 Adult', value: 1 },
+              { text: '2 Adults', value: 2 },
+              { text: '3 Adults', value: 3 },
+              { text: '4 Adults', value: 4 },
+              { text: '5 Adults', value: 5 },
             ]}
             onChange={this.handleGuestsChange}
             defaultValue={numberOfPeople}
