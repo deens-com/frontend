@@ -135,116 +135,78 @@ class TripCard extends Component {
   isViewTypeOf = type => {
     const param = queryString.parse(this.props.location.search, { ignoreQueryPrefix: true });
 
-    if (param.serviceTypes === type) {
+    if (param.serviceTypes === type || this.props.type === type) {
       return true;
     }
 
     return false;
   };
 
-  render() {
+  renderContent() {
     const { item } = this.props;
     const { average: rating, count } = (item && item.ratings) || 0;
 
     return (
+      <Wrap>
+        <Cart column className="card-animate">
+          <Thumb
+            url={
+              (item.media.length && item.media[0].files.thumbnail.url) ||
+              'https://please-com.imgix.net/7a7b798deb8064c64f57bff9ffeaa53a_1531363432782-4561574624.jpg?auto=format&dpr=1&crop=faces&fit=crop&w=800&h=500&ixlib=react-7.2.0'
+            }
+            tripCount={item.partOf}
+            withTooltip={this.props.withTooltip}
+          />
+          <ContentWrap small={this.isViewTypeOf('food')}>
+            <Title>
+              <Truncate
+                onTruncate={!this.state.truncated && this.handleTruncate}
+                lines={cardConfig.titleLines}
+              >
+                <I18nText data={item.title} />
+              </Truncate>
+              <Rating rating={rating} count={count} marginBottom="10px" />
+            </Title>
+            {(this.isViewTypeOf('accommodation') || this.isViewTypeOf('activity')) && (
+              <Description>
+                <Truncate lines={cardConfig.descriptionLines}>
+                  <I18nText data={item.description} />
+                </Truncate>
+              </Description>
+            )}
+            <ContentFooter>
+              <Price>
+                {this.isViewTypeOf('food') ? 'Average ' : 'From '}
+                <PriceTag unit="hidden" price={item.basePrice}>
+                  {({ symbol, convertedPrice }) => `${symbol}${convertedPrice}`}
+                </PriceTag>{' '}
+                per person
+              </Price>
+              <Location>
+                <PinIcon />
+                <p>
+                  <Truncate lines={cardConfig.locationLines}>
+                    {formatLocation(item.location)}
+                  </Truncate>
+                </p>
+              </Location>
+            </ContentFooter>
+          </ContentWrap>
+          <Author />
+        </Cart>
+      </Wrap>
+    );
+  }
+
+  render() {
+    const { item } = this.props;
+
+    return (
       <div>
         {this.state.truncated ? (
-          <Popup
-            trigger={
-              <Wrap>
-                <Cart column className="card-animate">
-                  <Thumb
-                    url={
-                      (item.media.length && item.media[0].files.thumbnail.url) ||
-                      'https://please-com.imgix.net/7a7b798deb8064c64f57bff9ffeaa53a_1531363432782-4561574624.jpg?auto=format&dpr=1&crop=faces&fit=crop&w=800&h=500&ixlib=react-7.2.0'
-                    }
-                    tripCount={item.partOf}
-                    withTooltip={this.props.withTooltip}
-                  />
-                  <ContentWrap>
-                    <Title>
-                      <Truncate lines={cardConfig.titleLines}>
-                        <I18nText data={item.title} />
-                      </Truncate>
-                      <Rating rating={rating} count={count} marginBottom="10px" />
-                    </Title>
-                    {(this.isViewTypeOf('accommodation') || this.isViewTypeOf('activity')) && (
-                      <Description>
-                        <Truncate lines={cardConfig.descriptionLines}>
-                          <I18nText data={item.description} />
-                        </Truncate>
-                      </Description>
-                    )}
-                    <ContentFooter>
-                      <Price>
-                        {this.isViewTypeOf('food') ? 'Average ' : 'From '}
-                        <PriceTag unit="hidden" price={item.basePrice}>
-                          {({ symbol, convertedPrice }) => `${symbol}${convertedPrice}`}
-                        </PriceTag>{' '}
-                        per person
-                      </Price>
-                      <Location>
-                        <PinIcon />
-                        <p>
-                          <Truncate lines={cardConfig.locationLines}>
-                            {formatLocation(item.location)}
-                          </Truncate>
-                        </p>
-                      </Location>
-                    </ContentFooter>
-                  </ContentWrap>
-                  <Author />
-                </Cart>
-              </Wrap>
-            }
-            content={item.title}
-          />
+          <Popup trigger={this.renderContent()} content={item.title} />
         ) : (
-          <Wrap>
-            <Cart column className="card-animate">
-              <Thumb
-                url={
-                  (item.media.length && item.media[0].files.thumbnail.url) ||
-                  'https://please-com.imgix.net/7a7b798deb8064c64f57bff9ffeaa53a_1531363432782-4561574624.jpg?auto=format&dpr=1&crop=faces&fit=crop&w=800&h=500&ixlib=react-7.2.0'
-                }
-                tripCount={item.partOf}
-                withTooltip={this.props.withTooltip}
-              />
-              <ContentWrap small={this.isViewTypeOf('food')}>
-                <Title>
-                  <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>
-                    <I18nText data={item.title} />
-                  </Truncate>
-                  <Rating rating={rating} count={count} marginBottom="10px" />
-                </Title>
-                {(this.isViewTypeOf('accommodation') || this.isViewTypeOf('activity')) && (
-                  <Description>
-                    <Truncate lines={cardConfig.descriptionLines}>
-                      <I18nText data={item.description} />
-                    </Truncate>
-                  </Description>
-                )}
-                <ContentFooter>
-                  <Price>
-                    {this.isViewTypeOf('food') ? 'Average ' : 'From '}
-                    <PriceTag unit="hidden" price={item.basePrice}>
-                      {({ symbol, convertedPrice }) => `${symbol}${convertedPrice}`}
-                    </PriceTag>{' '}
-                    per person
-                  </Price>
-                  <Location>
-                    <PinIcon />
-                    <p>
-                      <Truncate lines={cardConfig.locationLines}>
-                        {formatLocation(item.location)}
-                      </Truncate>
-                    </p>
-                  </Location>
-                </ContentFooter>
-              </ContentWrap>
-              <Author />
-            </Cart>
-          </Wrap>
+          this.renderContent()
         )}
       </div>
     );

@@ -33,6 +33,7 @@ const size = {
 const colors = {
   green: '#4FB798',
   lightGreen: '#38D39F',
+  lighterGreen: '#B9FFE7',
   greenActive: '#4ac4a1',
   white: '#fff',
   gray: '#d3d7dc',
@@ -95,6 +96,14 @@ export const theme = {
     color: colors.white,
     colorHover: colors.white,
   },
+  fillLighterGreen: {
+    background: colors.lighterGreen,
+    backgroundHover: colors.lightGreen,
+    border: colors.lighterGreen,
+    borderHover: colors.lightGreen,
+    color: colors.lightGreen,
+    colorHover: colors.white,
+  },
   icon: {
     background: 'transparent',
     backgroundHover: 'transparent',
@@ -123,6 +132,7 @@ export const theme = {
 
 export const Wrap = styled.div`
   display: inline-block;
+  width: ${props => props.width};
 
   > div,
   > label,
@@ -131,16 +141,19 @@ export const Wrap = styled.div`
     border-radius: ${props => (props.round ? '25px' : '0')};
     cursor: ${props => (props.theme === 'disabled' ? 'default' : 'pointer')};
     display: inline-block;
-    font-size: ${props => (props.size ? size[props.size].fontSize : 'inherit')};
+    font-size: ${props => props.fontSize || (props.size ? size[props.size].fontSize : 'inherit')};
     height: auto;
     overflow: hidden;
     padding: ${props => (props.size ? size[props.size].padding : '0')};
     text-align: ${props => props.align};
     transition: all 0.1s ease-out;
-    width: ${props => props.width};
     font-weight: ${props => (props.bold ? 'bold' : 'normal')};
-
-    svg {
+    width: ${props => props.width};
+    ${props =>
+      props.align === 'center'
+        ? `padding-right: 0;
+    padding-left: 0;`
+        : ''} svg {
       font-size: ${props => (props.size ? size[props.size].iconSize : '12px')};
     }
 
@@ -256,6 +269,7 @@ export default class Button extends Component {
         align={this.props.align}
         width={this.props.width}
         bold={this.props.bold}
+        fontSize={this.props.fontSize}
       >
         <El>
           {this.props.iconBefore && <IconBefore>{this.getIcon(this.props.iconBefore)}</IconBefore>}
@@ -288,7 +302,7 @@ Button.defaultProps = {
   round: true,
   size: 'small',
   align: 'left',
-  width: '100%',
+  width: 'auto',
   iconBefore: '',
   iconAfter: '',
   text: '',

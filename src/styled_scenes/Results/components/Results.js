@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 // COMPONENTS
 import Row from '../../../shared_components/layout/Row';
 import TripCard from '../../../shared_components/Cards/Trip';
+import PaginationWrap from 'shared_components/PaginationWrap';
 import ReactPaginate from 'react-paginate';
 import { media } from '../../../libs/styled';
 import { Loader, Grid } from 'semantic-ui-react';
@@ -14,47 +15,6 @@ import moment from 'moment';
 // STYLES
 const Wrap = styled.div`
   padding: 25px;
-`;
-
-const PaginationWrap = styled.div`
-  text-align: center;
-
-  ul {
-    display: inline-block;
-    list-style-type: none;
-
-    li {
-      float: left;
-      margin: 0;
-      padding: 0;
-
-      a {
-        display: block;
-        padding: 5px 12px;
-        margin: 0 5px;
-        border: 1px solid grey;
-        border-radius: 4px;
-        cursor: pointer;
-
-        &:focus {
-          outline: none;
-        }
-      }
-
-      &.selected {
-        a {
-          border: 1px solid #4fb798;
-          color: #4fb798;
-        }
-      }
-
-      &.disabled {
-        a {
-          visibility: hidden;
-        }
-      }
-    }
-  }
 `;
 
 const ResultItem = styled.div`

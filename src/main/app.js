@@ -13,6 +13,7 @@ import Results from './../scenes/results/results';
 import Trip from './../scenes/trip';
 import TripCreator from './../scenes/trip-creator';
 import TripOrganizer from './../scenes/trip-organizer';
+import TripShare from './../scenes/trip-share';
 import Users from './../scenes/users/users';
 import Services from './../scenes/services/services';
 import Registrations from './../scenes/registrations/registrations';
@@ -62,6 +63,10 @@ class App extends React.Component {
               <PrivateRoute
                 path={process.env.PUBLIC_URL + '/trips/organize/:id'}
                 component={commonHOCs(TripOrganizer)}
+              />
+              <PrivateRoute
+                path={process.env.PUBLIC_URL + '/trips/share/:id'}
+                component={commonHOCs(TripShare)}
               />
               <PrivateRoute
                 path={process.env.PUBLIC_URL + '/trips/checkout/:id'}

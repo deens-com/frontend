@@ -47,7 +47,7 @@ export class CheckoutTrip extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      days: mapServicesToDays(props.trip.services),
+      days: mapServicesToDays(props.trip.services, props.trip.duration),
     };
   }
   render() {

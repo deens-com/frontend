@@ -5,28 +5,34 @@ import { Dropdown } from 'semantic-ui-react';
 import I18nText from 'shared_components/I18nText';
 
 const Content = styled.span`
-  display: flex;
+  font-size: 12px;
 `;
 
 const GroupTitle = styled.span`
-  font-size: 16px;
+  font-size: 14px;
   font-weight: bold;
   margin-right: 10px;
-  flex-shrink: 1;
+  margin-bottom: 3px;
   align-self: center;
 `;
 
 const Title = styled.span`
   flex: 1;
+  flex-grow: 1;
 `;
 
 const Price = styled.span`
   flex: 1;
   font-weight: bold;
+  flex-shrink: 1;
 `;
 
 const DropdownWrapper = styled.span`
   flex-grow: 1;
+`;
+
+const Wrapper = styled.div`
+  padding: 5px 10px;
 `;
 
 function getPrice(base, price) {
@@ -40,11 +46,6 @@ function getPrice(base, price) {
 
   return Number(price.value);
 }
-
-const Wrapper = styled.div`
-  margin: auto;
-  display: flex;
-`;
 
 function renderOption(option, basePrice) {
   return (

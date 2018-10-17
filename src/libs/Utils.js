@@ -168,3 +168,15 @@ export function reloadPage() {
 export function getLargeImageFromMedia(media) {
   return media && media[0] && media[0].files && media[0].files.large && media[0].files.large.url;
 }
+
+/**
+ * Gets latitude and longitude from trip or service coordinates
+ * @param {Array<number>} coordinates An array of lat and lng
+ * @returns {Object} An object with the coordinates
+ */
+export function getFromCoordinates(coordinates) {
+  return {
+    lat: coordinates[1] || null,
+    lng: coordinates[0] || null,
+  };
+}
