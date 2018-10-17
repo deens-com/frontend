@@ -37,6 +37,8 @@ const colors = {
   greenActive: '#4ac4a1',
   white: '#fff',
   gray: '#d3d7dc',
+  darkRed: '#aa2929',
+  red: '#e87878',
 };
 
 export const theme = {
@@ -102,6 +104,14 @@ export const theme = {
     border: colors.lighterGreen,
     borderHover: colors.lightGreen,
     color: colors.lightGreen,
+    colorHover: colors.white,
+  },
+  fillLightRed: {
+    background: colors.red,
+    backgroundHover: colors.darkRed,
+    border: colors.red,
+    borderHover: colors.darkRed,
+    color: colors.darkRed,
     colorHover: colors.white,
   },
   icon: {

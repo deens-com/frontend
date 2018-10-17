@@ -374,19 +374,24 @@ export default class TripOrganizer extends Component {
     }, this.autoPatchTrip);
   };
 
-  changeTripName = (_, data) => {
+  changeTripName = event => {
+    const title = event.target.value;
+    this.changeTripNameDebounced(title);
+  };
+
+  changeTripNameDebounced = debounce(title => {
     this.setState(
       prevState => ({
         trip: {
           ...prevState.trip,
           title: {
-            'en-us': data.value,
+            'en-us': title,
           },
         },
       }),
       this.autoPatchTrip,
     );
-  };
+  }, 500);
 
   goToDay = index => {
     const domNode = ReactDOM.findDOMNode(this.childRefs[index].current);
@@ -474,7 +479,7 @@ export default class TripOrganizer extends Component {
       prevState => ({
         trip: {
           ...prevState.trip,
-          duration: prevState.trip + daysToMinutes(1),
+          duration: prevState.trip.duration + daysToMinutes(1),
         },
         days: [
           ...prevState.days,
@@ -544,7 +549,7 @@ export default class TripOrganizer extends Component {
     }
 
     if (!this.props.numberOfPeople) {
-      return 'You need to select a number of guests';
+      return 'You need to select a number of adults';
     }
 
     const options = [];

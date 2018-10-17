@@ -51,7 +51,7 @@ class DaySelector extends React.Component {
       <Wrapper bottom={this.props.bottom}>
         {days.map((day, index) => (
           <Button
-            theme="fillLighterGreen"
+            theme={day.data.length > 0 ? 'fillLighterGreen' : 'fillLightRed'}
             key={day.title}
             onClick={() => this.props.goToDay(index)}
             bold

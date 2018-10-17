@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Input, Button, Modal, Popup, Dropdown } from 'semantic-ui-react';
+import { Input, Button, Modal, Popup, Dropdown, Loader } from 'semantic-ui-react';
 import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete';
 import I18nText from 'shared_components/I18nText';
 import axios from 'libs/axios';
@@ -124,7 +124,7 @@ export default class AddServiceModal extends Component {
       isSearching: false,
       results: null,
       services: [],
-      page: 1,
+      page: 0,
     };
     this.latestSearchNumber = 0;
   }
@@ -136,6 +136,7 @@ export default class AddServiceModal extends Component {
       this.setState(
         {
           isSearching: true,
+          page: page || 0,
         },
         async () => {
           const query = composeFetchQuery({
@@ -149,7 +150,7 @@ export default class AddServiceModal extends Component {
             ...(searchType === 'text' && {
               text,
             }),
-            page: page || 1,
+            page: this.state.page + 1,
           });
 
           const results = await axios.get(`/search/services?${query}`);
@@ -204,7 +205,7 @@ export default class AddServiceModal extends Component {
   };
 
   selectService = async service => {
-    this.props.onServiceSelect(this.props.day, service);
+    this.props.onServiceSelect(this.props.day.day, service);
     this.handleClose();
   };
 
@@ -236,7 +237,7 @@ export default class AddServiceModal extends Component {
   };
 
   handlePageChange = item => {
-    this.search(item.selected + 1);
+    this.search(item.selected);
   };
 
   renderResults = () => {
@@ -287,7 +288,8 @@ export default class AddServiceModal extends Component {
           Adding to{' '}
           <TripName>
             <I18nText data={trip.title} />
-          </TripName>
+          </TripName>{' '}
+          on <TripName>{this.props.day.shortTitle}</TripName>
         </Modal.Header>
         <Modal.Content style={{ minHeight: '20vw' }}>
           <ModalContent>
@@ -344,7 +346,11 @@ export default class AddServiceModal extends Component {
                 )}
               </SearchBy>
             </SearchSettings>
-            {isSearching ? 'Fetching results...' : this.renderResults()}
+            {isSearching ? (
+              <Loader className="add-service-modal-loader" inline="centered" active />
+            ) : (
+              this.renderResults()
+            )}
             {this.state.services &&
               this.state.services.length > 0 && (
                 <Pagination>
@@ -355,6 +361,7 @@ export default class AddServiceModal extends Component {
                     onPageChange={this.handlePageChange}
                     previousClassName="previousButton"
                     nextClassName="nextButton"
+                    forcePage={this.state.page}
                   />
                 </Pagination>
               )}

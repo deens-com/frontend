@@ -40,12 +40,16 @@ const Title = styled.h3`
   a {
     color: inherit;
   }
+  position: relative;
+  bottom: 1.4em;
 `;
 
 const Description = styled.div`
   font-size: 14px;
   line-height: 16px;
   color: #545454;
+  position: relative;
+  bottom: 1.2em;
 `;
 
 const Price = styled.span`
@@ -158,6 +162,11 @@ class TripCard extends Component {
             withTooltip={this.props.withTooltip}
           />
           <ContentWrap small={this.isViewTypeOf('food')}>
+            {this.isViewTypeOf('food') || this.isViewTypeOf('accommodation') ? (
+              <div />
+            ) : (
+              <Duration>{duration(this.props.item.duration)}</Duration>
+            )}
             <Title>
               <Truncate
                 onTruncate={!this.state.truncated && this.handleTruncate}
