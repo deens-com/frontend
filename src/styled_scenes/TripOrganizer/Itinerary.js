@@ -3,14 +3,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Popup, Checkbox, Loader } from 'semantic-ui-react';
+import { Loader } from 'semantic-ui-react';
 import { getCategory } from 'libs/categories';
 import { media } from 'libs/styled';
 import I18nText from 'shared_components/I18nText';
-import { Settings } from 'shared_components/icons';
 import Category from 'shared_components/Category';
 import Options from './Options';
 import AddServiceModal from './AddServiceModal';
+import ServiceDaySelector from './ServiceDaySelector';
 
 const Wrapper = styled.div`
   margin: 40px auto 0;
@@ -25,21 +25,6 @@ const DayTitle = styled.div`
 
 const Day = styled.div`
   margin: 20px 0;
-`;
-
-const DayListItem = styled.li`
-  list-style-type: none;
-  display: flex;
-  margin: 5px 0;
-  align-items: center;
-
-  > div {
-    margin-right: 5px;
-  }
-`;
-
-const PopupTrigger = styled.div`
-  cursor: pointer;
 `;
 
 const Service = styled.div`
@@ -141,14 +126,6 @@ export default class Itinerary extends Component {
     this.props.changeDates({ start_date: start, end_date: end });
   };
 
-  handleServiceDayChange = (event, data) => {
-    if (!data.checked) {
-      this.props.removeService(data.day, data.service._id);
-      return;
-    }
-    this.props.addService(data.day, data.service);
-  };
-
   renderServiceFooter = (day, service) => {
     const availability =
       this.props.availability &&
@@ -205,11 +182,7 @@ export default class Itinerary extends Component {
   renderDay = (day, index) => (
     <Day key={day.title} innerRef={this.r[index]}>
       <DayTitle>{day.title}</DayTitle>
-      <AddServiceModal
-        trip={this.props.trip}
-        onServiceSelect={this.props.addService}
-        day={day.day}
-      />
+      <AddServiceModal trip={this.props.trip} onServiceSelect={this.props.addService} day={day} />
       {day.data.map(dayData => (
         <Service key={dayData.service._id}>
           <ServiceBody>
@@ -235,35 +208,12 @@ export default class Itinerary extends Component {
               </ServiceTitle>
               <LastLine>
                 <StartingPrice>Starts from ${dayData.service.basePrice}</StartingPrice>
-                <Popup
-                  trigger={
-                    <PopupTrigger>
-                      <Settings />
-                    </PopupTrigger>
-                  }
-                  content={
-                    <ul>
-                      {this.props.days.map(checkboxDay => (
-                        <DayListItem key={checkboxDay.day}>
-                          <Checkbox
-                            name={dayData.service._id}
-                            day={checkboxDay.day}
-                            service={dayData.service}
-                            checked={
-                              this.props.daysByService[dayData.service._id] &&
-                              this.props.daysByService[dayData.service._id].includes(
-                                checkboxDay.day,
-                              )
-                            }
-                            onChange={this.handleServiceDayChange}
-                          />
-                          {checkboxDay.title}
-                        </DayListItem>
-                      ))}
-                    </ul>
-                  }
-                  on="click"
-                  position="bottom left"
+                <ServiceDaySelector
+                  dayData={dayData}
+                  daysByService={this.props.daysByService}
+                  days={this.props.days}
+                  removeService={this.props.removeService}
+                  addService={this.props.addService}
                 />
               </LastLine>
             </ServiceData>

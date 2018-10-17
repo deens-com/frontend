@@ -204,7 +204,7 @@ export default class AddServiceModal extends Component {
   };
 
   selectService = async service => {
-    this.props.onServiceSelect(this.props.day, service);
+    this.props.onServiceSelect(this.props.day.day, service);
     this.handleClose();
   };
 
@@ -287,7 +287,8 @@ export default class AddServiceModal extends Component {
           Adding to{' '}
           <TripName>
             <I18nText data={trip.title} />
-          </TripName>
+          </TripName>{' '}
+          on <TripName>{this.props.day.shortTitle}</TripName>
         </Modal.Header>
         <Modal.Content style={{ minHeight: '20vw' }}>
           <ModalContent>

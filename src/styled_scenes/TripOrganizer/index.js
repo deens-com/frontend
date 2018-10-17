@@ -474,7 +474,7 @@ export default class TripOrganizer extends Component {
       prevState => ({
         trip: {
           ...prevState.trip,
-          duration: prevState.trip + daysToMinutes(1),
+          duration: prevState.trip.duration + daysToMinutes(1),
         },
         days: [
           ...prevState.days,
@@ -544,7 +544,7 @@ export default class TripOrganizer extends Component {
     }
 
     if (!this.props.numberOfPeople) {
-      return 'You need to select a number of guests';
+      return 'You need to select a number of adults';
     }
 
     const options = [];
