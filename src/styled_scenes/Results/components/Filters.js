@@ -8,11 +8,14 @@ import { DateRangePicker } from 'react-dates';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import moment from 'moment';
 import Media from 'react-media';
+import debounce from 'lodash.debounce';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
 import * as results_actions from './../../../scenes/results/actions';
+
+const radiusOptions = [1, 5, 10, 20, 50, 100];
 
 const Wrap = styled.div`
   //margin-left: 20px;
@@ -65,9 +68,70 @@ const MobileSorting = styled.span`
   margin-top: 0.9em;
 `;
 
+const InputRange = styled.input`
+  appearance: none;
+  width: 300px;
+  height: 15px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  border-radius: 15px;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background: #38d39f;
+    cursor: pointer;
+    border-radius: 15px;
+  }
+
+  &::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    background: #38d39f;
+    cursor: pointer;
+    border-radius: 15px;
+  }
+
+  &::-ms-thumb {
+    width: 15px;
+    height: 15px;
+    background: #38d39f;
+    cursor: pointer;
+    border-radius: 15px;
+  }
+`;
+
+const InputRangeValues = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+
+  span {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    width: 1px;
+    background: #d3d3d3;
+    height: 10px;
+    line-height: 40px;
+    margin: 0 0 10px 0;
+  }
+`;
+
 class Filters extends Component {
   constructor(props) {
     super(props);
+    const radiusIndex = radiusOptions.indexOf(Number(props.search_query.radiusInKm));
+
     this.state = {
       address: props.search_query.address || undefined,
       latitude: props.search_query.latitude || undefined,
@@ -88,10 +152,12 @@ class Filters extends Component {
       isGuestsPopupOpen: false,
       isMoodPopupOpen: false,
       isSortingPopupOpen: false,
+      isRadiusPopupOpen: false,
       startDate: null,
       endDate: null,
       focusedInput: null,
       sortBy: props.search_query.sortBy || null,
+      radiusInKm: radiusIndex !== -1 ? radiusIndex : 2,
     };
     this.handleLocationChange = this.handleLocationChange.bind(this);
     this.handleStartDateChange = this.handleStartDateChange.bind(this);
@@ -100,6 +166,21 @@ class Filters extends Component {
     this.get_query_params = this.get_query_params.bind(this);
     this.handleServiceTypeChange = this.handleServiceTypeChange.bind(this);
     this.clear_address = this.clear_address.bind(this);
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if (state.isRadiusPopupOpen) {
+      return null;
+    }
+
+    const radiusIndex = radiusOptions.indexOf(Number(props.search_query.radiusInKm));
+    if ((radiusIndex === -1) | (radiusIndex === state.radiusInKm)) {
+      return null;
+    }
+
+    return {
+      radiusInKm: radiusIndex,
+    };
   }
 
   get_query_params() {
@@ -114,6 +195,7 @@ class Filters extends Component {
       tags: this.props.search_query.tags,
       onlySmartContracts: this.props.search_query.onlySmartContracts,
       sortBy: this.props.search_query.sortBy,
+      radiusInKm: this.props.search_query.radiusInKm,
     };
   }
 
@@ -137,6 +219,10 @@ class Filters extends Component {
     query_params.end_date = dateRange.end_date;
     this.props.update_path(query_params);
   }
+
+  debounced_refetch_results = debounce(param_object => {
+    this.refetch_results(param_object);
+  }, 1000);
 
   handleStartDateChange(dateObject) {
     const date_start = dateObject.toISOString();
@@ -198,12 +284,27 @@ class Filters extends Component {
     this.refetch_results_for_dates({ start_date: '', end_date: '' });
   };
 
+  changeRadius = event => {
+    this.setState(
+      {
+        radiusInKm: event.target.value,
+      },
+      () => {
+        this.debounced_refetch_results({ radiusInKm: radiusOptions[this.state.radiusInKm] });
+      },
+    );
+  };
+
   handleCategoryPopupClose = () => {
     this.setState({ isCategoryPopupOpen: false });
   };
 
   handleLocationPopupClose = () => {
     this.setState({ isLocationPopupOpen: false });
+  };
+
+  handleRadiusPopupClose = () => {
+    this.setState({ isRadiusPopupOpen: false });
   };
 
   handleDatesPopupClose = () => {
@@ -244,6 +345,10 @@ class Filters extends Component {
 
   handleSortingPopupOpen = () => {
     this.setState({ isSortingPopupOpen: true });
+  };
+
+  handleRadiusPopupOpen = () => {
+    this.setState({ isRadiusPopupOpen: true });
   };
 
   onDropDownChange = (event, object) => {
@@ -371,6 +476,59 @@ class Filters extends Component {
                       open={this.state.isLocationPopupOpen}
                       onClose={this.handleLocationPopupClose}
                       onOpen={this.handleLocationPopupOpen}
+                      position="bottom center"
+                    />
+                  </EditableElement>
+
+                  <div>
+                    <p> &nbsp; {'within '} </p>
+                  </div>
+
+                  <EditableElement>
+                    <Popup
+                      trigger={
+                        <p>
+                          {this.state.isRadiusPopupOpen
+                            ? radiusOptions[this.state.radiusInKm]
+                            : this.props.search_query.radiusInKm}{' '}
+                          km
+                        </p>
+                      }
+                      content={
+                        <div style={{ textAlign: 'center' }}>
+                          {this.state.isRadiusPopupOpen && (
+                            <InputRange
+                              type="range"
+                              min="0"
+                              max="5"
+                              step="1"
+                              value={this.state.radiusInKm}
+                              onChange={this.changeRadius}
+                              list="options"
+                            />
+                          )}
+                          <InputRangeValues>
+                            <span>1</span>
+                            <span>5</span>
+                            <span>10</span>
+                            <span>20</span>
+                            <span>50</span>
+                            <span>100</span>
+                          </InputRangeValues>
+                          <datalist id="options">
+                            <option value="0" />
+                            <option value="1" />
+                            <option value="2" />
+                            <option value="3" />
+                            <option value="4" />
+                            <option value="5" />
+                          </datalist>
+                        </div>
+                      }
+                      on="click"
+                      open={this.state.isRadiusPopupOpen}
+                      onClose={this.handleRadiusPopupClose}
+                      onOpen={this.handleRadiusPopupOpen}
                       position="bottom center"
                     />
                   </EditableElement>
