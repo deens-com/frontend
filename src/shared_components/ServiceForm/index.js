@@ -724,7 +724,7 @@ export default withFormik({
           lng: service.location.geo.coordinates[0],
         }) ||
       null,
-    tags: (service && service.tags.map(tag => tag._id || tag)) || [],
+    tags: (service && service.tags && service.tags.map(tag => tag._id || tag)) || [],
     media: (service && service.media) || [],
     formattedAddress:
       (service && service.location && service.location.formattedAddress) || undefined,
