@@ -19,13 +19,37 @@ const Wrap = styled.div`
   transform: ${props => (props.$hover ? 'scale(1.1)' : 'scale(1)')};
   transition: transform 0.1s ease-out;
   width: 30px;
+  z-index: ${props => (props.$hover ? 5 : 1)};
+`;
+const Label = styled.div`
+  position: absolute;
+  top: -32px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  padding: 6px;
+  background: white;
+  color: black;
+
+  font-size: 14px;
+  white-space: nowrap;
+
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+  opacity: ${props => (props.$hover ? 1 : 0)};
+  transition: opacity 0.1s ease-out;
 `;
 
 // MODULE
-export default function MapMaker({ withIcon, color, $hover }) {
+export default function MapMaker({ withIcon, color, $hover, name }) {
   return (
     <Wrap $hover={$hover} color={color}>
-      {withIcon ? <PinIcon /> : <PinIcon />}
+      <div>
+        <Label $hover={$hover} className="name">
+          {name}
+        </Label>
+        {withIcon ? <PinIcon /> : <PinIcon />}
+      </div>
     </Wrap>
   );
 }
