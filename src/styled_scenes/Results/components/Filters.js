@@ -125,6 +125,7 @@ const InputRangeValues = styled.div`
     line-height: 40px;
     margin: 0 0 10px 0;
   }
+`;
 
 const ClearTagsWrapper = styled.div`
   margin-top: -10px;
