@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Loader } from 'semantic-ui-react';
+import { Loader, Modal } from 'semantic-ui-react';
 import { getCategory } from 'libs/categories';
 import { media } from 'libs/styled';
 import I18nText from 'shared_components/I18nText';
@@ -110,12 +110,25 @@ const StartingPrice = styled.div`
   font-size: 14px;
 `;
 
+const DeleteDayButton = styled.button`
+  background-color: white;
+  border-radius: 3px;
+  border: 1px solid #d98181;
+  color: #d98181;
+  font-weight: bold;
+  cursor: pointer;
+`;
+
 export default class Itinerary extends Component {
   constructor(props) {
     super(props);
     if (this.props.days) {
       this.r = this.props.days.map(_ => React.createRef());
     }
+
+    this.state = {
+      dayToDelete: null,
+    };
 
     props.assignRefsToParent(this.r);
   }
@@ -124,6 +137,25 @@ export default class Itinerary extends Component {
     const start = dateRange.startDate;
     const end = dateRange.endDate;
     this.props.changeDates({ start_date: start, end_date: end });
+  };
+
+  openModal = day => {
+    this.setState({
+      dayToDelete: day,
+    });
+  };
+
+  keepDay = () => {
+    this.setState({
+      dayToDelete: null,
+    });
+  };
+
+  removeDay = () => {
+    this.props.removeDay(this.state.dayToDelete);
+    this.setState({
+      dayToDelete: null,
+    });
   };
 
   renderServiceFooter = (day, service) => {
@@ -182,6 +214,7 @@ export default class Itinerary extends Component {
   renderDay = (day, index) => (
     <Day key={day.title} innerRef={this.r[index]}>
       <DayTitle>{day.title}</DayTitle>
+      <DeleteDayButton onClick={() => this.openModal(day)}>Delete this day</DeleteDayButton>
       <AddServiceModal trip={this.props.trip} onServiceSelect={this.props.addService} day={day} />
       {day.data.map(dayData => (
         <Service key={dayData.service._id}>
@@ -230,7 +263,34 @@ export default class Itinerary extends Component {
       this.props.assignRefsToParent(this.r);
     }
 
-    return <Wrapper>{this.props.days && this.props.days.map(this.renderDay)}</Wrapper>;
+    return (
+      <React.Fragment>
+        {this.state.dayToDelete && (
+          <Modal
+            open
+            on="click"
+            onClose={this.keepDay}
+            header={`Remove ${this.state.dayToDelete.title}`}
+            content="Are you sure you want to delete this day from your trip? If there are following days, they will be moved one day back."
+            size="small"
+            actions={[
+              {
+                key: 'keep',
+                content: 'Keep the day',
+                onClick: this.keepDay,
+              },
+              {
+                onClick: this.removeDay,
+                key: 'delete',
+                content: 'Delete',
+                negative: true,
+              },
+            ]}
+          />
+        )}
+        <Wrapper>{this.props.days && this.props.days.map(this.renderDay)}</Wrapper>
+      </React.Fragment>
+    );
   }
 }
 
