@@ -63,7 +63,6 @@ export default class PaymentSection extends Component {
       pricePerPerson,
       totalPrice,
       numberOfPerson,
-      isLoading,
       onStripeTokenReceived,
       paymentError,
       guests,

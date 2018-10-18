@@ -4,7 +4,6 @@ import { Dropdown, Form, Modal, Message, Button } from 'semantic-ui-react';
 import { withFormik } from 'formik';
 import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete';
 import styled from 'styled-components';
-import serviceTags from './service-tags';
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
 import { Link } from 'react-router-dom';
 import history from './../../main/history';
@@ -41,8 +40,6 @@ const weekDays = [
   { text: 'Saturday', value: 'saturday' },
   { text: 'Sunday', value: 'sunday' },
 ];
-
-const tagsDropdownOptions = serviceTags.map(value => ({ text: value, value }));
 
 const ErrorMsg = styled.div`
   color: red;
