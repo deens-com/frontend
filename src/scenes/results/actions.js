@@ -82,6 +82,7 @@ const composeQuery = search_params => {
     page: search_params.page || 1,
     limit: search_params.limit || 10,
     sortBy: search_params.sortBy || undefined,
+    radiusInKm: search_params.radiusInKm || 10,
   };
   let query_arr = [];
   Object.entries(query_params).forEach(([key, value]) => {
@@ -111,6 +112,7 @@ export const composeFetchQuery = search_params => {
     limit: search_params.limit || 1,
     text: search_params.text || undefined,
     sortBy: search_params.sortBy || undefined,
+    radiusInKm: search_params.radiusInKm || 10,
   };
   let query_arr = [];
   Object.entries(query_params).forEach(([key, value]) => {

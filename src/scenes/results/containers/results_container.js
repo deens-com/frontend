@@ -22,6 +22,7 @@ class ResultsContainer extends Component {
       page: this.props.page,
       limit: this.props.limit,
       sortBy: this.props.sortBy,
+      radiusInKm: this.props.radiusInKm,
     };
     this.props.update_search_query(search_query);
   }
@@ -44,6 +45,7 @@ class ResultsContainer extends Component {
         page: next_props.page,
         limit: next_props.limit,
         sortBy: next_props.sortBy,
+        radiusInKm: next_props.radiusInKm,
       });
     }
   }

@@ -30,6 +30,7 @@ const Results = props => {
   let resultsCount = search_params.resultsCount || 0;
   let limit = search_params.limit || 10;
   let sortBy = search_params.sortBy || '';
+  let radiusInKm = search_params.radiusInKm || 10;
 
   return (
     <div className="Home">
@@ -50,6 +51,7 @@ const Results = props => {
         resultsCount={resultsCount}
         limit={limit}
         sortBy={sortBy}
+        radiusInKm={radiusInKm}
       />
     </div>
   );
