@@ -110,6 +110,14 @@ const StartingPrice = styled.div`
   font-size: 14px;
 `;
 
+const NoServices = styled.div`
+  font-size: 18px;
+  margin: 10px 0 50px;
+  text-align: center;
+  font-variant: all-small-caps;
+  font-weight: bold;
+`;
+
 export default class Itinerary extends Component {
   constructor(props) {
     super(props);
@@ -221,6 +229,9 @@ export default class Itinerary extends Component {
           {this.renderServiceFooter(day.day, dayData.service)}
         </Service>
       ))}
+      {day.data.length === 0 && (
+        <NoServices>There are no services selected for this day.</NoServices>
+      )}
     </Day>
   );
 
