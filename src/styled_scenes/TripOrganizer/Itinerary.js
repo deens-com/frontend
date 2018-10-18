@@ -8,6 +8,7 @@ import { getCategory } from 'libs/categories';
 import { media } from 'libs/styled';
 import I18nText from 'shared_components/I18nText';
 import Category from 'shared_components/Category';
+import { TrashCan } from 'shared_components/icons';
 import Options from './Options';
 import AddServiceModal from './AddServiceModal';
 import ServiceDaySelector from './ServiceDaySelector';
@@ -17,10 +18,34 @@ const Wrapper = styled.div`
   color: #3c434b;
 `;
 
-const DayTitle = styled.div`
-  font-size: 18px;
-  font-weight: bold;
+const DayHeader = styled.div`
+  display: flex;
   margin-bottom: 15px;
+  align-items: center;
+`;
+
+const DeleteDayButton = styled.button`
+  background-color: white;
+  border-radius: 3px;
+  border: 1px solid #d98181;
+  color: #d98181;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 5px 7px;
+  margin-left: 15px;
+  outline: 0;
+  display: flex;
+
+  svg {
+    fill: #d98181;
+    margin-right: 5px;
+  }
+`;
+
+const DayTitle = styled.div`
+  font-size: 20px;
+  font-weight: bold;
 `;
 
 const Day = styled.div`
@@ -108,15 +133,6 @@ const StartingPrice = styled.div`
   flex: 1;
   color: #3c434b;
   font-size: 14px;
-`;
-
-const DeleteDayButton = styled.button`
-  background-color: white;
-  border-radius: 3px;
-  border: 1px solid #d98181;
-  color: #d98181;
-  font-weight: bold;
-  cursor: pointer;
 `;
 
 export default class Itinerary extends Component {
@@ -213,8 +229,13 @@ export default class Itinerary extends Component {
 
   renderDay = (day, index) => (
     <Day key={day.title} innerRef={this.r[index]}>
-      <DayTitle>{day.title}</DayTitle>
-      <DeleteDayButton onClick={() => this.openModal(day)}>Delete this day</DeleteDayButton>
+      <DayHeader>
+        <DayTitle>{day.title}</DayTitle>
+        <DeleteDayButton onClick={() => this.openModal(day)}>
+          <TrashCan />
+          Delete this day
+        </DeleteDayButton>
+      </DayHeader>
       <AddServiceModal trip={this.props.trip} onServiceSelect={this.props.addService} day={day} />
       {day.data.map(dayData => (
         <Service key={dayData.service._id}>
