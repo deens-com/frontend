@@ -23,3 +23,16 @@
   font-weight: normal !important;
   margin-top: 15px !important;
 }
+
+/*
+  Modal has a dimmer and a loader inside a dimmer is white.
+  But we show the loader over a white background. No official solution so far.
+  https://github.com/Semantic-Org/Semantic-UI/issues/4014
+*/
+.add-service-modal-loader::before {
+  border-color: rgba(0,0,0,.1) !important;
+}
+
+.add-service-modal-loader::after {
+  border-color: #767676 transparent transparent !important;
+}
