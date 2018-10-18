@@ -1,6 +1,7 @@
 // NPM
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import styled from 'styled-components';
 import Truncate from 'react-truncate';
 import { Popup } from 'semantic-ui-react';
@@ -116,8 +117,7 @@ function formatLocation(location) {
 }
 
 const duration = minutes => {
-  const dayNb = minutes || 0;
-  return dayNb.toFixed() + ' min';
+  return moment.duration(minutes || 0, 'minutes').humanize();
 };
 
 class TripCard extends Component {
