@@ -40,7 +40,6 @@ const CoinbaseButtonWrapper = styled.div`
 export default class PaymentSection extends Component {
   static propTypes = {
     tripId: PropTypes.string.isRequired,
-    isLoading: PropTypes.bool.isRequired,
     pricePerPerson: PropTypes.number.isRequired,
     totalPrice: PropTypes.number.isRequired,
     onPaymentClick: PropTypes.func.isRequired,
