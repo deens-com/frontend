@@ -25,6 +25,7 @@ const Price = styled.span`
   flex: 1;
   font-weight: bold;
   flex-shrink: 1;
+  margin-left: 15px;
 `;
 
 const DropdownWrapper = styled.span`
@@ -50,7 +51,7 @@ function getPrice(base, price) {
 function renderOption(option, basePrice) {
   return (
     <Content>
-      <Title>{I18nText.translate(option.subtitle || option.title)}</Title> -{' '}
+      <Title>{I18nText.translate(option.subtitle || option.title)}</Title>
       <Price>${getPrice(basePrice, option.price)}</Price>
     </Content>
   );

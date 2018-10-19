@@ -138,6 +138,7 @@ function createTripState(props, state) {
     days: mapServicesToDays(props.trip.services, props.trip.duration, props.trip.startDate),
     optionsSelected,
     daysByService,
+    isCheckingList: [],
   };
 }
 
@@ -163,6 +164,7 @@ export default class TripOrganizer extends Component {
         availability: {},
         daysByService: {},
         pictureUploadError: '',
+        isCheckingList: [],
       };
     }
   }
@@ -343,6 +345,7 @@ export default class TripOrganizer extends Component {
             ],
           };
         }),
+        isCheckingList: [...prevState.isCheckingList, `${day}-${service._id}`],
       }),
       async () => {
         this.autoPatchTrip();
@@ -371,6 +374,9 @@ export default class TripOrganizer extends Component {
                   ],
                   timestamp: new Date().getTime(),
                 },
+                isCheckingList: prevState.isCheckingList.filter(
+                  value => value !== `${day}-${service._id}`,
+                ),
               }
             : null),
         }));
@@ -501,6 +507,7 @@ export default class TripOrganizer extends Component {
           isChecking: true,
           timestamp,
         },
+        isCheckingList: [],
       }),
       async () => {
         const days = this.state.days.reduce(
@@ -636,6 +643,13 @@ export default class TripOrganizer extends Component {
 
     if (!this.props.numberOfPeople) {
       return 'You need to select a number of adults';
+    }
+
+    const checkingAvailability =
+      this.state.availability.isChecking || this.state.isCheckingList.length > 0;
+
+    if (checkingAvailability) {
+      return 'We are checking the availability of the selected services';
     }
 
     const options = [];
@@ -808,7 +822,14 @@ export default class TripOrganizer extends Component {
 
   renderPageContent = () => {
     const { startDate, numberOfPeople } = this.props;
-    const { availability, trip, days, optionsSelected, pictureUploadError } = this.state;
+    const {
+      availability,
+      trip,
+      days,
+      optionsSelected,
+      pictureUploadError,
+      isCheckingList,
+    } = this.state;
 
     const hero = trip.media.find(media => media.hero) || trip.media[0];
     let img;
@@ -887,6 +908,7 @@ export default class TripOrganizer extends Component {
         />
         <Itinerary
           isCheckingAvailability={availability.isChecking}
+          isCheckingList={isCheckingList}
           availability={availability.data}
           trip={trip}
           numberOfPeople={numberOfPeople}

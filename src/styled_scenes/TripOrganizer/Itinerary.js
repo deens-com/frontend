@@ -279,7 +279,7 @@ export default class Itinerary extends Component {
   };
 
   renderAvailability = (day, id) => {
-    if (this.props.isCheckingAvailability) {
+    if (this.props.isCheckingAvailability || this.props.isCheckingList.includes(`${day}-${id}`)) {
       return (
         <CheckingAvailability>
           <Loader inline="centered" size="mini" active />
@@ -434,4 +434,9 @@ Itinerary.propTypes = {
   assignRefsToParent: PropTypes.func.isRequired,
   selectOption: PropTypes.func.isRequired,
   addService: PropTypes.func.isRequired,
+  isCheckingList: PropTypes.array,
+};
+
+Itinerary.defaultProps = {
+  isCheckingList: [],
 };

@@ -5,7 +5,7 @@ import moment from 'moment';
 import styled from 'styled-components';
 import history from 'main/history';
 import { Loader, Popup, Icon, Dropdown, Dimmer } from 'semantic-ui-react';
-import { DayPicker } from 'react-dates';
+import { SingleDatePicker } from 'react-dates';
 
 // COMPONENTS
 import TopBar from 'shared_components/TopBar';
@@ -69,6 +69,20 @@ const SentenceText = styled.p`
 
 const PopupContent = styled.div`
   width: 100%;
+  position: relative;
+
+  .SingleDatePickerInput {
+    visibility: hidden;
+  }
+
+  .SingleDatePicker {
+    position: absolute;
+    top: -53px;
+  }
+
+  .close {
+    display: none;
+  }
 `;
 
 export default class Trip extends Component {
@@ -180,11 +194,28 @@ export default class Trip extends Component {
                 }
                 content={
                   <PopupContent>
-                    <p>Select Stat Day</p>
-                    <DayPicker
-                      onDayClick={this.handleDatesChange}
+                    <p>Select Starting Day</p>
+                    <SingleDatePicker
+                      id="startDate"
+                      date={startDate}
+                      onDateChange={this.handleDatesChange}
+                      focused={this.state.isDatePopupOpen}
+                      onFocusChange={({ focused }) =>
+                        focused ? this.handleDatePopupOpen() : this.handleDatePopupClose()
+                      }
+                      placeholder={formattedStartDate}
+                      isDayBlocked={date =>
+                        date.valueOf() <=
+                        moment()
+                          .add(1, 'days')
+                          .valueOf()
+                      }
                       numberOfMonths={1}
-                      initialVisibleMonth={() => (startDate && startDate.clone()) || moment()}
+                      small
+                      noBorder
+                      anchorDirection="right"
+                      displayFormat="MM/DD/YY"
+                      block
                     />
                     <Icon
                       style={{ position: 'relative', left: '265px', bottom: '44px' }}
