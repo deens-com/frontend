@@ -12,6 +12,7 @@ describe('sessions reducer', () => {
       isLedgerLoaderDisplayed: false,
       updateError: {},
       isUploadingAvatar: false,
+      isLoading: false,
     });
   });
 
@@ -34,6 +35,7 @@ describe('sessions reducer', () => {
       isLedgerLoaderDisplayed: false,
       updateError: {},
       isUploadingAvatar: false,
+      isLoading: false,
     });
   });
 
@@ -59,6 +61,7 @@ describe('sessions reducer', () => {
       isLedgerLoaderDisplayed: false,
       updateError: {},
       isUploadingAvatar: false,
+      isLoading: false,
     });
   });
 
@@ -78,6 +81,7 @@ describe('sessions reducer', () => {
       }),
     ).toEqual({
       loggedIn: true,
+      isLoading: false,
       loginError: {},
       session: {
         hello: 'world',
