@@ -109,6 +109,7 @@ class HomeSearch extends Component {
       address: '',
       latitude: undefined,
       longitude: undefined,
+      serviceType: undefined,
       keywords: '',
       show_banner: false,
     };
@@ -131,7 +132,7 @@ class HomeSearch extends Component {
     this.setState({ keywords: ev.target.value });
   }
 
-  handleLocationChange(address) {
+  handleLocationChange(address, serviceType) {
     geocodeByAddress(address)
       .then(results => {
         this.setState({ address });
@@ -139,7 +140,10 @@ class HomeSearch extends Component {
       })
       .then(results => {
         const { lat, lng } = results;
-        this.setState({ address, latitude: lat, longitude: lng }, this.handleSearchSubmit);
+        this.setState(
+          { address, latitude: lat, longitude: lng, serviceType },
+          this.handleSearchSubmit,
+        );
       });
   }
 
@@ -156,6 +160,7 @@ class HomeSearch extends Component {
       address: this.state.address,
       latitude: this.state.latitude,
       longitude: this.state.longitude,
+      serviceTypes: this.state.serviceType,
     };
     let query_arr = [];
     Object.entries(query_params).forEach(([key, value]) => {
