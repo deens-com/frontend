@@ -79,6 +79,7 @@ export default class ResultsScene extends Component {
         key: service.objectId,
         lat: parseFloat(service.geo.lat),
         lng: parseFloat(service.geo.lng),
+        name: service.name,
       }));
   };
 
