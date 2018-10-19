@@ -139,6 +139,7 @@ export default class LoginFormComponent extends Component {
                         fluid
                         size="large"
                         onClick={this.props.submitLogin}
+                        loading={this.props.isLoading}
                       >
                         Login
                       </Button>
@@ -240,6 +241,7 @@ LoginFormComponent.propTypes = {
   loginWithMetamask: PropTypes.func.isRequired,
   metaMaskError: PropTypes.object,
   ledgerError: PropTypes.object,
+  isLoading: PropTypes.bool,
 };
 
 //export default LoginFormComponent;
