@@ -125,8 +125,19 @@ class TripCard extends Component {
     super(props);
     this.state = {
       truncated: false,
+      showTitlePopup: false,
     };
   }
+
+  onMouseEnter = () => {
+    if (!this.state.truncated) return;
+    this.setState({ showTitlePopup: true });
+  };
+
+  onMouseLeave = () => {
+    if (!this.state.truncated) return;
+    this.setState({ showTitlePopup: false });
+  };
 
   handleTruncate = truncated => {
     if (this.state.truncated !== truncated) {
@@ -167,7 +178,12 @@ class TripCard extends Component {
             ) : (
               <Duration>{duration(this.props.item.duration)}</Duration>
             )}
-            <Title>
+
+            <Title
+              innerRef={x => {
+                this.titleRef = x;
+              }}
+            >
               <Truncate
                 onTruncate={!this.state.truncated && this.handleTruncate}
                 lines={cardConfig.titleLines}
@@ -176,6 +192,7 @@ class TripCard extends Component {
               </Truncate>
               <Rating rating={rating} count={count} marginBottom="10px" />
             </Title>
+
             {(this.isViewTypeOf('accommodation') || this.isViewTypeOf('activity')) && (
               <Description>
                 <Truncate lines={cardConfig.descriptionLines}>
@@ -211,12 +228,12 @@ class TripCard extends Component {
     const { item } = this.props;
 
     return (
-      <div>
-        {this.state.truncated ? (
-          <Popup trigger={this.renderContent()} content={item.title} />
-        ) : (
-          this.renderContent()
+      <div onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
+        {this.state.truncated && (
+          <Popup content={item.title} context={this.titleRef} open={this.state.showTitlePopup} />
         )}
+
+        {this.renderContent()}
       </div>
     );
   }
