@@ -140,6 +140,14 @@ export const theme = {
   },
 };
 
+function getTheme(props) {
+  if (props.customTheme) {
+    return props.customTheme;
+  }
+
+  return theme[props.theme];
+}
+
 export const Wrap = styled.div`
   display: inline-block;
   width: ${props => props.width};
@@ -168,21 +176,21 @@ export const Wrap = styled.div`
     }
 
     ${props =>
-      props.theme &&
+      (props.theme || props.customTheme) &&
       css`
-        background: ${theme[props.theme].background};
-        border: 1px solid ${theme[props.theme].border};
-        color: ${theme[props.theme].color};
+        background: ${getTheme(props).background};
+        border: 1px solid ${getTheme(props).border};
+        color: ${getTheme(props).color};
         outline: none;
 
         &:hover,
         &:focus {
-          background: ${theme[props.theme].backgroundHover};
-          border: 1px solid ${theme[props.theme].borderHover};
-          color: ${theme[props.theme].colorHover};
+          background: ${getTheme(props).backgroundHover};
+          border: 1px solid ${getTheme(props).borderHover};
+          color: ${getTheme(props).colorHover};
 
           svg {
-            fill: ${theme[props.theme].colorHover};
+            fill: ${getTheme(props).colorHover};
           }
         }
       `};
@@ -280,6 +288,7 @@ export default class Button extends Component {
         width={this.props.width}
         bold={this.props.bold}
         fontSize={this.props.fontSize}
+        customTheme={this.props.customTheme}
       >
         <El>
           {this.props.iconBefore && <IconBefore>{this.getIcon(this.props.iconBefore)}</IconBefore>}
@@ -295,6 +304,14 @@ export default class Button extends Component {
 Button.propTypes = {
   type: PropTypes.string,
   theme: PropTypes.oneOf(Object.keys(theme)),
+  customTheme: PropTypes.shape({
+    background: PropTypes.string.isRequired,
+    backgroundHover: PropTypes.string.isRequired,
+    border: PropTypes.string.isRequired,
+    borderHover: PropTypes.string.isRequired,
+    color: PropTypes.string.isRequired,
+    colorHover: PropTypes.string.isRequired,
+  }),
   round: PropTypes.bool,
   size: PropTypes.string,
   align: PropTypes.string,

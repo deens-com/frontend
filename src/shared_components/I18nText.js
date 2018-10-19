@@ -1,7 +1,7 @@
 import React from 'react';
 //import PropTypes from 'prop-types';
 
-const translate = data => data['en-us'] || data;
+const translate = data => (typeof data['en-us'] === 'string' ? data['en-us'] : data);
 
 /**
  * A really small component that takes an internationalized object
