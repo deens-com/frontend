@@ -106,9 +106,10 @@ class RegistrationsContainer extends Component {
     return (
       <div className="RegistrationsContainer">
         <RegistrationsComponent
-          session={this.props.session}
+          session={this.props.registrationSession}
           username={this.state.username}
           email={this.state.email}
+          isLoading={this.props.isLoading}
           password={this.state.password}
           password_confirmation={this.state.password_confirmation}
           errors={this.props.errors}
@@ -124,10 +125,11 @@ class RegistrationsContainer extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = ({ RegistrationsReducer }) => {
   return {
-    session: state.RegistrationsReducer.session,
-    errors: state.RegistrationsReducer.errors,
+    registrationSession: RegistrationsReducer.session,
+    errors: RegistrationsReducer.errors,
+    isLoading: RegistrationsReducer.isLoading,
   };
 };
 

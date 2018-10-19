@@ -3,6 +3,7 @@ import * as registrations_actions from './actions';
 const initialState = {
   session: {},
   errors: {},
+  isLoading: false,
 };
 
 export default function RegistrationsReducer(state = initialState, action = {}) {
@@ -16,6 +17,11 @@ export default function RegistrationsReducer(state = initialState, action = {}) 
       return {
         ...state,
         errors: action.payload,
+      };
+    case registrations_actions.types.SET_LOADING:
+      return {
+        ...state,
+        isLoading: action.payload,
       };
     default:
       return state;

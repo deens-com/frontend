@@ -6,6 +6,7 @@ import { saveSession } from 'libs/user-session';
 export const types = {
   REGISTRATION_SUCCESS: 'REGISTRATION_SUCCESS',
   REGISTRATION_FAILED: 'REGISTRATION_FAILED',
+  SET_LOADING: 'SET_LOADING',
 };
 
 export const registrationSuccess = session => {
@@ -28,8 +29,16 @@ export const registrationFailed = error_payload => {
   };
 };
 
+export const setLoading = payload => {
+  return {
+    type: this.types.SET_LOADING,
+    payload,
+  };
+};
+
 export const postRegistration = (username, email, password) => async dispatch => {
   try {
+    dispatch(setLoading(true));
     await axios.post('/users/signup', {
       username: username,
       email: email,
@@ -43,6 +52,7 @@ export const postRegistration = (username, email, password) => async dispatch =>
     const userData = user.data;
     userData.accessToken = auth0Token;
     dispatch(registrationSuccess({ session: userData }));
+    dispatch(setLoading(false));
     saveSession(userData);
     history.goBack();
   } catch (error) {
@@ -59,5 +69,6 @@ export const postRegistration = (username, email, password) => async dispatch =>
         },
       }),
     );
+    dispatch(setLoading(false));
   }
 };
