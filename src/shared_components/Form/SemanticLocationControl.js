@@ -12,6 +12,7 @@ const ListSpan = styled.span`
 
 const ListWrapper = styled.ul`
   list-style-type: none;
+  min-width: 100%;
 `;
 
 const ListItem = styled.li`
@@ -60,10 +61,8 @@ export default class SemanticLocationControl extends Component {
   };
 
   onSelect = (address, placeId) => {
-    // const { onChange } = this.props;
-    // this.setState({ address, isOpen: undefined }, () => {
-    //   if (onChange) onChange(address, placeId);
-    // });
+    this.setState({ address, isOpen: undefined });
+    return null;
   };
 
   openMenu = event => {
@@ -79,8 +78,8 @@ export default class SemanticLocationControl extends Component {
     });
   };
 
-  onSelectSuggestion = event => {
-    console.log(event.currentTarget);
+  onSelectSuggestion = (address, type) => {
+    this.props.onChange(address, type);
   };
 
   render() {
@@ -133,43 +132,48 @@ export default class SemanticLocationControl extends Component {
           >
             <ListWrapper>
               <article {...getSuggestionItemProps(suggestions.length > 0 && suggestions[0])}>
-                <ListItem
-                  onClick={this.onSelectSuggestion}
-                  queryParams={{
-                    suggestionType: 'home',
-                    suggestion: suggestions.length > 0 ? suggestions[0].description : '',
-                  }}
-                >
+                <ListItem onClick={() => this.onSelectSuggestion(suggestions[0].description, '')}>
                   <ListSpan>
                     <List.Icon name="location arrow" />
                     &nbsp;
                     <p>{suggestions.length > 0 && suggestions[0].description}</p>
                   </ListSpan>
                 </ListItem>
-                <ListItem>
+                <ListItem
+                  onClick={() =>
+                    this.onSelectSuggestion(suggestions[0].description, 'accommodation')
+                  }
+                >
                   <ListSpan>
-                    <List.Icon name="location home" />
+                    <List.Icon name="home" />
                     &nbsp;
                     <p>Home in {suggestions.length > 0 && suggestions[0].description}</p>
                   </ListSpan>
                 </ListItem>
-                <ListItem>
+                <ListItem
+                  onClick={() => this.onSelectSuggestion(suggestions[0].description, 'activity')}
+                >
                   <ListSpan>
-                    <List.Icon name="location magic" />
+                    <List.Icon name="magic" />
                     &nbsp;
                     <p>Experiences in {suggestions.length > 0 && suggestions[0].description}</p>
                   </ListSpan>
                 </ListItem>
-                <ListItem>
+                <ListItem
+                  onClick={() => this.onSelectSuggestion(suggestions[0].description, 'food')}
+                >
                   <ListSpan>
-                    <List.Icon name="location food" />
+                    <List.Icon name="food" />
                     &nbsp;
                     <p>Restaurants in {suggestions.length > 0 && suggestions[0].description}</p>
                   </ListSpan>
                 </ListItem>
 
                 {suggestions.slice(1, 4).map(suggestion => (
-                  <ListItem key={suggestion.placeId} onClick={this.onSelectSuggestion}>
+                  <ListItem
+                    key={suggestion.placeId}
+                    onClick={() => this.onSelectSuggestion(suggestion.description, '')}
+                  >
                     <ListSpan>
                       <List.Icon name="location arrow" />
                       &nbsp;
