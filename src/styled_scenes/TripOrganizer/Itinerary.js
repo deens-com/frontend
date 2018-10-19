@@ -207,9 +207,18 @@ export default class Itinerary extends Component {
 
     this.state = {
       dayToDelete: null,
+      resetNoteDefaultValues: 0,
     };
 
     props.assignRefsToParent(this.r);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.days.length > this.props.days.length) {
+      this.setState(prevState => ({
+        resetNoteDefaultValues: prevState.resetNoteDefaultValues + 1,
+      }));
+    }
   }
 
   handleDatesChange = dateRange => {
@@ -317,7 +326,7 @@ export default class Itinerary extends Component {
       )}
       {this.props.trip.notes &&
         this.props.trip.notes[day.day] && (
-          <Note>
+          <Note key={`${day.day}-note-${this.state.resetNoteDefaultValues}`}>
             <NoteTitle>Note</NoteTitle>
             <Popup
               trigger={
