@@ -138,12 +138,18 @@ export default class CheckoutBox extends React.Component {
   }
 
   render() {
-    const { startDate, numberOfPeople, bookError, shareError, numberOfDays } = this.props;
+    const { startDate, numberOfPeople, bookError, shareError, numberOfDays, days } = this.props;
     const formattedStartDate = startDate ? startDate.format('MM/DD/YY') : 'Select date';
+
+    const addDay = days[days.length - 1].data.some(
+      value => value.service.categories[0].names['en-us'] === 'Accommodation',
+    )
+      ? 1
+      : 0;
     const endDate = startDate
       ? startDate
           .clone()
-          .add(numberOfDays, 'days')
+          .add(numberOfDays + addDay, 'days')
           .format('MM/DD/YY')
       : '';
 

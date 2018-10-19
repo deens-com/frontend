@@ -182,9 +182,42 @@ export default class TripOrganizer extends Component {
       (!(state.availability && state.availability.timestamp) ||
         props.availability.timestamp === state.availability.timestamp)
     ) {
+      const optionsSelected =
+        props.availability.data &&
+        props.availability.data.reduce((prev, value) => {
+          if (!value.groupedOptions || value.groupedOptions.options.length === 0) {
+            return prev;
+          }
+
+          if (!prev[value.day]) {
+            return {
+              ...prev,
+              [value.day]: {
+                [value.serviceId]: {
+                  availabilityCode:
+                    value.groupedOptions.options[0].otherAttributes.availabilityCode.code,
+                  price: value.groupedOptions.options[0].price,
+                },
+              },
+            };
+          }
+
+          return {
+            ...prev,
+            [value.day]: {
+              ...prev[value.day],
+              [value.serviceId]: {
+                availabilityCode:
+                  value.groupedOptions.options[0].otherAttributes.availabilityCode.code,
+                price: value.groupedOptions.options[0].price,
+              },
+            },
+          };
+        }, {});
       newState = {
         ...newState,
         availability: props.availability,
+        optionsSelected: optionsSelected,
       };
     }
 
