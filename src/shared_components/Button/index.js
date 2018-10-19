@@ -156,7 +156,7 @@ export const Wrap = styled.div`
   > label,
   > button,
   > a {
-    border-radius: ${props => (props.round ? '25px' : '0')};
+    border-radius: ${props => (props.round ? '25px' : '3px')};
     cursor: ${props => (props.theme === 'disabled' ? 'default' : 'pointer')};
     display: inline-block;
     font-size: ${props => props.fontSize || (props.size ? size[props.size].fontSize : 'inherit')};
