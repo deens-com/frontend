@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import moment from 'moment';
 import styled from 'styled-components';
-import { Loader, Dimmer } from 'semantic-ui-react';
+import { Loader, Dimmer, Message } from 'semantic-ui-react';
 import { geocodeByPlaceId } from 'react-places-autocomplete';
 
 import { serverBaseURL } from 'libs/config';
@@ -162,6 +162,7 @@ export default class TripOrganizer extends Component {
         optionsSelected: {},
         availability: {},
         daysByService: {},
+        pictureUploadError: '',
       };
     }
   }
@@ -597,6 +598,10 @@ export default class TripOrganizer extends Component {
   onFileSelect = async e => {
     const file = e.currentTarget.files[0];
     if (!file) return;
+    if (file.size > 3000000) {
+      this.setState({ pictureUploadError: 'File size should not exceed 3 Mb' });
+      return;
+    }
     const formData = new FormData();
     formData.append('profilePicture', file);
     const uploadedFile = await axiosOriginal.post(`${serverBaseURL}/media`, formData, {});
@@ -645,7 +650,7 @@ export default class TripOrganizer extends Component {
 
   renderPageContent = () => {
     const { startDate, numberOfPeople } = this.props;
-    const { availability, trip, days, optionsSelected } = this.state;
+    const { availability, trip, days, optionsSelected, pictureUploadError } = this.state;
 
     const hero = trip.media.find(media => media.hero) || trip.media[0];
     let img;
@@ -667,6 +672,12 @@ export default class TripOrganizer extends Component {
 
     return (
       <React.Fragment>
+        {pictureUploadError.length > 0 && (
+          <Message negative>
+            <Message.Header>An error occured</Message.Header>
+            <p>{pictureUploadError}</p>
+          </Message>
+        )}
         <CoverImage url={img}>
           <Button
             element={({ children }) => <label htmlFor="cover-image">{children}</label>}
