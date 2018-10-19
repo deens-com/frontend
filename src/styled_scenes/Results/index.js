@@ -111,13 +111,13 @@ export default class ResultsScene extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    const currentMarkers = this.getMarkerLatLngs(this.props);
-    const newMarkers = this.getMarkerLatLngs(nextProps);
-    if (
-      currentMarkers.length !== newMarkers.length ||
-      this.props.latitude !== nextProps.latitude ||
-      this.props.longitude !== nextProps.longitude
-    ) {
+    const hasLocationsChanged =
+      nextProps.service_data.map(item => item.name).join(',') ===
+      this.props.service_data.map(item => item.name).join(',');
+
+    if (hasLocationsChanged) {
+      const currentMarkers = this.getMarkerLatLngs(this.props);
+      const newMarkers = this.getMarkerLatLngs(nextProps);
       const { center, zoom } = this.getCenterAndZoom(newMarkers, nextProps);
       this.setState({ center, zoom, markers: newMarkers });
     }
