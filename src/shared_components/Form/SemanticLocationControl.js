@@ -27,10 +27,6 @@ const ListItem = styled.li`
  * If you wanna change the styles of the input, pass `inputStyles` prop
  */
 export default class SemanticLocationControl extends Component {
-  constructor(props) {
-    super(props);
-    this.myRef = React.createRef();
-  }
 
   static propTypes = {
     defaultAddress: PropTypes.string,
