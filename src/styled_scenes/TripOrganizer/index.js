@@ -451,9 +451,6 @@ export default class TripOrganizer extends Component {
   };
 
   changeDates = dates => {
-    console.log(
-      mapServicesToDays(this.props.trip.services, this.props.trip.duration, dates.start_date),
-    );
     this.checkAllServicesAvailability({
       startDate: moment(dates.start_date),
       guests: this.props.numberOfPeople,
@@ -648,6 +645,65 @@ export default class TripOrganizer extends Component {
     );
   };
 
+  removeDay = day => {
+    this.setState(
+      prevState => {
+        const optionsSelected = Object.keys(prevState.optionsSelected).reduce(
+          (prevOptions, value) => {
+            if (value === day.day) {
+              return prevOptions;
+            }
+            return {
+              ...prevOptions,
+              [value < day.day ? value : value - 1]: prevState.optionsSelected[value],
+            };
+          },
+          {},
+        );
+
+        const daysByService = Object.keys(prevState.daysByService).reduce((prevDays, value) => {
+          const newValue = prevState.daysByService[value]
+            .filter(dayByService => dayByService !== day.day)
+            .map(dayByService => (dayByService < day.day ? dayByService : dayByService - 1));
+          if (newValue.length === 0) {
+            return prevDays;
+          }
+
+          return {
+            ...prevDays,
+            [value]: newValue,
+          };
+        }, {});
+
+        return {
+          trip: {
+            ...prevState.trip,
+            duration: prevState.trip.duration - daysToMinutes(1),
+          },
+          optionsSelected,
+          daysByService,
+          days: prevState.days.filter(prevDay => prevDay.day !== day.day).map(
+            prevDay =>
+              prevDay.day < day.day
+                ? prevDay
+                : {
+                    ...prevDay,
+                    ...dayTitles(prevDay.day - 1, this.props.startDate),
+                    day: prevDay.day - 1,
+                  },
+          ),
+        };
+      },
+      () => {
+        this.checkAllServicesAvailability({
+          startDate: this.props.startDate,
+          guests: this.props.numberOfPeople,
+        });
+        this.autoPatchTrip();
+      },
+    );
+  };
+
   renderPageContent = () => {
     const { startDate, numberOfPeople } = this.props;
     const { availability, trip, days, optionsSelected, pictureUploadError } = this.state;
@@ -740,6 +796,7 @@ export default class TripOrganizer extends Component {
           addService={this.addService}
           removeService={this.removeService}
           daysByService={this.state.daysByService}
+          removeDay={this.removeDay}
         />
       </React.Fragment>
     );
