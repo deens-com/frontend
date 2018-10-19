@@ -19,6 +19,14 @@ const ItemTitle = styled.div`
 `;
 
 class TripsListInDropDown extends React.Component {
+  state = { selectedTrip: null };
+
+  selectTrip(trip) {
+    this.setState({
+      selectedTrip: trip.objectId,
+    });
+  }
+
   onItemClick = ({ trip, day }) => () => {
     this.props.onTripClick({ trip, day });
   };
@@ -40,7 +48,7 @@ class TripsListInDropDown extends React.Component {
 
   renderItem = (trip, description) => {
     return (
-      <List.Item>
+      <List.Item onClick={() => this.selectTrip(trip)}>
         <Image avatar src={getTripImage(trip)} />
         <List.Content>
           <List.Header>
@@ -68,7 +76,13 @@ class TripsListInDropDown extends React.Component {
       );
     }
     return (
-      <Popup key={trip.objectId} position="right center" on="click" trigger={item} keepInViewPort>
+      <Popup
+        key={trip.objectId}
+        position="right center"
+        open={this.state.selectedTrip === trip.objectId}
+        trigger={item}
+        keepInViewPort
+      >
         <Popup.Header>Select Day</Popup.Header>
         <Popup.Content>
           <List selection verticalAlign="middle" divided>
