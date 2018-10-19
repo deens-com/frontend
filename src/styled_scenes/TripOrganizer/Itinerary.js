@@ -3,11 +3,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Loader, Modal } from 'semantic-ui-react';
+import { Loader, Modal, TextArea, Popup } from 'semantic-ui-react';
 import { getCategory } from 'libs/categories';
 import { media } from 'libs/styled';
 import I18nText from 'shared_components/I18nText';
 import Category from 'shared_components/Category';
+import Button from 'shared_components/Button';
 import { TrashCan } from 'shared_components/icons';
 import Options from './Options';
 import AddServiceModal from './AddServiceModal';
@@ -50,6 +51,51 @@ const DayTitle = styled.div`
 
 const Day = styled.div`
   margin: 20px 0;
+`;
+
+const AddNoteButton = styled.span`
+  margin-left: 15px;
+`;
+
+const Note = styled.div`
+  position: relative;
+  color: #c2af4d;
+  margin-top: 15px;
+
+  textarea {
+    border: 0;
+    outline: 0;
+    background-color: #fffdd9;
+    color: #c2af4d;
+    width: 100%;
+    background-color: #fffdd9;
+    border-radius: 5px;
+    padding: 58px 20px 8px;
+    color: #c2af4d;
+    :focus {
+      outline: 1px solid #c2af4d;
+    }
+  }
+`;
+
+const NoteTitle = styled.div`
+  background-color: #fdfab2;
+  color: #c2af4d;
+  border-radius: 20px;
+  padding: 7px;
+  width: 100px;
+  text-align: center;
+  position: absolute;
+  margin: 8px auto 0;
+  left: 0;
+  right: 0;
+`;
+
+const NoteDeleteButton = styled.div`
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 18px;
 `;
 
 const Service = styled.div`
@@ -143,6 +189,15 @@ const NoServices = styled.div`
   font-weight: bold;
 `;
 
+const addNoteTheme = {
+  background: '#FDFAB2',
+  backgroundHover: '#FDFAB2',
+  border: '#FDFAB2',
+  borderHover: '#FDFAB2',
+  color: '#C2AF4D',
+  colorHover: '#C2AF4D',
+};
+
 export default class Itinerary extends Component {
   constructor(props) {
     super(props);
@@ -173,6 +228,10 @@ export default class Itinerary extends Component {
     this.setState({
       dayToDelete: null,
     });
+  };
+
+  editNote = (_, data) => {
+    this.props.editNote(data.day, data.value);
   };
 
   removeDay = () => {
@@ -245,6 +304,38 @@ export default class Itinerary extends Component {
         </DeleteDayButton>
       </DayHeader>
       <AddServiceModal trip={this.props.trip} onServiceSelect={this.props.addService} day={day} />
+      {(!this.props.trip.notes || !this.props.trip.notes[day.day]) && (
+        <AddNoteButton>
+          <Button
+            iconBefore="plus"
+            customTheme={addNoteTheme}
+            onClick={() => this.props.addNote(day.day)}
+          >
+            Add note
+          </Button>
+        </AddNoteButton>
+      )}
+      {this.props.trip.notes &&
+        this.props.trip.notes[day.day] && (
+          <Note>
+            <NoteTitle>Note</NoteTitle>
+            <Popup
+              trigger={
+                <NoteDeleteButton onClick={() => this.props.deleteNote(day.day)}>
+                  <TrashCan />
+                </NoteDeleteButton>
+              }
+              content="Delete note"
+              position="top center"
+            />
+            <TextArea
+              autoHeight
+              defaultValue={I18nText.translate(this.props.trip.notes[day.day])}
+              day={day.day}
+              onChange={this.editNote}
+            />
+          </Note>
+        )}
       {day.data.map(dayData => (
         <Service key={dayData.service._id}>
           <ServiceBody>

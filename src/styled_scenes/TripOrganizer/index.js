@@ -427,6 +427,61 @@ export default class TripOrganizer extends Component {
     );
   }, 500);
 
+  addNote = day => {
+    this.setState(
+      prevState => ({
+        trip: {
+          ...prevState.trip,
+          notes: {
+            ...prevState.trip.notes,
+            [day]: {
+              'en-us': '',
+            },
+          },
+        },
+      }),
+      this.autoPatchTrip,
+    );
+  };
+
+  editNote = debounce((day, text) => {
+    this.setState(
+      prevState => ({
+        trip: {
+          ...prevState.trip,
+          notes: {
+            ...prevState.trip.notes,
+            [day]: {
+              'en-us': text,
+            },
+          },
+        },
+      }),
+      this.autoPatchTrip,
+    );
+  }, 2000);
+
+  deleteNote = day => {
+    this.setState(prevState => {
+      const notes = Object.keys(prevState.trip.notes).reduce((prevNotes, value) => {
+        if (value === String(day)) {
+          return prevNotes;
+        }
+        return {
+          ...prevNotes,
+          [value]: prevState.trip.notes[value],
+        };
+      }, {});
+
+      return {
+        trip: {
+          ...prevState.trip,
+          notes,
+        },
+      };
+    }, this.autoPatchTrip);
+  };
+
   goToDay = index => {
     const domNode = ReactDOM.findDOMNode(this.childRefs[index].current);
     domNode.scrollIntoView(true);
@@ -708,10 +763,24 @@ export default class TripOrganizer extends Component {
           };
         }, {});
 
+        const notes = Object.keys(prevState.trip.notes).reduce((prevNotes, value) => {
+          if (value === day.day) {
+            return prevNotes;
+          }
+
+          const newKey = value > day.day ? value - 1 : value;
+
+          return {
+            ...prevNotes,
+            [newKey]: prevState.trip.notes[value],
+          };
+        }, {});
+
         return {
           trip: {
             ...prevState.trip,
             duration: prevState.trip.duration - daysToMinutes(1),
+            notes,
           },
           optionsSelected,
           daysByService,
@@ -830,6 +899,9 @@ export default class TripOrganizer extends Component {
           removeService={this.removeService}
           daysByService={this.state.daysByService}
           removeDay={this.removeDay}
+          addNote={this.addNote}
+          editNote={this.editNote}
+          deleteNote={this.deleteNote}
         />
       </React.Fragment>
     );
