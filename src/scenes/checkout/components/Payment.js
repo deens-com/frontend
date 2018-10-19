@@ -2,12 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { injectStripe } from 'react-stripe-elements';
-import axios from 'libs/axios';
-import { serverBaseURL } from 'libs/config';
 
 import PaymentSection from './PaymentSection';
 import * as actions from '../actions';
-import { statuses } from 'libs/fetch_helpers';
 
 const PaymentContext = React.createContext();
 

@@ -6,7 +6,6 @@ const rewireWebpackBundleAnalyzer = require('react-app-rewire-webpack-bundle-ana
 const rewirePreloadPlugin = require('react-app-rewire-preload-plugin');
 const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin');
 // const rewireLodash = require('react-app-rewire-lodash');
-const { inspect } = require('util');
 
 module.exports = function override(config, env) {
   const isProd = env === 'production';

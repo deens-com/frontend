@@ -1,6 +1,5 @@
 import axios from 'libs/axios';
 import fetch_helpers from 'libs/fetch_helpers';
-import history from './../../main/history';
 import { trackTripBooked } from 'libs/analytics';
 
 export const types = {
