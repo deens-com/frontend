@@ -56,7 +56,6 @@ const Services = styled.div`
 const Service = styled.div`
   flex-shrink: 0;
   flex-grow: 1;
-  cursor: pointer;
   width: 80%;
   position: relative;
   margin: auto;
@@ -81,6 +80,15 @@ const SearchBy = styled.div`
 `;
 
 const SearchSettings = styled.div``;
+
+const ServiceButtons = styled.div`
+  position: absolute;
+  top: 10px;
+  padding: 0 10px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`;
 
 const ModalContent = styled.div`
   height: calc(100vh - 100px);
@@ -254,7 +262,7 @@ export default class AddServiceModal extends Component {
     return (
       <Services>
         {this.state.services.map((service, index) => (
-          <Service key={index} onClick={() => this.selectService(service)}>
+          <Service key={index}>
             <TripCard
               type={selectedType.toLowerCase()}
               key={service.label}
@@ -262,6 +270,27 @@ export default class AddServiceModal extends Component {
               withShadow
               item={service}
             />
+            <ServiceButtons>
+              <CustomButton
+                theme="fillLightGreen"
+                size="small"
+                onClick={() => this.selectService(service)}
+                iconBefore="plus"
+                round={false}
+              >
+                Add to trip
+              </CustomButton>
+              <CustomButton
+                theme="textGreen"
+                target="_blank"
+                href={`/services/${service._id}`}
+                size="small"
+                type="link"
+                round={false}
+              >
+                View service
+              </CustomButton>
+            </ServiceButtons>
           </Service>
         ))}
       </Services>
