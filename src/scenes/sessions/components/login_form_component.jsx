@@ -140,6 +140,7 @@ export default class LoginFormComponent extends Component {
                         size="large"
                         onClick={this.props.submitLogin}
                         loading={this.props.isLoading}
+                        disabled={this.props.isLoading}
                       >
                         Login
                       </Button>
