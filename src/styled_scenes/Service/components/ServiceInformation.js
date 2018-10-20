@@ -60,7 +60,15 @@ const ServiceInformation = ({ service }) => {
         </Row>
         <Row>
           <td>Location</td>
-          <td>{service.location}</td>
+          <td>
+            <Link
+              to={`/results?address=${service.location}&latitude=${service.geo.lat}&longitude=${
+                service.geo.lng
+              }`}
+            >
+              {service.location}
+            </Link>
+          </td>
         </Row>
         <Row>
           <td>Rating</td>
