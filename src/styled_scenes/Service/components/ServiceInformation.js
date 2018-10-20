@@ -6,6 +6,7 @@ import UserAvatar from 'shared_components/UserAvatar';
 import { padStart } from 'libs/Utils';
 import PriceTag from 'shared_components/Currency/PriceTag';
 import Rating from 'shared_components/Rating';
+import { Link } from 'react-router-dom';
 
 const Table = styled.table`
   table-layout: fixed;
