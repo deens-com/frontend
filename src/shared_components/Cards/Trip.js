@@ -130,11 +130,19 @@ class TripCard extends Component {
   }
 
   onMouseEnter = () => {
+    const { onOver, item } = this.props;
+    if (onOver) {
+      onOver(item.objectId);
+    }
     if (!this.state.truncated) return;
     this.setState({ showTitlePopup: true });
   };
 
   onMouseLeave = () => {
+    const { onLeave, item } = this.props;
+    if (onLeave) {
+      onLeave(item.objectId);
+    }
     if (!this.state.truncated) return;
     this.setState({ showTitlePopup: false });
   };
@@ -253,6 +261,8 @@ TripCard.propTypes = {
   withTooltip: PropTypes.bool,
   href: PropTypes.string,
   withShadow: PropTypes.bool,
+  onOver: PropTypes.func,
+  onLeave: PropTypes.func,
 };
 
 // Default props

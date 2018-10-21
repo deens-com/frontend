@@ -41,11 +41,11 @@ const Label = styled.div`
 `;
 
 // MODULE
-export default function MapMaker({ withIcon, color, $hover, name }) {
+export default function MapMaker({ withIcon, color, $hover, name, hover }) {
   return (
-    <Wrap $hover={$hover} color={color}>
+    <Wrap $hover={hover || $hover} color={color}>
       <div>
-        <Label $hover={$hover} className="name">
+        <Label $hover={hover || $hover} className="name">
           {name}
         </Label>
         {withIcon ? <PinIcon /> : <PinIcon />}
