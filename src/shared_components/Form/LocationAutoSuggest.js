@@ -1,9 +1,27 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import PlacesAutocomplete from 'react-places-autocomplete';
-import { Form, List, Popup } from 'semantic-ui-react';
+import { Form, List, Popup, Icon } from 'semantic-ui-react';
 import Input from 'shared_components/StyledInput';
 import { MapMarker } from 'shared_components/icons';
+import styled from 'styled-components';
+
+const ListSpan = styled.span`
+  display: inline-flex;
+`;
+
+const ListWrapper = styled.ul`
+  list-style-type: none;
+  min-width: 100%;
+`;
+
+const ListItem = styled.li`
+  height: 3em;
+`;
+
+const GreyIcon = styled(Icon)`
+  color: #c4c4c4;
+`;
 
 /**
  * A more advanced version of LocationControl
@@ -13,6 +31,7 @@ import { MapMarker } from 'shared_components/icons';
  * If you wanna change the styles of the input, pass `inputStyles` prop
  */
 export default class SemanticLocationControl extends Component {
+
   static propTypes = {
     defaultAddress: PropTypes.string,
     onChange: PropTypes.func.isRequired,
@@ -42,10 +61,8 @@ export default class SemanticLocationControl extends Component {
   };
 
   onSelect = (address, placeId) => {
-    const { onChange } = this.props;
-    this.setState({ address, isOpen: undefined }, () => {
-      if (onChange) onChange(address, placeId);
-    });
+    this.setState({ address, isOpen: undefined });
+    return null;
   };
 
   openMenu = event => {
@@ -61,8 +78,12 @@ export default class SemanticLocationControl extends Component {
     });
   };
 
+  onSelectSuggestion = (address, type) => {
+    this.props.onChange(address, type);
+  };
+
   render() {
-    const { inputProps, inputStyles, onlyCities, useStyledInput } = this.props;
+    const { inputProps, inputStyles, onlyCities, useStyledInput, customStyle = {} } = this.props;
     const { isOpen } = this.state;
 
     return (
@@ -108,16 +129,61 @@ export default class SemanticLocationControl extends Component {
             onOpen={this.handleOpen}
             position="bottom left"
             wide
-            style={{ top: '180px' }}
+            style={customStyle}
           >
-            <List divided selection verticalAlign="middle">
-              {suggestions.map(suggestion => (
-                <List.Item {...getSuggestionItemProps(suggestion)}>
-                  <List.Icon name="location arrow" />
-                  <List.Content>{suggestion.description}</List.Content>
-                </List.Item>
-              ))}
-            </List>
+            <ListWrapper>
+              <article {...getSuggestionItemProps(suggestions.length > 0 && suggestions[0])}>
+                <ListItem onClick={() => this.onSelectSuggestion(suggestions[0].description, '')}>
+                  <ListSpan>
+                    <GreyIcon name="travel" />
+                    &nbsp;
+                    <p><b>Trips near</b> {suggestions.length > 0 && suggestions[0].description}</p>
+                  </ListSpan>
+                </ListItem>
+                <ListItem
+                  onClick={() =>
+                    this.onSelectSuggestion(suggestions[0].description, 'accommodation')
+                  }
+                >
+                  <ListSpan>
+                    <GreyIcon name="building" />
+                    &nbsp;
+                    <p><b>Accommodations near</b> {suggestions.length > 0 && suggestions[0].description}</p>
+                  </ListSpan>
+                </ListItem>
+                <ListItem
+                onClick={() => this.onSelectSuggestion(suggestions[0].description, 'food')}
+                >
+                <ListSpan>
+                <GreyIcon name="food" />
+                &nbsp;
+                <p><b>Food near</b> {suggestions.length > 0 && suggestions[0].description}</p>
+                </ListSpan>
+                </ListItem>
+                <ListItem
+                  onClick={() => this.onSelectSuggestion(suggestions[0].description, 'activity')}
+                >
+                  <ListSpan>
+                    <GreyIcon name="globe" />
+                    &nbsp;
+                    <p><b>Activities near</b> {suggestions.length > 0 && suggestions[0].description}</p>
+                  </ListSpan>
+                </ListItem>
+
+                {suggestions.slice(1, 4).map(suggestion => (
+                  <ListItem
+                    key={suggestion.placeId}
+                    onClick={() => this.onSelectSuggestion(suggestion.description, '')}
+                  >
+                    <ListSpan>
+                      <GreyIcon name="travel" />
+                      &nbsp;
+                      <p><b>Trips near</b> {suggestion.description}</p>
+                    </ListSpan>
+                  </ListItem>
+                ))}
+              </article>
+            </ListWrapper>
           </Popup>
         )}
       </PlacesAutocomplete>
