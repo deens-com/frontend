@@ -463,9 +463,9 @@ export default class TripOrganizer extends Component {
           },
         },
       }),
-      this.autoPatchTrip,
+      this.patchTrip,
     );
-  }, 2000);
+  }, 500);
 
   deleteNote = day => {
     this.setState(prevState => {
