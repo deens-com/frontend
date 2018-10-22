@@ -31,7 +31,6 @@ const GreyIcon = styled(Icon)`
  * If you wanna change the styles of the input, pass `inputStyles` prop
  */
 export default class SemanticLocationControl extends Component {
-
   static propTypes = {
     defaultAddress: PropTypes.string,
     onChange: PropTypes.func.isRequired,
@@ -137,7 +136,9 @@ export default class SemanticLocationControl extends Component {
                   <ListSpan>
                     <GreyIcon name="travel" />
                     &nbsp;
-                    <p><b>Trips near</b> {suggestions.length > 0 && suggestions[0].description}</p>
+                    <p>
+                      <b>Trips near</b> {suggestions.length > 0 && suggestions[0].description}
+                    </p>
                   </ListSpan>
                 </ListItem>
                 <ListItem
@@ -148,17 +149,22 @@ export default class SemanticLocationControl extends Component {
                   <ListSpan>
                     <GreyIcon name="building" />
                     &nbsp;
-                    <p><b>Accommodations near</b> {suggestions.length > 0 && suggestions[0].description}</p>
+                    <p>
+                      <b>Accommodations near</b>{' '}
+                      {suggestions.length > 0 && suggestions[0].description}
+                    </p>
                   </ListSpan>
                 </ListItem>
                 <ListItem
-                onClick={() => this.onSelectSuggestion(suggestions[0].description, 'food')}
+                  onClick={() => this.onSelectSuggestion(suggestions[0].description, 'food')}
                 >
-                <ListSpan>
-                <GreyIcon name="food" />
-                &nbsp;
-                <p><b>Food near</b> {suggestions.length > 0 && suggestions[0].description}</p>
-                </ListSpan>
+                  <ListSpan>
+                    <GreyIcon name="food" />
+                    &nbsp;
+                    <p>
+                      <b>Food near</b> {suggestions.length > 0 && suggestions[0].description}
+                    </p>
+                  </ListSpan>
                 </ListItem>
                 <ListItem
                   onClick={() => this.onSelectSuggestion(suggestions[0].description, 'activity')}
@@ -166,7 +172,9 @@ export default class SemanticLocationControl extends Component {
                   <ListSpan>
                     <GreyIcon name="globe" />
                     &nbsp;
-                    <p><b>Activities near</b> {suggestions.length > 0 && suggestions[0].description}</p>
+                    <p>
+                      <b>Activities near</b> {suggestions.length > 0 && suggestions[0].description}
+                    </p>
                   </ListSpan>
                 </ListItem>
 
@@ -178,7 +186,9 @@ export default class SemanticLocationControl extends Component {
                     <ListSpan>
                       <GreyIcon name="travel" />
                       &nbsp;
-                      <p><b>Trips near</b> {suggestion.description}</p>
+                      <p>
+                        <b>Trips near</b> {suggestion.description}
+                      </p>
                     </ListSpan>
                   </ListItem>
                 ))}
