@@ -4,7 +4,9 @@ import styled from 'styled-components';
 import history from './../../../main/history';
 
 // COMPONENTS
-import { ArrowIcon, MicrophoneIcon, SearchIcon } from '../../icons';
+import { ArrowIcon, SearchIcon } from '../../icons';
+import SemanticLocationControl from 'shared_components/Form/LocationAutoSuggest';
+import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 
 // ACTIONS/CONFIG
 import { resetButton } from '../../../libs/styled';
@@ -81,6 +83,18 @@ const SubmitButton = styled.button`
   width: auto;
 `;
 
+const locationProps = {
+  inputStyles: {
+    height: '100%',
+    border: 0,
+  },
+  inputProps: {
+    placeholder: 'Where would you like to go?',
+    icon: 'false',
+    as: Input,
+  },
+};
+
 // MODULE
 export default class DesktopSearch extends Component {
   constructor() {
@@ -95,6 +109,8 @@ export default class DesktopSearch extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onFocus = this.onFocus.bind(this);
     this.onBlur = this.onBlur.bind(this);
+    this.handleLocationChange = this.handleLocationChange.bind(this);
+    this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
   }
   onFocus() {
     this.setState({ inFocus: true });
@@ -110,20 +126,54 @@ export default class DesktopSearch extends Component {
     const query_string = 'keywords=' + this.state.search;
     history.push(`/results?${query_string}`);
   }
+  handleLocationChange(address, serviceType) {
+    geocodeByAddress(address)
+      .then(results => {
+        this.setState({ address });
+        return getLatLng(results[0]);
+      })
+      .then(results => {
+        const { lat, lng } = results;
+        this.setState(
+          { address, latitude: lat, longitude: lng, serviceType },
+          this.handleSearchSubmit,
+        );
+      });
+  }
+  handleSearchSubmit() {
+    const query_params = {
+      address: this.state.address,
+      latitude: this.state.latitude,
+      longitude: this.state.longitude,
+      serviceTypes: this.state.serviceType,
+    };
+    let query_arr = [];
+    Object.entries(query_params).forEach(([key, value]) => {
+      if (value) {
+        let to_concat = key + '=' + value;
+        query_arr = query_arr.concat(to_concat);
+      }
+    });
+    let query_string = query_arr.join('&');
+    if (this.props.toggleSearch) {
+      this.props.toggleSearch();
+    }
+    history.push(`/results?${query_string}`);
+  }
   render() {
     return (
       <Wrapper inFocus={this.state.inFocus}>
         <Inner>
           <div>
-            <IconButton active={this.state.mode === 'voice'}>
+            {/*<IconButton active={this.state.mode === 'voice'}>
               <MicrophoneIcon />
-            </IconButton>
+            </IconButton>*/}
             <IconButton active={this.state.mode === 'text'}>
               <SearchIcon />
             </IconButton>
           </div>
           <Form onSubmit={this.handleSubmit}>
-            <Input
+            {/*<Input
               ref={el => {
                 this.input = el;
               }}
@@ -133,13 +183,19 @@ export default class DesktopSearch extends Component {
               onChange={this.handleInputChange}
               type="text"
               placeholder="Tell us about your dream stay"
+            />*/}
+
+            <SemanticLocationControl
+              onChange={this.handleLocationChange}
+              {...locationProps}
             />
-            <SubmitButton type="submit">
+
+            {/*<SubmitButton type="submit">
               <span>Let's go</span>
               <ArrowWrap>
                 <ArrowIcon />
               </ArrowWrap>
-            </SubmitButton>
+            </SubmitButton>*/}
           </Form>
         </Inner>
       </Wrapper>
