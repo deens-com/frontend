@@ -144,7 +144,15 @@ const RegistrationsComponent = props => {
 
                   <div className="login-q-text">
                     Already have an account ?&nbsp;&nbsp;
-                    <Link to="/login" replace>
+                    <Link
+                      to={{
+                        pathname: '/login',
+                        state: {
+                          message: props.message,
+                          from: props.from,
+                        },
+                      }}
+                    >
                       Sign In
                     </Link>
                   </div>

@@ -119,6 +119,8 @@ class RegistrationsContainer extends Component {
           validationErrors={this.props.validationErrors}
           validateInput={this.validateInput}
           isInputInvalid={this.isInputInvalid}
+          from={this.props.from}
+          message={this.props.message}
         />
       </div>
     );
