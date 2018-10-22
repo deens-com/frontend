@@ -4,20 +4,6 @@ import PlacesAutocomplete from 'react-places-autocomplete';
 import { Form, List, Popup } from 'semantic-ui-react';
 import Input from 'shared_components/StyledInput';
 import { MapMarker } from 'shared_components/icons';
-import styled from 'styled-components';
-
-const ListSpan = styled.span`
-  display: inline-flex;
-`;
-
-const ListWrapper = styled.ul`
-  list-style-type: none;
-  min-width: 100%;
-`;
-
-const ListItem = styled.li`
-  height: 3em;
-`;
 
 /**
  * A more advanced version of LocationControl
@@ -27,7 +13,6 @@ const ListItem = styled.li`
  * If you wanna change the styles of the input, pass `inputStyles` prop
  */
 export default class SemanticLocationControl extends Component {
-
   static propTypes = {
     defaultAddress: PropTypes.string,
     onChange: PropTypes.func.isRequired,
@@ -57,8 +42,10 @@ export default class SemanticLocationControl extends Component {
   };
 
   onSelect = (address, placeId) => {
-    this.setState({ address, isOpen: undefined });
-    return null;
+    const { onChange } = this.props;
+    this.setState({ address, isOpen: undefined }, () => {
+      if (onChange) onChange(address, placeId);
+    });
   };
 
   openMenu = event => {
@@ -72,10 +59,6 @@ export default class SemanticLocationControl extends Component {
     this.setState({
       isOpen: false,
     });
-  };
-
-  onSelectSuggestion = (address, type) => {
-    this.props.onChange(address, type);
   };
 
   render() {
@@ -125,60 +108,16 @@ export default class SemanticLocationControl extends Component {
             onOpen={this.handleOpen}
             position="bottom left"
             wide
+            style={{ top: '180px' }}
           >
-            <ListWrapper>
-              <article {...getSuggestionItemProps(suggestions.length > 0 && suggestions[0])}>
-                <ListItem onClick={() => this.onSelectSuggestion(suggestions[0].description, '')}>
-                  <ListSpan>
-                    <List.Icon name="location arrow" />
-                    &nbsp;
-                    <p>{suggestions.length > 0 && suggestions[0].description}</p>
-                  </ListSpan>
-                </ListItem>
-                <ListItem
-                  onClick={() =>
-                    this.onSelectSuggestion(suggestions[0].description, 'accommodation')
-                  }
-                >
-                  <ListSpan>
-                    <List.Icon name="home" />
-                    &nbsp;
-                    <p>Home in {suggestions.length > 0 && suggestions[0].description}</p>
-                  </ListSpan>
-                </ListItem>
-                <ListItem
-                  onClick={() => this.onSelectSuggestion(suggestions[0].description, 'activity')}
-                >
-                  <ListSpan>
-                    <List.Icon name="magic" />
-                    &nbsp;
-                    <p>Experiences in {suggestions.length > 0 && suggestions[0].description}</p>
-                  </ListSpan>
-                </ListItem>
-                <ListItem
-                  onClick={() => this.onSelectSuggestion(suggestions[0].description, 'food')}
-                >
-                  <ListSpan>
-                    <List.Icon name="food" />
-                    &nbsp;
-                    <p>Restaurants in {suggestions.length > 0 && suggestions[0].description}</p>
-                  </ListSpan>
-                </ListItem>
-
-                {suggestions.slice(1, 4).map(suggestion => (
-                  <ListItem
-                    key={suggestion.placeId}
-                    onClick={() => this.onSelectSuggestion(suggestion.description, '')}
-                  >
-                    <ListSpan>
-                      <List.Icon name="location arrow" />
-                      &nbsp;
-                      <p>{suggestion.description}</p>
-                    </ListSpan>
-                  </ListItem>
-                ))}
-              </article>
-            </ListWrapper>
+            <List divided selection verticalAlign="middle">
+              {suggestions.map(suggestion => (
+                <List.Item {...getSuggestionItemProps(suggestion)}>
+                  <List.Icon name="location arrow" />
+                  <List.Content>{suggestion.description}</List.Content>
+                </List.Item>
+              ))}
+            </List>
           </Popup>
         )}
       </PlacesAutocomplete>

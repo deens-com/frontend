@@ -13,7 +13,7 @@ import { bindActionCreators } from 'redux';
 
 // COMPONENTS
 import { SearchIcon, CrossIcon } from '../../../shared_components/icons';
-import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
+import SemanticLocationControl from 'shared_components/Form/LocationAutoSuggest';
 
 // ACTIONS & CONFIG
 import { placeholderMixin } from '../../../libs/styled';
@@ -101,6 +101,13 @@ const LeftIcon = ({ talking, onClickTalking }) => (
   </TypeIcon>
 );
 
+const suggestionStyle = {
+  left: '467px',
+  width: '100%',
+  maxWidth: '505px',
+  top: '341px',
+};
+
 class HomeSearch extends Component {
   constructor(props) {
     super(props);
@@ -179,7 +186,11 @@ class HomeSearch extends Component {
   renderInputContent = () => {
     return (
       <form style={{ flex: 1 }} onSubmit={this.handleKeywordsSearchSubmit}>
-        <SemanticLocationControl onChange={this.handleLocationChange} {...locationProps} />
+        <SemanticLocationControl
+          onChange={this.handleLocationChange}
+          {...locationProps}
+          customStyle={suggestionStyle}
+        />
       </form>
     );
   };
