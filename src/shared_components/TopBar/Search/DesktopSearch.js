@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import history from './../../../main/history';
 
 // COMPONENTS
-import { ArrowIcon, SearchIcon } from '../../icons';
+import { CrossIcon, SearchIcon } from '../../icons';
 import SemanticLocationControl from 'shared_components/Form/LocationAutoSuggest';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 
@@ -95,6 +95,16 @@ const locationProps = {
   },
 };
 
+const suggestionStyle = {
+  position: 'absolute',
+  left: '206px',
+  right: 'auto',
+  top: '49px',
+  bottom: 'auto',
+  width: '100%',
+  maxWidth: '613px',
+};
+
 // MODULE
 export default class DesktopSearch extends Component {
   constructor() {
@@ -123,8 +133,8 @@ export default class DesktopSearch extends Component {
   }
   handleSubmit(ev) {
     ev.preventDefault();
-    const query_string = 'keywords=' + this.state.search;
-    history.push(`/results?${query_string}`);
+    //const query_string = 'keywords=' + this.state.search;
+    history.push(`/results`);
   }
   handleLocationChange(address, serviceType) {
     geocodeByAddress(address)
@@ -185,14 +195,18 @@ export default class DesktopSearch extends Component {
               placeholder="Tell us about your dream stay"
             />*/}
 
-            <SemanticLocationControl onChange={this.handleLocationChange} {...locationProps} />
+            <SemanticLocationControl
+              onChange={this.handleLocationChange}
+              customStyle={suggestionStyle}
+              {...locationProps}
+            />
 
-            {/*<SubmitButton type="submit">
-              <span>Let's go</span>
+            <SubmitButton type="submit">
+              <span>Reset</span>
               <ArrowWrap>
-                <ArrowIcon />
+                <CrossIcon />
               </ArrowWrap>
-            </SubmitButton>*/}
+            </SubmitButton>
           </Form>
         </Inner>
       </Wrapper>
