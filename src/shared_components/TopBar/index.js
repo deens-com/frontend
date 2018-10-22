@@ -123,9 +123,7 @@ export default class TopBar extends Component {
             applyFixation={showMenu && !fixed}
             flex={Boolean(home)}
           />
-          {!noSearch && (
-            <Search menuIsOpened={showMenu} toggleSearch={this.toggleSearch} />
-          )}
+          {!noSearch && <Search menuIsOpened={showMenu} toggleSearch={this.toggleSearch} />}
           <DesktopNav home={home} theme="light" />
           <MobileDropdownMenu isMenuOpen={showMenu} toggleMenu={this.toggleMenu} dark={!home} />
         </InnerWrap>

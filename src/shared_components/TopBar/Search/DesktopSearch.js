@@ -185,10 +185,7 @@ export default class DesktopSearch extends Component {
               placeholder="Tell us about your dream stay"
             />*/}
 
-            <SemanticLocationControl
-              onChange={this.handleLocationChange}
-              {...locationProps}
-            />
+            <SemanticLocationControl onChange={this.handleLocationChange} {...locationProps} />
 
             {/*<SubmitButton type="submit">
               <span>Let's go</span>
