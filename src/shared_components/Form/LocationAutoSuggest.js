@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import PlacesAutocomplete from 'react-places-autocomplete';
-import { Form, List, Popup, Icon } from 'semantic-ui-react';
+import { Form, Popup, Icon } from 'semantic-ui-react';
 import Input from 'shared_components/StyledInput';
 import { MapMarker } from 'shared_components/icons';
 import styled from 'styled-components';
@@ -31,6 +31,28 @@ const GreyIcon = styled(Icon)`
  * If you wanna change the styles of the input, pass `inputStyles` prop
  */
 export default class SemanticLocationControl extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      address: '',
+      isOpen: false,
+    };
+  }
+
+  componentDidMount() {
+    this.setState({ address: this.props.defaultAddress });
+  }
+
+  componentWillUpdate(next_props) {
+    if (this.did_search_query_changed(this.props, next_props)) {
+      this.setState({ address: next_props.defaultAddress });
+    }
+  }
+
+  did_search_query_changed = (current_props, next_props) => {
+    return current_props.defaultAddress !== next_props.defaultAddress;
+  };
+
   static propTypes = {
     defaultAddress: PropTypes.string,
     onChange: PropTypes.func.isRequired,
@@ -48,10 +70,6 @@ export default class SemanticLocationControl extends Component {
     useStyledInput: false,
   };
 
-  state = {
-    address: this.props.defaultAddress,
-  };
-
   onAddressChange = address => {
     const { onKeyUp } = this.props;
     this.setState({ address }, () => {
@@ -60,7 +78,7 @@ export default class SemanticLocationControl extends Component {
   };
 
   onSelect = (address, placeId) => {
-    this.setState({ address, isOpen: undefined });
+    this.setState({ address, isOpen: false });
     return null;
   };
 
@@ -83,7 +101,6 @@ export default class SemanticLocationControl extends Component {
 
   render() {
     const { inputProps, inputStyles, onlyCities, useStyledInput, customStyle = {} } = this.props;
-    const { isOpen } = this.state;
 
     return (
       <PlacesAutocomplete
@@ -123,7 +140,7 @@ export default class SemanticLocationControl extends Component {
                 />
               )
             }
-            open={suggestions.length > 0 && isOpen}
+            open={suggestions.length > 0}
             onClose={this.handleClose}
             onOpen={this.handleOpen}
             position="bottom left"

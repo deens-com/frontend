@@ -59,8 +59,8 @@ const FixedPlaceholder = styled.div`
 
 // MODULE
 export default class TopBar extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       showMenu: false,
       showSearch: false,
@@ -123,7 +123,13 @@ export default class TopBar extends Component {
             applyFixation={showMenu && !fixed}
             flex={Boolean(home)}
           />
-          {!noSearch && <Search menuIsOpened={showMenu} toggleSearch={this.toggleSearch} />}
+          {!noSearch && (
+            <Search
+              menuIsOpened={showMenu}
+              toggleSearch={this.toggleSearch}
+              address={this.props.address}
+            />
+          )}
           <DesktopNav home={home} theme="light" />
           <MobileDropdownMenu isMenuOpen={showMenu} toggleMenu={this.toggleMenu} dark={!home} />
         </InnerWrap>

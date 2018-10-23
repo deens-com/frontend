@@ -107,8 +107,8 @@ const suggestionStyle = {
 
 // MODULE
 export default class DesktopSearch extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       search: '',
       mode: 'text',
@@ -199,12 +199,13 @@ export default class DesktopSearch extends Component {
               onChange={this.handleLocationChange}
               customStyle={suggestionStyle}
               {...locationProps}
+              defaultAddress={this.props.address}
             />
 
-            <SubmitButton type="submit">
+            <SubmitButton type="submit" style={{ color: 'grey' }}>
               <span>Reset</span>
               <ArrowWrap>
-                <CrossIcon />
+                <CrossIcon style={{ color: 'grey' }} />
               </ArrowWrap>
             </SubmitButton>
           </Form>

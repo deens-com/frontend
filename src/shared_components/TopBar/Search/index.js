@@ -23,7 +23,7 @@ const TriggerWrap = styled.button`
 `;
 
 // MODULE
-export default function TopBarSearch({ menuIsOpened, toggleSearch }) {
+export default function TopBarSearch({ menuIsOpened, toggleSearch, address }) {
   if (menuIsOpened) return null;
 
   return (
@@ -34,7 +34,7 @@ export default function TopBarSearch({ menuIsOpened, toggleSearch }) {
             <SearchIcon />
           </TriggerWrap>
         ) : (
-          <DesktopSearch />
+          <DesktopSearch address={address} />
         )
       }
     </Media>
