@@ -130,6 +130,13 @@ export const fetchTrip = id => async dispatch => {
       fetchTripSuccess({
         ...trip.data,
         tags: parseTags(trip.data.tags),
+        services: trip.data.services.map(service => ({
+          ...service,
+          service: {
+            ...service.service,
+            tags: parseTags(service.service.tags),
+          },
+        })),
       }),
     );
 

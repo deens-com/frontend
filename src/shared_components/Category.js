@@ -14,9 +14,9 @@ const Category = styled.div`
   justify-content: flex-start;
   text-transform: uppercase;
   font-weight: bold;
+  align-items: center;
   svg {
     font-size: ${props => props.iconSize};
-    margin-top: 2px;
     margin-right: 5px;
     path {
       fill: ${props => props.color};

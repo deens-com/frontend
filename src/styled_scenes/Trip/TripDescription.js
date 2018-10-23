@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 import { MapMarker, Map, Calendar } from 'shared_components/icons';
 import I18nText from 'shared_components/I18nText';
+import { minutesToDays } from './mapServicesToDays';
 import Tag from 'shared_components/Tag';
 
 const Wrapper = styled.div`
@@ -17,6 +18,8 @@ const About = styled.div`
   font-weight: bold;
   text-transform: uppercase;
   font-size: 18px;
+  text-align: center;
+  margin-bottom: 30px;
 `;
 
 const Description = styled.div`
@@ -31,16 +34,18 @@ const Tags = styled.div`
 
 const TripData = styled.div`
   display: flex;
-  justify-content: flex-around;
+  justify-content: center;
 `;
 
 const DataChunk = styled.div`
   display: flex;
-  flex: 1;
   color: #6e7885;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: bold;
+  align-items: center;
+  margin: 0 10px;
   > svg {
+    font-size: 20px;
     fill: #6e7885;
   }
 `;
@@ -57,15 +62,27 @@ export default class ResultsScene extends Component {
   };
 
   render() {
-    const { trip } = this.props;
-    console.log(trip.tags);
+    const { trip, countries, cities } = this.props;
+
     return (
       <Wrapper>
         <About>About this trip</About>
         <TripData>
           <DataChunk>
             <Calendar />
-            <span>Days</span>
+            <span>{minutesToDays(trip.duration)} Days</span>
+          </DataChunk>
+          <DataChunk>
+            <Map />
+            <span>
+              {countries} {countries === 1 ? 'Country' : 'Countries'}
+            </span>
+          </DataChunk>
+          <DataChunk>
+            <MapMarker />
+            <span>
+              {cities} {cities === 1 ? 'City' : 'Cities'}
+            </span>
           </DataChunk>
         </TripData>
         <Description>

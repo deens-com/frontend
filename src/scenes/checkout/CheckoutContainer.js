@@ -175,7 +175,6 @@ class CheckoutContainer extends React.Component {
   };
 
   handleGuestsDataChange = (event, data) => {
-    console.log(this.state.guests.length);
     this.setState(
       prevState => ({
         guests: prevState.guests.map(

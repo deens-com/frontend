@@ -7,7 +7,7 @@ import mapServicesToDays from './mapServicesToDays';
 
 const Wrapper = styled.div`
   position: fixed;
-  z-index: 1;
+  z-index: 10;
   display: flex;
   bottom: ${props => props.bottom || 0}px;
   background-color: #f2f2f2;

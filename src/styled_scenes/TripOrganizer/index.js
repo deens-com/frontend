@@ -163,7 +163,7 @@ export default class TripOrganizer extends Component {
         optionsSelected: {},
         availability: {},
         daysByService: {},
-        pictureUploadError: '',
+        pictureUploadError: null,
         isCheckingList: [],
       };
     }
@@ -259,7 +259,7 @@ export default class TripOrganizer extends Component {
         services: this.state.days.reduce((prev, day) => [...prev, ...day.data], []),
         ...(this.props.startDate ? { startDate: this.props.startDate } : {}),
         ...(this.props.numberOfPeople ? { peopleCount: this.props.numberOfPeople } : {}),
-        duration: daysToMinutes(this.state.days.length) || 1,
+        duration: (this.state.length && daysToMinutes(this.state.days.length)) || 1,
         tags: this.state.trip.tags ? this.state.trip.tags.map(tag => tag._id) : [], // This could be done when loading the trip to avoid executing each time we save
       };
 
@@ -710,6 +710,7 @@ export default class TripOrganizer extends Component {
       prev => ({
         trip: {
           ...prev.trip,
+          pictureUploadError: null,
           media: [
             {
               type: 'image',
@@ -851,7 +852,7 @@ export default class TripOrganizer extends Component {
 
     return (
       <React.Fragment>
-        {pictureUploadError.length > 0 && (
+        {pictureUploadError && (
           <Message negative>
             <Message.Header>An error occured</Message.Header>
             <p>{pictureUploadError}</p>

@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { media } from 'libs/styled';
 import Button from 'shared_components/Button';
+import { Popup } from 'semantic-ui-react';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -14,6 +15,7 @@ const Wrapper = styled.div`
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
   background-color: white;
   padding: 0 10px;
+  z-index: 5;
   ${media.minSmall} {
     padding-right: 55px;
   }
@@ -42,20 +44,35 @@ const Sentence = styled.span`
   }
 `;
 
+const renderButtonWithPopup = (button, content) => {
+  if (content) {
+    return (
+      <Popup on="hover" trigger={button} content={content} position="top center" hideOnScroll />
+    );
+  }
+  return button;
+};
+
 const FixedFooter = ({ price, peopleNumber, onCustomizeClick, startDate, endDate }) => {
+  const disabledButton = Boolean(!peopleNumber || !(startDate && endDate));
   return (
     <Wrapper>
       <Text>
         <Sentence>Estimated price for {peopleNumber} people:</Sentence> ${price}
       </Text>
-      <Button
-        disabled={!peopleNumber || !(startDate && endDate)}
-        theme="fillLightGreen"
-        size="medium"
-        onClick={onCustomizeClick}
-      >
-        Customize this trip
-      </Button>
+      {renderButtonWithPopup(
+        <div>
+          <Button
+            disableClick={disabledButton}
+            theme="fillLightGreen"
+            size="medium"
+            onClick={onCustomizeClick}
+          >
+            Customize this trip
+          </Button>
+        </div>,
+        disabledButton && 'Select number of guests and date to continue',
+      )}
     </Wrapper>
   );
 };
