@@ -97,6 +97,11 @@ export default class LoginFormComponent extends Component {
                     <div className="login-img-content">Plan your next trip with us!</div>
                   </Grid.Column>
                   <Grid.Column width="6" floated="right">
+                    {this.props.message && (
+                      <Message floating warning>
+                        {this.props.message}
+                      </Message>
+                    )}
                     <div className="login-header">Log-in to your account</div>
                     <br />
                     <Form size="large" error={this.props.isLoginError()}>
@@ -207,7 +212,7 @@ export default class LoginFormComponent extends Component {
                         color="green"
                         fluid
                         size="large"
-                        onClick={this.props.loginWithLedger}
+                        onClick={() => this.props.loginWithLedger(from)}
                       >
                         Login with Ledger
                       </MetamaskButton>
@@ -215,7 +220,16 @@ export default class LoginFormComponent extends Component {
 
                     <div className="login-q-text">
                       Don't have an account?&nbsp;&nbsp;
-                      <Link to="/register" replace>
+                      <Link
+                        to={{
+                          pathname: '/register',
+                          state: {
+                            message: this.props.message,
+                            from: this.props.from,
+                          },
+                        }}
+                        replace
+                      >
                         Sign Up
                       </Link>
                     </div>

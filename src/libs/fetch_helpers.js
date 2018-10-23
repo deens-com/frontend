@@ -8,7 +8,7 @@ const normalizeParseResponseData = data => {
 };
 
 export const parseLocation = location =>
-  location ? `${location.city ? location.city + ',' : ''} ${location.countryCode}` : '';
+  location ? `${location.city ? location.city + ',' : ''} ${location.country.names['en-us']}` : '';
 
 const getRandomInt = (min, max) => {
   min = Math.ceil(min);
