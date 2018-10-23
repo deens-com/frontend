@@ -9,7 +9,7 @@ import ReactPaginate from 'react-paginate';
 import PaginationWrap from 'shared_components/PaginationWrap';
 import { media } from 'libs/styled';
 import { getFromCoordinates } from 'libs/Utils';
-import SemanticLocationControl from 'shared_components/Form/LocationAutoSuggest';
+import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
 import CustomButton from 'shared_components/Button';
 import TripCard from 'shared_components/Cards/Trip';
 import { composeFetchQuery } from 'scenes/results/actions';
