@@ -9,8 +9,8 @@ const normalizeParseResponseData = data => {
 
 export const parseLocation = location =>
   location
-    ? `${location.city ? location.city + ',' : ''} ${
-        location.country ? location.country.names['en-us'] : ''
+    ? `${location.city ? location.city : ''}${
+        location.country ? ', ' + location.country.names['en-us'] : ''
       }`
     : '';
 
