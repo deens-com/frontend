@@ -143,6 +143,7 @@ function createTripState(props, state) {
     optionsSelected,
     daysByService,
     isCheckingList: [],
+    notes: props.trip.notes ? props.trip.notes : {},
   };
 }
 
@@ -169,6 +170,7 @@ export default class TripOrganizer extends Component {
         daysByService: {},
         pictureUploadError: null,
         isCheckingList: [],
+        notes: {},
       };
     }
   }
@@ -275,8 +277,9 @@ export default class TripOrganizer extends Component {
         ),
         ...(this.props.startDate ? { startDate: this.props.startDate } : {}),
         ...(this.props.numberOfPeople ? { peopleCount: this.props.numberOfPeople } : {}),
-        duration: (this.state.length && daysToMinutes(this.state.days.length)) || 1,
+        duration: (this.state.days && daysToMinutes(this.state.days.length)) || 1,
         tags: this.state.trip.tags ? this.state.trip.tags.map(tag => tag._id) : [], // This could be done when loading the trip to avoid executing each time we save
+        notes: this.state.notes,
       };
 
       await axios.patch(`/trips/${trip._id}`, trip);
@@ -355,7 +358,6 @@ export default class TripOrganizer extends Component {
               {
                 day,
                 priority: 1,
-                notes: [],
                 service,
               },
             ],
@@ -452,13 +454,10 @@ export default class TripOrganizer extends Component {
   addNote = day => {
     this.setState(
       prevState => ({
-        trip: {
-          ...prevState.trip,
-          notes: {
-            ...prevState.trip.notes,
-            [day]: {
-              'en-us': '',
-            },
+        notes: {
+          ...prevState.notes,
+          [day]: {
+            'en-us': '',
           },
         },
       }),
@@ -469,13 +468,10 @@ export default class TripOrganizer extends Component {
   editNote = debounce((day, text) => {
     this.setState(
       prevState => ({
-        trip: {
-          ...prevState.trip,
-          notes: {
-            ...prevState.trip.notes,
-            [day]: {
-              'en-us': text,
-            },
+        notes: {
+          ...prevState.notes,
+          [day]: {
+            'en-us': text,
           },
         },
       }),
@@ -485,21 +481,18 @@ export default class TripOrganizer extends Component {
 
   deleteNote = day => {
     this.setState(prevState => {
-      const notes = Object.keys(prevState.trip.notes).reduce((prevNotes, value) => {
+      const notes = Object.keys(prevState.notes).reduce((prevNotes, value) => {
         if (value === String(day)) {
           return prevNotes;
         }
         return {
           ...prevNotes,
-          [value]: prevState.trip.notes[value],
+          [value]: prevState.notes[value],
         };
       }, {});
 
       return {
-        trip: {
-          ...prevState.trip,
-          notes,
-        },
+        notes,
       };
     }, this.autoPatchTrip);
   };
@@ -794,7 +787,7 @@ export default class TripOrganizer extends Component {
           };
         }, {});
 
-        const notes = Object.keys(prevState.trip.notes).reduce((prevNotes, value) => {
+        const notes = Object.keys(prevState.notes).reduce((prevNotes, value) => {
           if (Number(value) === day.day) {
             return prevNotes;
           }
@@ -803,7 +796,7 @@ export default class TripOrganizer extends Component {
 
           return {
             ...prevNotes,
-            [newKey]: prevState.trip.notes[value],
+            [newKey]: prevState.notes[value],
           };
         }, {});
 
@@ -811,8 +804,8 @@ export default class TripOrganizer extends Component {
           trip: {
             ...prevState.trip,
             duration: prevState.trip.duration - daysToMinutes(1),
-            notes,
           },
+          notes,
           optionsSelected,
           daysByService,
           days: prevState.days.filter(prevDay => prevDay.day !== day.day).map(
@@ -846,6 +839,7 @@ export default class TripOrganizer extends Component {
       optionsSelected,
       pictureUploadError,
       isCheckingList,
+      notes,
     } = this.state;
 
     const hero = trip.media.find(media => media.hero) || trip.media[0];
@@ -933,6 +927,7 @@ export default class TripOrganizer extends Component {
           assignRefsToParent={this.assignRefs}
           days={days}
           optionsSelected={optionsSelected}
+          notes={notes}
           selectOption={this.selectOption}
           addService={this.addService}
           removeService={this.removeService}
