@@ -150,6 +150,7 @@ const RegistrationsComponent = props => {
                         state: {
                           message: props.message,
                           from: props.from,
+                          action: props.action,
                         },
                       }}
                     >

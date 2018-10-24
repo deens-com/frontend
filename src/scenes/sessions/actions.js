@@ -23,13 +23,13 @@ export const types = {
   NOT_LOGGED_IN: 'NOT_LOGGED_IN',
 };
 
-function redirect(to) {
-  if (to) {
-    history.replace(to);
-    return;
-  }
-
-  history.replace('/');
+function redirect(to, action) {
+  history.replace({
+    pathname: to || '/',
+    state: {
+      action,
+    },
+  });
 }
 
 export const loginStarts = () => {
@@ -192,7 +192,7 @@ export const update_user_avatar = file => {
   };
 };
 
-export const loginRequest = (email, password, from) => {
+export const loginRequest = (email, password, { from, action }) => {
   return async dispatch => {
     dispatch(loginStarts());
     try {
@@ -223,7 +223,7 @@ export const loginRequest = (email, password, from) => {
           userData.accessToken = auth0Token;
           dispatch(sessionsFetched({ session: userData }));
           saveSession(userData);
-          redirect(from);
+          redirect(from, action);
         }
       }
     } catch (error) {
@@ -232,7 +232,7 @@ export const loginRequest = (email, password, from) => {
   };
 };
 
-export const loginWithLedger = from => async dispatch => {
+export const loginWithLedger = ({ from, action }) => async dispatch => {
   try {
     const { getLedgerPublicAddress, ledgerSignMessage } = await import('libs/web3-utils');
     dispatch(displayLedgerLoader(true));
@@ -258,7 +258,7 @@ export const loginWithLedger = from => async dispatch => {
     };
     const user = await Parse.User.logInWith('ledgerauth', { authData });
     dispatch(sessionsFetched({ session: user }));
-    redirect(from);
+    redirect(from, action);
   } catch (error) {
     dispatch(displayLedgerLoader(false));
     if (error.code === 404) {
