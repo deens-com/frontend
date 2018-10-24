@@ -1,6 +1,7 @@
 // NPM
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { withRouter } from 'react-router';
 
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
 import FormControl from '../../../shared_components/Form/FormControl';
@@ -180,7 +181,7 @@ class SearchFilters extends Component {
   refetch_results(param_object) {
     const query_params = this.get_query_params();
     query_params[Object.keys(param_object)[0]] = param_object[Object.keys(param_object)[0]];
-    this.props.update_path(query_params);
+    this.props.update_path(query_params, this.props.history);
   }
 
   refetch_results_for_location(lat, lon, addr) {
@@ -188,7 +189,7 @@ class SearchFilters extends Component {
     query_params.latitude = lat;
     query_params.longitude = lon;
     query_params.address = addr;
-    this.props.update_path(query_params);
+    this.props.update_path(query_params, this.props.history);
   }
 
   handleStartDateChange(dateObject) {
@@ -463,7 +464,9 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators(results_actions, dispatch);
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(SearchFilters);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(SearchFilters),
+);

@@ -1,5 +1,4 @@
 import axios from 'libs/axios';
-import history from './../../main/history';
 import fetch_helpers from 'libs/fetch_helpers';
 import { trackVoiceUsage } from 'libs/analytics';
 
@@ -30,7 +29,7 @@ export const search_query_updated = search_query => {
   };
 };
 
-export const toggle_tag_from_search_query = (current_search_query, item_tag) => {
+export const toggle_tag_from_search_query = (current_search_query, item_tag, history) => {
   return dispatch => {
     let search_params = current_search_query;
     if (current_search_query.tags.length) {
@@ -55,12 +54,12 @@ export const toggle_tag_from_search_query = (current_search_query, item_tag) => 
         search_params.tags.push(item_tag);
       }
     }
-    dispatch(update_path(search_params));
+    dispatch(update_path(search_params, history));
     // will trigger update_search_query from results_container
   };
 };
 
-export const update_path = search_params => {
+export const update_path = (search_params, history) => {
   return dispatch => {
     const query_string = composeQuery(search_params);
     history.push('/results?' + query_string);

@@ -34,7 +34,10 @@ class SessionsContainer extends Component {
     if (!this.state.email || !this.state.password) {
       return this.props.setLoginError({ message: 'Empty email or password' });
     }
-    this.props.loginRequest(this.state.email, this.state.password, this.props.from);
+    this.props.loginRequest(this.state.email, this.state.password, {
+      from: this.props.from,
+      action: this.props.action,
+    });
   };
 
   handleInputChange(event) {
@@ -121,6 +124,7 @@ class SessionsContainer extends Component {
           isLoading={this.props.isLoading}
           from={this.props.from}
           message={this.props.message}
+          action={this.props.action}
         />
       </div>
     );

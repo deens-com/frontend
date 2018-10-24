@@ -95,6 +95,12 @@ export default class Trip extends Component {
     };
   }
 
+  componentDidMount() {
+    if (this.props.action === 'handleCustomizeClick') {
+      this.handleCustomizeClick();
+    }
+  }
+
   checkAvailability = (startDate, people) => {
     if (startDate && people) {
       this.props.checkAvailability(this.props.trip._id, startDate, people);
@@ -140,6 +146,14 @@ export default class Trip extends Component {
   handleCustomizeClick = () => {
     if (this.props.trip.owner === this.props.currentUserId) {
       history.push(`/trips/organize/${this.props.trip._id}`);
+      return;
+    }
+    if (!this.props.currentUserId) {
+      history.push('/login', {
+        message: 'You must login to continue',
+        from: `/trips/${this.props.trip._id}`,
+        action: 'handleCustomizeClick',
+      });
       return;
     }
     this.props.cloneTrip(this.props.trip._id);

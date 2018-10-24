@@ -18,7 +18,11 @@ import { Page } from 'shared_components/layout/Page';
 import I18nText from 'shared_components/I18nText';
 
 import Itinerary from './Itinerary';
-import mapServicesToDays, { minutesToDays, dayTitles } from '../Trip/mapServicesToDays';
+import mapServicesToDays, {
+  minutesToDays,
+  dayTitles,
+  updateServiceDayNames,
+} from '../Trip/mapServicesToDays';
 import DaySelector from '../Trip/DaySelector';
 import CheckoutBox from './CheckoutBox';
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
@@ -163,7 +167,7 @@ export default class TripOrganizer extends Component {
         optionsSelected: {},
         availability: {},
         daysByService: {},
-        pictureUploadError: '',
+        pictureUploadError: null,
         isCheckingList: [],
       };
     }
@@ -256,13 +260,19 @@ export default class TripOrganizer extends Component {
         otherAttributes: {
           selectedServiceOptions,
         },
-        services: this.state.days.reduce((prev, day) => [...prev, ...day.data], []),
+        services: this.state.days.reduce(
+          (prev, day) => [
+            ...prev,
+            ...day.data.map(dayData => ({ ...dayData, service: dayData.service._id })),
+          ],
+          [],
+        ),
         ...(this.props.startDate ? { startDate: this.props.startDate } : {}),
         ...(this.props.numberOfPeople ? { peopleCount: this.props.numberOfPeople } : {}),
         duration: daysToMinutes(this.state.days.length) || 1,
         tags: this.state.trip.tags ? this.state.trip.tags.map(tag => tag._id) : [], // This could be done when loading the trip to avoid executing each time we save
       };
-
+      console.log(this.state.days);
       await axios.patch(`/trips/${trip._id}`, trip);
 
       if (action === 'autosave') {
@@ -552,9 +562,9 @@ export default class TripOrganizer extends Component {
     });
     this.props.changeDates(dates);
     this.autoPatchTrip();
-    this.setState({
-      days: mapServicesToDays(this.props.trip.services, this.props.trip.duration, dates.start_date),
-    });
+    this.setState(prevState => ({
+      days: updateServiceDayNames(prevState.days, dates.start_date),
+    }));
   };
 
   changeGuests = data => {
@@ -778,7 +788,7 @@ export default class TripOrganizer extends Component {
         }, {});
 
         const notes = Object.keys(prevState.trip.notes).reduce((prevNotes, value) => {
-          if (value === day.day) {
+          if (Number(value) === day.day) {
             return prevNotes;
           }
 
@@ -851,7 +861,7 @@ export default class TripOrganizer extends Component {
 
     return (
       <React.Fragment>
-        {pictureUploadError.length > 0 && (
+        {pictureUploadError && (
           <Message negative>
             <Message.Header>An error occured</Message.Header>
             <p>{pictureUploadError}</p>
