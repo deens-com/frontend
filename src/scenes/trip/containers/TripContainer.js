@@ -37,7 +37,7 @@ class TripContainer extends Component {
     if (error) {
       return <NotFound />;
     }
-    console.log(this.props.location);
+
     return (
       <TripComponent
         isLoading={isLoading}

@@ -114,9 +114,19 @@ export default class Trip extends Component {
       isGuestsPopupOpen: false,
     };
 
-    this.sentenceRef = React.createRef();
-    this.headerRef = React.createRef();
+    if (!props.isLoading && props.trip) {
+      this.sentenceRef = React.createRef();
+      this.headerRef = React.createRef();
+    }
+
     this.ticking = false;
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!prevProps.trip && this.props.trip) {
+      this.sentenceRef = React.createRef();
+      this.headerRef = React.createRef();
+    }
   }
 
   componentDidMount() {
@@ -131,6 +141,10 @@ export default class Trip extends Component {
   }
 
   handleScroll = () => {
+    if (!this.headerRef || !this.sentenceRef) {
+      return;
+    }
+
     const { top, height } = this.headerRef.current.getBoundingClientRect();
     const shouldBeFixed = top + height <= 70;
 
