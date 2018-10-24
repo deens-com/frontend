@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 import styled from 'styled-components';
 import { Popup, Dropdown, Icon } from 'semantic-ui-react';
 import { DateRangePicker } from 'react-dates';
@@ -216,7 +217,7 @@ class Filters extends Component {
   refetch_results(param_object) {
     const query_params = this.get_query_params();
     query_params[Object.keys(param_object)[0]] = param_object[Object.keys(param_object)[0]];
-    this.props.update_path(query_params);
+    this.props.update_path(query_params, this.props.history);
   }
 
   refetch_results_for_location(lat, lon, addr) {
@@ -224,14 +225,14 @@ class Filters extends Component {
     query_params.latitude = lat;
     query_params.longitude = lon;
     query_params.address = addr;
-    this.props.update_path(query_params);
+    this.props.update_path(query_params, this.props.history);
   }
 
   refetch_results_for_dates(dateRange) {
     const query_params = this.get_query_params();
     query_params.start_date = dateRange.start_date;
     query_params.end_date = dateRange.end_date;
-    this.props.update_path(query_params);
+    this.props.update_path(query_params, this.props.history);
   }
 
   debounced_refetch_results = debounce(param_object => {
@@ -968,7 +969,9 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators(results_actions, dispatch);
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Filters);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(Filters),
+);

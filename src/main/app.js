@@ -1,8 +1,9 @@
 import React from 'react';
 import { Switch } from 'react-router';
-import { Route, HashRouter } from 'react-router-dom';
+import { Route, Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store';
+import history from 'main/history';
 import withSegmentTracker from './middlewares/with_segment_tracker';
 import withErrorBoundary from './middlewares/WithErrorBoundary';
 import Home from './../scenes/home/home';
@@ -34,7 +35,7 @@ class App extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        <HashRouter>
+        <Router history={history}>
           <ScrollToTop>
             <Switch>
               <Route exact path={process.env.PUBLIC_URL + '/'} component={commonHOCs(Home)} />
@@ -89,7 +90,7 @@ class App extends React.Component {
               <Route component={withErrorBoundary(Notfound)} />
             </Switch>
           </ScrollToTop>
-        </HashRouter>
+        </Router>
       </Provider>
     );
   }

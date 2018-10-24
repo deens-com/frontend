@@ -37,7 +37,7 @@ class TripContainer extends Component {
     if (error) {
       return <NotFound />;
     }
-
+    console.log(this.props.location);
     return (
       <TripComponent
         isLoading={isLoading}
@@ -53,6 +53,10 @@ class TripContainer extends Component {
         isCloning={isCloning}
         cloneTrip={cloneTrip}
         currentUserId={session._id}
+        history={this.props.history}
+        action={
+          this.props.location && this.props.location.state && this.props.location.state.action
+        }
       />
     );
   }

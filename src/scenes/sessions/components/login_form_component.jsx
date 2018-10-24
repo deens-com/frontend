@@ -212,7 +212,7 @@ export default class LoginFormComponent extends Component {
                         color="green"
                         fluid
                         size="large"
-                        onClick={() => this.props.loginWithLedger(from)}
+                        onClick={() => this.props.loginWithLedger({ from, action })}
                       >
                         Login with Ledger
                       </MetamaskButton>
@@ -226,6 +226,7 @@ export default class LoginFormComponent extends Component {
                           state: {
                             message: this.props.message,
                             from: this.props.from,
+                            action: this.props.action,
                           },
                         }}
                         replace
