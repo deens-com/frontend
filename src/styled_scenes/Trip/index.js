@@ -93,6 +93,7 @@ const PopupContent = styled.div`
   .SingleDatePicker {
     position: absolute;
     top: -53px;
+    right: -100px;
   }
 
   .close {
@@ -146,12 +147,12 @@ export default class Trip extends Component {
     }
 
     const { top, height } = this.headerRef.current.getBoundingClientRect();
-    const shouldBeFixed = top + height <= 70;
+    const shouldBeFixed = top + height <= 65;
 
     if (!this.ticking) {
       window.requestAnimationFrame(() => {
         if (shouldBeFixed) {
-          this.sentenceRef.current.style.top = '70px';
+          this.sentenceRef.current.style.top = '65px';
           this.sentenceRef.current.style.position = 'fixed';
           this.sentenceRef.current.style.left = 0;
           this.sentenceRef.current.style.right = 0;
@@ -226,7 +227,7 @@ export default class Trip extends Component {
   goToDay = index => {
     const domNode = ReactDOM.findDOMNode(this.childRefs[index].current);
     domNode.scrollIntoView(true);
-    window.scrollBy(0, -75); // To avoid the header blocking a part of the day
+    window.scrollBy(0, -140); // To avoid the header blocking a part of the day
   };
 
   assignRefs = refs => {

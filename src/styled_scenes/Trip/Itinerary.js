@@ -85,6 +85,7 @@ const ServiceData = styled.div`
   flex: 1;
   margin: 0 5px;
   padding-bottom: 15px;
+  padding-bottom: 45px;
 `;
 
 const ServiceTitle = styled.h3`

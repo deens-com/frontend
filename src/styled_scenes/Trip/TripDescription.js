@@ -2,16 +2,19 @@
 import React, { Component } from 'react';
 // import moment from 'moment';
 import styled from 'styled-components';
-
+import { media } from 'libs/styled';
 import { MapMarker, Map, Calendar } from 'shared_components/icons';
 import I18nText from 'shared_components/I18nText';
 import { minutesToDays } from './mapServicesToDays';
 import Tag from 'shared_components/Tag';
 
 const Wrapper = styled.div`
-  margin-top: 40px;
+  margin: 40px 20px 0;
   text-align: center;
   color: #3c434b;
+  ${media.minMedium} {
+    margin: 40px 0 0;
+  }
 `;
 
 const About = styled.div`
@@ -24,6 +27,10 @@ const About = styled.div`
 
 const Description = styled.div`
   margin: 20px 0;
+  text-align: left;
+  ${media.minMedium} {
+    text-align: center;
+  }
 `;
 
 const Tags = styled.div`
