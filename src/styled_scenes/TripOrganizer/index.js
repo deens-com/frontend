@@ -230,6 +230,12 @@ export default class TripOrganizer extends Component {
     return newState;
   }
 
+  componentDidCatch(error, errorInfo) {
+    // We should do something here
+    console.log('Error', error);
+    console.log('Errorinfo', errorInfo);
+  }
+
   patchTrip = (action = 'autosave') => {
     if (action === 'autosave' && this.state.isSaving) {
       return;
@@ -272,7 +278,7 @@ export default class TripOrganizer extends Component {
         duration: (this.state.length && daysToMinutes(this.state.days.length)) || 1,
         tags: this.state.trip.tags ? this.state.trip.tags.map(tag => tag._id) : [], // This could be done when loading the trip to avoid executing each time we save
       };
-      console.log(this.state.days);
+
       await axios.patch(`/trips/${trip._id}`, trip);
 
       if (action === 'autosave') {

@@ -41,7 +41,7 @@ class Results extends React.Component {
     let limit = search_params.limit || 10;
     let sortBy = search_params.sortBy || '';
     let radiusInKm = search_params.radiusInKm || 10;
-    console.log(serviceTypes);
+
     return (
       <div className="Home">
         <ResultsContainer
