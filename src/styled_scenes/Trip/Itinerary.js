@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { media } from 'libs/styled';
 import { getCategory } from 'libs/categories';
 import { parseLocation } from 'libs/fetch_helpers';
@@ -48,7 +49,9 @@ const Service = styled.div`
   }
 `;
 
+// REMOVE 'display: none;' IT'S JUST A QUICK FIX
 const ServiceDescription = styled.div`
+  display: none;
   position: absolute;
   bottom: 0;
   left: 0;
@@ -220,7 +223,9 @@ export default class Itinerary extends Component {
               {this.renderAvailability(day.day, dayData.service._id)}
             </CategoryWrapper>
             <ServiceTitle>
-              <I18nText data={dayData.service.title} />
+              <Link to={`/services/${dayData.service._id}`}>
+                <I18nText data={dayData.service.title} />
+              </Link>
             </ServiceTitle>
             {Boolean(dayData.service.ratings.count) && (
               <Rating
