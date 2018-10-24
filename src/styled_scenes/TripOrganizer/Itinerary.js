@@ -313,7 +313,7 @@ export default class Itinerary extends Component {
         </DeleteDayButton>
       </DayHeader>
       <AddServiceModal trip={this.props.trip} onServiceSelect={this.props.addService} day={day} />
-      {(!this.props.trip.notes || !this.props.trip.notes[day.day]) && (
+      {(!this.props.notes || !this.props.notes[day.day]) && (
         <AddNoteButton>
           <Button
             iconBefore="plus"
@@ -324,8 +324,8 @@ export default class Itinerary extends Component {
           </Button>
         </AddNoteButton>
       )}
-      {this.props.trip.notes &&
-        this.props.trip.notes[day.day] && (
+      {this.props.notes &&
+        this.props.notes[day.day] && (
           <Note key={`${day.day}-note-${this.state.resetNoteDefaultValues}`}>
             <NoteTitle>Note</NoteTitle>
             <Popup
@@ -339,7 +339,7 @@ export default class Itinerary extends Component {
             />
             <TextArea
               autoHeight
-              defaultValue={I18nText.translate(this.props.trip.notes[day.day])}
+              defaultValue={I18nText.translate(this.props.notes[day.day])}
               day={day.day}
               onChange={this.editNote}
             />
