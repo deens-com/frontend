@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 // COMPONENTS
-import Col from '../layout/Col';
+import Col from './../../../../shared_components/layout/Col';
 
 // ACTIONS/CONFIG
 

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 // ACTIONS/CONFIG
-import { media } from '../../libs/styled';
+import { media } from 'libs/styled';
 
 // STYLES
 const tagSizes = {
@@ -29,14 +29,19 @@ const tagSizes = {
   },
 };
 
+// quick fix to maintain the style
+const ServiceCarouselButton = styled.a``;
+const ServiceCarouselLink = styled(Link)``;
+
 const Wrap = styled.div`
-  background: ${props => props.background || '#ddd'};
+  background: #ffffff;
+  border: solid 1px ${props => props.background || '#dddddd'};
   border-radius: 4px;
-  box-shadow: ${props => (props.withShadow ? '0 8px 25px 0 rgba(141,141,141,0.22)' : 'none')};
+  box-shadow: ${props => (props.withShadow ? '0px 8px 10px 0 rgba(0, 0, 0, 0.22)' : 'none')};
   cursor: pointer;
   display: inline-block;
   margin-bottom: 15px;
-  margin-right: 0;
+  margin-right: ${props => tagSizes[props.size].marginRight};
   overflow: hidden;
   transition: box-shadow 0.1s ease-out, background 0.1s ease-out;
   width: ${props => tagSizes[props.size].width};
@@ -49,24 +54,38 @@ const Wrap = styled.div`
     background: ${props => props.hoverBg || '#dd9'};
     box-shadow: ${props => (props.withShadow ? '0 8px 40px 0px rgba(141,141,141,0.28)' : 'none')};
     opacity: 0.8;
+
+    a {
+      color: #ffffff;
+    }
   }
 
   a {
     align-items: center;
-    color: #fff;
+    color: ${props => props.background || '#000000'};
     display: flex;
     font-size: ${props => tagSizes[props.size].fontSize};
     min-height: ${props => tagSizes[props.size].minHeight};
     justify-content: center;
-    padding: ${props => (props.size === 'small' ? '6px 10px' : '0')};
+    padding: ${props => (props.size === 'small' ? '5px 15px' : '0')};
   }
 `;
 
 // MODULE
-export default function CategoryTag({ size, withShadow, item }) {
+export default function CategoryTag(props) {
+  const tagButton = props.href ? (
+    <ServiceCarouselLink to={props.href}>{props.item.label}</ServiceCarouselLink>
+  ) : (
+    <ServiceCarouselButton>{props.item.label}</ServiceCarouselButton>
+  );
   return (
-    <Wrap size={size} withShadow={withShadow} hoverBg={item.hoverBg} background={item.background}>
-      <Link to={`/results?tags=${item.label.toLowerCase()}`}>{item.label}</Link>
+    <Wrap
+      size={props.size}
+      withShadow={false}
+      hoverBg={props.item.hoverBg}
+      background={props.item.background}
+    >
+      {tagButton}
     </Wrap>
   );
 }
@@ -80,6 +99,7 @@ CategoryTag.propTypes = {
     background: PropTypes.string,
     label: PropTypes.string,
   }).isRequired,
+  href: PropTypes.string,
 };
 
 // Default Props

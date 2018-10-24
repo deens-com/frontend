@@ -269,7 +269,7 @@ export default class TripOrganizer extends Component {
         ),
         ...(this.props.startDate ? { startDate: this.props.startDate } : {}),
         ...(this.props.numberOfPeople ? { peopleCount: this.props.numberOfPeople } : {}),
-        duration: daysToMinutes(this.state.days.length) || 1,
+        duration: (this.state.length && daysToMinutes(this.state.days.length)) || 1,
         tags: this.state.trip.tags ? this.state.trip.tags.map(tag => tag._id) : [], // This could be done when loading the trip to avoid executing each time we save
       };
       console.log(this.state.days);
@@ -720,6 +720,7 @@ export default class TripOrganizer extends Component {
       prev => ({
         trip: {
           ...prev.trip,
+          pictureUploadError: null,
           media: [
             {
               type: 'image',

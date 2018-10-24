@@ -3,8 +3,10 @@ import React, { Component } from 'react';
 // import moment from 'moment';
 import styled from 'styled-components';
 
-// import { MapMarker, Map, Calendar } from 'shared_components/icons';
+import { MapMarker, Map, Calendar } from 'shared_components/icons';
 import I18nText from 'shared_components/I18nText';
+import { minutesToDays } from './mapServicesToDays';
+import Tag from 'shared_components/Tag';
 
 const Wrapper = styled.div`
   margin-top: 40px;
@@ -16,10 +18,36 @@ const About = styled.div`
   font-weight: bold;
   text-transform: uppercase;
   font-size: 18px;
+  text-align: center;
+  margin-bottom: 30px;
 `;
 
 const Description = styled.div`
   margin: 20px 0;
+`;
+
+const Tags = styled.div`
+  > div {
+    border-radius: 50px;
+  }
+`;
+
+const TripData = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const DataChunk = styled.div`
+  display: flex;
+  color: #6e7885;
+  font-size: 14px;
+  font-weight: bold;
+  align-items: center;
+  margin: 0 10px;
+  > svg {
+    font-size: 20px;
+    fill: #6e7885;
+  }
 `;
 
 export default class ResultsScene extends Component {
@@ -34,19 +62,41 @@ export default class ResultsScene extends Component {
   };
 
   render() {
-    const { trip } = this.props;
+    const { trip, countries, cities } = this.props;
 
     return (
       <Wrapper>
         <About>About this trip</About>
+        <TripData>
+          <DataChunk>
+            <Calendar />
+            <span>{minutesToDays(trip.duration)} Days</span>
+          </DataChunk>
+          <DataChunk>
+            <Map />
+            <span>
+              {countries} {countries === 1 ? 'Country' : 'Countries'}
+            </span>
+          </DataChunk>
+          <DataChunk>
+            <MapMarker />
+            <span>
+              {cities} {cities === 1 ? 'City' : 'Cities'}
+            </span>
+          </DataChunk>
+        </TripData>
         <Description>
           <I18nText data={trip.description} />
         </Description>
-        {trip.tags.map(tag => (
-          <span key={I18nText.translate(tag.names)}>
-            <I18nText data={tag.names} />
-          </span>
-        ))}
+        <Tags>
+          {trip.tags.map(tag => (
+            <Tag
+              key={tag.label}
+              item={tag}
+              href={`/results?service_types=trip&tags=${tag.label}`}
+            />
+          ))}
+        </Tags>
       </Wrapper>
     );
   }
