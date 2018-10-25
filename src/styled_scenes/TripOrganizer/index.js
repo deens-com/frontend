@@ -147,6 +147,37 @@ function createTripState(props, state) {
   };
 }
 
+function pickFirstOption(data) {
+  return data.reduce((prev, value) => {
+    if (!value.groupedOptions || value.groupedOptions.options.length === 0) {
+      return prev;
+    }
+
+    if (!prev[value.day]) {
+      return {
+        ...prev,
+        [value.day]: {
+          [value.serviceId]: {
+            availabilityCode: value.groupedOptions.options[0].otherAttributes.availabilityCode.code,
+            price: value.groupedOptions.options[0].price,
+          },
+        },
+      };
+    }
+
+    return {
+      ...prev,
+      [value.day]: {
+        ...prev[value.day],
+        [value.serviceId]: {
+          availabilityCode: value.groupedOptions.options[0].otherAttributes.availabilityCode.code,
+          price: value.groupedOptions.options[0].price,
+        },
+      },
+    };
+  }, {});
+}
+
 const emptyTrip = {
   title: '',
   services: [],
@@ -188,44 +219,14 @@ export default class TripOrganizer extends Component {
     if (
       props.availability &&
       (!(state.availability && state.availability.timestamp) ||
-        props.availability.timestamp === state.availability.timestamp)
+        props.availability.timestamp >= state.availability.timestamp)
     ) {
-      const optionsSelected =
-        props.availability.data &&
-        props.availability.data.reduce((prev, value) => {
-          if (!value.groupedOptions || value.groupedOptions.options.length === 0) {
-            return prev;
-          }
+      const optionsSelected = props.availability.data && pickFirstOption(props.availability.data);
 
-          if (!prev[value.day]) {
-            return {
-              ...prev,
-              [value.day]: {
-                [value.serviceId]: {
-                  availabilityCode:
-                    value.groupedOptions.options[0].otherAttributes.availabilityCode.code,
-                  price: value.groupedOptions.options[0].price,
-                },
-              },
-            };
-          }
-
-          return {
-            ...prev,
-            [value.day]: {
-              ...prev[value.day],
-              [value.serviceId]: {
-                availabilityCode:
-                  value.groupedOptions.options[0].otherAttributes.availabilityCode.code,
-                price: value.groupedOptions.options[0].price,
-              },
-            },
-          };
-        }, {});
       newState = {
         ...newState,
         availability: props.availability,
-        optionsSelected: optionsSelected,
+        optionsSelected,
       };
     }
 
@@ -513,9 +514,11 @@ export default class TripOrganizer extends Component {
       prevState => ({
         availability: {
           ...prevState.availability,
+          data: [],
           isChecking: true,
           timestamp,
         },
+        optionsSelected: {},
         isCheckingList: [],
       }),
       async () => {
@@ -537,18 +540,21 @@ export default class TripOrganizer extends Component {
           [],
         );
         const availability = await Promise.all(days.map(day => day.request));
+        const data = days.map((day, index) => ({
+          day: day.day,
+          serviceId: day.serviceId,
+          ...availability[index].data,
+        }));
+        const optionsSelected = pickFirstOption(data);
 
         this.setState({
           availability: {
-            data: days.map((day, index) => ({
-              day: day.day,
-              serviceId: day.serviceId,
-              ...availability[index].data,
-            })),
+            data,
             error: null,
             isChecking: false,
             timestamp,
           },
+          optionsSelected,
         });
       },
     );

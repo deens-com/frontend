@@ -165,6 +165,8 @@ export const checkAvailability = (id, startDate, peopleCount) => async dispatch 
     dispatch(checkAvailabilitySuccess(availability, timestamp));
   } catch (e) {
     dispatch(checkAvailabilityError(e, timestamp));
+    // retry! this is a quick fix, we need a better way to handle errors
+    checkAvailability(id, startDate, peopleCount);
   }
 };
 

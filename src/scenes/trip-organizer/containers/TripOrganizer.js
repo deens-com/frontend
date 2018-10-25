@@ -13,7 +13,7 @@ class TripOrganizerContainer extends Component {
     props.fetchTrip(props.match.params.id);
 
     if (props.startDate && props.numberOfPeople) {
-      props.checkAvailability(props.match.params.id, props.startDate, props.numberOfPeople);
+      props.checkAvailability(props.match.params.id, moment(props.startDate), props.numberOfPeople);
     }
   }
 
