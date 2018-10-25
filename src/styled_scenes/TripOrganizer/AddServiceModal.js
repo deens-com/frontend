@@ -77,6 +77,10 @@ const SearchBy = styled.div`
   > * {
     margin-top: 5px;
   }
+  > span {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
 `;
 
 const SearchSettings = styled.div``;
@@ -127,7 +131,6 @@ export default class AddServiceModal extends Component {
       selectedType: 'Accommodation',
       city: null,
       location: null,
-      searchType: 'city',
       text: null,
       isSearching: false,
       results: null,
@@ -138,7 +141,7 @@ export default class AddServiceModal extends Component {
   }
 
   search(page) {
-    const { selectedType, location, text, searchType } = this.state;
+    const { selectedType, location, text } = this.state;
     if (location || text) {
       const searchNumber = ++this.latestSearchNumber; // Avoid race condition
       this.setState(
@@ -149,15 +152,11 @@ export default class AddServiceModal extends Component {
         async () => {
           const query = composeFetchQuery({
             type: [selectedType],
-            ...(searchType === 'city' && {
-              latitude: location && location.lat,
-              longitude: location && location.lng,
-            }),
+            latitude: location && location.lat,
+            longitude: location && location.lng,
             tags: [],
             limit: searchLimit,
-            ...(searchType === 'text' && {
-              text,
-            }),
+            text,
             page: this.state.page + 1,
           });
 
@@ -215,12 +214,6 @@ export default class AddServiceModal extends Component {
   selectService = async service => {
     this.props.onServiceSelect(this.props.day.day, service);
     this.handleClose();
-  };
-
-  selectSearchType = (event, data) => {
-    this.setState({
-      searchType: data.value,
-    });
   };
 
   handleOpen = () => {
@@ -347,32 +340,14 @@ export default class AddServiceModal extends Component {
                 </Button>
               </TypeSelector>
               <SearchBy>
-                <span>Search by</span>
-                <Dropdown
-                  options={[
-                    {
-                      text: 'Text',
-                      value: 'text',
-                    },
-                    {
-                      text: 'City',
-                      value: 'city',
-                    },
-                  ]}
-                  onChange={this.selectSearchType}
-                  defaultValue="city"
-                  selection
+                <Input placeholder="Search text" onChange={this.handleTextChange} />
+                <span>near</span>
+                <Popup
+                  trigger={<EditableElement>{city || 'Select city'}</EditableElement>}
+                  content={<SemanticLocationControl onChange={this.handleLocationChange} />}
+                  on="click"
+                  position="bottom left"
                 />
-                {this.state.searchType === 'text' ? (
-                  <Input onChange={this.handleTextChange} />
-                ) : (
-                  <Popup
-                    trigger={<EditableElement>{city || 'Select city'}</EditableElement>}
-                    content={<SemanticLocationControl onChange={this.handleLocationChange} />}
-                    on="click"
-                    position="bottom left"
-                  />
-                )}
               </SearchBy>
             </SearchSettings>
             {isSearching ? (
