@@ -233,10 +233,13 @@ export default class TripOrganizer extends Component {
     return newState;
   }
 
-  componentDidCatch(error, errorInfo) {
-    // We should do something here
-    console.log('Error', error);
-    console.log('Errorinfo', errorInfo);
+  componentDidUpdate(prevProps) {
+    if (!prevProps.trip && this.props.trip) {
+      this.checkAllServicesAvailability({
+        startDate: this.props.startDate,
+        guests: this.props.numberOfPeople,
+      });
+    }
   }
 
   patchTrip = (action = 'autosave') => {
@@ -377,6 +380,7 @@ export default class TripOrganizer extends Component {
               .format('YYYY-MM-DD'),
             peopleCount: this.props.numberOfPeople,
           }));
+
         this.setState(prevState => ({
           ...(this.props.startDate
             ? {
@@ -396,6 +400,21 @@ export default class TripOrganizer extends Component {
                 isCheckingList: prevState.isCheckingList.filter(
                   value => value !== `${day}-${service._id}`,
                 ),
+                ...(availability.data.groupedOptions &&
+                  availability.data.groupedOptions.options.length > 0 && {
+                    optionsSelected: {
+                      ...prevState.optionsSelected,
+                      [day]: {
+                        ...prevState.optionsSelected[day],
+                        [service._id]: {
+                          availabilityCode:
+                            availability.data.groupedOptions.options[0].otherAttributes
+                              .availabilityCode.code,
+                          price: availability.data.groupedOptions.options[0].price,
+                        },
+                      },
+                    },
+                  }),
               }
             : null),
         }));
@@ -508,6 +527,21 @@ export default class TripOrganizer extends Component {
     this.childRefs = refs;
   };
 
+  checkSingleService = (data, startDate, guests) => {
+    try {
+      return axios.post(`/services/${data.service._id}/availability`, {
+        bookingDate: startDate
+          .clone()
+          .add(data.day - 1, 'days')
+          .format('YYYY-MM-DD'),
+        peopleCount: guests,
+      });
+    } catch (e) {
+      // Retry!
+      return this.checkSingleService(data, startDate, guests);
+    }
+  };
+
   checkAllServicesAvailability = ({ startDate, guests }) => {
     const timestamp = new Date().getTime();
     this.setState(
@@ -528,13 +562,7 @@ export default class TripOrganizer extends Component {
             ...day.data.map(data => ({
               serviceId: data.service._id,
               day: day.day,
-              request: axios.post(`/services/${data.service._id}/availability`, {
-                bookingDate: startDate
-                  .clone()
-                  .add(data.day - 1, 'days')
-                  .format('YYYY-MM-DD'),
-                peopleCount: guests,
-              }),
+              request: this.checkSingleService(data, startDate, guests),
             })),
           ],
           [],
