@@ -134,26 +134,23 @@ export default class ResultsScene extends Component {
     this.setState({ showMap: !this.state.showMap });
   };
 
-  onCardOver = e => {
+  setMarkerHoverState(id, state) {
     this.setState({
       markers: this.state.markers.map(marker => {
-        if (marker.id === e) {
-          marker.hover = true;
+        if (marker.id === id) {
+          marker.hover = state;
         }
         return marker;
       }),
     });
+  }
+
+  onCardOver = e => {
+    this.setMarkerHoverState(e, true);
   };
 
   onCardLeave = e => {
-    this.setState({
-      markers: this.state.markers.map(marker => {
-        if (marker.id === e) {
-          marker.hover = false;
-        }
-        return marker;
-      }),
-    });
+    this.setMarkerHoverState(e, false);
   };
 
   render() {
