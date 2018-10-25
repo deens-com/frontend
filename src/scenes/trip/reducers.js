@@ -141,6 +141,7 @@ export default function TripsReducer(state = initialState, action = {}) {
         availability: {
           ...initialState.availability,
           error: action.payload,
+          timestamp: action.timestamp,
         },
       };
     }
