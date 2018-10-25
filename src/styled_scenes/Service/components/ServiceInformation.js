@@ -6,6 +6,7 @@ import UserAvatar from 'shared_components/UserAvatar';
 import { padStart } from 'libs/Utils';
 import PriceTag from 'shared_components/Currency/PriceTag';
 import Rating from 'shared_components/Rating';
+import { Link } from 'react-router-dom';
 
 const Table = styled.table`
   table-layout: fixed;
@@ -60,7 +61,15 @@ const ServiceInformation = ({ service }) => {
         </Row>
         <Row>
           <td>Location</td>
-          <td>{service.location}</td>
+          <td>
+            <Link
+              to={`/results?address=${service.location}&latitude=${service.geo.lat}&longitude=${
+                service.geo.lng
+              }`}
+            >
+              {service.location}
+            </Link>
+          </td>
         </Row>
         <Row>
           <td>Rating</td>
