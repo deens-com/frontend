@@ -1,8 +1,9 @@
 import React from 'react';
 import { Switch } from 'react-router';
-import { Route, HashRouter } from 'react-router-dom';
+import { Route, Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store';
+import history from 'main/history';
 import withSegmentTracker from './middlewares/with_segment_tracker';
 import withErrorBoundary from './middlewares/WithErrorBoundary';
 import Home from './../scenes/home/home';
@@ -34,7 +35,7 @@ class App extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        <HashRouter>
+        <Router history={history}>
           <ScrollToTop>
             <Switch>
               <Route exact path={process.env.PUBLIC_URL + '/'} component={commonHOCs(Home)} />
@@ -63,18 +64,22 @@ class App extends React.Component {
               <PrivateRoute
                 path={process.env.PUBLIC_URL + '/trips/organize/:id'}
                 component={commonHOCs(TripOrganizer)}
+                message="Please login or register to continue with your trip."
               />
               <PrivateRoute
                 path={process.env.PUBLIC_URL + '/trips/share/:id'}
                 component={commonHOCs(TripShare)}
+                message="Please login or register to share your trip."
               />
               <PrivateRoute
                 path={process.env.PUBLIC_URL + '/trips/checkout/:id'}
                 component={commonHOCs(Checkout)}
+                message="Please login or register to checkout your trip."
               />
-              <Route
+              <PrivateRoute
                 path={process.env.PUBLIC_URL + '/trips/create'}
                 component={commonHOCs(TripCreator)}
+                message="Please login or register to create a new trip."
               />
               <Route path={process.env.PUBLIC_URL + '/trips/:id'} component={commonHOCs(Trip)} />
               <Route
@@ -85,7 +90,7 @@ class App extends React.Component {
               <Route component={withErrorBoundary(Notfound)} />
             </Switch>
           </ScrollToTop>
-        </HashRouter>
+        </Router>
       </Provider>
     );
   }

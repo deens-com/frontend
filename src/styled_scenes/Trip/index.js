@@ -21,6 +21,20 @@ import Itinerary from './Itinerary';
 import DaySelector from './DaySelector';
 import mapServicesToDays from './mapServicesToDays';
 
+const getCityCount = services => {
+  const cities = new Set();
+  services.forEach(data => cities.add(data.service.location.city));
+
+  return cities.size;
+};
+
+const getCountryCount = services => {
+  const countries = new Set();
+  services.forEach(data => countries.add(data.service.location.countryCode));
+
+  return countries.size;
+};
+
 const CustomPage = Page.extend`
   padding-bottom: 150px;
 `;
@@ -33,6 +47,7 @@ const TripData = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
+  z-index: 5;
 `;
 
 const EditableElement = styled.div`
@@ -78,11 +93,17 @@ const PopupContent = styled.div`
   .SingleDatePicker {
     position: absolute;
     top: -53px;
+    right: -100px;
   }
 
   .close {
     display: none;
   }
+`;
+
+const Body = styled.div`
+  max-width: 825px;
+  margin: 0 auto;
 `;
 
 export default class Trip extends Component {
@@ -93,7 +114,57 @@ export default class Trip extends Component {
       isDatePopupOpen: false,
       isGuestsPopupOpen: false,
     };
+
+    if (!props.isLoading && props.trip) {
+      this.sentenceRef = React.createRef();
+      this.headerRef = React.createRef();
+    }
+
+    this.ticking = false;
   }
+
+  componentDidUpdate(prevProps) {
+    if (!prevProps.trip && this.props.trip) {
+      this.sentenceRef = React.createRef();
+      this.headerRef = React.createRef();
+    }
+  }
+
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleScroll);
+    if (this.props.action === 'handleCustomizeClick') {
+      this.handleCustomizeClick();
+    }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
+  }
+
+  handleScroll = () => {
+    if (!this.headerRef || !this.sentenceRef) {
+      return;
+    }
+
+    const { top, height } = this.headerRef.current.getBoundingClientRect();
+    const shouldBeFixed = top + height <= 65;
+
+    if (!this.ticking) {
+      window.requestAnimationFrame(() => {
+        if (shouldBeFixed) {
+          this.sentenceRef.current.style.top = '65px';
+          this.sentenceRef.current.style.position = 'fixed';
+          this.sentenceRef.current.style.left = 0;
+          this.sentenceRef.current.style.right = 0;
+        } else {
+          this.sentenceRef.current.style = {};
+        }
+        this.ticking = false;
+      });
+
+      this.ticking = true;
+    }
+  };
 
   checkAvailability = (startDate, people) => {
     if (startDate && people) {
@@ -142,13 +213,21 @@ export default class Trip extends Component {
       history.push(`/trips/organize/${this.props.trip._id}`);
       return;
     }
+    if (!this.props.currentUserId) {
+      history.push('/login', {
+        message: 'You must login to continue',
+        from: `/trips/${this.props.trip._id}`,
+        action: 'handleCustomizeClick',
+      });
+      return;
+    }
     this.props.cloneTrip(this.props.trip._id);
   };
 
   goToDay = index => {
     const domNode = ReactDOM.findDOMNode(this.childRefs[index].current);
     domNode.scrollIntoView(true);
-    window.scrollBy(0, -75); // To avoid the header blocking a part of the day
+    window.scrollBy(0, -140); // To avoid the header blocking a part of the day
   };
 
   assignRefs = refs => {
@@ -175,13 +254,16 @@ export default class Trip extends Component {
     const formattedStartDate = startDate ? startDate.format('MMM DD, YYYY') : '';
     const formattedEndDate = endDate ? endDate.format('MMM DD, YYYY') : '';
 
+    const countries = getCountryCount(trip.services);
+    const cities = getCityCount(trip.services);
+
     return (
       <Wrapper>
         <Dimmer active={isCloning} page>
           <Loader size="massive" />
         </Dimmer>
-        <Header trip={trip} owner={owner} />
-        <TripData>
+        <Header innerRef={this.headerRef} trip={trip} owner={owner} />
+        <TripData innerRef={this.sentenceRef}>
           <Sentence>
             <SentenceText>I want this trip between</SentenceText>
             <EditableElement>
@@ -260,15 +342,17 @@ export default class Trip extends Component {
             </EditableElement>
           </Sentence>
         </TripData>
-        <TripDescription trip={trip} />
-        <Itinerary
-          isCheckingAvailability={isCheckingAvailability}
-          availability={availability}
-          trip={trip}
-          numberOfPeople={numberOfPeople}
-          startDate={this.props.startDate}
-          assignRefsToParent={this.assignRefs}
-        />
+        <Body>
+          <TripDescription trip={trip} cities={cities} countries={countries} />
+          <Itinerary
+            isCheckingAvailability={isCheckingAvailability}
+            availability={availability}
+            trip={trip}
+            numberOfPeople={numberOfPeople}
+            startDate={this.props.startDate}
+            assignRefsToParent={this.assignRefs}
+          />
+        </Body>
       </Wrapper>
     );
   };

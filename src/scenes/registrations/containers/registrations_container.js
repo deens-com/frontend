@@ -93,7 +93,10 @@ class RegistrationsContainer extends Component {
       return;
     }
     const email = this.state.email.toLowerCase();
-    this.props.postRegistration(this.state.username, email, this.state.password);
+    this.props.postRegistration(this.state.username, email, this.state.password, {
+      from: this.props.from,
+      action: this.props.action,
+    });
   };
 
   handleInputChange(event) {
@@ -119,6 +122,9 @@ class RegistrationsContainer extends Component {
           validationErrors={this.props.validationErrors}
           validateInput={this.validateInput}
           isInputInvalid={this.isInputInvalid}
+          from={this.props.from}
+          message={this.props.message}
+          action={this.props.action}
         />
       </div>
     );

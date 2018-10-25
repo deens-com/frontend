@@ -19,6 +19,13 @@ export function dayTitles(dayNumber, date) {
   };
 }
 
+export function updateServiceDayNames(days, date) {
+  return days.map(day => ({
+    ...day,
+    ...dayTitles(day.day, date),
+  }));
+}
+
 export default function mapServicesToDays(services, duration, date) {
   const numberOfDays = minutesToDays(duration);
   const daysArray = Array.from({ length: numberOfDays });

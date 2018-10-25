@@ -92,6 +92,7 @@ const ContentFooter = styled.div`
   margin-top: auto;
   position: absolute;
   bottom: 40px;
+  max-width: 74%;
 `;
 
 const Duration = styled.div`
@@ -108,8 +109,8 @@ function formatLocation(location) {
   let result = '';
   if (location.city) {
     result = location.city;
-    if (location.state) {
-      result = result.concat(`, ${location.state}`);
+    if (location.country) {
+      result = result.concat(`, ${location.country.names['en-us']}`);
     }
     return result;
   }

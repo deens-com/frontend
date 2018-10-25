@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router';
 
 // COMPONENTS
 import Row from '../../../shared_components/layout/Row';
@@ -45,7 +46,7 @@ const LoaderWithMargin = styled.section`
 `;
 
 // MODULE
-export default class Results extends Component {
+class Results extends Component {
   constructor(props) {
     super(props);
 
@@ -98,7 +99,7 @@ export default class Results extends Component {
   refetch_results(param_object) {
     const query_params = this.get_query_params();
     query_params[Object.keys(param_object)[0]] = param_object[Object.keys(param_object)[0]];
-    this.props.update_path(query_params);
+    this.props.update_path(query_params, this.props.history);
   }
 
   loadData = item => {
@@ -177,3 +178,5 @@ export default class Results extends Component {
     );
   }
 }
+
+export default withRouter(Results);

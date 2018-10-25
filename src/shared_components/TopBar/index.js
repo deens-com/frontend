@@ -8,6 +8,7 @@ import DesktopNav from '../Nav/DesktopNav';
 import MobileNav from '../Nav/MobileNav';
 import Logo from './Logo';
 import MobileDropdownMenu from '../Nav/MobileDropdownMenu';
+import Search from './Search';
 
 // ACTIONS/CONFIG
 import { media } from '../../libs/styled';
@@ -58,8 +59,8 @@ const FixedPlaceholder = styled.div`
 
 // MODULE
 export default class TopBar extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       showMenu: false,
       showSearch: false,
@@ -103,7 +104,7 @@ export default class TopBar extends Component {
   }
 
   render() {
-    const { home, fixed } = this.props;
+    const { home, fixed, noSearch } = this.props;
     const { showMenu } = this.state;
 
     return (
@@ -122,6 +123,13 @@ export default class TopBar extends Component {
             applyFixation={showMenu && !fixed}
             flex={Boolean(home)}
           />
+          {!noSearch && (
+            <Search
+              menuIsOpened={showMenu}
+              toggleSearch={this.toggleSearch}
+              address={this.props.address}
+            />
+          )}
           <DesktopNav home={home} theme="light" />
           <MobileDropdownMenu isMenuOpen={showMenu} toggleMenu={this.toggleMenu} dark={!home} />
         </InnerWrap>

@@ -52,7 +52,7 @@ const Username = styled.p`
   margin-top: 10px;
 `;
 
-const Header = ({ trip, owner }) => {
+const Header = ({ trip, owner, innerRef }) => {
   const hero = trip.media.find(media => media.hero) || trip.media[0];
   let img;
   if (hero && hero.files) {
@@ -60,7 +60,7 @@ const Header = ({ trip, owner }) => {
   }
 
   return (
-    <Wrapper img={img}>
+    <Wrapper innerRef={innerRef} img={img}>
       <Title>
         <I18nText data={trip.title} />
       </Title>

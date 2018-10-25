@@ -8,7 +8,22 @@ const normalizeParseResponseData = data => {
 };
 
 export const parseLocation = location =>
-  location ? `${location.city ? location.city + ',' : ''} ${location.countryCode}` : '';
+  location
+    ? `${location.city ? location.city : ''}${
+        location.country ? ', ' + location.country.names['en-us'] : ''
+      }`
+    : '';
+
+export const parseTags = tags =>
+  tags.map(tag => {
+    const i18nLocale = 'en-us';
+    const tagBg = tagsColorMatcher(tag.names);
+    return {
+      label: tag.names[i18nLocale].charAt(0).toUpperCase() + tag.names[i18nLocale].slice(1),
+      hoverBg: tagBg,
+      background: tagBg,
+    };
+  });
 
 const getRandomInt = (min, max) => {
   min = Math.ceil(min);
@@ -213,15 +228,7 @@ const buildServicesJson = services => {
       service.openingTime = (service.periods && service.periods[0].startTime) || '00';
       service.closingTime = (service.periods && service.periods[0].endTime) || '23';
       if (service.tags && service.tags.length && service.tags[0].type) {
-        const tags = service.tags.map(tag => {
-          const tagBg = tagsColorMatcher(tag.names);
-          return {
-            label: tag.names[i18nLocale].charAt(0).toUpperCase() + tag.names[i18nLocale].slice(1),
-            hoverBg: tagBg,
-            background: tagBg,
-          };
-        });
-        service.tags = tags;
+        service.tags = parseTags(service.tags);
       }
       if (service.type === undefined) {
         if (service.picture) {
