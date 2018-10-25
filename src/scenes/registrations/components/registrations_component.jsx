@@ -67,6 +67,11 @@ const RegistrationsComponent = props => {
                   <div className="login-img-content">Plan your next trip with us!</div>
                 </Grid.Column>
                 <Grid.Column width="6" floated="right">
+                  {props.message && (
+                    <Message floating warning>
+                      {props.message}
+                    </Message>
+                  )}
                   <div className="login-header">Create your new account</div>
                   <br />
                   {Object.keys(props.errors).length !== 0 && (

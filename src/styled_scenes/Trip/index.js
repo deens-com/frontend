@@ -115,19 +115,10 @@ export default class Trip extends Component {
       isGuestsPopupOpen: false,
     };
 
-    if (!props.isLoading && props.trip) {
-      this.sentenceRef = React.createRef();
-      this.headerRef = React.createRef();
-    }
+    this.sentenceRef = React.createRef();
+    this.headerRef = React.createRef();
 
     this.ticking = false;
-  }
-
-  componentDidUpdate(prevProps) {
-    if (!prevProps.trip && this.props.trip) {
-      this.sentenceRef = React.createRef();
-      this.headerRef = React.createRef();
-    }
   }
 
   componentDidMount() {
@@ -142,7 +133,7 @@ export default class Trip extends Component {
   }
 
   handleScroll = () => {
-    if (!this.headerRef || !this.sentenceRef) {
+    if (!this.headerRef.current || !this.sentenceRef.current) {
       return;
     }
 
@@ -215,7 +206,7 @@ export default class Trip extends Component {
     }
     if (!this.props.currentUserId) {
       history.push('/login', {
-        message: 'You must login to continue',
+        message: 'Please login or register to continue with your trip.',
         from: `/trips/${this.props.trip._id}`,
         action: 'handleCustomizeClick',
       });
