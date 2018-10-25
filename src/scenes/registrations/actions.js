@@ -1,5 +1,6 @@
 import * as analytics from 'libs/analytics';
 import axios from 'libs/axios';
+import history from 'main/history';
 import { saveSession } from 'libs/user-session';
 
 export const types = {
@@ -35,12 +36,7 @@ export const setLoading = payload => {
   };
 };
 
-export const postRegistration = (
-  username,
-  email,
-  password,
-  { from, action, history },
-) => async dispatch => {
+export const postRegistration = (username, email, password, { from, action }) => async dispatch => {
   try {
     dispatch(setLoading(true));
     await axios.post('/users/signup', {
@@ -64,9 +60,6 @@ export const postRegistration = (
         action,
       },
     });
-    if (action) {
-      action();
-    }
   } catch (error) {
     dispatch(
       registrationFailed({
