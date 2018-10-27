@@ -51,6 +51,10 @@ const ColoredText = styled.p`
   color: #b3a7a7;
 `;
 
+const LoaderWrapper = styled.div`
+  margin-top: 100px;
+`;
+
 class Trip extends Component {
   static propTypes = {
     trip: PropTypes.object.isRequired,
@@ -109,9 +113,11 @@ class Trip extends Component {
 const TripSectionComponent = props => {
   if (props.isLoadingTrips) {
     return (
-      <Loader active inline="centered" size="massive">
-        Loading
-      </Loader>
+      <LoaderWrapper>
+        <Loader active inline="centered" size="big">
+          Loading
+        </Loader>
+      </LoaderWrapper>
     );
   }
   if (!props.trips.length) {
