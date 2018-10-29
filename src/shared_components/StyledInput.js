@@ -22,6 +22,12 @@ const Wrapper = styled.div`
     border: 0;
     flex: 1;
   }
+
+  > * {
+    outline: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
 `;
 
 const Input = styled.input`

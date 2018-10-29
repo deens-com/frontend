@@ -221,7 +221,9 @@ export default class TripOrganizer extends Component {
       (!(state.availability && state.availability.timestamp) ||
         props.availability.timestamp >= state.availability.timestamp)
     ) {
-      const optionsSelected = props.availability.data && pickFirstOption(props.availability.data);
+      const optionsSelected = props.availability.data
+        ? pickFirstOption(props.availability.data)
+        : state.optionsSelected;
 
       newState = {
         ...newState,
@@ -527,15 +529,16 @@ export default class TripOrganizer extends Component {
     this.childRefs = refs;
   };
 
-  checkSingleService = (data, startDate, guests) => {
+  checkSingleService = async (data, startDate, guests) => {
     try {
-      return axios.post(`/services/${data.service._id}/availability`, {
+      const result = await axios.post(`/services/${data.service._id}/availability`, {
         bookingDate: startDate
           .clone()
           .add(data.day - 1, 'days')
           .format('YYYY-MM-DD'),
         peopleCount: guests,
       });
+      return result;
     } catch (e) {
       // Retry!
       return this.checkSingleService(data, startDate, guests);
@@ -689,7 +692,9 @@ export default class TripOrganizer extends Component {
     }
 
     const checkingAvailability =
-      this.state.availability.isChecking || this.state.isCheckingList.length > 0;
+      this.state.availability.isChecking ||
+      this.state.isCheckingList.length > 0 ||
+      !this.state.availability.data;
 
     if (checkingAvailability) {
       return 'We are checking the availability of the selected services';

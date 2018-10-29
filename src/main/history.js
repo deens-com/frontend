@@ -12,26 +12,26 @@ const hashHistory = createHashHistory({
   /* pass a configuration object here if needed */
 });
 
-const proxyObj = {
-  apply: (target, thisArg, argumentList) => {
-    if (!argumentList[1] && typeof argumentList[0] !== 'object') {
-      return target(...argumentList);
-    }
+const createNewFn = target => (to, state, ...args) => {
+  if (!state && typeof to !== 'object') {
+    return target(to, state, ...args);
+  }
 
-    const obj =
-      typeof argumentList[0] === 'object'
-        ? argumentList[0]
-        : {
-            pathname: argumentList[0],
-            state: argumentList[1],
-          };
+  const obj =
+    typeof to === 'object'
+      ? to
+      : {
+          pathname: to,
+          state: state,
+        };
 
-    return target(createLocation(obj));
-  },
+  return target(createLocation(obj));
 };
 
-hashHistory.push = new Proxy(hashHistory.push, proxyObj);
+const previousPush = hashHistory.push;
+const previousReplace = hashHistory.replace;
 
-hashHistory.replace = new Proxy(hashHistory.replace, proxyObj);
+hashHistory.push = createNewFn(previousPush);
+hashHistory.replace = createNewFn(previousReplace);
 
 export default hashHistory;

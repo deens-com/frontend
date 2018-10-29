@@ -180,3 +180,21 @@ export function getFromCoordinates(coordinates) {
     lng: coordinates[0] || null,
   };
 }
+
+/**
+ * Returns the price
+ * @param {Number} base A number from which calculate the price with different operators
+ * @param {Object} price An object with operator and value
+ * @returns {Number} The resulting price
+ */
+export function getPriceFromServiceOption(base, price) {
+  if (price.operator === '+') {
+    return price.value + base;
+  }
+
+  if (price.operator === '*') {
+    return price.value * base;
+  }
+
+  return Number(price.value);
+}

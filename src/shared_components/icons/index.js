@@ -55,6 +55,19 @@ export const DropArrow = SvgWithProps(({ ariaHidden, focusable, role, style }) =
   </svg>
 ));
 
+export const LeftArrow = SvgWithProps(({ ariaHidden, focusable, role, style }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    aria-hidden={ariaHidden}
+    focusable={focusable.toString()}
+    role={role}
+    style={style}
+  >
+    <path d="M14,7L9,12L14,17V7Z" />
+  </svg>
+));
+
 export const PinIcon = SvgWithProps(({ ariaHidden, focusable, role, style }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -356,6 +369,19 @@ export const TrashCan = SvgWithProps(({ ariaHidden, focusable, role, style }) =>
   >
     <path d="M1.50363 1.5357H2.7903V1.26572C2.7903 0.567797 3.36817 0 4.07844 0H4.92153C5.63181 0 6.20968 0.567797 6.20968 1.26572V1.5357H7.49635C8.32545 1.5357 9 2.19851 9 3.0132V3.38761H0V3.01317C0 2.19851 0.674545 1.5357 1.50363 1.5357ZM3.51582 1.5357H5.48414V1.26572C5.48414 0.960914 5.23175 0.712898 4.92151 0.712898H4.07842C3.7682 0.712898 3.51579 0.960891 3.51579 1.26572V1.5357H3.51582Z" />
     <path d="M8.49609 4.10051V11.275C8.49609 11.6748 8.16509 12 7.75824 12H1.24113C0.834283 12 0.503284 11.6748 0.503284 11.275V4.10051H8.49609ZM5.89428 10.9256H6.61979V5.17488H5.89428V10.9256ZM4.13693 10.9256H4.86245V5.17488H4.13693V10.9256ZM2.37954 10.9256H3.10505V5.17488H2.37954V10.9256Z" />
+  </svg>
+));
+
+export const CheckIcon = SvgWithProps(({ ariaHidden, focusable, role, style }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden={ariaHidden}
+    focusable={focusable.toString()}
+    role={role}
+    style={style}
+    viewBox="0 0 24 24"
+  >
+    <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
   </svg>
 ));
 
