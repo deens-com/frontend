@@ -111,6 +111,7 @@ class Results extends Component {
   };
 
   render() {
+    const { onCardOver, onCardLeave } = this.props;
     return (
       <Wrap>
         <Row>
@@ -142,7 +143,14 @@ class Results extends Component {
                       }
                     >
                       {result.contractAddress && <Badge>Decentralized</Badge>}
-                      <TripCard key={result.label} withTooltip withShadow item={result} />
+                      <TripCard
+                        key={result.label}
+                        onOver={onCardOver}
+                        onLeave={onCardLeave}
+                        withTooltip
+                        withShadow
+                        item={result}
+                      />
                     </Link>
                   </ResultItem>
                 </Grid.Column>

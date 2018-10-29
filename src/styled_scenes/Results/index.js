@@ -80,6 +80,8 @@ export default class ResultsScene extends Component {
         lat: parseFloat(service.geo.lat),
         lng: parseFloat(service.geo.lng),
         name: service.name,
+        id: service.objectId,
+        hover: false,
       }));
   };
 
@@ -132,6 +134,25 @@ export default class ResultsScene extends Component {
     this.setState({ showMap: !this.state.showMap });
   };
 
+  setMarkerHoverState(id, state) {
+    this.setState({
+      markers: this.state.markers.map(marker => {
+        if (marker.id === id) {
+          marker.hover = state;
+        }
+        return marker;
+      }),
+    });
+  }
+
+  onCardOver = e => {
+    this.setMarkerHoverState(e, true);
+  };
+
+  onCardLeave = e => {
+    this.setMarkerHoverState(e, false);
+  };
+
   render() {
     const { props } = this;
     const { center, zoom, markers } = this.state;
@@ -158,7 +179,13 @@ export default class ResultsScene extends Component {
         <PageContent flex>
           <ServicesWrapper>
             {/* <SearchFilters {...props} /> */}
-            <Results {...props} data={props.service_data} showMap={this.state.showMap} />
+            <Results
+              {...props}
+              onCardOver={this.onCardOver}
+              onCardLeave={this.onCardLeave}
+              data={props.service_data}
+              showMap={this.state.showMap}
+            />
           </ServicesWrapper>
 
           <MapWrapper style={{ display: this.state.showMap ? 'flex' : 'none' }}>
