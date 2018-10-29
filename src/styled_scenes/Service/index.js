@@ -124,6 +124,10 @@ const TripsWrap = styled.div`
 const SelfAlignCenter = styled.span`
   align-self: center;
 `;
+const DetailsLink = styled.a`
+  float: right;
+  cursor: pointer;
+`;
 const CarouselColumnSpan = styled.div`
   grid-column: span 2;
 `;
@@ -131,6 +135,18 @@ const CarouselColumnSpan = styled.div`
 const PreserveWhiteSpace = styled.p`
   white-space: pre-wrap;
 `;
+
+function formatDescription(description) {
+  var maxLength = 1000;
+  //trim the description to the maximum length
+  var trimmedString = description.substr(0, maxLength);
+  //re-trim if we are in the middle of a word
+  trimmedString = trimmedString.substr(
+    0,
+    Math.min(trimmedString.length, trimmedString.lastIndexOf(' ')),
+  );
+  return trimmedString;
+}
 
 // MODULE
 class FoodDetailScene extends Component {
@@ -140,6 +156,7 @@ class FoodDetailScene extends Component {
       date: null,
       time: null,
       personNb: null,
+      moreDetails: false,
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.checkServiceAvailability = this.checkServiceAvailability.bind(this);
@@ -179,7 +196,20 @@ class FoodDetailScene extends Component {
                 <h2>{this.props.service.title}</h2>
                 <PreserveWhiteSpace>{this.props.service.subtitle}</PreserveWhiteSpace>
                 <ServiceTags service={this.props.service} />
-                <PreserveWhiteSpace>{this.props.service.description}</PreserveWhiteSpace>
+                {!this.props.service.description ||
+                this.props.service.description.length < 1000 ||
+                this.state.moreDetails ? (
+                  <PreserveWhiteSpace>{this.props.service.description}</PreserveWhiteSpace>
+                ) : (
+                  <PreserveWhiteSpace>
+                    {formatDescription(this.props.service.description)}
+                    <DetailsLink
+                      onClick={() => this.setState(({ moreDetails }) => ({ moreDetails: true }))}
+                    >
+                      More...
+                    </DetailsLink>
+                  </PreserveWhiteSpace>
+                )}
                 {((this.props.service.startInstructions &&
                   this.props.service.startInstructions !== 'none') ||
                   (this.props.service.endInstructions &&
