@@ -93,6 +93,7 @@ class Results extends Component {
       resultsCount: this.props.search_query.resultsCount || 0,
       limit: this.props.search_query.limit || 0,
       sortBy: this.props.search_query.sortBy,
+      radiusInKm: this.props.search_query.radiusInKm,
     };
   }
 

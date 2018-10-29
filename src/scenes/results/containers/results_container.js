@@ -66,7 +66,8 @@ class ResultsContainer extends Component {
       current_props.page !== next_props.page ||
       current_props.limit !== next_props.limit ||
       current_props.sortBy !== next_props.sortBy ||
-      current_props.onlySmartContracts !== next_props.onlySmartContracts
+      current_props.onlySmartContracts !== next_props.onlySmartContracts ||
+      current_props.radiusInKm !== next_props.radiusInKm
     );
   };
 

@@ -124,7 +124,7 @@ export const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (dispatch
       description: { 'en-us': service.description },
       basePrice: service.basePrice,
       baseCurrency: service.baseCurrency,
-      services: [{ service: service, day: 1 }],
+      services: [{ service: service._id, day: 1 }],
       duration: service.duration,
     };
     const newTrip = await axios.post(`/trips`, serviceGroup).catch(error => {
