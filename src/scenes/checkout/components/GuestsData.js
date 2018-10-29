@@ -1,21 +1,55 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Input, Dropdown, Form, Label } from 'semantic-ui-react';
+import Input from 'shared_components/StyledInput';
+import { Dropdown } from 'semantic-ui-react';
+import { media } from 'libs/styled';
+
+const Form = styled.form`
+  label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+`;
+
+const Title = styled.div`
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: #c4c4c4;
+  border-bottom: 1px solid #c4c4c4;
+  text-align: center;
+  margin: 30px 0;
+  line-height: 0.1em;
+
+  > span {
+    background: white;
+    padding: 0 10px;
+  }
+`;
 
 const Guest = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #c4c4c4;
 `;
 
 const Group = styled.div`
   display: flex;
   flex-direction: column;
+  margin-right: 10px;
+  margin-top: 10px;
+  ${media.minSmall} {
+    margin-right: 0;
+    margin-top: 0;
+    margin-left: 10px;
+  }
 `;
 
 const TitleSelection = Group.extend`
-  min-width: 75px;
-  > div {
-    width: 100%;
-  }
+  width: 100px;
+  margin-left: 0;
 `;
 
 /**
@@ -24,28 +58,45 @@ const TitleSelection = Group.extend`
 const GuestsData = ({ number, onChange }) => {
   return (
     <Form>
+      <Title>
+        <span>Guests Details</span>
+      </Title>
       {Array.from({ length: number }).map((_, i) => (
         <Guest key={i}>
           <TitleSelection>
-            <Label htmlFor="title">Title</Label>
-            <Dropdown
-              name="title"
-              options={[
-                { text: 'Mr.', value: 'Mr' },
-                { text: 'Mrs.', value: 'Mrs' },
-                { text: 'Miss.', value: 'Miss' },
-              ]}
-              guest={i}
-              onChange={onChange}
-            />
+            <label htmlFor="title">Title</label>
+            <Input>
+              <Dropdown
+                name="title"
+                options={[
+                  { text: 'Mr.', value: 'Mr' },
+                  { text: 'Mrs.', value: 'Mrs' },
+                  { text: 'Miss.', value: 'Miss' },
+                ]}
+                guest={i}
+                onChange={onChange}
+                selection
+                fluid
+              />
+            </Input>
           </TitleSelection>
           <Group>
-            <Label htmlFor="firstName">First Name</Label>
-            <Input guest={i} name="firstName" onChange={onChange} />
+            <label htmlFor="firstName">First Name</label>
+            <Input
+              name="firstName"
+              onChange={event =>
+                onChange(event, { guest: i, value: event.target.value, name: 'firstName' })
+              }
+            />
           </Group>
           <Group>
-            <Label htmlFor="lastName">Last Name</Label>
-            <Input guest={i} name="lastName" onChange={onChange} />
+            <label htmlFor="lastName">Last Name</label>
+            <Input
+              name="lastName"
+              onChange={event =>
+                onChange(event, { guest: i, value: event.target.value, name: 'lastName' })
+              }
+            />
           </Group>
         </Guest>
       ))}

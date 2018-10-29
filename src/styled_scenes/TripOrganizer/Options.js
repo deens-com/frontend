@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Dropdown } from 'semantic-ui-react';
 
 import I18nText from 'shared_components/I18nText';
+import { getPriceFromServiceOption } from 'libs/Utils';
 
 const Content = styled.span`
   font-size: 12px;
@@ -36,23 +37,11 @@ const Wrapper = styled.div`
   padding: 5px 10px;
 `;
 
-function getPrice(base, price) {
-  if (price.operator === '+') {
-    return price.value + base;
-  }
-
-  if (price.operator === '*') {
-    return price.value * base;
-  }
-
-  return Number(price.value);
-}
-
 function renderOption(option, basePrice) {
   return (
     <Content>
       <Title>{I18nText.translate(option.subtitle || option.title)}</Title>
-      <Price>${getPrice(basePrice, option.price)}</Price>
+      <Price>${getPriceFromServiceOption(basePrice, option.price)}</Price>
     </Content>
   );
 }
@@ -75,7 +64,7 @@ export default class Options extends Component {
           value: option.otherAttributes.availabilityCode.code,
           content: renderOption(option, props.basePrice),
           text: renderOption(option, props.basePrice),
-          price: getPrice(props.basePrice, option.price),
+          price: getPriceFromServiceOption(props.basePrice, option.price),
         })),
         groupName: props.options.groupName,
       },
