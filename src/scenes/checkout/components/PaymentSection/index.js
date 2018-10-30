@@ -65,6 +65,7 @@ export default class PaymentSection extends Component {
       onStripeTokenReceived,
       paymentError,
       guests,
+      stripe,
     } = this.props;
     return (
       <Wrap>
@@ -97,24 +98,28 @@ export default class PaymentSection extends Component {
                       const amount = parseFloat(convertedPrice);
                       return (
                         <React.Fragment>
-                          <StripeAutoPaymentButton
-                            key={selectedCurrency}
-                            amount={amount}
-                            stripeMultiplier={stripeMultiplier}
-                            currency={selectedCurrency}
-                            onStripeTokenReceived={onStripeTokenReceived}
-                            canMakeAutoPayment={this.setCanMakeAutoPayment}
-                          />
+                          {stripe && (
+                            <StripeAutoPaymentButton
+                              key={selectedCurrency}
+                              amount={amount}
+                              stripeMultiplier={stripeMultiplier}
+                              currency={selectedCurrency}
+                              onStripeTokenReceived={onStripeTokenReceived}
+                              canMakeAutoPayment={this.setCanMakeAutoPayment}
+                            />
+                          )}
                           {paymentError && (
                             <ErrorMessage>
                               {paymentError.customMessage || paymentError.message}
                             </ErrorMessage>
                           )}
-                          <StripeCardDetails
-                            amount={amount}
-                            symbol={symbol}
-                            showOrInText={this.state.canMakeAutoPayment}
-                          />
+                          {stripe && (
+                            <StripeCardDetails
+                              amount={amount}
+                              symbol={symbol}
+                              showOrInText={this.state.canMakeAutoPayment}
+                            />
+                          )}
                           <CoinbaseButtonWrapper>
                             <CoinbaseButtonContainer tripId={tripId} guests={guests} />
                           </CoinbaseButtonWrapper>
