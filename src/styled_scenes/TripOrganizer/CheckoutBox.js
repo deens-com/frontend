@@ -5,18 +5,14 @@ import { media } from 'libs/styled';
 import { Dropdown, Popup } from 'semantic-ui-react';
 import { SingleDatePicker } from 'react-dates';
 import Button from 'shared_components/Button';
+import CancellationPolicy from 'shared_components/CancellationPolicy';
 
 const now = moment().add(1, 'days');
 const isDayBlocked = date => date.valueOf() <= now.valueOf();
 
 const Wrapper = styled.div`
-  background-color: white;
-  border: 1px solid #dfdfdf;
-  border-radius: 5px;
-  padding: 30px 50px 24px;
   margin-top: 30px;
-  display: flex;
-  flex-direction: column;
+  text-align: center;
   ${media.minLarge} {
     position: fixed;
     top: 80px;
@@ -25,10 +21,22 @@ const Wrapper = styled.div`
     height: 400px;
     z-index: 1;
     right: 15px;
-    padding-left: 15px;
-    padding-right: 15px;
     min-width: 300px;
     width: calc(100vw - 80%);
+  }
+`;
+
+const Box = styled.div`
+  border: 1px solid #dfdfdf;
+  border-radius: 5px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 30px 50px 24px;
+  text-align: left;
+  ${media.minLarge} {
+    padding-left: 15px;
+    padding-right: 15px;
   }
 `;
 
@@ -155,84 +163,87 @@ export default class CheckoutBox extends React.Component {
 
     return (
       <Wrapper>
-        <Price>Total Price Booked ${this.props.price * numberOfPeople}</Price>
-        <Divider />
-        <Field>
-          <Label>Start Date</Label>
-          <Date>
-            <span onClick={() => this.onDateFocusChange({ focused: true })}>
-              <span>Start</span>
-              <SingleDatePicker
-                id="startDate"
-                date={startDate}
-                onDateChange={this.handleDateChange}
-                focused={this.state.dateFocused}
-                onFocusChange={this.onDateFocusChange}
-                placeholder={formattedStartDate}
-                isDayBlocked={isDayBlocked}
-                numberOfMonths={1}
-                small
-                noBorder
-                /*withPortal*/
-                anchorDirection="right"
-                displayFormat="MM/DD/YY"
-              />
-            </span>
-            <span>End</span>
-            <input disabled value={endDate} style={{ color: 'gray', paddingBottom: '2px' }} />
-          </Date>
-        </Field>
-        <DropdownField>
-          <Label>Number of Guests</Label>
-          <Dropdown
-            placeholder={numberOfPeople + ' Adults'}
-            options={[
-              { text: '1 Adult', value: 1 },
-              { text: '2 Adults', value: 2 },
-              { text: '3 Adults', value: 3 },
-              { text: '4 Adults', value: 4 },
-              { text: '5 Adults', value: 5 },
-            ]}
-            onChange={this.handleGuestsChange}
-            defaultValue={numberOfPeople}
-            fluid
-            selection
-          />
-        </DropdownField>
-        {this.renderButtonWithPopup(
-          <ButtonWrap>
-            <Button
-              disableClick={Boolean(bookError)}
-              size="medium"
-              type="button"
-              theme="fillLightGreen"
-              onClick={this.book}
-              width="100%"
-              align="center"
-              bold
-            >
-              Book
-            </Button>
-          </ButtonWrap>,
-          bookError,
-        )}
-        {this.renderButtonWithPopup(
-          <ButtonWrap>
-            <Button
-              disableClick={Boolean(shareError)}
-              size="medium"
-              type="button"
-              theme="white"
-              onClick={this.share}
-              width="100%"
-              align="center"
-              bold
-            >
-              Share and earn rewards
-            </Button>
-          </ButtonWrap>,
-          shareError,
-        )}
+        <Box>
+          <Price>Total Price Booked ${this.props.price * numberOfPeople}</Price>
+          <Divider />
+          <Field>
+            <Label>Start Date</Label>
+            <Date>
+              <span onClick={() => this.onDateFocusChange({ focused: true })}>
+                <span>Start</span>
+                <SingleDatePicker
+                  id="startDate"
+                  date={startDate}
+                  onDateChange={this.handleDateChange}
+                  focused={this.state.dateFocused}
+                  onFocusChange={this.onDateFocusChange}
+                  placeholder={formattedStartDate}
+                  isDayBlocked={isDayBlocked}
+                  numberOfMonths={1}
+                  small
+                  noBorder
+                  /*withPortal*/
+                  anchorDirection="right"
+                  displayFormat="MM/DD/YY"
+                />
+              </span>
+              <span>End</span>
+              <input disabled value={endDate} style={{ color: 'gray', paddingBottom: '2px' }} />
+            </Date>
+          </Field>
+          <DropdownField>
+            <Label>Number of Guests</Label>
+            <Dropdown
+              placeholder={numberOfPeople + ' Adults'}
+              options={[
+                { text: '1 Adult', value: 1 },
+                { text: '2 Adults', value: 2 },
+                { text: '3 Adults', value: 3 },
+                { text: '4 Adults', value: 4 },
+                { text: '5 Adults', value: 5 },
+              ]}
+              onChange={this.handleGuestsChange}
+              defaultValue={numberOfPeople}
+              fluid
+              selection
+            />
+          </DropdownField>
+          {this.renderButtonWithPopup(
+            <ButtonWrap>
+              <Button
+                disableClick={Boolean(bookError)}
+                size="medium"
+                type="button"
+                theme="fillLightGreen"
+                onClick={this.book}
+                width="100%"
+                align="center"
+                bold
+              >
+                Book
+              </Button>
+            </ButtonWrap>,
+            bookError,
+          )}
+          {this.renderButtonWithPopup(
+            <ButtonWrap>
+              <Button
+                disableClick={Boolean(shareError)}
+                size="medium"
+                type="button"
+                theme="white"
+                onClick={this.share}
+                width="100%"
+                align="center"
+                bold
+              >
+                Share and earn rewards
+              </Button>
+            </ButtonWrap>,
+            shareError,
+          )}
+        </Box>
+        <CancellationPolicy />
       </Wrapper>
     );
   }
