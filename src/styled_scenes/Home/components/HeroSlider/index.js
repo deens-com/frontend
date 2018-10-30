@@ -68,42 +68,34 @@ const RightArrow = Arrow.extend`
 // If you fail to do so, we might load images that may never be used.
 // YOU HAVE BEEN WARNED!!
 // - @jaydp
-const slider = [
+export const slider = [
   {
-    name: 'Cycling',
-    location: 'Patagonia, Chile',
+    name: 'NYC Must See',
+    location: 'New York City, United States of America',
     avatar: '#',
-    image: 'https://please-com.imgix.net/static/hero-slider/beach-2018-07-13.jpg',
+    image: 'https://please-com.imgix.net/5ea4f976-6142-4d7e-b342-29b2543963e8.png',
+    id: '5bc398950ef3aee10fe5ebc0',
   },
   {
-    name: 'Rock diving',
-    location: 'Bali, Indonesia',
+    name: 'Romantic and amazing trip in Sydney',
+    location: 'Sydney, Australia',
     avatar: '#',
-    image: 'https://please-com.imgix.net/static/hero-slider/back-2018-07-13.jpg',
+    image: 'https://please-com.imgix.net/981fabde-0314-409c-a394-36acce1f9b3b.png',
+    id: '5bc6a5dfacba028138cf594f',
   },
   {
-    name: 'Sky diving',
-    location: 'Chaing Mai, Thailand',
+    name: 'London getaway, GB',
+    location: 'London, United Kingdom',
     avatar: '#',
-    image: 'https://please-com.imgix.net/static/hero-slider/jump-2018-07-13.jpg',
+    image: 'https://please-com.imgix.net/58dd1807-a82d-41e1-bcf5-e7c4cf0ec95e.png',
+    id: '5bc69d8e7dad4cd393e5be7e',
   },
   {
-    name: 'Beach',
-    location: 'Chaing Mai, Thailand',
+    name: 'The outer San Francisco : From Silicon Valley to Yosemite',
+    location: 'San Francisco, United States of America',
     avatar: '#',
-    image: 'https://please-com.imgix.net/static/hero-slider/beach-2018-07-13.jpg',
-  },
-  {
-    name: 'Field',
-    location: 'Chaing Mai, Thailand',
-    avatar: '#',
-    image: 'https://please-com.imgix.net/static/hero-slider/field-2018-07-13.jpg',
-  },
-  {
-    name: 'Trekking',
-    location: 'Chaing Mai, Thailand',
-    avatar: '#',
-    image: 'https://please-com.imgix.net/static/hero-slider/trekking-2018-07-13.jpg',
+    image: 'https://please-com.imgix.net/3cc53d62-b030-49df-9c02-5a9cbd5025eb.png',
+    id: '5bc6a9ceacba0224e3cf5950',
   },
 ];
 
@@ -170,7 +162,12 @@ export default class HeroSlider extends Component {
         <RightArrow onClick={this.goToNext}>
           <ArrowIcon />
         </RightArrow>
-        <SliderPerson name={currImg.name} location={currImg.location} avatar={currImg.avatar} />
+        <SliderPerson
+          id={currImg.id}
+          name={currImg.name}
+          location={currImg.location}
+          avatar={currImg.avatar}
+        />
       </Wrap>
     );
   }

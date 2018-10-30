@@ -19,7 +19,7 @@ import { cardConfig } from 'libs/config';
 import { PinIcon } from 'shared_components/icons';
 import I18nText from 'shared_components/I18nText';
 
-import ImgurAvatar from './../../assets/imgur-avatar.png';
+import ImgurAvatar from './../../assets/no-avatar.png';
 
 const Wrap = styled.div`
   display: inline-block;

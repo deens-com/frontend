@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 // COMPONENTS
 
@@ -20,6 +21,10 @@ const Content = styled.div`
   color: white;
   margin-right: 15px;
   text-align: right;
+
+  a {
+    color: white;
+  }
 
   span {
     display: block;
@@ -41,12 +46,16 @@ const Content = styled.div`
 // `;
 
 // MODULE
-export default function SliderPerson({ name, location, avatar }) {
+export default function SliderPerson({ name, location, id, avatar }) {
   return (
     <Person>
       <Content>
-        <span>{name}</span>
-        <span>{location}</span>
+        <Link to={`/trips/${id}`}>
+          <span>{name}</span>
+        </Link>
+        <Link to={`/trips/${id}`}>
+          <span>{location}</span>
+        </Link>
       </Content>
       {/*<Avatar>
         <Image src={avatar} alt={name} />
@@ -60,4 +69,5 @@ SliderPerson.propTypes = {
   name: PropTypes.string.isRequired,
   location: PropTypes.string.isRequired,
   avatar: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
 };

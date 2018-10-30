@@ -6,7 +6,7 @@ import CircularProfilePic from './CircularProfilePic';
 import Stars from './Stars';
 import { Link } from 'react-router-dom';
 import { Menu, Card, Button } from 'semantic-ui-react';
-import ImgurAvatar from './../../../assets/imgur-avatar.png';
+import ImgurAvatar from './../../../assets/no-avatar.png';
 
 const AttributeTitle = styled.h6`
   font-size: 9px;

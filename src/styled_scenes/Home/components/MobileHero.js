@@ -1,9 +1,7 @@
 // NPM
 import React from 'react';
 import styled from 'styled-components';
-
-// COMPONENTS
-import back from './HeroSlider/img/back.jpg';
+import { slider } from './HeroSlider';
 
 // ACTIONS/CONFIG
 
@@ -17,7 +15,7 @@ const Wrap = styled.div`
   bottom: 0;
   z-index: 0;
   background-image: linear-gradient(135deg, rgba(7, 82, 83, 0.23) 0%, rgba(2, 38, 54, 0.65)),
-    url(${back});
+    url(${props => slider[0].image});
   background-size: cover;
   background-position: center;
 `;

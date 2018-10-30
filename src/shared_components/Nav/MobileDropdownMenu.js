@@ -11,7 +11,7 @@ import { Image } from 'semantic-ui-react';
 
 // ACTIONS/CONFIG
 import { sizes } from '../../libs/styled';
-import ImgurAvatar from './../../assets/imgur-avatar.png';
+import ImgurAvatar from './../../assets/no-avatar.png';
 import { Menu, CrossIcon } from 'shared_components/icons';
 
 // STYLES

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Image } from 'semantic-ui-react';
 import Rating from '../../shared_components/Rating';
-import ImgurAvatar from './../../assets/imgur-avatar.png';
+import ImgurAvatar from './../../assets/no-avatar.png';
 
 const AvatarWrapper = styled.div`
   height: 30px;

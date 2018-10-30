@@ -80,7 +80,7 @@ export default function Footer({ withTopBorder, withPadding }) {
         <span>© Please.com</span>
       </Company>
       <div>
-        <ALink href="https://www.facebook.com/PleaseDotCom" target="_blank">
+        <ALink href="https://www.facebook.com/PleaseTrips/" target="_blank">
           <Facebook
             style={{
               height: '16px',
@@ -90,7 +90,7 @@ export default function Footer({ withTopBorder, withPadding }) {
             }}
           />
         </ALink>
-        <ALink href="https://twitter.com/PleaseDotCom" target="_blank">
+        <ALink href="https://twitter.com/PleaseTrips/" target="_blank">
           <Twitter
             style={{
               height: '16px',
@@ -100,7 +100,7 @@ export default function Footer({ withTopBorder, withPadding }) {
             }}
           />
         </ALink>
-        <ALink href="https://www.instagram.com/PleaseDotCom/" target="_blank">
+        <ALink href="https://www.instagram.com/PleaseTrips/" target="_blank">
           <Instagram
             style={{
               height: '16px',
