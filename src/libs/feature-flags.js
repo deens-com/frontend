@@ -6,6 +6,7 @@ window.Cookies = Cookies;
 export const keys = {
   stripeIntegration: 'stripe-integration',
   cryptoCurrencies: 'disable-crypto-currencies',
+  gdprDismissed: 'gdpr-dismissed',
 };
 
 const convertToBool = stringBool => stringBool === 'true';
@@ -23,3 +24,12 @@ export const disableCryptoCurrencies = boolValue => {
   Cookies.set(keys.cryptoCurrencies, !!boolValue);
   reloadPage();
 };
+
+/**
+ * Dismiss GDPR banner
+ */
+export const dismissGDPRBanner = () => {
+  Cookies.set(keys.gdprDismissed, true);
+};
+
+export const isGDPRDismissed = () => convertToBool(Cookies.get(keys.gdprDismissed));
