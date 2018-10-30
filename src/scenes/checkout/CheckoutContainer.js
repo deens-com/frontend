@@ -11,6 +11,7 @@ import { media } from 'libs/styled';
 import { Page } from 'shared_components/layout/Page';
 import TopBar from 'shared_components/TopBar';
 import I18nText from 'shared_components/I18nText';
+import CancellationPolicy from 'shared_components/CancellationPolicy';
 import { formatLocation } from 'shared_components/Carts/Trip';
 import { MapMarker, LeftArrow } from 'shared_components/icons';
 import PaymentContainer from './PaymentContainer';
@@ -146,6 +147,8 @@ const Taxes = styled.div`
   font-size: 12px;
 `;
 
+const TotalPriceWrapper = styled.div``;
+
 const TotalPrice = styled.div`
   border-radius: 5px;
   border: 1px solid #38d39f;
@@ -256,7 +259,6 @@ class CheckoutContainer extends React.Component {
   };
 
   handleGuestsDataChange = (event, data) => {
-    console.log(data);
     this.setState(
       prevState => ({
         guests: prevState.guests.map(
@@ -264,14 +266,11 @@ class CheckoutContainer extends React.Component {
         ),
       }),
       () => {
-        this.setState(
-          prevState =>
-            console.log(prevState) || {
-              nextDisabled: prevState.guests.some(
-                guest => !guest.title || !guest.firstName || !guest.lastName,
-              ),
-            },
-        );
+        this.setState(prevState => ({
+          nextDisabled: prevState.guests.some(
+            guest => !guest.title || !guest.firstName || !guest.lastName,
+          ),
+        }));
       },
     );
   };
@@ -349,10 +348,13 @@ class CheckoutContainer extends React.Component {
                     {trip.peopleCount} {trip.peopleCount === 1 ? 'Guest' : 'Guests'}
                   </Guests>
                 </SummaryData>
-                <TotalPrice>
-                  <PriceLine>Total Price Booked Items ${trip.basePrice}</PriceLine>
-                  <Taxes>* all taxes and fees are included</Taxes>
-                </TotalPrice>
+                <TotalPriceWrapper>
+                  <TotalPrice>
+                    <PriceLine>Total Price Booked Items ${trip.basePrice}</PriceLine>
+                    <Taxes>* all taxes and fees are included</Taxes>
+                  </TotalPrice>
+                  <CancellationPolicy />
+                </TotalPriceWrapper>
               </Summary>
               {this.renderStep()}
             </Wrapper>
