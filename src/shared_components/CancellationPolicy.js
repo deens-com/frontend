@@ -9,8 +9,5 @@ const Text = styled.span`
 `;
 
 export default CancellationPolicy => (
-  <Popup
-    trigger={<Text>Cancellation Policy</Text>}
-    content={'Cancel up to 30 days before the start date and get 100% refund'}
-  />
+  <Popup trigger={<Text>Cancellation Policy</Text>} content={'Non-refundable'} on="click" />
 );

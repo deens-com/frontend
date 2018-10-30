@@ -5,7 +5,6 @@ import { media } from 'libs/styled';
 import { Dropdown, Popup } from 'semantic-ui-react';
 import { SingleDatePicker } from 'react-dates';
 import Button from 'shared_components/Button';
-import CancellationPolicy from 'shared_components/CancellationPolicy';
 
 const now = moment().add(1, 'days');
 const isDayBlocked = date => date.valueOf() <= now.valueOf();
@@ -243,7 +242,6 @@ export default class CheckoutBox extends React.Component {
             shareError,
           )}
         </Box>
-        <CancellationPolicy />
       </Wrapper>
     );
   }
