@@ -4,7 +4,7 @@ import { Grid, Icon } from 'semantic-ui-react';
 import styled from 'styled-components';
 import CircularProfilePic from './CircularProfilePic';
 import moment from 'moment';
-import ImgurAvatar from './../../../assets/imgur-avatar.png';
+import ImgurAvatar from './../../../assets/no-avatar.png';
 
 const BodyText = styled.p`
   font-weight: 500;

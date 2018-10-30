@@ -385,4 +385,4 @@ export const CheckIcon = SvgWithProps(({ ariaHidden, focusable, role, style }) =
   </svg>
 ));
 
-export const Logo = ({ style }) => <img src="/please-logo.svg" width="90%" style={style} alt="" />;
+export const Logo = ({ style }) => <img src="/please-logo.svg" width="100%" style={style} alt="" />;

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Image } from 'semantic-ui-react';
 import { media } from 'libs/styled';
 import I18nText from 'shared_components/I18nText';
-import ImgurAvatar from 'assets/imgur-avatar.png';
+import ImgurAvatar from 'assets/no-avatar.png';
 
 const Wrapper = styled.div`
   width: 100%;

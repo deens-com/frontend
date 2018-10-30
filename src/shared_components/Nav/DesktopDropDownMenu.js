@@ -15,7 +15,7 @@ import { getCurrentUser, logOut } from 'scenes/sessions/actions';
 import { Dropdown } from 'semantic-ui-react';
 
 import history from './../../main/history';
-import ImgurAvatar from './../../assets/imgur-avatar.png';
+import ImgurAvatar from './../../assets/no-avatar.png';
 // STYLES
 const Wrap = styled.div`
   align-items: center;
