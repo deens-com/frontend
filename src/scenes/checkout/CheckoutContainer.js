@@ -196,11 +196,17 @@ const Footer = styled.div`
   }
 `;
 
+function stateFromProps(props) {
+  return {
+    days: props.trip.duration / 1440 || 1,
+    guests: Array.from({ length: props.trip.peopleCount }).map(_ => ({})),
+  };
+}
+
 class CheckoutContainer extends React.Component {
   constructor(props) {
     super(props);
     this.tripId = props.match.params.id;
-    props.fetchTrip(this.tripId);
     this.state = {
       step: 1,
       days: null,
@@ -208,14 +214,20 @@ class CheckoutContainer extends React.Component {
       provision: [],
       nextDisabled: false,
     };
+
+    props.fetchTrip(this.tripId);
+
+    if (props.trip && props.trip.id === this.tripId) {
+      this.state = {
+        ...this.state,
+        ...stateFromProps(props),
+      };
+    }
   }
 
   static getDerivedStateFromProps(props, state) {
     if (props.trip && !state.days) {
-      return {
-        days: props.trip.duration / 1440 || 1,
-        guests: Array.from({ length: props.trip.peopleCount }).map(_ => ({})),
-      };
+      return stateFromProps(props);
     }
     return null;
   }
