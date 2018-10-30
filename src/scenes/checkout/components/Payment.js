@@ -70,6 +70,7 @@ class Payment extends React.Component {
           onStripeTokenReceived={this.onStripeTokenReceived}
           paymentError={this.props.paymentError || this.state.paymentError}
           guests={this.props.guests}
+          showStripe={Boolean(this.props.stripe)}
         />
       </PaymentContext.Provider>
     );

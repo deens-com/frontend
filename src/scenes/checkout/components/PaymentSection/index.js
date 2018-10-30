@@ -65,7 +65,7 @@ export default class PaymentSection extends Component {
       onStripeTokenReceived,
       paymentError,
       guests,
-      stripe,
+      showStripe,
     } = this.props;
     return (
       <Wrap>
@@ -98,7 +98,7 @@ export default class PaymentSection extends Component {
                       const amount = parseFloat(convertedPrice);
                       return (
                         <React.Fragment>
-                          {stripe && (
+                          {showStripe && (
                             <StripeAutoPaymentButton
                               key={selectedCurrency}
                               amount={amount}
@@ -113,7 +113,7 @@ export default class PaymentSection extends Component {
                               {paymentError.customMessage || paymentError.message}
                             </ErrorMessage>
                           )}
-                          {stripe && (
+                          {showStripe && (
                             <StripeCardDetails
                               amount={amount}
                               symbol={symbol}
