@@ -54,7 +54,6 @@ const FileInputWrapper = styled.div`
 `;
 
 class UserBasicInfo extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -81,7 +80,6 @@ class UserBasicInfo extends Component {
     this.props.update_user_avatar(file);
   };
 
-
   render() {
     const name = this.props.user_profile.fullName || this.props.user_profile.username;
     const dpUrl = this.props.user_profile.profilePicture || ImgurAvatar;
@@ -89,25 +87,28 @@ class UserBasicInfo extends Component {
     return (
       <Card>
         <Wrapper>
-          {
-            this.state.pictureUploadError.length > 0 &&
-            <p style={{textAlign: 'center', color: 'red'}}>{this.state.pictureUploadError}</p>
-          }
+          {this.state.pictureUploadError.length > 0 && (
+            <p style={{ textAlign: 'center', color: 'red' }}>{this.state.pictureUploadError}</p>
+          )}
           <CircularProfilePic src={dpUrl} />
-          {
-            activePath === 'profile' &&
-            (
-              <CenteredDiv>
-                <FileInputWrapper>
-                  <Button circular className="btn-file-input">
-                    Update avatar
-                  </Button>
-                  <input type="file" name="file" accept=".jpg, .jpeg, .png" onChange={this.onFileSelect} />
-                </FileInputWrapper>
-              </CenteredDiv>
-            )
-          }
-          <Link to={'/users/' + this.props.user_profile.username}>{name && <NameDiv>{name}</NameDiv>}</Link>
+          {activePath === 'profile' && (
+            <CenteredDiv>
+              <FileInputWrapper>
+                <Button circular className="btn-file-input">
+                  Update avatar
+                </Button>
+                <input
+                  type="file"
+                  name="file"
+                  accept=".jpg, .jpeg, .png"
+                  onChange={this.onFileSelect}
+                />
+              </FileInputWrapper>
+            </CenteredDiv>
+          )}
+          <Link to={'/users/' + this.props.user_profile.username}>
+            {name && <NameDiv>{name}</NameDiv>}
+          </Link>
 
           <Grid columns={2} divided>
             <Grid.Row>
@@ -183,6 +184,5 @@ class UserBasicInfo extends Component {
       </Card>
     );
   }
-
 }
 export default withRouter(UserBasicInfo);
