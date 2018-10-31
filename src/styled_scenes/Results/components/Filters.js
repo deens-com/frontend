@@ -6,6 +6,7 @@ import { withRouter } from 'react-router';
 import styled from 'styled-components';
 import { Popup, Dropdown, Icon } from 'semantic-ui-react';
 import { DateRangePicker } from 'react-dates';
+import a from 'indefinite';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import moment from 'moment';
 import Media from 'react-media';
@@ -50,7 +51,7 @@ const CenteredSection = styled.section`
 `;
 
 const EditableElement = styled.div`
-  margin-left: 5px;
+  margin-left: ${props => (props.addMargin ? '15px' : '5px')};
   color: #4fb798;
   font-weight: bold;
   text-decoration: dashed underline;
@@ -310,6 +311,21 @@ class Filters extends Component {
     );
   };
 
+  getPreposition = () => {
+    if (this.props.tags.length > 0) {
+      const sentence = a(this.props.tags[0]);
+      return sentence.slice(0, sentence.indexOf(' '));
+    }
+
+    const serviceTypes = this.props.search_query.type || [];
+
+    return serviceTypes.includes('activity') || serviceTypes.includes('accommodation')
+      ? ' an'
+      : serviceTypes.includes('food')
+        ? ' '
+        : ' a';
+  };
+
   handleCategoryPopupClose = () => {
     this.setState({ isCategoryPopupOpen: false });
   };
@@ -425,17 +441,311 @@ class Filters extends Component {
     }
   };
 
+  getProps = type => {
+    const props = {
+      dates: {
+        content: (
+          <div>
+            <DateRangePicker
+              startDateId="startDate"
+              endDateId="endDate"
+              startDate={this.state.startDate}
+              endDate={this.state.endDate}
+              onDatesChange={({ startDate, endDate }) => {
+                this.handleDatesChange({ startDate, endDate });
+              }}
+              focusedInput={this.state.focusedInput}
+              onFocusChange={focusedInput => {
+                this.setState({ focusedInput });
+              }}
+            />
+            <Icon
+              style={{ position: 'relative', left: '265px', bottom: '44px' }}
+              name="close"
+              onClick={this.clearDates}
+            />
+          </div>
+        ),
+        on: 'click',
+        open: this.state.isDatesPopupOpen,
+        onClose: this.handleDatesPopupClose,
+        onOpen: this.handleDatesPopupOpen,
+        position: 'bottom center',
+        style: { minWidth: '316px' },
+      },
+      location: {
+        content: (
+          <div>
+            <SemanticLocationControl
+              key={this.props.search_query.address}
+              defaultAddress={this.props.search_query.address}
+              onChange={this.handleLocationChange}
+            />
+            <Icon
+              style={{ position: 'relative', left: '178px', bottom: '34px' }}
+              name="close"
+              onClick={this.clear_address}
+            />
+          </div>
+        ),
+        on: 'click',
+        open: this.state.isLocationPopupOpen,
+        onClose: this.handleLocationPopupClose,
+        onOpen: this.handleLocationPopupOpen,
+        position: 'bottom center',
+      },
+      mood: {
+        content: (
+          <React.Fragment>
+            {this.props.tags.length > 0 && (
+              <ClearTagsWrapper>
+                <ClearTagsLink onClick={this.clearTags}>Clear tags</ClearTagsLink>
+              </ClearTagsWrapper>
+            )}
+            <Dropdown
+              name="tags"
+              options={this.props.tagsOptions}
+              placeholder="Add tags"
+              search
+              selection
+              fluid
+              multiple
+              value={this.props.tags
+                .map(tag => tag.replace('%20', ' '))
+                .map(tag => tag.charAt(0).toUpperCase() + tag.substr(1))}
+              onChange={this.onDropDownChange}
+              style={{ minWidth: '250px' }}
+            />
+          </React.Fragment>
+        ),
+        on: 'click',
+        open: this.state.isMoodPopupOpen,
+        onClose: this.handleMoodPopupClose,
+        onOpen: this.handleMoodPopupOpen,
+        position: 'bottom center',
+      },
+      radius: {
+        content: (
+          <div style={{ textAlign: 'center' }}>
+            {this.state.isRadiusPopupOpen && (
+              <InputRange
+                type="range"
+                min="0"
+                max="5"
+                step="1"
+                value={this.state.radiusInKm}
+                onChange={this.changeRadius}
+                list="options"
+              />
+            )}
+            <InputRangeValues>
+              <span>1</span>
+              <span>5</span>
+              <span>10</span>
+              <span>20</span>
+              <span>50</span>
+              <span>100</span>
+            </InputRangeValues>
+            <datalist id="options">
+              <option value="0" />
+              <option value="1" />
+              <option value="2" />
+              <option value="3" />
+              <option value="4" />
+              <option value="5" />
+            </datalist>
+          </div>
+        ),
+        on: 'click',
+        open: this.state.isRadiusPopupOpen,
+        onClose: this.handleRadiusPopupClose,
+        onOpen: this.handleRadiusPopupOpen,
+        position: 'bottom center',
+      },
+      guests: {
+        content: (
+          <Dropdown
+            placeholder={
+              (this.props.search_query.person_nb || 0) +
+              ` Adult${this.props.search_query.person_nb > 1 ? 's' : ''}`
+            }
+            options={[
+              { text: 1, value: 1 },
+              { text: 2, value: 2 },
+              { text: 3, value: 3 },
+              { text: 4, value: 4 },
+              { text: 5, value: 5 },
+            ]}
+            onChange={this.handleGuestsNbChange}
+            fluid
+            selection
+          />
+        ),
+        on: 'click',
+        open: this.state.isGuestsPopupOpen,
+        onClose: this.handleGuestsPopupClose,
+        onOpen: this.handleGuestsPopupOpen,
+        position: 'bottom center',
+      },
+    };
+
+    return props[type];
+  };
+
+  renderEditable = (type, trigger, styleProps) => {
+    return (
+      <EditableElement {...styleProps}>
+        <Popup trigger={<p>{trigger}</p>} {...this.getProps(type)} />
+      </EditableElement>
+    );
+  };
+
+  renderMood = () => {
+    if (this.props.tags.length === 0) {
+      return null;
+    }
+
+    const tags = this.props.tags.slice(0, this.props.tags.length - 1);
+    const sentence =
+      tags.length > 0
+        ? `${tags.join(', ')} and ${this.props.tags[this.props.tags.length - 1]}`
+        : this.props.tags[0];
+
+    return this.renderEditable('mood', sentence);
+  };
+
+  renderLocation = () => {
+    if (!this.props.search_query.address) {
+      return null;
+    }
+
+    return (
+      <React.Fragment>
+        <div>
+          <p> &nbsp; {'in '} </p>
+        </div>
+
+        {this.renderEditable('location', this.props.search_query.address)}
+      </React.Fragment>
+    );
+  };
+
+  renderRadius = () => {
+    if (!this.props.search_query.address) {
+      return null;
+    }
+
+    const trigger = `${
+      this.state.isRadiusPopupOpen
+        ? radiusOptions[this.state.radiusInKm]
+        : this.props.search_query.radiusInKm
+    } km`;
+    return (
+      <React.Fragment>
+        <div>
+          <p> &nbsp; {'within '} </p>
+        </div>
+
+        {this.renderEditable('radius', trigger)}
+      </React.Fragment>
+    );
+  };
+
+  renderDates = (formatted_start_date, formatted_end_date) => {
+    if (!this.props.search_query.start_date) {
+      return null;
+    }
+
+    return (
+      <React.Fragment>
+        <div>
+          <p> &nbsp; {'from '} </p>
+        </div>
+
+        {this.renderEditable(
+          'dates',
+          `${formatted_start_date} ${formatted_end_date && `to ${formatted_end_date}`}`,
+        )}
+      </React.Fragment>
+    );
+  };
+
+  renderGuests = () => {
+    if (!this.props.search_query.person_nb) {
+      return null;
+    }
+
+    return (
+      <React.Fragment>
+        <div>
+          <p> &nbsp; {'for '} </p>
+        </div>
+
+        {this.renderEditable(
+          'guests',
+          `${this.props.search_query.person_nb} adult${
+            this.props.search_query.person_nb > 1 ? 's' : ''
+          }`,
+        )}
+      </React.Fragment>
+    );
+  };
+
+  renderNotDefinedFilters = () => {
+    return (
+      <React.Fragment>
+        {!this.props.search_query.address &&
+          this.renderEditable(
+            'location',
+            <React.Fragment>
+              <Icon name="plus" /> Location
+            </React.Fragment>,
+            { addMargin: true },
+          )}
+        {!this.props.search_query.start_date &&
+          this.renderEditable(
+            'dates',
+            <React.Fragment>
+              <Icon name="plus" /> Dates
+            </React.Fragment>,
+            { addMargin: true },
+          )}
+        {this.props.tags.length === 0 &&
+          this.renderEditable(
+            'mood',
+            <React.Fragment>
+              <Icon name="plus" /> Mood
+            </React.Fragment>,
+            { addMargin: true },
+          )}
+        {!this.props.search_query.person_nb &&
+          this.renderEditable(
+            'guests',
+            <React.Fragment>
+              <Icon name="plus" /> Guests
+            </React.Fragment>,
+            { addMargin: true },
+          )}
+      </React.Fragment>
+    );
+  };
+
   render() {
     let start_date = this.props.search_query.start_date;
     let formatted_start_date =
-      start_date && start_date.length ? moment(parseInt(start_date, 10)).format('YYYY-M-D') : '';
+      start_date && start_date.length
+        ? moment(parseInt(start_date, 10))
+            .format('Do MMMM, YYYY')
+            .replace(/(\d)(st|nd|rd|th)/g, '$1$2')
+        : '';
     let end_date = this.props.search_query.end_date;
     let formatted_end_date =
-      end_date && end_date.length ? moment(parseInt(end_date, 10)).format('YYYY-M-D') : '';
+      end_date && end_date.length ? moment(parseInt(end_date, 10)).format('Do MMMM, YYYY') : '';
     let person_nb = this.props.search_query.person_nb;
     let serviceTypes = this.props.search_query.type;
-    let address = this.props.search_query.address;
     // let tags = this.props.search_query.tags || [];
+    let address = this.props.search_query.address;
+
     return (
       <section>
         <Wrap>
@@ -444,24 +754,14 @@ class Filters extends Component {
               matches ? (
                 <SentenceWrapper>
                   <div>
-                    <p>
-                      I want
-                      {serviceTypes &&
-                      (serviceTypes.includes('activity') || serviceTypes.includes('accommodation'))
-                        ? ' an'
-                        : serviceTypes && serviceTypes.includes('food')
-                          ? ' '
-                          : ' a'}
-                    </p>
+                    <p>Please, find {this.getPreposition()}</p>
                   </div>
+
+                  {this.renderMood()}
 
                   <EditableElement>
                     <Popup
-                      trigger={
-                        <p style={{ textTransform: 'capitalize' }}>
-                          {serviceTypes && serviceTypes[0]}
-                        </p>
-                      }
+                      trigger={<p>{serviceTypes && serviceTypes[0]}</p>}
                       content={this.categoryPopupSelect(serviceTypes)}
                       on="click"
                       open={this.state.isCategoryPopupOpen}
@@ -471,206 +771,19 @@ class Filters extends Component {
                     />
                   </EditableElement>
 
-                  <div>
-                    <p> &nbsp; {'in '} </p>
-                  </div>
+                  {this.renderLocation()}
 
-                  <EditableElement>
-                    <Popup
-                      trigger={<p>{address || 'City Name'}</p>}
-                      content={
-                        <div>
-                          <SemanticLocationControl
-                            key={address}
-                            defaultAddress={address}
-                            onChange={this.handleLocationChange}
-                          />
-                          <Icon
-                            style={{ position: 'relative', left: '178px', bottom: '34px' }}
-                            name="close"
-                            onClick={this.clear_address}
-                          />
-                        </div>
-                      }
-                      on="click"
-                      open={this.state.isLocationPopupOpen}
-                      onClose={this.handleLocationPopupClose}
-                      onOpen={this.handleLocationPopupOpen}
-                      position="bottom center"
-                    />
-                  </EditableElement>
+                  {this.renderRadius()}
 
-                  <div>
-                    <p> &nbsp; {'within '} </p>
-                  </div>
+                  {this.renderDates(formatted_start_date, formatted_end_date)}
 
-                  <EditableElement>
-                    <Popup
-                      trigger={
-                        <p>
-                          {this.state.isRadiusPopupOpen
-                            ? radiusOptions[this.state.radiusInKm]
-                            : this.props.search_query.radiusInKm}{' '}
-                          km
-                        </p>
-                      }
-                      content={
-                        <div style={{ textAlign: 'center' }}>
-                          {this.state.isRadiusPopupOpen && (
-                            <InputRange
-                              type="range"
-                              min="0"
-                              max="5"
-                              step="1"
-                              value={this.state.radiusInKm}
-                              onChange={this.changeRadius}
-                              list="options"
-                            />
-                          )}
-                          <InputRangeValues>
-                            <span>1</span>
-                            <span>5</span>
-                            <span>10</span>
-                            <span>20</span>
-                            <span>50</span>
-                            <span>100</span>
-                          </InputRangeValues>
-                          <datalist id="options">
-                            <option value="0" />
-                            <option value="1" />
-                            <option value="2" />
-                            <option value="3" />
-                            <option value="4" />
-                            <option value="5" />
-                          </datalist>
-                        </div>
-                      }
-                      on="click"
-                      open={this.state.isRadiusPopupOpen}
-                      onClose={this.handleRadiusPopupClose}
-                      onOpen={this.handleRadiusPopupOpen}
-                      position="bottom center"
-                    />
-                  </EditableElement>
+                  {this.renderGuests()}
 
-                  <div>
-                    <p> &nbsp; {'on '} </p>
-                  </div>
-
-                  <EditableElement>
-                    <Popup
-                      trigger={
-                        <p>
-                          {(formatted_start_date &&
-                            formatted_start_date + ' / ' + formatted_end_date) ||
-                            'Dates'}
-                        </p>
-                      }
-                      content={
-                        <div>
-                          <DateRangePicker
-                            startDateId="startDate"
-                            endDateId="endDate"
-                            startDate={this.state.startDate}
-                            endDate={this.state.endDate}
-                            onDatesChange={({ startDate, endDate }) => {
-                              this.handleDatesChange({ startDate, endDate });
-                            }}
-                            focusedInput={this.state.focusedInput}
-                            onFocusChange={focusedInput => {
-                              this.setState({ focusedInput });
-                            }}
-                          />
-                          <Icon
-                            style={{ position: 'relative', left: '265px', bottom: '44px' }}
-                            name="close"
-                            onClick={this.clearDates}
-                          />
-                        </div>
-                      }
-                      on="click"
-                      open={this.state.isDatesPopupOpen}
-                      onClose={this.handleDatesPopupClose}
-                      onOpen={this.handleDatesPopupOpen}
-                      position="bottom center"
-                      style={{ minWidth: '316px' }}
-                    />
-                  </EditableElement>
-
-                  <div>
-                    <p> &nbsp; {'for '} </p>
-                  </div>
-
-                  <EditableElement>
-                    <Popup
-                      trigger={<p>{person_nb + ' Guests' || 'Guests Nb'}</p>}
-                      content={
-                        <Dropdown
-                          placeholder={person_nb || 0 + ' Guests'}
-                          options={[
-                            { text: 1, value: 1 },
-                            { text: 2, value: 2 },
-                            { text: 3, value: 3 },
-                            { text: 4, value: 4 },
-                            { text: 5, value: 5 },
-                          ]}
-                          onChange={this.handleGuestsNbChange}
-                          fluid
-                          selection
-                        />
-                      }
-                      on="click"
-                      open={this.state.isGuestsPopupOpen}
-                      onClose={this.handleGuestsPopupClose}
-                      onOpen={this.handleGuestsPopupOpen}
-                      position="bottom center"
-                    />
-                  </EditableElement>
+                  {this.renderNotDefinedFilters()}
 
                   <div>
                     <p> &nbsp; &nbsp; </p>
                   </div>
-
-                  <EditableElement>
-                    <Popup
-                      trigger={
-                        <p>
-                          <Icon name="plus" />
-                          {this.props.tags.length > 0
-                            ? `${this.props.tags.length} Mood`
-                            : `Select Mood`}
-                        </p>
-                      }
-                      content={
-                        <React.Fragment>
-                          {this.props.tags.length > 0 && (
-                            <ClearTagsWrapper>
-                              <ClearTagsLink onClick={this.clearTags}>Clear tags</ClearTagsLink>
-                            </ClearTagsWrapper>
-                          )}
-                          <Dropdown
-                            name="tags"
-                            options={this.props.tagsOptions}
-                            placeholder="Add tags"
-                            search
-                            selection
-                            fluid
-                            multiple
-                            value={this.props.tags
-                              .map(tag => tag.replace('%20', ' '))
-                              .map(tag => tag.charAt(0).toUpperCase() + tag.substr(1))}
-                            onChange={this.onDropDownChange}
-                            style={{ minWidth: '250px' }}
-                          />
-                        </React.Fragment>
-                      }
-                      on="click"
-                      open={this.state.isMoodPopupOpen}
-                      onClose={this.handleMoodPopupClose}
-                      onOpen={this.handleMoodPopupOpen}
-                      position="bottom center"
-                    />
-                  </EditableElement>
 
                   <Sorting>
                     <div>
@@ -730,7 +843,7 @@ class Filters extends Component {
                         <MobileSentence>
                           <div>
                             <p>
-                              I want
+                              Please, find
                               {serviceTypes &&
                               (serviceTypes.includes('activity') ||
                                 serviceTypes.includes('accommodation'))

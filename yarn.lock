@@ -5205,6 +5205,11 @@ imurmurhash@^0.1.4:
   resolved "https://registry.yarnpkg.com/imurmurhash/-/imurmurhash-0.1.4.tgz#9218b9b2b928a238b13dc4fb6b6d576f231453ea"
   integrity sha1-khi5srkoojixPcT7a21XbyMUU+o=
 
+indefinite@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/indefinite/-/indefinite-2.2.0.tgz#194491aa0c1e8012f8358126c7dfdde83478ec06"
+  integrity sha512-YuYPvPHGFLxxR/fss1XpRACziYJhv+U6duk4dhYk04FqWRjJB2nOCXmaUaHrNX4v3EwWDfaGUIbW641q8WzBTw==
+
 indent-string@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/indent-string/-/indent-string-2.1.0.tgz#8e2d48348742121b4a8218b7a137e9a52049dc80"
@@ -8658,6 +8663,7 @@ react-beautiful-dnd@7.1.2:
 react-coinbase-commerce@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/react-coinbase-commerce/-/react-coinbase-commerce-1.2.0.tgz#7069e201fa47738a9eabcfae0f3ad1cafd8a14c7"
+  integrity sha512-2E4Viav8v3wffEejR1T44cQebyCI2DuqDANN0kBPFmXJe+0/9sgmRPq22CRQrdOfwZsbLo14c+JKmeK7k2vaLw==
 
 react-dates@^18.1.0:
   version "18.1.0"
