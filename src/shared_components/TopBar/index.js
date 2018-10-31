@@ -49,6 +49,7 @@ const InnerWrap = styled.header`
       left: 0;
       position: fixed;
       top: 0;
+      z-index: 10000;
     `};
 `;
 
