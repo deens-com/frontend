@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Grid, Icon } from 'semantic-ui-react';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
@@ -53,17 +53,15 @@ const FileInputWrapper = styled.div`
   }
 `;
 
-const UserBasicInfo = ({ user_profile: user = {}, match, update_user_avatar, logOut }) => {
-  const name = user.fullName || user.username;
-  const dpUrl = user.profilePicture || ImgurAvatar;
-  let activePath = match.path.replace('/account/', '');
-  // const logout = () => {
-  //   props.logOut();
-  //   // Parse.User.logOut().then(() => {
-  //   //   history.push('/');
-  //   // });
-  // };
-  const scrollDownMobileOnly = () => {
+class UserBasicInfo extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      pictureUploadError: '',
+    };
+  }
+
+  scrollDownMobileOnly = () => {
     const currentWidth = window.innerWidth;
     if (currentWidth <= 750) {
       setTimeout(() => {
@@ -71,98 +69,120 @@ const UserBasicInfo = ({ user_profile: user = {}, match, update_user_avatar, log
       }, 20);
     }
   };
-  const onFileSelect = e => {
+
+  onFileSelect = e => {
     const file = e.currentTarget.files[0];
     if (!file) return;
-    update_user_avatar(file);
+    if (file.size > 3000000) {
+      this.setState({ pictureUploadError: 'File size should not exceed 3 Mb' });
+      return;
+    }
+    this.props.update_user_avatar(file);
   };
-  return (
-    <Card>
-      <Wrapper>
-        <CircularProfilePic src={dpUrl} />
-        <CenteredDiv>
-          <FileInputWrapper>
-            <Button circular className="btn-file-input">
-              Update avatar
-            </Button>
-            <input type="file" name="file" accept=".jpg, .jpeg, .png" onChange={onFileSelect} />
-          </FileInputWrapper>
-        </CenteredDiv>
-        <Link to={'/users/' + user.username}>{name && <NameDiv>{name}</NameDiv>}</Link>
 
-        <Grid columns={2} divided>
-          <Grid.Row>
-            <Grid.Column textAlign="center">
-              <div>
-                <AttributeTitle>PLS Balance</AttributeTitle>
-                {user.plsBalance || 0}
-              </div>
-            </Grid.Column>
-            <Grid.Column textAlign="center">
-              <div>
-                <AttributeTitle>RATING</AttributeTitle>
-                <Stars rating={user.rating} />
-              </div>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-
-        <br />
-
-        <Menu secondary fluid vertical style={{ paddingLeft: '10px' }}>
-          <Link to="/account/trips/all" onClick={scrollDownMobileOnly}>
-            <Menu.Item name="trips" active={activePath === 'trips'}>
-              <MenuIcon disabled name="angle right" circular />
-              <span>
-                <MenuIcon disabled name="plane" circular />
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; My Trips
-              </span>
-            </Menu.Item>
+  render() {
+    const name = this.props.user_profile.fullName || this.props.user_profile.username;
+    const dpUrl = this.props.user_profile.profilePicture || ImgurAvatar;
+    let activePath = this.props.match.path.replace('/account/', '');
+    return (
+      <Card>
+        <Wrapper>
+          {this.state.pictureUploadError.length > 0 && (
+            <p style={{ textAlign: 'center', color: 'red' }}>{this.state.pictureUploadError}</p>
+          )}
+          <CircularProfilePic src={dpUrl} />
+          {activePath === 'profile' && (
+            <CenteredDiv>
+              <FileInputWrapper>
+                <Button circular className="btn-file-input">
+                  Update avatar
+                </Button>
+                <input
+                  type="file"
+                  name="file"
+                  accept=".jpg, .jpeg, .png"
+                  onChange={this.onFileSelect}
+                />
+              </FileInputWrapper>
+            </CenteredDiv>
+          )}
+          <Link to={'/users/' + this.props.user_profile.username}>
+            {name && <NameDiv>{name}</NameDiv>}
           </Link>
 
-          <Link to="/account/services" onClick={scrollDownMobileOnly}>
-            <Menu.Item name="services" active={activePath === 'services'}>
-              <MenuIcon disabled name="angle right" circular />
-              <span>
-                <MenuIcon disabled name="list" circular />
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; My Services
-              </span>
-            </Menu.Item>
-          </Link>
+          <Grid columns={2} divided>
+            <Grid.Row>
+              <Grid.Column textAlign="center">
+                <div>
+                  <AttributeTitle>PLS Balance</AttributeTitle>
+                  {this.props.user_profile.plsBalance || 0}
+                </div>
+              </Grid.Column>
+              <Grid.Column textAlign="center">
+                <div>
+                  <AttributeTitle>RATING</AttributeTitle>
+                  <Stars rating={this.props.user_profile.rating} />
+                </div>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
 
-          <Link to="/account/profile" onClick={scrollDownMobileOnly}>
-            <Menu.Item name="profile" active={activePath === 'profile'}>
-              <MenuIcon disabled name="angle right" circular />
-              <span>
-                <MenuIcon disabled name="user" circular />
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Profile
-              </span>
-            </Menu.Item>
-          </Link>
-          {/*
-          <Link to="/account/settings" onClick={scrollDownMobileOnly}>
-            <Menu.Item name="settings" active={activePath === 'settings'}>
-              <MenuIcon disabled name="angle right" circular />
-              <span>
-                <MenuIcon disabled name="cogs" circular />
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Settings
-              </span>
-            </Menu.Item>
-          </Link>
-            */}
-          <div style={{ cursor: 'pointer' }} onClick={logOut}>
-            <Menu.Item name="logout" active={activePath === 'logout'}>
-              <MenuIcon disabled name="angle right" circular />
-              <span>
-                <MenuIcon disabled name="power" circular />
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Logout
-              </span>
-            </Menu.Item>
-          </div>
-        </Menu>
-      </Wrapper>
-    </Card>
-  );
-};
+          <br />
 
+          <Menu secondary fluid vertical style={{ paddingLeft: '10px' }}>
+            <Link to="/account/trips/all" onClick={this.scrollDownMobileOnly}>
+              <Menu.Item name="trips" active={activePath === 'trips'}>
+                <MenuIcon disabled name="angle right" circular />
+                <span>
+                  <MenuIcon disabled name="plane" circular />
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; My Trips
+                </span>
+              </Menu.Item>
+            </Link>
+
+            <Link to="/account/services" onClick={this.scrollDownMobileOnly}>
+              <Menu.Item name="services" active={activePath === 'services'}>
+                <MenuIcon disabled name="angle right" circular />
+                <span>
+                  <MenuIcon disabled name="list" circular />
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; My Services
+                </span>
+              </Menu.Item>
+            </Link>
+
+            <Link to="/account/profile" onClick={this.scrollDownMobileOnly}>
+              <Menu.Item name="profile" active={activePath === 'profile'}>
+                <MenuIcon disabled name="angle right" circular />
+                <span>
+                  <MenuIcon disabled name="user" circular />
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Profile
+                </span>
+              </Menu.Item>
+            </Link>
+            {/*
+            <Link to="/account/settings" onClick={scrollDownMobileOnly}>
+              <Menu.Item name="settings" active={activePath === 'settings'}>
+                <MenuIcon disabled name="angle right" circular />
+                <span>
+                  <MenuIcon disabled name="cogs" circular />
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Settings
+                </span>
+              </Menu.Item>
+            </Link>
+              */}
+            <div style={{ cursor: 'pointer' }} onClick={this.props.logOut}>
+              <Menu.Item name="logout" active={activePath === 'logout'}>
+                <MenuIcon disabled name="angle right" circular />
+                <span>
+                  <MenuIcon disabled name="power" circular />
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Logout
+                </span>
+              </Menu.Item>
+            </div>
+          </Menu>
+        </Wrapper>
+      </Card>
+    );
+  }
+}
 export default withRouter(UserBasicInfo);
