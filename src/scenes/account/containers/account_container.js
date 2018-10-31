@@ -36,6 +36,7 @@ class AccountContainer extends Component {
               user_profile={this.props.session}
               update_user_profile={this.props.update_user_profile}
               editUserError={this.props.updateError}
+              update_user_avatar={this.props.update_user_avatar}
             />
           )}
         />
