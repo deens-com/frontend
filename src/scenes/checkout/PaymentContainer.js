@@ -17,7 +17,13 @@ const PaymentContainer = props => {
   return (
     <Wrapper apiKey={stripeKey}>
       <Elements>
-        <Payment nextStep={props.nextStep} guests={props.guests} trip={props.trip} />
+        <Payment
+          getProvisionCodes={props.getProvisionCodes}
+          error={props.error}
+          nextStep={props.nextStep}
+          guests={props.guests}
+          trip={props.trip}
+        />
       </Elements>
     </Wrapper>
   );

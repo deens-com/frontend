@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Grid } from 'semantic-ui-react';
+import { Grid, Modal } from 'semantic-ui-react';
 import styled from 'styled-components';
+import history from 'main/history';
 
 import PriceTag from 'shared_components/Currency/PriceTag';
 import { media } from 'libs/styled';
@@ -46,6 +47,7 @@ export default class PaymentSection extends Component {
     numberOfPerson: PropTypes.number.isRequired,
     onStripeTokenReceived: PropTypes.func.isRequired,
     guests: PropTypes.array.isRequired,
+    getProvisionCodes: PropTypes.func.isRequired,
   };
 
   state = {
@@ -66,9 +68,28 @@ export default class PaymentSection extends Component {
       paymentError,
       guests,
       showStripe,
+      error,
+      getProvisionCodes,
     } = this.props;
     return (
       <Wrap>
+        <Modal
+          open={Boolean(error)}
+          content="There was an error with some of the services"
+          size="small"
+          actions={[
+            {
+              key: 'retry',
+              content: 'Retry',
+              onClick: getProvisionCodes,
+            },
+            {
+              key: 'trip',
+              content: 'Go to trip',
+              onClick: () => history.replace(`/trips/${tripId}`),
+            },
+          ]}
+        />
         <Grid>
           <Grid.Row columns={2}>
             <Grid.Column stretched>Guest(s)</Grid.Column>
@@ -91,44 +112,42 @@ export default class PaymentSection extends Component {
 
           <Grid.Row>
             <Grid.Column>
-              {totalPrice && (
-                <StripWrap>
-                  <PriceTag price={totalPrice}>
-                    {({ convertedPrice, stripeMultiplier, selectedCurrency, symbol }) => {
-                      const amount = parseFloat(convertedPrice);
-                      return (
-                        <React.Fragment>
-                          {showStripe && (
-                            <StripeAutoPaymentButton
-                              key={selectedCurrency}
-                              amount={amount}
-                              stripeMultiplier={stripeMultiplier}
-                              currency={selectedCurrency}
-                              onStripeTokenReceived={onStripeTokenReceived}
-                              canMakeAutoPayment={this.setCanMakeAutoPayment}
-                            />
-                          )}
-                          {paymentError && (
-                            <ErrorMessage>
-                              {paymentError.customMessage || paymentError.message}
-                            </ErrorMessage>
-                          )}
-                          {showStripe && (
-                            <StripeCardDetails
-                              amount={amount}
-                              symbol={symbol}
-                              showOrInText={this.state.canMakeAutoPayment}
-                            />
-                          )}
-                          <CoinbaseButtonWrapper>
-                            <CoinbaseButtonContainer tripId={tripId} guests={guests} />
-                          </CoinbaseButtonWrapper>
-                        </React.Fragment>
-                      );
-                    }}
-                  </PriceTag>
-                </StripWrap>
-              )}
+              <StripWrap>
+                <PriceTag price={totalPrice}>
+                  {({ convertedPrice, stripeMultiplier, selectedCurrency, symbol }) => {
+                    const amount = parseFloat(convertedPrice);
+                    return (
+                      <React.Fragment>
+                        {showStripe && (
+                          <StripeAutoPaymentButton
+                            key={selectedCurrency}
+                            amount={amount}
+                            stripeMultiplier={stripeMultiplier}
+                            currency={selectedCurrency}
+                            onStripeTokenReceived={onStripeTokenReceived}
+                            canMakeAutoPayment={this.setCanMakeAutoPayment}
+                          />
+                        )}
+                        {paymentError && (
+                          <ErrorMessage>
+                            {paymentError.customMessage || paymentError.message}
+                          </ErrorMessage>
+                        )}
+                        {showStripe && (
+                          <StripeCardDetails
+                            amount={amount}
+                            symbol={symbol}
+                            showOrInText={this.state.canMakeAutoPayment}
+                          />
+                        )}
+                        <CoinbaseButtonWrapper>
+                          <CoinbaseButtonContainer tripId={tripId} guests={guests} />
+                        </CoinbaseButtonWrapper>
+                      </React.Fragment>
+                    );
+                  }}
+                </PriceTag>
+              </StripWrap>
             </Grid.Column>
           </Grid.Row>
         </Grid>
