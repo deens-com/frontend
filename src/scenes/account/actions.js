@@ -67,16 +67,19 @@ export const fetch_user_profile = () => async dispatch => {
 export const update_user_service_status = e => async dispatch => {
   let status = e.target.dataset.status;
   let serviceId = e.target.dataset.objectId;
-
   if (!serviceId || !status) {
     console.error(new Error("can't update service status without serviceId and status"));
   }
-
-  const serviceObject = await fetch_helpers.build_query('Service').get(serviceId);
-  serviceObject.set('serviceStatus', status);
-  await serviceObject.save();
-
-  dispatch(fetch_user_services());
+  try {
+    const updatedService = await axios.patch(`/services/${serviceId}`, { status }).catch(error => {
+      console.log(error);
+    });
+    if (updatedService) {
+      dispatch(fetch_user_services());
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 //const locales = ['ar', 'ar-AE', 'ar-BH', 'ar-DZ', 'ar-EG', 'ar-IQ', 'ar-JO', 'ar-KW', 'ar-LB', 'ar-LY', 'ar-MA', 'ar-QA', 'ar-QM', 'ar-SA', 'ar-SD', 'ar-SY', 'ar-TN', 'ar-YE', 'bg-BG', 'cs-CZ', 'da-DK', 'de-DE', 'el-GR', 'en-AU', 'en-GB', 'en-HK', 'en-IN', 'en-NZ', 'en-US', 'en-ZA', 'en-ZM', 'es-ES', 'fr-FR', 'hu-HU', 'it-IT', 'nb-NO', 'nl-NL', 'nn-NO', 'pl-PL', 'pt-BR', 'pt-PT', 'ru-RU', 'sk-SK', 'sr-RS', 'sr-RS@latin', 'sv-SE', 'tr-TR', 'uk-UA'];
