@@ -69,7 +69,7 @@ const ContentWrap = styled.div`
 `;
 
 const ServiceItem = item => {
-  const isActivated = item.serviceStatus !== 'disabled';
+  const isActivated = item.status === 'active';
 
   const showContractStatus = item.contractAddress != null;
 
@@ -117,7 +117,7 @@ const ServiceItem = item => {
           <Button
             color="red"
             onClick={item.update_user_service_status}
-            data-status="disabled"
+            data-status="inactive"
             data-object-id={item.objectId}
           >
             Disable Service
@@ -126,7 +126,7 @@ const ServiceItem = item => {
           <Button
             color="green"
             onClick={item.update_user_service_status}
-            data-status="activated"
+            data-status="active"
             data-object-id={item.objectId}
           >
             Activate Service
