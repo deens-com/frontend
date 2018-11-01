@@ -136,10 +136,14 @@ export default class DesktopSearch extends Component {
     //const query_string = 'keywords=' + this.state.search;
     history.push(`/results`);
   }
-  handleLocationChange(address, serviceType) {
+  handleLocationChange(address, serviceType, text) {
+    if (text) {
+      this.setState({ text, address: null }, this.handleSearchSubmit);
+      return;
+    }
     geocodeByAddress(address)
       .then(results => {
-        this.setState({ address });
+        this.setState({ address, text: null });
         return getLatLng(results[0]);
       })
       .then(results => {
@@ -156,6 +160,7 @@ export default class DesktopSearch extends Component {
       latitude: this.state.latitude,
       longitude: this.state.longitude,
       serviceTypes: this.state.serviceType,
+      text: this.state.text,
     };
     let query_arr = [];
     Object.entries(query_params).forEach(([key, value]) => {
@@ -199,7 +204,7 @@ export default class DesktopSearch extends Component {
               onChange={this.handleLocationChange}
               customStyle={suggestionStyle}
               {...locationProps}
-              defaultAddress={this.props.address}
+              defaultAddress={this.props.text || this.props.address}
             />
 
             <SubmitButton type="submit" style={{ color: 'grey' }}>

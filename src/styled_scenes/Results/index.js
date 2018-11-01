@@ -54,6 +54,7 @@ const MapToggle = styled.div`
   flex-flow: row-reverse;
   padding-right: 1em;
   //padding-bottom: 1em;
+  margin-top: -2.5em;
 `;
 
 const defaultCenter = {

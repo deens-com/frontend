@@ -23,6 +23,7 @@ class ResultsContainer extends Component {
       limit: this.props.limit,
       sortBy: this.props.sortBy,
       radiusInKm: this.props.radiusInKm,
+      text: this.props.text,
     };
     this.props.update_search_query(search_query);
   }
@@ -46,6 +47,7 @@ class ResultsContainer extends Component {
         limit: next_props.limit,
         sortBy: next_props.sortBy,
         radiusInKm: next_props.radiusInKm,
+        text: next_props.text,
       });
     }
   }
@@ -67,7 +69,8 @@ class ResultsContainer extends Component {
       current_props.limit !== next_props.limit ||
       current_props.sortBy !== next_props.sortBy ||
       current_props.onlySmartContracts !== next_props.onlySmartContracts ||
-      current_props.radiusInKm !== next_props.radiusInKm
+      current_props.radiusInKm !== next_props.radiusInKm ||
+      current_props.text !== next_props.text
     );
   };
 
