@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import PlacesAutocomplete from 'react-places-autocomplete';
-import { Form, Popup, Icon } from 'semantic-ui-react';
-import Input from 'shared_components/StyledInput';
+import { Form, Popup, Icon, Input } from 'semantic-ui-react';
+import StyledInput from 'shared_components/StyledInput';
 import { MapMarker } from 'shared_components/icons';
 import styled from 'styled-components';
 
@@ -13,10 +13,18 @@ const ListSpan = styled.span`
 const ListWrapper = styled.ul`
   list-style-type: none;
   min-width: 100%;
+  display: flex;
+  flex-direction: column;
+  > article {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 const ListItem = styled.li`
   height: 3em;
+  cursor: pointer;
+  order: ${props => props.order || 1};
 `;
 
 const GreyIcon = styled(Icon)`
@@ -29,12 +37,13 @@ const GreyIcon = styled(Icon)`
  * If you wanna pass props to the input element directly, then pass them in `inputProps` prop
  * If you wanna listen for all the text changes on the input pass `onKeyUp` prop function
  * If you wanna change the styles of the input, pass `inputStyles` prop
+ * If the user select "Search for..." option, first two "onChange" parameters are null
  */
 export default class SemanticLocationControl extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      address: '',
+      address: props.defaultAddress || '',
       isOpen: false,
     };
   }
@@ -42,16 +51,6 @@ export default class SemanticLocationControl extends Component {
   componentDidMount() {
     this.setState({ address: this.props.defaultAddress });
   }
-
-  componentWillUpdate(next_props) {
-    if (this.did_search_query_changed(this.props, next_props)) {
-      this.setState({ address: next_props.defaultAddress });
-    }
-  }
-
-  did_search_query_changed = (current_props, next_props) => {
-    return current_props.defaultAddress !== next_props.defaultAddress;
-  };
 
   static propTypes = {
     defaultAddress: PropTypes.string,
@@ -82,48 +81,59 @@ export default class SemanticLocationControl extends Component {
     return null;
   };
 
-  openMenu = event => {
+  onError = (error, clearSuggestions) => {
+    if (error === 'ZERO_RESULTS') {
+      clearSuggestions();
+    }
+  };
+
+  onSelectSearch = () => {
+    this.onSelect(this.state.address);
+    this.props.onChange(null, null, this.state.address);
+  };
+
+  handleOpen = event => {
     event.target.select();
     this.setState({
       isOpen: true,
     });
   };
 
-  closeMenu = () => {
+  handleClose = () => {
     this.setState({
       isOpen: false,
     });
   };
 
   onSelectSuggestion = (address, type) => {
+    this.onSelect(address);
     this.props.onChange(address, type);
   };
 
   render() {
     const { inputProps, inputStyles, onlyCities, useStyledInput, customStyle = {} } = this.props;
-
     return (
       <PlacesAutocomplete
         value={this.state.address}
         onChange={this.onAddressChange}
-        onSelect={this.onSelect}
         searchOptions={{
           ...(onlyCities ? { types: ['(cities)'] } : null),
         }}
+        onError={this.onError}
       >
         {({ getInputProps, suggestions, getSuggestionItemProps }) => (
           <Popup
             basic
             trigger={
               useStyledInput ? (
-                <Input
+                <StyledInput
                   {...getInputProps({
                     ...inputProps,
                     placeholder: inputProps.placeholder || 'Enter location ...',
                   })}
                   leftContent={<MapMarker style={{ fill: '#6E7885' }} />}
-                  onFocus={this.openMenu}
-                  onBlur={this.closeMenu}
+                  onFocus={this.handleOpen}
+                  onBlur={this.handleClose}
                 />
               ) : (
                 <Form.Input
@@ -135,81 +145,102 @@ export default class SemanticLocationControl extends Component {
                     placeholder: inputProps.placeholder || 'Enter location ...',
                   })}
                   style={inputStyles}
-                  onFocus={this.openMenu}
-                  onBlur={this.closeMenu}
+                  onFocus={this.handleOpen}
+                  onBlur={this.handleClose}
                 />
               )
             }
-            open={suggestions.length > 0}
-            onClose={this.handleClose}
-            onOpen={this.handleOpen}
-            position="bottom left"
+            open={this.state.isOpen && Boolean(this.state.address)}
+            position="bottom center"
             wide
-            style={customStyle}
+            style={{ zIndex: 10000, ...customStyle }}
           >
             <ListWrapper>
-              <article {...getSuggestionItemProps(suggestions.length > 0 && suggestions[0])}>
-                <ListItem onClick={() => this.onSelectSuggestion(suggestions[0].description, '')}>
-                  <ListSpan>
-                    <GreyIcon name="travel" />
-                    &nbsp;
-                    <p>
-                      <b>Trips near</b> {suggestions.length > 0 && suggestions[0].description}
-                    </p>
-                  </ListSpan>
-                </ListItem>
-                <ListItem
-                  onClick={() =>
-                    this.onSelectSuggestion(suggestions[0].description, 'accommodation')
-                  }
-                >
-                  <ListSpan>
-                    <GreyIcon name="building" />
-                    &nbsp;
-                    <p>
-                      <b>Accommodations near</b>{' '}
-                      {suggestions.length > 0 && suggestions[0].description}
-                    </p>
-                  </ListSpan>
-                </ListItem>
-                <ListItem
-                  onClick={() => this.onSelectSuggestion(suggestions[0].description, 'food')}
-                >
-                  <ListSpan>
-                    <GreyIcon name="food" />
-                    &nbsp;
-                    <p>
-                      <b>Food near</b> {suggestions.length > 0 && suggestions[0].description}
-                    </p>
-                  </ListSpan>
-                </ListItem>
-                <ListItem
-                  onClick={() => this.onSelectSuggestion(suggestions[0].description, 'activity')}
-                >
-                  <ListSpan>
-                    <GreyIcon name="globe" />
-                    &nbsp;
-                    <p>
-                      <b>Activities near</b> {suggestions.length > 0 && suggestions[0].description}
-                    </p>
-                  </ListSpan>
-                </ListItem>
+              <ListItem
+                {...getSuggestionItemProps(this.state.address)}
+                order={2}
+                onClick={this.onSelectSearch}
+              >
+                <ListSpan>
+                  <GreyIcon name="search" />
+                  &nbsp;
+                  <p>
+                    <b>Search for</b> {this.state.address}
+                  </p>
+                </ListSpan>
+              </ListItem>
+              {!(Boolean(this.state.address) && suggestions.length === 0) && (
+                <React.Fragment>
+                  <article {...getSuggestionItemProps(suggestions.length > 0 && suggestions[0])}>
+                    <ListItem
+                      onClick={() => this.onSelectSuggestion(suggestions[0].description, '')}
+                    >
+                      <ListSpan>
+                        <GreyIcon name="travel" />
+                        &nbsp;
+                        <p>
+                          <b>Trips near</b> {suggestions.length > 0 && suggestions[0].description}
+                        </p>
+                      </ListSpan>
+                    </ListItem>
+                    <ListItem
+                      onClick={() =>
+                        this.onSelectSuggestion(suggestions[0].description, 'accommodation')
+                      }
+                    >
+                      <ListSpan>
+                        <GreyIcon name="building" />
+                        &nbsp;
+                        <p>
+                          <b>Accommodations near</b>{' '}
+                          {suggestions.length > 0 && suggestions[0].description}
+                        </p>
+                      </ListSpan>
+                    </ListItem>
+                    <ListItem
+                      onClick={() => this.onSelectSuggestion(suggestions[0].description, 'food')}
+                    >
+                      <ListSpan>
+                        <GreyIcon name="food" />
+                        &nbsp;
+                        <p>
+                          <b>Food near</b> {suggestions.length > 0 && suggestions[0].description}
+                        </p>
+                      </ListSpan>
+                    </ListItem>
+                    <ListItem
+                      onClick={() =>
+                        this.onSelectSuggestion(suggestions[0].description, 'activity')
+                      }
+                    >
+                      <ListSpan>
+                        <GreyIcon name="globe" />
+                        &nbsp;
+                        <p>
+                          <b>Activities near</b>{' '}
+                          {suggestions.length > 0 && suggestions[0].description}
+                        </p>
+                      </ListSpan>
+                    </ListItem>
+                  </article>
 
-                {suggestions.slice(1, 4).map(suggestion => (
-                  <ListItem
-                    key={suggestion.placeId}
-                    onClick={() => this.onSelectSuggestion(suggestion.description, '')}
-                  >
-                    <ListSpan>
-                      <GreyIcon name="travel" />
-                      &nbsp;
-                      <p>
-                        <b>Trips near</b> {suggestion.description}
-                      </p>
-                    </ListSpan>
-                  </ListItem>
-                ))}
-              </article>
+                  {suggestions.slice(1, 4).map(suggestion => (
+                    <ListItem
+                      key={suggestion.placeId}
+                      onClick={() => this.onSelectSuggestion(suggestion.description, '')}
+                      order={3}
+                    >
+                      <ListSpan>
+                        <GreyIcon name="travel" />
+                        &nbsp;
+                        <p>
+                          <b>Trips near</b> {suggestion.description}
+                        </p>
+                      </ListSpan>
+                    </ListItem>
+                  ))}
+                </React.Fragment>
+              )}
             </ListWrapper>
           </Popup>
         )}

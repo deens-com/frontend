@@ -139,7 +139,12 @@ class HomeSearch extends Component {
     this.setState({ keywords: ev.target.value });
   }
 
-  handleLocationChange(address, serviceType) {
+  handleLocationChange(address, serviceType, text) {
+    if (text) {
+      this.setState({ text }, this.handleSearchSubmit);
+      return;
+    }
+
     geocodeByAddress(address)
       .then(results => {
         this.setState({ address });
@@ -168,6 +173,7 @@ class HomeSearch extends Component {
       latitude: this.state.latitude,
       longitude: this.state.longitude,
       serviceTypes: this.state.serviceType,
+      text: this.state.text,
     };
     let query_arr = [];
     Object.entries(query_params).forEach(([key, value]) => {

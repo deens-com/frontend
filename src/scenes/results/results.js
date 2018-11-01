@@ -16,9 +16,7 @@ class Results extends React.Component {
     let search_params = queryString.parse(props.location.search, { ignoreQueryPrefix: true });
 
     // does not properly parse '+'.
-    let serviceTypes = (search_params.serviceTypes && search_params.serviceTypes.split(' ')) || [
-      'trip',
-    ];
+    let serviceTypes = (search_params.serviceTypes && search_params.serviceTypes.split(' ')) || [];
     let tags_arr =
       (props.location.search.match(/(tags.+)/) &&
         props.location.search
@@ -41,6 +39,7 @@ class Results extends React.Component {
     let limit = search_params.limit || 10;
     let sortBy = search_params.sortBy || '';
     let radiusInKm = search_params.radiusInKm || 10;
+    let text = search_params.text || '';
 
     return (
       <div className="Home">
@@ -62,6 +61,7 @@ class Results extends React.Component {
           limit={limit}
           sortBy={sortBy}
           radiusInKm={radiusInKm}
+          text={text}
         />
       </div>
     );
