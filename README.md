@@ -47,7 +47,7 @@ yarn lint-staged''' > .git/hooks/pre-commit
 
 ## Troubleshooting
 
-If you're stuck somewhere while working on something, create an issue or jump on to the [Telegram group](https://t.me/PleaseDotCom) and we'll help you out.
+If you're stuck somewhere while working on something, create an issue or jump on to the [Telegram group](https://t.me/PleaseProtocol) and we'll help you out.
 
 ## 🎓 License
 
