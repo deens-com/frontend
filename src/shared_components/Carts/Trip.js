@@ -84,7 +84,7 @@ const Location = styled.span`
 const ContentFooter = styled.div`
   margin-top: auto;
   position: absolute;
-  bottom: 93px;
+  bottom: 75px;
 `;
 
 const Author = styled.div`
