@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import styled from 'styled-components';
 import Truncate from 'react-truncate';
-import { Popup } from 'semantic-ui-react';
+import { Popup, Image } from 'semantic-ui-react';
 
 import { withRouter } from 'react-router-dom';
 
@@ -21,6 +21,8 @@ import { cardConfig } from 'libs/config';
 import { PinIcon } from 'shared_components/icons';
 import I18nText from 'shared_components/I18nText';
 import AddToTrip from './AddToTrip';
+
+import ImgurAvatar from './../../assets/no-avatar.png';
 
 const queryString = require('qs');
 
@@ -52,7 +54,7 @@ const Description = styled.div`
   line-height: 16px;
   color: #545454;
   position: relative;
-  bottom: 1.2em;
+  bottom: 1.5em;
 `;
 
 const Price = styled.span`
@@ -67,7 +69,7 @@ const Location = styled.span`
   display: flex;
   align-items: flex-start;
   margin-bottom: 5px;
-  padding-top: 15px;
+  padding-top: 5px;
   height: 44px;
   font-size: 12px;
   line-height: 14px;
@@ -93,18 +95,43 @@ const Location = styled.span`
 const ContentFooter = styled.div`
   margin-top: auto;
   position: absolute;
-  bottom: 40px;
+  bottom: ${props => (props.isTrip ? '60px' : '0')};
   max-width: 74%;
 `;
 
 const Duration = styled.div`
   color: #50a18a;
+  margin-top: -15px;
 `;
 
 const Author = styled.div`
-  //border-top: 1px solid #e5e5e5;
   margin: 0 22px;
   height: 75px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const AvatarWrapper = styled.div`
+  height: 43px;
+  width: 43px;
+`;
+
+const AuthorText = styled.div`
+  margin-left: 10px;
+  color: #3c434b;
+`;
+
+const Created = styled.p`
+  font-size: 10px;
+  line-height: 12px;
+  margin-bottom: 0;
+`;
+
+const Username = styled.p`
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-weight: bold;
 `;
 
 function formatLocation(location) {
@@ -169,8 +196,14 @@ class TripCard extends Component {
   };
 
   renderContent() {
-    const { item } = this.props;
+    const { item, isTrip } = this.props;
     const { average: rating, count } = (item && item.ratings) || 0;
+    let avatar, owner;
+
+    if (isTrip) {
+      owner = item.owner;
+      avatar = owner.profilePicture || ImgurAvatar;
+    }
 
     return (
       <Wrap>
@@ -207,14 +240,14 @@ class TripCard extends Component {
               <Rating rating={rating} count={count} marginBottom="10px" />
             </Title>
 
-            {(this.isViewTypeOf('accommodation') || this.isViewTypeOf('activity')) && (
+            {!this.isViewTypeOf('food') && (
               <Description>
                 <Truncate lines={cardConfig.descriptionLines}>
                   <I18nText data={item.description} />
                 </Truncate>
               </Description>
             )}
-            <ContentFooter>
+            <ContentFooter isTrip={isTrip}>
               <Price>
                 {this.isViewTypeOf('food') ? 'Average ' : 'From '}
                 <PriceTag unit="hidden" price={item.basePrice}>
@@ -232,7 +265,17 @@ class TripCard extends Component {
               </Location>
             </ContentFooter>
           </ContentWrap>
-          <Author />
+          {isTrip && (
+            <Author>
+              <AvatarWrapper>
+                <Image src={avatar} circular />
+              </AvatarWrapper>
+              <AuthorText>
+                <Created>Created by</Created>
+                <Username>{owner.username}</Username>
+              </AuthorText>
+            </Author>
+          )}
         </Cart>
       </Wrap>
     );
@@ -269,6 +312,7 @@ TripCard.propTypes = {
   withShadow: PropTypes.bool,
   onOver: PropTypes.func,
   onLeave: PropTypes.func,
+  isTrip: PropTypes.bool,
 };
 
 // Default props

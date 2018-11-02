@@ -4,7 +4,7 @@ import { media } from '../../libs/styled';
 
 export const ContentWrap = styled.div`
   padding: 15px;
-  height: ${props => (props.small ? '100px' : '180px')};
+  height: ${props => (props.small ? '160px' : '220px')};
 
   ${media.minSmall} {
     padding: 20px;
