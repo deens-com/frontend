@@ -196,5 +196,5 @@ export function getPriceFromServiceOption(base, price) {
     return price.value * base;
   }
 
-  return Number(price.value);
+  return Number(price.value === undefined ? price : price.value);
 }
