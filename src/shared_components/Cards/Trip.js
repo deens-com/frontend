@@ -210,7 +210,7 @@ class TripCard extends Component {
             {(this.isViewTypeOf('accommodation') || this.isViewTypeOf('activity')) && (
               <Description>
                 <Truncate lines={cardConfig.descriptionLines}>
-                  <I18nText data={item.description} />
+                  <I18nText data={item.subtitle.length > 0 ? item.subtitle : item.description} />
                 </Truncate>
               </Description>
             )}
