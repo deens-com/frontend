@@ -11,6 +11,7 @@ import axios from 'libs/axios';
 import { media } from 'libs/styled';
 import axiosOriginal from 'axios';
 import history from '../../main/history';
+import { getPriceFromServiceOption } from 'libs/Utils';
 
 import TopBar from 'shared_components/TopBar';
 import BrandFooter from 'shared_components/BrandFooter';
@@ -114,7 +115,10 @@ function createTripState(props, state) {
       optionsSelected[selected.day] = {
         [selected.serviceId]: {
           availabilityCode: selected.availabilityCode,
-          price: selected.price,
+          price: getPriceFromServiceOption(
+            props.trip.services.find(item => item.service._id === selected.serviceId).basePrice,
+            selected.price,
+          ),
         },
       };
       return;
@@ -138,7 +142,36 @@ function createTripState(props, state) {
   };
 }
 
+const calculatePrice = prevState => ({
+  ...prevState,
+  trip: {
+    ...prevState.trip,
+    basePrice: prevState.availability.data.reduce((price, elem) => {
+      if (
+        prevState.optionsSelected[elem.day] &&
+        prevState.optionsSelected[elem.day][elem.serviceId]
+      ) {
+        const service = prevState.trip.services.find(item => item.service._id === elem.serviceId)
+          .basePrice;
+        const optionPrice = getPriceFromServiceOption(
+          service,
+          prevState.optionsSelected[elem.day][elem.serviceId].price,
+        );
+        return (
+          price +
+          (optionPrice ||
+            prevState.days
+              .find(day => day.day === elem.day)
+              .data.find(day => day.service._id === elem.serviceId).basePrice)
+        );
+      }
+      return price;
+    }, 0),
+  },
+});
+
 function pickFirstOption(data) {
+  // selectOption(value.day, value.serviceId, value.groupedOptions.options[0].otherAttributes.availabilityCode.code, value.groupedOptions.options[0].price);
   return data.reduce((prev, value) => {
     if (!value.groupedOptions || value.groupedOptions.options.length === 0) {
       return prev;
@@ -310,29 +343,7 @@ export default class TripOrganizer extends Component {
         },
       }),
       () => {
-        this.setState(
-          prevState => ({
-            trip: {
-              ...prevState.trip,
-              basePrice: prevState.availability.data.reduce((price, elem) => {
-                if (
-                  prevState.optionsSelected[elem.day] &&
-                  prevState.optionsSelected[elem.day][elem.serviceId]
-                ) {
-                  return (
-                    price +
-                    (prevState.optionsSelected[elem.day][elem.serviceId].price ||
-                      prevState.days
-                        .find(day => day.day === elem.day)
-                        .data.find(day => day.service._id === elem.serviceId).basePrice)
-                  );
-                }
-                return price;
-              }, 0),
-            },
-          }),
-          this.autoPatchTrip,
-        );
+        this.setState(calculatePrice, this.autoPatchTrip);
       },
     );
   };
@@ -600,15 +611,18 @@ export default class TripOrganizer extends Component {
         }));
         const optionsSelected = pickFirstOption(data);
 
-        this.setState({
-          availability: {
-            data,
-            error: null,
-            isChecking: false,
-            timestamp,
-          },
-          optionsSelected,
-        });
+        this.setState(prevState =>
+          calculatePrice({
+            ...prevState,
+            availability: {
+              data,
+              error: null,
+              isChecking: false,
+              timestamp,
+            },
+            optionsSelected,
+          }),
+        );
       },
     );
   };
@@ -973,7 +987,7 @@ export default class TripOrganizer extends Component {
           changeGuests={this.changeGuests}
           startDate={startDate}
           numberOfPeople={numberOfPeople}
-          price={trip.basePrice || 0}
+          price={(trip.basePrice || 0).toFixed(2)}
           bookError={this.getBookError()}
           shareError={this.getShareError()}
           numberOfDays={minutesToDays(trip.duration)}
