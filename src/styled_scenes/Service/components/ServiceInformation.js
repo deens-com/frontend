@@ -67,7 +67,9 @@ const ServiceInformation = ({ service }) => {
                 service.geo.lng
               }`}
             >
-              {service.location}
+              {service.type === 'Food'
+                ? service.originalLocation.formattedAddress
+                : service.location}
             </Link>
           </td>
         </Row>
