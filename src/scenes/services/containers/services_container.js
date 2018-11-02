@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router';
 import { getSession } from 'libs/user-session';
+import NotFoundScene from 'styled_scenes/NotFound';
 
 class ServicesContainer extends Component {
   state = {
@@ -45,13 +46,17 @@ class ServicesContainer extends Component {
   };
 
   render() {
-    return (
-      <ServiceComponent
-        {...this.props}
-        onAddServiceToTrip={this.onAddServiceToTrip}
-        onAddServiceToNewTrip={this.onAddServiceToNewTrip}
-      />
-    );
+    if (this.props.serviceFetchError.code === 404) {
+      return <NotFoundScene />;
+    } else {
+      return (
+        <ServiceComponent
+          {...this.props}
+          onAddServiceToTrip={this.onAddServiceToTrip}
+          onAddServiceToNewTrip={this.onAddServiceToNewTrip}
+        />
+      );
+    }
   }
 }
 
@@ -66,6 +71,7 @@ const mapStateToProps = state => {
     isServiceUnavailableModalOpen: state.ServicesReducer.isServiceUnavailableModalOpen,
     abi: state.ServicesReducer.abi,
     isPageLoading: state.ServicesReducer.isPageLoading,
+    serviceFetchError: state.ServicesReducer.serviceFetchError,
   };
 };
 
