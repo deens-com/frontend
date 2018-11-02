@@ -316,7 +316,7 @@ export default class Itinerary extends Component {
       <Button
         iconBefore="plus"
         theme="fillLightGreen"
-        onClick={this.props.addService.bind(null, day.day)}
+        onClick={this.props.goToAddService.bind(null, day.day)}
       >
         Add Service
       </Button>

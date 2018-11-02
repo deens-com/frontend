@@ -173,7 +173,7 @@ export default class SemanticLocationControl extends Component {
                 <React.Fragment>
                   <article {...getSuggestionItemProps(suggestions.length > 0 && suggestions[0])}>
                     <ListItem
-                      onClick={() => this.onSelectSuggestion(suggestions[0].description, '')}
+                      onClick={() => this.onSelectSuggestion(suggestions[0].description, 'trip')}
                     >
                       <ListSpan>
                         <GreyIcon name="travel" />
@@ -227,7 +227,7 @@ export default class SemanticLocationControl extends Component {
                   {suggestions.slice(1, 4).map(suggestion => (
                     <ListItem
                       key={suggestion.placeId}
-                      onClick={() => this.onSelectSuggestion(suggestion.description, '')}
+                      onClick={() => this.onSelectSuggestion(suggestion.description, 'trip')}
                       order={3}
                     >
                       <ListSpan>

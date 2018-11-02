@@ -337,7 +337,7 @@ export default class TripOrganizer extends Component {
     );
   };
 
-  /*addService = async (day, service) => {
+  addService = async (day, service) => {
     this.setState(
       prevState => ({
         daysByService: {
@@ -413,9 +413,9 @@ export default class TripOrganizer extends Component {
         }));
       },
     );
-  };*/
+  };
 
-  addService = day => {
+  goToAddService = day => {
     const { trip } = this.state;
     const { history } = this.props;
     const coord =
@@ -991,6 +991,7 @@ export default class TripOrganizer extends Component {
           notes={notes}
           selectOption={this.selectOption}
           addService={this.addService}
+          goToAddService={this.goToAddService}
           removeService={this.removeService}
           daysByService={this.state.daysByService}
           removeDay={this.removeDay}
