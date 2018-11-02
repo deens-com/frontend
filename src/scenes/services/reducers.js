@@ -13,6 +13,7 @@ const initialState = {
   isServiceUnavailableModalOpen: false,
   abi: null,
   bytecode: null,
+  serviceFetchError: {},
 };
 
 export default function ServicesReducer(state = initialState, action = {}) {
@@ -37,6 +38,7 @@ export default function ServicesReducer(state = initialState, action = {}) {
       return {
         ...state,
         isPageLoading: false,
+        serviceFetchError: action.payload,
       };
     case 'TRIPS_FETCHED':
       return {
