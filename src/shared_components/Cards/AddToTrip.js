@@ -20,7 +20,7 @@ const Button = styled.div`
 `;
 
 const AddPanel = styled.div`
-  display: ${props => (props.isOpen ? 'flex' : 'none')};
+  display: ${props => (props.isOpen ? 'block' : 'none')};
   position: absolute;
   top: 0;
   left: 0;
@@ -29,11 +29,16 @@ const AddPanel = styled.div`
   background-color: rgba(0, 0, 0, 0.7);
   z-index: 2;
   border-radius: 5px;
-  overflow: scroll;
+  overflow-y: scroll;
   padding: 15px;
+  cursor: initial;
+`;
+
+const AddPanelContent = styled.div`
+  position: relative;
+  display: flex;
   justify-content: center;
   flex-direction: column;
-  cursor: initial;
 `;
 
 const Label = styled.label`
@@ -119,14 +124,16 @@ export default class AddToTrip extends Component {
           <PlusIcon />
         </Button>
         <AddPanel innerRef={this.panelRef} isOpen={this.state.isOpen} onClick={this.panelClick}>
-          {this.state.days.map((isAdded, i) => {
-            const dayName = this.props.data.days[i];
-            return (
-              <Option key={i + 1} onClick={e => this.optionClick(e, i, isAdded)}>
-                <Checkbox checked={isAdded} name={dayName} label={<Label>{dayName}</Label>} />
-              </Option>
-            );
-          })}
+          <AddPanelContent>
+            {this.state.days.map((isAdded, i) => {
+              const dayName = this.props.data.days[i];
+              return (
+                <Option key={i + 1} onClick={e => this.optionClick(e, i, isAdded)}>
+                  <Checkbox checked={isAdded} name={dayName} label={<Label>{dayName}</Label>} />
+                </Option>
+              );
+            })}
+          </AddPanelContent>
         </AddPanel>
       </React.Fragment>
     );

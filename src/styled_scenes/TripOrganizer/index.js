@@ -418,20 +418,22 @@ export default class TripOrganizer extends Component {
   addService = day => {
     const { trip } = this.state;
     const { history } = this.props;
-    const { lat: latitude, lng: longitude } =
+    const coord =
       trip.location &&
       trip.location.geo &&
       trip.location.geo.coordinates &&
       getFromCoordinates(trip.location.geo.coordinates);
     const country =
       trip.location && trip.location.country && I18nText.translate(trip.location.country.names);
-    const address = trip.location && `${trip.location.city || trip.location.state}, ${country}`;
+    const address =
+      trip.location &&
+      `${trip.location.city || trip.location.state}${country ? `, ${country}` : ''}`;
 
     this.props.updatePath(
       {
         type: ['accommodation'],
-        latitude,
-        longitude,
+        latitude: coord && coord.lat,
+        longitude: coord && coord.lng,
         address,
       },
       history,
