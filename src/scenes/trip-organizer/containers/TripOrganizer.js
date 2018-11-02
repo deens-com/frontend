@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 import * as actions from '../../trip/actions';
-import { update_search_query_without_search } from '../../../scenes/results/actions';
+import { update_search_query_without_search, update_path } from '../../../scenes/results/actions';
 import moment from 'moment';
 import TripOrganizer from '../../../styled_scenes/TripOrganizer';
 
@@ -22,6 +22,8 @@ class TripOrganizerContainer extends Component {
         startDate={moment(this.props.startDate)}
         numberOfPeople={this.props.numberOfPeople}
         changeDates={this.props.changeDates}
+        updatePath={this.props.updatePath}
+        history={this.props.history}
       />
     );
   }
@@ -58,6 +60,7 @@ const mapDispatchToProps = dispatch =>
     {
       ...actions,
       changeDates: update_search_query_without_search,
+      updatePath: update_path,
     },
     dispatch,
   );

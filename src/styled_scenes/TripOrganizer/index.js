@@ -4,6 +4,7 @@ import moment from 'moment';
 import styled from 'styled-components';
 import { Loader, Dimmer, Message } from 'semantic-ui-react';
 import { geocodeByPlaceId } from 'react-places-autocomplete';
+import { getFromCoordinates } from 'libs/Utils';
 
 import { serverBaseURL } from 'libs/config';
 import axios from 'libs/axios';
@@ -22,6 +23,7 @@ import mapServicesToDays, {
   minutesToDays,
   dayTitles,
   updateServiceDayNames,
+  getDaysByService,
 } from '../Trip/mapServicesToDays';
 import DaySelector from '../Trip/DaySelector';
 import CheckoutBox from './CheckoutBox';
@@ -123,24 +125,7 @@ function createTripState(props, state) {
     };
   });
 
-  const daysByService = props.trip.services.reduce((prev, service) => {
-    if (!service.service) {
-      return prev;
-    }
-
-    const id = service.service._id;
-    if (!prev[id]) {
-      return {
-        ...prev,
-        [id]: [service.day],
-      };
-    }
-
-    return {
-      ...prev,
-      [id]: [...prev[id], service.day],
-    };
-  }, {});
+  const daysByService = getDaysByService(props.trip.services);
 
   return {
     ...state,
@@ -352,7 +337,7 @@ export default class TripOrganizer extends Component {
     );
   };
 
-  addService = async (day, service) => {
+  /*addService = async (day, service) => {
     this.setState(
       prevState => ({
         daysByService: {
@@ -426,6 +411,35 @@ export default class TripOrganizer extends Component {
               }
             : null),
         }));
+      },
+    );
+  };*/
+
+  addService = day => {
+    const { trip } = this.state;
+    const { history } = this.props;
+    const { lat: latitude, lng: longitude } =
+      trip.location &&
+      trip.location.geo &&
+      trip.location.geo.coordinates &&
+      getFromCoordinates(trip.location.geo.coordinates);
+    const country =
+      trip.location && trip.location.country && I18nText.translate(trip.location.country.names);
+    const address = trip.location && `${trip.location.city || trip.location.state}, ${country}`;
+
+    this.props.updatePath(
+      {
+        type: ['accommodation'],
+        latitude,
+        longitude,
+        address,
+      },
+      history,
+      {
+        tripId: trip._id,
+        day,
+        duration: trip.duration,
+        startDate: this.props.startDate.valueOf(),
       },
     );
   };

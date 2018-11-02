@@ -1,6 +1,7 @@
 import axios from 'libs/axios';
 import fetch_helpers from 'libs/fetch_helpers';
 import { trackVoiceUsage } from 'libs/analytics';
+// import history from 'main/history';
 
 export const results_fetched = results => {
   return {
@@ -59,10 +60,11 @@ export const toggle_tag_from_search_query = (current_search_query, item_tag, his
   };
 };
 
-export const update_path = (search_params, history) => {
+export const update_path = (search_params, history, state) => {
+  // I don't know why this is an action creator but don't have time to refactor ATM
   return dispatch => {
     const query_string = composeQuery(search_params);
-    history.push('/results?' + query_string);
+    history.push('/results?' + query_string, state);
     // will trigger update_search_query from results_container
   };
 };
@@ -76,7 +78,9 @@ const composeQuery = search_params => {
     latitude: search_params.latitude || undefined,
     longitude: search_params.longitude || undefined,
     address: search_params.address || undefined,
-    tags: !search_params.tags.length ? undefined : search_params.tags.join('+'),
+    tags: !(search_params.tags && search_params.tags.length)
+      ? undefined
+      : search_params.tags.join('+'),
     onlySmartContracts: search_params.onlySmartContracts || undefined,
     page: search_params.page || 1,
     limit: search_params.limit || 10,

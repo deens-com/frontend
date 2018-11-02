@@ -4,6 +4,27 @@ export function minutesToDays(duration) {
   return Math.ceil(duration / (60 * 24)); // Duration is in minutes
 }
 
+export function getDaysByService(services) {
+  return services.reduce((prev, service) => {
+    if (!service.service) {
+      return prev;
+    }
+
+    const id = service.service._id;
+    if (!prev[id]) {
+      return {
+        ...prev,
+        [id]: [service.day],
+      };
+    }
+
+    return {
+      ...prev,
+      [id]: [...prev[id], service.day],
+    };
+  }, {});
+}
+
 export function dayTitles(dayNumber, date) {
   return {
     title: date

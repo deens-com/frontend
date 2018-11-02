@@ -5,8 +5,10 @@ import styled from 'styled-components';
 import GoogleMapReact from 'google-map-react';
 import { fitBounds } from 'google-map-react/utils';
 import { Checkbox } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 import Media from 'react-media';
 
+import history from 'main/history';
 // COMPONENTS
 import TopBar from './../../shared_components/TopBar';
 
@@ -14,6 +16,7 @@ import BrandFooter from './../../shared_components/BrandFooter';
 import Filters from './components/Filters';
 import Results from './components/Results';
 import MapMaker from './../../shared_components/MapMarker';
+import I18nText from 'shared_components/I18nText';
 
 // ACTIONS/CONFIG
 import { media } from '../../libs/styled';
@@ -47,6 +50,15 @@ const ServicesWrapper = styled.div`
   ${media.minLarge} {
     // width: 58%;
   }
+`;
+
+const GoBackToTrip = styled.span`
+  color: #4fb798;
+  margin: auto;
+  margin-top: 15px;
+  margin-left: 20px;
+  cursor: pointer;
+  display: inline-block;
 `;
 
 const MapToggle = styled.div`
@@ -154,6 +166,11 @@ export default class ResultsScene extends Component {
     this.setMarkerHoverState(e, false);
   };
 
+  goBackToTrip = () => {
+    this.props.resetTrip();
+    history.replace(`/trips/organize/${this.props.routeState.tripId}`);
+  };
+
   render() {
     const { props } = this;
     const { center, zoom, markers } = this.state;
@@ -177,6 +194,12 @@ export default class ResultsScene extends Component {
             }
           </Media>
         </span>
+        {props.routeState &&
+          Boolean(props.routeState.tripId) && (
+            <GoBackToTrip onClick={this.goBackToTrip}>
+              Go back to <I18nText data={props.trip.title} />
+            </GoBackToTrip>
+          )}
         <PageContent flex>
           <ServicesWrapper>
             {/* <SearchFilters {...props} /> */}

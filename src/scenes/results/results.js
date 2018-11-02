@@ -1,8 +1,13 @@
 import React from 'react';
 import ResultsContainer from './containers/results_container';
+//import history from 'main/history'
 import queryString from 'qs';
 
 class Results extends React.Component {
+  constructor(props) {
+    super(props);
+    this.routeState = props.location.state;
+  }
   componentDidMount() {
     this.unlisten = this.props.history.listen(() => this.forceUpdate());
   }
@@ -62,6 +67,7 @@ class Results extends React.Component {
           sortBy={sortBy}
           radiusInKm={radiusInKm}
           text={text}
+          routeState={this.routeState}
         />
       </div>
     );

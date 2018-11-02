@@ -145,6 +145,10 @@ export default function TripsReducer(state = initialState, action = {}) {
         },
       };
     }
+
+    case types.RESET_TRIP: {
+      return initialState;
+    }
     default:
       return state;
   }
