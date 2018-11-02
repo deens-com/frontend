@@ -189,6 +189,7 @@ class Results extends Component {
                         withTooltip
                         withShadow
                         item={result}
+                        isTrip={!(result.categories && result.categories.length)}
                         addToTrip={
                           this.props.routeState && {
                             id: this.props.routeState.tripId,

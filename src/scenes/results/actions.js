@@ -153,13 +153,10 @@ export const fetch_results = results_search_query => {
   return async dispatch => {
     try {
       const query = composeFetchQuery(results_search_query);
-      const searchPath = query ? '?' + query : '';
-      const pathPrefix = results_search_query.type.includes('trip')
-        ? '/search'
-        : '/search/services';
-      const results = await axios.get(pathPrefix + searchPath).catch(error => {
-        console.log(error);
-      });
+      const includeTrips = results_search_query.type.includes('trip');
+      const searchPath = `?${query ? query + '&' : ''}${includeTrips ? 'include=owner' : ''}`;
+      const pathPrefix = includeTrips ? '/search' : '/search/services';
+      const results = await axios.get(pathPrefix + searchPath);
       if (results) {
         const resultsArr = results.data.trips || results.data.services;
         const data = fetch_helpers.buildServicesJson(resultsArr);
