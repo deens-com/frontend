@@ -11,7 +11,7 @@ import Category from 'shared_components/Category';
 import Button from 'shared_components/Button';
 import { TrashCan } from 'shared_components/icons';
 import Options from './Options';
-import AddServiceModal from './AddServiceModal';
+//import AddServiceModal from './AddServiceModal';
 import ServiceDaySelector from './ServiceDaySelector';
 
 const Wrapper = styled.div`
@@ -303,6 +303,7 @@ export default class Itinerary extends Component {
     );
   };
 
+  /*<AddServiceModal trip={this.props.trip} onServiceSelect={this.props.addService} day={day} />*/
   renderDay = (day, index) => (
     <Day key={day.title} innerRef={this.r[index]}>
       <DayHeader>
@@ -312,7 +313,13 @@ export default class Itinerary extends Component {
           Delete this day
         </DeleteDayButton>
       </DayHeader>
-      <AddServiceModal trip={this.props.trip} onServiceSelect={this.props.addService} day={day} />
+      <Button
+        iconBefore="plus"
+        theme="fillLightGreen"
+        onClick={this.props.addService.bind(null, day.day)}
+      >
+        Add Service
+      </Button>
       {(!this.props.notes || !this.props.notes[day.day]) && (
         <AddNoteButton>
           <Button

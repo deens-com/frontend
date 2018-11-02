@@ -241,7 +241,7 @@ export const loginWithLedger = ({ from, action }) => async dispatch => {
       publicAddress: publicAddress,
       type: 'ledger',
     });
-    console.log(response);
+
     if (response.code === 404) {
       dispatch({
         type: types.LEDGER_ERROR,

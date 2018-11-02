@@ -147,7 +147,6 @@ export default class FormControl extends Component {
           <TimeSelect
             {...this.props}
             innerRef={input => {
-              console.log(input);
               this.input = input;
             }}
             onChange={this.props.onChange}

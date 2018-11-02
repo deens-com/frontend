@@ -19,6 +19,7 @@ export const types = {
   PATCH_TRIP_SUCCESS: 'PATCH_TRIP_SUCCESS',
   PATCH_TRIP_ERROR: 'PATCH_TRIP_ERROR',
   SELECT_OPTION: 'SELECT_OPTION',
+  RESET_TRIP: 'RESET_TRIP',
 };
 
 export const fetchTripStart = () => {
@@ -120,6 +121,12 @@ export const patchTripError = e => {
     type: types.PATCH_TRIP_ERROR,
     payload: e,
   };
+};
+
+export const resetTrip = () => async dispatch => {
+  dispatch({
+    type: types.RESET_TRIP,
+  });
 };
 
 export const fetchTrip = id => async dispatch => {

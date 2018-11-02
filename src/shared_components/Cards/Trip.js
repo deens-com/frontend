@@ -20,12 +20,14 @@ import { Cart, ContentWrap } from './styles';
 import { cardConfig } from 'libs/config';
 import { PinIcon } from 'shared_components/icons';
 import I18nText from 'shared_components/I18nText';
+import AddToTrip from './AddToTrip';
 
 const queryString = require('qs');
 
 const Wrap = styled.div`
   // display: inline-block;
   // width: 300px;
+  position: relative;
 `;
 
 // How did we come up with height: 104px?
@@ -173,6 +175,9 @@ class TripCard extends Component {
     return (
       <Wrap>
         <Cart column className="card-animate">
+          {Boolean(this.props.addToTrip) && (
+            <AddToTrip serviceId={item.objectId} data={this.props.addToTrip} />
+          )}
           <Thumb
             url={
               (item.media.length && item.media[0].files.thumbnail.url) ||

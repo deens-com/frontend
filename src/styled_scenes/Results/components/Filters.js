@@ -227,7 +227,7 @@ class Filters extends Component {
   refetch_results(param_object) {
     const query_params = this.get_query_params();
     query_params[Object.keys(param_object)[0]] = param_object[Object.keys(param_object)[0]];
-    this.props.update_path(query_params, this.props.history);
+    this.props.update_path(query_params, this.props.history, this.props.routeState);
   }
 
   refetch_results_for_location(lat, lon, addr) {
@@ -235,14 +235,14 @@ class Filters extends Component {
     query_params.latitude = lat;
     query_params.longitude = lon;
     query_params.address = addr;
-    this.props.update_path(query_params, this.props.history);
+    this.props.update_path(query_params, this.props.history, this.props.routeState);
   }
 
   refetch_results_for_dates(dateRange) {
     const query_params = this.get_query_params();
     query_params.start_date = dateRange.start_date;
     query_params.end_date = dateRange.end_date;
-    this.props.update_path(query_params, this.props.history);
+    this.props.update_path(query_params, this.props.history, this.props.routeState);
   }
 
   debounced_refetch_results = debounce(param_object => {
