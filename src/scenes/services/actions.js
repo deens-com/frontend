@@ -46,6 +46,18 @@ export const userUnpurchasedTripsFetchFinish = trips => ({
   payload: trips,
 });
 
+const shouldServiceBeVisible = service => {
+  const user = getSession();
+  if (service.status === 'inactive') {
+    if (!user) {
+      return false;
+    } else if (service.owner._id === user._id) {
+      return true;
+    }
+  }
+  return true;
+};
+
 export const fetch_service = serviceId => async dispatch => {
   dispatch(serviceFetchStart());
   try {
@@ -54,6 +66,13 @@ export const fetch_service = serviceId => async dispatch => {
     });
     if (service) {
       const serviceData = service.data;
+      if (!shouldServiceBeVisible(serviceData)) {
+        dispatch({
+          type: 'SERVICE_FETCH_ERROR',
+          payload: { code: 404, error: 'Service is inactive' },
+        });
+        return;
+      }
       const formattedServiceData = fetch_helpers.buildServicesJson([serviceData])[0];
       const trips = await axios.get(`/trips/containing-service/${serviceId}`).catch(error => {
         dispatch({ type: 'SERVICE_FETCH_ERROR', payload: error });

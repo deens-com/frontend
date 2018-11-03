@@ -21,17 +21,20 @@ const createNewFn = target => (to, state, ...args) => {
     typeof to === 'object'
       ? to
       : {
-          pathname: to,
+          pathname: to.split('?', 2)[0],
           state: state,
+          search: to.split('?', 2)[1] || '',
         };
 
   return target(createLocation(obj));
 };
 
 const previousPush = hashHistory.push;
+const previousPop = hashHistory.pop;
 const previousReplace = hashHistory.replace;
 
 hashHistory.push = createNewFn(previousPush);
+hashHistory.pop = createNewFn(previousPop);
 hashHistory.replace = createNewFn(previousReplace);
 
 export default hashHistory;

@@ -394,7 +394,7 @@ class CheckoutContainer extends React.Component {
                 </SummaryData>
                 <TotalPriceWrapper>
                   <TotalPrice>
-                    <PriceLine>Total Price Booked Items ${trip.basePrice}</PriceLine>
+                    <PriceLine>Total Price Booked Items ${trip.basePrice.toFixed(2)}</PriceLine>
                     <Taxes>* all taxes and fees are included</Taxes>
                   </TotalPrice>
                   <CancellationPolicy />

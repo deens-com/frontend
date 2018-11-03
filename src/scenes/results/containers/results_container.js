@@ -3,6 +3,7 @@ import ResultsComponent from './../components/results_component';
 import * as results_actions from './../actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { resetTrip } from '../../trip/actions';
 
 class ResultsContainer extends Component {
   componentDidMount() {
@@ -86,11 +87,18 @@ const mapStateToProps = state => {
     carousel_tags: state.ResultsReducer.carousel_tags,
     isLoadingResults: state.ResultsReducer.isLoadingResults,
     tagsOptions: state.ResultsReducer.tagsOptions,
+    trip: state.TripReducer.trip,
   };
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators(results_actions, dispatch);
+  return bindActionCreators(
+    {
+      ...results_actions,
+      resetTrip,
+    },
+    dispatch,
+  );
 };
 
 export default connect(

@@ -48,7 +48,7 @@ export default class TripLengthFormInput extends Component {
       (sum, { services }) => sum + services.length,
       0,
     );
-    console.log(`days: ${daysToBeRemoved.length}, services: ${serviceRemovalCount}`);
+
     if (daysToBeRemoved.length === 0) {
       onChange(event);
       this.closePopup();

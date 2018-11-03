@@ -1,6 +1,7 @@
 import axios from 'libs/axios';
 import fetch_helpers from 'libs/fetch_helpers';
 import { trackVoiceUsage } from 'libs/analytics';
+// import history from 'main/history';
 
 export const results_fetched = results => {
   return {
@@ -59,10 +60,11 @@ export const toggle_tag_from_search_query = (current_search_query, item_tag, his
   };
 };
 
-export const update_path = (search_params, history) => {
+export const update_path = (search_params, history, state) => {
+  // I don't know why this is an action creator but don't have time to refactor ATM
   return dispatch => {
     const query_string = composeQuery(search_params);
-    history.push('/results?' + query_string);
+    history.push('/results?' + query_string, state);
     // will trigger update_search_query from results_container
   };
 };
@@ -76,12 +78,14 @@ const composeQuery = search_params => {
     latitude: search_params.latitude || undefined,
     longitude: search_params.longitude || undefined,
     address: search_params.address || undefined,
-    tags: !search_params.tags.length ? undefined : search_params.tags.join('+'),
+    tags: !(search_params.tags && search_params.tags.length)
+      ? undefined
+      : search_params.tags.join('+'),
     onlySmartContracts: search_params.onlySmartContracts || undefined,
     page: search_params.page || 1,
     limit: search_params.limit || 10,
     sortBy: search_params.sortBy || undefined,
-    text: search_params.text || undefined,
+    text: typeof search_params.text === 'string' ? search_params.text : undefined,
     radiusInKm: search_params.radiusInKm || 10,
   };
   let query_arr = [];
@@ -149,13 +153,10 @@ export const fetch_results = results_search_query => {
   return async dispatch => {
     try {
       const query = composeFetchQuery(results_search_query);
-      const searchPath = query ? '?' + query : '';
-      const pathPrefix = results_search_query.type.includes('trip')
-        ? '/search'
-        : '/search/services';
-      const results = await axios.get(pathPrefix + searchPath).catch(error => {
-        console.log(error);
-      });
+      const includeTrips = results_search_query.type.includes('trip');
+      const searchPath = `?${query ? query + '&' : ''}${includeTrips ? 'include=owner' : ''}`;
+      const pathPrefix = includeTrips ? '/search' : '/search/services';
+      const results = await axios.get(pathPrefix + searchPath);
       if (results) {
         const resultsArr = results.data.trips || results.data.services;
         const data = fetch_helpers.buildServicesJson(resultsArr);

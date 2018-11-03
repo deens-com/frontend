@@ -54,25 +54,16 @@ const renderButtonWithPopup = (button, content) => {
 };
 
 const FixedFooter = ({ price, peopleNumber, onCustomizeClick, startDate, endDate }) => {
-  const disabledButton = Boolean(!peopleNumber || !(startDate && endDate));
   return (
     <Wrapper>
       <Text>
         <Sentence>Estimated price for {peopleNumber} people:</Sentence> ${price}
       </Text>
-      {renderButtonWithPopup(
-        <div>
-          <Button
-            disableClick={disabledButton}
-            theme="fillLightGreen"
-            size="medium"
-            onClick={onCustomizeClick}
-          >
-            Customize this trip
-          </Button>
-        </div>,
-        disabledButton && 'Select number of guests and date to continue',
-      )}
+      <div>
+        <Button theme="fillLightGreen" size="medium" onClick={onCustomizeClick}>
+          Customize this trip
+        </Button>
+      </div>
     </Wrapper>
   );
 };

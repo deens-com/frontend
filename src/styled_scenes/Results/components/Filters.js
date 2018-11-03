@@ -227,7 +227,7 @@ class Filters extends Component {
   refetch_results(param_object) {
     const query_params = this.get_query_params();
     query_params[Object.keys(param_object)[0]] = param_object[Object.keys(param_object)[0]];
-    this.props.update_path(query_params, this.props.history);
+    this.props.update_path(query_params, this.props.history, this.props.routeState);
   }
 
   refetch_results_for_location(lat, lon, addr) {
@@ -235,14 +235,14 @@ class Filters extends Component {
     query_params.latitude = lat;
     query_params.longitude = lon;
     query_params.address = addr;
-    this.props.update_path(query_params, this.props.history);
+    this.props.update_path(query_params, this.props.history, this.props.routeState);
   }
 
   refetch_results_for_dates(dateRange) {
     const query_params = this.get_query_params();
     query_params.start_date = dateRange.start_date;
     query_params.end_date = dateRange.end_date;
-    this.props.update_path(query_params, this.props.history);
+    this.props.update_path(query_params, this.props.history, this.props.routeState);
   }
 
   debounced_refetch_results = debounce(param_object => {
@@ -324,15 +324,16 @@ class Filters extends Component {
     this.setState(
       {
         text,
+        type: [],
       },
       () => {
-        this.debounced_refetch_results({ text });
+        this.debounced_refetch_results({ text, type: [] });
       },
     );
   };
 
   getPreposition = () => {
-    if (this.state.text) {
+    if (this.state.text || this.state.willTextPopupOpen || this.state.isTextPopupOpen) {
       return ' ';
     }
     if (this.props.tags.length > 0) {
@@ -414,7 +415,16 @@ class Filters extends Component {
   };
 
   handleTextPopupOpen = () => {
-    this.setState({ isTextPopupOpen: true });
+    this.setState(
+      {
+        willTextPopupOpen: true,
+      },
+      () =>
+        this.setState({
+          willTextPopupOpen: false,
+          isTextPopupOpen: true,
+        }),
+    );
   };
 
   onDropDownChange = (event, object) => {
@@ -630,6 +640,7 @@ class Filters extends Component {
                 /*value={this.state.text}*/
                 onChange={this.changeText}
                 defaultValue={this.state.text}
+                autoFocus
               />
             )}
           </div>
@@ -663,10 +674,8 @@ class Filters extends Component {
   };
 
   renderText = () => {
-    if (!this.state.text) {
-      if (this.props.search_query.type && this.props.search_query.type.length !== 0) {
-        return null;
-      }
+    if (!this.state.text && !this.state.willTextPopupOpen && !this.state.isTextPopupOpen) {
+      return null;
     }
 
     return this.renderEditable('text', this.state.text || '...');
@@ -687,15 +696,16 @@ class Filters extends Component {
   };
 
   renderCategory = () => {
-    if (
-      !this.props.search_query.type ||
-      this.props.search_query.type.length === 0 ||
-      this.state.text
-    ) {
+    if (this.state.text || this.state.willTextPopupOpen || this.state.isTextPopupOpen) {
       return null;
     }
 
-    return this.renderEditable('category', this.props.search_query.type[0]);
+    const type =
+      !this.props.search_query.type || this.props.search_query.type.length === 0
+        ? 'accommodation, food and activities'
+        : this.props.search_query.type[0];
+
+    return this.renderEditable('category', type);
   };
 
   renderLocation = () => {
@@ -810,6 +820,13 @@ class Filters extends Component {
               <Icon name="plus" /> Guests
             </React.Fragment>,
             { addMargin: true },
+          )}
+        {!this.state.text &&
+          !this.state.isTextPopupOpen &&
+          !this.state.willTextPopupOpen && (
+            <EditableElement onClick={this.handleTextPopupOpen}>
+              <Icon name="plus" /> Text
+            </EditableElement>
           )}
       </React.Fragment>
     );

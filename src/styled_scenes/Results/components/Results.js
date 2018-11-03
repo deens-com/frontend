@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
+import axios from 'libs/axios';
 
 // COMPONENTS
 import Row from '../../../shared_components/layout/Row';
@@ -12,6 +13,8 @@ import ReactPaginate from 'react-paginate';
 import { media } from '../../../libs/styled';
 import { Loader, Grid } from 'semantic-ui-react';
 import moment from 'moment';
+import { minutesToDays, getDaysByService } from 'styled_scenes/Trip/mapServicesToDays';
+import debounce from 'lodash.debounce';
 
 // STYLES
 const Wrap = styled.div`
@@ -71,6 +74,21 @@ class Results extends Component {
       resultsCount: props.search_query.resultsCount || 0,
       limit: props.search_query.limit || 0,
     };
+
+    if (props.routeState && props.trip && props.trip._id === props.routeState.tripId) {
+      this.daysByService = getDaysByService(props.trip.services);
+      this.days =
+        props.routeState &&
+        Array.from({ length: minutesToDays(props.routeState.duration) }).map((_, i) =>
+          moment(props.routeState.startDate)
+            .add(i, 'days')
+            .format('MMMM DD'),
+        );
+      this.tripServices = props.trip.services.map(service => ({
+        ...service,
+        service: service.service._id,
+      }));
+    }
   }
 
   componentWillReceiveProps() {
@@ -101,7 +119,7 @@ class Results extends Component {
   refetch_results(param_object) {
     const query_params = this.get_query_params();
     query_params[Object.keys(param_object)[0]] = param_object[Object.keys(param_object)[0]];
-    this.props.update_path(query_params, this.props.history);
+    this.props.update_path(query_params, this.props.history, this.props.routeState);
   }
 
   loadData = item => {
@@ -109,6 +127,26 @@ class Results extends Component {
       const selectedPage = item.selected + 1;
       this.refetch_results({ page: selectedPage });
     }
+  };
+
+  addToTrip = async (serviceId, day) => {
+    this.tripServices = [
+      ...this.tripServices,
+      {
+        service: serviceId,
+        day,
+        notes: [],
+        priority: 1,
+      },
+    ];
+    await axios.patch(`/trips/${this.props.trip._id}`, { services: this.tripServices });
+  };
+
+  removeFromTrip = async (serviceId, day) => {
+    this.tripServices = this.tripServices.filter(
+      service => service.service !== serviceId || service.day !== day,
+    );
+    await axios.patch(`/trips/${this.props.trip._id}`, { services: this.tripServices });
   };
 
   render() {
@@ -151,6 +189,17 @@ class Results extends Component {
                         withTooltip
                         withShadow
                         item={result}
+                        isTrip={!(result.categories && result.categories.length)}
+                        addToTrip={
+                          this.props.routeState && {
+                            id: this.props.routeState.tripId,
+                            day: this.props.routeState.day,
+                            days: this.days,
+                            daysByService: this.daysByService,
+                            addToTrip: this.addToTrip,
+                            removeFromTrip: this.removeFromTrip,
+                          }
+                        }
                       />
                     </Link>
                   </ResultItem>
