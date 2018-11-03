@@ -19,7 +19,7 @@ $ cd frontend
 $ yarn
 ```
 
-We have a few [yarn](https://yarnpkg.com/) specific code in our `package.json` thus we recommend you use [yarn](https://yarnpkg.com/) for package management with this repo.
+We have some [yarn](https://yarnpkg.com/) specific code in our `package.json` so we recommend that you use [yarn](https://yarnpkg.com/) for package management with this repo.
 
 ```sh
 # export the backend endpoint to use
@@ -31,9 +31,9 @@ $ yarn start
 
 ## :art: Style Guidelines
 
-We use [Prettier](https://github.com/prettier/prettier) for formatting the code for this repo.
+We use [Prettier](https://github.com/prettier/prettier) to format the code for this repo.
 
-Before comitting do run `yarn prettier-all` to format the code, or add it in the `pre-commit` hook and it'll be automatically taken care of.
+Before committing, please run `yarn prettier-all` to format your code or add Prettier to the `pre-commit` hook to automatically take care of formatting.
 
 #### How to add Prettier to pre-commit hook?
 
@@ -47,7 +47,7 @@ yarn lint-staged''' > .git/hooks/pre-commit
 
 ## Troubleshooting
 
-If you're stuck somewhere while working on something create an issue or jump on to the [Telegram group](https://t.me/PleaseDotCom) and we'll help you out.
+If you're stuck somewhere while working on something, create an issue or jump on to the [Telegram group](https://t.me/PleaseProtocol) and we'll help you out.
 
 ## 🎓 License
 
