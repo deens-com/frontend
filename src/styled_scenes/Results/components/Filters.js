@@ -163,6 +163,7 @@ class Filters extends Component {
             .add(1, 'days')
             .format(),
       text: props.search_query.text || undefined,
+      previousPropsText: props.search_query.text,
       person_nb: props.search_query.person_nb || undefined,
       service_type: props.search_query.type || [],
       tags: props.search_query.tags || [],
@@ -190,8 +191,21 @@ class Filters extends Component {
   }
 
   static getDerivedStateFromProps(props, state) {
+    if (props.search_query.text !== state.previousPropsText) {
+      const text = props.search_query.text;
+
+      return {
+        text,
+        previousPropsText: text,
+      };
+    }
+
     if (state.text !== props.search_query.text) {
-      return { text: state.text || props.search_query.text };
+      const text = state.text || props.search_query.text;
+
+      return {
+        text,
+      };
     }
     if (state.isRadiusPopupOpen) {
       return null;
