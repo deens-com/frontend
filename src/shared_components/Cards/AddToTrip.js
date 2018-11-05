@@ -1,22 +1,14 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { PlusIcon } from 'shared_components/icons';
 import { Checkbox } from 'semantic-ui-react';
+import Button from 'shared_components/Button';
+import moment from 'moment';
 
-const Button = styled.div`
+const AddButton = styled.div`
   position: absolute;
-  background-color: #4fb798;
-  color: white;
   right: 20px;
-  top: 30px;
+  top: 20px;
   z-index: 1;
-  width: 35px;
-  height: 35px;
-  border-radius: 20px;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const AddPanel = styled.div`
@@ -30,7 +22,7 @@ const AddPanel = styled.div`
   z-index: 2;
   border-radius: 5px;
   overflow-y: scroll;
-  padding: 15px;
+  padding: 35px 15px 15px;
   cursor: initial;
 `;
 
@@ -57,6 +49,20 @@ const Option = styled.div`
   border-radius: 3px;
   padding-left: 0;
   cursor: pointer;
+`;
+
+const Message = styled.div`
+  background-color: #b9ffe7;
+  border: 1px solid #4ac4a1;
+  color: #4ac4a1;
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  right: 0;
+  padding: 0 5px;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
 `;
 
 export default class AddToTrip extends Component {
@@ -99,7 +105,7 @@ export default class AddToTrip extends Component {
     this.open();
   };
 
-  optionClick = (e, index, isAdded) => {
+  optionClick = (e, index, dayName, isAdded) => {
     e.preventDefault();
     e.stopPropagation();
     if (isAdded) {
@@ -107,9 +113,27 @@ export default class AddToTrip extends Component {
     } else {
       this.props.data.addToTrip(this.props.serviceId, index + 1);
     }
+
+    const action = isAdded ? 'Removed' : 'Added';
+    const date = moment(dayName).format('MMM DD');
+
     this.setState({
       days: this.state.days.map((value, i) => (i === index ? !isAdded : value)),
+      lastAction: {
+        action,
+        date,
+      },
     });
+
+    setTimeout(() => {
+      this.setState(prevState => {
+        if (prevState.lastAction.date === date && prevState.lastAction.action === action) {
+          return {
+            lastAction: null,
+          };
+        }
+      });
+    }, 5000);
   };
 
   panelClick = e => {
@@ -120,15 +144,23 @@ export default class AddToTrip extends Component {
   render() {
     return (
       <React.Fragment>
-        <Button onClick={this.buttonClick}>
-          <PlusIcon />
-        </Button>
+        <AddButton>
+          <Button iconBefore="plus" theme="fillLightGreen" onClick={this.buttonClick}>
+            Add to trip
+          </Button>
+        </AddButton>
         <AddPanel innerRef={this.panelRef} isOpen={this.state.isOpen} onClick={this.panelClick}>
+          {this.state.lastAction && (
+            <Message action={this.state.lastAction.action} onClick={this.props.data.goBackToTrip}>
+              {this.state.lastAction.action === 'Added' ? 'Added to' : 'Removed from'} trip on{' '}
+              {this.state.lastAction.date}
+            </Message>
+          )}
           <AddPanelContent>
             {this.state.days.map((isAdded, i) => {
               const dayName = this.props.data.days[i];
               return (
-                <Option key={i + 1} onClick={e => this.optionClick(e, i, isAdded)}>
+                <Option key={i + 1} onClick={e => this.optionClick(e, i, dayName, isAdded)}>
                   <Checkbox checked={isAdded} name={dayName} label={<Label>{dayName}</Label>} />
                 </Option>
               );

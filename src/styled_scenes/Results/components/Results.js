@@ -198,6 +198,7 @@ class Results extends Component {
                             daysByService: this.daysByService,
                             addToTrip: this.addToTrip,
                             removeFromTrip: this.removeFromTrip,
+                            goBackToTrip: this.props.goBackToTrip,
                           }
                         }
                       />
