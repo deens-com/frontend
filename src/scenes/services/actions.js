@@ -53,6 +53,8 @@ const shouldServiceBeVisible = service => {
       return false;
     } else if (service.owner._id === user._id) {
       return true;
+    } else {
+      return false;
     }
   }
   return true;
