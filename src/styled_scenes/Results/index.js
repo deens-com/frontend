@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import GoogleMapReact from 'google-map-react';
 import { fitBounds } from 'google-map-react/utils';
 import { Checkbox } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
 import Media from 'react-media';
 
 import history from 'main/history';
@@ -209,6 +208,7 @@ export default class ResultsScene extends Component {
               onCardLeave={this.onCardLeave}
               data={props.service_data}
               showMap={this.state.showMap}
+              goBackToTrip={this.goBackToTrip}
             />
           </ServicesWrapper>
 
