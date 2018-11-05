@@ -96,12 +96,7 @@ const locationProps = {
 };
 
 const suggestionStyle = {
-  position: 'absolute',
-  left: '206px',
-  right: 'auto',
-  top: '49px',
-  bottom: 'auto',
-  width: '100%',
+  width: '80vw',
   maxWidth: '613px',
 };
 
@@ -121,6 +116,7 @@ export default class DesktopSearch extends Component {
     this.onBlur = this.onBlur.bind(this);
     this.handleLocationChange = this.handleLocationChange.bind(this);
     this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
+    this.searchWrapper = React.createRef();
   }
   onFocus() {
     this.setState({ inFocus: true });

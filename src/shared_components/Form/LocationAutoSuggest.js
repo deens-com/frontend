@@ -6,6 +6,10 @@ import StyledInput from 'shared_components/StyledInput';
 import { MapMarker } from 'shared_components/icons';
 import styled from 'styled-components';
 
+const Wrapper = styled.div`
+  width: 100%;
+`;
+
 const ListSpan = styled.span`
   display: inline-flex;
 `;
@@ -123,36 +127,38 @@ export default class SemanticLocationControl extends Component {
       >
         {({ getInputProps, suggestions, getSuggestionItemProps }) => (
           <Popup
-            basic
+            context={this.props.context}
             trigger={
-              useStyledInput ? (
-                <StyledInput
-                  {...getInputProps({
-                    ...inputProps,
-                    placeholder: inputProps.placeholder || 'Enter location ...',
-                  })}
-                  leftContent={<MapMarker style={{ fill: '#6E7885' }} />}
-                  onFocus={this.handleOpen}
-                  onBlur={this.handleClose}
-                />
-              ) : (
-                <Form.Input
-                  icon="map pin"
-                  iconPosition="left"
-                  type="text"
-                  {...getInputProps({
-                    ...inputProps,
-                    placeholder: inputProps.placeholder || 'Enter location ...',
-                  })}
-                  style={inputStyles}
-                  onFocus={this.handleOpen}
-                  onBlur={this.handleClose}
-                />
-              )
+              <Wrapper>
+                {useStyledInput ? (
+                  <StyledInput
+                    {...getInputProps({
+                      ...inputProps,
+                      placeholder: inputProps.placeholder || 'Enter location ...',
+                    })}
+                    leftContent={<MapMarker style={{ fill: '#6E7885' }} />}
+                    onFocus={this.handleOpen}
+                    onBlur={this.handleClose}
+                  />
+                ) : (
+                  <Form.Input
+                    icon="map pin"
+                    iconPosition="left"
+                    type="text"
+                    {...getInputProps({
+                      ...inputProps,
+                      placeholder: inputProps.placeholder || 'Enter location ...',
+                    })}
+                    style={inputStyles}
+                    onFocus={this.handleOpen}
+                    onBlur={this.handleClose}
+                  />
+                )}
+              </Wrapper>
             }
             open={this.state.isOpen && Boolean(this.state.address)}
+            //open={true}
             position="bottom center"
-            wide
             style={{ zIndex: 10000, ...customStyle }}
           >
             <ListWrapper>

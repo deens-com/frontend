@@ -23,8 +23,8 @@ const TriggerWrap = styled.button`
 `;
 
 // MODULE
-export default function TopBarSearch({ menuIsOpened, toggleSearch, address }) {
-  if (menuIsOpened) return null;
+export default function TopBarSearch({ isMenuOpen, toggleSearch, address }) {
+  if (isMenuOpen) return null;
 
   return (
     <Media query={`(max-width: ${sizes.small})`}>

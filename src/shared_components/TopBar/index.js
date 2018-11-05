@@ -100,8 +100,7 @@ export default class TopBar extends Component {
   }
 
   toggleSearch() {
-    const { showSearch } = this.state;
-    this.setState({ showSearch: !showSearch });
+    this.setState(prevState => ({ showSearch: !prevState.showSearch }));
   }
 
   render() {
