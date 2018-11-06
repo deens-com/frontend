@@ -15,12 +15,19 @@ const initialState = {
 export default function ResultsReducer(state = initialState, action = {}) {
   switch (action.type) {
     case 'RESULTS_FETCHED':
+      if (action.timestamp !== state.timestamp) {
+        return state;
+      }
+
       return {
         ...state,
         results: action.payload.results,
         isLoadingResults: false,
       };
     case 'SEARCH_QUERY_UPDATED':
+      if (action.timestamp && action.timestamp !== state.timestamp) {
+        return state;
+      }
       return {
         ...state,
         search_query: {
@@ -37,6 +44,7 @@ export default function ResultsReducer(state = initialState, action = {}) {
       return {
         ...state,
         isLoadingResults: true,
+        timestamp: action.timestamp,
       };
     case 'TAGS_FETCHED':
       return {

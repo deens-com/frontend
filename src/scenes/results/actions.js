@@ -3,10 +3,11 @@ import fetch_helpers from 'libs/fetch_helpers';
 import { trackVoiceUsage } from 'libs/analytics';
 // import history from 'main/history';
 
-export const results_fetched = results => {
+export const results_fetched = (results, timestamp) => {
   return {
     type: 'RESULTS_FETCHED',
     payload: results,
+    timestamp,
   };
 };
 
@@ -17,16 +18,18 @@ export const tagsOptionsFetched = tags => {
   };
 };
 
-export const results_fetch_started = () => {
+export const results_fetch_started = timestamp => {
   return {
     type: 'RESULTS_FETCH_STARTED',
+    timestamp,
   };
 };
 
-export const search_query_updated = search_query => {
+export const search_query_updated = (search_query, timestamp) => {
   return {
     type: 'SEARCH_QUERY_UPDATED',
     payload: search_query,
+    timestamp,
   };
 };
 
@@ -133,9 +136,10 @@ export const composeFetchQuery = search_params => {
 /* is triggered whenever serviceTypes or tags props have changed */
 export const update_search_query = search_params => {
   return dispatch => {
+    const timestamp = new Date().valueOf();
     dispatch(search_query_updated({ search_query: search_params }));
-    dispatch(fetch_results(search_params));
-    dispatch(results_fetch_started());
+    dispatch(fetch_results(search_params, timestamp));
+    dispatch(results_fetch_started(timestamp));
   };
 };
 
@@ -149,7 +153,7 @@ export const update_search_query_without_search = search_params => {
   };
 };
 
-export const fetch_results = results_search_query => {
+export const fetch_results = (results_search_query, timestamp) => {
   return async dispatch => {
     try {
       const query = composeFetchQuery(results_search_query);
@@ -161,9 +165,9 @@ export const fetch_results = results_search_query => {
         const resultsArr = results.data.trips || results.data.services;
         const data = fetch_helpers.buildServicesJson(resultsArr);
         const resultsData = { results: data };
-        dispatch(results_fetched(resultsData));
+        dispatch(results_fetched(resultsData, timestamp));
         results_search_query['resultsCount'] = results.data.count;
-        dispatch(search_query_updated({ search_query: results_search_query }));
+        dispatch(search_query_updated({ search_query: results_search_query }, timestamp));
         const tagsOptions = results.data.tags.map(tag => {
           return tag.names['en-us'].charAt(0).toUpperCase() + tag.names['en-us'].substr(1);
         });
