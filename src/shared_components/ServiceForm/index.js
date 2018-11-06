@@ -239,51 +239,12 @@ class ServiceForm extends Component {
           </Modal.Actions>
         </Modal>
 
-        {/* Title */}
+        {/* Type of service */}
         <Form.Field required>
-          <label>Service name</label>
-          <Form.Input
-            name="title"
-            placeholder="Service name"
-            value={values.title}
-            error={!!(touched.title && errors.title)}
-            {...defaultProps}
-          />
-          {touched.title && errors.title && <ErrorMsg>{errors.title}</ErrorMsg>}
-        </Form.Field>
-
-        {/* Subtitle */}
-        <Form.Field required>
-          <label>Service subtitle</label>
-          <Form.Input
-            name="subtitle"
-            placeholder="Service subtitle"
-            value={values.subtitle}
-            error={!!(touched.subtitle && errors.subtitle)}
-            {...defaultProps}
-          />
-          {touched.subtitle && errors.subtitle && <ErrorMsg>{errors.subtitle}</ErrorMsg>}
-        </Form.Field>
-
-        {/* Description */}
-        <Form.Field required>
-          <label>Service description</label>
-          <Form.TextArea
-            name="description"
-            placeholder="Tell us more..."
-            value={values.description}
-            error={!!(touched.description && errors.description)}
-            {...defaultProps}
-          />
-          {touched.description && errors.description && <ErrorMsg>{errors.description}</ErrorMsg>}
-        </Form.Field>
-
-        {/* Service Category */}
-        <Form.Field required>
-          <label>Service category</label>
+          <label>Type of service</label>
           <Dropdown
             name="category"
-            placeholder="Service Category"
+            placeholder="Type of service"
             selection
             value={values.category}
             options={serviceTypeDropdownOptions}
@@ -292,49 +253,6 @@ class ServiceForm extends Component {
           />
           {touched.category && errors.category && <ErrorMsg>{errors.category}</ErrorMsg>}
         </Form.Field>
-
-        {/* Price */}
-        <Form.Field required>
-          <label>Price Per {values.category === 'Accommodation' ? 'Night' : 'Day'}</label>
-          <Form.Input
-            name="basePrice"
-            value={values.basePrice}
-            error={!!(touched.basePrice && errors.basePrice)}
-            {...defaultProps}
-          />
-          {touched.basePrice && errors.basePrice && <ErrorMsg>{errors.basePrice}</ErrorMsg>}
-        </Form.Field>
-
-        {/* Available Days */}
-        <Form.Group grouped>
-          <Form.Field required>
-            <label>Available Days</label>
-            <Dropdown
-              name="availableDays"
-              placeholder="Select davailable days"
-              selection
-              multiple
-              value={values.availableDays}
-              options={weekDays}
-              onChange={this.onDropDownChange}
-              error={!!(touched.availableDays && errors.availableDays)}
-            />
-            {touched.availableDays &&
-              errors.availableDays && <ErrorMsg>{errors.availableDays}</ErrorMsg>}
-          </Form.Field>
-        </Form.Group>
-
-        {/* Duration */}
-        {values.category !== 'Accommodation' && (
-          <DurationInput
-            onChange={this.changeDuration}
-            onTouch={this.handleDurationTouch}
-            defaultValue={Number(values.duration) || undefined}
-            touched={touched.duration}
-            error={errors.duration}
-            ErrorComponent={ErrorMsg}
-          />
-        )}
 
         {/* Location search */}
         <Form.Field required>
@@ -348,14 +266,95 @@ class ServiceForm extends Component {
           {touched.latlong && errors.latlong && <ErrorMsg>{errors.latlong}</ErrorMsg>}
         </Form.Field>
 
-        {/* Instruction */}
-        <Form.Field>
-          <label>Instructions given before your service start time</label>
-          <Form.TextArea name="start" value={values.start} {...defaultProps} />
+        {/* Title */}
+        <Form.Field required>
+          <label>Title</label>
+          <Form.Input
+            name="title"
+            placeholder="Title"
+            value={values.title}
+            error={!!(touched.title && errors.title)}
+            {...defaultProps}
+          />
+          {touched.title && errors.title && <ErrorMsg>{errors.title}</ErrorMsg>}
         </Form.Field>
+
+        {/* Subtitle */}
+        <Form.Field required>
+          <label>Sub-title</label>
+          <Form.Input
+            name="subtitle"
+            placeholder="Sub-title"
+            value={values.subtitle}
+            error={!!(touched.subtitle && errors.subtitle)}
+            {...defaultProps}
+          />
+          {touched.subtitle && errors.subtitle && <ErrorMsg>{errors.subtitle}</ErrorMsg>}
+        </Form.Field>
+
+        {/* Description */}
+        <Form.Field required>
+          <label>Description</label>
+          <Form.TextArea
+            name="description"
+            placeholder="Tell us more..."
+            value={values.description}
+            error={!!(touched.description && errors.description)}
+            {...defaultProps}
+          />
+          {touched.description && errors.description && <ErrorMsg>{errors.description}</ErrorMsg>}
+        </Form.Field>
+
+        {/* Tags */}
         <Form.Field>
-          <label>Instructions given before your service end time</label>
-          <Form.TextArea name="end" value={values.end} {...defaultProps} />
+          <label>Tags</label>
+          <Dropdown
+            name="tags"
+            options={this.props.serviceFormTagsOptions.map(tag => {
+              return { text: tag.names['en-us'], value: tag._id };
+            })}
+            placeholder="Add tags"
+            search
+            selection
+            fluid
+            multiple
+            value={values.tags}
+            onChange={this.onDropDownChange}
+          />
+        </Form.Field>
+
+        {/* Multi image upload */}
+        <Form.Field>
+          <label>Pictures (the first one you upload will be your main service picture)</label>
+          <MultiImageUploader
+            value={values.media}
+            onUploadedFilesChanged={this.onUploadedFilesChanged}
+            initialUploadedFiles={values.media}
+          />
+        </Form.Field>
+
+        {/* Duration */}
+        {values.category !== 'Accommodation' && (
+          <DurationInput
+            onChange={this.changeDuration}
+            onTouch={this.handleDurationTouch}
+            defaultValue={Number(values.duration) || undefined}
+            touched={touched.duration}
+            error={errors.duration}
+            ErrorComponent={ErrorMsg}
+          />
+        )}
+
+        {/* Price */}
+        <Form.Field required>
+          <label>{values.category === 'Food' ? 'Average Price per person' : 'Price'} ($ USD)</label>
+          <Form.Input
+            name="basePrice"
+            value={values.basePrice}
+            error={!!(touched.basePrice && errors.basePrice)}
+            {...defaultProps}
+          />
+          {touched.basePrice && errors.basePrice && <ErrorMsg>{errors.basePrice}</ErrorMsg>}
         </Form.Field>
 
         {/* Rules */}
@@ -394,6 +393,16 @@ class ServiceForm extends Component {
           </AddRuleContainer>
         </React.Fragment>
 
+        {/* Instruction */}
+        <Form.Field>
+          <label>Instructions given before your service start time</label>
+          <Form.TextArea name="start" value={values.start} {...defaultProps} />
+        </Form.Field>
+        <Form.Field>
+          <label>Instructions given before your service end time</label>
+          <Form.TextArea name="end" value={values.end} {...defaultProps} />
+        </Form.Field>
+
         {/* Period date */}
         <Form.Group widths="equal">
           <Form.Field required>
@@ -431,6 +440,25 @@ class ServiceForm extends Component {
           </Form.Field>
         </Form.Group>
 
+        {/* Available Days */}
+        <Form.Group grouped>
+          <Form.Field required>
+            <label>Days this service is available</label>
+            <Dropdown
+              name="availableDays"
+              placeholder="Select available days"
+              selection
+              multiple
+              value={values.availableDays}
+              options={weekDays}
+              onChange={this.onDropDownChange}
+              error={!!(touched.availableDays && errors.availableDays)}
+            />
+            {touched.availableDays &&
+              errors.availableDays && <ErrorMsg>{errors.availableDays}</ErrorMsg>}
+          </Form.Field>
+        </Form.Group>
+
         {/* Timings */}
         <Form.Group widths="equal">
           <Form.Field>
@@ -463,9 +491,7 @@ class ServiceForm extends Component {
 
         {/* Slots in a Day */}
         <Form.Field required>
-          <label>
-            Number of slots available per {values.category === 'Accommodation' ? 'Night' : 'Day'}
-          </label>
+          <label>Number of slots available</label>
           <Form.Input
             name="slots"
             type="number"
@@ -510,82 +536,6 @@ class ServiceForm extends Component {
             {touched.website && errors.website && <ErrorMsg>{errors.website}</ErrorMsg>}
           </Form.Field>
         </Form.Group>
-
-        {/* Tags */}
-        <Form.Field>
-          <label>Tags</label>
-          <Dropdown
-            name="tags"
-            options={this.props.serviceFormTagsOptions.map(tag => {
-              return { text: tag.names['en-us'], value: tag._id };
-            })}
-            placeholder="Add tags"
-            search
-            selection
-            fluid
-            multiple
-            value={values.tags}
-            onChange={this.onDropDownChange}
-          />
-        </Form.Field>
-
-        {/* Multi image upload */}
-        <Form.Field>
-          <label>Service Images</label>
-          <MultiImageUploader
-            value={values.media}
-            onUploadedFilesChanged={this.onUploadedFilesChanged}
-            initialUploadedFiles={values.media}
-          />
-        </Form.Field>
-
-        {/* Accept Ethereum */}
-        {isMobile ? null : userHasConnectedWallet ? (
-          <Message info>
-            <Message.Header>Deploy smart contract and accept payments in Ethereum</Message.Header>
-            <Message.Content>
-              <br />
-              <Form.Field>
-                <Form.Checkbox
-                  id="acceptETH"
-                  name="acceptETH"
-                  checked={values.acceptETH}
-                  {...defaultProps}
-                  label="Yes, deploy service as a smart contract"
-                  disabled={serviceHasContract}
-                />
-                {serviceHasContract && (
-                  <span>
-                    * Can't update the service smart contract once contract has been deployed
-                  </span>
-                )}
-                {!service &&
-                  userProfile.ledgerPublicAddress && (
-                    <p>
-                      Before clicking submit, make sure you are connected on the Ethereum app in
-                      your Ledger and that it's not on standby mode
-                    </p>
-                  )}
-              </Form.Field>
-            </Message.Content>
-          </Message>
-        ) : (
-          !service && (
-            <Message info>
-              <Message.Header>Deploy smart contract and accept payments in Ethereum</Message.Header>
-              <br />
-              <Message.Content>
-                If you want to deploy a smart contract and accept payments in Ethereum, you should
-                connect your account with Ledger or MetaMask. <br />
-                <br />
-                <strong>
-                  <Link to="/account/settings">Click here</Link>
-                </strong>{' '}
-                to continue to your settings page where you can connect your preferred wallet.
-              </Message.Content>
-            </Message>
-          )
-        )}
 
         <Form.Button disabled={submitInFlight}>{this.props.submitButtonText}</Form.Button>
       </Form>

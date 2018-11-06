@@ -18,7 +18,7 @@ const NewServiceScene = ({ location }) => {
         <Container text>
           {isNewService && (
             <React.Fragment>
-              <h2>Create a new Service</h2>
+              <h2>Add a new service</h2>
               <NewServiceFormContainer />
             </React.Fragment>
           )}
