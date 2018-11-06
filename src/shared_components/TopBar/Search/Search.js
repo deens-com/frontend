@@ -17,7 +17,7 @@ const Wrapper = styled.div`
   display: flex;
   flex: 1;
   max-width: 650px;
-  padding-right: 25px;
+  padding-right: ${props => (props.isMobile ? '0' : '25px')};
 `;
 
 const Inner = styled.div`
@@ -96,12 +96,7 @@ const locationProps = {
 };
 
 const suggestionStyle = {
-  position: 'absolute',
-  left: '206px',
-  right: 'auto',
-  top: '49px',
-  bottom: 'auto',
-  width: '100%',
+  width: '80vw',
   maxWidth: '613px',
 };
 
@@ -121,6 +116,7 @@ export default class DesktopSearch extends Component {
     this.onBlur = this.onBlur.bind(this);
     this.handleLocationChange = this.handleLocationChange.bind(this);
     this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
+    this.searchWrapper = React.createRef();
   }
   onFocus() {
     this.setState({ inFocus: true });
@@ -176,8 +172,9 @@ export default class DesktopSearch extends Component {
     history.push(`/results?${query_string}`);
   }
   render() {
+    const { isMobile, toggleSearch } = this.props;
     return (
-      <Wrapper inFocus={this.state.inFocus}>
+      <Wrapper isMobile={isMobile} inFocus={this.state.inFocus}>
         <Inner>
           <div>
             {/*<IconButton active={this.state.mode === 'voice'}>
@@ -207,12 +204,20 @@ export default class DesktopSearch extends Component {
               defaultAddress={this.props.text || this.props.address}
             />
 
-            <SubmitButton type="submit" style={{ color: 'grey' }}>
-              <span>Reset</span>
-              <ArrowWrap>
-                <CrossIcon style={{ color: 'grey' }} />
-              </ArrowWrap>
-            </SubmitButton>
+            {isMobile ? (
+              <SubmitButton style={{ color: 'grey' }}>
+                <ArrowWrap onClick={toggleSearch}>
+                  <CrossIcon style={{ color: 'grey' }} />
+                </ArrowWrap>
+              </SubmitButton>
+            ) : (
+              <SubmitButton type="submit" style={{ color: 'grey' }}>
+                <span>Reset</span>
+                <ArrowWrap>
+                  <CrossIcon style={{ color: 'grey' }} />
+                </ArrowWrap>
+              </SubmitButton>
+            )}
           </Form>
         </Inner>
       </Wrapper>

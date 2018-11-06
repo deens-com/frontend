@@ -102,10 +102,9 @@ const LeftIcon = ({ talking, onClickTalking }) => (
 );
 
 const suggestionStyle = {
-  left: '467px',
-  width: '100%',
+  width: '80vw',
   maxWidth: '505px',
-  top: '341px',
+  marginLeft: '-25px',
 };
 
 class HomeSearch extends Component {
@@ -196,6 +195,7 @@ class HomeSearch extends Component {
           onChange={this.handleLocationChange}
           {...locationProps}
           customStyle={suggestionStyle}
+          context={this.input.current}
         />
       </form>
     );
@@ -207,7 +207,7 @@ class HomeSearch extends Component {
 
   render() {
     return (
-      <Wrapper>
+      <Wrapper ref={this.input}>
         <SearchBg>
           <LeftIcon />
           {this.renderInputContent()}
