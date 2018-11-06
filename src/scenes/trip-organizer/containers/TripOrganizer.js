@@ -6,11 +6,18 @@ import * as actions from '../../trip/actions';
 import { update_search_query_without_search, update_path } from '../../../scenes/results/actions';
 import moment from 'moment';
 import TripOrganizer from '../../../styled_scenes/TripOrganizer';
+import history from 'main/history';
 
 class TripOrganizerContainer extends Component {
   constructor(props) {
     super(props);
     props.fetchTrip(props.match.params.id);
+  }
+
+  componentDidUpdate() {
+    if (this.props.trip && this.props.trip.bookingStatus === 'booked') {
+      history.replace(`/trips/${this.props.match.params.id}`);
+    }
   }
 
   render() {

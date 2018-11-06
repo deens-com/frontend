@@ -17,23 +17,6 @@ const AccountTripsScene = props => {
       </Grid.Column>
       <Grid.Column mobile={16} tablet={11} computer={12}>
         <h1>My Trips</h1>
-        <Link
-          to="/account/trips/all"
-          onClick={scrollDownMobileOnly}
-          style={{ borderBottom: '2px solid #50a189' }}
-        >
-          All
-        </Link>
-        &nbsp; | &nbsp;
-        <Link to="/account/trips/planned" onClick={scrollDownMobileOnly}>
-          Planned
-        </Link>
-        &nbsp; | &nbsp;
-        <Link to="/account/trips/completed" onClick={scrollDownMobileOnly}>
-          Completed
-        </Link>
-        <br />
-        <br />
         <TripSectionComponent
           isLoadingTrips={props.isLoadingTrips}
           trips={props.all_trips}
