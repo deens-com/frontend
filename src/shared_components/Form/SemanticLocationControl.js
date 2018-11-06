@@ -108,7 +108,6 @@ export default class SemanticLocationControl extends Component {
             onOpen={this.handleOpen}
             position="bottom left"
             wide
-            style={{ top: '180px' }}
           >
             <List divided selection verticalAlign="middle">
               {suggestions.map(suggestion => (
