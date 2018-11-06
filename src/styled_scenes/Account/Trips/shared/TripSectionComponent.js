@@ -42,7 +42,7 @@ const InlineH2 = styled.h2`
 
 const TripTitleRow = styled.span`
   vertical-align: middle;
-  a:last-child {
+  a:not(:first-child) {
     margin-left: 24px;
   }
 `;
@@ -72,26 +72,34 @@ class Trip extends Component {
       <SectionContent key={trip.objectId}>
         <Divider />
         <TripTitleRow>
-          <Link to={this.state.linkToEditTrip}>
+          <Link
+            to={
+              trip.bookingStatus === 'booked'
+                ? this.state.linkToViewTrip
+                : this.state.linkToEditTrip
+            }
+          >
             <InlineH2>
               <I18nText data={trip.title} />
             </InlineH2>
           </Link>
-          <Button
-            as={Link}
-            basic
-            icon
-            labelPosition="left"
-            size="tiny"
-            to={this.state.linkToEditTrip}
-          >
-            <Icon name="edit" />
-            Edit
-          </Button>
+          {trip.bookingStatus !== 'booked' ? (
+            <Button
+              as={Link}
+              basic
+              icon
+              labelPosition="left"
+              size="tiny"
+              to={this.state.linkToEditTrip}
+            >
+              <Icon name="edit" />
+              Edit
+            </Button>
+          ) : null}
         </TripTitleRow>
         <ColoredText>{this.state.tripDates}</ColoredText>
         <Label color={get_label_color(trip.status)}>Trip visibility: {trip.status}</Label>
-        {trip.booked ? <Label color="olive">purchased</Label> : null}
+        {trip.bookingStatus === 'booked' ? <Label color="olive">Booked</Label> : null}
         <br />
         <br />
         <CarouselWrapper>

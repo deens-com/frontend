@@ -18,7 +18,7 @@ class AccountTripsComponent extends Component {
           )}
         />
         <Route
-          path={process.env.PUBLIC_URL + '/account/trips/planned'}
+          path={process.env.PUBLIC_URL + '/account/trips/all'}
           render={props => (
             <AccountTripsPlannedComponent {...this.props} user_profile={this.props.user_profile} />
           )}

@@ -238,9 +238,13 @@ class CheckoutContainer extends React.Component {
 
   componentDidUpdate() {
     if (this.props.trip) {
+      if (this.props.trip.bookingStatus === 'booked') {
+        history.replace(`/trips/${this.tripId}`);
+        return;
+      }
       if (!this.props.trip.startDate || !this.props.trip.peopleCount) {
         history.replace(`/trips/organize/${this.tripId}`);
-        return null;
+        return;
       }
     }
   }

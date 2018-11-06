@@ -4,6 +4,7 @@ import { Grid } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
+import history from 'main/history';
 
 import { Page, PageContent } from 'shared_components/layout/Page';
 import TopBar from 'shared_components/TopBar';
@@ -31,10 +32,8 @@ class AccountTripsScene extends Component {
   getTrips = pathname => {
     const { allTrips } = this.props;
     let status = 'all';
-    if (pathname === '/account/trips/planned') {
-      status = 'planned';
-    } else if (pathname === '/account/trips/completed') {
-      status = 'completed';
+    if (pathname === '/account/trips/planned' || pathname === '/account/trips/completed') {
+      history.replace('/account/trips/all');
     }
     return allTrips.filter(trip => {
       if (status === 'all') return true;
@@ -59,31 +58,6 @@ class AccountTripsScene extends Component {
               </Grid.Column>
               <Grid.Column mobile={16} tablet={11} computer={12}>
                 <h1>My Trips</h1>
-                <AutoLink
-                  to="/account/trips/all"
-                  pathname={pathname}
-                  onClick={scrollDownMobileOnly}
-                >
-                  All
-                </AutoLink>
-                |
-                <AutoLink
-                  to="/account/trips/planned"
-                  pathname={pathname}
-                  onClick={scrollDownMobileOnly}
-                >
-                  Planned
-                </AutoLink>
-                |
-                <AutoLink
-                  to="/account/trips/completed"
-                  pathname={pathname}
-                  onClick={scrollDownMobileOnly}
-                >
-                  Completed
-                </AutoLink>
-                <br />
-                <br />
                 <TripSectionComponent
                   isLoadingTrips={isLoadingTrips}
                   trips={this.getTrips(pathname)}

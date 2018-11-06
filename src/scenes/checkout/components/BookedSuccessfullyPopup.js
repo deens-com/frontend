@@ -13,7 +13,7 @@ const ThankYouMsg = styled.h2`
 
 class BookedSuccessfullyPopup extends React.Component {
   onClose = () => {
-    this.props.history.push('/account/trips/planned');
+    this.props.history.push('/account/trips/all');
   };
 
   render() {
