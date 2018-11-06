@@ -62,7 +62,9 @@ class ServiceForm extends Component {
     super(props);
     this.state = {
       serviceId: null,
+      uploadingImages: false,
     };
+    this.uploadingImagesSet = new Set();
   }
 
   static propTypes = {
@@ -148,10 +150,26 @@ class ServiceForm extends Component {
       });
   };
 
-  onUploadedFilesChanged = mediaUrls => {
+  onUploadedFilesChanged = (mediaUrls, id) => {
+    this.uploadingImagesSet.delete(id);
+
+    if (this.uploadingImagesSet.size === 0) {
+      this.setState({
+        uploadingImages: false,
+      });
+    }
+
     const { setFieldValue, setFieldTouched } = this.props;
     setFieldTouched('media', true);
     setFieldValue('media', mediaUrls);
+  };
+
+  onStartedUpload = id => {
+    this.uploadingImagesSet.add(id);
+
+    this.setState({
+      uploadingImages: true,
+    });
   };
 
   componentWillReceiveProps(nextProps) {
@@ -330,6 +348,7 @@ class ServiceForm extends Component {
             value={values.media}
             onUploadedFilesChanged={this.onUploadedFilesChanged}
             initialUploadedFiles={values.media}
+            onStartedUpload={this.onStartedUpload}
           />
         </Form.Field>
 
@@ -537,7 +556,9 @@ class ServiceForm extends Component {
           </Form.Field>
         </Form.Group>
 
-        <Form.Button disabled={submitInFlight}>{this.props.submitButtonText}</Form.Button>
+        <Form.Button color="green" disabled={submitInFlight || this.state.uploadingImages}>
+          {this.props.submitButtonText}
+        </Form.Button>
       </Form>
     );
   }

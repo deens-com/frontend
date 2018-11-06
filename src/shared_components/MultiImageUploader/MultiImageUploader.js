@@ -11,6 +11,7 @@ export default class MultiImageUploader extends Component {
   static propTypes = {
     onUploadedFilesChanged: PropTypes.func.isRequired,
     initialUploadedFiles: PropTypes.arrayOf(PropTypes.object),
+    onStartedUpload: PropTypes.func,
   };
 
   static defaultProps = {
@@ -47,7 +48,7 @@ export default class MultiImageUploader extends Component {
               ({ fileUrls }) => ({
                 fileUrls: fileUrls.filter((url, index) => index !== id),
               }),
-              () => this.props.onUploadedFilesChanged(this.state.fileUrls),
+              () => this.props.onUploadedFilesChanged(this.state.fileUrls, id),
             );
           },
         },
@@ -57,8 +58,12 @@ export default class MultiImageUploader extends Component {
     this.uploader.on('complete', (id, name, response) => {
       this.setState(
         ({ fileUrls }) => ({ fileUrls: [...fileUrls, response.url] }),
-        () => this.props.onUploadedFilesChanged(this.state.fileUrls),
+        () => this.props.onUploadedFilesChanged(this.state.fileUrls, id),
       );
+    });
+
+    this.uploader.on('submit', id => {
+      this.props.onStartedUpload(id);
     });
 
     this.uploader.on('error', (id, name, errorReason) => {
