@@ -188,6 +188,10 @@ export function getFromCoordinates(coordinates) {
  * @returns {Number} The resulting price
  */
 export function getPriceFromServiceOption(base, price) {
+  if (!price) {
+    return base;
+  }
+
   if (typeof price === 'number') {
     return price;
   }
