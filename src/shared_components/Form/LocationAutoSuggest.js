@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import PlacesAutocomplete from 'react-places-autocomplete';
-import { Form, Popup, Icon, Input } from 'semantic-ui-react';
+import { Form, Popup, Icon, Ref } from 'semantic-ui-react';
 import StyledInput from 'shared_components/StyledInput';
 import { MapMarker } from 'shared_components/icons';
 import styled from 'styled-components';
@@ -50,11 +50,16 @@ export default class SemanticLocationControl extends Component {
       address: props.defaultAddress || '',
       isOpen: false,
     };
+    this.inputRef = null;
   }
 
   componentDidMount() {
     this.setState({ address: this.props.defaultAddress });
   }
+
+  handleInputRef = input => {
+    this.inputRef = input;
+  };
 
   static propTypes = {
     defaultAddress: PropTypes.string,
@@ -81,7 +86,8 @@ export default class SemanticLocationControl extends Component {
   };
 
   onSelect = (address, placeId) => {
-    this.setState({ address, isOpen: false });
+    this.inputRef.blur();
+    this.setState({ address });
     return null;
   };
 
@@ -141,18 +147,20 @@ export default class SemanticLocationControl extends Component {
                     onBlur={this.handleClose}
                   />
                 ) : (
-                  <Form.Input
-                    icon="map pin"
-                    iconPosition="left"
-                    type="text"
-                    {...getInputProps({
-                      ...inputProps,
-                      placeholder: inputProps.placeholder || 'Enter location ...',
-                    })}
-                    style={inputStyles}
-                    onFocus={this.handleOpen}
-                    onBlur={this.handleClose}
-                  />
+                  <Ref innerRef={this.handleInputRef}>
+                    <Form.Input
+                      icon="map pin"
+                      iconPosition="left"
+                      type="text"
+                      {...getInputProps({
+                        ...inputProps,
+                        placeholder: inputProps.placeholder || 'Enter location ...',
+                      })}
+                      style={inputStyles}
+                      onFocus={this.handleOpen}
+                      onBlur={this.handleClose}
+                    />
+                  </Ref>
                 )}
               </Wrapper>
             }
@@ -232,6 +240,7 @@ export default class SemanticLocationControl extends Component {
 
                   {suggestions.slice(1, 4).map(suggestion => (
                     <ListItem
+                      {...getSuggestionItemProps(suggestion)}
                       key={suggestion.placeId}
                       onClick={() => this.onSelectSuggestion(suggestion.description, 'trip')}
                       order={3}
