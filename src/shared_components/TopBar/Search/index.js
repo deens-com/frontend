@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 // COMPONENTS
 import { SearchIcon } from '../../icons';
-import DesktopSearch from './DesktopSearch';
+import Search from './Search';
 
 // ACTIONS/CONFIG
 import { sizes, resetButton } from '../../../libs/styled';
@@ -23,18 +23,18 @@ const TriggerWrap = styled.button`
 `;
 
 // MODULE
-export default function TopBarSearch({ isMenuOpen, toggleSearch, address }) {
+export default function TopBarSearch({ isMenuOpen, toggleSearch, address, isMobileSearchOpen }) {
   if (isMenuOpen) return null;
 
   return (
     <Media query={`(max-width: ${sizes.small})`}>
       {matches =>
-        matches ? (
+        matches && !isMobileSearchOpen ? (
           <TriggerWrap onClick={toggleSearch}>
             <SearchIcon />
           </TriggerWrap>
         ) : (
-          <DesktopSearch address={address} />
+          <Search address={address} isMobile={matches} toggleSearch={toggleSearch} />
         )
       }
     </Media>

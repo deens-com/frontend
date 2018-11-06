@@ -64,7 +64,7 @@ export default class TopBar extends Component {
     super(props);
     this.state = {
       showMenu: false,
-      showSearch: false,
+      showSearchMobile: false,
     };
 
     this.toggleMenu = this.toggleMenu.bind(this);
@@ -100,12 +100,12 @@ export default class TopBar extends Component {
   }
 
   toggleSearch() {
-    this.setState(prevState => ({ showSearch: !prevState.showSearch }));
+    this.setState(prevState => ({ showSearchMobile: !prevState.showSearchMobile }));
   }
 
   render() {
     const { home, fixed, noSearch } = this.props;
-    const { showMenu } = this.state;
+    const { showMenu, showSearchMobile } = this.state;
 
     return (
       <React.Fragment>
@@ -117,21 +117,26 @@ export default class TopBar extends Component {
           home={home}
           fixed={fixed}
         >
-          <Logo
-            menuIsOpened={showMenu}
-            toggleMenu={this.toggleMenu}
-            applyFixation={showMenu && !fixed}
-            flex={Boolean(home)}
-          />
+          {!showSearchMobile && (
+            <Logo
+              menuIsOpened={showMenu}
+              toggleMenu={this.toggleMenu}
+              applyFixation={showMenu && !fixed}
+              flex={Boolean(home)}
+            />
+          )}
           {!noSearch && (
             <Search
-              menuIsOpened={showMenu}
+              isMenuOpen={showMenu}
               toggleSearch={this.toggleSearch}
               address={this.props.address}
+              isMobileSearchOpen={showSearchMobile}
             />
           )}
           <DesktopNav home={home} theme="light" />
-          <MobileDropdownMenu isMenuOpen={showMenu} toggleMenu={this.toggleMenu} dark={!home} />
+          {!showSearchMobile && (
+            <MobileDropdownMenu isMenuOpen={showMenu} toggleMenu={this.toggleMenu} dark={!home} />
+          )}
         </InnerWrap>
         <MobileNav toggleMenu={this.toggleMenu} showProfileMenu={showMenu} />
         {fixed && <FixedPlaceholder />}
