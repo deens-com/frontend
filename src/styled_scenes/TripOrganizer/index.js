@@ -147,23 +147,16 @@ const calculatePrice = prevState => ({
   trip: {
     ...prevState.trip,
     basePrice: prevState.availability.data.reduce((price, elem) => {
-      if (
-        prevState.optionsSelected[elem.day] &&
-        prevState.optionsSelected[elem.day][elem.serviceId]
-      ) {
-        const service = prevState.trip.services.find(item => item.service._id === elem.serviceId)
-          .basePrice;
+      const service = prevState.trip.services.find(item => item.service._id === elem.serviceId);
+
+      if (!service.service.periods[0].payAtService) {
         const optionPrice = getPriceFromServiceOption(
-          service,
-          prevState.optionsSelected[elem.day][elem.serviceId].price,
+          service.service.basePrice,
+          prevState.optionsSelected[elem.day] &&
+            prevState.optionsSelected[elem.day][elem.serviceId] &&
+            prevState.optionsSelected[elem.day][elem.serviceId].price,
         );
-        return (
-          price +
-          (optionPrice ||
-            prevState.days
-              .find(day => day.day === elem.day)
-              .data.find(day => day.service._id === elem.serviceId).basePrice)
-        );
+        return price + optionPrice;
       }
       return price;
     }, 0),
