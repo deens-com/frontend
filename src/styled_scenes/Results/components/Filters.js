@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { media } from 'libs/styled';
 import styled from 'styled-components';
-import { Popup, Dropdown, Icon } from 'semantic-ui-react';
+import { Popup, Dropdown, Icon, Dimmer } from 'semantic-ui-react';
 import { DateRangePicker } from 'react-dates';
 import a from 'indefinite';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
@@ -147,6 +147,17 @@ const ClearTagsLink = styled.span`
   cursor: pointer;
 `;
 
+const defaultOpenStates = {
+  isCategoryPopupOpen: false,
+  isLocationPopupOpen: false,
+  isDatesPopupOpen: false,
+  isGuestsPopupOpen: false,
+  isMoodPopupOpen: false,
+  isSortingPopupOpen: false,
+  isRadiusPopupOpen: false,
+  isTextPopupOpen: false,
+};
+
 class Filters extends Component {
   constructor(props) {
     super(props);
@@ -167,18 +178,12 @@ class Filters extends Component {
       service_type: props.search_query.type || [],
       tags: props.search_query.tags || [],
       showFilters: false,
-      isCategoryPopupOpen: false,
-      isLocationPopupOpen: false,
-      isDatesPopupOpen: false,
-      isGuestsPopupOpen: false,
-      isMoodPopupOpen: false,
-      isSortingPopupOpen: false,
-      isRadiusPopupOpen: false,
       startDate: null,
       endDate: null,
       focusedInput: null,
       sortBy: props.search_query.sortBy || null,
       radiusInKm: radiusIndex !== -1 ? radiusIndex : 2,
+      ...defaultOpenStates,
     };
     this.handleLocationChange = this.handleLocationChange.bind(this);
     this.handleStartDateChange = this.handleStartDateChange.bind(this);
@@ -354,64 +359,79 @@ class Filters extends Component {
         : ' a';
   };
 
+  changeOpenState = (key, value) => {
+    this.setState({
+      ...defaultOpenStates,
+      [key]: value,
+    });
+  };
+
+  isAnyPopupOpen = () => {
+    return Object.keys(defaultOpenStates).some(openState => this.state[openState]);
+  };
+
+  closeAll = () => {
+    this.setState(defaultOpenStates);
+  };
+
   handleCategoryPopupClose = () => {
-    this.setState({ isCategoryPopupOpen: false });
+    this.changeOpenState('isCategoryPopupOpen', false);
   };
 
   handleLocationPopupClose = () => {
-    this.setState({ isLocationPopupOpen: false });
+    this.changeOpenState('isLocationPopupOpen', false);
   };
 
   handleRadiusPopupClose = () => {
-    this.setState({ isRadiusPopupOpen: false });
+    this.changeOpenState('isRadiusPopupOpen', false);
   };
 
   handleTextPopupClose = () => {
-    this.setState({ isTextPopupOpen: false });
+    this.changeOpenState('isTextPopupOpen', false);
   };
 
   handleDatesPopupClose = () => {
-    this.setState({ isDatesPopupOpen: false });
+    this.changeOpenState('isDatesPopupOpen', false);
   };
 
   handleGuestsPopupClose = () => {
-    this.setState({ isGuestsPopupOpen: false });
+    this.changeOpenState('isGuestsPopupOpen', false);
   };
 
   handleMoodPopupClose = () => {
-    this.setState({ isMoodPopupOpen: false });
+    this.changeOpenState('isMoodPopupOpen', false);
   };
 
   handleSortingPopupClose = () => {
-    this.setState({ isSortingPopupOpen: false });
+    this.changeOpenState('isSortingPopupOpen', false);
   };
 
   handleCategoryPopupOpen = () => {
-    this.setState({ isCategoryPopupOpen: true });
+    this.changeOpenState('isCategoryPopupOpen', true);
   };
 
   handleLocationPopupOpen = () => {
-    this.setState({ isLocationPopupOpen: true });
+    this.changeOpenState('isLocationPopupOpen', true);
   };
 
   handleDatesPopupOpen = () => {
-    this.setState({ isDatesPopupOpen: true });
+    this.changeOpenState('isDatesPopupOpen', true);
   };
 
   handleGuestsPopupOpen = () => {
-    this.setState({ isGuestsPopupOpen: true });
+    this.changeOpenState('isGuestsPopupOpen', true);
   };
 
   handleMoodPopupOpen = () => {
-    this.setState({ isMoodPopupOpen: true });
+    this.changeOpenState('isMoodPopupOpen', true);
   };
 
   handleSortingPopupOpen = () => {
-    this.setState({ isSortingPopupOpen: true });
+    this.changeOpenState('isSortingPopupOpen', true);
   };
 
   handleRadiusPopupOpen = () => {
-    this.setState({ isRadiusPopupOpen: true });
+    this.changeOpenState('isRadiusPopupOpen', true);
   };
 
   handleTextPopupOpen = () => {
@@ -666,9 +686,10 @@ class Filters extends Component {
   };
 
   renderEditable = (type, trigger, styleProps) => {
+    const props = this.getProps(type);
     return (
       <EditableElement {...styleProps}>
-        <Popup trigger={<p>{trigger}</p>} {...this.getProps(type)} />
+        <Popup trigger={<p>{trigger}</p>} {...props} />
       </EditableElement>
     );
   };
@@ -923,86 +944,84 @@ class Filters extends Component {
               ) : (
                 <section>
                   {this.state.showFilters ? (
-                    <CenteredSection>
-                      <Icon
-                        name="close"
-                        bordered
-                        circular
-                        onClick={this.displayFilters}
-                        style={{ paddingBottom: '2em' }}
+                    <Dimmer.Dimmable>
+                      <Dimmer
+                        page
+                        inverted
+                        active={this.isAnyPopupOpen()}
+                        onClickOutside={this.closeAll}
                       />
-
-                      <div>
-                        <p>Please, find {this.getPreposition()}</p>
-                      </div>
-
-                      {this.renderText()}
-                      {this.renderMood()}
-
-                      <EditableElement>
-                        <Popup
-                          trigger={<p>{serviceTypes && serviceTypes[0]}</p>}
-                          content={this.categoryPopupSelect(serviceTypes)}
-                          on="click"
-                          open={this.state.isCategoryPopupOpen}
-                          onClose={this.handleCategoryPopupClose}
-                          onOpen={this.handleCategoryPopupOpen}
-                          position="bottom center"
+                      <CenteredSection>
+                        <Icon
+                          name="close"
+                          bordered
+                          circular
+                          onClick={this.displayFilters}
+                          style={{ paddingBottom: '2em' }}
                         />
-                      </EditableElement>
 
-                      {this.renderRadius()}
-
-                      {this.renderLocation()}
-
-                      {this.renderDates(formatted_start_date, formatted_end_date)}
-
-                      {this.renderGuests()}
-
-                      {this.renderNotDefinedFilters()}
-
-                      <MobileSorting>
                         <div>
-                          <p> &nbsp; &nbsp; Sort by </p>
+                          <p>Please, find {this.getPreposition()}</p>
                         </div>
 
-                        <EditableElement>
-                          <Popup
-                            trigger={
-                              <p>
-                                {this.props.sortBy
-                                  ? `${this.sortingText(this.props.sortBy)}`
-                                  : `Relevance`}
-                              </p>
-                            }
-                            content={
-                              <Dropdown
-                                name="sort"
-                                options={[
-                                  { text: '', value: '' },
-                                  { text: '↑ Price', value: 'price:asc' },
-                                  { text: '↓ Price', value: 'price:desc' },
-                                  { text: 'Rating', value: 'rating:desc' },
-                                  { text: 'Relevance', value: 'relevance:desc' },
-                                ]}
-                                placeholder="Sort By"
-                                search
-                                selection
-                                fluid
-                                value={this.props.sortBy}
-                                onChange={this.onSortingDropDownChange}
-                                style={{ minWidth: '250px' }}
-                              />
-                            }
-                            on="click"
-                            open={this.state.isSortingPopupOpen}
-                            onClose={this.handleSortingPopupClose}
-                            onOpen={this.handleSortingPopupOpen}
-                            position="bottom center"
-                          />
-                        </EditableElement>
-                      </MobileSorting>
-                    </CenteredSection>
+                        {this.renderText()}
+                        {this.renderMood()}
+
+                        {this.renderCategory()}
+
+                        {this.renderRadius()}
+
+                        {this.renderLocation()}
+
+                        {this.renderDates(formatted_start_date, formatted_end_date)}
+
+                        {this.renderGuests()}
+
+                        {this.renderNotDefinedFilters()}
+
+                        <MobileSorting>
+                          <div>
+                            <p> &nbsp; &nbsp; Sort by &nbsp;</p>
+                          </div>
+
+                          <EditableElement>
+                            <Popup
+                              trigger={
+                                <p>
+                                  {this.props.sortBy
+                                    ? `${this.sortingText(this.props.sortBy)}`
+                                    : `Relevance`}
+                                </p>
+                              }
+                              content={
+                                <Dropdown
+                                  name="sort"
+                                  options={[
+                                    { text: '', value: '' },
+                                    { text: '↑ Price', value: 'price:asc' },
+                                    { text: '↓ Price', value: 'price:desc' },
+                                    { text: 'Rating', value: 'rating:desc' },
+                                    { text: 'Relevance', value: 'relevance:desc' },
+                                  ]}
+                                  placeholder="Sort By"
+                                  search
+                                  selection
+                                  fluid
+                                  value={this.props.sortBy}
+                                  onChange={this.onSortingDropDownChange}
+                                  style={{ minWidth: '250px' }}
+                                />
+                              }
+                              on="click"
+                              open={this.state.isSortingPopupOpen}
+                              onClose={this.handleSortingPopupClose}
+                              onOpen={this.handleSortingPopupOpen}
+                              position="bottom center"
+                            />
+                          </EditableElement>
+                        </MobileSorting>
+                      </CenteredSection>
+                    </Dimmer.Dimmable>
                   ) : (
                     <CenteredSection>
                       <Icon
