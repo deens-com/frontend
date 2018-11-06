@@ -349,28 +349,14 @@ class ServiceForm extends Component {
         </Form.Field>
 
         {/* Instruction */}
-        <Form.Group widths="equal">
-          <Form.Field required>
-            <label>Instructions Before Service</label>
-            <Form.Input
-              name="start"
-              value={values.start}
-              error={!!(touched.start && errors.start)}
-              {...defaultProps}
-            />
-            {touched.start && errors.start && <ErrorMsg>{errors.start}</ErrorMsg>}
-          </Form.Field>
-          <Form.Field required>
-            <label>Instructions After Service</label>
-            <Form.Input
-              name="end"
-              value={values.end}
-              error={!!(touched.end && errors.end)}
-              {...defaultProps}
-            />
-            {touched.end && errors.end && <ErrorMsg>{errors.end}</ErrorMsg>}
-          </Form.Field>
-        </Form.Group>
+        <Form.Field>
+          <label>Instructions given before your service start time</label>
+          <Form.TextArea name="start" value={values.start} {...defaultProps} />
+        </Form.Field>
+        <Form.Field>
+          <label>Instructions given before your service end time</label>
+          <Form.TextArea name="end" value={values.end} {...defaultProps} />
+        </Form.Field>
 
         {/* Rules */}
         <React.Fragment>
@@ -613,8 +599,6 @@ function validate(values) {
     'title',
     'subtitle',
     'description',
-    'start',
-    'end',
     'duration',
     'basePrice',
     'availableDays',
