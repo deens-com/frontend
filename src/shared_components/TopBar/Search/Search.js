@@ -166,7 +166,7 @@ export default class DesktopSearch extends Component {
       }
     });
     let query_string = query_arr.join('&');
-    if (this.props.toggleSearch) {
+    if (this.props.toggleSearch && this.props.isMobile) {
       this.props.toggleSearch();
     }
     history.push(`/results?${query_string}`);
