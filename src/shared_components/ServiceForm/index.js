@@ -5,7 +5,7 @@ import { withFormik } from 'formik';
 import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete';
 import styled from 'styled-components';
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
-import { Link } from 'react-router-dom';
+import HelpTooltip from 'shared_components/HelpTooltip';
 import history from './../../main/history';
 import { isMobile, checkRequiredFields } from 'libs/Utils';
 import i18n from './../../libs/i18n';
@@ -51,6 +51,27 @@ const AddRuleContainer = styled.div`
 
 const RulesLabel = styled.label`
   font-weight: bold;
+`;
+
+const FormWrapper = styled.div`
+  .DayPickerInput {
+    display: block;
+  }
+`;
+
+const LabelWithIcon = styled.label`
+  span {
+    display: inline-block;
+  }
+  display: inline-block !important;
+  position: relative;
+`;
+
+const Icon = styled.span`
+  position: absolute;
+  top: 0;
+  right: -30px;
+  color: grey;
 `;
 
 const facebookUrl = /^(?:(?:https?):\/\/)?(?:www.)?((facebook\.com)|(fb\.me))\/(#?\/?[a-zA-Z0-9#]+)+\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/;
@@ -235,331 +256,393 @@ class ServiceForm extends Component {
 
     // we're using the key prop over here because we want to re-create the form component once we get the service
     return (
-      <Form key={service && service.objectId} onSubmit={handleSubmit} loading={submitInFlight}>
-        <Modal
-          closeOnDimmerClick={false}
-          size="tiny"
-          open={this.state.showGlobalError}
-          onClose={this.handleModalClose}
-        >
-          <Modal.Header>There was an issue with creating your service</Modal.Header>
-          <Modal.Content>{globalError.message}</Modal.Content>
-          <Modal.Actions>
-            <Button
-              color="green"
-              onClick={() => this.redeploy(this.props.values, this.state.serviceId)}
-            >
-              Re-deploy
-            </Button>
-            <Button color="red" onClick={this.handleModalClose}>
-              Close
-            </Button>
-          </Modal.Actions>
-        </Modal>
-
-        {/* Type of service */}
-        <Form.Field required>
-          <label>Type of service</label>
-          <Dropdown
-            name="category"
-            placeholder="Type of service"
-            selection
-            value={values.category}
-            options={serviceTypeDropdownOptions}
-            onChange={this.onDropDownChange}
-            error={!!(touched.category && errors.category)}
-          />
-          {touched.category && errors.category && <ErrorMsg>{errors.category}</ErrorMsg>}
-        </Form.Field>
-
-        {/* Location search */}
-        <Form.Field required>
-          <label>Location</label>
-          <SemanticLocationControl
-            defaultAddress={values.formattedAddress}
-            onKeyUp={this.onLocationKeyUp}
-            onChange={this.onLocationSelect}
-            onlyCities
-          />
-          {touched.latlong && errors.latlong && <ErrorMsg>{errors.latlong}</ErrorMsg>}
-        </Form.Field>
-
-        {/* Title */}
-        <Form.Field required>
-          <label>Title</label>
-          <Form.Input
-            name="title"
-            placeholder="Title"
-            value={values.title}
-            error={!!(touched.title && errors.title)}
-            {...defaultProps}
-          />
-          {touched.title && errors.title && <ErrorMsg>{errors.title}</ErrorMsg>}
-        </Form.Field>
-
-        {/* Subtitle */}
-        <Form.Field required>
-          <label>Sub-title</label>
-          <Form.Input
-            name="subtitle"
-            placeholder="Sub-title"
-            value={values.subtitle}
-            error={!!(touched.subtitle && errors.subtitle)}
-            {...defaultProps}
-          />
-          {touched.subtitle && errors.subtitle && <ErrorMsg>{errors.subtitle}</ErrorMsg>}
-        </Form.Field>
-
-        {/* Description */}
-        <Form.Field required>
-          <label>Description</label>
-          <Form.TextArea
-            name="description"
-            placeholder="Tell us more..."
-            value={values.description}
-            error={!!(touched.description && errors.description)}
-            {...defaultProps}
-          />
-          {touched.description && errors.description && <ErrorMsg>{errors.description}</ErrorMsg>}
-        </Form.Field>
-
-        {/* Tags */}
-        <Form.Field>
-          <label>Tags</label>
-          <Dropdown
-            name="tags"
-            options={this.props.serviceFormTagsOptions.map(tag => {
-              return { text: tag.names['en-us'], value: tag._id };
-            })}
-            placeholder="Add tags"
-            search
-            selection
-            fluid
-            multiple
-            value={values.tags}
-            onChange={this.onDropDownChange}
-          />
-        </Form.Field>
-
-        {/* Multi image upload */}
-        <Form.Field>
-          <label>Pictures (the first one you upload will be your main service picture)</label>
-          <MultiImageUploader
-            value={values.media}
-            onUploadedFilesChanged={this.onUploadedFilesChanged}
-            initialUploadedFiles={values.media}
-            onStartedUpload={this.onStartedUpload}
-          />
-        </Form.Field>
-
-        {/* Duration */}
-        {values.category !== 'Accommodation' && (
-          <DurationInput
-            onChange={this.changeDuration}
-            onTouch={this.handleDurationTouch}
-            defaultValue={Number(values.duration) || undefined}
-            touched={touched.duration}
-            error={errors.duration}
-            ErrorComponent={ErrorMsg}
-          />
-        )}
-
-        {/* Price */}
-        <Form.Field required>
-          <label>{values.category === 'Food' ? 'Average Price per person' : 'Price'} ($ USD)</label>
-          <Form.Input
-            name="basePrice"
-            value={values.basePrice}
-            error={!!(touched.basePrice && errors.basePrice)}
-            {...defaultProps}
-          />
-          {touched.basePrice && errors.basePrice && <ErrorMsg>{errors.basePrice}</ErrorMsg>}
-        </Form.Field>
-
-        {/* Rules */}
-        <React.Fragment>
-          <RulesLabel>Rules</RulesLabel>
-          {values.rules.map((rule, index) => (
-            <Form.Group key={`rule-${index}`}>
-              <Form.Field style={{ flex: 1 }}>
-                <label>{`Rule ${index + 1}`}</label>
-                <Form.Input
-                  name={`rules[${index}]`}
-                  value={rule}
-                  error={!!(touched.rule && errors.rule)}
-                  {...defaultProps}
-                />
-                {touched.rule && errors.rule && <ErrorMsg>{errors.rule}</ErrorMsg>}
-              </Form.Field>
+      <FormWrapper>
+        <Form key={service && service.objectId} onSubmit={handleSubmit} loading={submitInFlight}>
+          <Modal
+            closeOnDimmerClick={false}
+            size="tiny"
+            open={this.state.showGlobalError}
+            onClose={this.handleModalClose}
+          >
+            <Modal.Header>There was an issue with creating your service</Modal.Header>
+            <Modal.Content>{globalError.message}</Modal.Content>
+            <Modal.Actions>
               <Button
-                color="red"
-                size="mini"
-                onClick={this.removeRule.bind(this, index)}
-                style={{
-                  marginBottom: '3px',
-                  alignSelf: 'flex-end',
-                  height: '3em',
-                }}
+                color="green"
+                onClick={() => this.redeploy(this.props.values, this.state.serviceId)}
               >
-                Remove
+                Re-deploy
               </Button>
-            </Form.Group>
-          ))}
-          <AddRuleContainer>
-            <Button color="green" size="small" onClick={this.addRule}>
-              Add rule
-            </Button>
-          </AddRuleContainer>
-        </React.Fragment>
+              <Button color="red" onClick={this.handleModalClose}>
+                Close
+              </Button>
+            </Modal.Actions>
+          </Modal>
 
-        {/* Instruction */}
-        <Form.Field>
-          <label>Instructions given before your service start time</label>
-          <Form.TextArea name="start" value={values.start} {...defaultProps} />
-        </Form.Field>
-        <Form.Field>
-          <label>Instructions given before your service end time</label>
-          <Form.TextArea name="end" value={values.end} {...defaultProps} />
-        </Form.Field>
-
-        {/* Period date */}
-        <Form.Group widths="equal">
+          {/* Type of service */}
           <Form.Field required>
-            <label>Start date</label>
-            <DateInput
-              onChange={this.handleStartDateChange}
-              placeholder="Start date"
-              label="Start date"
-              leftIcon="date"
-              value={values.startDate}
-              innerRef={input => {
-                this.startDateInput = input;
-              }}
-              dayPickerProps={{ disabledDays: { before: new Date() } }}
-            />
-            {touched.startDate && errors.startDate && <ErrorMsg>{errors.startDate}</ErrorMsg>}
-          </Form.Field>
-
-          <Form.Field required>
-            <label>End date</label>
-            <DateInput
-              onChange={this.handleEndDateChange}
-              placeholder="End date"
-              leftIcon="date"
-              value={values.endDate}
-              dayPickerProps={{
-                disabledDays: { before: values.startDate || new Date() },
-                month: values.startDate,
-              }}
-              innerRef={input => {
-                this.endDateInput = input;
-              }}
-            />
-            {touched.endDate && errors.endDate && <ErrorMsg>{errors.endDate}</ErrorMsg>}
-          </Form.Field>
-        </Form.Group>
-
-        {/* Available Days */}
-        <Form.Group grouped>
-          <Form.Field required>
-            <label>Days this service is available</label>
+            <label>Type of service</label>
             <Dropdown
-              name="availableDays"
-              placeholder="Select available days"
+              name="category"
+              placeholder="Type of service"
               selection
+              value={values.category}
+              options={serviceTypeDropdownOptions}
+              onChange={this.onDropDownChange}
+              error={!!(touched.category && errors.category)}
+            />
+            {touched.category && errors.category && <ErrorMsg>{errors.category}</ErrorMsg>}
+          </Form.Field>
+
+          {/* Location search */}
+          <Form.Field required>
+            <LabelWithIcon>
+              <span>Location</span>
+              <Icon>
+                <HelpTooltip
+                  style={{ width: 16, height: 16 }}
+                  content="Please state your service location"
+                />
+              </Icon>
+            </LabelWithIcon>
+            <SemanticLocationControl
+              defaultAddress={values.formattedAddress}
+              onKeyUp={this.onLocationKeyUp}
+              onChange={this.onLocationSelect}
+              onlyCities
+            />
+            {touched.latlong && errors.latlong && <ErrorMsg>{errors.latlong}</ErrorMsg>}
+          </Form.Field>
+
+          {/* Title */}
+          <Form.Field required>
+            <label>Title</label>
+            <Form.Input
+              name="title"
+              placeholder="Title"
+              value={values.title}
+              error={!!(touched.title && errors.title)}
+              {...defaultProps}
+            />
+            {touched.title && errors.title && <ErrorMsg>{errors.title}</ErrorMsg>}
+          </Form.Field>
+
+          {/* Subtitle */}
+          <Form.Field required>
+            <LabelWithIcon>
+              <span>Sub-title</span>
+              <Icon>
+                <HelpTooltip
+                  style={{ width: 16, height: 16 }}
+                  content="Sub-title is a one sentence service explanation"
+                />
+              </Icon>
+            </LabelWithIcon>
+            <Form.Input
+              name="subtitle"
+              placeholder="Sub-title"
+              value={values.subtitle}
+              error={!!(touched.subtitle && errors.subtitle)}
+              {...defaultProps}
+            />
+            {touched.subtitle && errors.subtitle && <ErrorMsg>{errors.subtitle}</ErrorMsg>}
+          </Form.Field>
+
+          {/* Description */}
+          <Form.Field required>
+            <LabelWithIcon>
+              <span>Description</span>
+              <Icon>
+                <HelpTooltip
+                  style={{ width: 16, height: 16 }}
+                  content="Please describe your service in detail in this field"
+                />
+              </Icon>
+            </LabelWithIcon>
+            <Form.TextArea
+              name="description"
+              placeholder="Tell us more..."
+              value={values.description}
+              error={!!(touched.description && errors.description)}
+              {...defaultProps}
+            />
+            {touched.description && errors.description && <ErrorMsg>{errors.description}</ErrorMsg>}
+          </Form.Field>
+
+          {/* Tags */}
+          <Form.Field>
+            <LabelWithIcon>
+              <span>Tags</span>
+              <Icon>
+                <HelpTooltip
+                  style={{ width: 16, height: 16 }}
+                  content="Search labels which are applicable to your service to make it easy to find on search by users"
+                />
+              </Icon>
+            </LabelWithIcon>
+            <Dropdown
+              name="tags"
+              options={this.props.serviceFormTagsOptions.map(tag => {
+                return { text: tag.names['en-us'], value: tag._id };
+              })}
+              placeholder="Add tags"
+              search
+              selection
+              fluid
               multiple
-              value={values.availableDays}
-              options={weekDays}
+              value={values.tags}
               onChange={this.onDropDownChange}
-              error={!!(touched.availableDays && errors.availableDays)}
             />
-            {touched.availableDays &&
-              errors.availableDays && <ErrorMsg>{errors.availableDays}</ErrorMsg>}
           </Form.Field>
-        </Form.Group>
 
-        {/* Timings */}
-        <Form.Group widths="equal">
+          {/* Multi image upload */}
           <Form.Field>
-            <Form.Dropdown
-              name="openingTime"
-              label="Opening time"
-              placeholder="Select opening time"
-              selection
-              value={values.openingTime}
-              options={hoursDropdownOptions}
-              onChange={this.onDropDownChange}
-              error={!!(touched.openingTime && errors.openingTime)}
+            <label>Pictures (the first one you upload will be your main service picture)</label>
+            <MultiImageUploader
+              value={values.media}
+              onUploadedFilesChanged={this.onUploadedFilesChanged}
+              initialUploadedFiles={values.media}
+              onStartedUpload={this.onStartedUpload}
             />
-            {touched.openingTime && errors.openingTime && <ErrorMsg>{errors.openingTime}</ErrorMsg>}
           </Form.Field>
-          <Form.Field>
-            <Form.Dropdown
-              name="closingTime"
-              label="Closing time"
-              placeholder="Select closing time"
-              selection
-              value={values.closingTime}
-              options={hoursDropdownOptions}
-              onChange={this.onDropDownChange}
-              error={!!(touched.closingTime && errors.closingTime)}
+
+          {/* Duration */}
+          {values.category !== 'Accommodation' && (
+            <DurationInput
+              onChange={this.changeDuration}
+              onTouch={this.handleDurationTouch}
+              defaultValue={Number(values.duration) || undefined}
+              touched={touched.duration}
+              error={errors.duration}
+              ErrorComponent={ErrorMsg}
             />
-            {touched.closingTime && errors.closingTime && <ErrorMsg>{errors.closingTime}</ErrorMsg>}
-          </Form.Field>
-        </Form.Group>
+          )}
 
-        {/* Slots in a Day */}
-        <Form.Field required>
-          <label>Number of slots available</label>
-          <Form.Input
-            name="slots"
-            type="number"
-            min="0"
-            value={values.slots}
-            error={!!(touched.slots && errors.slots)}
-            {...defaultProps}
-          />
-          {touched.slots && errors.slots && <ErrorMsg>{errors.slots}</ErrorMsg>}
-        </Form.Field>
-
-        {/* Links */}
-        <Form.Group widths="equal">
-          <Form.Field>
-            <label>Facebook Link</label>
+          {/* Price */}
+          <Form.Field required>
+            <label>
+              {values.category === 'Food' ? 'Average Price per person' : 'Price'} ($ USD)
+            </label>
             <Form.Input
-              name="facebook"
-              value={values.facebook}
-              error={!!(touched.facebook && errors.facebook)}
+              name="basePrice"
+              value={values.basePrice}
+              error={!!(touched.basePrice && errors.basePrice)}
               {...defaultProps}
             />
-            {touched.facebook && errors.facebook && <ErrorMsg>{errors.facebook}</ErrorMsg>}
+            {touched.basePrice && errors.basePrice && <ErrorMsg>{errors.basePrice}</ErrorMsg>}
           </Form.Field>
-          <Form.Field>
-            <label>Twitter Link</label>
-            <Form.Input
-              name="twitter"
-              value={values.twitter}
-              error={!!(touched.twitter && errors.twitter)}
-              {...defaultProps}
-            />
-            {touched.twitter && errors.twitter && <ErrorMsg>{errors.twitter}</ErrorMsg>}
-          </Form.Field>
-          <Form.Field>
-            <label>Website Link</label>
-            <Form.Input
-              name="website"
-              value={values.website}
-              error={!!(touched.website && errors.website)}
-              {...defaultProps}
-            />
-            {touched.website && errors.website && <ErrorMsg>{errors.website}</ErrorMsg>}
-          </Form.Field>
-        </Form.Group>
 
-        <Form.Button color="green" disabled={submitInFlight || this.state.uploadingImages}>
-          {this.props.submitButtonText}
-        </Form.Button>
-      </Form>
+          {/* Rules */}
+          <React.Fragment>
+            <RulesLabel>Rules</RulesLabel>
+            {values.rules.map((rule, index) => (
+              <Form.Group key={`rule-${index}`}>
+                <Form.Field style={{ flex: 1 }}>
+                  <label>{`Rule ${index + 1}`}</label>
+                  <Form.Input
+                    name={`rules[${index}]`}
+                    value={rule}
+                    error={!!(touched.rule && errors.rule)}
+                    {...defaultProps}
+                  />
+                  {touched.rule && errors.rule && <ErrorMsg>{errors.rule}</ErrorMsg>}
+                </Form.Field>
+                <Button
+                  color="red"
+                  size="mini"
+                  onClick={this.removeRule.bind(this, index)}
+                  style={{
+                    marginBottom: '3px',
+                    alignSelf: 'flex-end',
+                    height: '3em',
+                  }}
+                >
+                  Remove
+                </Button>
+              </Form.Group>
+            ))}
+            <AddRuleContainer>
+              <Button color="green" size="small" onClick={this.addRule}>
+                Add rule
+              </Button>
+            </AddRuleContainer>
+          </React.Fragment>
+
+          {/* Instruction */}
+          <Form.Field>
+            <label>Instructions given before your service start time</label>
+            <Form.TextArea name="start" value={values.start} {...defaultProps} />
+          </Form.Field>
+          <Form.Field>
+            <label>Instructions given before your service end time</label>
+            <Form.TextArea name="end" value={values.end} {...defaultProps} />
+          </Form.Field>
+
+          {/* Period date */}
+          <Form.Group widths="equal">
+            <Form.Field required>
+              <LabelWithIcon>
+                <span>Start date</span>
+                <Icon>
+                  <HelpTooltip
+                    style={{ width: 16, height: 16 }}
+                    content="Starting date of your service"
+                  />
+                </Icon>
+              </LabelWithIcon>
+              <DateInput
+                onChange={this.handleStartDateChange}
+                placeholder="Start date"
+                label="Start date"
+                leftIcon="date"
+                value={values.startDate}
+                innerRef={input => {
+                  this.startDateInput = input;
+                }}
+                dayPickerProps={{ disabledDays: { before: new Date() } }}
+              />
+              {touched.startDate && errors.startDate && <ErrorMsg>{errors.startDate}</ErrorMsg>}
+            </Form.Field>
+
+            <Form.Field required>
+              <LabelWithIcon>
+                <span>End date</span>
+                <Icon>
+                  <HelpTooltip
+                    style={{ width: 16, height: 16 }}
+                    content="Ending date of your service"
+                  />
+                </Icon>
+              </LabelWithIcon>
+              <DateInput
+                onChange={this.handleEndDateChange}
+                placeholder="End date"
+                leftIcon="date"
+                value={values.endDate}
+                dayPickerProps={{
+                  disabledDays: { before: values.startDate || new Date() },
+                  month: values.startDate,
+                }}
+                innerRef={input => {
+                  this.endDateInput = input;
+                }}
+              />
+              {touched.endDate && errors.endDate && <ErrorMsg>{errors.endDate}</ErrorMsg>}
+            </Form.Field>
+          </Form.Group>
+
+          {/* Available Days */}
+          <Form.Group grouped>
+            <Form.Field required>
+              <label>Days this service is available</label>
+              <Dropdown
+                name="availableDays"
+                placeholder="Select available days"
+                selection
+                multiple
+                value={values.availableDays}
+                options={weekDays}
+                onChange={this.onDropDownChange}
+                error={!!(touched.availableDays && errors.availableDays)}
+              />
+              {touched.availableDays &&
+                errors.availableDays && <ErrorMsg>{errors.availableDays}</ErrorMsg>}
+            </Form.Field>
+          </Form.Group>
+
+          {/* Timings */}
+          <Form.Group widths="equal">
+            <Form.Field>
+              <Form.Dropdown
+                name="openingTime"
+                label="Opening time"
+                placeholder="Select opening time"
+                selection
+                value={values.openingTime}
+                options={hoursDropdownOptions}
+                onChange={this.onDropDownChange}
+                error={!!(touched.openingTime && errors.openingTime)}
+              />
+              {touched.openingTime &&
+                errors.openingTime && <ErrorMsg>{errors.openingTime}</ErrorMsg>}
+            </Form.Field>
+            <Form.Field>
+              <Form.Dropdown
+                name="closingTime"
+                label="Closing time"
+                placeholder="Select closing time"
+                selection
+                value={values.closingTime}
+                options={hoursDropdownOptions}
+                onChange={this.onDropDownChange}
+                error={!!(touched.closingTime && errors.closingTime)}
+              />
+              {touched.closingTime &&
+                errors.closingTime && <ErrorMsg>{errors.closingTime}</ErrorMsg>}
+            </Form.Field>
+          </Form.Group>
+
+          {/* Slots in a Day */}
+          <Form.Field required>
+            <LabelWithIcon>
+              <span>Number of slots available</span>
+              <Icon>
+                <HelpTooltip
+                  style={{ width: 16, height: 16 }}
+                  content="Number of available slots"
+                />
+              </Icon>
+            </LabelWithIcon>
+            <Form.Input
+              name="slots"
+              type="number"
+              min="0"
+              value={values.slots}
+              error={!!(touched.slots && errors.slots)}
+              {...defaultProps}
+            />
+            {touched.slots && errors.slots && <ErrorMsg>{errors.slots}</ErrorMsg>}
+          </Form.Field>
+
+          {/* Links */}
+          <Form.Group widths="equal">
+            <Form.Field>
+              <label>Facebook Link</label>
+              <Form.Input
+                name="facebook"
+                value={values.facebook}
+                error={!!(touched.facebook && errors.facebook)}
+                {...defaultProps}
+              />
+              {touched.facebook && errors.facebook && <ErrorMsg>{errors.facebook}</ErrorMsg>}
+            </Form.Field>
+            <Form.Field>
+              <label>Twitter Link</label>
+              <Form.Input
+                name="twitter"
+                value={values.twitter}
+                error={!!(touched.twitter && errors.twitter)}
+                {...defaultProps}
+              />
+              {touched.twitter && errors.twitter && <ErrorMsg>{errors.twitter}</ErrorMsg>}
+            </Form.Field>
+            <Form.Field>
+              <label>Website Link</label>
+              <Form.Input
+                name="website"
+                value={values.website}
+                error={!!(touched.website && errors.website)}
+                {...defaultProps}
+              />
+              {touched.website && errors.website && <ErrorMsg>{errors.website}</ErrorMsg>}
+            </Form.Field>
+          </Form.Group>
+
+          <Form.Button color="green" disabled={submitInFlight || this.state.uploadingImages}>
+            {this.props.submitButtonText}
+          </Form.Button>
+        </Form>
+      </FormWrapper>
     );
   }
 }
