@@ -314,7 +314,9 @@ class Filters extends Component {
     const start = dateRange.startDate; // && dateRange.startDate._d.getTime();
     const end = dateRange.endDate; // && dateRange.endDate._d.getTime();
     this.setState({ startDate: start, endDate: end });
-    this.refetch_results_for_dates({ start_date: start, end_date: end });
+    if (start && end) {
+      this.refetch_results_for_dates({ start_date: start, end_date: end });
+    }
   };
 
   clear_address() {
