@@ -4,13 +4,13 @@ import styled from 'styled-components';
 import Media from 'react-media';
 
 // COMPONENTS
-import TopBar from './../../../shared_components/TopBar';
+import TopBar from 'shared_components/TopBar';
+import Button from 'shared_components/Button';
 import HomeSearch from './../../../styled_scenes/Home/components/HomeSearch';
 import BrandFooter from './../../../shared_components/BrandFooter';
 import MobileHero from './../../../styled_scenes/Home/components/MobileHero';
 import HeroSlider from './../../../styled_scenes/Home/components/HeroSlider';
 import SectionTrips from './../../../styled_scenes/Home/components/SectionTrips';
-import SectionCTA from './../../../styled_scenes/Home/components/SectionCTA';
 import SectionTopDestinations from './../../../styled_scenes/Home/components/SectionTopDestinations';
 // ACTIONS/CONFIG
 import { sizes, media } from './../../../libs/styled';
@@ -71,6 +71,12 @@ const HomeTagLine = styled.h1`
   }
 `;
 
+const CreateTrip = styled.div`
+  text-align: center;
+  position: relative;
+  padding-bottom: 150px;
+`;
+
 const HomeComponent = props => {
   return (
     <Page>
@@ -82,6 +88,17 @@ const HomeComponent = props => {
           </Media>
           <HomeTagLine>Book complete trips in minutes</HomeTagLine>
           <HomeSearch />
+          <CreateTrip>
+            <Button
+              padding="16px 28px"
+              fontSize="16px"
+              theme="fillLightGreen"
+              href="/trips/create"
+              type="link"
+            >
+              or <strong>Create a trip from scratch</strong>
+            </Button>
+          </CreateTrip>
         </PageTop>
         <PageContent
           itemProp="itemList"
@@ -89,7 +106,6 @@ const HomeComponent = props => {
           itemType="http://schema.org/ItemList"
           padding="28px 0 0"
         >
-          <SectionCTA loggedIn={Boolean(props.session.username)} />
           <SectionTrips trips={props.trips} isLoading={props.isLoadingTrips} />
           <SectionTopDestinations />
         </PageContent>

@@ -162,7 +162,12 @@ export const Wrap = styled.div`
     font-size: ${props => props.fontSize || (props.size ? size[props.size].fontSize : 'inherit')};
     height: auto;
     overflow: hidden;
-    padding: ${props => (props.size ? size[props.size].padding : '0')};
+    padding: ${props => {
+      if (props.padding) {
+        return props.padding;
+      }
+      return props.size ? size[props.size].padding : '0';
+    }};
     text-align: ${props => props.align};
     transition: all 0.1s ease-out;
     font-weight: ${props => (props.bold ? 'bold' : 'normal')};
@@ -284,6 +289,7 @@ export default class Button extends Component {
         theme={this.props.disabled || this.props.disableClick ? 'disabled' : this.props.theme}
         round={this.props.round}
         size={this.props.size}
+        padding={this.props.padding}
         align={this.props.align}
         width={this.props.width}
         bold={this.props.bold}
