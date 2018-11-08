@@ -229,6 +229,7 @@ class MobileNav extends Component {
         render={() => (
           <Wrap>
             <InnerList>
+              {/* Enable Token Sale
               <li aria-hidden="true">
                 <Divider />
               </li>
@@ -237,6 +238,7 @@ class MobileNav extends Component {
                 <NavLink to="/">Information</NavLink>
                 <NavLink to="/">Contribute</NavLink>
               </li>
+              */}
               {this.renderLoggedInMenu()}
               <li aria-hidden="false">
                 <NavLink to="/">Home</NavLink>

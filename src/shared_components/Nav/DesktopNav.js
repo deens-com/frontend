@@ -125,7 +125,8 @@ const TopBarDesktopNav = function TopBarDesktopNav({
       render={() => (
         <Wrap home={home}>
           <Nav home={home}>
-            <Dropdown
+            {/* Enable Token Sale
+              <Dropdown
               text="Token Sale"
               trigger={DropdownTrigger()}
               direction="left"
@@ -136,6 +137,7 @@ const TopBarDesktopNav = function TopBarDesktopNav({
                 <Dropdown.Item text="Contribute" />
               </Dropdown.Menu>
             </Dropdown>
+            */}
             <NavLink
               activeclassname="is-active"
               to="earn-money"
