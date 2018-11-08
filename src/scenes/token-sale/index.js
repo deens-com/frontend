@@ -82,6 +82,7 @@ class TokenSale extends Component {
     if (kycToken) {
       this.loadIFrame(kycToken);
     }
+
     return (
       <Page>
         <PageWrapper>

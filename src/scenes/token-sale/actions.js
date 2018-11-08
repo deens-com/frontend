@@ -1,5 +1,6 @@
 import { serverBaseURL } from '../../libs/config';
 import axios from 'libs/axios';
+import history from 'main/history';
 
 export const types = {
   KYC_TOKEN_SUCCESS: 'KYC_TOKEN_SUCCESS',
@@ -19,5 +20,6 @@ export const fetchIFrameToken = () => async dispatch => {
     dispatch(iframe_token_fetched(response.data));
   } catch (e) {
     console.log(e);
+    history.push('/login');
   }
 };
