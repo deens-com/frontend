@@ -206,3 +206,10 @@ export function getPriceFromServiceOption(base, price) {
 
   return Number(price.value);
 }
+
+export function calculateBottomPosition(isGDPRDismissed, baseBottom = 0) {
+  if (!isGDPRDismissed) {
+    return baseBottom + document.getElementById('gdpr-banner').getBoundingClientRect().height;
+  }
+  return baseBottom;
+}

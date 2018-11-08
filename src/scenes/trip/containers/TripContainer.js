@@ -32,6 +32,7 @@ class TripContainer extends Component {
       isCloning,
       cloneTrip,
       session,
+      isGDPRDismissed,
     } = this.props;
 
     if (error) {
@@ -57,6 +58,7 @@ class TripContainer extends Component {
         action={
           this.props.location && this.props.location.state && this.props.location.state.action
         }
+        isGDPRDismissed={isGDPRDismissed}
       />
     );
   }
@@ -74,6 +76,7 @@ const mapStateToProps = state => {
     endDate: state.ResultsReducer.search_query.end_date,
     availability: state.TripReducer.availability,
     isCloning: state.TripReducer.isCloning,
+    isGDPRDismissed: state.SettingsReducer.gdprDismissed,
   };
 };
 

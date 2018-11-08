@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { media } from 'libs/styled';
-import { isGDPRDismissed, dismissGDPRBanner } from 'libs/feature-flags';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as actions from 'main/settings/actions';
 import { CrossIcon } from 'shared_components/icons';
 
 const Notification = styled.div`
@@ -19,6 +21,7 @@ const Notification = styled.div`
   padding-left: 5px;
   padding-top: 5px;
   padding-bottom: 5px;
+  cursor: pointer;
   ${media.minSmall} {
     padding-right: 0;
   }
@@ -42,40 +45,35 @@ const CloseButton = styled.span`
   }
 `;
 
-export default class GDPRBanner extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      closed: isGDPRDismissed(),
-    };
+const GDPRBanner = ({ closed, dismissGdpr }) => {
+  if (closed) {
+    return null;
   }
 
-  close = () => {
-    this.setState({
-      closed: true,
-    });
-    dismissGDPRBanner();
-  };
+  return (
+    <Notification id="gdpr-banner" onClick={dismissGdpr}>
+      <Text>
+        This site uses cookies to provide you with a great user experience. By using Please.com you
+        accept our use of{' '}
+        <a href="#/cookie-policy" target="_blank" onClick={e => e.stopPropagation()}>
+          cookies
+        </a>
+        .
+      </Text>
+      <CloseButton onClick={dismissGdpr}>
+        <CrossIcon style={{ width: 24, height: 24 }} />
+      </CloseButton>
+    </Notification>
+  );
+};
 
-  render() {
-    if (this.state.closed) {
-      return null;
-    }
+const mapStateToProps = state => ({
+  closed: state.SettingsReducer.gdprDismissed,
+});
 
-    return (
-      <Notification>
-        <Text>
-          This site uses cookies to provide you with a great user experience. By using Please.com
-          you accept our use of{' '}
-          <a href="#/cookie-policy" target="_blank">
-            cookies
-          </a>
-          .
-        </Text>
-        <CloseButton onClick={this.close}>
-          <CrossIcon style={{ width: 24, height: 24 }} />
-        </CloseButton>
-      </Notification>
-    );
-  }
-}
+const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(GDPRBanner);
