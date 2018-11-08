@@ -11,7 +11,7 @@ import { mainNav } from '../../data/nav';
 import Button from '../Button';
 import { Briefcase, Folder, AccountCircle, Settings } from '../icons';
 import { getSession } from 'libs/user-session';
-import { trackHeaderCategoryClick } from 'libs/analytics';
+import { trackHeaderClick } from 'libs/analytics';
 import { bindActionCreators } from 'redux';
 import { logOut } from 'scenes/sessions/actions';
 
@@ -97,10 +97,18 @@ const InnerList = styled.ul`
   }
 `;
 
+const NavLinkTitle = styled.span`
+  display: flex;
+  font-size: 16px;
+  padding: 10px 0;
+  font-weight: bold;
+`;
+
 const NavLink = styled(Link)`
   display: flex;
   font-size: 24px;
   padding: 10px 0;
+  align-items: center;
 
   &.is-active {
     color: #4fb798;
@@ -221,9 +229,24 @@ class MobileNav extends Component {
         render={() => (
           <Wrap>
             <InnerList>
+              {/* Enable Token Sale
+              <li aria-hidden="true">
+                <Divider />
+              </li>
+              <li aria-hidden="false">
+                <NavLinkTitle>Token Sale</NavLinkTitle>
+                <NavLink to="/">Information</NavLink>
+                <NavLink to="/">Contribute</NavLink>
+              </li>
+              */}
               {this.renderLoggedInMenu()}
               <li aria-hidden="false">
                 <NavLink to="/">Home</NavLink>
+              </li>
+              <li aria-hidden="false">
+                <NavLink onClick={() => analytics(trackHeaderClick('Earn Money'))} to="/">
+                  Earn Money
+                </NavLink>
               </li>
               <li aria-hidden="true">
                 <Divider />
@@ -233,7 +256,7 @@ class MobileNav extends Component {
                   <NavLink
                     activeclassname="is-active"
                     to={item.href}
-                    onClick={() => analytics(trackHeaderCategoryClick(item.label))}
+                    onClick={() => analytics(trackHeaderClick(item.label))}
                   >
                     {item.label}
                   </NavLink>

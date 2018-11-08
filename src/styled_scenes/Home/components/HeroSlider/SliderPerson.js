@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 // STYLES
 const Person = styled.div`
   align-items: center;
-  bottom: 50px;
+  bottom: 30px;
   display: flex;
   position: absolute;
   right: 35px;

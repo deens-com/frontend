@@ -100,11 +100,11 @@ export const trackLedgerConnected = () => {
   };
 };
 
-export const trackHeaderCategoryClick = category => {
+export const trackHeaderClick = category => {
   return {
     eventType: EventTypes.track,
     eventPayload: {
-      event: `Header Category Clicked${commonSuffix}`,
+      event: `Header Button Clicked${commonSuffix}`,
       properties: {
         category,
       },

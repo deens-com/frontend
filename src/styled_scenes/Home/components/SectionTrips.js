@@ -29,7 +29,7 @@ export default function HomeSectionTrips({ trips, isLoading }) {
     <PageWrapper>
       <SectionWrap>
         <SectionHeader>
-          <h3>Featured Trips</h3>
+          <h3>Featured Customizable Trips</h3>
           <More>
             <Link to="/results?serviceTypes=trip">See All Trips</Link>
           </More>

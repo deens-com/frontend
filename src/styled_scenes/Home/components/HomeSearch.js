@@ -41,7 +41,7 @@ const Wrapper = styled.div`
   position: relative;
   max-width: 504px;
   margin: auto;
-  padding-bottom: 63px;
+  padding-bottom: 45px;
 `;
 
 const TypeIcon = styled.div`
@@ -89,7 +89,7 @@ const locationProps = {
     border: 0,
   },
   inputProps: {
-    placeholder: 'Where would you like to go?',
+    placeholder: 'Search for a destination',
     icon: 'false',
     as: Input,
   },

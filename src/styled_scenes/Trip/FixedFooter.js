@@ -44,15 +44,6 @@ const Sentence = styled.span`
   }
 `;
 
-const renderButtonWithPopup = (button, content) => {
-  if (content) {
-    return (
-      <Popup on="hover" trigger={button} content={content} position="top center" hideOnScroll />
-    );
-  }
-  return button;
-};
-
 const FixedFooter = ({ price, peopleNumber, onCustomizeClick, startDate, endDate }) => {
   return (
     <Wrapper>

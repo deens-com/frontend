@@ -2,6 +2,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import history from 'main/history';
+import { Dropdown } from 'semantic-ui-react';
 import styled, { css } from 'styled-components';
 import Media from 'react-media';
 import { connect } from 'react-redux';
@@ -12,8 +14,7 @@ import DesktopDropDownMenu from './DesktopDropDownMenu';
 
 // ACTIONS/CONFIG
 import { sizes } from '../../libs/styled';
-import { mainNav } from '../../data/nav';
-import { trackHeaderCategoryClick } from 'libs/analytics';
+import { trackHeaderClick } from 'libs/analytics';
 
 // STYLES
 const Wrap = styled.div`
@@ -33,18 +34,19 @@ const Wrap = styled.div`
 `;
 
 const Nav = styled.nav`
+  color: inherit;
   ${props =>
     props.home &&
     css`
-      a {
+      color: white;
+      > a {
         color: white;
       }
     `};
 `;
 
-const NavLink = styled(Link)`
+const navItemStyle = `
   display: inline-block;
-  margin-right: 15px;
   padding: 5px;
   position: relative;
   transition: color 0.1s ease-in;
@@ -79,6 +81,14 @@ const NavLink = styled(Link)`
   }
 `;
 
+const NavLink = styled(Link)`
+  ${navItemStyle} margin-right: 15px;
+`;
+
+const NavDropdown = styled.span`
+  ${navItemStyle};
+`;
+
 const ActionsWrap = styled.div`
   align-items: center;
   display: flex;
@@ -98,6 +108,8 @@ const ActionsWrap = styled.div`
   }
 `;
 
+const DropdownTrigger = () => <NavDropdown activeclassname="is-active">Token Sale</NavDropdown>;
+
 // MODULE
 const TopBarDesktopNav = function TopBarDesktopNav({
   home,
@@ -113,16 +125,26 @@ const TopBarDesktopNav = function TopBarDesktopNav({
       render={() => (
         <Wrap home={home}>
           <Nav home={home}>
-            {mainNav.map(item => (
-              <NavLink
-                key={item.label}
-                activeclassname="is-active"
-                to={item.href}
-                onClick={() => analytics(trackHeaderCategoryClick(item.label))}
-              >
-                {item.label}
-              </NavLink>
-            ))}
+            {/* Enable Token Sale
+              <Dropdown
+              text="Token Sale"
+              trigger={DropdownTrigger()}
+              direction="left"
+              style={{ color: 'inherit', marginRight: 30 }}
+            >
+              <Dropdown.Menu>
+                <Dropdown.Item text="Information" />
+                <Dropdown.Item text="Contribute" />
+              </Dropdown.Menu>
+            </Dropdown>
+            */}
+            <NavLink
+              activeclassname="is-active"
+              to="earn-money"
+              onClick={() => analytics(trackHeaderClick('Earn Money'))}
+            >
+              Earn Money
+            </NavLink>
           </Nav>
           <ActionsWrap>
             <DesktopDropDownMenu isBackgroundWhite={!home} history={history} />

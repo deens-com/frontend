@@ -13,7 +13,6 @@ export const mainNav = [
     service_type: 'activity',
   },
   { label: i18n.t('foods.label'), href: '/results?serviceTypes=food', service_type: 'food' },
-  // { label: i18n.t('earnMoney.label'), href: 'earn-money' },
 ];
 
 export const languages = [
