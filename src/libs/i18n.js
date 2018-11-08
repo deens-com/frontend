@@ -15,6 +15,7 @@ i18next.init({
         foods: { label: 'Food', singular: 'Food' },
         trips: { label: 'Trips', singular: 'Trip' },
         earnMoney: { label: 'Earn Money' },
+        tokenSale: { label: 'Token Sale' },
       },
     },
     // es: {
