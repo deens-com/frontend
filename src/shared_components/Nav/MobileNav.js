@@ -123,6 +123,25 @@ const NavLink = styled(Link)`
   }
 `;
 
+const NavAnchor = styled.a`
+  display: flex;
+  font-size: 24px;
+  padding: 10px 0;
+  align-items: center;
+
+  &.is-active {
+    color: #4fb798;
+  }
+
+  @media screen and (max-width: 768px) {
+    font-size: 14px;
+    padding: 4px;
+  }
+  svg {
+    margin-right: 20px;
+  }
+`;
+
 const Divider = styled.hr`
   border: none;
   margin: 15px 0;
@@ -229,16 +248,14 @@ class MobileNav extends Component {
         render={() => (
           <Wrap>
             <InnerList>
-              {/* Enable Token Sale
               <li aria-hidden="true">
                 <Divider />
               </li>
               <li aria-hidden="false">
                 <NavLinkTitle>Token Sale</NavLinkTitle>
-                <NavLink to="/">Information</NavLink>
-                <NavLink to="/">Contribute</NavLink>
+                <NavAnchor href="https://protocol.please.com">Information</NavAnchor>
+                <NavLink to="/token-sale">Contribute</NavLink>
               </li>
-              */}
               {this.renderLoggedInMenu()}
               <li aria-hidden="false">
                 <NavLink to="/">Home</NavLink>
