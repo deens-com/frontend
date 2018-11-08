@@ -115,7 +115,7 @@ class UserBasicInfo extends Component {
               <Grid.Column textAlign="center">
                 <div>
                   <AttributeTitle>PLS Balance</AttributeTitle>
-                  {this.props.user_profile.plsBalance || 0}
+                  <b>{this.props.user_profile.plsBalance || 0} 🄿</b>
                 </div>
               </Grid.Column>
               <Grid.Column textAlign="center">
