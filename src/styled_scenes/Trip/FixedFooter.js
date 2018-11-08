@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { media } from 'libs/styled';
 import Button from 'shared_components/Button';
-import { Popup } from 'semantic-ui-react';
+import { isGDPRDismissed } from 'libs/feature-flags';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -10,7 +10,7 @@ const Wrapper = styled.div`
   height: 65px;
   display: flex;
   align-items: center;
-  bottom: 0;
+  bottom: ${props => props.bottom || 0}px;
   justify-content: flex-end;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
   background-color: white;
@@ -44,9 +44,9 @@ const Sentence = styled.span`
   }
 `;
 
-const FixedFooter = ({ price, peopleNumber, onCustomizeClick, startDate, endDate }) => {
+const FixedFooter = ({ price, peopleNumber, onCustomizeClick, bottom }) => {
   return (
-    <Wrapper>
+    <Wrapper bottom={bottom}>
       <Text>
         <Sentence>Estimated price for {peopleNumber} people:</Sentence> ${price}
       </Text>
