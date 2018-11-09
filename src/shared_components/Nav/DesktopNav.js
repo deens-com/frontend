@@ -131,8 +131,8 @@ const TopBarDesktopNav = function TopBarDesktopNav({
               style={{ color: 'inherit', marginRight: 30 }}
             >
               <Dropdown.Menu>
-                <a target="_blank" class="item" href="https://protocol.please.com">
-                  <span class="text">Information</span>
+                <a target="_blank" className="item" href="https://protocol.please.com">
+                  <span className="text">Information</span>
                 </a>
                 <Dropdown.Item text="Contribute" as={Link} to="/token-sale" />
               </Dropdown.Menu>

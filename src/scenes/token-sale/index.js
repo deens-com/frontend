@@ -15,6 +15,7 @@ import { media } from 'libs/styled';
 
 import headerImg from './images/header.jpg';
 
+import ThankYou from './ThankYou';
 import TopBar from '../../shared_components/TopBar';
 import { Page, PageWrapper, PageContent } from '../../shared_components/layout/Page';
 import BrandFooter from '../../shared_components/BrandFooter';
@@ -69,69 +70,76 @@ const Subtitle = styled.h2`
 `;
 
 class TokenSale extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loadingToken: false,
-    };
-  }
-
   componentDidMount() {
-    if (this.props.kycState === 1) {
+    if (this.props.kycState === 0 && this.props.oldKycToken) {
       this.getToken();
     }
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.kycState === undefined && this.props.kycState === 1) {
+    if (this.props.kycState === 0 && (!prevProps.oldKycToken && this.props.oldKycToken)) {
       this.getToken();
     }
   }
 
   getToken = () => {
-    this.props.fetchIFrameToken();
-  };
-
-  renderContent() {
-    if (this.props.loggedIn === null || this.props.isLoadingToken) {
-      return <Loader active size="big" />;
-    }
-
     if (this.props.loggedIn === false) {
       history.push('/register', {
         message: 'Please login or register to continue with the verification process.',
         from: '/token-sale',
       });
+      return;
+    }
+    this.props.fetchIFrameToken();
+  };
+
+  renderContent() {
+    if (this.props.kycState === 1) {
+      return <ThankYou />;
     }
 
-    if (this.props.kycState === 1 || this.props.kyc_token || this.props.kycToken) {
-      return (
-        <KYC
-          isLoading={this.props.isLoadingToken}
-          kycToken={this.props.kyc_token || this.props.kycToken}
-        />
-      );
+    if (this.props.isLoadingToken) {
+      return <Loader active size="big" />;
+    }
+
+    if (this.props.kyc_token) {
+      return <KYC kycToken={this.props.kyc_token} />;
     }
 
     return <Information goToNextStep={this.getToken} />;
   }
 
+  renderHeader() {
+    if (this.props.kycState === 1 || this.props.loggedIn === null) {
+      return <TopBar fixed />;
+    }
+
+    return (
+      <PageTop>
+        <Header />
+        <TopBar home noSearch />
+        <HeaderText>
+          <Title>Welcome to Please.com Token Sale!</Title>
+          <Subtitle>
+            Please.com is a protocol and a marketplace to promote decentralization and progressively
+            bring it to the masses through the travel industry.
+          </Subtitle>
+        </HeaderText>
+      </PageTop>
+    );
+  }
+
   render() {
+    console.log(this.props, this.props.kycState !== 1);
     return (
       <Page>
         <PageWrapper>
-          <PageTop>
-            <Header />
-            <TopBar home noSearch />
-            <HeaderText>
-              <Title>Welcome to Please.com Token Sale!</Title>
-              <Subtitle>
-                Please.com is a protocol and a marketplace to promote decentralization and
-                progressively bring it to the masses through the travel industry.
-              </Subtitle>
-            </HeaderText>
-          </PageTop>
-          <PageContent>{this.renderContent()}</PageContent>
+          {this.renderHeader()}
+          {this.props.loggedIn === null ? (
+            <Loader active size="big" />
+          ) : (
+            <PageContent>{this.renderContent()}</PageContent>
+          )}
           <BrandFooter />
         </PageWrapper>
       </Page>
@@ -145,7 +153,7 @@ const mapStateToProps = state => {
     loggedIn: state.SessionsReducer.loggedIn,
     isLoadingUser: state.SessionsReducer.isLoading,
     kycState: state.SessionsReducer.session.kycValidated,
-    kycToken: state.SessionsReducer.session.kycToken, // yeah, we have it twice. this comes from the user
+    oldKycToken: state.SessionsReducer.session.kycToken,
     isLoadingToken: state.TokenSaleReducer.loading,
   };
 };
