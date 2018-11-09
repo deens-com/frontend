@@ -1,7 +1,7 @@
 import React from 'react';
-import { Loader } from 'semantic-ui-react';
+
 export default class KYC extends React.Component {
-  componentDidMount(prevProps) {
+  componentDidMount() {
     this.loadIFrame(this.props.kycToken);
   }
 
