@@ -7,8 +7,7 @@ const Wrapper = styled.div`
   flex: 1;
   order: -1;
   text-align: center;
-  margin-bottom: 15px;
-  margin-top: 50px;
+  padding-top: 75px;
 `;
 
 const Title = styled.div`
