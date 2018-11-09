@@ -73,6 +73,7 @@ class Payment extends React.Component {
           showStripe={Boolean(this.props.stripe)}
           error={error}
           getProvisionCodes={getProvisionCodes}
+          payWithPls={this.props.payWithPls}
         />
       </PaymentContext.Provider>
     );

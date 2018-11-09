@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Modal } from 'semantic-ui-react';
+import { Grid, Modal, Button } from 'semantic-ui-react';
 import styled from 'styled-components';
 import history from 'main/history';
 
@@ -35,6 +35,10 @@ const ErrorMessage = styled.p`
 `;
 
 const CoinbaseButtonWrapper = styled.div`
+  margin-top: 20px;
+`;
+
+const PlsPaymentButtonWrapper = styled.div`
   margin-top: 20px;
 `;
 
@@ -143,6 +147,11 @@ export default class PaymentSection extends Component {
                         <CoinbaseButtonWrapper>
                           <CoinbaseButtonContainer tripId={tripId} guests={guests} />
                         </CoinbaseButtonWrapper>
+                        <PlsPaymentButtonWrapper>
+                          <Button onClick={() => this.props.payWithPls(guests, tripId)}>
+                            Pay with PLS
+                          </Button>
+                        </PlsPaymentButtonWrapper>
                       </React.Fragment>
                     );
                   }}
