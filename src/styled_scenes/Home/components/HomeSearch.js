@@ -118,6 +118,7 @@ class HomeSearch extends Component {
       serviceType: undefined,
       keywords: '',
       show_banner: false,
+      focus: false,
     };
 
     this.input = React.createRef();
@@ -188,6 +189,18 @@ class HomeSearch extends Component {
     history.push(`/results?${query_string}`);
   }
 
+  onFocus = () => {
+    this.setState({
+      focus: true,
+    });
+  };
+
+  onBlur = () => {
+    this.setState({
+      focus: false,
+    });
+  };
+
   renderInputContent = () => {
     return (
       <form style={{ flex: 1 }} onSubmit={this.handleKeywordsSearchSubmit}>
@@ -196,6 +209,8 @@ class HomeSearch extends Component {
           {...locationProps}
           customStyle={suggestionStyle}
           context={this.input.current}
+          onFocus={this.onFocus}
+          onBlur={this.onBlur}
         />
       </form>
     );
@@ -208,7 +223,7 @@ class HomeSearch extends Component {
   render() {
     return (
       <Wrapper ref={this.input}>
-        <SearchBg>
+        <SearchBg /*style={{zIndex: this.state.focus ? 11 : 1}}*/>
           <LeftIcon />
           {this.renderInputContent()}
         </SearchBg>
