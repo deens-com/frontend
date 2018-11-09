@@ -121,7 +121,6 @@ class HomeSearch extends Component {
       focus: false,
     };
 
-    this.input = React.createRef();
     this.setSearch = this.setSearch.bind(this);
     this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
     this.handleLocationChange = this.handleLocationChange.bind(this);
@@ -208,7 +207,6 @@ class HomeSearch extends Component {
           onChange={this.handleLocationChange}
           {...locationProps}
           customStyle={suggestionStyle}
-          context={this.input.current}
           onFocus={this.onFocus}
           onBlur={this.onBlur}
         />
@@ -222,8 +220,8 @@ class HomeSearch extends Component {
 
   render() {
     return (
-      <Wrapper ref={this.input}>
-        <SearchBg /*style={{zIndex: this.state.focus ? 11 : 1}}*/>
+      <Wrapper>
+        <SearchBg style={{ zIndex: this.state.focus ? 11 : 1 }}>
           <LeftIcon />
           {this.renderInputContent()}
         </SearchBg>

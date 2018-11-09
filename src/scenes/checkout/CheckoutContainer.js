@@ -7,6 +7,7 @@ import axios from 'libs/axios';
 import { Loader, Dimmer } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { media } from 'libs/styled';
+import { calculateBottomPosition } from 'libs/Utils';
 
 import { Page } from 'shared_components/layout/Page';
 import TopBar from 'shared_components/TopBar';
@@ -183,7 +184,7 @@ const Guests = styled.div`
 
 const Footer = styled.div`
   position: fixed;
-  bottom: 0;
+  bottom: ${props => props.bottom || 0}px;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -346,7 +347,7 @@ class CheckoutContainer extends React.Component {
   }
 
   render() {
-    const { trip, isLoading } = this.props;
+    const { trip, isLoading, isGDPRDismissed } = this.props;
     const { days, step } = this.state;
 
     return (
@@ -407,7 +408,7 @@ class CheckoutContainer extends React.Component {
               {this.renderStep()}
             </Wrapper>
             {step < 3 && (
-              <Footer>
+              <Footer bottom={calculateBottomPosition(isGDPRDismissed)}>
                 <Button
                   disabled={this.state.nextDisabled}
                   theme="fillLightGreen"
@@ -430,6 +431,7 @@ const mapStateToProps = state => ({
   trip: state.TripReducer.trip,
   isLoading: state.TripReducer.isLoading,
   session: state.SessionsReducer.session,
+  isGDPRDismissed: state.SettingsReducer.gdprDismissed,
 });
 
 const mapDispatchToProps = dispatch =>

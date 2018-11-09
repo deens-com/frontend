@@ -31,6 +31,7 @@ class TripOrganizerContainer extends Component {
         changeDates={this.props.changeDates}
         updatePath={this.props.updatePath}
         history={this.props.history}
+        isGDPRDismissed={this.props.isGDPRDismissed}
       />
     );
   }
@@ -59,6 +60,7 @@ const mapStateToProps = state => {
     startDate,
     endDate: state.ResultsReducer.search_query.end_date,
     availability: state.TripReducer.availability,
+    isGDPRDismissed: state.SettingsReducer.gdprDismissed,
   };
 };
 

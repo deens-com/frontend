@@ -95,7 +95,7 @@ const ServiceTitle = styled.h3`
   margin: 10px 0 5px;
 `;
 
-const ServiceTags = styled.p`
+const ServiceTags = styled.div`
   font-size: 12px;
   color: #6e7885;
   > div {

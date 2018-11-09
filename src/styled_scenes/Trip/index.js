@@ -380,6 +380,7 @@ export default class Trip extends Component {
           peopleNumber={numberOfPeople}
           startDate={this.props.startDate}
           endDate={this.props.endDate}
+          booked={trip.bookingStatus === 'booked'}
           onCustomizeClick={this.handleCustomizeClick}
           bottom={calculateBottomPosition(isGDPRDismissed)}
         />
