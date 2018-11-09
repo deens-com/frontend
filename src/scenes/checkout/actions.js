@@ -72,8 +72,6 @@ export const payWithPls = (guests, tripId) => {
         payload: statuses.SUCCESS,
         meta: { analytics: trackTripBooked(tripId) },
       });
-      // Todo: display BookedSuccessfullyPopup
-      history.push('/account/trips/all');
     } catch (error) {
       dispatch({
         type: types.PAYMENT_ERROR,

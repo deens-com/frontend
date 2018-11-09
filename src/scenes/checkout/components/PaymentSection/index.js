@@ -74,6 +74,7 @@ export default class PaymentSection extends Component {
       showStripe,
       error,
       getProvisionCodes,
+      bookingStatus,
     } = this.props;
     return (
       <Wrap>
@@ -160,7 +161,7 @@ export default class PaymentSection extends Component {
             </Grid.Column>
           </Grid.Row>
         </Grid>
-        <BookedSuccessfullyPopup />
+        <BookedSuccessfullyPopup status={bookingStatus} />
       </Wrap>
     );
   }
