@@ -11,7 +11,7 @@ import axios from 'libs/axios';
 import { media } from 'libs/styled';
 import axiosOriginal from 'axios';
 import history from '../../main/history';
-import { getPriceFromServiceOption } from 'libs/Utils';
+import { getPriceFromServiceOption, calculateBottomPosition } from 'libs/Utils';
 
 import TopBar from 'shared_components/TopBar';
 import BrandFooter from 'shared_components/BrandFooter';
@@ -1014,7 +1014,7 @@ export default class TripOrganizer extends Component {
   };
 
   render() {
-    const { isLoading, availability, tripId } = this.props;
+    const { isLoading, availability, tripId, isGDPRDismissed } = this.props;
     const { trip, isSaving, days } = this.state;
 
     const loading = isLoading || (!trip || trip._id !== tripId) || !availability;
@@ -1026,7 +1026,12 @@ export default class TripOrganizer extends Component {
           <Loader size="massive" />
         </Dimmer>
         {!loading && (
-          <DaySelector days={days} goToDay={this.goToDay} onAddDay={this.handleAddDay} />
+          <DaySelector
+            bottom={calculateBottomPosition(isGDPRDismissed)}
+            days={days}
+            goToDay={this.goToDay}
+            onAddDay={this.handleAddDay}
+          />
         )}
         <PageContent>
           {loading ? <Loader inline="centered" active size="massive" /> : this.renderPageContent()}
