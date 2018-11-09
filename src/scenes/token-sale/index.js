@@ -130,7 +130,6 @@ class TokenSale extends Component {
   }
 
   render() {
-    console.log(this.props, this.props.kycState !== 1);
     return (
       <Page>
         <PageWrapper>
