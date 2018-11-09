@@ -17,8 +17,9 @@ class BookedSuccessfullyPopup extends React.Component {
   };
 
   render() {
-    const { bookingStatus } = this.props;
-    const show = bookingStatus === statuses.SUCCESS;
+    const { bookingStatus, status } = this.props;
+    const show = bookingStatus === statuses.SUCCESS || status === statuses.SUCCESS;
+
     return (
       <Modal centered={false} open={show} onClose={this.onClose} size="tiny">
         <Modal.Header>Payment Successful</Modal.Header>
