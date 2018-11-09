@@ -144,10 +144,10 @@ export default ({ goToNextStep }) => {
         </a>
       </ActionsWrapper>
       <PolicyWrapper>
-        <Divider />
+        {/*<Divider />
         <a href="#">Token Sale Agreement</a>
         <span style={{ marginLeft: 10, marginRight: 10 }}>•</span>
-        <a href="#">Token Sale Terms and conditions</a>
+        <a href="#">Token Sale Terms and conditions</a>*/}
         <Divider />
         <Support>Support</Support>
         <a href="mailto:contribute@please.com">contribute@please.com</a>
