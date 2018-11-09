@@ -19,4 +19,10 @@ export const serverBaseURL = (() => {
   return process.env.REACT_APP_PARSE_SERVER_URL || 'https://api.please.docker';
 })();
 
+export const kycIframeUrl = (() => {
+  if (env === 'production')
+    return process.env.KYC_IFRAME_URL || 'https://api.sumsub.com/idensic/static/idensic.js';
+  return process.env.KYC_IFRAME_URL || 'https://test-api.sumsub.com/idensic/static/idensic.js';
+})();
+
 export const stripeKey = process.env.REACT_APP_STRIPE_KEY || '';
