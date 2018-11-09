@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import CircularProfilePic from './CircularProfilePic';
 import Stars from './Stars';
 import { Link } from 'react-router-dom';
+import CustomButton from 'shared_components/Button';
 import { Menu, Card, Button } from 'semantic-ui-react';
 import ImgurAvatar from './../../../assets/no-avatar.png';
 
@@ -32,6 +33,10 @@ const NameDiv = styled.div`
 
 const MenuIcon = styled(Icon)`
   color: #5fb79e;
+`;
+
+const BuyTokens = styled.div`
+  text-align: center;
 `;
 
 const FileInputWrapper = styled.div`
@@ -128,7 +133,12 @@ class UserBasicInfo extends Component {
           </Grid>
 
           <br />
-
+          <BuyTokens>
+            <CustomButton theme="fillLightGreen" fontSize={12} type="link" href="/token-sale">
+              Buy tokens
+            </CustomButton>
+          </BuyTokens>
+          <br />
           <Menu secondary fluid vertical style={{ paddingLeft: '10px' }}>
             <Link to="/account/trips/all" onClick={this.scrollDownMobileOnly}>
               <Menu.Item name="trips" active={activePath === 'trips'}>

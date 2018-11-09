@@ -4,8 +4,12 @@ import { connect } from 'react-redux';
 
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router';
+import { Loader } from 'semantic-ui-react';
+import history from 'main/history';
 
 import * as actions from './actions';
+import Information from './Information';
+import KYC from './KYC';
 
 import { media } from 'libs/styled';
 
@@ -60,43 +64,69 @@ const Subtitle = styled.h2`
   ${media.minMedium} {
     font-size: 18px;
     line-height: 22px;
-    max-width: 350px;
+    max-width: 450px;
   }
 `;
 
 class TokenSale extends Component {
-  loadIFrame(accessToken) {
-    window.idensic.init('#idensic', {
-      accessToken,
-      requiredDocuments:
-        'IDENTITY:PASSPORT,ID_CARD,DRIVERS;SELFIE:SELFIE;PROOF_OF_RESIDENCE:UTILITY_BILL,BANK_STATEMENT,OTHER',
-    });
+  constructor(props) {
+    super(props);
+    this.state = {
+      loadingToken: false,
+    };
   }
 
   componentDidMount() {
+    if (this.props.kycState === 1) {
+      this.getToken();
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.kycState === undefined && this.props.kycState === 1) {
+      this.getToken();
+    }
+  }
+
+  getToken = () => {
     this.props.fetchIFrameToken();
+  };
+
+  renderContent() {
+    if (this.props.loggedIn === null || this.props.isLoadingToken) {
+      return <Loader active size="big" />;
+    }
+
+    if (this.props.loggedIn === false) {
+      history.push('/login', {
+        message: 'Please login or register to continue with your trip.',
+        from: '/token-sale',
+      });
+    }
+
+    if (this.props.kycState === 1 || this.props.kyc_token) {
+      return <KYC isLoading={this.props.isLoadingToken} kycToken={this.props.kyc_token} />;
+    }
+
+    return <Information goToNextStep={this.getToken} />;
   }
 
   render() {
-    const kycToken = this.props.kyc_token;
-    if (kycToken) {
-      this.loadIFrame(kycToken);
-    }
-
     return (
       <Page>
         <PageWrapper>
           <PageTop>
             <Header />
-            <TopBar home />
+            <TopBar home noSearch />
             <HeaderText>
-              <Title>Token Sale</Title>
-              <Subtitle>Welcome to Please.com token sale!</Subtitle>
+              <Title>Welcome to Please.com Token Sale!</Title>
+              <Subtitle>
+                Please.com is a protocol and a marketplace to promote decentralization and
+                progressively bring it to the masses through the travel industry.
+              </Subtitle>
             </HeaderText>
           </PageTop>
-          <PageContent>
-            <div id="idensic" />
-          </PageContent>
+          <PageContent>{this.renderContent()}</PageContent>
           <BrandFooter />
         </PageWrapper>
       </Page>
@@ -107,7 +137,10 @@ class TokenSale extends Component {
 const mapStateToProps = state => {
   return {
     kyc_token: state.TokenSaleReducer.kyc_token,
-    loggedIn: Boolean(state.SessionsReducer.session.username),
+    loggedIn: state.SessionsReducer.session.loggedIn,
+    isLoadingUser: state.SessionsReducer.session.isLoading,
+    kycState: state.SessionsReducer.session.kycValidated,
+    isLoadingToken: state.TokenSaleReducer.loading,
   };
 };
 
