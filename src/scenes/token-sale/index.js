@@ -98,14 +98,19 @@ class TokenSale extends Component {
     }
 
     if (this.props.loggedIn === false) {
-      history.push('/login', {
-        message: 'Please login or register to continue with your trip.',
+      history.push('/register', {
+        message: 'Please login or register to continue with the verification process.',
         from: '/token-sale',
       });
     }
 
-    if (this.props.kycState === 1 || this.props.kyc_token) {
-      return <KYC isLoading={this.props.isLoadingToken} kycToken={this.props.kyc_token} />;
+    if (this.props.kycState === 1 || this.props.kyc_token || this.props.kycToken) {
+      return (
+        <KYC
+          isLoading={this.props.isLoadingToken}
+          kycToken={this.props.kyc_token || this.props.kycToken}
+        />
+      );
     }
 
     return <Information goToNextStep={this.getToken} />;
@@ -137,9 +142,10 @@ class TokenSale extends Component {
 const mapStateToProps = state => {
   return {
     kyc_token: state.TokenSaleReducer.kyc_token,
-    loggedIn: state.SessionsReducer.session.loggedIn,
-    isLoadingUser: state.SessionsReducer.session.isLoading,
+    loggedIn: state.SessionsReducer.loggedIn,
+    isLoadingUser: state.SessionsReducer.isLoading,
     kycState: state.SessionsReducer.session.kycValidated,
+    kycToken: state.SessionsReducer.session.kycToken, // yeah, we have it twice. this comes from the user
     isLoadingToken: state.TokenSaleReducer.loading,
   };
 };
