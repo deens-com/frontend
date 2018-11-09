@@ -1,6 +1,7 @@
 import axios from 'libs/axios';
 import fetch_helpers from 'libs/fetch_helpers';
 import { trackTripBooked } from 'libs/analytics';
+import history from 'main/history';
 
 export const types = {
   MARK_TRIP_BOOKED_STATUS: 'MARK_TRIP_BOOKED_STATUS',
@@ -53,4 +54,29 @@ export const chargeStripeToken = (token, guests, complete = () => {}) => async (
       payload: error.response.data,
     });
   }
+};
+
+export const payWithPls = (guests, tripId) => {
+  return async dispatch => {
+    const guestsNb = guests.length || 1;
+    try {
+      await axios({
+        method: 'POST',
+        url: `/payment/pls-charge/${tripId}`,
+        data: {
+          guests: guestsNb,
+        },
+      });
+      dispatch({
+        type: types.MARK_TRIP_BOOKED_STATUS,
+        payload: statuses.SUCCESS,
+        meta: { analytics: trackTripBooked(tripId) },
+      });
+    } catch (error) {
+      dispatch({
+        type: types.PAYMENT_ERROR,
+        payload: error.response.data,
+      });
+    }
+  };
 };

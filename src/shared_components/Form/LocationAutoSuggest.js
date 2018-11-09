@@ -68,6 +68,8 @@ export default class SemanticLocationControl extends Component {
     inputProps: PropTypes.object,
     inputStyles: PropTypes.object,
     onlyCities: PropTypes.bool,
+    onFocus: PropTypes.func,
+    onBlur: PropTypes.func,
   };
 
   static defaultProps = {
@@ -76,6 +78,8 @@ export default class SemanticLocationControl extends Component {
     inputStyles: {},
     onlyCities: false,
     useStyledInput: false,
+    onFocus: () => {},
+    onBlur: () => {},
   };
 
   onAddressChange = address => {
@@ -107,12 +111,14 @@ export default class SemanticLocationControl extends Component {
     this.setState({
       isOpen: true,
     });
+    this.props.onFocus();
   };
 
   handleClose = () => {
     this.setState({
       isOpen: false,
     });
+    this.props.onBlur();
   };
 
   onSelectSuggestion = (address, type) => {

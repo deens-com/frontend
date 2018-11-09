@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import history from 'main/history';
 import { Loader, Popup, Icon, Dropdown, Dimmer } from 'semantic-ui-react';
 import { SingleDatePicker } from 'react-dates';
+import { calculateBottomPosition } from 'libs/Utils';
 
 // COMPONENTS
 import TopBar from 'shared_components/TopBar';
@@ -349,7 +350,7 @@ export default class Trip extends Component {
   };
 
   render() {
-    const { trip, numberOfPeople } = this.props;
+    const { trip, numberOfPeople, isGDPRDismissed } = this.props;
 
     if (!trip) {
       return (
@@ -367,14 +368,21 @@ export default class Trip extends Component {
     return (
       <CustomPage>
         <TopBar fixed />
-        <DaySelector bottom={65} days={days} trip={trip} goToDay={this.goToDay} />
+        <DaySelector
+          bottom={calculateBottomPosition(isGDPRDismissed, 65)}
+          days={days}
+          trip={trip}
+          goToDay={this.goToDay}
+        />
         <PageContent>{this.renderPageContent()}</PageContent>
         <FixedFooter
           price={trip.basePrice}
           peopleNumber={numberOfPeople}
           startDate={this.props.startDate}
           endDate={this.props.endDate}
+          booked={trip.bookingStatus === 'booked'}
           onCustomizeClick={this.handleCustomizeClick}
+          bottom={calculateBottomPosition(isGDPRDismissed)}
         />
       </CustomPage>
     );

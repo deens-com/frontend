@@ -118,9 +118,9 @@ class HomeSearch extends Component {
       serviceType: undefined,
       keywords: '',
       show_banner: false,
+      focus: false,
     };
 
-    this.input = React.createRef();
     this.setSearch = this.setSearch.bind(this);
     this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
     this.handleLocationChange = this.handleLocationChange.bind(this);
@@ -188,6 +188,18 @@ class HomeSearch extends Component {
     history.push(`/results?${query_string}`);
   }
 
+  onFocus = () => {
+    this.setState({
+      focus: true,
+    });
+  };
+
+  onBlur = () => {
+    this.setState({
+      focus: false,
+    });
+  };
+
   renderInputContent = () => {
     return (
       <form style={{ flex: 1 }} onSubmit={this.handleKeywordsSearchSubmit}>
@@ -195,7 +207,8 @@ class HomeSearch extends Component {
           onChange={this.handleLocationChange}
           {...locationProps}
           customStyle={suggestionStyle}
-          context={this.input.current}
+          onFocus={this.onFocus}
+          onBlur={this.onBlur}
         />
       </form>
     );
@@ -207,8 +220,8 @@ class HomeSearch extends Component {
 
   render() {
     return (
-      <Wrapper ref={this.input}>
-        <SearchBg>
+      <Wrapper>
+        <SearchBg style={{ zIndex: this.state.focus ? 11 : 1 }}>
           <LeftIcon />
           {this.renderInputContent()}
         </SearchBg>

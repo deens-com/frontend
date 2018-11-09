@@ -73,6 +73,8 @@ class Payment extends React.Component {
           showStripe={Boolean(this.props.stripe)}
           error={error}
           getProvisionCodes={getProvisionCodes}
+          payWithPls={this.props.payWithPls}
+          bookingStatus={this.props.bookingStatus}
         />
       </PaymentContext.Provider>
     );
@@ -81,6 +83,7 @@ class Payment extends React.Component {
 
 const mapStateToProps = state => ({
   paymentError: state.CheckoutReducer.paymentError,
+  bookingStatus: state.CheckoutReducer.bookingStatus,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
