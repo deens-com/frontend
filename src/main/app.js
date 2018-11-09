@@ -8,6 +8,8 @@ import withSegmentTracker from './middlewares/with_segment_tracker';
 import withErrorBoundary from './middlewares/WithErrorBoundary';
 import Home from './../scenes/home/home';
 import EarnMoney from './../scenes/earn-money';
+import TokenSale from './../scenes/token-sale';
+import ThankYouKYC from './../scenes/token-sale/ThankYou';
 import CookiePolicy from './../scenes/cookie-policy';
 import Account from './../scenes/account/account';
 import Sessions from './../scenes/sessions/sessions';
@@ -50,6 +52,10 @@ class App extends React.Component {
                 <Route
                   path={process.env.PUBLIC_URL + '/earn-money'}
                   component={commonHOCs(EarnMoney)}
+                />
+                <Route
+                  path={process.env.PUBLIC_URL + '/token-sale'}
+                  component={commonHOCs(TokenSale)}
                 />
                 <Route
                   path={process.env.PUBLIC_URL + '/cookie-policy'}

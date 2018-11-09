@@ -125,19 +125,18 @@ const TopBarDesktopNav = function TopBarDesktopNav({
       render={() => (
         <Wrap home={home}>
           <Nav home={home}>
-            {/* Enable Token Sale
-              <Dropdown
-              text="Token Sale"
+            <Dropdown
               trigger={DropdownTrigger()}
               direction="left"
               style={{ color: 'inherit', marginRight: 30 }}
             >
               <Dropdown.Menu>
-                <Dropdown.Item text="Information" />
-                <Dropdown.Item text="Contribute" />
+                <a target="_blank" className="item" href="https://protocol.please.com">
+                  <span className="text">Information</span>
+                </a>
+                <Dropdown.Item text="Contribute" as={Link} to="/token-sale" />
               </Dropdown.Menu>
             </Dropdown>
-            */}
             <NavLink
               activeclassname="is-active"
               to="earn-money"
