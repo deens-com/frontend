@@ -7,7 +7,7 @@
 
 [![CircleCI](https://circleci.com/gh/PleaseDotCom/frontend.svg?style=svg)](https://circleci.com/gh/PleaseDotCom/frontend)
 
-This is the repository for the frontend of [beta.please.com](https://beta.please.com). This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app) and then later moved over to [React app rewired](https://github.com/timarney/react-app-rewired).
+This is the repository for the frontend of [please.com](https://please.com). This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app) and then later moved over to [React app rewired](https://github.com/timarney/react-app-rewired).
 
 ## 🏗 Development
 
