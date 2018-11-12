@@ -25,4 +25,9 @@ export const kycIframeUrl = (() => {
   return process.env.KYC_IFRAME_URL || 'https://test-api.sumsub.com/idensic/static/idensic.js';
 })();
 
+export const kycTelegramBotId = (() => {
+  if (env === 'production') return process.env.KYC_TELEGRAM_BOT_ID || 691314081;
+  return process.env.KYC_TELEGRAM_BOT_ID || 669660896;
+})();
+
 export const stripeKey = process.env.REACT_APP_STRIPE_KEY || '';
