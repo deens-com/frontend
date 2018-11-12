@@ -4,6 +4,7 @@ import { media } from 'libs/styled';
 import { Segment } from 'semantic-ui-react';
 import Input from 'shared_components/StyledInput';
 import Button from 'shared_components/Button';
+import { Link } from 'react-router-dom';
 
 const plsValue = 0.36;
 const preIcoBonus = 20; // in %
@@ -65,6 +66,11 @@ const SecondCol = styled.div`
   flex-shrink: 1;
 `;
 
+const SmartContractLink = styled(Link)`
+  color: #38d39f;
+  text-decoration: underline;
+`;
+
 export default class BuyTokens extends React.Component {
   constructor(props) {
     super(props);
@@ -82,13 +88,15 @@ export default class BuyTokens extends React.Component {
     const plsToBuy = (this.state.amount / plsValue).toFixed(2);
     const bonus = ((Number(plsToBuy) * preIcoBonus) / 100).toFixed(2);
     const total = (Number(plsToBuy) + Number(bonus)).toFixed(2);
-
     return (
       <Wrapper>
+        <SmartContractLink to="/token-sale/smart-contract">
+          Contribute through smart contract
+        </SmartContractLink>
         <Segment>
           <SegmentContent>
             <SegmentTitle>My PLS</SegmentTitle>
-            <PLSNumber>0 PLS</PLSNumber>
+            <PLSNumber>{this.props.plsBalance || 0} PLS</PLSNumber>
           </SegmentContent>
         </Segment>
         <Segment>

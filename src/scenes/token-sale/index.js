@@ -12,6 +12,7 @@ import * as actions from './actions';
 import Information from './Information';
 import KYC from './KYC';
 import BuyTokens from './BuyTokens';
+import SmartContract from './BuyTokens/SmartContract';
 
 import { media } from 'libs/styled';
 
@@ -122,7 +123,10 @@ class TokenSale extends Component {
 
   renderContent() {
     if (this.props.kycState === 2 || this.state.agreedTerms) {
-      return <BuyTokens />;
+      if (this.props.location.pathname === '/token-sale/smart-contract') {
+        return <SmartContract />;
+      }
+      return <BuyTokens plsBalance={this.props.plsBalance} />;
     }
 
     if (this.props.kycState === 1) {
@@ -188,6 +192,7 @@ const mapStateToProps = state => {
     loggedIn: state.SessionsReducer.loggedIn,
     isLoadingUser: state.SessionsReducer.isLoading,
     kycState: state.SessionsReducer.session.kycValidated || 0,
+    plsBalance: state.SessionsReducer.session.plsBalance,
     oldKycToken: state.SessionsReducer.session.kycToken,
     isLoadingToken: state.TokenSaleReducer.loading,
   };
