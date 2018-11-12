@@ -97,7 +97,8 @@ export const getCurrentUser = () => async dispatch => {
         }
       });
       if (currentUser.data) {
-        dispatch(sessionsFetched({ session: currentUser.data }));
+        const userObject = fetch_helpers.buildUserJson(currentUser.data);
+        dispatch(sessionsFetched({ session: userObject }));
       }
       return;
     }
@@ -127,7 +128,8 @@ export const update_user_profile = (user_id, field_type, value) => {
           isUsernameValid = validator.isAlphanumeric(value, 'en-US');
           if (!isUsernameValid) {
             dispatch(displayUpdateError({ code: 203, error: 'Username should be alphanumeric.' }));
-            dispatch(sessionsFetched({ session: currentUser.data }));
+            const userObject = fetch_helpers.buildUserJson(currentUser.data);
+            dispatch(sessionsFetched({ session: userObject }));
             return;
           }
         }
@@ -137,14 +139,16 @@ export const update_user_profile = (user_id, field_type, value) => {
             dispatch(
               displayUpdateError({ code: 203, error: 'Please, enter a valid email address.' }),
             );
-            dispatch(sessionsFetched({ session: currentUser.data }));
+            const userObject = fetch_helpers.buildUserJson(currentUser.data);
+            dispatch(sessionsFetched({ session: userObject }));
             return;
           }
         }
         const updatedUser = await axios.patch('/users/me', { [field_type]: value }).catch(error => {
           dispatch(displayUpdateError({ code: 422, error: error }));
         });
-        dispatch(sessionsFetched({ session: updatedUser.data }));
+        const userObject = fetch_helpers.buildUserJson(updatedUser.data);
+        dispatch(sessionsFetched({ session: userObject }));
         dispatch(displayUpdateError({}));
       } catch (error) {
         dispatch(displayUpdateError({ code: 422, error: error }));
@@ -221,7 +225,8 @@ export const loginRequest = (email, password, { from, action }) => {
         if (user) {
           const userData = user.data;
           userData.accessToken = auth0Token;
-          dispatch(sessionsFetched({ session: userData }));
+          const userObject = fetch_helpers.buildUserJson(userData);
+          dispatch(sessionsFetched({ session: userObject }));
           saveSession(userData);
           redirect(from, action);
         }

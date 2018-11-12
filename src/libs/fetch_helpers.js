@@ -249,6 +249,11 @@ const buildServicesJson = services => {
   });
 };
 
+const buildUserJson = user => {
+  user.plsBalance = user.plsBalance.$numberDecimal;
+  return user;
+};
+
 // This function should be rewritten when redesigning the service page
 const mapServiceObjects = services => {
   return services.map(service => {
@@ -316,4 +321,5 @@ export default {
   removeDuplicates,
   build_query,
   statuses,
+  buildUserJson,
 };
