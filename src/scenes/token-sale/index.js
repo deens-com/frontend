@@ -6,16 +6,18 @@ import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router';
 import { Loader } from 'semantic-ui-react';
 import history from 'main/history';
+import axios from 'libs/axios';
 
 import * as actions from './actions';
 import Information from './Information';
 import KYC from './KYC';
+import BuyTokens from './BuyTokens';
 
 import { media } from 'libs/styled';
 
 import headerImg from './images/header.jpg';
 
-import ThankYou from './ThankYou';
+import TermsAgreement from './TermsAgreement';
 import TopBar from '../../shared_components/TopBar';
 import { Page, PageWrapper, PageContent } from '../../shared_components/layout/Page';
 import BrandFooter from '../../shared_components/BrandFooter';
@@ -23,7 +25,7 @@ import BrandFooter from '../../shared_components/BrandFooter';
 const PageTop = styled.div`
   width: 100%;
   position: relative;
-  height: 426px;
+  height: 350px;
 `;
 
 const Header = styled.div`
@@ -33,13 +35,13 @@ const Header = styled.div`
   width: 100vw;
   position: absolute;
   left: calc(-50vw - -50%);
-  height: 426px;
+  height: 350px;
 `;
 
 const HeaderText = styled.div`
   color: white;
   position: relative;
-  padding-top: 170px;
+  padding-top: 120px;
   text-align: center;
 `;
 
@@ -70,6 +72,12 @@ const Subtitle = styled.h2`
 `;
 
 class TokenSale extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      agreedTerms: false,
+    };
+  }
   componentDidMount() {
     if (this.props.kycState === 0 && this.props.oldKycToken) {
       this.getToken();
@@ -93,13 +101,36 @@ class TokenSale extends Component {
     this.props.fetchIFrameToken();
   };
 
-  renderContent() {
-    if (this.props.kycState === 1) {
-      return <ThankYou />;
+  getTitle() {
+    if (this.props.kycState === 0) {
+      return 'Welcome to Please.com Token Sale!';
     }
 
-    if (this.props.isLoadingToken) {
-      return <Loader active size="big" />;
+    if (this.props.kycState === 1 && !this.state.agreedTerms) {
+      return 'Just one more step before you can contribute';
+    }
+
+    return 'Purchase PLS Tokens';
+  }
+
+  onTermsAgree = async () => {
+    this.setState({
+      agreedTerms: true,
+    });
+    axios.patch('/users/me', { kycValidated: 2 });
+  };
+
+  renderContent() {
+    if (this.props.kycState === 2 || this.state.agreedTerms) {
+      return <BuyTokens />;
+    }
+
+    if (this.props.kycState === 1) {
+      return <TermsAgreement onProceed={this.onTermsAgree} />;
+    }
+
+    if (this.props.isLoadingToken || this.state.isLoading) {
+      return <Loader inline="centered" active size="big" />;
     }
 
     if (this.props.kyc_token) {
@@ -112,20 +143,23 @@ class TokenSale extends Component {
   }
 
   renderHeader() {
-    if (this.props.kycState === 1 || this.props.loggedIn === null) {
+    if (this.props.loggedIn === null) {
       return <TopBar fixed />;
     }
+
+    const title = this.getTitle();
+    const subtitle =
+      this.props.kycState === 0
+        ? 'Please.com is a protocol and a marketplace to promote decentralization and progressively bring it to the masses through the travel industry.'
+        : '';
 
     return (
       <PageTop>
         <Header />
         <TopBar home noSearch />
         <HeaderText>
-          <Title>Welcome to Please.com Token Sale!</Title>
-          <Subtitle>
-            Please.com is a protocol and a marketplace to promote decentralization and progressively
-            bring it to the masses through the travel industry.
-          </Subtitle>
+          <Title>{title}</Title>
+          <Subtitle>{subtitle}</Subtitle>
         </HeaderText>
       </PageTop>
     );
@@ -137,7 +171,7 @@ class TokenSale extends Component {
         <PageWrapper>
           {this.renderHeader()}
           {this.props.loggedIn === null ? (
-            <Loader active size="big" />
+            <Loader inline="centered" active size="big" />
           ) : (
             <PageContent>{this.renderContent()}</PageContent>
           )}
@@ -153,7 +187,7 @@ const mapStateToProps = state => {
     kyc_token: state.TokenSaleReducer.kyc_token,
     loggedIn: state.SessionsReducer.loggedIn,
     isLoadingUser: state.SessionsReducer.isLoading,
-    kycState: state.SessionsReducer.session.kycValidated,
+    kycState: state.SessionsReducer.session.kycValidated || 0,
     oldKycToken: state.SessionsReducer.session.kycToken,
     isLoadingToken: state.TokenSaleReducer.loading,
   };
