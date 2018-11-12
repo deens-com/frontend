@@ -18,7 +18,7 @@ export default class KYC extends React.Component {
         userAgreementUrl: 'https://vision.please.com/assets/terms.pdf',
         privacyPolicyUrl: 'https://vision.please.com/assets/privacy.pdf',
         requiredDocuments:
-          'IDENTITY:PASSPORT,ID_CARD,DRIVERS;SELFIE:SELFIE;PROOF_OF_RESIDENCE:UTILITY_BILL,BANK_STATEMENT,OTHER',
+          'IDENTITY:PASSPORT,ID_CARD,DRIVERS;SELFIE:SELFIE;PROOF_OF_RESIDENCE:UTILITY_BILL',
       });
     };
   }
