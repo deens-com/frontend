@@ -58,13 +58,12 @@ export const chargeStripeToken = (token, guests, complete = () => {}) => async (
 
 export const payWithPls = (guests, tripId) => {
   return async dispatch => {
-    const guestsNb = guests.length || 1;
     try {
       await axios({
         method: 'POST',
         url: `/payment/pls-charge/${tripId}`,
         data: {
-          guests: guestsNb,
+          guests,
         },
       });
       dispatch({
