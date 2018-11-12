@@ -62,6 +62,10 @@ class App extends React.Component {
                   component={commonHOCs(TokenSale)}
                 />
                 <Route
+                  path={process.env.PUBLIC_URL + '/token-sale/smart-contract'}
+                  component={commonHOCs(TokenSale)}
+                />
+                <Route
                   path={process.env.PUBLIC_URL + '/cookie-policy'}
                   component={commonHOCs(CookiePolicy)}
                 />
