@@ -236,7 +236,7 @@ class EditTripForm extends Component {
 function validate(values) {
   const requiredFields = ['title', 'description', 'formattedAddress', 'dayCount'];
   const errors = checkRequiredFields(values, requiredFields);
-  const integerFields = ['dayCount', 'peopleCount'];
+  const integerFields = ['dayCount', 'adultCount'];
   for (const field of integerFields) {
     const value = values[field];
     if (!errors[field] && value && isNaN(value)) {

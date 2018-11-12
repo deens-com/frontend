@@ -160,20 +160,20 @@ export const fetchTrip = id => async dispatch => {
   }
 };
 
-export const checkAvailability = (id, startDate, peopleCount) => async dispatch => {
+export const checkAvailability = (id, startDate, adultCount) => async dispatch => {
   const timestamp = new Date().getTime();
   dispatch(checkAvailabilityStart(timestamp));
   try {
     const availability = await axios.get(
       `${serverBaseURL}/trips/${id}/availability?bookingDate=${startDate.format(
         'YYYY-MM-DD',
-      )}&peopleCount=${peopleCount}`,
+      )}&adultCount=${adultCount}`,
     );
     dispatch(checkAvailabilitySuccess(availability, timestamp));
   } catch (e) {
     dispatch(checkAvailabilityError(e, timestamp));
     // retry! this is a quick fix, we need a better way to handle errors
-    checkAvailability(id, startDate, peopleCount);
+    checkAvailability(id, startDate, adultCount);
   }
 };
 

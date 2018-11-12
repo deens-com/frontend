@@ -299,7 +299,7 @@ export default class TripOrganizer extends Component {
           [],
         ),
         ...(this.props.startDate ? { startDate: this.props.startDate } : {}),
-        ...(this.props.numberOfPeople ? { peopleCount: this.props.numberOfPeople } : {}),
+        ...(this.props.numberOfPeople ? { adultCount: this.props.numberOfPeople } : {}),
         duration: (this.state.days && daysToMinutes(this.state.days.length)) || 1,
         tags: this.state.trip.tags ? this.state.trip.tags.map(tag => tag._id) : [], // This could be done when loading the trip to avoid executing each time we save
         notes: this.state.notes,
@@ -375,7 +375,7 @@ export default class TripOrganizer extends Component {
               .clone()
               .add(day - 1, 'days')
               .format('YYYY-MM-DD'),
-            peopleCount: this.props.numberOfPeople,
+            adultCount: this.props.numberOfPeople,
           }));
 
         this.setState(prevState => ({
@@ -562,7 +562,7 @@ export default class TripOrganizer extends Component {
           .clone()
           .add(data.day - 1, 'days')
           .format('YYYY-MM-DD'),
-        peopleCount: guests,
+        adultCount: guests,
       });
       return result;
     } catch (e) {
