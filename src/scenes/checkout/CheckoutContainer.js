@@ -200,7 +200,7 @@ const Footer = styled.div`
 function stateFromProps(props) {
   return {
     days: props.trip.duration / 1440 || 1,
-    guests: Array.from({ length: props.trip.peopleCount }).map(_ => ({})),
+    guests: Array.from({ length: props.trip.peopleCount }).map(_ => ({})) || 1,
   };
 }
 
