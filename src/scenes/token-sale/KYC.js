@@ -32,6 +32,8 @@ export default class KYC extends React.Component {
   }
 
   loadTelegramPassport(accessToken) {
+    if (this.props.locationPathname.indexOf('tg_passport') > 0) return; // do not show button if it was a call back
+
     const addScript = document.createElement('script');
     addScript.setAttribute('src', '/telegram-passport.js');
     document.body.appendChild(addScript);
@@ -53,6 +55,7 @@ export default class KYC extends React.Component {
             'lwIDAQAB\n' +
             '-----END PUBLIC KEY-----',
           nonce: accessToken,
+          callback_url: window.location.href,
         },
         {
           text: 'KYC Check via Telegram Passport', // custom text
