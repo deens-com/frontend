@@ -141,7 +141,7 @@ class AccountProfileScene extends Component {
               <Icon onClick={() => this.toggleEdition('username')} name="pencil" />
             )}
           </HorizontalSpan>
-          {/*<HorizontalSpan>
+          <HorizontalSpan>
             <BoldH4>Email :</BoldH4>
             {this.state.isEmailEditable ? (
               <Input
@@ -163,7 +163,7 @@ class AccountProfileScene extends Component {
             ) : (
               <Icon onClick={() => this.toggleEdition('email')} name="pencil" />
             )}
-          </HorizontalSpan>*/}
+          </HorizontalSpan>
         </Grid.Column>
       </Grid>
     );

@@ -103,7 +103,9 @@ class TokenSale extends Component {
     }
 
     if (this.props.kyc_token) {
-      return <KYC kycToken={this.props.kyc_token} />;
+      return (
+        <KYC kycToken={this.props.kyc_token} locationPathname={this.props.location.pathname} />
+      );
     }
 
     return <Information goToNextStep={this.getToken} />;
