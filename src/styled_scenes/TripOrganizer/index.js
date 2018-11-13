@@ -378,6 +378,7 @@ export default class TripOrganizer extends Component {
               .add(day - 1, 'days')
               .format('YYYY-MM-DD'),
             adultCount: this.props.numberOfPeople,
+            peopleCount: this.props.numberOfPeople,
           }));
 
         this.setState(prevState => ({
@@ -565,6 +566,7 @@ export default class TripOrganizer extends Component {
           .add(data.day - 1, 'days')
           .format('YYYY-MM-DD'),
         adultCount: guests,
+        peopleCount: guests,
       });
       return result;
     } catch (e) {

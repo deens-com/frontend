@@ -167,7 +167,7 @@ export const checkAvailability = (id, startDate, adultCount) => async dispatch =
     const availability = await axios.get(
       `${serverBaseURL}/trips/${id}/availability?bookingDate=${startDate.format(
         'YYYY-MM-DD',
-      )}&adultCount=${adultCount}`,
+      )}&adultCount=${adultCount}&peopleCount=${adultCount}`,
     );
     dispatch(checkAvailabilitySuccess(availability, timestamp));
   } catch (e) {
