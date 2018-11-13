@@ -174,7 +174,7 @@ export const checkAvailability = (id, startDate, peopleCount, attempt = 1) => as
     dispatch(checkAvailabilityError(e, timestamp));
     if (attempt < 3) {
       // retry! this is a quick fix, we need a better way to handle errors
-      checkAvailability(id, startDate, peopleCount, (attempt = attempt + 1));
+      checkAvailability(id, startDate, peopleCount, attempt + 1);
     }
   }
 };
