@@ -187,9 +187,9 @@ export function getFromCoordinates(coordinates) {
  * @param {Object} price An object with operator and value
  * @returns {Number} The resulting price
  */
-export function getPriceFromServiceOption(base, price) {
+export function getPriceFromServiceOption(base, price, peopleCount = 1) {
   if (!price) {
-    return base;
+    return base * peopleCount;
   }
 
   if (typeof price === 'number') {
@@ -212,4 +212,8 @@ export function calculateBottomPosition(isGDPRDismissed, baseBottom = 0) {
     return baseBottom + document.getElementById('gdpr-banner').getBoundingClientRect().height;
   }
   return baseBottom;
+}
+
+export function getPeopleCount(trip) {
+  return trip.adultCount;
 }

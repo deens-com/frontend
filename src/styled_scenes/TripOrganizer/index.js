@@ -11,7 +11,7 @@ import axios from 'libs/axios';
 import { media } from 'libs/styled';
 import axiosOriginal from 'axios';
 import history from '../../main/history';
-import { getPriceFromServiceOption, calculateBottomPosition } from 'libs/Utils';
+import { getPriceFromServiceOption, getPeopleCount, calculateBottomPosition } from 'libs/Utils';
 
 import TopBar from 'shared_components/TopBar';
 import BrandFooter from 'shared_components/BrandFooter';
@@ -118,6 +118,7 @@ function createTripState(props, state) {
           price: getPriceFromServiceOption(
             props.trip.services.find(item => item.service._id === selected.serviceId).basePrice,
             selected.price,
+            getPeopleCount(state.trip),
           ),
         },
       };
@@ -155,6 +156,7 @@ const calculatePrice = prevState => ({
           prevState.optionsSelected[elem.day] &&
             prevState.optionsSelected[elem.day][elem.serviceId] &&
             prevState.optionsSelected[elem.day][elem.serviceId].price,
+          getPeopleCount(prevState.trip),
         );
         return price + optionPrice;
       }
@@ -299,7 +301,7 @@ export default class TripOrganizer extends Component {
           [],
         ),
         ...(this.props.startDate ? { startDate: this.props.startDate } : {}),
-        ...(this.props.numberOfPeople ? { peopleCount: this.props.numberOfPeople } : {}),
+        ...(this.props.numberOfPeople ? { adultCount: this.props.numberOfPeople } : {}),
         duration: (this.state.days && daysToMinutes(this.state.days.length)) || 1,
         tags: this.state.trip.tags ? this.state.trip.tags.map(tag => tag._id) : [], // This could be done when loading the trip to avoid executing each time we save
         notes: this.state.notes,
@@ -375,6 +377,7 @@ export default class TripOrganizer extends Component {
               .clone()
               .add(day - 1, 'days')
               .format('YYYY-MM-DD'),
+            adultCount: this.props.numberOfPeople,
             peopleCount: this.props.numberOfPeople,
           }));
 
@@ -562,6 +565,7 @@ export default class TripOrganizer extends Component {
           .clone()
           .add(data.day - 1, 'days')
           .format('YYYY-MM-DD'),
+        adultCount: guests,
         peopleCount: guests,
       });
       return result;

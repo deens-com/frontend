@@ -198,9 +198,10 @@ const Footer = styled.div`
 `;
 
 function stateFromProps(props) {
+  console.log('la prima', props.trip.duration, props.trip.adultCount);
   return {
     days: props.trip.duration / 1440 || 1,
-    guests: Array.from({ length: props.trip.peopleCount }).map(_ => ({})) || 1,
+    guests: Array.from({ length: props.trip.adultCount }).map(_ => ({ type: 'adult' })),
   };
 }
 
@@ -227,7 +228,10 @@ class CheckoutContainer extends React.Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (props.trip && !state.days) {
+    if (!props.trip) {
+      return null;
+    }
+    if (!state.days || props.trip.adultCount !== state.guests.length) {
       return stateFromProps(props);
     }
     return null;
@@ -243,7 +247,7 @@ class CheckoutContainer extends React.Component {
         history.replace(`/trips/${this.tripId}`);
         return;
       }
-      if (!this.props.trip.startDate || !this.props.trip.peopleCount) {
+      if (!this.props.trip.startDate || !this.props.trip.adultCount) {
         history.replace(`/trips/organize/${this.tripId}`);
         return;
       }
@@ -338,7 +342,7 @@ class CheckoutContainer extends React.Component {
       <CheckoutTrip trip={trip} />
     ) : (
       <GuestsData
-        number={trip.peopleCount}
+        number={this.state.guests.length}
         onChange={this.handleGuestsDataChange}
         nextDisable={this.nextDisable}
         nextEnable={this.nextEnable}
@@ -394,7 +398,7 @@ class CheckoutContainer extends React.Component {
                   </Location>
                   <Dates>{formatDate(trip.startDate, days)}</Dates>
                   <Guests>
-                    {trip.peopleCount} {trip.peopleCount === 1 ? 'Guest' : 'Guests'}
+                    {trip.adultCount} {trip.adultCount === 1 ? 'Guest' : 'Guests'}
                   </Guests>
                 </SummaryData>
                 <TotalPriceWrapper>

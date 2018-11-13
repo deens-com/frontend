@@ -5,7 +5,7 @@ import moment from 'moment';
 import mapServicesToDays from '../../../styled_scenes/Trip/mapServicesToDays';
 import I18nText from 'shared_components/I18nText';
 import { MapMarker } from 'shared_components/icons';
-import { getPriceFromServiceOption } from 'libs/Utils';
+import { getPriceFromServiceOption, getPeopleCount } from 'libs/Utils';
 import { getCategory } from 'libs/categories';
 import Category from 'shared_components/Category';
 
@@ -90,7 +90,7 @@ function getPrice(trip, day, service) {
     );
 
   return selected
-    ? getPriceFromServiceOption(service.service.basePrice, selected.price)
+    ? getPriceFromServiceOption(service.service.basePrice, selected.price, getPeopleCount(trip))
     : service.service.basePrice;
 }
 
@@ -121,7 +121,7 @@ export class CheckoutTrip extends React.Component {
     return (
       <PriceWrapper>
         <Price>
-          ${price.toFixed(2)} for {trip.peopleCount} people
+          ${price.toFixed(2)} for {trip.adultCount} people
         </Price>
       </PriceWrapper>
     );

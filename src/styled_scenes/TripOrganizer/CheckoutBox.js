@@ -163,7 +163,7 @@ export default class CheckoutBox extends React.Component {
     return (
       <Wrapper>
         <Box>
-          <Price>Total Price Booked ${this.props.price * numberOfPeople}</Price>
+          <Price>Total Price Booked ${this.props.price}</Price>
           <Divider />
           <Field>
             <Label>Start Date</Label>
