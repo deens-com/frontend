@@ -571,7 +571,6 @@ class Filters extends Component {
         ),
         on: 'click',
         open: this.state.isLocationPopupOpen,
-        onClose: this.handleLocationPopupClose,
         onOpen: this.handleLocationPopupOpen,
         position: 'bottom center',
       },

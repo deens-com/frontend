@@ -220,7 +220,7 @@ const buildServicesJson = services => {
       service.longitude = (service.location && service.location.longitude) || 1;
       // const country =
       //   service.location && service.location.country && service.location.country.names[i18nLocale];
-      service.type = service.categories[0].names[i18nLocale];
+      service.type = service.categories && service.categories[0].names[i18nLocale];
       service.originalLocation = service.location;
       service.location = parseLocation(service.location);
       service.ratings = service.ratings;
