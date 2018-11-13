@@ -8,6 +8,16 @@ const Wrapper = styled.div`
   padding-bottom: 50px;
 `;
 
+const Or = styled.p`
+  margin: 25px auto 15px;
+`;
+
+const Divider = styled.div`
+  border-top: 1px solid #e0e0e0;
+  max-width: 670px;
+  margin: 24px auto;
+`;
+
 export default class KYC extends React.Component {
   componentDidMount() {
     this.loadIFrame(this.props.kycToken);
@@ -31,8 +41,13 @@ export default class KYC extends React.Component {
     };
   }
 
+  isTelegramCallBack() {
+    if (this.props.locationPathname.indexOf('tg_passport') > 0) return true;
+    return false;
+  }
+
   loadTelegramPassport(accessToken) {
-    if (this.props.locationPathname.indexOf('tg_passport') > 0) return; // do not show button if it was a call back
+    if (this.isTelegramCallBack()) return; // do not show button if it was a call back
 
     const addScript = document.createElement('script');
     addScript.setAttribute('src', '/telegram-passport.js');
@@ -68,7 +83,14 @@ export default class KYC extends React.Component {
     return (
       <Wrapper>
         <div id="idensic" />
-        <div id="telegram_passport_auth" />
+        {!this.isTelegramCallBack() && (
+          <div>
+            <Divider />
+            <Or>or</Or>
+            <div id="telegram_passport_auth" />
+            <Divider />
+          </div>
+        )}
       </Wrapper>
     );
   }
