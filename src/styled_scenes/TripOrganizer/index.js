@@ -555,7 +555,7 @@ export default class TripOrganizer extends Component {
     this.childRefs = refs;
   };
 
-  checkSingleService = async (data, startDate, guests) => {
+  checkSingleService = async (data, startDate, guests, attempt = 1) => {
     try {
       const result = await axios.post(`/services/${data.service._id}/availability`, {
         bookingDate: startDate
@@ -567,7 +567,11 @@ export default class TripOrganizer extends Component {
       return result;
     } catch (e) {
       // Retry!
-      return this.checkSingleService(data, startDate, guests);
+      if (attempt < 3) {
+        // retry! this is a quick fix, we need a better way to handle errors
+        return this.checkSingleService(data, startDate, guests, attempt + 1);
+      }
+      return {};
     }
   };
 
