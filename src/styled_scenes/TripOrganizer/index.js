@@ -11,7 +11,7 @@ import axios from 'libs/axios';
 import { media } from 'libs/styled';
 import axiosOriginal from 'axios';
 import history from '../../main/history';
-import { getPriceFromServiceOption, calculateBottomPosition } from 'libs/Utils';
+import { getPriceFromServiceOption, getPeopleCount, calculateBottomPosition } from 'libs/Utils';
 
 import TopBar from 'shared_components/TopBar';
 import BrandFooter from 'shared_components/BrandFooter';
@@ -118,6 +118,7 @@ function createTripState(props, state) {
           price: getPriceFromServiceOption(
             props.trip.services.find(item => item.service._id === selected.serviceId).basePrice,
             selected.price,
+            getPeopleCount(state.trip),
           ),
         },
       };
@@ -155,6 +156,7 @@ const calculatePrice = prevState => ({
           prevState.optionsSelected[elem.day] &&
             prevState.optionsSelected[elem.day][elem.serviceId] &&
             prevState.optionsSelected[elem.day][elem.serviceId].price,
+          getPeopleCount(prevState.trip),
         );
         return price + optionPrice;
       }
