@@ -32,7 +32,9 @@ class Results extends React.Component {
       [];
     let latitude = search_params.latitude || '';
     let longitude = search_params.longitude || '';
-    let person_nb = search_params.person_nb || '';
+    let adults = search_params.adults || 1;
+    let children = search_params.children || 0;
+    let infants = search_params.infants || 0;
     let start_date = search_params.start_date || '';
     let end_date = search_params.end_date || '';
     let keywords = search_params.keywords || '';
@@ -54,7 +56,9 @@ class Results extends React.Component {
           tags={tags_arr}
           latitude={latitude}
           longitude={longitude}
-          person_nb={person_nb}
+          adults={adults}
+          children={children}
+          infants={infants}
           start_date={start_date}
           end_date={end_date}
           keywords={keywords}

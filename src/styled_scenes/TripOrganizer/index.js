@@ -565,8 +565,10 @@ export default class TripOrganizer extends Component {
           .clone()
           .add(data.day - 1, 'days')
           .format('YYYY-MM-DD'),
-        adultCount: guests,
-        peopleCount: guests,
+        adultCount: guests.adults,
+        childCount: guests.children,
+        infantCount: guests.infants,
+        peopleCount: guests.adults + guests.children + guests.infants,
       });
       return result;
     } catch (e) {
@@ -631,7 +633,11 @@ export default class TripOrganizer extends Component {
   changeDates = dates => {
     this.checkAllServicesAvailability({
       startDate: moment(dates.start_date),
-      guests: this.props.numberOfPeople,
+      guests: {
+        adults: this.props.adults,
+        children: this.props.children,
+        infants: this.props.infants,
+      },
     });
     this.props.changeDates(dates);
     this.autoPatchTrip();
@@ -643,7 +649,7 @@ export default class TripOrganizer extends Component {
   changeGuests = data => {
     this.checkAllServicesAvailability({
       startDate: this.props.startDate,
-      guests: data.person_nb,
+      guests: data,
     });
 
     this.props.changeDates(data);
@@ -724,7 +730,7 @@ export default class TripOrganizer extends Component {
       return 'You need to select a start date';
     }
 
-    if (!this.props.numberOfPeople) {
+    if (!this.props.adults) {
       return 'You need to select a number of adults';
     }
 
@@ -899,7 +905,11 @@ export default class TripOrganizer extends Component {
       () => {
         this.checkAllServicesAvailability({
           startDate: this.props.startDate,
-          guests: this.props.numberOfPeople,
+          guests: {
+            adults: this.props.adults,
+            children: this.props.children,
+            infants: this.props.infants,
+          },
         });
         this.autoPatchTrip();
       },
@@ -907,7 +917,7 @@ export default class TripOrganizer extends Component {
   };
 
   renderPageContent = () => {
-    const { startDate, numberOfPeople } = this.props;
+    const { startDate, adults, children, infants } = this.props;
     const {
       availability,
       trip,
@@ -987,7 +997,9 @@ export default class TripOrganizer extends Component {
           changeDates={this.changeDates}
           changeGuests={this.changeGuests}
           startDate={startDate}
-          numberOfPeople={numberOfPeople}
+          adults={adults}
+          children={children}
+          infants={infants}
           price={(trip.basePrice || 0).toFixed(2)}
           bookError={this.getBookError()}
           shareError={this.getShareError()}
@@ -998,7 +1010,7 @@ export default class TripOrganizer extends Component {
           isCheckingList={isCheckingList}
           availability={availability.data}
           trip={trip}
-          numberOfPeople={numberOfPeople}
+          numberOfPeople={adults + children + infants}
           startDate={startDate}
           assignRefsToParent={this.assignRefs}
           days={days}

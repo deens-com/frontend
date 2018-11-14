@@ -65,7 +65,9 @@ class Results extends Component {
         : moment()
             .add(1, 'days')
             .format(),
-      person_nb: props.search_query.person_nb || undefined,
+      adults: props.search_query.adults || undefined,
+      children: props.search_query.childen || undefined,
+      infants: props.search_query.infants || undefined,
       service_type: props.search_query.type || [],
       tags: [],
       startDate: null,
@@ -101,7 +103,9 @@ class Results extends Component {
       type: this.props.search_query.type,
       start_date: this.props.search_query.start_date,
       end_date: this.props.search_query.end_date,
-      person_nb: this.props.search_query.person_nb,
+      adults: this.props.search_query.adults,
+      children: this.props.search_query.children,
+      infants: this.props.search_query.infants,
       latitude: this.props.search_query.latitude,
       longitude: this.props.search_query.longitude,
       address: this.props.search_query.address,

@@ -17,6 +17,7 @@ import 'react-dates/lib/css/_datepicker.css';
 
 import StyledInput from 'shared_components/StyledInput';
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
+import GuestsSelector from 'shared_components/SelectGuests/GuestsSelector';
 import * as results_actions from './../../../scenes/results/actions';
 
 const radiusOptions = [1, 5, 10, 20, 50, 100];
@@ -175,7 +176,9 @@ class Filters extends Component {
             .format(),
       text: props.search_query.text || undefined,
       previousPropsText: props.search_query.text,
-      person_nb: props.search_query.person_nb || undefined,
+      adults: props.search_query.adults || undefined,
+      children: props.search_query.children || undefined,
+      infants: props.search_query.infants || undefined,
       service_type: props.search_query.type || [],
       tags: props.search_query.tags || [],
       showFilters: false,
@@ -231,7 +234,9 @@ class Filters extends Component {
       type: this.props.search_query.type,
       start_date: this.props.search_query.start_date,
       end_date: this.props.search_query.end_date,
-      person_nb: this.props.search_query.person_nb,
+      adults: Number(this.props.search_query.adults),
+      children: Number(this.props.search_query.children),
+      infants: Number(this.props.search_query.infants),
       latitude: this.props.search_query.latitude,
       longitude: this.props.search_query.longitude,
       address: this.props.search_query.address,
@@ -254,6 +259,14 @@ class Filters extends Component {
     query_params.latitude = lat;
     query_params.longitude = lon;
     query_params.address = addr;
+    this.props.update_path(query_params, this.props.history, this.props.routeState);
+  }
+
+  refetch_results_for_guests({ adults, children, infants }) {
+    const query_params = this.get_query_params();
+    query_params.adults = adults;
+    query_params.children = children;
+    query_params.infants = infants;
     this.props.update_path(query_params, this.props.history, this.props.routeState);
   }
 
@@ -303,11 +316,19 @@ class Filters extends Component {
     this.refetch_results({ type: [type] });
   }
 
-  handleGuestsNbChange = (event, data) => {
-    const nb = data.value;
+  handleGuestsNbChange = data => {
+    console.log('data', data);
     this.handleGuestsPopupClose();
-    this.setState({ person_nb: nb });
-    this.refetch_results({ person_nb: nb });
+    this.setState({
+      adults: data.adults,
+      children: data.children,
+      infants: data.infants,
+    });
+    this.refetch_results_for_guests({
+      adults: data.adults,
+      children: data.children,
+      infants: data.infants,
+    });
   };
 
   handleDatesChange = dateRange => {
@@ -644,21 +665,13 @@ class Filters extends Component {
       },
       guests: {
         content: (
-          <Dropdown
-            placeholder={
-              (this.props.search_query.person_nb || 0) +
-              ` Adult${this.props.search_query.person_nb > 1 ? 's' : ''}`
-            }
-            options={[
-              { text: 1, value: 1 },
-              { text: 2, value: 2 },
-              { text: 3, value: 3 },
-              { text: 4, value: 4 },
-              { text: 5, value: 5 },
-            ]}
-            onChange={this.handleGuestsNbChange}
-            fluid
-            selection
+          <GuestsSelector
+            adults={this.props.search_query.adults || 1}
+            children={this.props.search_query.children || 0}
+            infants={this.props.search_query.infants || 0}
+            close={this.handleGuestsPopupClose}
+            onApply={this.handleGuestsNbChange}
+            relative
           />
         ),
         on: 'click',
@@ -801,9 +814,14 @@ class Filters extends Component {
   };
 
   renderGuests = () => {
-    if (!this.props.search_query.person_nb) {
+    if (!this.props.search_query.adults) {
       return null;
     }
+
+    const guests =
+      this.props.search_query.adults +
+      (this.props.search_query.children || 0) +
+      (this.props.search_query.infants || 0);
 
     return (
       <React.Fragment>
@@ -811,12 +829,7 @@ class Filters extends Component {
           <p> &nbsp; {'for '} </p>
         </div>
 
-        {this.renderEditable(
-          'guests',
-          `${this.props.search_query.person_nb} adult${
-            this.props.search_query.person_nb > 1 ? 's' : ''
-          }`,
-        )}
+        {this.renderEditable('guests', `${guests} guest${guests > 1 ? 's' : ''}`)}
       </React.Fragment>
     );
   };
@@ -849,7 +862,7 @@ class Filters extends Component {
             </React.Fragment>,
             { addMargin: true },
           )}
-        {!this.props.search_query.person_nb &&
+        {!this.props.search_query.adults &&
           this.renderEditable(
             'guests',
             <React.Fragment>
@@ -879,7 +892,6 @@ class Filters extends Component {
     let end_date = this.props.search_query.end_date;
     let formatted_end_date =
       end_date && end_date.length ? moment(parseInt(end_date, 10)).format('Do MMMM, YYYY') : '';
-    let person_nb = this.props.search_query.person_nb;
     let serviceTypes = this.props.search_query.type;
     // let tags = this.props.search_query.tags || [];
     let address = this.props.search_query.address;
@@ -1060,7 +1072,12 @@ class Filters extends Component {
 const mapStateToProps = state => {
   return {
     results: state.ResultsReducer.results,
-    search_query: state.ResultsReducer.search_query,
+    search_query: {
+      ...state.ResultsReducer.search_query,
+      adults: Number(state.ResultsReducer.search_query.adults) || undefined,
+      children: Number(state.ResultsReducer.search_query.children) || undefined,
+      infants: Number(state.ResultsReducer.search_query.infants) || undefined,
+    },
   };
 };
 
