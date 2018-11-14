@@ -198,10 +198,13 @@ const Footer = styled.div`
 `;
 
 function stateFromProps(props) {
-  console.log('la prima', props.trip.duration, props.trip.adultCount);
   return {
     days: props.trip.duration / 1440 || 1,
-    guests: Array.from({ length: props.trip.adultCount }).map(_ => ({ type: 'adult' })),
+    guests: [
+      ...Array.from({ length: props.trip.adultCount }).map(_ => ({ type: 'adult' })),
+      ...Array.from({ length: props.trip.childrenCount }).map(_ => ({ type: 'child' })),
+      ...Array.from({ length: props.trip.infantCount }).map(_ => ({ type: 'infant' })),
+    ],
   };
 }
 
@@ -231,7 +234,10 @@ class CheckoutContainer extends React.Component {
     if (!props.trip) {
       return null;
     }
-    if (!state.days || props.trip.adultCount !== state.guests.length) {
+    const guests =
+      props.trip.adultCount + (props.trip.childrenCount || 0) + (props.trip.infantCount || 0);
+
+    if (!state.days || guests !== state.guests.length) {
       return stateFromProps(props);
     }
     return null;
@@ -312,6 +318,13 @@ class CheckoutContainer extends React.Component {
     );
   };
 
+  calculateGuests = () =>
+    this.props.trip
+      ? this.props.trip.adultCount +
+        (this.props.trip.childrenCount || 0) +
+        (this.props.trip.infantCount || 0)
+      : 0;
+
   renderStep() {
     const { step, guests, loadingProvision, errorProvision } = this.state;
     const { trip } = this.props;
@@ -342,7 +355,7 @@ class CheckoutContainer extends React.Component {
       <CheckoutTrip trip={trip} />
     ) : (
       <GuestsData
-        number={this.state.guests.length}
+        guests={this.state.guests}
         onChange={this.handleGuestsDataChange}
         nextDisable={this.nextDisable}
         nextEnable={this.nextEnable}
@@ -353,7 +366,7 @@ class CheckoutContainer extends React.Component {
   render() {
     const { trip, isLoading, isGDPRDismissed } = this.props;
     const { days, step } = this.state;
-
+    const numberOfGuests = this.calculateGuests();
     return (
       <Page topPush>
         <TopBar fixed />
@@ -398,7 +411,7 @@ class CheckoutContainer extends React.Component {
                   </Location>
                   <Dates>{formatDate(trip.startDate, days)}</Dates>
                   <Guests>
-                    {trip.adultCount} {trip.adultCount === 1 ? 'Guest' : 'Guests'}
+                    {numberOfGuests} {numberOfGuests === 1 ? 'Guest' : 'Guests'}
                   </Guests>
                 </SummaryData>
                 <TotalPriceWrapper>

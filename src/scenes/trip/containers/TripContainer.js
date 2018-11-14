@@ -44,7 +44,6 @@ class TripContainer extends Component {
         isLoading={isLoading}
         trip={trip}
         owner={owner}
-        numberOfPeople={numberOfPeople}
         startDate={startDate}
         endDate={endDate}
         changeDates={changeDates}

@@ -215,5 +215,5 @@ export function calculateBottomPosition(isGDPRDismissed, baseBottom = 0) {
 }
 
 export function getPeopleCount(trip) {
-  return trip.adultCount;
+  return trip.adultCount + (trip.childrenCount || 0) + (trip.infantCount || 0);
 }
