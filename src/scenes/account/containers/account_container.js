@@ -10,6 +10,7 @@ import { Route, withRouter } from 'react-router-dom';
 import BrandFooter from '../../../shared_components/BrandFooter';
 import styled from 'styled-components';
 import AccountTripsContainer from './AccountTripsContainer';
+import history from 'main/history';
 
 const StaticFooter = styled.footer`
   position: static;
@@ -19,6 +20,12 @@ const StaticFooter = styled.footer`
 class AccountContainer extends Component {
   componentDidMount() {
     this.props.getCurrentUser();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.session.email) {
+      history.push('/login');
+    }
   }
 
   render() {
