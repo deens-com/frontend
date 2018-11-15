@@ -7625,6 +7625,12 @@ react-motion@^0.5.2:
     prop-types "^15.5.8"
     raf "^3.1.0"
 
+react-number-format@^4.0.4:
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/react-number-format/-/react-number-format-4.0.4.tgz#0a9fffdcc0f43031eb8587aa22d616dca0852239"
+  dependencies:
+    prop-types "^15.6.0"
+
 react-outside-click-handler@^1.2.0:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/react-outside-click-handler/-/react-outside-click-handler-1.2.2.tgz#2c4609fbaacbfc192e269786d555419b115bf93f"
