@@ -20,13 +20,11 @@ export default class AddToTripButton extends React.Component {
     this.setState({ isOpen: true });
   };
 
-  handleClose = () => {
-    this.setState({ isOpen: false });
-  };
+  handleClose = () => {};
 
   onTripClickOverride = trip => {
     // close the popup
-    this.handleClose();
+    this.closePopupOnButtonClick();
     this.props.onTripClick(trip);
   };
 
@@ -39,6 +37,10 @@ export default class AddToTripButton extends React.Component {
   isLoggedIn = () => getSession() != null;
 
   redirectToLogin = () => history.push('/login');
+
+  closePopupOnButtonClick = () => {
+    this.setState({ isOpen: false });
+  };
 
   render() {
     const { props } = this;
@@ -53,6 +55,7 @@ export default class AddToTripButton extends React.Component {
         bgColor="rgb(95, 183, 158)"
         whiteText
         {...clickProps}
+        onClick={this.closePopupOnButtonClick}
       >
         Add to trip
         <Icon name="angle down" />
