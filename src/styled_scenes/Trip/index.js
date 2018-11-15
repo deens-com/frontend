@@ -201,7 +201,10 @@ export default class Trip extends Component {
   };
 
   handleCustomizeClick = () => {
-    if (this.props.trip.owner === this.props.currentUserId) {
+    if (
+      this.props.trip.owner === this.props.currentUserId &&
+      this.props.trip.bookingStatus !== 'booked'
+    ) {
       history.push(`/trips/organize/${this.props.trip._id}`);
       return;
     }
