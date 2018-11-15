@@ -45,6 +45,7 @@
     "react-i18next": "^7.8.0",
     "react-imgix": "^7.2.0",
     "react-media": "^1.8.0",
+    "react-number-format": "^4.0.4",
     "react-paginate": "^5.2.3",
     "react-places-autocomplete": "^7.2.0",
     "react-redux": "^5.0.7",

@@ -8,6 +8,8 @@ import { Link } from 'react-router-dom';
 import CustomButton from 'shared_components/Button';
 import { Menu, Card, Button } from 'semantic-ui-react';
 import ImgurAvatar from './../../../assets/no-avatar.png';
+import PlsIcon from 'assets/ic_pls.png';
+import NumberFormat from 'react-number-format';
 
 const AttributeTitle = styled.h6`
   font-size: 9px;
@@ -58,11 +60,20 @@ const FileInputWrapper = styled.div`
   }
 `;
 
+const PlsIconWrapper = styled.span`
+  position: relative;
+  left: 0.3em;
+  top: 0.15em;
+`;
+
+const PlsBalanceWrapper = styled.span``;
+
 class UserBasicInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
       pictureUploadError: '',
+      balanceCurrency: 'PLS',
     };
   }
 
@@ -83,6 +94,14 @@ class UserBasicInfo extends Component {
       return;
     }
     this.props.update_user_avatar(file);
+  };
+
+  showUsdBalance = e => {
+    this.setState({ balanceCurrency: 'USD' });
+  };
+
+  showPlsBalance = e => {
+    this.setState({ balanceCurrency: 'PLS' });
   };
 
   render() {
@@ -120,7 +139,34 @@ class UserBasicInfo extends Component {
               <Grid.Column textAlign="center">
                 <div>
                   <AttributeTitle>PLS Balance</AttributeTitle>
-                  <b>{this.props.user_profile.plsBalance || 0} 🄿</b>
+                  <PlsBalanceWrapper
+                    onMouseEnter={this.showUsdBalance}
+                    onMouseLeave={this.showPlsBalance}
+                  >
+                    {this.state.balanceCurrency === 'PLS' ? (
+                      <span>
+                        <NumberFormat
+                          value={this.props.user_profile.plsBalance || 0}
+                          thousandSeparator={true}
+                          displayType={'text'}
+                          decimalScale={2}
+                        />
+                        <PlsIconWrapper>
+                          <img src={PlsIcon} alt="plsIcon" />
+                        </PlsIconWrapper>
+                      </span>
+                    ) : (
+                      <span>
+                        <NumberFormat
+                          value={this.props.user_profile.plsBalance * 0.036 || 0}
+                          thousandSeparator={true}
+                          suffix={' USD'}
+                          displayType={'text'}
+                          decimalScale={2}
+                        />
+                      </span>
+                    )}
+                  </PlsBalanceWrapper>
                 </div>
               </Grid.Column>
               <Grid.Column textAlign="center">
