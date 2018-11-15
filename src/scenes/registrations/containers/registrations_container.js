@@ -80,6 +80,12 @@ class RegistrationsContainer extends Component {
       });
       return;
     }
+    if (this.state.password.length > 127) {
+      this.setState({
+        errors: { message: 'Password must be less than 128 characters long' },
+      });
+      return;
+    }
     if (this.state.username.length < 4) {
       this.setState({
         errors: { message: 'Username must be at least 4 characters long' },
