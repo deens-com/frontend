@@ -103,7 +103,6 @@ export const getCurrentUser = () => async dispatch => {
       return;
     }
     dispatch({ type: types.NOT_LOGGED_IN });
-    history.push('/login');
   } catch (error) {
     console.log(error);
   }
