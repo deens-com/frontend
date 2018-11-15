@@ -1,7 +1,6 @@
 import * as analytics from 'libs/analytics';
 import axios from 'libs/axios';
 import history from 'main/history';
-import { saveSession } from 'libs/user-session';
 
 export const types = {
   REGISTRATION_SUCCESS: 'REGISTRATION_SUCCESS',
@@ -44,22 +43,23 @@ export const postRegistration = (username, email, password, { from, action }) =>
       email: email,
       password: password,
     });
-    const loginResponse = await axios.post('/users/login', { username: email, password: password });
-    const auth0Token = loginResponse.data.access_token;
-    const user = await axios.get('/users/me', {
-      headers: { Authorization: `Bearer ${auth0Token}` },
-    });
-    const userData = user.data;
-    userData.accessToken = auth0Token;
-    dispatch(registrationSuccess({ session: userData }));
+    // const loginResponse = await axios.post('/users/login', { username: email, password: password });
+    // const auth0Token = loginResponse.data.access_token;
+    // const user = await axios.get('/users/me', {
+    //   headers: { Authorization: `Bearer ${auth0Token}` },
+    // });
+    // const userData = user.data;
+    // userData.accessToken = auth0Token;
+    // dispatch(registrationSuccess({ session: {} }));
+    // saveSession(userData);
+    // history.replace({
+    //   pathname: from || '/login',
+    //   state: {
+    //     action,
+    //   },
+    // });
     dispatch(setLoading(false));
-    saveSession(userData);
-    history.replace({
-      pathname: from || '/',
-      state: {
-        action,
-      },
-    });
+    history.push('/login');
   } catch (error) {
     dispatch(
       registrationFailed({

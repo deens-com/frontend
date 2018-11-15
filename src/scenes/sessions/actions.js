@@ -145,11 +145,18 @@ export const update_user_profile = (user_id, field_type, value) => {
           }
         }
         const updatedUser = await axios.patch('/users/me', { [field_type]: value }).catch(error => {
-          dispatch(displayUpdateError({ code: 422, error: error }));
+          return dispatch(
+            displayUpdateError({
+              code: 422,
+              error: error.response ? error.response.data.message : error,
+            }),
+          );
         });
-        const userObject = fetch_helpers.buildUserJson(updatedUser.data);
-        dispatch(sessionsFetched({ session: userObject }));
-        dispatch(displayUpdateError({}));
+        if (updatedUser.data) {
+          const userObject = fetch_helpers.buildUserJson(updatedUser.data);
+          dispatch(sessionsFetched({ session: userObject }));
+          dispatch(displayUpdateError({}));
+        }
       } catch (error) {
         dispatch(displayUpdateError({ code: 422, error: error }));
       }
