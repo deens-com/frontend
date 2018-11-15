@@ -842,6 +842,7 @@ class Filters extends Component {
           )}
         {this.props.tags.length === 0 &&
           !this.state.text &&
+          (this.props.tagsOptions && this.props.tagsOptions.length > 0) &&
           this.renderEditable(
             'mood',
             <React.Fragment>
