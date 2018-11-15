@@ -10,6 +10,17 @@ import SelectGuests from 'shared_components/SelectGuests';
 const now = moment().add(1, 'days');
 const isDayBlocked = date => date.valueOf() <= now.valueOf();
 
+function guestsText(adults, children, infants) {
+  let text = `${adults} adult${adults === 1 ? '' : 's'}`;
+  if (children) {
+    text = `${text}, ${children} child${children === 1 ? '' : 'ren'}`;
+  }
+  if (infants) {
+    text = `${text}, ${infants} infant${infants === 1 ? '' : 's'}`;
+  }
+  return text;
+}
+
 const Wrapper = styled.div`
   margin-top: 30px;
   text-align: center;
@@ -211,7 +222,7 @@ export default class CheckoutBox extends React.Component {
               onApply={this.props.changeGuests}
               renderTrigger={({ triggerPopup }) => (
                 <FakeDropdown onClick={triggerPopup}>
-                  {adults + children + infants} Guests
+                  {guestsText(adults, children, infants)}
                 </FakeDropdown>
               )}
             />

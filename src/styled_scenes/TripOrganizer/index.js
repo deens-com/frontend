@@ -660,6 +660,14 @@ export default class TripOrganizer extends Component {
   };
 
   changeGuests = data => {
+    this.setState(prevState => ({
+      trip: {
+        ...prevState.trip,
+        adultCount: data.adults,
+        childrenCount: data.children,
+        infantCount: data.infants,
+      },
+    }));
     this.checkAllServicesAvailability({
       startDate: this.props.startDate,
       guests: data,

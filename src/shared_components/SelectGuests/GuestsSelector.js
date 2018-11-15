@@ -157,7 +157,11 @@ export default class GuestsSelector extends React.Component {
     return (
       <SelectorWrapper relative={relative} innerRef={this.wrapperRef}>
         <Row>
-          <LeftColumn>Adults</LeftColumn>
+          <LeftColumn>
+            Adults
+            <br />
+            (Ages > 13)
+          </LeftColumn>
           <RightColumn>
             <IconButton disabled={adults === 1} onClick={this.removeAdult}>
               <MinusIcon style={{ width: 24, height: 24 }} />
@@ -172,7 +176,7 @@ export default class GuestsSelector extends React.Component {
           <LeftColumn>
             Children
             <br />
-            Ages 2-12
+            (Ages 2-12)
           </LeftColumn>
           <RightColumn>
             <IconButton disabled={children === 0} onClick={this.removeChild}>
@@ -188,7 +192,7 @@ export default class GuestsSelector extends React.Component {
           <LeftColumn>
             Infants
             <br />
-            Under 2
+            (Under 2)
           </LeftColumn>
           <RightColumn>
             <IconButton disabled={infants === 0} onClick={this.removeInfant}>

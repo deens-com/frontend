@@ -12,8 +12,12 @@ class TripContainer extends Component {
     super(props);
     props.fetchTrip(props.match.params.id);
 
-    if (props.startDate && props.numberOfPeople) {
-      props.checkAvailability(props.match.params.id, props.startDate, props.numberOfPeople);
+    if (props.startDate && props.adults) {
+      props.checkAvailability(props.match.params.id, props.startDate, {
+        adults: props.adults,
+        infants: props.infants,
+        children: props.children,
+      });
     }
   }
 
@@ -23,7 +27,9 @@ class TripContainer extends Component {
       trip,
       isLoading,
       owner,
-      numberOfPeople,
+      adults,
+      children,
+      infants,
       startDate,
       endDate,
       changeDates,
@@ -54,6 +60,9 @@ class TripContainer extends Component {
         cloneTrip={cloneTrip}
         currentUserId={session._id}
         history={this.props.history}
+        adults={adults}
+        children={children}
+        infants={infants}
         action={
           this.props.location && this.props.location.state && this.props.location.state.action
         }
@@ -70,7 +79,9 @@ const mapStateToProps = state => {
     error: state.TripReducer.error,
     isLoading: state.TripReducer.isLoading,
     owner: state.TripReducer.owner,
-    numberOfPeople: state.ResultsReducer.search_query.person_nb || 1,
+    adults: state.ResultsReducer.search_query.adults || 1,
+    children: state.ResultsReducer.search_query.children || 0,
+    infants: state.ResultsReducer.search_query.infants || 0,
     startDate: state.ResultsReducer.search_query.start_date,
     endDate: state.ResultsReducer.search_query.end_date,
     availability: state.TripReducer.availability,
