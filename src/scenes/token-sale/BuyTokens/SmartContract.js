@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { media } from 'libs/styled';
+import axios from 'libs/axios';
 import { CopyToClipboard } from 'shared_components/icons';
+import Button from 'shared_components/Button';
 import { Popup } from 'semantic-ui-react';
 import etherScanLogo from '../images/etherscan.png';
 
@@ -47,8 +48,12 @@ const AddressInput = styled.input`
   border: 1px solid #a7cfd6;
   border-radius: 5px;
   color: #58939d;
-  background-color: #d2ecf1;
-  margin-top: 15px;
+  margin: 15px 0;
+  outline: 0;
+  width: 100%;
+  :disabled {
+    background-color: #d2ecf1;
+  }
 `;
 
 const ChangeAddress = styled.p`
@@ -159,9 +164,12 @@ export default class BuyTokens extends React.Component {
     super(props);
     this.state = {
       copiedToClipboard: false,
+      addedAddress: false,
+      error: null,
     };
 
     this.addressRef = React.createRef();
+    this.inputRef = React.createRef();
   }
 
   onCopy = () => {
@@ -173,6 +181,22 @@ export default class BuyTokens extends React.Component {
     setTimeout(() => this.setState({ copiedToClipboard: false }), 2000);
   };
 
+  addAddress = async () => {
+    const address = this.inputRef.current;
+    try {
+      this.setState({
+        error: null,
+        addedAddress: true,
+      });
+      await axios.patch('/users/me', { whitelistedIcoAddresses: [address.value] });
+    } catch (e) {
+      this.setState({
+        error: e,
+        addedAddress: false,
+      });
+    }
+  };
+
   render() {
     return (
       <React.Fragment>
@@ -180,7 +204,27 @@ export default class BuyTokens extends React.Component {
           <WalletWrapper>
             <WalletContent>
               <WalletTitle>Your wallet address</WalletTitle>
-              <AddressInput disabled value="0x..." />
+              <AddressInput
+                innerRef={this.inputRef}
+                disabled={Boolean(this.props.whitelistedAddress) || this.state.addedAddress}
+                value={this.props.whitelistedAddress}
+              />
+              {(!this.props.whitelistedAddress || this.state.addedAddress) && (
+                <Button
+                  customTheme={{
+                    background: '#12545F',
+                    backgroundHover: '#12545F',
+                    border: '#12545F',
+                    borderHover: '#12545F',
+                    color: '#FFFFFF',
+                    colorHover: '#FFFFFF',
+                  }}
+                  padding="10px 15px"
+                  onClick={this.addAddress}
+                >
+                  Whitelist address
+                </Button>
+              )}
               <ChangeAddress>
                 In order to change your address please contact us at{' '}
                 <a href="mailto:contribute@please.com">contribute@please.com</a>
@@ -238,7 +282,7 @@ export default class BuyTokens extends React.Component {
               wallet. Use the following information:
             </strong>
           </p>
-          <p>Address: 0x...</p>
+          <p>Address: 0xd7f82e36ef04c9543ce18e6d1072354a1b9d629c</p>
           <p>Decimals: 18</p>
           <p>Symbol: PLS </p>
         </Footer>

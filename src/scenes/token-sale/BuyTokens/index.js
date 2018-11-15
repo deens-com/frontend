@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { media } from 'libs/styled';
 import { Segment } from 'semantic-ui-react';
 import Input from 'shared_components/StyledInput';
-import Button from 'shared_components/Button';
+import BuyButton from './BuyButton';
 import { Link } from 'react-router-dom';
 
 const plsValue = 0.36;
@@ -127,9 +127,7 @@ export default class BuyTokens extends React.Component {
                 <SecondCol>{total}</SecondCol>
               </Row>
             </Table>
-            <Button padding="8px 21px" fontSize="14" theme="fillLightGreen" onClick={() => {}}>
-              Buy Tokens
-            </Button>
+            <BuyButton amount={this.state.amount} onSuccess={this.props.onTokenBought} />
           </SegmentContent>
         </Segment>
       </Wrapper>
