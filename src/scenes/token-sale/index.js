@@ -19,6 +19,7 @@ import { media } from 'libs/styled';
 import headerImg from './images/header.jpg';
 
 import TermsAgreement from './TermsAgreement';
+import ThankYou from './ThankYou';
 import TopBar from '../../shared_components/TopBar';
 import { Page, PageWrapper, PageContent } from '../../shared_components/layout/Page';
 import BrandFooter from '../../shared_components/BrandFooter';
@@ -114,6 +115,12 @@ class TokenSale extends Component {
     return 'Purchase PLS Tokens';
   }
 
+  onTokenBought = async () => {
+    this.setState({
+      tokensBought: true,
+    });
+  };
+
   onTermsAgree = async () => {
     this.setState({
       agreedTerms: true,
@@ -122,19 +129,29 @@ class TokenSale extends Component {
   };
 
   renderContent() {
+    if (this.props.isLoadingToken || this.state.isLoading) {
+      return <Loader inline="centered" active size="big" />;
+    }
+
+    if (this.state.tokenBought) {
+      return <ThankYou />;
+    }
+
     if (this.props.kycState === 2 || this.state.agreedTerms) {
       if (this.props.location.pathname === '/token-sale/smart-contract') {
-        return <SmartContract />;
+        return (
+          <SmartContract
+            whitelistedAddress={
+              this.props.whitelistedAddresses && this.props.whitelistedAddresses[0]
+            }
+          />
+        );
       }
-      return <BuyTokens plsBalance={this.props.plsBalance} />;
+      return <BuyTokens onTokenBought={this.onTokenBought} plsBalance={this.props.plsBalance} />;
     }
 
     if (this.props.kycState === 1) {
       return <TermsAgreement onProceed={this.onTermsAgree} />;
-    }
-
-    if (this.props.isLoadingToken || this.state.isLoading) {
-      return <Loader inline="centered" active size="big" />;
     }
 
     if (this.props.kyc_token) {
@@ -194,6 +211,7 @@ const mapStateToProps = state => {
     kycState: state.SessionsReducer.session.kycValidated || 0,
     plsBalance: state.SessionsReducer.session.plsBalance,
     oldKycToken: state.SessionsReducer.session.kycToken,
+    whitelistedAddresses: state.SessionsReducer.session.whitelistedIcoAddresses,
     isLoadingToken: state.TokenSaleReducer.loading,
   };
 };
