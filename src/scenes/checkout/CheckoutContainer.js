@@ -257,9 +257,16 @@ class CheckoutContainer extends React.Component {
         history.replace(`/trips/organize/${this.tripId}`);
         return;
       }
+
+      if (this.props.trip.services.length === 0) {
+        history.replace(`/trips/organize/${this.tripId}`);
+        return;
+      }
+
       if (this.props.availability) {
         if (this.props.availability.some(service => !service.isAvailable)) {
           history.replace(`/trips/organize/${this.tripId}`);
+          return;
         }
       } else if (!this.props.isCheckingAvailability) {
         this.props.checkAvailability(this.tripId, this.props.trip.startDate, {
