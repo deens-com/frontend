@@ -25,13 +25,12 @@ import { media } from '../../libs/styled';
 import { Page, PageContent } from './../../shared_components/layout/Page';
 
 const MapWrapper = styled.div`
-  // width: 42%;
   width: 100%;
   background: #5cb89e;
   display: flex;
   align-items: center;
   justify-content: center;
-  max-height: 900px;
+  height: calc(100vh - 70px - 1.8em - 60px);
   margin-top: 1.8em;
 
   h3 {
@@ -212,7 +211,6 @@ export default class ResultsScene extends Component {
           </ServicesWrapper>
 
           <MapWrapper style={{ display: this.state.showMap ? 'flex' : 'none' }}>
-            <br />
             <GoogleMapReact
               center={center}
               zoom={zoom}

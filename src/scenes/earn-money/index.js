@@ -169,7 +169,7 @@ const EarnMoney = ({ loggedIn }) => {
               <CallToAction
                 loggedIn={loggedIn}
                 text="Share a trip"
-                url="/search"
+                url="/results?serviceTypes=trip"
                 loggedOutText="Log In to Share Trip"
               />
             </InfoContent>
