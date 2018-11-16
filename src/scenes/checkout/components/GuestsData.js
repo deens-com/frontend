@@ -52,53 +52,63 @@ const TitleSelection = Group.extend`
   margin-left: 0;
 `;
 
+const Type = styled.div`
+  color: #38d39f;
+  font-weight: bold;
+`;
+
 /**
  * Builds up the higher level blocks of the page
  */
-const GuestsData = ({ number, onChange }) => {
+const GuestsData = ({ guests, onChange }) => {
   return (
     <Form>
       <Title>
         <span>Guests Details</span>
       </Title>
-      {Array.from({ length: number }).map((_, i) => (
-        <Guest key={i}>
-          <TitleSelection>
-            <label htmlFor="title">Title</label>
-            <Input>
-              <Dropdown
-                name="title"
-                options={[
-                  { text: 'Mr.', value: 'Mr' },
-                  { text: 'Mrs.', value: 'Mrs' },
-                  { text: 'Miss.', value: 'Miss' },
-                ]}
-                guest={i}
-                onChange={onChange}
-                selection
-                fluid
+      {guests.map((guest, i) => (
+        <React.Fragment>
+          <Type>
+            {i + 1}- {guest.type.charAt(0).toUpperCase() + guest.type.slice(1)}
+          </Type>
+          <Guest key={i}>
+            <TitleSelection>
+              <label htmlFor="title">Title</label>
+              <Input>
+                <Dropdown
+                  name="title"
+                  options={[
+                    { text: 'Mr.', value: 'Mr' },
+                    { text: 'Mrs.', value: 'Mrs' },
+                    { text: 'Miss.', value: 'Miss' },
+                  ]}
+                  guest={i}
+                  onChange={onChange}
+                  selection
+                  fluid
+                />
+              </Input>
+            </TitleSelection>
+            <Group>
+              <label htmlFor="firstName">First Name</label>
+              <Input
+                name="firstName"
+                onChange={event =>
+                  onChange(event, { guest: i, value: event.target.value, name: 'firstName' })
+                }
               />
-            </Input>
-          </TitleSelection>
-          <Group>
-            <label htmlFor="firstName">First Name</label>
-            <Input
-              name="firstName"
-              onChange={event =>
-                onChange(event, { guest: i, value: event.target.value, name: 'firstName' })
-              }
-            />
-          </Group>
-          <Group>
-            <label htmlFor="lastName">Last Name</label>
-            <Input
-              name="lastName"
-              onChange={event =>
-                onChange(event, { guest: i, value: event.target.value, name: 'lastName' })
-              }
-            />
-          </Group>
-        </Guest>
+            </Group>
+            <Group>
+              <label htmlFor="lastName">Last Name</label>
+              <Input
+                name="lastName"
+                onChange={event =>
+                  onChange(event, { guest: i, value: event.target.value, name: 'lastName' })
+                }
+              />
+            </Group>
+          </Guest>
+        </React.Fragment>
       ))}
     </Form>
   );

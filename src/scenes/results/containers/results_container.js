@@ -12,7 +12,9 @@ class ResultsContainer extends Component {
       tags: this.props.tags,
       latitude: this.props.latitude,
       longitude: this.props.longitude,
-      person_nb: this.props.person_nb,
+      adults: Number(this.props.adults),
+      children: Number(this.props.children),
+      infants: Number(this.props.infants),
       start_date: this.props.start_date,
       end_date: this.props.end_date,
       keywords: this.props.keywords,
@@ -36,7 +38,9 @@ class ResultsContainer extends Component {
         tags: next_props.tags,
         latitude: next_props.latitude,
         longitude: next_props.longitude,
-        person_nb: next_props.person_nb,
+        adults: Number(next_props.adults),
+        children: Number(next_props.children),
+        infants: Number(next_props.infants),
         start_date: next_props.start_date,
         end_date: next_props.end_date,
         keywords: next_props.keywords,
@@ -59,7 +63,9 @@ class ResultsContainer extends Component {
       current_props.tags !== next_props.tags ||
       current_props.latitude !== next_props.latitude ||
       current_props.longitude !== next_props.longitude ||
-      current_props.person_nb !== next_props.person_nb ||
+      current_props.adults !== next_props.adults ||
+      current_props.children !== next_props.children ||
+      current_props.infants !== next_props.infants ||
       current_props.start_date !== next_props.start_date ||
       current_props.end_date !== next_props.end_date ||
       current_props.keywords !== next_props.keywords ||

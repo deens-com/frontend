@@ -27,7 +27,9 @@ class TripOrganizerContainer extends Component {
         trip={this.props.trip}
         tripId={this.props.match.params.id}
         startDate={moment(this.props.startDate)}
-        numberOfPeople={this.props.numberOfPeople}
+        adults={this.props.adults || 1}
+        children={this.props.children}
+        infants={this.props.infants}
         changeDates={this.props.changeDates}
         updatePath={this.props.updatePath}
         history={this.props.history}
@@ -56,7 +58,9 @@ const mapStateToProps = state => {
     error: state.TripReducer.error,
     isLoading: state.TripReducer.isLoading,
     owner: state.TripReducer.owner,
-    numberOfPeople: state.ResultsReducer.search_query.person_nb || 1,
+    adults: state.ResultsReducer.search_query.adults,
+    children: state.ResultsReducer.search_query.children,
+    infants: state.ResultsReducer.search_query.infants,
     startDate,
     endDate: state.ResultsReducer.search_query.end_date,
     availability: state.TripReducer.availability,

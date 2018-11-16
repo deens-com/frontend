@@ -121,7 +121,7 @@ export class CheckoutTrip extends React.Component {
     return (
       <PriceWrapper>
         <Price>
-          ${price.toFixed(2)} for {trip.adultCount} people
+          ${price.toFixed(2)} for {getPeopleCount(trip)} people
         </Price>
       </PriceWrapper>
     );

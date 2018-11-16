@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import moment from 'moment';
 import styled from 'styled-components';
 import history from 'main/history';
-import { Loader, Popup, Icon, Dropdown, Dimmer } from 'semantic-ui-react';
+import { Loader, Popup, Icon, Dimmer } from 'semantic-ui-react';
 import { SingleDatePicker } from 'react-dates';
 import { calculateBottomPosition } from 'libs/Utils';
 
@@ -13,6 +13,7 @@ import TopBar from 'shared_components/TopBar';
 
 // STYLES
 import { Page, PageContent } from 'shared_components/layout/Page';
+import GuestsSelector from 'shared_components/SelectGuests/GuestsSelector';
 import { media } from 'libs/styled';
 
 import Header from './Header';
@@ -175,13 +176,17 @@ export default class Trip extends Component {
           .add(this.props.trip.duration, 'minutes')
           .valueOf(),
     });
-    this.checkAvailability(day, this.props.numberOfPeople);
+    this.checkAvailability(day, {
+      adults: this.props.adults,
+      children: this.props.children,
+      infants: this.props.infants,
+    });
   };
 
-  handleGuestsChange = (_, data) => {
+  handleGuestsChange = data => {
     this.handleGuestsPopupClose();
-    this.props.changeDates({ person_nb: data.value });
-    this.checkAvailability(this.props.startDate, data.value);
+    this.props.changeDates(data);
+    this.checkAvailability(moment(this.props.startDate), data);
   };
 
   handleGuestsPopupClose = () => {
@@ -230,15 +235,7 @@ export default class Trip extends Component {
   };
 
   renderPageContent = () => {
-    const {
-      isLoading,
-      trip,
-      owner,
-      numberOfPeople,
-      availability,
-      isCheckingAvailability,
-      isCloning,
-    } = this.props;
+    const { isLoading, trip, owner, availability, isCheckingAvailability, isCloning } = this.props;
 
     if (isLoading || !trip) {
       return <Loader active size="massive" />;
@@ -312,20 +309,19 @@ export default class Trip extends Component {
             <SentenceText> for</SentenceText>
             <EditableElement>
               <Popup
-                trigger={<span>{numberOfPeople + ' Guests'}</span>}
+                trigger={
+                  <span>
+                    {this.props.adults + this.props.children + this.props.infants + ' Guests'}
+                  </span>
+                }
                 content={
-                  <Dropdown
-                    placeholder={numberOfPeople + ' Guests'}
-                    options={[
-                      { text: 1, value: 1 },
-                      { text: 2, value: 2 },
-                      { text: 3, value: 3 },
-                      { text: 4, value: 4 },
-                      { text: 5, value: 5 },
-                    ]}
-                    onChange={this.handleGuestsChange}
-                    fluid
-                    selection
+                  <GuestsSelector
+                    adults={this.props.adults}
+                    children={this.props.children}
+                    infants={this.props.infants}
+                    close={this.handleGuestsPopupClose}
+                    onApply={this.handleGuestsChange}
+                    relative
                   />
                 }
                 on="click"
@@ -343,7 +339,7 @@ export default class Trip extends Component {
             isCheckingAvailability={isCheckingAvailability}
             availability={availability}
             trip={trip}
-            numberOfPeople={numberOfPeople}
+            numberOfPeople={this.props.adults + this.props.children + this.props.infants}
             startDate={this.props.startDate}
             assignRefsToParent={this.assignRefs}
           />
@@ -353,7 +349,7 @@ export default class Trip extends Component {
   };
 
   render() {
-    const { trip, numberOfPeople, isGDPRDismissed } = this.props;
+    const { trip, adults, children, infants, isGDPRDismissed } = this.props;
 
     if (!trip) {
       return (
@@ -380,7 +376,7 @@ export default class Trip extends Component {
         <PageContent>{this.renderPageContent()}</PageContent>
         <FixedFooter
           price={trip.basePrice}
-          peopleNumber={numberOfPeople}
+          peopleNumber={adults + children + infants}
           startDate={this.props.startDate}
           endDate={this.props.endDate}
           booked={trip.bookingStatus === 'booked'}

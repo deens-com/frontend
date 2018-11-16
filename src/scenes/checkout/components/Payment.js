@@ -63,7 +63,7 @@ class Payment extends React.Component {
       >
         <PaymentSection
           tripId={trip._id}
-          numberOfPerson={trip.adultCount}
+          numberOfPerson={trip.adultCount + trip.childrenCount + trip.infantCount}
           pricePerPerson={trip.basePrice}
           totalPrice={totalPrice}
           onPaymentClick={() => {}}

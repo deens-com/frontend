@@ -118,7 +118,7 @@ function createTripState(props, state) {
           price: getPriceFromServiceOption(
             props.trip.services.find(item => item.service._id === selected.serviceId).basePrice,
             selected.price,
-            getPeopleCount(state.trip),
+            getPeopleCount(state.trip || props.trip),
           ),
         },
       };
@@ -134,7 +134,12 @@ function createTripState(props, state) {
 
   return {
     ...state,
-    trip: props.trip,
+    trip: {
+      ...props.trip,
+      adultCount: props.trip.adultCount || props.adults || 1,
+      childrenCount: props.trip.childrenCount || props.children || 0,
+      infantCount: props.trip.infantCount || props.infants || 0,
+    },
     days: mapServicesToDays(props.trip.services, props.trip.duration, props.trip.startDate),
     optionsSelected,
     daysByService,
@@ -258,7 +263,11 @@ export default class TripOrganizer extends Component {
     if (!prevProps.trip && this.props.trip) {
       this.checkAllServicesAvailability({
         startDate: this.props.startDate,
-        guests: this.props.numberOfPeople,
+        guests: {
+          adults: this.state.trip.adultCount,
+          children: this.state.trip.childrenCount,
+          infants: this.state.trip.infantCount,
+        },
       });
     }
   }
@@ -301,7 +310,6 @@ export default class TripOrganizer extends Component {
           [],
         ),
         ...(this.props.startDate ? { startDate: this.props.startDate } : {}),
-        ...(this.props.numberOfPeople ? { adultCount: this.props.numberOfPeople } : {}),
         duration: (this.state.days && daysToMinutes(this.state.days.length)) || 1,
         tags: this.state.trip.tags ? this.state.trip.tags.map(tag => tag._id) : [], // This could be done when loading the trip to avoid executing each time we save
         notes: this.state.notes,
@@ -377,8 +385,13 @@ export default class TripOrganizer extends Component {
               .clone()
               .add(day - 1, 'days')
               .format('YYYY-MM-DD'),
-            adultCount: this.props.numberOfPeople,
-            peopleCount: this.props.numberOfPeople,
+            adultCount: this.state.trip.adultCount,
+            childrenCount: this.state.trip.childrenCount,
+            infantCount: this.state.trip.infantCount,
+            peopleCount:
+              this.state.trip.adultCount +
+              this.state.trip.childrenCount +
+              this.state.trip.infantCount,
           }));
 
         this.setState(prevState => ({
@@ -565,8 +578,10 @@ export default class TripOrganizer extends Component {
           .clone()
           .add(data.day - 1, 'days')
           .format('YYYY-MM-DD'),
-        adultCount: guests,
-        peopleCount: guests,
+        adultCount: guests.adults,
+        childCount: guests.children,
+        infantCount: guests.infants,
+        peopleCount: guests.adults + guests.children + guests.infants,
       });
       return result;
     } catch (e) {
@@ -631,7 +646,11 @@ export default class TripOrganizer extends Component {
   changeDates = dates => {
     this.checkAllServicesAvailability({
       startDate: moment(dates.start_date),
-      guests: this.props.numberOfPeople,
+      guests: {
+        adults: this.state.trip.adultCount,
+        children: this.state.trip.childrenCount,
+        infants: this.state.trip.infantCount,
+      },
     });
     this.props.changeDates(dates);
     this.autoPatchTrip();
@@ -641,9 +660,17 @@ export default class TripOrganizer extends Component {
   };
 
   changeGuests = data => {
+    this.setState(prevState => ({
+      trip: {
+        ...prevState.trip,
+        adultCount: data.adults,
+        childrenCount: data.children,
+        infantCount: data.infants,
+      },
+    }));
     this.checkAllServicesAvailability({
       startDate: this.props.startDate,
-      guests: data.person_nb,
+      guests: data,
     });
 
     this.props.changeDates(data);
@@ -722,10 +749,6 @@ export default class TripOrganizer extends Component {
   getBookError = () => {
     if (!this.props.startDate) {
       return 'You need to select a start date';
-    }
-
-    if (!this.props.numberOfPeople) {
-      return 'You need to select a number of adults';
     }
 
     const checkingAvailability =
@@ -899,7 +922,11 @@ export default class TripOrganizer extends Component {
       () => {
         this.checkAllServicesAvailability({
           startDate: this.props.startDate,
-          guests: this.props.numberOfPeople,
+          guests: {
+            adults: this.state.trip.adultCount,
+            children: this.state.trip.childrenCount,
+            infants: this.state.trip.infantCount,
+          },
         });
         this.autoPatchTrip();
       },
@@ -907,7 +934,7 @@ export default class TripOrganizer extends Component {
   };
 
   renderPageContent = () => {
-    const { startDate, numberOfPeople } = this.props;
+    const { startDate } = this.props;
     const {
       availability,
       trip,
@@ -987,7 +1014,9 @@ export default class TripOrganizer extends Component {
           changeDates={this.changeDates}
           changeGuests={this.changeGuests}
           startDate={startDate}
-          numberOfPeople={numberOfPeople}
+          adults={trip.adultCount}
+          children={trip.childrenCount}
+          infants={trip.infantCount}
           price={(trip.basePrice || 0).toFixed(2)}
           bookError={this.getBookError()}
           shareError={this.getShareError()}
@@ -998,7 +1027,7 @@ export default class TripOrganizer extends Component {
           isCheckingList={isCheckingList}
           availability={availability.data}
           trip={trip}
-          numberOfPeople={numberOfPeople}
+          numberOfPeople={trip.adultCount + trip.childrenCount + trip.infantCount}
           startDate={startDate}
           assignRefsToParent={this.assignRefs}
           days={days}

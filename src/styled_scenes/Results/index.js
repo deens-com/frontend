@@ -201,7 +201,6 @@ export default class ResultsScene extends Component {
           )}
         <PageContent flex>
           <ServicesWrapper>
-            {/* <SearchFilters {...props} /> */}
             <Results
               {...props}
               onCardOver={this.onCardOver}

@@ -2,12 +2,24 @@ import React from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
 import { media } from 'libs/styled';
-import { Dropdown, Popup } from 'semantic-ui-react';
+import { Popup } from 'semantic-ui-react';
 import { SingleDatePicker } from 'react-dates';
 import Button from 'shared_components/Button';
+import SelectGuests from 'shared_components/SelectGuests';
 
 const now = moment().add(1, 'days');
 const isDayBlocked = date => date.valueOf() <= now.valueOf();
+
+function guestsText(adults, children, infants) {
+  let text = `${adults} adult${adults === 1 ? '' : 's'}`;
+  if (children) {
+    text = `${text}, ${children} child${children === 1 ? '' : 'ren'}`;
+  }
+  if (infants) {
+    text = `${text}, ${infants} infant${infants === 1 ? '' : 's'}`;
+  }
+  return text;
+}
 
 const Wrapper = styled.div`
   margin-top: 30px;
@@ -66,6 +78,12 @@ const DropdownField = Field.extend`
   }
 `;
 
+const FakeDropdown = styled.div`
+  width: 100%;
+  padding: 10px 16px;
+  cursor: pointer;
+`;
+
 const Date = styled.div`
   input {
     font-weight: bold;
@@ -119,10 +137,6 @@ export default class CheckoutBox extends React.Component {
     });
   };
 
-  handleGuestsChange = (event, data) => {
-    this.props.changeGuests({ person_nb: data.value });
-  };
-
   onDateFocusChange = ({ focused }) => {
     this.setState({
       dateFocused: focused,
@@ -145,7 +159,16 @@ export default class CheckoutBox extends React.Component {
   }
 
   render() {
-    const { startDate, numberOfPeople, bookError, shareError, numberOfDays, days } = this.props;
+    const {
+      startDate,
+      adults,
+      children,
+      infants,
+      bookError,
+      shareError,
+      numberOfDays,
+      days,
+    } = this.props;
     const formattedStartDate = startDate ? startDate.format('MM/DD/YY') : 'Select date';
 
     const addDay = days[days.length - 1].data.some(
@@ -191,20 +214,17 @@ export default class CheckoutBox extends React.Component {
             </Date>
           </Field>
           <DropdownField>
-            <Label>Number of Guests</Label>
-            <Dropdown
-              placeholder={numberOfPeople + ' Adults'}
-              options={[
-                { text: '1 Adult', value: 1 },
-                { text: '2 Adults', value: 2 },
-                { text: '3 Adults', value: 3 },
-                { text: '4 Adults', value: 4 },
-                { text: '5 Adults', value: 5 },
-              ]}
-              onChange={this.handleGuestsChange}
-              defaultValue={numberOfPeople}
-              fluid
-              selection
+            <Label>Number of Adults</Label>
+            <SelectGuests
+              adults={adults}
+              infants={infants}
+              children={children}
+              onApply={this.props.changeGuests}
+              renderTrigger={({ triggerPopup }) => (
+                <FakeDropdown onClick={triggerPopup}>
+                  {guestsText(adults, children, infants)}
+                </FakeDropdown>
+              )}
             />
           </DropdownField>
           {this.renderButtonWithPopup(
