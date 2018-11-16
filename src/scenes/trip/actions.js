@@ -2,6 +2,7 @@ import axios from 'libs/axios';
 import { serverBaseURL } from 'libs/config';
 import { parseTags } from 'libs/fetch_helpers';
 import history from './../../main/history';
+import moment from 'moment';
 
 export const types = {
   FETCH_TRIP_START: 'FETCH_TRIP_START',
@@ -167,7 +168,7 @@ export const checkAvailability = (id, startDate, peopleData, attempt = 1) => asy
   dispatch(checkAvailabilityStart(timestamp));
   try {
     const availability = await axios.get(
-      `${serverBaseURL}/trips/${id}/availability?bookingDate=${startDate.format(
+      `${serverBaseURL}/trips/${id}/availability?bookingDate=${moment(startDate).format(
         'YYYY-MM-DD',
       )}&adultCount=${adults}&childrenCount=${children}&infantCount=${infants}&peopleCount=${adults +
         children +
