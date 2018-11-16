@@ -7,7 +7,7 @@ import axios from 'libs/axios';
 import { Loader, Dimmer } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { media } from 'libs/styled';
-import { calculateBottomPosition } from 'libs/Utils';
+import { updateBottomChatPosition, calculateBottomPosition } from 'libs/Utils';
 
 import { Page } from 'shared_components/layout/Page';
 import TopBar from 'shared_components/TopBar';
@@ -245,6 +245,11 @@ class CheckoutContainer extends React.Component {
 
   componentDidMount() {
     this.props.cleanPaymentStatus();
+    updateBottomChatPosition(calculateBottomPosition(this.props.isGDPRDismissed, 50));
+  }
+
+  componentWillUnmount() {
+    updateBottomChatPosition();
   }
 
   componentDidUpdate() {

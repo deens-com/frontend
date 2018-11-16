@@ -53,6 +53,9 @@
 
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc&libraries=places&language=en"></script>
 
+    <!-- TODO: Fresh chat -->
+    <script src="https://wchat.freshchat.com/js/widget.js"></script>
+
     <script type="text/javascript">
       (function(){
 
@@ -171,5 +174,11 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <script>
+      window.fcWidget.init({
+        token: "002a4aa2-5539-4b36-b131-7ed354533bf7",
+        host: "https://wchat.freshchat.com"
+      });
+    </script>
   </body>
 </html>
