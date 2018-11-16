@@ -287,7 +287,12 @@ class TripCard extends Component {
     return (
       <div onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
         {this.state.truncated && (
-          <Popup content={item.title} context={this.titleRef} open={this.state.showTitlePopup} />
+          <Popup
+            style={{ zIndex: 4 }}
+            content={item.title}
+            context={this.titleRef}
+            open={this.state.showTitlePopup}
+          />
         )}
 
         {this.renderContent()}
