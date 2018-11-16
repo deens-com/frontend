@@ -319,10 +319,12 @@ export default class Itinerary extends Component {
     <Day key={day.title} innerRef={this.r[index]}>
       <DayHeader>
         <DayTitle>{day.title}</DayTitle>
-        <DeleteDayButton onClick={() => this.openModal(day)}>
-          <TrashCan />
-          Delete this day
-        </DeleteDayButton>
+        {this.props.days.length > 1 && (
+          <DeleteDayButton onClick={() => this.openModal(day)}>
+            <TrashCan />
+            Delete this day
+          </DeleteDayButton>
+        )}
       </DayHeader>
       <Button
         iconBefore="plus"

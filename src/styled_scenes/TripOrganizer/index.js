@@ -760,19 +760,21 @@ export default class TripOrganizer extends Component {
       return 'We are checking the availability of the selected services';
     }
 
-    const options = [];
-    const servicesAreAvailable =
-      this.state.availability.data &&
-      this.state.availability.data.some(value => {
-        if (value.groupedOptions) {
-          options.push({
-            day: value.day,
-            id: value.serviceId,
-          });
-        }
+    if (!this.state.availability.data || this.state.availability.data.length === 0) {
+      return 'You have to add services to the current trip';
+    }
 
-        return !value.isAvailable;
-      });
+    const options = [];
+    const servicesAreAvailable = this.state.availability.data.some(value => {
+      if (value.groupedOptions) {
+        options.push({
+          day: value.day,
+          id: value.serviceId,
+        });
+      }
+
+      return !value.isAvailable;
+    });
 
     if (servicesAreAvailable) {
       return 'Please check that all services are available in selected dates';
