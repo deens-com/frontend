@@ -257,6 +257,17 @@ class CheckoutContainer extends React.Component {
         history.replace(`/trips/organize/${this.tripId}`);
         return;
       }
+      if (this.props.availability) {
+        if (this.props.availability.some(service => !service.isAvailable)) {
+          history.replace(`/trips/organize/${this.tripId}`);
+        }
+      } else if (!this.props.isCheckingAvailability) {
+        this.props.checkAvailability(this.tripId, this.props.trip.startDate, {
+          adults: this.props.trip.adultCount,
+          children: this.props.trip.childrenCount,
+          infants: this.props.trip.infantCount,
+        });
+      }
     }
   }
 
@@ -449,6 +460,8 @@ const mapStateToProps = state => ({
   isLoading: state.TripReducer.isLoading,
   session: state.SessionsReducer.session,
   isGDPRDismissed: state.SettingsReducer.gdprDismissed,
+  availability: state.TripReducer.availability.data,
+  isCheckingAvailability: state.TripReducer.availability.isChecking,
 });
 
 const mapDispatchToProps = dispatch =>
@@ -456,6 +469,7 @@ const mapDispatchToProps = dispatch =>
     {
       ...actions,
       fetchTrip: tripActions.fetchTrip,
+      checkAvailability: tripActions.checkAvailability,
     },
     dispatch,
   );
