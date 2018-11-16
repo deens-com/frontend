@@ -34,6 +34,7 @@ class TripOrganizerContainer extends Component {
         updatePath={this.props.updatePath}
         history={this.props.history}
         isGDPRDismissed={this.props.isGDPRDismissed}
+        isLoading={this.props.isLoading}
       />
     );
   }
