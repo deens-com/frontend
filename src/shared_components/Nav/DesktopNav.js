@@ -139,7 +139,7 @@ const TopBarDesktopNav = function TopBarDesktopNav({
             </Dropdown>
             <NavLink
               activeclassname="is-active"
-              to="earn-money"
+              to="/earn-money"
               onClick={() => analytics(trackHeaderClick('Earn Money'))}
             >
               Earn Money
