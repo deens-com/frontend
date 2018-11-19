@@ -103,8 +103,8 @@ const createService = values => {
     description: { [i18nLocale]: values.description },
     duration: values.category === 'Accommodation' ? 1 : values.duration,
     instructions: {
-      start: { [i18nLocale]: values.start },
-      end: { [i18nLocale]: values.end },
+      ...(values.start ? { start: { [i18nLocale]: values.start } } : {}),
+      ...(values.end ? { end: { [i18nLocale]: values.end } } : {}),
     },
     rules: values.rules.map(rule => ({ [i18nLocale]: rule })),
     tags: values.tags,

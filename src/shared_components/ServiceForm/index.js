@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Dropdown, Form, Modal, Message, Button } from 'semantic-ui-react';
+import { Dropdown, Form, Modal, Button } from 'semantic-ui-react';
 import { withFormik } from 'formik';
 import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete';
 import styled from 'styled-components';
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
 import HelpTooltip from 'shared_components/HelpTooltip';
 import history from './../../main/history';
-import { isMobile, checkRequiredFields } from 'libs/Utils';
+import { checkRequiredFields } from 'libs/Utils';
 import i18n from './../../libs/i18n';
 import MultiImageUploader from 'shared_components/MultiImageUploader/MultiImageUploader';
 import DateInput from '../Form/DateInput';
