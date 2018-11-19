@@ -67,11 +67,22 @@ export default function Footer({ withTopBorder, withPadding }) {
     <Wrapper withTopBorder={withTopBorder} withPadding={withPadding}>
       <Nav>
         <div>
-          <ALink target="_blank" href="https://vision.please.com/assets/terms.pdf">
+          <ALink
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://vision.please.com/assets/terms.pdf"
+          >
             Terms
           </ALink>
-          <ALink target="_blank" href="https://vision.please.com/assets/privacy.pdf">
+          <ALink
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://vision.please.com/assets/privacy.pdf"
+          >
             Privacy
+          </ALink>
+          <ALink target="_blank" rel="noopener noreferrer" href="https://help.please.com/">
+            Help
           </ALink>
         </div>
       </Nav>
@@ -80,7 +91,11 @@ export default function Footer({ withTopBorder, withPadding }) {
         <span>© Please.com</span>
       </Company>
       <div>
-        <ALink href="https://www.facebook.com/PleaseTrips/" target="_blank">
+        <ALink
+          href="https://www.facebook.com/PleaseTrips/"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
           <Facebook
             style={{
               height: '16px',
@@ -90,7 +105,7 @@ export default function Footer({ withTopBorder, withPadding }) {
             }}
           />
         </ALink>
-        <ALink href="https://twitter.com/PleaseTrips/" target="_blank">
+        <ALink href="https://twitter.com/PleaseTrips/" rel="noopener noreferrer" target="_blank">
           <Twitter
             style={{
               height: '16px',
@@ -100,7 +115,11 @@ export default function Footer({ withTopBorder, withPadding }) {
             }}
           />
         </ALink>
-        <ALink href="https://www.instagram.com/PleaseTrips/" target="_blank">
+        <ALink
+          href="https://www.instagram.com/PleaseTrips/"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
           <Instagram
             style={{
               height: '16px',
