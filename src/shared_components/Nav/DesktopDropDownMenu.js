@@ -106,9 +106,9 @@ class DesktopDropDownMenu extends Component {
 
     return (
       <Wrap>
-        {showAddServiceButton && (
-          <Button type="link" theme="mainFilled" round size="small" href="/services/new">
-            Add Service
+        {this.props.isBackgroundWhite && (
+          <Button type="link" theme="mainFilled" round size="small" href="/trips/create">
+            Create a Trip
           </Button>
         )}
         <Dropdown
