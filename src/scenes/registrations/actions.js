@@ -59,7 +59,6 @@ export const postRegistration = (username, email, password, { from, action }) =>
     //   },
     // });
     dispatch(setLoading(false));
-    history.push('/login');
   } catch (error) {
     dispatch(
       registrationFailed({

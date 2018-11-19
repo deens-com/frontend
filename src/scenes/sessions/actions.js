@@ -107,7 +107,11 @@ export const getCurrentUser = () => async dispatch => {
     }
     dispatch({ type: types.NOT_LOGGED_IN });
   } catch (error) {
-    if (error.response && error.response.data.authorizerError === 'jwt expired') {
+    if (
+      error.response &&
+      (error.response.data.message === 'jwt expired' ||
+        error.response.data.message === 'invalid auth mechanism')
+    ) {
       dispatch(logOut());
     }
   }

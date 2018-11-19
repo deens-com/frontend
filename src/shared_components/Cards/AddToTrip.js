@@ -19,7 +19,7 @@ const AddPanel = styled.div`
   bottom: 0;
   right: 0;
   background-color: rgba(0, 0, 0, 0.7);
-  z-index: 2;
+  z-index: 5;
   border-radius: 5px;
   overflow-y: scroll;
   padding: 35px 15px 15px;
@@ -149,7 +149,12 @@ export default class AddToTrip extends Component {
             Add to trip
           </Button>
         </AddButton>
-        <AddPanel innerRef={this.panelRef} isOpen={this.state.isOpen} onClick={this.panelClick}>
+        <AddPanel
+          innerRef={this.panelRef}
+          isOpen={this.state.isOpen}
+          onClick={this.panelClick}
+          onMouseOver={e => e.stopPropagation()}
+        >
           {this.state.lastAction && (
             <Message action={this.state.lastAction.action} onClick={this.props.data.goBackToTrip}>
               {this.state.lastAction.action === 'Added' ? 'Added to' : 'Removed from'} trip on{' '}
