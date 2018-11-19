@@ -9,12 +9,14 @@ import axios from 'libs/axios';
 import Row from '../../../shared_components/layout/Row';
 import TripCard from '../../../shared_components/Cards/Trip';
 import PaginationWrap from 'shared_components/PaginationWrap';
+import Button from 'shared_components/Button';
 import ReactPaginate from 'react-paginate';
 import { media } from '../../../libs/styled';
 import { Loader, Grid } from 'semantic-ui-react';
 import moment from 'moment';
 import { minutesToDays, getDaysByService } from 'styled_scenes/Trip/mapServicesToDays';
 import debounce from 'lodash.debounce';
+import notFoundImg from '../not_found.png';
 
 // STYLES
 const Wrap = styled.div`
@@ -46,6 +48,13 @@ const Badge = styled.div`
 
 const LoaderWithMargin = styled.section`
   margin-top: 40px;
+`;
+
+const NotFound = styled.div`
+  img {
+    width: 115px;
+  }
+  text-align: center;
 `;
 
 // MODULE
@@ -161,9 +170,23 @@ class Results extends Component {
           {!this.props.isLoadingResults &&
             this.props.data.length === 0 && (
               <section>
-                <h4 style={{ textAlign: 'center', color: 'grey' }}>
-                  There are no search results for given search criteria.
-                </h4>
+                {this.props.search_query.type && this.props.search_query.type[0] === 'trip' ? (
+                  <NotFound>
+                    <img src={notFoundImg} alt="Not found" />
+                    <h3>There are no trips available in the location selected.</h3>
+                    <p>
+                      Be the first to create a trip for {this.props.search_query.address}, and share
+                      to earn rewards!
+                    </p>
+                    <Button type="link" href="/trips/create">
+                      Create a trip
+                    </Button>
+                  </NotFound>
+                ) : (
+                  <h4 style={{ textAlign: 'center', color: 'grey' }}>
+                    There are no search results for given search criteria.
+                  </h4>
+                )}
                 <br />
               </section>
             )}
