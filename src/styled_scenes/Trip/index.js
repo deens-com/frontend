@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import history from 'main/history';
 import { Loader, Popup, Icon, Dimmer } from 'semantic-ui-react';
 import { SingleDatePicker } from 'react-dates';
-import { calculateBottomPosition } from 'libs/Utils';
+import { calculateBottomPosition, updateBottomChatPosition } from 'libs/Utils';
 
 // COMPONENTS
 import TopBar from 'shared_components/TopBar';
@@ -128,10 +128,13 @@ export default class Trip extends Component {
     if (this.props.action === 'handleCustomizeClick') {
       this.handleCustomizeClick();
     }
+
+    updateBottomChatPosition(calculateBottomPosition(this.props.isGDPRDismissed, 65) + 60);
   }
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
+    updateBottomChatPosition(calculateBottomPosition(this.props.isGDPRDismissed, 0));
   }
 
   handleScroll = () => {

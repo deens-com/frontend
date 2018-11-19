@@ -217,3 +217,14 @@ export function calculateBottomPosition(isGDPRDismissed, baseBottom = 0) {
 export function getPeopleCount(trip) {
   return trip.adultCount + (trip.childrenCount || 0) + (trip.infantCount || 0);
 }
+
+/**
+ * update bottom position
+ */
+export function updateBottomChatPosition(bottom = 0) {
+  const chat = document.getElementById('fc_frame');
+  if (chat) {
+    chat.style.bottom = `${bottom + 15}px`;
+    chat.style.zIndex = 15;
+  }
+}

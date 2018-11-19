@@ -11,7 +11,12 @@ import axios from 'libs/axios';
 import { media } from 'libs/styled';
 import axiosOriginal from 'axios';
 import history from '../../main/history';
-import { getPriceFromServiceOption, getPeopleCount, calculateBottomPosition } from 'libs/Utils';
+import {
+  getPriceFromServiceOption,
+  getPeopleCount,
+  calculateBottomPosition,
+  updateBottomChatPosition,
+} from 'libs/Utils';
 
 import TopBar from 'shared_components/TopBar';
 import BrandFooter from 'shared_components/BrandFooter';
@@ -257,6 +262,14 @@ export default class TripOrganizer extends Component {
     }
 
     return newState;
+  }
+
+  componentDidMount() {
+    updateBottomChatPosition(calculateBottomPosition(this.props.isGDPRDismissed, 60));
+  }
+
+  componentWillUnmount() {
+    updateBottomChatPosition();
   }
 
   componentDidUpdate(prevProps) {

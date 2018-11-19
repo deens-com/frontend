@@ -53,6 +53,59 @@
 
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc&libraries=places&language=en"></script>
 
+    <!-- Fresh chat -->
+    <script src="https://snippets.freshchat.com/js/fc-pre-chat-form-v2.js"></script>
+    <script>
+      var preChatTemplate = {
+        //Form header color and Submit button color.
+        mainbgColor: '#38D39F',
+        //Form Header Text and Submit button text color.
+        maintxColor: '#fff',
+        //Chat Form Title
+        heading: 'Chat with us!',
+        //Chat form Welcome Message
+        textBanner: 'We can\'t wait to talk to you. But first, please tell us a bit about yourself.',
+        //Submit Button Label.
+        SubmitLabel: 'Start Chat',
+        //Fields List - Maximum is 5
+        //All the values are mandatory and the script will not work if not available.
+        fields : {
+          field1 : {
+            type: "email",
+            label: "Email",
+            fieldId: "email",
+            required: "yes",
+            error: "Please Enter a valid Email"
+          },
+          field2 : {
+            type: "name",
+            label: "Name",
+            fieldId: "name",
+            required: "no",
+            error: "Please Enter a valid name"
+          }
+        }
+      };
+      window.fcSettings = {
+        token: "002a4aa2-5539-4b36-b131-7ed354533bf7",
+        host: "https://wchat.freshchat.com",
+        config: {
+          cssNames: {
+            //The below element is mandatory. Please add any custom class or leave the default.
+            widget: 'custom_fc_frame',
+            //The below element is mandatory. Please add any custom class or leave the default.
+            expanded: 'custom_fc_expanded'
+          }
+        },
+        onInit: function() {
+          fcPreChatform.fcWidgetInit(preChatTemplate);
+          fcPreChatform.addCss({ bottom: 200 })
+        }
+      };
+    </script>
+    <script src="https://wchat.freshchat.com/js/widget.js"></script>
+
+
     <script type="text/javascript">
       (function(){
 
@@ -171,5 +224,11 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <script>
+      window.fcWidget.init({
+        token: "002a4aa2-5539-4b36-b131-7ed354533bf7",
+        host: "https://wchat.freshchat.com"
+      });
+    </script>
   </body>
 </html>
