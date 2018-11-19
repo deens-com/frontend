@@ -55,7 +55,7 @@ const GDPRBanner = ({ closed, dismissGdpr }) => {
       <Text>
         This site uses cookies to provide you with a great user experience. By using Please.com you
         accept our use of{' '}
-        <a href="#/cookie-policy" target="_blank" onClick={e => e.stopPropagation()}>
+        <a href="/cookie-policy" target="_blank" onClick={e => e.stopPropagation()}>
           cookies
         </a>
         .
