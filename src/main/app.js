@@ -9,7 +9,7 @@ import withErrorBoundary from './middlewares/WithErrorBoundary';
 import Home from './../scenes/home/home';
 import EarnMoney from './../scenes/earn-money';
 import TokenSale from './../scenes/token-sale';
-import ThankYouKYC from './../scenes/token-sale/ThankYou';
+import UserVerification from '../scenes/user-verification';
 import CookiePolicy from './../scenes/cookie-policy';
 import Account from './../scenes/account/account';
 import Sessions from './../scenes/sessions/sessions';
@@ -45,6 +45,10 @@ class App extends React.Component {
               <Switch>
                 <Route exact path={process.env.PUBLIC_URL + '/'} component={commonHOCs(Home)} />
                 <Route path={process.env.PUBLIC_URL + '/login'} component={commonHOCs(Sessions)} />
+                <Route
+                  path={process.env.PUBLIC_URL + '/user-verification'}
+                  component={commonHOCs(UserVerification)}
+                />
                 <Route
                   path={process.env.PUBLIC_URL + '/register'}
                   component={commonHOCs(Registrations)}
