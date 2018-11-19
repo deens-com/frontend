@@ -92,7 +92,11 @@ export const getCurrentUser = () => async dispatch => {
     if (session) {
       const currentUser = await axios.get('/users/me').catch(error => {
         console.log(error);
-        if (error.response && error.response.data.message === 'jwt expired') {
+        if (
+          error.response &&
+          (error.response.data.message === 'jwt expired' ||
+            error.response.data.message === 'invalid auth mechanism')
+        ) {
           dispatch(logOut());
         }
       });

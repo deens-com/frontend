@@ -16,11 +16,20 @@ class RegistrationsContainer extends Component {
       password: '',
       password_confirmation: '',
       errors: {},
+      registered: false,
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.isInputInvalid = this.isInputInvalid.bind(this);
     if (getSession()) {
       history.push('/');
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.isLoading && !this.props.isLoading) {
+      this.setState({
+        registered: true,
+      });
     }
   }
 
@@ -119,6 +128,7 @@ class RegistrationsContainer extends Component {
           username={this.state.username}
           email={this.state.email}
           isLoading={this.props.isLoading}
+          registered={this.state.registered}
           password={this.state.password}
           password_confirmation={this.state.password_confirmation}
           errors={this.props.errors}
