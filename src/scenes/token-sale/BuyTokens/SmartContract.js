@@ -159,6 +159,10 @@ const Footer = styled.div`
   }
 `;
 
+const Error = styled.p`
+  color: red;
+`;
+
 export default class BuyTokens extends React.Component {
   constructor(props) {
     super(props);
@@ -209,6 +213,12 @@ export default class BuyTokens extends React.Component {
                 disabled={Boolean(this.props.whitelistedAddress) || this.state.addedAddress}
                 value={this.props.whitelistedAddress}
               />
+              {this.state.error && (
+                <Error>
+                  There was an error while adding the address. Please check that it's correct and
+                  try again.
+                </Error>
+              )}
               {(!this.props.whitelistedAddress || this.state.addedAddress) && (
                 <Button
                   customTheme={{
@@ -233,10 +243,12 @@ export default class BuyTokens extends React.Component {
           </WalletWrapper>
           <AdviceWrapper>
             <p>
-              Make sure you keep your private keys for the address used to send ether to the
-              contract safe and secure, this will be the address that will hold your PLS tokens.
-              Please do not send ether to Please.com crowdfunding contract from wallets hosted by
-              exchanges, make sure you always use your private key.
+              <strong>
+                Make sure you keep your private keys for the address used to send ether to the
+                contract safe and secure, this will be the address that will hold your PLS tokens.
+                Please do not send ether to Please.com crowdfunding contract from wallets hosted by
+                exchanges, make sure you always use your private key.
+              </strong>
             </p>
           </AdviceWrapper>
           <ContractWrapper>
