@@ -71,6 +71,11 @@ const SmartContractLink = styled(Link)`
   text-decoration: underline;
 `;
 
+const USDInput = styled.span`
+  color: #c1c1c1;
+  font-weight: bold;
+`;
+
 export default class BuyTokens extends React.Component {
   constructor(props) {
     super(props);
@@ -104,6 +109,7 @@ export default class BuyTokens extends React.Component {
             <SegmentTitle>Purchase Tokens</SegmentTitle>
             <HowMuch>How much would you like to contribute?</HowMuch>
             <Input
+              leftContent={this.state.amount ? <USDInput>USD</USDInput> : null}
               type="number"
               min="1"
               step="any"
