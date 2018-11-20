@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { media } from 'libs/styled';
 import { getCategory } from 'libs/categories';
 import { parseLocation } from 'libs/fetch_helpers';
+import { getPriceFromServiceOption, getPeopleCount } from 'libs/Utils';
 
 import I18nText from 'shared_components/I18nText';
 import { MapMarker } from 'shared_components/icons';
@@ -79,6 +80,16 @@ const Image = styled.div`
   ${media.minSmall} {
     width: 200px;
   }
+`;
+
+const PayAtVenue = styled.div`
+  color: #6e7885;
+  font-size: 12px;
+  background-color: #d3d7dc;
+  padding: 5px 15px;
+  border-radius: 3px;
+  display: inline-block;
+  font-weight: bold;
 `;
 
 const ServiceData = styled.div`
@@ -197,6 +208,25 @@ export default class Itinerary extends Component {
     );
   };
 
+  renderPrice = dayData => {
+    const service = dayData.service;
+    if (service.periods && service.periods[0] && service.periods[0].payAtService) {
+      return (
+        <ServicePrice>
+          <PayAtVenue>Not included in the payment</PayAtVenue>
+        </ServicePrice>
+      );
+    }
+
+    const price = getPriceFromServiceOption(
+      service.basePrice,
+      this.props.bookedInformation[dayData.day][service._id].price,
+      getPeopleCount(this.props.trip),
+    );
+
+    return <ServicePrice>${price.toFixed(2)}</ServicePrice>;
+  };
+
   renderDay = (day, index) => (
     <Day key={day.title} innerRef={this.r[index]}>
       <DayTitle>{day.title}</DayTitle>
@@ -251,9 +281,7 @@ export default class Itinerary extends Component {
                 <MapMarker />
                 {parseLocation(dayData.service.location)}
               </ServiceLocation>
-              {dayData.service.basePrice !== 0 && (
-                <ServicePrice>From ${dayData.service.basePrice}</ServicePrice>
-              )}
+              {this.renderPrice(dayData)}
             </ServiceFooter>
           </ServiceData>
         </Service>

@@ -42,7 +42,8 @@ const CustomPage = Page.extend`
 `;
 const Wrapper = styled.div``;
 const TripData = styled.div`
-  background-color: #f7f7f7;
+  background-color: #38d39f;
+  color: white;
   height: 65px;
   font-size: 16px;
   text-align: center;
@@ -209,10 +210,7 @@ export default class Trip extends Component {
   };
 
   handleCustomizeClick = () => {
-    if (
-      this.props.trip.owner === this.props.currentUserId &&
-      this.props.trip.bookingStatus !== 'booked'
-    ) {
+    if (this.props.trip.owner === this.props.currentUserId && !this.props.booked) {
       history.push(`/trips/organize/${this.props.trip._id}`);
       return;
     }
@@ -237,17 +235,112 @@ export default class Trip extends Component {
     this.childRefs = refs;
   };
 
+  renderSentence = (startDate, endDate) => {
+    const formattedStartDate = startDate ? startDate.format('MMM DD, YYYY') : '';
+    const formattedEndDate = endDate ? endDate.format('MMM DD, YYYY') : '';
+
+    if (this.props.booked) {
+      return (
+        <Sentence>
+          <SentenceText>
+            <b>Your trip booked for </b>
+            <span>{formattedStartDate && formattedStartDate + ' - ' + formattedEndDate}</span>
+            <span> for </span>
+            <span>{this.props.adults + this.props.children + this.props.infants + ' Guests'}</span>
+          </SentenceText>
+        </Sentence>
+      );
+    }
+
+    return (
+      <Sentence>
+        <SentenceText>
+          <b>I want this trip between</b>
+        </SentenceText>
+        <EditableElement>
+          <Popup
+            trigger={
+              <p>
+                {(formattedStartDate && formattedStartDate + ' / ' + formattedEndDate) || 'Dates'}
+              </p>
+            }
+            content={
+              <PopupContent>
+                <p>Select Starting Day</p>
+                <SingleDatePicker
+                  id="startDate"
+                  date={startDate}
+                  onDateChange={this.handleDatesChange}
+                  focused={this.state.isDatePopupOpen}
+                  onFocusChange={({ focused }) =>
+                    focused ? this.handleDatePopupOpen() : this.handleDatePopupClose()
+                  }
+                  placeholder={formattedStartDate}
+                  isDayBlocked={date =>
+                    date.valueOf() <=
+                    moment()
+                      .add(1, 'days')
+                      .valueOf()
+                  }
+                  numberOfMonths={1}
+                  small
+                  noBorder
+                  anchorDirection="right"
+                  displayFormat="MM/DD/YY"
+                  block
+                />
+                <Icon
+                  style={{ position: 'relative', left: '265px', bottom: '44px' }}
+                  name="close"
+                  onClick={this.handleDatePopupClose}
+                />
+              </PopupContent>
+            }
+            on="click"
+            position="bottom left"
+            keepInViewPort
+            open={this.state.isDatePopupOpen}
+            onClose={this.handleDatePopupClose}
+            onOpen={this.handleDatePopupOpen}
+          />
+        </EditableElement>
+        <SentenceText> for</SentenceText>
+        <EditableElement>
+          <Popup
+            trigger={
+              <span>
+                {this.props.adults + this.props.children + this.props.infants + ' Guests'}
+              </span>
+            }
+            content={
+              <GuestsSelector
+                adults={this.props.adults}
+                children={this.props.children}
+                infants={this.props.infants}
+                close={this.handleGuestsPopupClose}
+                onApply={this.handleGuestsChange}
+                relative
+              />
+            }
+            on="click"
+            open={this.state.isGuestsPopupOpen}
+            onClose={this.handleGuestsPopupClose}
+            onOpen={this.handleGuestsPopupOpen}
+            position="bottom center"
+          />
+        </EditableElement>
+      </Sentence>
+    );
+  };
+
   renderPageContent = () => {
     const { isLoading, trip, owner, availability, isCheckingAvailability, isCloning } = this.props;
-
     if (isLoading || !trip) {
       return <Loader active size="massive" />;
     }
 
     const startDate = this.props.startDate && moment(parseInt(this.props.startDate, 10));
     const endDate = startDate && startDate.clone().add(this.props.trip.duration, 'minutes');
-    const formattedStartDate = startDate ? startDate.format('MMM DD, YYYY') : '';
-    const formattedEndDate = endDate ? endDate.format('MMM DD, YYYY') : '';
 
     const countries = getCountryCount(trip.services);
     const cities = getCityCount(trip.services);
@@ -258,84 +351,7 @@ export default class Trip extends Component {
           <Loader size="massive" />
         </Dimmer>
         <Header innerRef={this.headerRef} trip={trip} owner={owner} />
-        <TripData innerRef={this.sentenceRef}>
-          <Sentence>
-            <SentenceText>I want this trip between</SentenceText>
-            <EditableElement>
-              <Popup
-                trigger={
-                  <p>
-                    {(formattedStartDate && formattedStartDate + ' / ' + formattedEndDate) ||
-                      'Dates'}
-                  </p>
-                }
-                content={
-                  <PopupContent>
-                    <p>Select Starting Day</p>
-                    <SingleDatePicker
-                      id="startDate"
-                      date={startDate}
-                      onDateChange={this.handleDatesChange}
-                      focused={this.state.isDatePopupOpen}
-                      onFocusChange={({ focused }) =>
-                        focused ? this.handleDatePopupOpen() : this.handleDatePopupClose()
-                      }
-                      placeholder={formattedStartDate}
-                      isDayBlocked={date =>
-                        date.valueOf() <=
-                        moment()
-                          .add(1, 'days')
-                          .valueOf()
-                      }
-                      numberOfMonths={1}
-                      small
-                      noBorder
-                      anchorDirection="right"
-                      displayFormat="MM/DD/YY"
-                      block
-                    />
-                    <Icon
-                      style={{ position: 'relative', left: '265px', bottom: '44px' }}
-                      name="close"
-                      onClick={this.handleDatePopupClose}
-                    />
-                  </PopupContent>
-                }
-                on="click"
-                position="bottom left"
-                keepInViewPort
-                open={this.state.isDatePopupOpen}
-                onClose={this.handleDatePopupClose}
-                onOpen={this.handleDatePopupOpen}
-              />
-            </EditableElement>
-            <SentenceText> for</SentenceText>
-            <EditableElement>
-              <Popup
-                trigger={
-                  <span>
-                    {this.props.adults + this.props.children + this.props.infants + ' Guests'}
-                  </span>
-                }
-                content={
-                  <GuestsSelector
-                    adults={this.props.adults}
-                    children={this.props.children}
-                    infants={this.props.infants}
-                    close={this.handleGuestsPopupClose}
-                    onApply={this.handleGuestsChange}
-                    relative
-                  />
-                }
-                on="click"
-                open={this.state.isGuestsPopupOpen}
-                onClose={this.handleGuestsPopupClose}
-                onOpen={this.handleGuestsPopupOpen}
-                position="bottom center"
-              />
-            </EditableElement>
-          </Sentence>
-        </TripData>
+        <TripData innerRef={this.sentenceRef}>{this.renderSentence(startDate, endDate)}</TripData>
         <Body>
           <TripDescription trip={trip} cities={cities} countries={countries} />
           <Itinerary
@@ -345,6 +361,7 @@ export default class Trip extends Component {
             numberOfPeople={this.props.adults + this.props.children + this.props.infants}
             startDate={this.props.startDate}
             assignRefsToParent={this.assignRefs}
+            bookedInformation={this.props.bookedInformation}
           />
         </Body>
       </Wrapper>
@@ -382,7 +399,7 @@ export default class Trip extends Component {
           peopleNumber={adults + children + infants}
           startDate={this.props.startDate}
           endDate={this.props.endDate}
-          booked={trip.bookingStatus === 'booked'}
+          booked={this.props.booked}
           onCustomizeClick={this.handleCustomizeClick}
           bottom={calculateBottomPosition(isGDPRDismissed)}
         />
