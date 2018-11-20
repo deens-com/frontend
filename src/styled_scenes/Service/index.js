@@ -186,7 +186,7 @@ class FoodDetailScene extends Component {
 
         <Container>
           <br />
-          <PageContent flex loading={this.props.isPageLoading}>
+          <PageContent flex loading={this.props.isPageLoading || this.props.isLoading}>
             <Media
               query={`(min-width: ${sizes.large})`}
               render={() => <ImgSlider images={this.props.service.media} />}
