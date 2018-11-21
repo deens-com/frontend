@@ -308,7 +308,6 @@ class Filters extends Component {
         this.setState({ latitude: lat, longitude: lng });
         this.refetch_results_for_location(lat, lng, addr);
       });
-    this.handleLocationPopupClose();
   }
 
   handleServiceTypeChange(event, data) {
@@ -418,7 +417,7 @@ class Filters extends Component {
   };
 
   handleLocationPopupClose = () => {
-    this.changeOpenState('isLocationPopupOpen', false);
+    setTimeout(() => this.changeOpenState('isLocationPopupOpen', false), 0);
   };
 
   handleRadiusPopupClose = () => {
@@ -595,6 +594,7 @@ class Filters extends Component {
         on: 'click',
         open: this.state.isLocationPopupOpen,
         onOpen: this.handleLocationPopupOpen,
+        onClose: this.handleLocationPopupClose,
         position: 'bottom center',
       },
       mood: {

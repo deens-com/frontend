@@ -53,6 +53,7 @@ class GDPRBanner extends React.Component {
     }
   }
 
+
   dismiss = () => {
     updateBottomChatPosition();
     this.props.dismissGdpr();
