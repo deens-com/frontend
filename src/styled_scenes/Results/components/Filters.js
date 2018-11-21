@@ -250,7 +250,9 @@ class Filters extends Component {
 
   refetch_results(param_object) {
     const query_params = this.get_query_params();
-    query_params[Object.keys(param_object)[0]] = param_object[Object.keys(param_object)[0]];
+    Object.keys(param_object).forEach(param => {
+      query_params[param] = param_object[param];
+    });
     this.props.update_path(query_params, this.props.history, this.props.routeState);
   }
 
@@ -365,7 +367,7 @@ class Filters extends Component {
     this.setState(
       {
         text,
-        type: [],
+        service_type: [],
       },
       () => {
         this.debounced_refetch_results({ text, type: [] });

@@ -90,25 +90,30 @@ export const getCurrentUser = () => async dispatch => {
   try {
     const session = getSession();
     if (session) {
-      const currentUser = await axios.get('/users/me').catch(error => {
-        console.log(error);
-        if (
-          error.response &&
-          (error.response.data.message === 'jwt expired' ||
-            error.response.data.message === 'invalid auth mechanism')
-        ) {
-          dispatch(logOut());
-        }
-      });
+      const currentUser = await axios.get('/users/me');
       if (currentUser.data) {
         const userObject = fetch_helpers.buildUserJson(currentUser.data);
         dispatch(sessionsFetched({ session: userObject }));
+
+        // Fresh chat data
+        window.fcWidget.setExternalId(userObject._id);
+        // To set user name
+        window.fcWidget.user.setFirstName(userObject.username);
+
+        // To set user email
+        window.fcWidget.user.setEmail(userObject.email);
       }
       return;
     }
     dispatch({ type: types.NOT_LOGGED_IN });
   } catch (error) {
-    console.log(error);
+    if (
+      error.response &&
+      (error.response.data.message === 'jwt expired' ||
+        error.response.data.message === 'invalid auth mechanism')
+    ) {
+      dispatch(logOut());
+    }
   }
 };
 

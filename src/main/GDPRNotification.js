@@ -4,6 +4,7 @@ import { media } from 'libs/styled';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from 'main/settings/actions';
+import { updateBottomChatPosition, calculateBottomPosition } from 'libs/Utils';
 import { CrossIcon } from 'shared_components/icons';
 
 const Notification = styled.div`
@@ -45,27 +46,43 @@ const CloseButton = styled.span`
   }
 `;
 
-const GDPRBanner = ({ closed, dismissGdpr }) => {
-  if (closed) {
-    return null;
+class GDPRBanner extends React.Component {
+  componentDidMount() {
+    if (!this.props.closed) {
+      updateBottomChatPosition(calculateBottomPosition(false, 0));
+    }
   }
 
-  return (
-    <Notification id="gdpr-banner" onClick={dismissGdpr}>
-      <Text>
-        This site uses cookies to provide you with a great user experience. By using Please.com you
-        accept our use of{' '}
-        <a href="/cookie-policy" target="_blank" onClick={e => e.stopPropagation()}>
-          cookies
-        </a>
-        .
-      </Text>
-      <CloseButton onClick={dismissGdpr}>
-        <CrossIcon style={{ width: 24, height: 24 }} />
-      </CloseButton>
-    </Notification>
-  );
-};
+
+  dismiss = () => {
+    updateBottomChatPosition();
+    this.props.dismissGdpr();
+  };
+
+  render() {
+    const { closed } = this.props;
+
+    if (closed) {
+      return null;
+    }
+
+    return (
+      <Notification id="gdpr-banner" onClick={this.dismiss}>
+        <Text>
+          This site uses cookies to provide you with a great user experience. By using Please.com
+          you accept our use of{' '}
+          <a href="#/cookie-policy" target="_blank" onClick={e => e.stopPropagation()}>
+            cookies
+          </a>
+          .
+        </Text>
+        <CloseButton onClick={this.dismiss}>
+          <CrossIcon style={{ width: 24, height: 24 }} />
+        </CloseButton>
+      </Notification>
+    );
+  }
+}
 
 const mapStateToProps = state => ({
   closed: state.SettingsReducer.gdprDismissed,
