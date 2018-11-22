@@ -95,6 +95,10 @@ export default class SemanticLocationControl extends Component {
     return null;
   };
 
+  onReset = () => {
+    this.setState({ address: '' });
+  };
+
   onError = (error, clearSuggestions) => {
     if (error === 'ZERO_RESULTS') {
       clearSuggestions();
