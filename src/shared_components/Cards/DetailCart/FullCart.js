@@ -18,7 +18,7 @@ import EditTripContainer from 'scenes/trips/containers/EditTripContainer';
 // ACTIONS/CONFIG
 import { media } from '../../../libs/styled';
 import Tag from './components/Tag';
-import { padStart } from '../../../libs/Utils';
+import { padStart, getHeroImage } from '../../../libs/Utils';
 
 const Wrap = styled.div`
   ${media.minSmall} {
@@ -120,7 +120,7 @@ export default function FullCart({ data: service, trip, toggleExpansion, onDelet
   return (
     <Wrap>
       <LeftCol>
-        <Thumb url={service.media && service.media[0]} tripCount={service.partOf} withTooltip />
+        <Thumb url={getHeroImage(service)} tripCount={service.partOf} withTooltip />
       </LeftCol>
       <ContentCol>
         <CenterCol>

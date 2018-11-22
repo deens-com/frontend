@@ -54,6 +54,43 @@ const formatAddressLine = location => {
 
 const weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
+const mapImage = (image, i) => {
+  if (typeof image === 'object' && !image.url) {
+    return image;
+  }
+  const url = image.url || image;
+
+  return {
+    type: 'image',
+    hero: Boolean(image.hero),
+    names: {
+      'en-us': `Image ${i}`,
+    },
+    files: {
+      thumbnail: {
+        url,
+        width: 215,
+        height: 140,
+      },
+      small: {
+        url,
+        width: 430,
+        height: 280,
+      },
+      large: {
+        url,
+        width: 860,
+        height: 560,
+      },
+      hero: {
+        url,
+        width: 860,
+        height: 560,
+      },
+    },
+  };
+};
+
 const createService = values => {
   const i18nLocale = 'en-us';
   return {
@@ -115,38 +152,7 @@ const createService = values => {
       facebook: values.facebook,
       twitter: values.twitter,
     },
-    media: values.media.map(
-      (image, i) =>
-        (typeof image === 'object' && image) || {
-          type: 'image',
-          hero: false,
-          names: {
-            [i18nLocale]: `Image ${i}`,
-          },
-          files: {
-            thumbnail: {
-              url: image,
-              width: 215,
-              height: 140,
-            },
-            small: {
-              url: image,
-              width: 430,
-              height: 280,
-            },
-            large: {
-              url: image,
-              width: 860,
-              height: 560,
-            },
-            hero: {
-              url: image,
-              width: 860,
-              height: 560,
-            },
-          },
-        },
-    ),
+    media: values.media.map(mapImage),
   };
 };
 
@@ -167,8 +173,8 @@ const buildServiceForView = service => {
       const rules = service.rules.map(rule => rule[i18nLocale]);
       service.rules = rules;
     }
-    service.start = service.instructions.start[i18nLocale];
-    service.end = service.instructions.end[i18nLocale];
+    service.start = service.instructions.start && service.instructions.start[i18nLocale];
+    service.end = service.instructions.end && service.instructions.end[i18nLocale];
     service.facebook = service.links.facebook;
     service.twitter = service.links.twitter;
     service.website = service.links.website;
@@ -186,6 +192,7 @@ const buildServiceForView = service => {
   } catch (error) {
     console.log(error);
   }
+  console.log(service);
   return service;
 };
 
