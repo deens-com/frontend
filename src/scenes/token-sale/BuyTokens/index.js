@@ -5,6 +5,7 @@ import { Segment } from 'semantic-ui-react';
 import Input from 'shared_components/StyledInput';
 import BuyButton from './BuyButton';
 import { Link } from 'react-router-dom';
+import round from 'lodash.round';
 
 const plsValue = 0.36;
 const preIcoBonus = 20; // in %
@@ -90,7 +91,7 @@ export default class BuyTokens extends React.Component {
   };
 
   render() {
-    const plsToBuy = (this.state.amount / plsValue).toFixed(2);
+    const plsToBuy = round(this.state.amount / plsValue, 8).toFixed(2);
     const bonus = ((Number(plsToBuy) * preIcoBonus) / 100).toFixed(2);
     const total = (Number(plsToBuy) + Number(bonus)).toFixed(2);
     return (
