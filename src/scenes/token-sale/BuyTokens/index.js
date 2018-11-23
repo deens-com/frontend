@@ -91,8 +91,8 @@ export default class BuyTokens extends React.Component {
   };
 
   render() {
-    const plsToBuy = round(this.state.amount / plsValue, 8).toFixed(2);
-    const bonus = ((Number(plsToBuy) * preIcoBonus) / 100).toFixed(2);
+    const plsToBuy = round(this.state.amount / plsValue, 8);
+    const bonus = (Number(plsToBuy) * preIcoBonus) / 100;
     const total = (Number(plsToBuy) + Number(bonus)).toFixed(2);
     return (
       <Wrapper>
@@ -121,17 +121,17 @@ export default class BuyTokens extends React.Component {
               <Divider />
               <Row>
                 <FirstCol>Amount in PLS (1 PLS = ${plsValue})</FirstCol>
-                <SecondCol>{plsToBuy}</SecondCol>
+                <SecondCol>{plsToBuy.toFixed(2)}</SecondCol>
               </Row>
               <Divider />
               <Row>
                 <FirstCol>(Pre-ICO) {preIcoBonus}% bonus in PLS</FirstCol>
-                <SecondCol>{bonus}</SecondCol>
+                <SecondCol>{bonus.toFixed(2)}</SecondCol>
               </Row>
               <Divider />
               <Row>
                 <FirstCol>Total amount in PLS</FirstCol>
-                <SecondCol>{total}</SecondCol>
+                <SecondCol>≈ {total}</SecondCol>
               </Row>
             </Table>
             <BuyButton amount={this.state.amount} onSuccess={this.props.onTokenBought} />
