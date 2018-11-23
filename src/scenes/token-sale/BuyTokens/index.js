@@ -7,7 +7,7 @@ import BuyButton from './BuyButton';
 import { Link } from 'react-router-dom';
 import round from 'lodash.round';
 
-const plsValue = 0.36;
+const plsValue = 0.036;
 const preIcoBonus = 20; // in %
 
 const Wrapper = styled.div`
