@@ -30,12 +30,11 @@ const HomeTagLine = styled.h1`
   margin-top: 0px;
   margin-left: 13px;
   padding-top: 138px;
-  padding-bottom: 47px;
   position: relative;
   font-weight: bold;
   text-align: center;
   line-height: 56px;
-  max-width: 504px;
+  max-width: 630px;
   margin: auto;
 
   ${media.minSmall} {
@@ -45,30 +44,17 @@ const HomeTagLine = styled.h1`
   ${media.minMedium} {
     font-size: 48px;
   }
+`;
 
-  span {
-    font-size: 36px;
-    left: 26px;
-    letter-spacing: 0;
-    position: absolute;
-    top: -44px;
-    font-family: 'Muli', sans-serif !important;
-    font-weight: 200;
-
-    ${media.minSmall} {
-      font-size: 40px;
-      left: 42px;
-    }
-
-    ${media.minMedium} {
-      font-size: 60px;
-      left: 68px;
-    }
-
-    @media screen and (max-width: 768px) {
-      position: static;
-    }
-  }
+const HomeSecondTagLine = styled.h2`
+  position: relative;
+  font-size: 18px;
+  text-transform: uppercase;
+  padding-bottom: 30px;
+  color: white;
+  margin: auto;
+  text-align: center;
+  margin-top: 5px;
 `;
 
 const CreateTrip = styled.div`
@@ -86,7 +72,8 @@ const HomeComponent = props => {
           <Media query={`(min-width: ${sizes.large})`}>
             {matches => (matches ? <HeroSlider /> : <MobileHero />)}
           </Media>
-          <HomeTagLine>Book complete trips in minutes</HomeTagLine>
+          <HomeTagLine>Book complete customizable trips in minutes</HomeTagLine>
+          <HomeSecondTagLine>No added costs</HomeSecondTagLine>
           <HomeSearch />
           <CreateTrip>
             <Button
