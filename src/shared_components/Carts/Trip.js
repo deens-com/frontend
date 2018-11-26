@@ -139,7 +139,7 @@ function getTripImage(item) {
   if (!item.media || item.media.length === 0) {
     return '';
   }
-  return getHeroImage(item.media).files.thumbnail.url;
+  return getHeroImage(item).files.thumbnail.url;
 }
 
 export default class TripCart extends Component {
