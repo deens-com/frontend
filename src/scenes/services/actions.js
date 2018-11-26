@@ -158,7 +158,7 @@ export const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (dispatch
       setAddedToTripMessage(formattedTrip)(dispatch);
       dispatch(tripCreated({ trip: formattedTrip }));
       if (redirectToCreatedTrip) {
-        history.push(`/trips/${newTrip.data._id}`);
+        history.push(`/trips/organize/${newTrip.data._id}`);
       }
     }
   } catch (error) {
