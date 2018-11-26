@@ -76,6 +76,7 @@ class Payment extends React.Component {
           payWithPls={this.props.payWithPls}
           bookingStatus={this.props.bookingStatus}
           isPaymentProcessing={this.state.isPaymentProcessing}
+          plsBalance={this.props.plsBalance}
         />
       </PaymentContext.Provider>
     );
@@ -85,6 +86,7 @@ class Payment extends React.Component {
 const mapStateToProps = state => ({
   paymentError: state.CheckoutReducer.paymentError,
   bookingStatus: state.CheckoutReducer.bookingStatus,
+  plsBalance: state.SessionsReducer.session.plsBalance || 0,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);

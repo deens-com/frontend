@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Dimmer, Loader, Modal, Button } from 'semantic-ui-react';
+import { Dimmer, Loader, Modal } from 'semantic-ui-react';
 import styled from 'styled-components';
 import history from 'main/history';
 
@@ -9,6 +9,7 @@ import { media } from 'libs/styled';
 import BookedSuccessfullyPopup from '../BookedSuccessfullyPopup';
 import StripeCardDetails from '../StripeCardDetails';
 import CoinbaseButtonContainer from '../../CoinbaseButtonContainer';
+import PLSButton from './PLSButton';
 
 import VisaLogo from '../logos/visa.svg';
 import MasterLogo from '../logos/mastercard.svg';
@@ -37,12 +38,8 @@ const StripWrap = styled.div`
   padding: 15px 18px;
 `;
 
-const CoinbaseButtonWrapper = styled.div`
-  margin-top: 20px;
-`;
-
-const PlsPaymentButtonWrapper = styled.div`
-  margin-top: 20px;
+const ButtonWrapper = styled.div`
+  margin: 20px auto 0;
 `;
 
 const ChooseMethodTitle = styled.div`
@@ -88,15 +85,26 @@ const Method = styled.div`
   cursor: pointer;
   color: ${props => (props.selected ? 'white' : '#3C434B')};
   background-color: ${props => (props.selected ? '#38D39F' : '#FFFFFF')};
-  width: 130px;
-  height: 130px;
   flex-direction: row;
   border-radius: 5px;
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1), -1px 0px 2px rgba(0, 0, 0, 0.1);
   text-align: center;
-  padding-top: 20px;
   font-size: 14px;
   font-weight: bold;
+  width: 114px;
+  height: 100px;
+  padding-top: 8px;
+  ${media.minSmall} {
+    width: 130px;
+    height: 130px;
+    padding-top: 20px;
+  }
+  > p {
+    ${media.minSmall} {
+      width: 130px;
+      height: 130px;
+    }
+  }
 `;
 
 const Logos = styled.div`
@@ -107,25 +115,39 @@ const Logos = styled.div`
 
 const CreditCardLogos = styled(Logos)`
   > img {
-    width: 34px;
-    height: 20px;
+    width: 27px;
+    height: 16px;
     margin-bottom: 10px;
+    margin: 0 3px;
+    ${media.minSmall} {
+      width: 34px;
+      height: 20px;
+      margin: 0;
+    }
   }
 `;
 
 const CryptoLogos = styled(Logos)`
   margin: 0 25px;
   > img {
-    width: 28px;
-    height: 28px;
+    width: 20px;
+    height: 20px;
     margin-bottom: 10px;
+    ${media.minSmall} {
+      width: 28px;
+      height: 28px;
+    }
   }
 `;
 
 const PLSLogoWrapper = styled(Logos)`
   > img {
-    width: 52px;
-    height: 52px;
+    width: 40px;
+    height: 40px;
+    ${media.minSmall} {
+      width: 52px;
+      height: 52px;
+    }
   }
 `;
 
@@ -163,13 +185,10 @@ export default class PaymentSection extends Component {
   render() {
     const {
       tripId,
-      pricePerPerson,
       totalPrice,
-      numberOfPerson,
-      onStripeTokenReceived,
       paymentError,
       guests,
-      showStripe,
+      plsBalance,
       error,
       getProvisionCodes,
       bookingStatus,
@@ -258,16 +277,19 @@ export default class PaymentSection extends Component {
                         />
                       )}
                       {this.state.paymentMethod === CRYPTO_METHOD && (
-                        <CoinbaseButtonWrapper>
+                        <ButtonWrapper>
                           <CoinbaseButtonContainer tripId={tripId} guests={guests} />
-                        </CoinbaseButtonWrapper>
+                        </ButtonWrapper>
                       )}
                       {this.state.paymentMethod === PLS_METHOD && (
-                        <PlsPaymentButtonWrapper>
-                          <Button onClick={() => this.props.payWithPls(guests, tripId)}>
-                            Pay with PLS
-                          </Button>
-                        </PlsPaymentButtonWrapper>
+                        <ButtonWrapper>
+                          <PLSButton
+                            plsBalance={plsBalance}
+                            guests={guests}
+                            tripId={tripId}
+                            onClick={this.props.payWithPls}
+                          />
+                        </ButtonWrapper>
                       )}
                     </React.Fragment>
                   );
