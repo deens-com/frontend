@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { media } from 'libs/styled';
 import { getCategory } from 'libs/categories';
 import { parseLocation } from 'libs/fetch_helpers';
+import { getHeroImage } from 'libs/Utils';
 
 import I18nText from 'shared_components/I18nText';
 import { MapMarker } from 'shared_components/icons';
@@ -211,8 +212,9 @@ export default class Itinerary extends Component {
           <ServiceDescription>
             <I18nText data={dayData.service.description} />
           </ServiceDescription>
-          {dayData.service.media &&
-            dayData.service.media[0] && <Image url={dayData.service.media[0].files.small.url} />}
+          {getHeroImage(dayData.service) && (
+            <Image url={getHeroImage(dayData.service).files.small.url} />
+          )}
           <ServiceData>
             <CategoryWrapper>
               <Category

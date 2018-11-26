@@ -90,7 +90,7 @@ export default class FoodImgSlider extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      index: 0,
+      index: props.images.findIndex(image => Boolean(image.hero)) || 0,
     };
 
     this.goToNext = this.goToNext.bind(this);

@@ -228,3 +228,13 @@ export function updateBottomChatPosition(bottom = 0) {
     chat.style.zIndex = 15;
   }
 }
+
+/*
+* Get hero image
+*/
+export function getHeroImage(service) {
+  if (!service.media) {
+    return null;
+  }
+  return service.media.find(media => media.hero === true) || service.media[0];
+}

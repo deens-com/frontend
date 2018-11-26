@@ -16,6 +16,7 @@ import {
   getPeopleCount,
   calculateBottomPosition,
   updateBottomChatPosition,
+  getHeroImage,
 } from 'libs/Utils';
 
 import TopBar from 'shared_components/TopBar';
@@ -960,7 +961,7 @@ export default class TripOrganizer extends Component {
       notes,
     } = this.state;
 
-    const hero = trip.media.find(media => media.hero) || trip.media[0];
+    const hero = trip && getHeroImage(trip);
     let img;
 
     if (hero && hero.files) {

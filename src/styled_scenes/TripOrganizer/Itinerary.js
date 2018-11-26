@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { Loader, Modal, TextArea, Popup } from 'semantic-ui-react';
 import { getCategory } from 'libs/categories';
 import { media } from 'libs/styled';
+import { getHeroImage } from 'libs/Utils';
 import I18nText from 'shared_components/I18nText';
 import Category from 'shared_components/Category';
 import Button from 'shared_components/Button';
@@ -368,7 +369,9 @@ export default class Itinerary extends Component {
       {day.data.map(dayData => (
         <Service key={dayData.service._id}>
           <ServiceBody>
-            {dayData.service.media[0] && <Image url={dayData.service.media[0].files.small.url} />}
+            {getHeroImage(dayData.service) && (
+              <Image url={getHeroImage(dayData.service).files.small.url} />
+            )}
             <ServiceData>
               <CategoryWrapper>
                 <Category

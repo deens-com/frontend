@@ -171,7 +171,7 @@ class ServiceForm extends Component {
       });
   };
 
-  onUploadedFilesChanged = (mediaUrls, id) => {
+  onUploadedFilesChanged = (mediaUrls, id, hero) => {
     this.uploadingImagesSet.delete(id);
 
     if (this.uploadingImagesSet.size === 0) {
@@ -182,7 +182,15 @@ class ServiceForm extends Component {
 
     const { setFieldValue, setFieldTouched } = this.props;
     setFieldTouched('media', true);
-    setFieldValue('media', mediaUrls);
+    setFieldValue(
+      'media',
+      mediaUrls.map(url => {
+        return {
+          ...url,
+          hero: hero === url.id,
+        };
+      }),
+    );
   };
 
   onStartedUpload = id => {

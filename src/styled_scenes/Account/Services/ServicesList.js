@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import Rating from 'shared_components/Rating';
 import * as SmartContractStatus from 'shared_components/SmartContract/Status';
 import { media } from 'libs/styled';
+import { getHeroImage } from 'libs/Utils';
 import PriceTag from '../../../shared_components/Currency/PriceTag';
 import Thumb from '../../../shared_components/Carts/components/Thumb';
 import { Cart } from '../../../shared_components/Carts/styles';
@@ -72,18 +73,17 @@ const ServiceItem = item => {
   const isActivated = item.status === 'active';
 
   const showContractStatus = item.contractAddress != null;
-
+  const image = getHeroImage(item);
   return (
     <Cart column>
       {showContractStatus && (
         <SmartContractStatus.Wrapper status={item.contractStatus} hash={item.hash} />
       )}
-      {item.media &&
-        item.media[0] && (
-          <Link to={'/services/' + item.objectId} key={item.objectId}>
-            <Thumb url={item.media[0].files.thumbnail.url} />
-          </Link>
-        )}
+      {image && (
+        <Link to={'/services/' + item.objectId} key={item.objectId}>
+          <Thumb url={image.files.thumbnail.url} />
+        </Link>
+      )}
 
       <ContentWrap>
         <Link to={'/services/' + item.objectId} key={item.objectId}>
