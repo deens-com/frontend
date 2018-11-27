@@ -1,5 +1,7 @@
 import * as analytics from 'libs/analytics';
 import axios from 'libs/axios';
+import Cookies from 'js-cookie';
+
 
 export const types = {
   REGISTRATION_SUCCESS: 'REGISTRATION_SUCCESS',
@@ -37,26 +39,17 @@ export const setLoading = payload => {
 export const postRegistration = (username, email, password, { from, action }) => async dispatch => {
   try {
     dispatch(setLoading(true));
+
+    const cookieReferrerId = 'please_referrer_id';
+    let referrer = Cookies.get(cookieReferrerId);
+
     await axios.post('/users/signup', {
       username: username,
       email: email,
       password: password,
+      referrer,
     });
-    // const loginResponse = await axios.post('/users/login', { username: email, password: password });
-    // const auth0Token = loginResponse.data.access_token;
-    // const user = await axios.get('/users/me', {
-    //   headers: { Authorization: `Bearer ${auth0Token}` },
-    // });
-    // const userData = user.data;
-    // userData.accessToken = auth0Token;
-    // dispatch(registrationSuccess({ session: {} }));
-    // saveSession(userData);
-    // history.replace({
-    //   pathname: from || '/login',
-    //   state: {
-    //     action,
-    //   },
-    // });
+
     dispatch(setLoading(false));
   } catch (error) {
     dispatch(
