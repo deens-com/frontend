@@ -34,19 +34,19 @@ import GDPRNotification from './GDPRNotification';
 const commonHOCs = comp => withErrorBoundary(withSegmentTracker(comp));
 
 class App extends React.Component {
-  checkForReferralAndSet = () => {
-    const cookieReferralId = 'please_referral_id';
+  checkForReferrerAndSet = () => {
+    const cookieReferrerId = 'please_referrer_id';
     const params = queryString.parse(history.location.search);
 
     if (params.ref) {
-      Cookies.set(cookieReferralId, params.ref);
+      Cookies.set(cookieReferrerId, params.ref);
     }
   };
 
   componentDidMount() {
     getCurrentUser()(store.dispatch);
 
-    this.checkForReferralAndSet();
+    this.checkForReferrerAndSet();
   }
 
   render() {
