@@ -99,12 +99,6 @@ const Method = styled.div`
     height: 130px;
     padding-top: 20px;
   }
-  > p {
-    ${media.minSmall} {
-      width: 130px;
-      height: 130px;
-    }
-  }
 `;
 
 const Logos = styled.div`
@@ -122,7 +116,7 @@ const CreditCardLogos = styled(Logos)`
     ${media.minSmall} {
       width: 34px;
       height: 20px;
-      margin: 0;
+      margin: 5px 0;
     }
   }
 `;
