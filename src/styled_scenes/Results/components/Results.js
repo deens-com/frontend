@@ -15,7 +15,6 @@ import { media } from '../../../libs/styled';
 import { Loader, Grid } from 'semantic-ui-react';
 import moment from 'moment';
 import { minutesToDays, getDaysByService } from 'styled_scenes/Trip/mapServicesToDays';
-import debounce from 'lodash.debounce';
 import notFoundImg from '../not_found.png';
 
 // STYLES

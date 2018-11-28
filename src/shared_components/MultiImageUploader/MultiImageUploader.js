@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import FineUploaderTraditional from 'fine-uploader-wrappers';
 import Filename from 'react-fine-uploader/filename';
-import { TrashCan, Star, StarOutline } from 'shared_components/icons';
+import { TrashCan, Star } from 'shared_components/icons';
 import CancelButton from 'react-fine-uploader/cancel-button';
 import Filesize from 'react-fine-uploader/filesize';
 import DeleteButton from 'react-fine-uploader/delete-button';

@@ -2,7 +2,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import history from 'main/history';
 import { Dropdown } from 'semantic-ui-react';
 import styled, { css } from 'styled-components';
 import Media from 'react-media';
@@ -131,7 +130,12 @@ const TopBarDesktopNav = function TopBarDesktopNav({
               style={{ color: 'inherit', marginRight: 30 }}
             >
               <Dropdown.Menu>
-                <a target="_blank" className="item" href="https://protocol.please.com">
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="item"
+                  href="https://protocol.please.com"
+                >
                   <span className="text">Information</span>
                 </a>
                 <Dropdown.Item text="Contribute" as={Link} to="/token-sale" />

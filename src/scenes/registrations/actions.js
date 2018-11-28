@@ -1,6 +1,5 @@
 import * as analytics from 'libs/analytics';
 import axios from 'libs/axios';
-import history from 'main/history';
 
 export const types = {
   REGISTRATION_SUCCESS: 'REGISTRATION_SUCCESS',
