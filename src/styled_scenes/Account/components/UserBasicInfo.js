@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Grid, Icon } from 'semantic-ui-react';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
+import copy from 'copy-to-clipboard';
 import CircularProfilePic from './CircularProfilePic';
 import Stars from './Stars';
 import { Link } from 'react-router-dom';
@@ -81,6 +82,7 @@ class UserBasicInfo extends Component {
     this.state = {
       pictureUploadError: '',
       balanceCurrency: 'PLS',
+      copyButtonText: 'Copy',
     };
   }
 
@@ -109,6 +111,12 @@ class UserBasicInfo extends Component {
 
   showPlsBalance = e => {
     this.setState({ balanceCurrency: 'PLS' });
+  };
+
+  copyButtonHandler = () => {
+    this.setState({ copyButtonText: 'Copied' });
+
+    copy(`https://please.com/register?ref=${this.props.user_profile.referral}`);
   };
 
   render() {
@@ -238,16 +246,17 @@ class UserBasicInfo extends Component {
               <br />
               <center>
                 Your referral code:
-                <CopyButton
-                  action={{
-                    color: '#858585',
-                    labelPosition: 'left',
-                    icon: 'copy',
-                    content: 'Copy',
-                    size: 'mini',
-                  }}
-                  defaultValue={this.props.user_profile.referral} // https://please.com/register?ref=
-                />
+                <CopyButton>
+                  <input defaultValue={this.props.user_profile.referral} />
+                  <Button
+                    type="submit"
+                    icon="copy"
+                    size="mini"
+                    labelPosition="left"
+                    content={this.state.copyButtonText}
+                    onClick={this.copyButtonHandler}
+                  />
+                </CopyButton>
                 <br />
                 <br />
                 <small>

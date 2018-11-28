@@ -17,6 +17,7 @@
     "axios": "^0.18.0",
     "babel-plugin-transform-semantic-ui-react-imports": "^1.3.1",
     "clipboard-copy": "^2.0.0",
+    "copy-to-clipboard": "^3.0.8",
     "ethers": "^3.0.17",
     "fine-uploader": "^5.16.2",
     "formik": "0.11.11",
