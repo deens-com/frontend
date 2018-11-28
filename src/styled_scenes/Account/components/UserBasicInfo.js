@@ -6,7 +6,7 @@ import CircularProfilePic from './CircularProfilePic';
 import Stars from './Stars';
 import { Link } from 'react-router-dom';
 import CustomButton from 'shared_components/Button';
-import { Menu, Card, Button } from 'semantic-ui-react';
+import { Menu, Card, Button, Input } from 'semantic-ui-react';
 import ImgurAvatar from './../../../assets/no-avatar.png';
 import PlsIcon from 'assets/ic_pls.png';
 import NumberFormat from 'react-number-format';
@@ -18,6 +18,13 @@ const AttributeTitle = styled.h6`
 
 const CenteredDiv = styled.div`
   text-align: center;
+`;
+
+const CopyButton = styled(Input)`
+  button.button {
+    background: #38d39f;
+    color: white;
+  }
 `;
 
 const Wrapper = styled.div`
@@ -215,17 +222,7 @@ class UserBasicInfo extends Component {
                 </span>
               </Menu.Item>
             </Link>
-            {/*
-            <Link to="/account/settings" onClick={scrollDownMobileOnly}>
-              <Menu.Item name="settings" active={activePath === 'settings'}>
-                <MenuIcon disabled name="angle right" circular />
-                <span>
-                  <MenuIcon disabled name="cogs" circular />
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Settings
-                </span>
-              </Menu.Item>
-            </Link>
-              */}
+
             <div style={{ cursor: 'pointer' }} onClick={this.props.logOut}>
               <Menu.Item name="logout" active={activePath === 'logout'}>
                 <MenuIcon disabled name="angle right" circular />
@@ -234,6 +231,30 @@ class UserBasicInfo extends Component {
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Logout
                 </span>
               </Menu.Item>
+            </div>
+
+            <div>
+              <br />
+              <br />
+              <center>
+                Your referral code:
+                <CopyButton
+                  action={{
+                    color: '#858585',
+                    labelPosition: 'left',
+                    icon: 'copy',
+                    content: 'Copy',
+                    size: 'mini',
+                  }}
+                  defaultValue={this.props.user_profile.referral} // https://please.com/register?ref=
+                />
+                <br />
+                <br />
+                <small>
+                  There are {this.props.user_profile.referredUsersCount} users that signed up with
+                  your referral code.
+                </small>
+              </center>
             </div>
           </Menu>
         </Wrapper>
