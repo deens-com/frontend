@@ -33,9 +33,7 @@ class Payment extends React.Component {
       // TODO: @jaydp use the customer's name in the below line
       const { token, error } = await this.props.stripe.createToken({ name: 'Customer name' });
       if (error) {
-        alert(error);
-        this.setState({ isPaymentProcessing: false });
-        return;
+        throw error;
       }
       this.onStripeTokenReceived(token, status => {
         this.setState({ isPaymentProcessing: false });
@@ -44,8 +42,10 @@ class Payment extends React.Component {
         }
       });
     } catch (error) {
-      alert(error);
-      this.setState({ isPaymentProcessing: false });
+      this.setState({
+        isPaymentProcessing: false,
+        paymentError: error,
+      });
     }
   };
 
@@ -75,6 +75,8 @@ class Payment extends React.Component {
           getProvisionCodes={getProvisionCodes}
           payWithPls={this.props.payWithPls}
           bookingStatus={this.props.bookingStatus}
+          isPaymentProcessing={this.state.isPaymentProcessing}
+          plsBalance={this.props.plsBalance}
         />
       </PaymentContext.Provider>
     );
@@ -84,6 +86,7 @@ class Payment extends React.Component {
 const mapStateToProps = state => ({
   paymentError: state.CheckoutReducer.paymentError,
   bookingStatus: state.CheckoutReducer.bookingStatus,
+  plsBalance: state.SessionsReducer.session.plsBalance || 0,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);

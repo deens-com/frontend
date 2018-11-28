@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'semantic-ui-react';
+import styled from 'styled-components';
+import Button from 'shared_components/Button';
 import CoinbaseCommerceButton from 'react-coinbase-commerce';
 import 'react-coinbase-commerce/dist/coinbase-commerce-button.css';
 import axios from 'libs/axios';
@@ -14,6 +15,18 @@ const buttonStates = {
 
 const displayNone = { display: 'none' };
 const coinbaseButtonDomID = 'coinbase-payment-button';
+
+const Wrap = styled.div`
+  text-align: center;
+`;
+
+const Text = styled.p`
+  font-size: 12px;
+  margin-top: 10px;
+  > strong {
+    font-weight: bold;
+  }
+`;
 
 class CoinbaseButtonContainer extends Component {
   static propTypes = {
@@ -56,16 +69,16 @@ class CoinbaseButtonContainer extends Component {
 
   render() {
     return (
-      <div>
+      <Wrap>
         <Button
           onClick={this.handleClick}
-          loading={this.state.buttonState === buttonStates.loading}
+          theme="fillLightGreen"
           disabled={
             this.state.buttonState === buttonStates.loading ||
             this.state.buttonState === buttonStates.error
           }
         >
-          Pay with CryptoCurrency
+          <strong>Pay with Cryptocurrency</strong>
         </Button>
         <CoinbaseCommerceButton
           style={displayNone}
@@ -75,7 +88,11 @@ class CoinbaseButtonContainer extends Component {
           onChargeFailure={msgData => console.log('onChargeFailure', msgData)}
           onModalClosed={this.onModalClosed}
         />
-      </div>
+        <Text>
+          *Currencies accepted:{' '}
+          <strong>Bitcoin (BTC), Ethereum (ETH), Litecoin (LTC), Bitcoin Cash (BCH)</strong>
+        </Text>
+      </Wrap>
     );
   }
 }
