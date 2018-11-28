@@ -257,7 +257,7 @@ const buildServicesJson = services => {
 };
 
 const buildUserJson = user => {
-  user.plsBalance = user.plsBalance.$numberDecimal;
+  user.plsBalance = user.plsBalance.$numberDecimal || user.plsBalance;
   return user;
 };
 
