@@ -48,7 +48,7 @@ const IconWrapper = styled.div`
   }
 `;
 
-const BookingDone = () => {
+const ThankYou = () => {
   return (
     <React.Fragment>
       <Wrapper>
@@ -56,16 +56,16 @@ const BookingDone = () => {
           <CheckIcon style={{ width: 72, height: 72 }} />
         </IconWrapper>
         <Title>Thank you!</Title>
-        <FirstLine>Token purchase completed</FirstLine>
-        <SecondLine>You can see your tokens in your profile</SecondLine>
+        <FirstLine>Your information has been verified.</FirstLine>
+        <SecondLine>We will update you shortly on the next steps.</SecondLine>
         <Button type="link" href="/" theme="textLightGreen">
-          Explore trips
+          Now let's find some trips
         </Button>
       </Wrapper>
     </React.Fragment>
   );
 };
 
-BookingDone.propTypes = {};
+ThankYou.propTypes = {};
 
-export default BookingDone;
+export default ThankYou;
