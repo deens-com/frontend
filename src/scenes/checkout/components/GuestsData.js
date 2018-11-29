@@ -67,11 +67,11 @@ const GuestsData = ({ guests, onChange }) => {
         <span>Guests Details</span>
       </Title>
       {guests.map((guest, i) => (
-        <React.Fragment>
+        <React.Fragment key={i}>
           <Type>
             {i + 1}- {guest.type.charAt(0).toUpperCase() + guest.type.slice(1)}
           </Type>
-          <Guest key={i}>
+          <Guest>
             <TitleSelection>
               <label htmlFor="title">Title</label>
               <Input>
