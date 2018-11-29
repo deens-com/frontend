@@ -260,7 +260,6 @@ const buildUserJson = user => {
   if (user.plsBalance.$numberDecimal) {
     user.plsBalance = user.plsBalance.$numberDecimal;
   }
-
   return user;
 };
 
