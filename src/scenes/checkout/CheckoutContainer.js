@@ -359,7 +359,7 @@ class CheckoutContainer extends React.Component {
     if (step === 3) {
       return (
         <Dimmer.Dimmable dimmed={loadingProvision}>
-          <Dimmer active={loadingProvision}>
+          <Dimmer inverted active={loadingProvision}>
             <Loader />
           </Dimmer>
           <PaymentContainer
@@ -369,7 +369,6 @@ class CheckoutContainer extends React.Component {
             guests={guests}
             trip={trip}
           />
-          ;
         </Dimmer.Dimmable>
       );
     }

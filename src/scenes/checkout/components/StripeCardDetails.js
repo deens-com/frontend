@@ -1,85 +1,231 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { CardElement } from 'react-stripe-elements';
+import {
+  CardNumberElement,
+  CardExpiryElement,
+  CardCVCElement,
+  PostalCodeElement,
+  PaymentRequestButtonElement,
+} from 'react-stripe-elements';
 import styled from 'styled-components';
-import CustomColorSemanticButton from 'shared_components/CustomColorSemanticButton';
 import { PaymentContextConsumer } from './Payment';
 
 const Wrapper = styled.div`
   border-style: none;
-  padding: 5px;
-  margin-left: -5px;
-  margin-right: -5px;
-  background: rgba(18, 91, 152, 0.05);
+  padding: 34px 5px;
+  background: #f9f9f9;
   border-radius: 8px;
   width: 100%;
-  max-width: 500px;
-  margin-top: 10px;
+  text-align: center;
 
-  p {
+  > p {
     width: 100%;
     text-align: center;
-    font-size: 13px;
-    color: #8898aa;
+    font-size: 16px;
     padding: 3px 10px 7px;
     margin: 0;
+  }
+
+  .inputBase {
+    border: 1px solid #ebebeb;
+    border-bottom: 1px solid #38d39f;
+    padding: 0 7px;
+    border-radius: 5px 5px 0 0;
+    color: #3c434b;
+    align-items: center;
+    padding: 10px 7px;
+    display: inline-block;
+    width: 100%;
+
+    input {
+      font-weight: bold !important;
+    }
+  }
+
+  .inputFocus {
+    border-color: #38d39f;
+  }
+
+  .inputError {
+    border-color: #d98181;
   }
 `;
 
 const CardInputWrapper = styled.div`
-  background-color: #fff;
-  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-  border-radius: 4px;
-  padding: 3px;
+  display: inline-block;
+  width: 200px;
 `;
 
-const StyledCardElement = styled(CardElement)`
-  padding: 10px;
-  margin-bottom: 2px;
+const CVCWrapper = styled.div`
+  display: inline-block;
+  width: 50px;
+  margin: 0 25px;
 `;
 
-const StripeCardDetails = ({ showOrInText, symbol, amount }) => {
-  return (
-    <Wrapper>
-      <p>{showOrInText ? 'Or enter' : 'Enter'} card details!</p>
-      <CardInputWrapper>
-        <StyledCardElement
-          style={{
-            base: {
-              lineHeight: '42px',
-              color: '#32325D',
-              fontWeight: 500,
-              fontFamily: 'Inter UI, Open Sans, Segoe UI, sans-serif',
-              fontSize: '16px',
-              fontSmoothing: 'antialiased',
-              '::placeholder': {
-                color: '#CFD7DF',
-              },
-            },
-            invalid: {
-              color: '#E25950',
-            },
-          }}
-        />
+const ExpiryWrapper = styled.div`
+  display: inline-block;
+  width: 75px;
+`;
+
+const Label = styled.div`
+  font-size: 12px;
+  color: #3c434b;
+  text-align: left;
+  font-weight: bold;
+`;
+
+const Required = styled.span`
+  color: red;
+`;
+
+const ErrorMessage = styled.p`
+  color: red;
+  font-weight: bold;
+  height: 35px;
+  padding: 5px 0 0;
+`;
+
+const PayButton = styled.div`
+  color: white;
+  background-color: ${props => (props.disabled ? '#d6d6d6' : '#38D39F')};
+  width: 180px;
+  font-weight: bold;
+  margin: auto;
+  text-align: left;
+  padding: 10px 20px;
+  border-radius: 100px;
+  position: relative;
+  margin-top: 15px;
+  cursor: pointer;
+`;
+
+const AmountButton = styled.div`
+  background-color: ${props => (props.disabled ? '#d6d6d6' : 'white')};
+  color: #3c434b;
+  display: inline-block;
+  position: absolute;
+  right: 1px;
+  height: calc(100% - 2px);
+  top: 1px;
+  border-radius: 0 50px 50px 0;
+  padding-top: 10px;
+  padding: 10px 20px 0;
+
+  :before {
+    content: '';
+    border-style: solid;
+    border-width: 10px 15px 10px 0;
+    border-color: transparent white transparent transparent;
+    position: absolute;
+    left: -10px;
+  }
+`;
+
+class StripeCardDetails extends React.Component {
+  constructor(props) {
+    super(props);
+    this.cardNumberRef = null;
+    this.cvcRef = null;
+    this.expiryRef = null;
+  }
+
+  focusNextInput = type => {
+    if (type === 'cardNumber') {
+      this.cvcRef.focus();
+    }
+
+    if (type === 'cardCvc') {
+      this.expiryRef.focus();
+    }
+
+    if (type === 'cardExpiry') {
+      this.expiryRef.blur();
+    }
+  };
+
+  onCardNumberChange = event => {
+    if (event.complete) {
+      this.focusNextInput(event.elementType);
+    }
+  };
+
+  render() {
+    const { symbol, amount, paymentError } = this.props;
+
+    return (
+      <Wrapper>
+        <p>Enter card details</p>
+        <CardInputWrapper>
+          <Label>
+            Card Number
+            <Required>*</Required>
+          </Label>
+          <CardNumberElement
+            onChange={this.onCardNumberChange}
+            style={{ base: { fontWeight: 'bold' } }}
+            classes={{
+              base: 'inputBase',
+              focus: 'inputFocus',
+              invalid: 'inputError',
+              complete: 'inputFocus',
+            }}
+            onReady={elem => (this.cardNumberRef = elem)}
+          />
+        </CardInputWrapper>
+        <CVCWrapper>
+          <Label>
+            CVC
+            <Required>*</Required>
+          </Label>
+          <CardCVCElement
+            onChange={this.onCardNumberChange}
+            style={{ base: { fontWeight: 'bold', width: '50px' } }}
+            classes={{
+              base: 'inputBase',
+              focus: 'inputFocus',
+              invalid: 'inputError',
+              complete: 'inputFocus',
+            }}
+            onReady={elem => (this.cvcRef = elem)}
+          />
+        </CVCWrapper>
+        <ExpiryWrapper>
+          <Label>
+            Expiry Date
+            <Required>*</Required>
+          </Label>
+          <CardExpiryElement
+            onChange={this.onCardNumberChange}
+            style={{ base: { fontWeight: 'bold', width: '50px' } }}
+            classes={{
+              base: 'inputBase',
+              focus: 'inputFocus',
+              invalid: 'inputError',
+              complete: 'inputFocus',
+            }}
+            onReady={elem => (this.expiryRef = elem)}
+          />
+        </ExpiryWrapper>
+
+        <ErrorMessage>
+          {paymentError ? paymentError.customMessage || paymentError.message : ' '}
+        </ErrorMessage>
+
         <PaymentContextConsumer>
           {({ onSubmitWithCardDetails, isPaymentProcessing }) => (
-            <CustomColorSemanticButton
-              fluid
-              bgColor="rgb(95, 183, 158)"
-              whiteText
-              onClick={onSubmitWithCardDetails}
-              loading={isPaymentProcessing}
-              disabled={isPaymentProcessing}
-            >
-              Pay {symbol}
-              {amount}
-            </CustomColorSemanticButton>
+            <PayButton onClick={onSubmitWithCardDetails} disabled={isPaymentProcessing}>
+              <span>Pay</span>
+              <AmountButton disabled={isPaymentProcessing}>
+                {symbol}
+                {amount}
+              </AmountButton>
+            </PayButton>
           )}
         </PaymentContextConsumer>
-      </CardInputWrapper>
-    </Wrapper>
-  );
-};
+      </Wrapper>
+    );
+  }
+}
 
 StripeCardDetails.propTypes = {
   amount: PropTypes.number.isRequired,

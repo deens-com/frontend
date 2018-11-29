@@ -127,7 +127,29 @@ export default class CheckoutBox extends React.Component {
     super(props);
     this.state = {
       dateFocused: false,
+      saved: 0,
     };
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.isSaving && !this.props.isSaving) {
+      let num;
+      this.setState(
+        prevState => {
+          num = prevState.saved + 1;
+          return {
+            saved: num,
+          };
+        },
+        () => {
+          setTimeout(() => {
+            this.setState(prevState => ({
+              saved: prevState.saved === num ? 0 : prevState.saved,
+            }));
+          }, 2500);
+        },
+      );
+    }
   }
 
   handleDateChange = date => {
@@ -151,11 +173,25 @@ export default class CheckoutBox extends React.Component {
     this.props.action('share');
   };
 
+  save = () => {
+    this.props.action('manual-save');
+  };
+
   renderButtonWithPopup(button, content) {
     if (content) {
       return <Popup trigger={button} content={content} position="bottom left" hideOnScroll />;
     }
     return button;
+  }
+
+  saveButtonText() {
+    if (this.props.isSaving) {
+      return 'Saving Trip';
+    }
+    if (this.state.saved) {
+      return 'Saved';
+    }
+    return 'Save Trip';
   }
 
   render() {
@@ -261,6 +297,20 @@ export default class CheckoutBox extends React.Component {
             </ButtonWrap>,
             shareError,
           )}
+          <ButtonWrap>
+            <Button
+              disabled={Boolean(this.props.isSaving)}
+              size="medium"
+              type="button"
+              theme={this.state.saved ? 'fillLightGreen' : 'white'}
+              onClick={this.save}
+              width="100%"
+              align="center"
+              bold
+            >
+              {this.saveButtonText()}
+            </Button>
+          </ButtonWrap>
         </Box>
       </Wrapper>
     );

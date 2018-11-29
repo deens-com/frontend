@@ -895,9 +895,6 @@ class Filters extends Component {
     let end_date = this.props.search_query.end_date;
     let formatted_end_date =
       end_date && end_date.length ? moment(parseInt(end_date, 10)).format('Do MMMM, YYYY') : '';
-    let serviceTypes = this.props.search_query.type;
-    // let tags = this.props.search_query.tags || [];
-    let address = this.props.search_query.address;
 
     return (
       <section>

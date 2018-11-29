@@ -291,56 +291,69 @@ export default class TripOrganizer extends Component {
       return;
     }
 
-    this.setState(action === 'autosave' ? {} : { isSaving: true }, async () => {
-      let selectedServiceOptions = [];
+    this.setState(
+      action === 'autosave'
+        ? {}
+        : {
+            isSaving: action === 'share' || action === 'book',
+            isManualSaving: action === 'manual-save',
+          },
+      async () => {
+        let selectedServiceOptions = [];
 
-      Object.keys(this.state.optionsSelected).forEach(day => {
-        Object.keys(this.state.optionsSelected[day]).forEach(serviceId => {
-          selectedServiceOptions.push({
-            day: parseInt(day, 10),
-            serviceId,
-            availabilityCode:
-              this.state.optionsSelected[day] &&
-              this.state.optionsSelected[day][serviceId] &&
-              (this.state.optionsSelected[day][serviceId].availabilityCode ||
-                this.state.optionsSelected[day][serviceId]),
-            price:
-              this.state.optionsSelected[day][serviceId] &&
-              this.state.optionsSelected[day][serviceId].price,
+        Object.keys(this.state.optionsSelected).forEach(day => {
+          Object.keys(this.state.optionsSelected[day]).forEach(serviceId => {
+            selectedServiceOptions.push({
+              day: parseInt(day, 10),
+              serviceId,
+              availabilityCode:
+                this.state.optionsSelected[day] &&
+                this.state.optionsSelected[day][serviceId] &&
+                (this.state.optionsSelected[day][serviceId].availabilityCode ||
+                  this.state.optionsSelected[day][serviceId]),
+              price:
+                this.state.optionsSelected[day][serviceId] &&
+                this.state.optionsSelected[day][serviceId].price,
+            });
           });
         });
-      });
 
-      const trip = {
-        ...this.state.trip,
-        otherAttributes: {
-          selectedServiceOptions,
-        },
-        services: this.state.days.reduce(
-          (prev, day) => [
-            ...prev,
-            ...day.data.map(dayData => ({ ...dayData, service: dayData.service._id })),
-          ],
-          [],
-        ),
-        ...(this.props.startDate ? { startDate: this.props.startDate } : {}),
-        duration: (this.state.days && daysToMinutes(this.state.days.length)) || 1,
-        tags: this.state.trip.tags ? this.state.trip.tags.map(tag => tag._id) : [], // This could be done when loading the trip to avoid executing each time we save
-        notes: this.state.notes,
-      };
+        const trip = {
+          ...this.state.trip,
+          otherAttributes: {
+            selectedServiceOptions,
+          },
+          services: this.state.days.reduce(
+            (prev, day) => [
+              ...prev,
+              ...day.data.map(dayData => ({ ...dayData, service: dayData.service._id })),
+            ],
+            [],
+          ),
+          ...(this.props.startDate ? { startDate: this.props.startDate } : {}),
+          duration: (this.state.days && daysToMinutes(this.state.days.length)) || 1,
+          tags: this.state.trip.tags ? this.state.trip.tags.map(tag => tag._id) : [], // This could be done when loading the trip to avoid executing each time we save
+          notes: this.state.notes,
+        };
 
-      await axios.patch(`/trips/${trip._id}`, trip);
+        await axios.patch(`/trips/${trip._id}`, trip);
 
-      if (action === 'autosave') {
-        return;
-      }
+        if (action === 'autosave') {
+          return;
+        }
 
-      if (action === 'share') {
-        history.push(`/trips/share/${trip._id}`);
-        return;
-      }
-      history.push(`/trips/checkout/${trip._id}`);
-    });
+        if (action === 'manual-save') {
+          this.setState({ isManualSaving: false });
+          return;
+        }
+
+        if (action === 'share') {
+          history.push(`/trips/share/${trip._id}`);
+          return;
+        }
+        history.push(`/trips/checkout/${trip._id}`);
+      },
+    );
   };
 
   autoPatchTrip = debounce(this.patchTrip, 2000);
@@ -1027,6 +1040,7 @@ export default class TripOrganizer extends Component {
           trip={trip}
           days={days}
           action={this.patchTrip}
+          isSaving={this.state.isManualSaving}
           changeDates={this.changeDates}
           changeGuests={this.changeGuests}
           startDate={startDate}

@@ -248,7 +248,6 @@ class ServiceForm extends Component {
       globalError,
       handleSubmit,
       submitInFlight,
-      userProfile,
       service,
     } = this.props;
 
@@ -256,11 +255,6 @@ class ServiceForm extends Component {
       onChange: handleChange,
       onBlur: handleBlur,
     };
-
-    const userHasConnectedWallet =
-      userProfile && (userProfile.ledgerPublicAddress || userProfile.metamaskPublicAddress);
-
-    const serviceHasContract = service && service.contractAddress != null;
 
     // we're using the key prop over here because we want to re-create the form component once we get the service
     return (
