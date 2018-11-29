@@ -31,3 +31,5 @@ export const kycTelegramBotId = (() => {
 })();
 
 export const stripeKey = process.env.REACT_APP_STRIPE_KEY || '';
+
+export const icoReady = process.env.REACT_APP_ICO;

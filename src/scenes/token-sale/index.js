@@ -20,9 +20,11 @@ import headerImg from './images/header.jpg';
 
 import TermsAgreement from './TermsAgreement';
 import ThankYou from './ThankYou';
+import TokenBought from './TokenBought';
 import TopBar from '../../shared_components/TopBar';
 import { Page, PageWrapper, PageContent } from '../../shared_components/layout/Page';
 import BrandFooter from '../../shared_components/BrandFooter';
+import { icoReady } from 'libs/config';
 
 const PageTop = styled.div`
   width: 100%;
@@ -134,7 +136,7 @@ class TokenSale extends Component {
     }
 
     if (this.state.tokenBought) {
-      return <ThankYou />;
+      return <TokenBought />;
     }
 
     if (this.props.kycState === 2 || this.state.agreedTerms) {
@@ -151,7 +153,10 @@ class TokenSale extends Component {
     }
 
     if (this.props.kycState === 1) {
-      return <TermsAgreement onProceed={this.onTermsAgree} />;
+      if (icoReady) {
+        return <TermsAgreement onProceed={this.onTermsAgree} />;
+      }
+      return <ThankYou />;
     }
 
     if (this.props.kyc_token) {

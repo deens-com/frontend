@@ -56,10 +56,10 @@ const BookingDone = () => {
           <CheckIcon style={{ width: 72, height: 72 }} />
         </IconWrapper>
         <Title>Thank you!</Title>
-        <FirstLine>Your information has been verified.</FirstLine>
-        <SecondLine>We will update you shortly on the next steps.</SecondLine>
+        <FirstLine>Token purchase completed</FirstLine>
+        <SecondLine>You can see your tokens in your profile</SecondLine>
         <Button type="link" href="/" theme="textLightGreen">
-          Now let's find some trips
+          Explore trips
         </Button>
       </Wrapper>
     </React.Fragment>
