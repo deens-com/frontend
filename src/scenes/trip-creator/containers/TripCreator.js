@@ -27,7 +27,7 @@ class TripCreatorContainer extends Component {
         history.push(`/trips/organize/${response.data._id}`);
       });
     } else {
-      history.push('/login');
+      history.push('/trips/organize');
     }
   }
   render() {

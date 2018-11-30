@@ -7,7 +7,7 @@ import { update_search_query_without_search, update_path } from '../../../scenes
 import moment from 'moment';
 import TripOrganizer from '../../../styled_scenes/TripOrganizer';
 import history from 'main/history';
-import { loadTrip } from 'libs/localStorage';
+import { loadTrip, removeTrip } from 'libs/localStorage';
 import axios from 'libs/axios';
 
 class TripOrganizerContainer extends Component {
@@ -26,6 +26,15 @@ class TripOrganizerContainer extends Component {
           })),
         };
         axios.post(`/trips`, tripToSave).then(response => {
+          if (props.location.state.action === 'book') {
+            history.push(`/trips/checkout/${response.data._id}`);
+            removeTrip();
+            return;
+          } else if (props.location.state.action === 'share') {
+            history.push(`/trips/share/${response.data._id}`);
+            removeTrip();
+            return;
+          }
           history.push(`/trips/organize/${response.data._id}`, this.props.location.state);
         });
       }

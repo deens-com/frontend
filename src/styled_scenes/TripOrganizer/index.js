@@ -9,7 +9,7 @@ import { getFromCoordinates } from 'libs/Utils';
 import { serverBaseURL } from 'libs/config';
 import axios from 'libs/axios';
 import { media } from 'libs/styled';
-import { saveTrip } from 'libs/localStorage';
+import { saveTrip, removeTrip } from 'libs/localStorage';
 import axiosOriginal from 'axios';
 import history from '../../main/history';
 import {
@@ -240,11 +240,6 @@ export default class TripOrganizer extends Component {
         notes: {},
       };
     }
-    if (props.action === routeActions.book) {
-      history.push(`/trips/checkout/${props.trip._id}`);
-    } else if (props.action === routeActions.share) {
-      history.push(`/trips/share/${props.trip._id}`);
-    }
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -376,9 +371,7 @@ export default class TripOrganizer extends Component {
           history.push('/login', {
             from: '/trips/organize',
             message: 'Please login or register to continue',
-            state: {
-              action,
-            },
+            action,
           });
           return;
         }

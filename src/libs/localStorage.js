@@ -6,6 +6,10 @@ export function saveTrip(trip) {
   localStorage.setItem(tripKey, JSON.stringify(trip));
 }
 
+export function removeTrip() {
+  localStorage.removeItem(tripKey);
+}
+
 export function loadTrip() {
   const localStorageUser = localStorage.getItem(tripKey);
   if (localStorageUser) {
