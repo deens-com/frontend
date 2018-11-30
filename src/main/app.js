@@ -83,6 +83,10 @@ class App extends React.Component {
                   component={commonHOCs(TripOrganizer)}
                   message="Please login or register to continue with your trip."
                 />
+                <Route
+                  path={process.env.PUBLIC_URL + '/trips/organize'}
+                  component={commonHOCs(TripOrganizer)}
+                />
                 <PrivateRoute
                   path={process.env.PUBLIC_URL + '/trips/share/:id'}
                   component={commonHOCs(TripShare)}
