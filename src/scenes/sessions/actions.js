@@ -253,6 +253,7 @@ export const loginRequest = (email, password, { from, action }) => {
   };
 };
 
+/*
 export const loginWithLedger = ({ from, action }) => async dispatch => {
   try {
     const { getLedgerPublicAddress, ledgerSignMessage } = await import('libs/web3-utils');
@@ -336,7 +337,7 @@ export const loginWithMetamask = () => async dispatch => {
     }
   }
 };
-
+*/
 export const clearErrors = () => dispatch => {
   dispatch({ type: types.LOGIN_ERROR, payload: {} });
   dispatch({ type: types.METAMASK_ERROR, payload: {} });

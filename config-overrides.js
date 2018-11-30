@@ -5,6 +5,7 @@ const rewireStyledComponents = require('react-app-rewire-styled-components');
 const rewireWebpackBundleAnalyzer = require('react-app-rewire-webpack-bundle-analyzer');
 const rewirePreloadPlugin = require('react-app-rewire-preload-plugin');
 const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin');
+const rewireBabelLoader = require('react-app-rewire-babel-loader');
 // const rewireLodash = require('react-app-rewire-lodash');
 
 module.exports = function override(config, env) {
@@ -25,6 +26,8 @@ module.exports = function override(config, env) {
     ],
     config,
   );
+
+  config.entry.unshift('babel-polyfill');
 
   if (isProd) {
     config = rewireWebpackBundleAnalyzer(config, env, {
