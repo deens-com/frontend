@@ -165,7 +165,11 @@ export default class ResultsScene extends Component {
 
   goBackToTrip = () => {
     this.props.resetTrip();
-    history.replace(`/trips/organize/${this.props.routeState.tripId}`);
+    if (this.props.routeState.tripId) {
+      history.replace(`/trips/organize/${this.props.routeState.tripId}`);
+      return;
+    }
+    history.replace('/trips/organize');
   };
 
   render() {

@@ -9,6 +9,7 @@ import { getFromCoordinates } from 'libs/Utils';
 import { serverBaseURL } from 'libs/config';
 import axios from 'libs/axios';
 import { media } from 'libs/styled';
+import { saveTrip, removeTrip } from 'libs/localStorage';
 import axiosOriginal from 'axios';
 import history from '../../main/history';
 import {
@@ -216,11 +217,16 @@ const emptyTrip = {
   basePrice: 0,
   duration: 1,
 };
+
+const routeActions = {
+  book: 'book',
+  share: 'share',
+};
 export default class TripOrganizer extends Component {
   constructor(props) {
     super(props);
 
-    if (props.tripId === (props.trip && props.trip._id)) {
+    if (props.tripId === (props.trip && props.trip._id) || !props.tripId) {
       this.state = createTripState(props, {});
     } else {
       this.state = {
@@ -267,6 +273,17 @@ export default class TripOrganizer extends Component {
 
   componentDidMount() {
     updateBottomChatPosition(calculateBottomPosition(this.props.isGDPRDismissed, 60));
+
+    if (!this.props.tripId) {
+      this.checkAllServicesAvailability({
+        startDate: this.props.startDate,
+        guests: {
+          adults: this.state.trip.adultCount || this.props.adults,
+          children: this.state.trip.childrenCount || this.props.children,
+          infants: this.state.trip.infantCount || this.props.infants,
+        },
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -326,7 +343,10 @@ export default class TripOrganizer extends Component {
           services: this.state.days.reduce(
             (prev, day) => [
               ...prev,
-              ...day.data.map(dayData => ({ ...dayData, service: dayData.service._id })),
+              ...day.data.map(dayData => ({
+                ...dayData,
+                service: this.props.tripId ? dayData.service._id : dayData.service,
+              })),
             ],
             [],
           ),
@@ -336,7 +356,7 @@ export default class TripOrganizer extends Component {
           notes: this.state.notes,
         };
 
-        await axios.patch(`/trips/${trip._id}`, trip);
+        await this.save(trip);
 
         if (action === 'autosave') {
           return;
@@ -347,13 +367,32 @@ export default class TripOrganizer extends Component {
           return;
         }
 
+        if (!this.props.tripId) {
+          history.push('/login', {
+            from: '/trips/organize',
+            message: 'Please login or register to continue',
+            action,
+          });
+          return;
+        }
+
         if (action === 'share') {
           history.push(`/trips/share/${trip._id}`);
           return;
         }
-        history.push(`/trips/checkout/${trip._id}`);
+        history.push(`/trips/checkout/${trip._id}`, {
+          action: routeActions.book,
+        });
       },
     );
+  };
+
+  save = async trip => {
+    if (this.props.tripId) {
+      await axios.patch(`/trips/${trip._id}`, trip);
+      return;
+    }
+    saveTrip(trip);
   };
 
   autoPatchTrip = debounce(this.patchTrip, 2000);
@@ -489,6 +528,7 @@ export default class TripOrganizer extends Component {
         day,
         duration: trip.duration,
         startDate: this.props.startDate.valueOf(),
+        isCreatingTripNotLoggedIn: !Boolean(trip._id),
       },
     );
   };
@@ -498,9 +538,11 @@ export default class TripOrganizer extends Component {
       return {
         availability: {
           ...prevState.availability,
-          data: prevState.availability.data.filter(
-            elem => elem.serviceId !== serviceId || elem.day !== day,
-          ),
+          data: prevState.availability.data
+            ? prevState.availability.data.filter(
+                elem => elem.serviceId !== serviceId || elem.day !== day,
+              )
+            : null,
           timestamp: new Date().getTime(),
         },
         days: prevState.days.map(elem => {

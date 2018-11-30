@@ -7,14 +7,45 @@ import { update_search_query_without_search, update_path } from '../../../scenes
 import moment from 'moment';
 import TripOrganizer from '../../../styled_scenes/TripOrganizer';
 import history from 'main/history';
+import { loadTrip, removeTrip } from 'libs/localStorage';
+import axios from 'libs/axios';
 
 class TripOrganizerContainer extends Component {
   constructor(props) {
     super(props);
-    props.fetchTrip(props.match.params.id);
+    if (props.match.params.id) {
+      props.fetchTrip(props.match.params.id);
+    } else {
+      if (this.props.session.username) {
+        this.isLoading = true;
+        const tripToSave = {
+          ...this.props.trip,
+          services: this.props.trip.services.map(service => ({
+            ...service,
+            service: service.service._id,
+          })),
+        };
+        axios.post(`/trips`, tripToSave).then(response => {
+          if (props.location.state.action === 'book') {
+            history.push(`/trips/checkout/${response.data._id}`);
+            removeTrip();
+            return;
+          } else if (props.location.state.action === 'share') {
+            history.push(`/trips/share/${response.data._id}`);
+            removeTrip();
+            return;
+          }
+          history.push(`/trips/organize/${response.data._id}`, this.props.location.state);
+        });
+      }
+    }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
+    if (!prevProps.match.params.id && this.props.match.params.id) {
+      this.isLoading = false;
+      this.props.fetchTrip(this.props.match.params.id);
+    }
     if (this.props.trip && this.props.trip.bookingStatus === 'booked') {
       history.replace(`/trips/${this.props.match.params.id}`);
     }
@@ -34,28 +65,34 @@ class TripOrganizerContainer extends Component {
         updatePath={this.props.updatePath}
         history={this.props.history}
         isGDPRDismissed={this.props.isGDPRDismissed}
-        isLoading={this.props.isLoading}
+        isLoading={this.props.isLoading || this.isLoading}
+        action={
+          this.props.location && this.props.location.state && this.props.location.state.action
+        }
       />
     );
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, props) => {
+  const trip = props.match.params.id ? state.TripReducer.trip : loadTrip();
+
   let startDate = state.ResultsReducer.search_query.start_date;
   if (!startDate) {
     const tomorrow = moment()
       .add(1, 'days')
       .startOf('day');
-    if (!state.TripReducer.trip) {
+    if (!trip) {
       startDate = tomorrow;
     } else {
-      const tripDate = moment(state.TripReducer.trip.startDate).startOf('day');
+      const tripDate = moment(trip.startDate).startOf('day');
       startDate = tripDate.diff(tomorrow, 'days') >= 0 ? tripDate : tomorrow;
     }
   }
+
   return {
     session: state.SessionsReducer.session,
-    trip: state.TripReducer.trip,
+    trip,
     error: state.TripReducer.error,
     isLoading: state.TripReducer.isLoading,
     owner: state.TripReducer.owner,

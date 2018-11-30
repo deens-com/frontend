@@ -216,15 +216,7 @@ export default class Trip extends Component {
       history.push(`/trips/organize/${this.props.trip._id}`);
       return;
     }
-    if (!this.props.currentUserId) {
-      history.push('/login', {
-        message: 'Please login or register to continue with your trip.',
-        from: `/trips/${this.props.trip._id}`,
-        action: 'handleCustomizeClick',
-      });
-      return;
-    }
-    this.props.cloneTrip(this.props.trip._id);
+    this.props.cloneTrip(this.props.trip._id, this.props.currentUserId);
   };
 
   goToDay = index => {

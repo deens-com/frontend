@@ -72,8 +72,8 @@ export default class AddToTrip extends Component {
     this.state = {
       days: props.data.days.map(
         (value, i) =>
-          Boolean(props.data.daysByService[props.serviceId]) &&
-          props.data.daysByService[props.serviceId].includes(i + 1),
+          Boolean(props.data.daysByService[props.service._id]) &&
+          props.data.daysByService[props.service._id].includes(i + 1),
       ),
       isOpen: false,
     };
@@ -109,9 +109,9 @@ export default class AddToTrip extends Component {
     e.preventDefault();
     e.stopPropagation();
     if (isAdded) {
-      this.props.data.removeFromTrip(this.props.serviceId, index + 1);
+      this.props.data.removeFromTrip(this.props.service._id, index + 1);
     } else {
-      this.props.data.addToTrip(this.props.serviceId, index + 1);
+      this.props.data.addToTrip(this.props.service, index + 1);
     }
 
     const action = isAdded ? 'Removed' : 'Added';
