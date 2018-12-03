@@ -158,16 +158,14 @@ class Results extends Component {
         priority: 1,
       },
     ];
+
     if (this.props.trip._id) {
       await axios.patch(`/trips/${this.props.trip._id}`, {
-        services: this.tripServices.map(service => ({ ...service, service: service._id })),
+        services: this.tripServices.map(service => ({ ...service, service: service.service._id })),
       });
       return;
     }
-    console.log({
-      ...this.props.trip,
-      services: this.tripServices,
-    });
+
     saveTrip({
       ...this.props.trip,
       services: this.tripServices,

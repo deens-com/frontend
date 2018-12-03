@@ -14,7 +14,6 @@ export default class CustomPlacesAutocomplete extends React.Component {
   };
 
   componentDidMount() {
-    console.log('hola', window.initMap);
     if (!window.initMap) {
       window.initMap = this.initMap;
       const gmapScriptEl = document.createElement('script');
