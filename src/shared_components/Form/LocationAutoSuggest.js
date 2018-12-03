@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import PlacesAutocomplete from 'react-places-autocomplete';
+import PlacesAutocomplete from 'shared_components/PlacesAutocomplete';
 import { Form, Popup, Icon, Ref } from 'semantic-ui-react';
 import StyledInput from 'shared_components/StyledInput';
 import { MapMarker } from 'shared_components/icons';
