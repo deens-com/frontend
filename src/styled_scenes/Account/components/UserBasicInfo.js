@@ -11,6 +11,7 @@ import { Menu, Card, Button, Input } from 'semantic-ui-react';
 import ImgurAvatar from './../../../assets/no-avatar.png';
 import PlsIcon from 'assets/ic_pls.png';
 import NumberFormat from 'react-number-format';
+import { webUrl } from 'libs/config';
 
 const AttributeTitle = styled.h6`
   font-size: 9px;
@@ -116,7 +117,7 @@ class UserBasicInfo extends Component {
   copyButtonHandler = () => {
     this.setState({ copyButtonText: 'Copied' });
 
-    copy(`https://please.com/register?ref=${this.props.user_profile.referral}`);
+    copy(`${webUrl}/register?ref=${this.props.user_profile.referral}`);
   };
 
   render() {
@@ -247,7 +248,7 @@ class UserBasicInfo extends Component {
               <center>
                 Your referral code:
                 <CopyButton>
-                  <input defaultValue={this.props.user_profile.referral} />
+                  <input value={this.props.user_profile.referral} />
                   <Button
                     type="submit"
                     icon="copy"

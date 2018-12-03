@@ -39,7 +39,11 @@ const LoggedIn = ({ text, url }) => (
   </Container>
 );
 
-const CallToAction = ({ loggedIn, text, url, loggedOutText }) =>
-  loggedIn ? LoggedIn({ text, url }) : LoggedOut({ text: loggedOutText });
+const CallToAction = ({ loggedIn, text, url, loggedOutText, loggedInElement }) => {
+  if (loggedIn && loggedInElement) {
+    return loggedInElement;
+  }
+  return loggedIn ? LoggedIn({ text, url }) : LoggedOut({ text: loggedOutText });
+};
 
 export default CallToAction;
