@@ -303,17 +303,19 @@ export default class TripOrganizer extends Component {
     }
   }
 
-  patchTrip = (action = 'autosave') => {
-    if (action === 'autosave' && this.state.isSaving) {
-      return;
-    }
+  blockUntilSaved = () => {
+    this.setState({
+      isBlockedUntilSaved: true,
+    });
+  };
 
+  patchTrip = (action = 'autosave') => {
     this.setState(
       action === 'autosave'
         ? {}
         : {
-            isSaving: action === 'share' || action === 'book',
-            isManualSaving: action === 'manual-save',
+            isBlockedUntilSaved: action === 'share' || action === 'book',
+            isSaving: true,
           },
       async () => {
         let selectedServiceOptions = [];
@@ -358,12 +360,13 @@ export default class TripOrganizer extends Component {
 
         await this.save(trip);
 
-        if (action === 'autosave') {
-          return;
-        }
+        this.setState({
+          isSaving: false,
+          savingPending: false,
+          isBlockedUntilSaved: false,
+        });
 
-        if (action === 'manual-save') {
-          this.setState({ isManualSaving: false });
+        if (action === 'manual-save' || action === 'autosave') {
           return;
         }
 
@@ -395,7 +398,14 @@ export default class TripOrganizer extends Component {
     saveTrip(trip);
   };
 
-  autoPatchTrip = debounce(this.patchTrip, 2000);
+  debouncedPatch = debounce(this.patchTrip, 2000);
+
+  autoPatchTrip = () => {
+    this.setState({
+      savingPending: true,
+    });
+    this.debouncedPatch();
+  };
 
   selectOption = (day, serviceId, optionCode, price) => {
     this.setState(
@@ -785,6 +795,7 @@ export default class TripOrganizer extends Component {
     try {
       const results = await geocodeByPlaceId(placeId);
       const currentResult = results[0];
+      console.log(currentResult);
       const { address_components: addressComponents } = currentResult;
       const localities = addressComponents.filter(
         c => c.types.includes('locality') || c.types.includes('postal_town'),
@@ -798,8 +809,8 @@ export default class TripOrganizer extends Component {
           trip: {
             ...prevState.trip,
             location: {
-              city: localities[0].long_name,
-              state: state[0].long_name,
+              city: (localities[0] || addressComponents[0]).long_name,
+              state: state.lenth > 0 ? state[0].long_name : '',
               countryCode: countries[0].short_name,
               geo: {
                 type: 'Point',
@@ -1082,7 +1093,7 @@ export default class TripOrganizer extends Component {
           trip={trip}
           days={days}
           action={this.patchTrip}
-          isSaving={this.state.isManualSaving}
+          isSaving={this.state.isSaving || this.state.savingPending}
           changeDates={this.changeDates}
           changeGuests={this.changeGuests}
           startDate={startDate}
@@ -1114,6 +1125,8 @@ export default class TripOrganizer extends Component {
           addNote={this.addNote}
           editNote={this.editNote}
           deleteNote={this.deleteNote}
+          isSaving={this.state.isSaving || this.state.savingPending}
+          blockUntilSaved={this.blockUntilSaved}
         />
         <Cancellation>
           <CancellationPolicy />
@@ -1124,14 +1137,14 @@ export default class TripOrganizer extends Component {
 
   render() {
     const { isLoading, availability, tripId, isGDPRDismissed } = this.props;
-    const { trip, isSaving, days } = this.state;
+    const { trip, isBlockedUntilSaved, days } = this.state;
 
     const loading = isLoading || (!trip || trip._id !== tripId) || !availability;
 
     return (
       <Page>
         <TopBar fixed />
-        <Dimmer active={isSaving} page>
+        <Dimmer active={isBlockedUntilSaved} page>
           <Loader size="massive" />
         </Dimmer>
         {!loading && (
