@@ -231,6 +231,10 @@ export default class Itinerary extends Component {
         resetNoteDefaultValues: prevState.resetNoteDefaultValues + 1,
       }));
     }
+
+    if (this.state.isWaitingToSave && !this.props.isSaving) {
+      this.setState({ isWaitingToSave: false }, this.goToAddService);
+    }
   }
 
   handleDatesChange = dateRange => {
@@ -260,6 +264,15 @@ export default class Itinerary extends Component {
     this.setState({
       dayToDelete: null,
     });
+  };
+
+  goToAddService = day => {
+    if (this.props.isSaving) {
+      this.props.blockUntilSaved();
+      this.setState({ isWaitingToSave: true });
+      return;
+    }
+    this.props.goToAddService(day);
   };
 
   renderServiceFooter = (day, service) => {
@@ -327,11 +340,7 @@ export default class Itinerary extends Component {
           </DeleteDayButton>
         )}
       </DayHeader>
-      <Button
-        iconBefore="plus"
-        theme="fillLightGreen"
-        onClick={this.props.goToAddService.bind(null, day.day)}
-      >
+      <Button iconBefore="plus" theme="fillLightGreen" onClick={() => this.goToAddService(day.day)}>
         Add Service
       </Button>
       {(!this.props.notes || !this.props.notes[day.day]) && (
