@@ -18,7 +18,7 @@ import {
   ShareBg,
   MapWrapper,
 } from './styles';
-import { getFormattedTripDates } from 'libs/Utils';
+import { getFormattedTripDates, waitUntilMapsLoaded } from 'libs/Utils';
 import EditTripContainer from 'scenes/trip/containers/EditTripContainer';
 import placeholder from './../../../../assets/placeholder350x350.svg';
 
@@ -122,7 +122,11 @@ export default class TripLeftPortion extends Component {
           query={`(min-width: ${sizes.medium})`}
           render={() => (
             <MapWrapper>
-              <GoogleMapReact center={this.state.center} zoom={this.state.zoom}>
+              <GoogleMapReact
+                googleMapLoader={waitUntilMapsLoaded}
+                center={this.state.center}
+                zoom={this.state.zoom}
+              >
                 {this.getMarkerLatLngs(this.props).map(({ key, latitude, longitude }) => (
                   <MapMaker key={key} lat={latitude} lng={longitude} scale={1} color="#4fb798" />
                 ))}

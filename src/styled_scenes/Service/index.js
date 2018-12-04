@@ -28,6 +28,8 @@ import ServiceTags from './components/ServiceTags';
 import ServiceInformation from './components/ServiceInformation';
 import ServiceActionButtons from './components/ServiceActionButtons';
 
+import { waitUntilMapsLoaded } from 'libs/Utils';
+
 const DetailWrapper = styled.div`
   width: 100%;
   padding: 15px 15px 25px 15px;
@@ -261,6 +263,7 @@ class FoodDetailScene extends Component {
                     }}
                     defaultZoom={11}
                     bootstrapURLKeys={{ key: 'AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc' }}
+                    googleMapLoader={waitUntilMapsLoaded}
                   >
                     <MapMaker lat={latitude} lng={longitude} scale={1} color="#4fb798" />
                   </GoogleMapReact>
