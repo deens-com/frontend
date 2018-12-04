@@ -29,6 +29,8 @@ import { restaurant } from '../../../../data/food';
 // STYLES
 import { Page, PageContent } from '../../../../components/layout/Page';
 
+import { waitUntilMapsLoaded } from 'libs/Utils';
+
 const DetailWrapper = styled.div`
   width: 100%;
   padding: 25px 15px;
@@ -293,7 +295,11 @@ export default function FoodDetailScene({}) {
           />
           <ContactWrap>
             <MapWrap>
-              <GoogleMapReact defaultCenter={{ lat: 59.95, lng: 30.33 }} defaultZoom={11}>
+              <GoogleMapReact
+                googleMapLoader={waitUntilMapsLoaded}
+                defaultCenter={{ lat: 59.95, lng: 30.33 }}
+                defaultZoom={11}
+              >
                 <MapMaker lat={59.95} lng={30.33} scale={1} color="#4fb798" />
               </GoogleMapReact>
             </MapWrap>

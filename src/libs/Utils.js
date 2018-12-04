@@ -238,3 +238,11 @@ export function getHeroImage(service) {
   }
   return service.media.find(media => media.hero === true) || service.media[0];
 }
+
+export async function waitUntilMapsLoaded() {
+  if (!window.google || !window.google.maps) {
+    await new Promise(resolve => setTimeout(resolve, 250));
+    return waitUntilMapsLoaded();
+  }
+  return window.google.maps;
+}
