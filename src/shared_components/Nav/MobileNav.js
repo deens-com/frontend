@@ -14,6 +14,7 @@ import { getSession } from 'libs/user-session';
 import { trackHeaderClick } from 'libs/analytics';
 import { bindActionCreators } from 'redux';
 import { logOut } from 'scenes/sessions/actions';
+import { icoReady } from 'libs/config';
 
 // STYLES
 const Wrap = styled.div`
@@ -251,11 +252,13 @@ class MobileNav extends Component {
               <li aria-hidden="true">
                 <Divider />
               </li>
-              <li aria-hidden="false">
-                <NavLinkTitle>Token Sale</NavLinkTitle>
-                <NavAnchor href="https://protocol.please.com">Information</NavAnchor>
-                <NavLink to="/token-sale">Contribute</NavLink>
-              </li>
+              {icoReady && (
+                <li aria-hidden="false">
+                  <NavLinkTitle>Token Sale</NavLinkTitle>
+                  <NavAnchor href="https://protocol.please.com">Information</NavAnchor>
+                  <NavLink to="/token-sale">Contribute</NavLink>
+                </li>
+              )}
               {this.renderLoggedInMenu()}
               <li aria-hidden="false">
                 <NavLink to="/">Home</NavLink>
