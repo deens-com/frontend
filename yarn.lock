@@ -15,14 +15,14 @@
     "@babel/types" "^7.0.0"
 
 "@babel/runtime@^7.1.2":
-  version "7.1.5"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.1.5.tgz#4170907641cf1f61508f563ece3725150cc6fe39"
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.2.0.tgz#b03e42eeddf5898e00646e4c840fa07ba8dcad7f"
   dependencies:
     regenerator-runtime "^0.12.0"
 
 "@babel/types@^7.0.0", "@babel/types@^7.0.0-beta.49":
-  version "7.1.6"
-  resolved "https://registry.yarnpkg.com/@babel/types/-/types-7.1.6.tgz#0adb330c3a281348a190263aceb540e10f04bcce"
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/@babel/types/-/types-7.2.0.tgz#7941c5b2d8060e06f9601d6be7c223eef906d5d8"
   dependencies:
     esutils "^2.0.2"
     lodash "^4.17.10"
@@ -45,9 +45,55 @@
     exenv "^1.2.2"
     prop-types "^15.6.2"
 
+"@sentry/browser@^4.4.1":
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-4.4.1.tgz#3473ca9e61926c2e896abe84bddfb2651004fb5a"
+  dependencies:
+    "@sentry/core" "4.4.1"
+    "@sentry/types" "4.4.1"
+    "@sentry/utils" "4.4.1"
+    tslib "^1.9.3"
+
+"@sentry/core@4.4.1":
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-4.4.1.tgz#8836813d9d309059913b464cee6d23da09cc4056"
+  dependencies:
+    "@sentry/hub" "4.4.1"
+    "@sentry/minimal" "4.4.1"
+    "@sentry/types" "4.4.1"
+    "@sentry/utils" "4.4.1"
+    tslib "^1.9.3"
+
+"@sentry/hub@4.4.1":
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/@sentry/hub/-/hub-4.4.1.tgz#3f82405131bf10ef9e751e2760d63bfff809fa4a"
+  dependencies:
+    "@sentry/types" "4.4.1"
+    "@sentry/utils" "4.4.1"
+    tslib "^1.9.3"
+
+"@sentry/minimal@4.4.1":
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/@sentry/minimal/-/minimal-4.4.1.tgz#332e97395a20a01e398ae6614a8fb857f2566c31"
+  dependencies:
+    "@sentry/hub" "4.4.1"
+    "@sentry/types" "4.4.1"
+    tslib "^1.9.3"
+
+"@sentry/types@4.4.1":
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/@sentry/types/-/types-4.4.1.tgz#d19f9b0450a543aa11b136681ea19612e3cc1611"
+
+"@sentry/utils@4.4.1":
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-4.4.1.tgz#cf80fe596d43dc04f51cb780e0cf70017a8c1eb1"
+  dependencies:
+    "@sentry/types" "4.4.1"
+    tslib "^1.9.3"
+
 "@types/node@*":
-  version "10.12.11"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.12.11.tgz#715c476c99a5f6898a1ae61caf9825e43c03912e"
+  version "10.12.12"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.12.12.tgz#e15a9d034d9210f00320ef718a50c4a799417c47"
 
 "@zeit/schemas@2.1.1":
   version "2.1.1"
@@ -307,11 +353,11 @@ array-find-index@^1.0.1:
 
 array-flatten@1.1.1:
   version "1.1.1"
-  resolved "https://registry.yarnpkg.com/array-flatten/-/array-flatten-1.1.1.tgz#9a5f699051b1e7073328f2a008968b64ea2955d2"
+  resolved "http://registry.npmjs.org/array-flatten/-/array-flatten-1.1.1.tgz#9a5f699051b1e7073328f2a008968b64ea2955d2"
 
 array-flatten@^2.1.0:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/array-flatten/-/array-flatten-2.1.1.tgz#426bb9da84090c1838d812c8150af20a8331e296"
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/array-flatten/-/array-flatten-2.1.2.tgz#24ef80a28c1a893617e2149b0c6d0d788293b099"
 
 array-includes@^3.0.3:
   version "3.0.3"
@@ -411,7 +457,7 @@ async-eventemitter@^0.2.2:
   dependencies:
     async "^2.4.0"
 
-async-eventemitter@ahultgren/async-eventemitter#fa06e39e56786ba541c180061dbf2c0a5bbf951c:
+"async-eventemitter@github:ahultgren/async-eventemitter#fa06e39e56786ba541c180061dbf2c0a5bbf951c":
   version "0.2.3"
   resolved "https://codeload.github.com/ahultgren/async-eventemitter/tar.gz/fa06e39e56786ba541c180061dbf2c0a5bbf951c"
   dependencies:
@@ -1640,12 +1686,12 @@ caniuse-api@^1.5.2:
     lodash.uniq "^4.5.0"
 
 caniuse-db@^1.0.30000529, caniuse-db@^1.0.30000634, caniuse-db@^1.0.30000639:
-  version "1.0.30000912"
-  resolved "https://registry.yarnpkg.com/caniuse-db/-/caniuse-db-1.0.30000912.tgz#29c739d8c8fae006de61b51f547bdbf02f5d867e"
+  version "1.0.30000914"
+  resolved "https://registry.yarnpkg.com/caniuse-db/-/caniuse-db-1.0.30000914.tgz#5df1edfb2407dd857bf33e7f346514316c7b9fa3"
 
 caniuse-lite@^1.0.30000748, caniuse-lite@^1.0.30000792, caniuse-lite@^1.0.30000844:
-  version "1.0.30000912"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000912.tgz#08e650d4090a9c0ab06bfd2b46b7d3ad6dcaea28"
+  version "1.0.30000914"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000914.tgz#f802b4667c24d0255f54a95818dcf8e1aa41f624"
 
 capture-stack-trace@^1.0.0:
   version "1.0.1"
@@ -2707,8 +2753,8 @@ ejs@^2.5.7:
   resolved "https://registry.yarnpkg.com/ejs/-/ejs-2.6.1.tgz#498ec0d495655abc6f23cd61868d926464071aa0"
 
 electron-to-chromium@^1.2.7, electron-to-chromium@^1.3.30, electron-to-chromium@^1.3.47:
-  version "1.3.86"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.86.tgz#a45ea01da5b26500d12bca5e0f194ebb3e1fd14e"
+  version "1.3.88"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.88.tgz#f36ab32634f49ef2b0fdc1e82e2d1cc17feb29e7"
 
 elegant-spinner@^1.0.1:
   version "1.0.1"
@@ -4309,8 +4355,8 @@ hoist-non-react-statics@^2.3.1, hoist-non-react-statics@^2.5.0:
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.5.tgz#c5903cf409c0dfd908f388e619d86b9c1174cb47"
 
 hoist-non-react-statics@^3.1.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.2.0.tgz#d21b9fc72b50fdc38c5d88f6e2c52f2c2dbe5ee2"
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.2.1.tgz#c09c0555c84b38a7ede6912b61efddafd6e75e1e"
   dependencies:
     react-is "^16.3.2"
 
@@ -7248,8 +7294,8 @@ process@~0.5.1:
   resolved "https://registry.yarnpkg.com/process/-/process-0.5.2.tgz#1638d8a8e34c2f440a91db95ab9aeb677fc185cf"
 
 progress@^2.0.0:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.1.tgz#c9242169342b1c29d275889c95734621b1952e31"
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.2.tgz#db9476f916bcc9ebe8a04efb22b18b0740376c61"
 
 promise-to-callback@^1.0.0:
   version "1.0.0"
@@ -7428,10 +7474,6 @@ randomhex@0.1.5:
 range-parser@1.2.0, range-parser@^1.0.3, range-parser@~1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.2.0.tgz#f49be6b487894ddc40dcc94a322f611092e00d5e"
-
-raven-js@^3.25.2:
-  version "3.27.0"
-  resolved "https://registry.yarnpkg.com/raven-js/-/raven-js-3.27.0.tgz#9f47c03e17933ce756e189f3669d49c441c1ba6e"
 
 raw-body@2.3.3:
   version "2.3.3"
@@ -8320,8 +8362,8 @@ sax@^1.2.1, sax@^1.2.4, sax@~1.2.1:
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
 
 scheduler@^0.11.2:
-  version "0.11.2"
-  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.11.2.tgz#a8db5399d06eba5abac51b705b7151d2319d33d3"
+  version "0.11.3"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.11.3.tgz#b5769b90cf8b1464f3f3cfcafe8e3cd7555a2d6b"
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
@@ -9307,7 +9349,7 @@ tryer@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/tryer/-/tryer-1.0.1.tgz#f2c85406800b9b0f74c9f7465b81eaad241252f8"
 
-tslib@^1.9.0:
+tslib@^1.9.0, tslib@^1.9.3:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.3.tgz#d7e4dd79245d85428c4d7e4822a79917954ca286"
 

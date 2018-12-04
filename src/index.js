@@ -8,7 +8,7 @@ import App from './main/app';
 import createHistory from 'history/createBrowserHistory';
 import { unregister as unregisterServiceWorker } from './registerServiceWorker';
 import Parse from 'parse';
-import Raven from 'raven-js';
+import * as Sentry from '@sentry/browser';
 import { serverBaseURL, isProd, isStaging } from './libs/config';
 import * as featureFlags from './libs/feature-flags';
 import { readSession } from 'libs/user-session';
@@ -19,12 +19,26 @@ Parse.serverURL = `${serverBaseURL}/parse`;
 const history = createHistory();
 
 if (isProd || isStaging) {
-  Raven.config('https://fd51482cf40f43fca379bc14417b6f2b@sentry.io/1220761').install();
+  let environment = window.location.hostname.split('.')[0];
+  console.log(environment);
+  if (environment === 'localhost') {
+    return;
+  }
+  if (isProd) {
+    environment = 'production';
+  } else if (isStaging) {
+    environment = 'staging';
+  }
+
+  Sentry.init({
+    dsn: 'https://fd51482cf40f43fca379bc14417b6f2b@sentry.io/1220761',
+    environment,
+  });
 }
 
 if (isProd) {
   const noop = () => {};
-  const error = error => Raven.captureException(error);
+  const error = error => Sentry.captureException(error);
   console.log = noop;
   console.warn = error;
   console.error = error;

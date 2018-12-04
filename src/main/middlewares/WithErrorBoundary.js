@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Raven from 'raven-js';
+import * as Sentry from '@sentry/browser';
 import ErrorPage from 'shared_components/ErrorPage';
 
 export default ChildComponent => {
@@ -11,7 +11,7 @@ export default ChildComponent => {
     componentDidCatch(error, info) {
       this.setState({ showErrorPage: true });
       console.log({ error, info });
-      Raven.captureException(error, { extra: info });
+      Sentry.captureException(error, { extra: info });
     }
 
     render() {
