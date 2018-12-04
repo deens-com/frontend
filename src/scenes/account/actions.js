@@ -1,7 +1,5 @@
-import Parse from 'parse';
 import fetch_helpers from './../../libs/fetch_helpers';
 import history from './../../main/history';
-import { trackMetamaskConnected, trackLedgerConnected } from 'libs/analytics';
 import { serverBaseURL, env } from 'libs/config';
 import validator from 'validator';
 import axios from 'libs/axios';

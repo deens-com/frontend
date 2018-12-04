@@ -47,7 +47,10 @@ const FixedFooter = ({ booked, price, peopleNumber, onCustomizeClick, bottom }) 
   return (
     <Wrapper bottom={bottom}>
       <Text>
-        <Sentence>Estimated price for {peopleNumber} people:</Sentence> ${price}
+        <Sentence>
+          {booked ? 'Paid' : 'Estimated'} price for {peopleNumber} people:
+        </Sentence>{' '}
+        ${price}
       </Text>
       <div>
         <Button theme="fillLightGreen" size="medium" onClick={onCustomizeClick}>

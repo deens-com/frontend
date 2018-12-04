@@ -1,11 +1,49 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import moment from 'moment';
 import { withRouter } from 'react-router-dom';
 import TripComponent from 'styled_scenes/Trip';
 import NotFound from 'styled_scenes/NotFound';
 import * as actions from '../actions';
 import { update_search_query_without_search } from '../../../scenes/results/actions';
+import { getPriceFromServiceOption, getPeopleCount } from 'libs/Utils';
+
+function getBookedInformation(trip) {
+  const serviceOptions = trip.otherAttributes.selectedServiceOptions;
+  if (!serviceOptions) {
+    return {};
+  }
+  return serviceOptions.reduce((prev, option) => {
+    const price = getPriceFromServiceOption(
+      trip.services.find(
+        service => service.service._id === option.serviceId && service.day === option.day,
+      ).basePrice,
+      option.price,
+      getPeopleCount(trip),
+    );
+
+    if (!prev[option.day]) {
+      return {
+        ...prev,
+        [option.day]: {
+          [option.serviceId]: {
+            price,
+          },
+        },
+      };
+    }
+    return {
+      ...prev,
+      [option.day]: {
+        ...prev[option.day],
+        [option.serviceId]: {
+          price,
+        },
+      },
+    };
+  }, {});
+}
 
 class TripContainer extends Component {
   constructor(props) {
@@ -44,13 +82,16 @@ class TripContainer extends Component {
     if (error) {
       return <NotFound />;
     }
+    const booked = trip && trip.bookingStatus === 'booked';
 
     return (
       <TripComponent
         isLoading={isLoading}
         trip={trip}
+        booked={booked}
+        bookedInformation={booked && getBookedInformation(trip)}
         owner={owner}
-        startDate={startDate}
+        startDate={booked ? moment(trip.startDate).valueOf() : startDate}
         endDate={endDate}
         changeDates={changeDates}
         checkAvailability={checkAvailability}
@@ -60,9 +101,9 @@ class TripContainer extends Component {
         cloneTrip={cloneTrip}
         currentUserId={session._id}
         history={this.props.history}
-        adults={adults}
-        children={children}
-        infants={infants}
+        adults={booked ? trip.adultCount : adults}
+        children={booked ? trip.childrenCount : children}
+        infants={booked ? trip.infantCount : infants}
         action={
           this.props.location && this.props.location.state && this.props.location.state.action
         }
