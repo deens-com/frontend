@@ -20,20 +20,17 @@ const history = createHistory();
 
 if (isProd || isStaging) {
   let environment = window.location.hostname.split('.')[0];
-  console.log(environment);
-  if (environment === 'localhost') {
-    return;
-  }
-  if (isProd) {
-    environment = 'production';
-  } else if (isStaging) {
-    environment = 'staging';
-  }
 
-  Sentry.init({
-    dsn: 'https://fd51482cf40f43fca379bc14417b6f2b@sentry.io/1220761',
-    environment,
-  });
+  if (environment !== 'localhost') {
+    if (isProd) {
+      environment = 'production';
+    }
+
+    Sentry.init({
+      dsn: 'https://fd51482cf40f43fca379bc14417b6f2b@sentry.io/1220761',
+      environment,
+    });
+  }
 }
 
 if (isProd) {
