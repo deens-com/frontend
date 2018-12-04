@@ -55,7 +55,7 @@ const TripData = styled.div`
 
 const EditableElement = styled.div`
   margin-left: 5px;
-  color: #4fb798;
+  color: white;
   font-weight: bold;
   text-decoration: dashed underline;
   text-underline-position: under;
@@ -235,10 +235,12 @@ export default class Trip extends Component {
       return (
         <Sentence>
           <SentenceText>
-            <b>Your trip booked for </b>
-            <span>{formattedStartDate && formattedStartDate + ' - ' + formattedEndDate}</span>
+            <span>Your trip booked for </span>
+            <strong>{formattedStartDate && formattedStartDate + ' - ' + formattedEndDate}</strong>
             <span> for </span>
-            <span>{this.props.adults + this.props.children + this.props.infants + ' Guests'}</span>
+            <strong>
+              {this.props.adults + this.props.children + this.props.infants + ' Guests'}
+            </strong>
           </SentenceText>
         </Sentence>
       );

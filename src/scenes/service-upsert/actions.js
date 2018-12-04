@@ -1,4 +1,3 @@
-import Parse from 'parse';
 import fetch_helpers from '../../libs/fetch_helpers';
 import history from '../../main/history';
 import { trackServiceCreated } from 'libs/analytics';
@@ -167,7 +166,7 @@ export const redeployContract = (values, serviceId, history) => async (dispatch,
   try {
     // Redeploy from styled_scenes/Account/Trips/shared/Carts/Location Or Redeploy from service creation form
     dispatch(submittingStateChanged(true));
-    let service = await fetch_helpers.build_query('Service').get(serviceId);
+    // let service = await fetch_helpers.build_query('Service').get(serviceId);
     //dispatch(deployContract(service, values, history));
   } catch (error) {
     console.log(error);

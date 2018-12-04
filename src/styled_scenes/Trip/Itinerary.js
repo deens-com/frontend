@@ -173,6 +173,8 @@ const Note = styled.div`
   padding: 20px 20px;
 `;
 
+const BookingId = styled.div``;
+
 export default class Itinerary extends Component {
   constructor(props) {
     super(props);
@@ -188,6 +190,13 @@ export default class Itinerary extends Component {
   };
 
   renderAvailability = (day, id) => {
+    if (this.props.bookedInformation) {
+      const service = this.props.trip.services.find(
+        service => service.day === day && service.service._id === id,
+      );
+      return <BookingId>Booking ID: {service.reservation.bookingId}</BookingId>;
+    }
+
     if (this.props.isCheckingAvailability) {
       return <CheckingAvailability>Checking availability...</CheckingAvailability>;
     }
@@ -220,7 +229,7 @@ export default class Itinerary extends Component {
 
     const price = getPriceFromServiceOption(
       service.basePrice,
-      this.props.bookedInformation[dayData.day][service._id].price,
+      this.props.bookedInformation && this.props.bookedInformation[dayData.day][service._id].price,
       getPeopleCount(this.props.trip),
     );
 

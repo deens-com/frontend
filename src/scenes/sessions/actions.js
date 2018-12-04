@@ -1,4 +1,3 @@
-import Parse from 'parse';
 import axios from 'libs/axios';
 import validator from 'validator';
 import history from './../../main/history';

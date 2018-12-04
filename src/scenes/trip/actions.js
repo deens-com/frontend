@@ -134,18 +134,21 @@ export const resetTrip = () => async dispatch => {
 export const fetchTrip = id => async dispatch => {
   dispatch(fetchTripStart());
   try {
-    const trip = await axios.get(`${serverBaseURL}/trips/${id}?include=services,tags`);
+    const trip = await axios.get(`${serverBaseURL}/trips/${id}?include=services,tags,reservations`);
     dispatch(
       fetchTripSuccess({
         ...trip.data,
         tags: parseTags(trip.data.tags),
-        services: trip.data.services.map(service => ({
-          ...service,
-          service: {
-            ...service.service,
-            tags: parseTags(service.service.tags),
-          },
-        })),
+        services: trip.data.services.map(
+          service =>
+            console.log(service) || {
+              ...service,
+              service: {
+                ...service.service,
+                tags: parseTags(service.service.tags),
+              },
+            },
+        ),
       }),
     );
 

@@ -9,7 +9,7 @@ import { getFromCoordinates } from 'libs/Utils';
 import { serverBaseURL } from 'libs/config';
 import axios from 'libs/axios';
 import { media } from 'libs/styled';
-import { saveTrip, removeTrip } from 'libs/localStorage';
+import { saveTrip } from 'libs/localStorage';
 import axiosOriginal from 'axios';
 import history from '../../main/history';
 import {
