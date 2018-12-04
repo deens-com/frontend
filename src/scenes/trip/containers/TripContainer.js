@@ -15,10 +15,16 @@ function getBookedInformation(trip) {
     return {};
   }
   return serviceOptions.reduce((prev, option) => {
+    const serviceFound = trip.services.find(
+      service => service.service._id === option.serviceId && service.day === option.day,
+    );
+
+    if (!serviceFound) {
+      return prev;
+    }
+
     const price = getPriceFromServiceOption(
-      trip.services.find(
-        service => service.service._id === option.serviceId && service.day === option.day,
-      ).basePrice,
+      serviceFound.basePrice,
       option.price,
       getPeopleCount(trip),
     );
