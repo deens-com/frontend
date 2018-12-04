@@ -71,6 +71,7 @@ const mapStateToProps = state => {
     isServiceUnavailableModalOpen: state.ServicesReducer.isServiceUnavailableModalOpen,
     abi: state.ServicesReducer.abi,
     isPageLoading: state.ServicesReducer.isPageLoading,
+    isLoading: state.ServicesReducer.isUpdatingTrip || state.ServicesReducer.isCreatingTrip,
     serviceFetchError: state.ServicesReducer.serviceFetchError,
   };
 };

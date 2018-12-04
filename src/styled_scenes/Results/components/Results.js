@@ -9,12 +9,14 @@ import axios from 'libs/axios';
 import Row from '../../../shared_components/layout/Row';
 import TripCard from '../../../shared_components/Cards/Trip';
 import PaginationWrap from 'shared_components/PaginationWrap';
+import Button from 'shared_components/Button';
 import ReactPaginate from 'react-paginate';
 import { media } from '../../../libs/styled';
 import { Loader, Grid } from 'semantic-ui-react';
 import moment from 'moment';
 import { minutesToDays, getDaysByService } from 'styled_scenes/Trip/mapServicesToDays';
-import debounce from 'lodash.debounce';
+import notFoundImg from '../not_found.png';
+import { loadTrip, saveTrip } from 'libs/localStorage';
 
 // STYLES
 const Wrap = styled.div`
@@ -48,6 +50,13 @@ const LoaderWithMargin = styled.section`
   margin-top: 40px;
 `;
 
+const NotFound = styled.div`
+  img {
+    width: 115px;
+  }
+  text-align: center;
+`;
+
 // MODULE
 class Results extends Component {
   constructor(props) {
@@ -77,8 +86,14 @@ class Results extends Component {
       limit: props.search_query.limit || 0,
     };
 
-    if (props.routeState && props.trip && props.trip._id === props.routeState.tripId) {
-      this.daysByService = getDaysByService(props.trip.services);
+    const trip =
+      props.routeState && props.routeState.isCreatingTripNotLoggedIn ? loadTrip() : props.trip;
+
+    if (
+      props.routeState &&
+      (trip._id === props.routeState.tripId || props.routeState.isCreatingTripNotLoggedIn)
+    ) {
+      this.daysByService = getDaysByService(trip.services);
       this.days =
         props.routeState &&
         Array.from({ length: minutesToDays(props.routeState.duration) }).map((_, i) =>
@@ -88,7 +103,7 @@ class Results extends Component {
         );
       this.tripServices = props.trip.services.map(service => ({
         ...service,
-        service: service.service._id,
+        service: service.service,
       }));
     }
   }
@@ -133,24 +148,44 @@ class Results extends Component {
     }
   };
 
-  addToTrip = async (serviceId, day) => {
+  addToTrip = async (service, day) => {
     this.tripServices = [
       ...this.tripServices,
       {
-        service: serviceId,
+        service,
         day,
         notes: [],
         priority: 1,
       },
     ];
-    await axios.patch(`/trips/${this.props.trip._id}`, { services: this.tripServices });
+
+    if (this.props.trip._id) {
+      await axios.patch(`/trips/${this.props.trip._id}`, {
+        services: this.tripServices.map(service => ({ ...service, service: service.service._id })),
+      });
+      return;
+    }
+
+    saveTrip({
+      ...this.props.trip,
+      services: this.tripServices,
+    });
   };
 
   removeFromTrip = async (serviceId, day) => {
     this.tripServices = this.tripServices.filter(
-      service => service.service !== serviceId || service.day !== day,
+      service => service.service._id !== serviceId || service.day !== day,
     );
-    await axios.patch(`/trips/${this.props.trip._id}`, { services: this.tripServices });
+    if (this.props.trip._id) {
+      await axios.patch(`/trips/${this.props.trip._id}`, {
+        services: this.tripServices.map(service => ({ ...service, service: service._id })),
+      });
+      return;
+    }
+    saveTrip({
+      ...this.props.trip,
+      services: this.tripServices,
+    });
   };
 
   render() {
@@ -161,9 +196,23 @@ class Results extends Component {
           {!this.props.isLoadingResults &&
             this.props.data.length === 0 && (
               <section>
-                <h4 style={{ textAlign: 'center', color: 'grey' }}>
-                  There are no search results for given search criteria.
-                </h4>
+                {this.props.search_query.type && this.props.search_query.type[0] === 'trip' ? (
+                  <NotFound>
+                    <img src={notFoundImg} alt="Not found" />
+                    <h3>There are no trips available in the location selected.</h3>
+                    <p>
+                      Be the first to create a trip for {this.props.search_query.address}, and share
+                      to earn rewards!
+                    </p>
+                    <Button type="link" href="/trips/create">
+                      Create a trip
+                    </Button>
+                  </NotFound>
+                ) : (
+                  <h4 style={{ textAlign: 'center', color: 'grey' }}>
+                    There are no search results for given search criteria.
+                  </h4>
+                )}
                 <br />
               </section>
             )}

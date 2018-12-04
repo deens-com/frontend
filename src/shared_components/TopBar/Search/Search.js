@@ -81,6 +81,11 @@ const SubmitButton = styled.button`
   color: #4fb798;
   display: flex;
   width: auto;
+  :active,
+  :focus {
+    outline: 0;
+    border: 0;
+  }
 `;
 
 const locationProps = {
@@ -117,6 +122,7 @@ export default class DesktopSearch extends Component {
     this.handleLocationChange = this.handleLocationChange.bind(this);
     this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
     this.searchWrapper = React.createRef();
+    this.inputRef = React.createRef();
   }
   onFocus() {
     this.setState({ inFocus: true });
@@ -130,6 +136,11 @@ export default class DesktopSearch extends Component {
   handleSubmit(ev) {
     ev.preventDefault();
     //const query_string = 'keywords=' + this.state.search;
+    this.setState({
+      search: '',
+      mode: 'text',
+    });
+    this.inputRef.current.onReset();
     history.push(`/results`);
   }
   handleLocationChange(address, serviceType, text) {
@@ -202,6 +213,7 @@ export default class DesktopSearch extends Component {
               customStyle={suggestionStyle}
               {...locationProps}
               defaultAddress={this.props.text || this.props.address}
+              ref={this.inputRef}
             />
 
             {isMobile ? (

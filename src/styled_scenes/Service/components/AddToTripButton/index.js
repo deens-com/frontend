@@ -8,28 +8,47 @@ import CustomColorSemanticButton from 'shared_components/CustomColorSemanticButt
 import { getSession } from 'libs/user-session';
 
 export default class AddToTripButton extends React.Component {
+  constructor(props) {
+    super(props);
+    this.listRef = React.createRef();
+    this.daysRef = React.createRef();
+    this.state = { isOpen: false };
+  }
+
   static propTypes = {
     myUnpurchasedTrips: PropTypes.array,
     onTripClick: PropTypes.func.isRequired,
     onNewTripClick: PropTypes.func.isRequired,
   };
 
-  state = { isOpen: false };
-
   handleOpen = () => {
     this.setState({ isOpen: true });
+    document.addEventListener('mousedown', this.handleOutsideClick);
   };
 
-  handleClose = () => {};
+  handleOutsideClick = e => {
+    console.log(e.target);
+    console.log('list', this.listRef.current);
+    console.log('days', this.daysRef.current);
+    if (
+      !this.listRef.current.contains(e.target) &&
+      (!this.daysRef.current || !this.daysRef.current.contains(e.target))
+    ) {
+      this.handleClose();
+    }
+  };
+
+  handleClose = () => {
+    this.setState({ isOpen: false });
+    document.removeEventListener('mousedown', this.handleOutsideClick);
+  };
 
   onTripClickOverride = trip => {
-    // close the popup
-    this.closePopupOnButtonClick();
+    this.handleClose();
     this.props.onTripClick(trip);
   };
 
   onNewTripClickOverride = () => {
-    // close the popup
     this.handleClose();
     this.props.onNewTripClick();
   };
@@ -37,10 +56,6 @@ export default class AddToTripButton extends React.Component {
   isLoggedIn = () => getSession() != null;
 
   redirectToLogin = () => history.push('/login');
-
-  closePopupOnButtonClick = () => {
-    this.setState({ isOpen: false });
-  };
 
   render() {
     const { props } = this;
@@ -55,7 +70,7 @@ export default class AddToTripButton extends React.Component {
         bgColor="rgb(95, 183, 158)"
         whiteText
         {...clickProps}
-        onClick={this.closePopupOnButtonClick}
+        onClick={this.handleClose}
       >
         Add to trip
         <Icon name="angle down" />
@@ -68,6 +83,8 @@ export default class AddToTripButton extends React.Component {
 
     const listComponent = (
       <TripsListInDropDown
+        innerRef={this.listRef}
+        daysRef={this.daysRef}
         trips={props.myUnpurchasedTrips}
         onTripClick={this.onTripClickOverride}
         onNewTripClick={this.onNewTripClickOverride}
@@ -81,7 +98,6 @@ export default class AddToTripButton extends React.Component {
         content={listComponent}
         on="click"
         open={this.state.isOpen}
-        onClose={this.handleClose}
         onOpen={this.handleOpen}
         wide
       />

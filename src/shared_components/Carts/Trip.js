@@ -16,6 +16,7 @@ import Thumb from './components/Thumb';
 // STYLES
 import { Cart, ContentWrap } from './styles';
 import { cardConfig } from 'libs/config';
+import { getHeroImage } from 'libs/Utils';
 import { PinIcon } from 'shared_components/icons';
 import I18nText from 'shared_components/I18nText';
 
@@ -136,9 +137,9 @@ export function formatLocation(location) {
 
 function getTripImage(item) {
   if (!item.media || item.media.length === 0) {
-    return 'https://please-com.imgix.net/7a7b798deb8064c64f57bff9ffeaa53a_1531363432782-4561574624.jpg?auto=format&dpr=1&crop=faces&fit=crop&w=800&h=500&ixlib=react-7.2.0';
+    return '';
   }
-  return item.media[0].files.thumbnail.url;
+  return getHeroImage(item).files.thumbnail.url;
 }
 
 export default class TripCart extends Component {

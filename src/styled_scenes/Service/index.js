@@ -28,6 +28,8 @@ import ServiceTags from './components/ServiceTags';
 import ServiceInformation from './components/ServiceInformation';
 import ServiceActionButtons from './components/ServiceActionButtons';
 
+import { waitUntilMapsLoaded } from 'libs/Utils';
+
 const DetailWrapper = styled.div`
   width: 100%;
   padding: 15px 15px 25px 15px;
@@ -186,10 +188,12 @@ class FoodDetailScene extends Component {
 
         <Container>
           <br />
-          <PageContent flex loading={this.props.isPageLoading}>
+          <PageContent flex loading={this.props.isPageLoading || this.props.isLoading}>
             <Media
               query={`(min-width: ${sizes.large})`}
-              render={() => <ImgSlider images={this.props.service.media} />}
+              render={() =>
+                this.props.service.media ? <ImgSlider images={this.props.service.media} /> : null
+              }
             />
             <DetailWrapper>
               <HeaderWrap>
@@ -238,7 +242,9 @@ class FoodDetailScene extends Component {
               </HeaderWrap>
               <Media
                 query={`(max-width: ${sizes.large})`}
-                render={() => <ImgSlider images={this.props.service.media} />}
+                render={() =>
+                  this.props.service.media ? <ImgSlider images={this.props.service.media} /> : null
+                }
               />
               <ServiceActionButtons
                 myUnpurchasedTrips={this.props.myUnpurchasedTrips}
@@ -257,6 +263,7 @@ class FoodDetailScene extends Component {
                     }}
                     defaultZoom={11}
                     bootstrapURLKeys={{ key: 'AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc' }}
+                    googleMapLoader={waitUntilMapsLoaded}
                   >
                     <MapMaker lat={latitude} lng={longitude} scale={1} color="#4fb798" />
                   </GoogleMapReact>

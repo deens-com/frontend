@@ -228,3 +228,21 @@ export function updateBottomChatPosition(bottom = 0) {
     chat.style.zIndex = 15;
   }
 }
+
+/*
+* Get hero image
+*/
+export function getHeroImage(service) {
+  if (!service.media) {
+    return null;
+  }
+  return service.media.find(media => media.hero === true) || service.media[0];
+}
+
+export async function waitUntilMapsLoaded() {
+  if (!window.google || !window.google.maps) {
+    await new Promise(resolve => setTimeout(resolve, 250));
+    return waitUntilMapsLoaded();
+  }
+  return window.google.maps;
+}

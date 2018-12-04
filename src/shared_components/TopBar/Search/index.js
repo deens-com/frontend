@@ -43,6 +43,6 @@ export default function TopBarSearch({ isMenuOpen, toggleSearch, address, isMobi
 
 // Props Validation
 TopBarSearch.propTypes = {
-  menuIsOpened: PropTypes.bool.isRequired,
+  isMenuOpen: PropTypes.bool.isRequired,
   toggleSearch: PropTypes.func.isRequired,
 };

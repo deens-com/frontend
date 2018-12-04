@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Dropdown } from 'semantic-ui-react';
 
 import I18nText from 'shared_components/I18nText';
-import { getPriceFromServiceOption, getPeopleCount } from 'libs/Utils';
+import { getPriceFromServiceOption } from 'libs/Utils';
 
 const Content = styled.span`
   font-size: 12px;

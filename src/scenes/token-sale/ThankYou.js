@@ -48,7 +48,7 @@ const IconWrapper = styled.div`
   }
 `;
 
-const BookingDone = () => {
+const ThankYou = () => {
   return (
     <React.Fragment>
       <Wrapper>
@@ -66,6 +66,6 @@ const BookingDone = () => {
   );
 };
 
-BookingDone.propTypes = {};
+ThankYou.propTypes = {};
 
-export default BookingDone;
+export default ThankYou;

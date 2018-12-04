@@ -250,7 +250,9 @@ class Filters extends Component {
 
   refetch_results(param_object) {
     const query_params = this.get_query_params();
-    query_params[Object.keys(param_object)[0]] = param_object[Object.keys(param_object)[0]];
+    Object.keys(param_object).forEach(param => {
+      query_params[param] = param_object[param];
+    });
     this.props.update_path(query_params, this.props.history, this.props.routeState);
   }
 
@@ -306,7 +308,6 @@ class Filters extends Component {
         this.setState({ latitude: lat, longitude: lng });
         this.refetch_results_for_location(lat, lng, addr);
       });
-    this.handleLocationPopupClose();
   }
 
   handleServiceTypeChange(event, data) {
@@ -366,7 +367,7 @@ class Filters extends Component {
     this.setState(
       {
         text,
-        type: [],
+        service_type: [],
       },
       () => {
         this.debounced_refetch_results({ text, type: [] });
@@ -416,7 +417,7 @@ class Filters extends Component {
   };
 
   handleLocationPopupClose = () => {
-    this.changeOpenState('isLocationPopupOpen', false);
+    setTimeout(() => this.changeOpenState('isLocationPopupOpen', false), 0);
   };
 
   handleRadiusPopupClose = () => {
@@ -593,6 +594,7 @@ class Filters extends Component {
         on: 'click',
         open: this.state.isLocationPopupOpen,
         onOpen: this.handleLocationPopupOpen,
+        onClose: this.handleLocationPopupClose,
         position: 'bottom center',
       },
       mood: {
@@ -893,9 +895,6 @@ class Filters extends Component {
     let end_date = this.props.search_query.end_date;
     let formatted_end_date =
       end_date && end_date.length ? moment(parseInt(end_date, 10)).format('Do MMMM, YYYY') : '';
-    let serviceTypes = this.props.search_query.type;
-    // let tags = this.props.search_query.tags || [];
-    let address = this.props.search_query.address;
 
     return (
       <section>

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Grid } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 import history from 'main/history';
 
@@ -10,14 +8,7 @@ import { Page, PageContent } from 'shared_components/layout/Page';
 import TopBar from 'shared_components/TopBar';
 import { SectionWrap } from 'shared_components/layout/Page';
 import UserBasicInfo from 'styled_scenes/Account/components/UserBasicInfo';
-import { scrollDownMobileOnly } from 'styled_scenes/Account/Trips/shared/scrollDownMobileOnly';
 import TripSectionComponent from 'styled_scenes/Account/Trips/shared/TripSectionComponent';
-
-const AutoLink = styled(Link)`
-  border-bottom: ${props => (props.pathname === props.to ? '2px solid #50a189' : 'none')};
-  margin-left: 5px;
-  margin-right: 5px;
-`;
 
 class AccountTripsScene extends Component {
   static propTypes = {

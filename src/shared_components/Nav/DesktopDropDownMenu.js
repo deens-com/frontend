@@ -102,8 +102,6 @@ class DesktopDropDownMenu extends Component {
   }
 
   logged_in() {
-    const showAddServiceButton = window.location.hash !== '#/account/services'; //this.props.history && this.props.history.location.pathname !== "/account/services"
-
     return (
       <Wrap>
         {this.props.isBackgroundWhite && (

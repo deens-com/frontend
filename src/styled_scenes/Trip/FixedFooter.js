@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { media } from 'libs/styled';
 import Button from 'shared_components/Button';
-import { isGDPRDismissed } from 'libs/feature-flags';
 
 const Wrapper = styled.div`
   width: 100%;

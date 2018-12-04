@@ -83,27 +83,31 @@ class TripsListInDropDown extends React.Component {
         trigger={item}
         keepInViewPort
       >
-        <Popup.Header>Select Day</Popup.Header>
-        <Popup.Content>
-          <List selection verticalAlign="middle" divided>
-            {dayItems}
-          </List>
-        </Popup.Content>
+        <div ref={this.props.daysRef}>
+          <Popup.Header>Select Day</Popup.Header>
+          <Popup.Content>
+            <List selection verticalAlign="middle" divided>
+              {dayItems}
+            </List>
+          </Popup.Content>
+        </div>
       </Popup>
     );
   };
 
   render() {
     return (
-      <List selection verticalAlign="middle" divided>
-        {this.props.trips.map(this.renderItemWithPopup)}
-        <List.Item onClick={this.props.onNewTripClick}>
-          <List.Icon name="add" />
-          <List.Content>
-            <List.Header>Create a new Trip</List.Header>
-          </List.Content>
-        </List.Item>
-      </List>
+      <div ref={this.props.innerRef}>
+        <List selection verticalAlign="middle" divided>
+          {this.props.trips.map(this.renderItemWithPopup)}
+          <List.Item onClick={this.props.onNewTripClick}>
+            <List.Icon name="add" />
+            <List.Content>
+              <List.Header>Create a new Trip</List.Header>
+            </List.Content>
+          </List.Item>
+        </List>
+      </div>
     );
   }
 }

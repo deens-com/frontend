@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { Loader, Modal, TextArea, Popup } from 'semantic-ui-react';
 import { getCategory } from 'libs/categories';
 import { media } from 'libs/styled';
+import { getHeroImage } from 'libs/Utils';
 import I18nText from 'shared_components/I18nText';
 import Category from 'shared_components/Category';
 import Button from 'shared_components/Button';
@@ -230,6 +231,10 @@ export default class Itinerary extends Component {
         resetNoteDefaultValues: prevState.resetNoteDefaultValues + 1,
       }));
     }
+
+    if (this.state.isWaitingToSave && !this.props.isSaving) {
+      this.setState({ isWaitingToSave: false }, this.goToAddService);
+    }
   }
 
   handleDatesChange = dateRange => {
@@ -259,6 +264,15 @@ export default class Itinerary extends Component {
     this.setState({
       dayToDelete: null,
     });
+  };
+
+  goToAddService = day => {
+    if (this.props.isSaving) {
+      this.props.blockUntilSaved();
+      this.setState({ isWaitingToSave: true });
+      return;
+    }
+    this.props.goToAddService(day);
   };
 
   renderServiceFooter = (day, service) => {
@@ -326,11 +340,7 @@ export default class Itinerary extends Component {
           </DeleteDayButton>
         )}
       </DayHeader>
-      <Button
-        iconBefore="plus"
-        theme="fillLightGreen"
-        onClick={this.props.goToAddService.bind(null, day.day)}
-      >
+      <Button iconBefore="plus" theme="fillLightGreen" onClick={() => this.goToAddService(day.day)}>
         Add Service
       </Button>
       {(!this.props.notes || !this.props.notes[day.day]) && (
@@ -368,7 +378,9 @@ export default class Itinerary extends Component {
       {day.data.map(dayData => (
         <Service key={dayData.service._id}>
           <ServiceBody>
-            {dayData.service.media[0] && <Image url={dayData.service.media[0].files.small.url} />}
+            {getHeroImage(dayData.service) && (
+              <Image url={getHeroImage(dayData.service).files.small.url} />
+            )}
             <ServiceData>
               <CategoryWrapper>
                 <Category

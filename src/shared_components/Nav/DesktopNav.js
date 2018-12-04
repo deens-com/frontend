@@ -2,7 +2,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import history from 'main/history';
 import { Dropdown } from 'semantic-ui-react';
 import styled, { css } from 'styled-components';
 import Media from 'react-media';
@@ -15,6 +14,7 @@ import DesktopDropDownMenu from './DesktopDropDownMenu';
 // ACTIONS/CONFIG
 import { sizes } from '../../libs/styled';
 import { trackHeaderClick } from 'libs/analytics';
+import { icoReady } from 'libs/config';
 
 // STYLES
 const Wrap = styled.div`
@@ -125,18 +125,25 @@ const TopBarDesktopNav = function TopBarDesktopNav({
       render={() => (
         <Wrap home={home}>
           <Nav home={home}>
-            <Dropdown
-              trigger={DropdownTrigger()}
-              direction="left"
-              style={{ color: 'inherit', marginRight: 30 }}
-            >
-              <Dropdown.Menu>
-                <a target="_blank" className="item" href="https://protocol.please.com">
-                  <span className="text">Information</span>
-                </a>
-                <Dropdown.Item text="Contribute" as={Link} to="/token-sale" />
-              </Dropdown.Menu>
-            </Dropdown>
+            {icoReady && (
+              <Dropdown
+                trigger={DropdownTrigger()}
+                direction="left"
+                style={{ color: 'inherit', marginRight: 30 }}
+              >
+                <Dropdown.Menu>
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="item"
+                    href="https://protocol.please.com"
+                  >
+                    <span className="text">Information</span>
+                  </a>
+                  <Dropdown.Item text="Contribute" as={Link} to="/token-sale" />
+                </Dropdown.Menu>
+              </Dropdown>
+            )}
             <NavLink
               activeclassname="is-active"
               to="/earn-money"

@@ -19,6 +19,7 @@ import I18nText from 'shared_components/I18nText';
 
 // ACTIONS/CONFIG
 import { media } from '../../libs/styled';
+import { waitUntilMapsLoaded } from 'libs/Utils';
 // import { foodList } from "../../data/food";
 
 // STYLES
@@ -129,7 +130,6 @@ export default class ResultsScene extends Component {
       this.props.service_data.map(item => item.name).join(',');
 
     if (hasLocationsChanged) {
-      const currentMarkers = this.getMarkerLatLngs(this.props);
       const newMarkers = this.getMarkerLatLngs(nextProps);
       const { center, zoom } = this.getCenterAndZoom(newMarkers, nextProps);
       this.setState({ center, zoom, markers: newMarkers });
@@ -166,7 +166,11 @@ export default class ResultsScene extends Component {
 
   goBackToTrip = () => {
     this.props.resetTrip();
-    history.replace(`/trips/organize/${this.props.routeState.tripId}`);
+    if (this.props.routeState.tripId) {
+      history.replace(`/trips/organize/${this.props.routeState.tripId}`);
+      return;
+    }
+    history.replace('/trips/organize');
   };
 
   render() {
@@ -217,6 +221,7 @@ export default class ResultsScene extends Component {
               bootstrapURLKeys={{
                 key: 'AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc',
               }}
+              googleMapLoader={waitUntilMapsLoaded}
             >
               {markers.map(marker => (
                 <MapMaker {...marker} scale={1} color="#4fb798" />

@@ -171,7 +171,7 @@ class ServiceForm extends Component {
       });
   };
 
-  onUploadedFilesChanged = (mediaUrls, id) => {
+  onUploadedFilesChanged = (mediaUrls, id, hero) => {
     this.uploadingImagesSet.delete(id);
 
     if (this.uploadingImagesSet.size === 0) {
@@ -182,7 +182,15 @@ class ServiceForm extends Component {
 
     const { setFieldValue, setFieldTouched } = this.props;
     setFieldTouched('media', true);
-    setFieldValue('media', mediaUrls);
+    setFieldValue(
+      'media',
+      mediaUrls.map(url => {
+        return {
+          ...url,
+          hero: hero === url.id,
+        };
+      }),
+    );
   };
 
   onStartedUpload = id => {
@@ -240,7 +248,6 @@ class ServiceForm extends Component {
       globalError,
       handleSubmit,
       submitInFlight,
-      userProfile,
       service,
     } = this.props;
 
@@ -248,11 +255,6 @@ class ServiceForm extends Component {
       onChange: handleChange,
       onBlur: handleBlur,
     };
-
-    const userHasConnectedWallet =
-      userProfile && (userProfile.ledgerPublicAddress || userProfile.metamaskPublicAddress);
-
-    const serviceHasContract = service && service.contractAddress != null;
 
     // we're using the key prop over here because we want to re-create the form component once we get the service
     return (

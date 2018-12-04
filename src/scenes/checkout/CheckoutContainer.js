@@ -22,6 +22,8 @@ import * as actions from './actions';
 import * as tripActions from '../trip/actions';
 import Button from 'shared_components/Button';
 import GuestsData from './components/GuestsData';
+import Countdown from './components/Countdown';
+import ReprovisionModal from './components/ReprovisionModal';
 import history from 'main/history';
 
 function formatDate(date, days) {
@@ -259,18 +261,18 @@ class CheckoutContainer extends React.Component {
         return;
       }
       if (!this.props.trip.startDate || !this.props.trip.adultCount) {
-        history.replace(`/trips/organize/${this.tripId}`);
+        this.goToTripOrganizer();
         return;
       }
 
       if (this.props.trip.services.length === 0) {
-        history.replace(`/trips/organize/${this.tripId}`);
+        this.goToTripOrganizer();
         return;
       }
 
       if (this.props.availability) {
         if (this.props.availability.some(service => !service.isAvailable)) {
-          history.replace(`/trips/organize/${this.tripId}`);
+          this.goToTripOrganizer();
           return;
         }
       } else if (!this.props.isCheckingAvailability) {
@@ -283,11 +285,16 @@ class CheckoutContainer extends React.Component {
     }
   }
 
+  goToTripOrganizer = () => {
+    history.replace(`/trips/organize/${this.tripId}`);
+  };
+
   getProvisionCodes = () => {
     this.setState(
       {
         loadingProvision: true,
         errorProvision: null,
+        timedOut: false,
       },
       async () => {
         try {
@@ -297,9 +304,22 @@ class CheckoutContainer extends React.Component {
             throw new Error('Some services could not be provisioned');
           }
 
+          const expireDate = provision.data.reduce((prevDate, element) => {
+            if (element.expireAt && element.expireAt < prevDate) {
+              return moment(element.expireAt).valueOf();
+            }
+            return prevDate;
+          }, null);
+
           this.setState({
             provision: provision.data,
             loadingProvision: false,
+            expireDate:
+              expireDate ||
+              moment()
+                .add(10, 'minutes')
+                .valueOf(),
+            timedOut: false,
           });
         } catch (error) {
           this.setState({
@@ -308,6 +328,13 @@ class CheckoutContainer extends React.Component {
         }
       },
     );
+  };
+
+  onTimeout = () => {
+    this.setState({
+      timedOut: true,
+      expireDate: null,
+    });
   };
 
   nextStep = () => {
@@ -359,7 +386,7 @@ class CheckoutContainer extends React.Component {
     if (step === 3) {
       return (
         <Dimmer.Dimmable dimmed={loadingProvision}>
-          <Dimmer active={loadingProvision}>
+          <Dimmer inverted active={loadingProvision}>
             <Loader />
           </Dimmer>
           <PaymentContainer
@@ -369,7 +396,6 @@ class CheckoutContainer extends React.Component {
             guests={guests}
             trip={trip}
           />
-          ;
         </Dimmer.Dimmable>
       );
     }
@@ -388,7 +414,7 @@ class CheckoutContainer extends React.Component {
 
   render() {
     const { trip, isLoading, isGDPRDismissed } = this.props;
-    const { days, step } = this.state;
+    const { days, step, expireDate, timedOut } = this.state;
     const numberOfGuests = this.calculateGuests();
     return (
       <Page topPush>
@@ -445,6 +471,13 @@ class CheckoutContainer extends React.Component {
                   <CancellationPolicy />
                 </TotalPriceWrapper>
               </Summary>
+              {expireDate && <Countdown expireDate={expireDate} onTimeout={this.onTimeout} />}
+              {timedOut && (
+                <ReprovisionModal
+                  okClick={this.getProvisionCodes}
+                  cancelClick={this.goToTripOrganizer}
+                />
+              )}
               {this.renderStep()}
             </Wrapper>
             {step < 3 && (

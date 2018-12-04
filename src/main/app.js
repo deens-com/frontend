@@ -62,6 +62,10 @@ class App extends React.Component {
                   component={commonHOCs(TokenSale)}
                 />
                 <Route
+                  path={process.env.PUBLIC_URL + '/token-sale/smart-contract'}
+                  component={commonHOCs(TokenSale)}
+                />
+                <Route
                   path={process.env.PUBLIC_URL + '/cookie-policy'}
                   component={commonHOCs(CookiePolicy)}
                 />
@@ -83,6 +87,10 @@ class App extends React.Component {
                   component={commonHOCs(TripOrganizer)}
                   message="Please login or register to continue with your trip."
                 />
+                <Route
+                  path={process.env.PUBLIC_URL + '/trips/organize'}
+                  component={commonHOCs(TripOrganizer)}
+                />
                 <PrivateRoute
                   path={process.env.PUBLIC_URL + '/trips/share/:id'}
                   component={commonHOCs(TripShare)}
@@ -93,10 +101,9 @@ class App extends React.Component {
                   component={commonHOCs(Checkout)}
                   message="Please login or register to checkout your trip."
                 />
-                <PrivateRoute
+                <Route
                   path={process.env.PUBLIC_URL + '/trips/create'}
                   component={commonHOCs(TripCreator)}
-                  message="Please login or register to create a new trip."
                 />
                 <Route path={process.env.PUBLIC_URL + '/trips/:id'} component={commonHOCs(Trip)} />
                 <Route
