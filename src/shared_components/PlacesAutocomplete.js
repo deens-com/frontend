@@ -7,7 +7,6 @@ export default class CustomPlacesAutocomplete extends React.Component {
   };
 
   initMap = () => {
-    console.log('jeje init');
     this.setState({
       gmapsLoaded: true,
     });
