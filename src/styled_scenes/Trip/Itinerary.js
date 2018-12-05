@@ -194,6 +194,11 @@ export default class Itinerary extends Component {
       const service = this.props.trip.services.find(
         service => service.day === day && service.service._id === id,
       );
+
+      if (!service || !service.reservation) {
+        return null;
+      }
+
       return <BookingId>Booking ID: {service.reservation.bookingId}</BookingId>;
     }
 
