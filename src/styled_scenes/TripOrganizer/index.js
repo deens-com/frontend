@@ -119,11 +119,12 @@ function createTripState(props, state) {
     (props.trip.otherAttributes && props.trip.otherAttributes.selectedServiceOptions) || [];
   selectedServiceOptions.forEach(selected => {
     if (!optionsSelected[selected.day]) {
+      const service = props.trip.services.find(item => item.service._id === selected.serviceId);
       optionsSelected[selected.day] = {
         [selected.serviceId]: {
           availabilityCode: selected.availabilityCode,
           price: getPriceFromServiceOption(
-            props.trip.services.find(item => item.service._id === selected.serviceId).basePrice,
+            service ? service.basePrice : 0,
             selected.price,
             getPeopleCount(state.trip || props.trip),
           ),
