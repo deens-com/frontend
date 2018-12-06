@@ -227,9 +227,14 @@ export default class Itinerary extends Component {
       );
     }
 
+    const bookedInformationPrice =
+      this.props.bookedInformation &&
+      this.props.bookedInformation[dayData.day][service._id] &&
+      this.props.bookedInformation[dayData.day][service._id].price;
+
     const price = getPriceFromServiceOption(
       service.basePrice,
-      this.props.bookedInformation && this.props.bookedInformation[dayData.day][service._id].price,
+      bookedInformationPrice,
       getPeopleCount(this.props.trip),
     );
 
