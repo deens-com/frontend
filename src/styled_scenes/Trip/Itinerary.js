@@ -234,6 +234,7 @@ export default class Itinerary extends Component {
 
     const bookedInformationPrice =
       this.props.bookedInformation &&
+      this.props.bookedInformation[dayData.day] &&
       this.props.bookedInformation[dayData.day][service._id] &&
       this.props.bookedInformation[dayData.day][service._id].price;
 
