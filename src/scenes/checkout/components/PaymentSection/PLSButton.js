@@ -35,6 +35,12 @@ const USDBalance = styled.p`
   margin-top: 5px;
   margin-bottom: 16px;
 `;
+const ErrorMessage = styled.p`
+  color: red;
+  font-weight: bold;
+  height: 35px;
+  padding: 5px 0 0;
+`;
 
 const BalanceTitle = styled.p`
   color: #6e7885;
@@ -44,13 +50,12 @@ const BalanceTitle = styled.p`
 
 const BuyPLS = styled.div`
   font-size: 14px;
-  margin-top: 25px;
   a {
     color: #38d39f;
   }
 `;
 
-class CoinbaseButtonContainer extends Component {
+class PLSButton extends Component {
   static propTypes = {
     tripId: PropTypes.string.isRequired,
     guests: PropTypes.array.isRequired,
@@ -65,6 +70,7 @@ class CoinbaseButtonContainer extends Component {
   };
 
   render() {
+    const { paymentError } = this.props;
     return (
       <Wrap>
         <BalanceTitle>PLS Balance</BalanceTitle>
@@ -78,6 +84,10 @@ class CoinbaseButtonContainer extends Component {
           Pay with PLS
         </Button>
 
+        <ErrorMessage>
+          {paymentError ? paymentError.customMessage || paymentError.message : ' '}
+        </ErrorMessage>
+
         <BuyPLS>
           <Link target="_blank" to="/token-sale">
             Add funds in PLS
@@ -88,4 +98,4 @@ class CoinbaseButtonContainer extends Component {
   }
 }
 
-export default CoinbaseButtonContainer;
+export default PLSButton;

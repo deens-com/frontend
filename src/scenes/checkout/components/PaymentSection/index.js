@@ -192,7 +192,7 @@ export default class PaymentSection extends Component {
 
     return (
       <Dimmer.Dimmable dimmed={isPaymentProcessing}>
-        <Dimmer inverted active={isPaymentProcessing}>
+        <Dimmer inverted active={isPaymentProcessing || bookingStatus === 'started'}>
           <Loader />
         </Dimmer>
         <Wrap>
@@ -283,6 +283,7 @@ export default class PaymentSection extends Component {
                             guests={guests}
                             tripId={trip._id}
                             onClick={this.props.payWithPls}
+                            paymentError={paymentError}
                           />
                         </ButtonWrapper>
                       )}
