@@ -40,6 +40,7 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         paymentError: action.payload,
+        bookingStatus: null,
       };
     }
     default:
