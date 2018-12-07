@@ -1,5 +1,5 @@
-import Parse from 'parse';
-import fetch_helpers from './../../libs/fetch_helpers';
+import axios from 'libs/axios';
+import { serverBaseURL } from 'libs/config';
 
 export const trips_fetched = trips => {
   return {
@@ -29,16 +29,12 @@ export const fullUserFetchError = ({ code, message }) => ({
   payload: { code, message },
 });
 
-export const fetchFullUser = userName => dispatch => {
+export const fetchFullUser = username => async dispatch => {
   dispatch(fullUserFetchStarted());
-  Parse.Cloud.run('fetch_profile_data', { userName })
-    .then(response => {
-      const responseData = fetch_helpers.normalizeParseResponseData(response);
-      dispatch(fullUserFetched(responseData));
-    })
-    .catch(parseError => {
-      if (parseError.message && parseError.message.code === 404) {
-        dispatch(fullUserFetchError(parseError.message));
-      }
-    });
+  try {
+    const responseData = await axios.get(`${serverBaseURL}/users/${username}`);
+    dispatch(fullUserFetched(responseData));
+  } catch (e) {
+    dispatch(fullUserFetchError(e));
+  }
 };
