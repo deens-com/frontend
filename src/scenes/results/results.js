@@ -2,6 +2,8 @@ import React from 'react';
 import ResultsContainer from './containers/results_container';
 //import history from 'main/history'
 import queryString from 'qs';
+import { Helmet } from 'react-helmet';
+import { websiteUrl } from 'libs/config';
 
 class Results extends React.Component {
   constructor(props) {
@@ -48,8 +50,25 @@ class Results extends React.Component {
     let radiusInKm = search_params.radiusInKm || 10;
     let text = search_params.text || '';
 
+    let helmet;
+
+    const location = search_params.address ? `near ${search_params.address}` : '';
+    const serviceTypesStr = serviceTypes.join(', ');
+    const title = `Find ${serviceTypesStr || 'services'} ${location}`;
+    const url = `${websiteUrl}${this.props.location.pathname}${this.props.location.search}`;
+
+    helmet = (
+      <Helmet>
+        <title>{title} | Please.com</title>
+        <link rel="canonical" href={url} />
+        <meta property="og:url" content={url} />
+        <meta property="og:title" content={title} />
+      </Helmet>
+    );
+
     return (
       <div className="Home">
+        {helmet}
         <ResultsContainer
           {...props}
           serviceTypes={serviceTypes}

@@ -9,6 +9,7 @@ import history from '../../../main/history';
 import * as actions from '../actions';
 import ServiceForm from '../../../shared_components/ServiceForm';
 import NotFound from '../../../styled_scenes/NotFound';
+import { generateServiceSlug } from 'libs/Utils';
 
 class EditServiceFormContainer extends Component {
   getServiceId = () => this.props.match.params.id;
@@ -54,7 +55,9 @@ class EditServiceFormContainer extends Component {
         <h2>
           {' '}
           Editing Service{' '}
-          {service && <Link to={`/services/${service.objectId}`}>{service.name}</Link>}{' '}
+          {service && (
+            <Link to={`/services/${generateServiceSlug(service)}`}>{service.name}</Link>
+          )}{' '}
         </h2>
         <ServiceForm
           onSubmit={this.onSubmit}

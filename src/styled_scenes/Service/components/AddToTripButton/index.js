@@ -27,9 +27,6 @@ export default class AddToTripButton extends React.Component {
   };
 
   handleOutsideClick = e => {
-    console.log(e.target);
-    console.log('list', this.listRef.current);
-    console.log('days', this.daysRef.current);
     if (
       !this.listRef.current.contains(e.target) &&
       (!this.daysRef.current || !this.daysRef.current.contains(e.target))

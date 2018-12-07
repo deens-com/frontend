@@ -9,6 +9,7 @@ import TripOrganizer from '../../../styled_scenes/TripOrganizer';
 import history from 'main/history';
 import { loadTrip, removeTrip } from 'libs/localStorage';
 import axios from 'libs/axios';
+import { generateTripSlug } from 'libs/Utils';
 
 class TripOrganizerContainer extends Component {
   constructor(props) {
@@ -47,7 +48,7 @@ class TripOrganizerContainer extends Component {
       this.props.fetchTrip(this.props.match.params.id);
     }
     if (this.props.trip && this.props.trip.bookingStatus === 'booked') {
-      history.replace(`/trips/${this.props.match.params.id}`);
+      history.replace(`/trips/${generateTripSlug(this.props.trip)}`);
     }
   }
 

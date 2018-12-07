@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { generateGenericSlug } from 'libs/Utils';
 
 // COMPONENTS
 
@@ -50,16 +51,13 @@ export default function SliderPerson({ name, location, id, avatar }) {
   return (
     <Person>
       <Content>
-        <Link to={`/trips/${id}`}>
+        <Link to={`/trips/${generateGenericSlug(name, id)}`}>
           <span>{name}</span>
         </Link>
-        <Link to={`/trips/${id}`}>
+        <Link to={`/trips/${generateGenericSlug(name, id)}`}>
           <span>{location}</span>
         </Link>
       </Content>
-      {/*<Avatar>
-        <Image src={avatar} alt={name} />
-      </Avatar>*/}
     </Person>
   );
 }

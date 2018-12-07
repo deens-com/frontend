@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Button, Divider, Icon, Label } from 'semantic-ui-react';
 
 import { SectionContent } from 'shared_components/layout/Page';
-import { getFormattedTripDates } from 'libs/Utils';
+import { getFormattedTripDates, generateTripSlug } from 'libs/Utils';
 import Carousel from './Carousel';
 import LocationCart from './Carts/Location';
 import { Loader } from 'semantic-ui-react';
@@ -61,7 +61,7 @@ class Trip extends Component {
   };
 
   state = {
-    linkToViewTrip: `/trips/${this.props.trip._id}`,
+    linkToViewTrip: `/trips/${generateTripSlug(this.props.trip)}`,
     linkToEditTrip: `/trips/organize/${this.props.trip._id}`,
     tripDates: getFormattedTripDates(this.props.trip),
   };

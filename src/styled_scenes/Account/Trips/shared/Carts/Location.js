@@ -22,7 +22,7 @@ import CityCountry from 'shared_components/CityCountry';
 // STYLES
 import { Cart } from './styles';
 import { cardConfig } from 'libs/config';
-import { getLargeImageFromMedia } from 'libs/Utils';
+import { getLargeImageFromMedia, generateServiceSlug } from 'libs/Utils';
 import NewPriceTag from 'shared_components/Currency/NewPriceTag';
 
 const ContentWrap = styled.div`
@@ -103,7 +103,7 @@ class ServiceLocationCard extends Component {
 
   wrapWithLink = element => {
     const { item } = this.props;
-    return <Link to={`/services/${item._id}`}>{element}</Link>;
+    return <Link to={`/services/${generateServiceSlug(item)}`}>{element}</Link>;
   };
 
   render() {

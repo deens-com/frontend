@@ -28,7 +28,7 @@ import ServiceTags from './components/ServiceTags';
 import ServiceInformation from './components/ServiceInformation';
 import ServiceActionButtons from './components/ServiceActionButtons';
 
-import { waitUntilMapsLoaded } from 'libs/Utils';
+import { waitUntilMapsLoaded, generateTripSlug } from 'libs/Utils';
 
 const DetailWrapper = styled.div`
   width: 100%;
@@ -299,7 +299,7 @@ class FoodDetailScene extends Component {
                     <Grid columns={4} doubling stackable>
                       {this.props.trips.map(trip => (
                         <Grid.Column>
-                          <Link to={'/trips/' + trip.objectId}>
+                          <Link to={'/trips/' + generateTripSlug(trip)}>
                             <TripCart key={trip.objectId} withTooltip withShadow item={trip} />
                           </Link>
                         </Grid.Column>

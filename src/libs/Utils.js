@@ -1,5 +1,6 @@
 import moment from 'moment';
 import tagsData from './../data/tags';
+import I18nText from 'shared_components/I18nText';
 
 export const serverBaseURL = () => {
   if (process.env.REACT_APP_NODE_ENV === 'production') {
@@ -245,4 +246,41 @@ export async function waitUntilMapsLoaded() {
     return waitUntilMapsLoaded();
   }
   return window.google.maps;
+}
+
+function generateSlug(str) {
+  str = str.replace(/^\s+|\s+$/g, ''); // trim
+  str = str.toLowerCase();
+
+  // remove accents, swap ñ for n, etc
+  var from = 'åàáãäâèéëêìíïîòóöôùúüûñç·/_,:;';
+  var to = 'aaaaaaeeeeiiiioooouuuunc------';
+
+  for (var i = 0, l = from.length; i < l; i++) {
+    str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+  }
+
+  str = str
+    .replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+    .replace(/\s+/g, '-') // collapse whitespace and replace by -
+    .replace(/-+/g, '-') // collapse dashes
+    .replace(/^-+/, '') // trim - from start of text
+    .replace(/-+$/, ''); // trim - from end of text
+
+  return str;
+}
+
+export function generateTripSlug(trip) {
+  const text = I18nText.translate(trip.title);
+  return `${generateSlug(text)}_${trip._id}`;
+}
+
+export function generateGenericSlug(text, id) {
+  return `${generateSlug(text)}_${id}`;
+}
+
+export function generateServiceSlug(service) {
+  const text = I18nText.translate(service.title);
+  const location = service.location && (service.location.city || service.location.state);
+  return `${generateSlug(`${text}${location ? ` in ${location}` : ''}`)}_${service._id}`;
 }

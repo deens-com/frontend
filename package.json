@@ -43,6 +43,7 @@
     "react-day-picker": "^7.1.4",
     "react-dom": "^16.2.0",
     "react-fine-uploader": "^1.1.0",
+    "react-helmet": "^5.2.0",
     "react-i18next": "^7.8.0",
     "react-imgix": "^7.2.0",
     "react-media": "^1.8.0",

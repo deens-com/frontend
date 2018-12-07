@@ -6,7 +6,12 @@ import { Link } from 'react-router-dom';
 import { media } from 'libs/styled';
 import { getCategory } from 'libs/categories';
 import { parseLocation } from 'libs/fetch_helpers';
-import { getHeroImage, getPriceFromServiceOption, getPeopleCount } from 'libs/Utils';
+import {
+  getHeroImage,
+  getPriceFromServiceOption,
+  getPeopleCount,
+  generateServiceSlug,
+} from 'libs/Utils';
 
 import I18nText from 'shared_components/I18nText';
 import { MapMarker } from 'shared_components/icons';
@@ -275,7 +280,7 @@ export default class Itinerary extends Component {
               {this.renderAvailability(day.day, dayData.service._id)}
             </CategoryWrapper>
             <ServiceTitle>
-              <Link to={`/services/${dayData.service._id}`}>
+              <Link to={`/services/${generateServiceSlug(dayData.service)}`}>
                 <I18nText data={dayData.service.title} />
               </Link>
             </ServiceTitle>

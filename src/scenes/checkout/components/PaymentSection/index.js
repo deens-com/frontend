@@ -6,6 +6,7 @@ import history from 'main/history';
 
 import PriceTag from 'shared_components/Currency/PriceTag';
 import { media } from 'libs/styled';
+import { generateTripSlug } from 'libs/Utils';
 import BookedSuccessfullyPopup from '../BookedSuccessfullyPopup';
 import StripeCardDetails from '../StripeCardDetails';
 import CoinbaseButtonContainer from '../../CoinbaseButtonContainer';
@@ -178,7 +179,7 @@ export default class PaymentSection extends Component {
 
   render() {
     const {
-      tripId,
+      trip,
       totalPrice,
       paymentError,
       guests,
@@ -208,7 +209,7 @@ export default class PaymentSection extends Component {
               {
                 key: 'trip',
                 content: 'Go to trip',
-                onClick: () => history.replace(`/trips/${tripId}`),
+                onClick: () => history.replace(`/trips/${generateTripSlug(trip)}`),
               },
             ]}
           />
@@ -272,7 +273,7 @@ export default class PaymentSection extends Component {
                       )}
                       {this.state.paymentMethod === CRYPTO_METHOD && (
                         <ButtonWrapper>
-                          <CoinbaseButtonContainer tripId={tripId} guests={guests} />
+                          <CoinbaseButtonContainer tripId={trip._id} guests={guests} />
                         </ButtonWrapper>
                       )}
                       {this.state.paymentMethod === PLS_METHOD && (
@@ -280,7 +281,7 @@ export default class PaymentSection extends Component {
                           <PLSButton
                             plsBalance={plsBalance}
                             guests={guests}
-                            tripId={tripId}
+                            tripId={trip._id}
                             onClick={this.props.payWithPls}
                           />
                         </ButtonWrapper>
