@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import Rating from 'shared_components/Rating';
 import * as SmartContractStatus from 'shared_components/SmartContract/Status';
 import { media } from 'libs/styled';
-import { getHeroImage } from 'libs/Utils';
+import { getHeroImage, generateServiceSlug } from 'libs/Utils';
 import PriceTag from '../../../shared_components/Currency/PriceTag';
 import Thumb from '../../../shared_components/Carts/components/Thumb';
 import { Cart } from '../../../shared_components/Carts/styles';
@@ -80,13 +80,13 @@ const ServiceItem = item => {
         <SmartContractStatus.Wrapper status={item.contractStatus} hash={item.hash} />
       )}
       {image && (
-        <Link to={'/services/' + item.objectId} key={item.objectId}>
+        <Link to={'/services/' + generateServiceSlug(item)} key={item.objectId}>
           <Thumb url={image.files.thumbnail.url} />
         </Link>
       )}
 
       <ContentWrap>
-        <Link to={'/services/' + item.objectId} key={item.objectId}>
+        <Link to={'/services/' + generateServiceSlug(item)} key={item.objectId}>
           <Title>{item.name}</Title>
 
           <Rating marginBottom="25px" rating={item.ratings.average} count={item.ratings.count} />

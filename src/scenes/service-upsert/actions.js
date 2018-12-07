@@ -3,6 +3,7 @@ import history from '../../main/history';
 import { trackServiceCreated } from 'libs/analytics';
 import { serverBaseURL } from '../../libs/config';
 import axios from 'libs/axios';
+import { generateServiceSlug } from 'libs/Utils';
 
 export const types = {
   SERVICE_CREATE_STARTED: 'SERVICE_CREATE_STARTED',
@@ -77,7 +78,7 @@ export const registerService = (values, history) => async (dispatch, getState) =
         payload: result,
         meta: { analytics: trackServiceCreated(result) },
       });
-      history.push(`/services/${result.data._id}`);
+      history.push(`/services/${generateServiceSlug(result.data)}`);
     }
   } catch (error) {
     if (error.errors) {
@@ -136,7 +137,7 @@ export const saveServiceChanges = (serviceId, values, history) => async (dispatc
       //dispatch(deployContract(result, updatedService, history));
     } else {
       dispatch({ type: types.SERVICE_SAVE_SUCCESS, payload: result.data });
-      history.push(`/services/${result.data._id}`);
+      history.push(`/services/${generateServiceSlug(result.data)}`);
     }
   } catch (error) {
     if (error.errors) {

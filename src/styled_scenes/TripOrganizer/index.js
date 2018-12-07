@@ -796,7 +796,6 @@ export default class TripOrganizer extends Component {
     try {
       const results = await geocodeByPlaceId(placeId);
       const currentResult = results[0];
-      console.log(currentResult);
       const { address_components: addressComponents } = currentResult;
       const localities = addressComponents.filter(
         c => c.types.includes('locality') || c.types.includes('postal_town'),

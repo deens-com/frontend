@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { Loader, Modal, TextArea, Popup } from 'semantic-ui-react';
 import { getCategory } from 'libs/categories';
 import { media } from 'libs/styled';
-import { getHeroImage } from 'libs/Utils';
+import { getHeroImage, generateServiceSlug } from 'libs/Utils';
 import I18nText from 'shared_components/I18nText';
 import Category from 'shared_components/Category';
 import Button from 'shared_components/Button';
@@ -396,7 +396,7 @@ export default class Itinerary extends Component {
                 </AvailabilityWrapper>
               </CategoryWrapper>
               <ServiceTitle>
-                <Link to={`/services/${dayData.service._id}`}>
+                <Link to={`/services/${generateServiceSlug(dayData.service)}`}>
                   <I18nText data={dayData.service.title} />
                 </Link>
               </ServiceTitle>

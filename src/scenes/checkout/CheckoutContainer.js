@@ -7,6 +7,7 @@ import axios from 'libs/axios';
 import { Loader, Dimmer } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { media } from 'libs/styled';
+import { generateTripSlug } from 'libs/Utils';
 import { updateBottomChatPosition, calculateBottomPosition } from 'libs/Utils';
 
 import { Page } from 'shared_components/layout/Page';
@@ -257,7 +258,7 @@ class CheckoutContainer extends React.Component {
   componentDidUpdate() {
     if (this.props.trip) {
       if (this.props.trip.bookingStatus === 'booked') {
-        history.replace(`/trips/${this.tripId}`);
+        history.replace(`/trips/${generateTripSlug(this.props.trip)}`);
         return;
       }
       if (!this.props.trip.startDate || !this.props.trip.adultCount) {

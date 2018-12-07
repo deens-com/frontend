@@ -3,6 +3,8 @@ import HomeComponent from './../components/Home';
 import { searchTrips } from 'store/search/actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Helmet } from 'react-helmet';
+import { websiteUrl } from 'libs/config';
 
 class HomeContainer extends Component {
   componentDidMount() {
@@ -12,6 +14,10 @@ class HomeContainer extends Component {
   render() {
     return (
       <div className="HomeContainer">
+        <Helmet>
+          <title>Please, plan my trip!</title>
+          <link rel="canonical" href={websiteUrl} />
+        </Helmet>
         <HomeComponent trips={this.props.trips} />
       </div>
     );

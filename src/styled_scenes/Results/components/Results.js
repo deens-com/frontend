@@ -17,6 +17,7 @@ import moment from 'moment';
 import { minutesToDays, getDaysByService } from 'styled_scenes/Trip/mapServicesToDays';
 import notFoundImg from '../not_found.png';
 import { loadTrip, saveTrip } from 'libs/localStorage';
+import { generateTripSlug, generateServiceSlug } from 'libs/Utils';
 
 // STYLES
 const Wrap = styled.div`
@@ -230,8 +231,8 @@ class Results extends Component {
                     <Link
                       to={
                         result.categories && result.categories.length
-                          ? '/services/' + result.objectId
-                          : '/trips/' + result.objectId
+                          ? '/services/' + generateServiceSlug(result)
+                          : '/trips/' + generateTripSlug(result)
                       }
                     >
                       {result.contractAddress && <Badge>Decentralized</Badge>}
