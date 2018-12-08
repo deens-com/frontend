@@ -298,7 +298,7 @@ class FoodDetailScene extends Component {
                   <Row>
                     <Grid columns={4} doubling stackable>
                       {this.props.trips.map(trip => (
-                        <Grid.Column>
+                        <Grid.Column key={trip.objectId}>
                           <Link to={'/trips/' + generateTripSlug(trip)}>
                             <TripCart key={trip.objectId} withTooltip withShadow item={trip} />
                           </Link>
