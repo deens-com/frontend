@@ -281,6 +281,9 @@ export function generateGenericSlug(text, id) {
 
 export function generateServiceSlug(service) {
   const text = I18nText.translate(service.title);
-  const location = service.location && (service.location.city || service.location.state);
+  const locationObj =
+    typeof service.location === 'object' ? service.location : service.originalLocation;
+  const location = locationObj && (locationObj.city || locationObj.state);
+
   return `${generateSlug(`${text}${location ? ` in ${location}` : ''}`)}_${service._id}`;
 }

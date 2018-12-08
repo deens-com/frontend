@@ -52,7 +52,11 @@ export default class AddToTripButton extends React.Component {
 
   isLoggedIn = () => getSession() != null;
 
-  redirectToLogin = () => history.push('/login');
+  redirectToLogin = () =>
+    history.push('/login', {
+      from: window.location.pathname,
+      message: 'Please login or register to continue',
+    });
 
   render() {
     const { props } = this;
@@ -67,7 +71,7 @@ export default class AddToTripButton extends React.Component {
         bgColor="rgb(95, 183, 158)"
         whiteText
         {...clickProps}
-        onClick={this.handleClose}
+        onClick={isLoggedIn ? this.handleClose : this.redirectToLogin}
       >
         Add to trip
         <Icon name="angle down" />

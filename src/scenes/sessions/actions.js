@@ -95,12 +95,14 @@ export const getCurrentUser = () => async dispatch => {
         dispatch(sessionsFetched({ session: userObject }));
 
         // Fresh chat data
-        const chatUser = (await window.fcWidget.user.get()).data;
-        if (chatUser.firstName !== userObject.username) {
-          await window.fcWidget.user.clear();
-          await window.fcWidget.setExternalId(userObject._id);
-          await window.fcWidget.user.setFirstName(userObject.username);
-          await window.fcWidget.user.setEmail(userObject.email);
+        if (window.fcWidget.user) {
+          const chatUser = (await window.fcWidget.user.get()).data;
+          if (chatUser.firstName !== userObject.username) {
+            await window.fcWidget.user.clear();
+            await window.fcWidget.setExternalId(userObject._id);
+            await window.fcWidget.user.setFirstName(userObject.username);
+            await window.fcWidget.user.setEmail(userObject.email);
+          }
         }
       }
       return;
