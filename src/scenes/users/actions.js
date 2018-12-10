@@ -32,7 +32,7 @@ export const fullUserFetchError = ({ code, message }) => ({
 export const fetchFullUser = username => async dispatch => {
   dispatch(fullUserFetchStarted());
   try {
-    const responseData = await axios.get(`${serverBaseURL}/users/${username}`);
+    const responseData = await axios.get(`${serverBaseURL}/users/username/${username}`);
     dispatch(fullUserFetched(responseData));
   } catch (e) {
     dispatch(fullUserFetchError(e));
