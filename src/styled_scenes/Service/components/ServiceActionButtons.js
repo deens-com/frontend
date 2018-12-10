@@ -52,6 +52,7 @@ function ServiceActionButtons(props) {
         myUnpurchasedTrips={props.myUnpurchasedTrips}
         onTripClick={props.onAddServiceToTrip}
         onNewTripClick={props.onAddServiceToNewTrip}
+        isLoggedIn={props.isLoggedIn}
       />
       <Button icon labelPosition="right" color="blue" onClick={props.onBookNowClick}>
         Book Now
@@ -59,8 +60,12 @@ function ServiceActionButtons(props) {
       </Button>
       <ErrorMsgDiv>
         {props.serviceRecentlyAddedToTrip && (
-          <SuccessMessage to={`/trips/organize/${props.serviceRecentlyAddedToTrip.objectId}`}>
-            Added to <b>{props.serviceRecentlyAddedToTrip.title}</b>
+          <SuccessMessage
+            to={`/trips/organize/${
+              props.loggedIn ? props.serviceRecentlyAddedToTrip.objectId : ''
+            }`}
+          >
+            Added to <b>{props.loggedIn ? props.serviceRecentlyAddedToTrip.title : 'trip'}</b>
             <Icon name="check circle outline" />
           </SuccessMessage>
         )}
