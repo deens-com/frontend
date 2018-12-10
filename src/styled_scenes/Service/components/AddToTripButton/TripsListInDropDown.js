@@ -4,7 +4,6 @@ import { Image, List, Popup } from 'semantic-ui-react';
 import moment from 'moment';
 import styled from 'styled-components';
 import placeholder from './../../../../assets/placeholder350x350.svg';
-window.moment = moment;
 
 const getTripImage = trip => {
   if (trip.picture && trip.picture.url) return trip.picture.url;

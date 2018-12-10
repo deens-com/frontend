@@ -171,7 +171,7 @@ export const onBookNowClick = () => async (dispatch, getState) => {
   if (user) {
     createNewTrip({ redirectToCreatedTrip: true })(dispatch, getState);
   } else {
-    history.push('/login');
+    history.push('/register');
   }
 };
 

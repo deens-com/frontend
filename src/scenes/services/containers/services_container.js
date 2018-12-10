@@ -10,6 +10,7 @@ import { Helmet } from 'react-helmet';
 import { websiteUrl } from 'libs/config';
 import I18nText from 'shared_components/I18nText';
 import { getHeroImage, generateServiceSlug } from 'libs/Utils';
+import { loadTrip } from 'libs/localStorage';
 
 class ServicesContainer extends Component {
   state = {
@@ -31,13 +32,8 @@ class ServicesContainer extends Component {
     this.props.resetServiceData();
   }
 
-  onAddServiceToTrip = ({ trip, day }) => {
-    const user = getSession();
-    if (user != null) {
-      this.props.addServiceToTrip({ trip, day });
-    } else {
-      this.props.history.push('/login');
-    }
+  onAddServiceToTrip = ({ trip, day }, isLoggedIn) => {
+    this.props.addServiceToTrip({ trip, day }, isLoggedIn);
   };
 
   onAddServiceToNewTrip = () => {
@@ -105,12 +101,14 @@ class ServicesContainer extends Component {
 
 const mapStateToProps = state => {
   const service = state.ServicesReducer.service;
+  const isLoggedIn = state.SessionsReducer.loggedIn;
 
   return {
     service,
+    isLoggedIn,
     trips: state.ServicesReducer.trips.filter(trip => trip !== undefined),
     reviews: state.ServicesReducer.reviews,
-    myUnpurchasedTrips: state.ServicesReducer.userUnpurchasedTrips.data,
+    myUnpurchasedTrips: isLoggedIn ? state.ServicesReducer.userUnpurchasedTrips.data : [loadTrip()],
     serviceRecentlyAddedToTrip: state.ServicesReducer.serviceRecentlyAddedToTrip,
     serviceAlreadyAddedToTrip: state.ServicesReducer.serviceAlreadyAddedToTrip,
     isServiceUnavailableModalOpen: state.ServicesReducer.isServiceUnavailableModalOpen,

@@ -253,6 +253,7 @@ class FoodDetailScene extends Component {
                 serviceRecentlyAddedToTrip={this.props.serviceRecentlyAddedToTrip}
                 serviceAlreadyAddedToTrip={this.props.serviceAlreadyAddedToTrip}
                 onBookNowClick={this.props.onBookNowClick}
+                isLoggedIn={this.props.isLoggedIn}
               />
               <ContactWrap>
                 <MapWrap>
