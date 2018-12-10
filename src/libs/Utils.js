@@ -272,7 +272,10 @@ function generateSlug(str) {
 
 export function generateTripSlug(trip) {
   const text = I18nText.translate(trip.title);
-  return `${generateSlug(text)}_${trip._id}`;
+  const locationObj = typeof trip.location === 'object' ? trip.location : trip.originalLocation;
+  const location = locationObj && (locationObj.city || locationObj.state);
+
+  return `${generateSlug(`${text}${location ? ` in ${location}` : ''}`)}_${trip._id}`;
 }
 
 export function generateGenericSlug(text, id) {
