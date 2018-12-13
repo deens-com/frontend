@@ -4,7 +4,6 @@ import { Route, Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store';
 import history from 'main/history';
-import { Helmet } from 'react-helmet';
 import withSegmentTracker from './middlewares/with_segment_tracker';
 import withErrorBoundary from './middlewares/WithErrorBoundary';
 import Home from './../scenes/home/home';
@@ -43,29 +42,6 @@ class App extends React.Component {
     return (
       <Provider store={store}>
         <React.Fragment>
-          <Helmet>
-            <title>Please.com</title>
-            <meta
-              name="description"
-              content="Customize and book end-to-end trips planned by locals and frequent travelers"
-            />
-            <meta property="og:type" content="website" />
-            <meta property="og:url" content={websiteUrl} />
-            <meta property="og:title" content="Please, plan my trip!" />
-            <meta property="og:site_name" content="Please" />
-            <meta
-              property="og:description"
-              content="Customize and book end-to-end trips planned by locals and frequent travelers"
-            />
-            <meta property="og:image" content={`${websiteUrl}${pleaseImg}`} />
-            <meta property="og:video" content="https://www.youtube.com/watch?v=LOzteotPJbw" />
-            <meta property="twitter:site" content="@PleaseTrips" />
-            <meta property="twitter:creator" content="@RomainBarissat" />
-            <meta
-              property="twitter:image:alt"
-              content="Find the perfect trip organized by locals"
-            />
-          </Helmet>
           <Router history={history}>
             <ScrollToTop>
               <Switch>
