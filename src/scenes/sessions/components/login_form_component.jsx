@@ -254,7 +254,7 @@ LoginFormComponent.propTypes = {
   submitLogin: PropTypes.func,
   validateInput: PropTypes.func,
   handleInputChange: PropTypes.func,
-  loginWithMetamask: PropTypes.func.isRequired,
+  loginWithMetamask: PropTypes.func,
   metaMaskError: PropTypes.object,
   ledgerError: PropTypes.object,
   isLoading: PropTypes.bool,
