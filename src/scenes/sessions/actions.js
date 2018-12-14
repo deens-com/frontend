@@ -86,8 +86,8 @@ export const set_base_currency = currency => async dispatch => {
 };
 
 export const getCurrentUser = () => async dispatch => {
+  const session = getSession();
   try {
-    const session = getSession();
     if (session) {
       const currentUser = await axios.get('/users/me');
       if (currentUser.data) {
@@ -96,12 +96,16 @@ export const getCurrentUser = () => async dispatch => {
 
         // Fresh chat data
         if (window.fcWidget.user) {
-          const chatUser = (await window.fcWidget.user.get()).data;
-          if (chatUser.firstName !== userObject.username) {
-            await window.fcWidget.user.clear();
-            await window.fcWidget.setExternalId(userObject._id);
-            await window.fcWidget.user.setFirstName(userObject.username);
-            await window.fcWidget.user.setEmail(userObject.email);
+          try {
+            const chatUser = (await window.fcWidget.user.get()).data;
+            if (chatUser.firstName !== userObject.username) {
+              await window.fcWidget.user.clear();
+              await window.fcWidget.setExternalId(userObject._id);
+              await window.fcWidget.user.setFirstName(userObject.username);
+              await window.fcWidget.user.setEmail(userObject.email);
+            }
+          } catch (e) {
+            console.log(e);
           }
         }
       }
@@ -109,13 +113,7 @@ export const getCurrentUser = () => async dispatch => {
     }
     dispatch({ type: types.NOT_LOGGED_IN });
   } catch (error) {
-    if (
-      error.response &&
-      (error.response.data.message === 'jwt expired' ||
-        error.response.data.message === 'invalid auth mechanism')
-    ) {
-      dispatch(logOut());
-    }
+    dispatch(logOut());
   }
 };
 
