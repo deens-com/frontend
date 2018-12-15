@@ -30,7 +30,7 @@
     "lodash.round": "^4.0.4",
     "lodash.throttle": "^4.1.1",
     "moment": "^2.22.1",
-    "now": "^11.2.4",
+    "now": "^12.1.12",
     "parse": "^1.11.1",
     "prop-types": "^15.6.1",
     "qs": "^6.5.2",
