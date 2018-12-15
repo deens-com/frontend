@@ -3,13 +3,12 @@
   "env": {
     "REACT_APP_NODE_ENV": "staging"
   },
-  "type": "static",
-  "static": {
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
-  }
+  "version": 2,
+  "routes": [
+    {
+      "src": ".*",
+      "dest": "/index.html"
+    }
+  ],
+  "builds": [{ "src": "/index.html", "use": "@now/static" }]
 }
