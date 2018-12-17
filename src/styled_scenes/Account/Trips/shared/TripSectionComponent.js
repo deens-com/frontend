@@ -72,13 +72,7 @@ class Trip extends Component {
       <SectionContent key={trip.objectId}>
         <Divider />
         <TripTitleRow>
-          <Link
-            to={
-              trip.bookingStatus === 'booked'
-                ? this.state.linkToViewTrip
-                : this.state.linkToEditTrip
-            }
-          >
+          <Link to={this.state.linkToViewTrip}>
             <InlineH2>
               <I18nText data={trip.title} />
             </InlineH2>
