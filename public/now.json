@@ -6,6 +6,10 @@
   "version": 2,
   "routes": [
     {
+      "src": "/static/<url>",
+      "dest": "/static/$url"
+    },
+    {
       "src": ".*",
       "dest": "/index.html"
     }
