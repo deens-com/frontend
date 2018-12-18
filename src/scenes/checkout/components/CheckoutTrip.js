@@ -8,6 +8,7 @@ import { MapMarker } from 'shared_components/icons';
 import { getPriceFromServiceOption, getPeopleCount } from 'libs/Utils';
 import { getCategory } from 'libs/categories';
 import Category from 'shared_components/Category';
+import Button from 'shared_components/Button';
 
 const Day = styled.div`
   color: #3c434b;
@@ -69,7 +70,7 @@ const ServiceTitle = styled.div`
 
 const City = styled.div`
   color: #787878;
-  margin-top: 10px;
+  flex: 1;
   display: flex;
   font-size: 14px;
   align-items: center;
@@ -79,6 +80,14 @@ const City = styled.div`
     }
     margin-right: 5px;
   }
+`;
+
+const SecondLine = styled.div`
+  display: flex;
+`;
+
+const ButtonWrapper = styled.div`
+  flex-grow: 0;
 `;
 
 function getPrice(trip, day, service) {
@@ -102,13 +111,13 @@ export class CheckoutTrip extends React.Component {
     };
   }
 
+  static defaultProps = {
+    showTitle: true,
+  };
+
   renderPrice = (trip, day, service) => {
     const price = getPrice(trip, day, service);
-    if (
-      service.service.periods &&
-      service.service.periods[0] &&
-      service.service.periods[0].payAtService
-    ) {
+    if (this.props.onlyExternalServices && service.service.checkoutOptions.payAt !== 'please') {
       return (
         <PriceWrapper>
           <div>
@@ -128,13 +137,15 @@ export class CheckoutTrip extends React.Component {
   };
 
   render() {
-    const { trip } = this.props;
+    const { trip, showTitle, onlyExternalServices } = this.props;
 
     return (
       <React.Fragment>
-        <TripItineraryTitle>
-          <span>Trip Itinerary</span>
-        </TripItineraryTitle>
+        {showTitle && (
+          <TripItineraryTitle>
+            <span>Trip Itinerary</span>
+          </TripItineraryTitle>
+        )}
         {this.state.days.map((day, dayIndex) => (
           <Day key={day.day}>
             <Title>
@@ -142,7 +153,10 @@ export class CheckoutTrip extends React.Component {
                 .add(day.day - 1, 'days')
                 .format('MMM DD, dddd')}
             </Title>
-            {day.data.map((service, serviceIndex) => (
+            {(onlyExternalServices
+              ? day.data.filter(service => service.service.checkoutOptions.payAt !== 'please')
+              : day.data
+            ).map((service, serviceIndex) => (
               <Service key={`${day.day}-${service.service._id}`}>
                 <Category
                   color={getCategory(service.service.categories[0]).color}
@@ -153,10 +167,27 @@ export class CheckoutTrip extends React.Component {
                 <ServiceTitle>
                   <I18nText data={service.service.title} />
                 </ServiceTitle>
-                <City>
-                  <MapMarker />
-                  {service.service.location.formattedAddress}
-                </City>
+                <SecondLine>
+                  <City>
+                    <MapMarker />
+                    {service.service.location.formattedAddress ||
+                      service.service.location.city ||
+                      service.service.location.state}
+                  </City>
+                  {service.service.checkoutOptions.payAt === 'external-provider' && (
+                    <ButtonWrapper>
+                      <Button
+                        external
+                        type="link"
+                        target="_blank"
+                        noReferrer
+                        href={service.service.checkoutOptions.checkoutURL}
+                      >
+                        Book here
+                      </Button>
+                    </ButtonWrapper>
+                  )}
+                </SecondLine>
                 {this.renderPrice(trip, day, service)}
               </Service>
             ))}

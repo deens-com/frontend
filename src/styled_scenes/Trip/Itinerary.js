@@ -87,16 +87,6 @@ const Image = styled.div`
   }
 `;
 
-const PayAtVenue = styled.div`
-  color: #6e7885;
-  font-size: 12px;
-  background-color: #d3d7dc;
-  padding: 5px 15px;
-  border-radius: 3px;
-  display: inline-block;
-  font-weight: bold;
-`;
-
 const ServiceData = styled.div`
   flex: 1;
   margin: 0 5px;
@@ -229,13 +219,6 @@ export default class Itinerary extends Component {
 
   renderPrice = dayData => {
     const service = dayData.service;
-    if (service.periods && service.periods[0] && service.periods[0].payAtService) {
-      return (
-        <ServicePrice>
-          <PayAtVenue>Not included in the payment</PayAtVenue>
-        </ServicePrice>
-      );
-    }
 
     const bookedInformationPrice =
       this.props.bookedInformation &&

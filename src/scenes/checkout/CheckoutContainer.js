@@ -450,35 +450,39 @@ class CheckoutContainer extends React.Component {
                   </React.Fragment>
                 )}
               </Top>
-              <Summary>
-                <SummaryData>
-                  <Title>
-                    <I18nText data={trip.title} />
-                  </Title>
-                  <Location>
-                    <MapMarker style={{ fill: '#6E7885' }} />
-                    <span>{formatLocation(trip.location)}</span>
-                  </Location>
-                  <Dates>{formatDate(trip.startDate, days)}</Dates>
-                  <Guests>
-                    {numberOfGuests} {numberOfGuests === 1 ? 'Guest' : 'Guests'}
-                  </Guests>
-                </SummaryData>
-                <TotalPriceWrapper>
-                  <TotalPrice>
-                    <PriceLine>Total Price Booked Items ${trip.basePrice.toFixed(2)}</PriceLine>
-                    <Taxes>* all taxes and fees are included</Taxes>
-                  </TotalPrice>
-                  <CancellationPolicy />
-                </TotalPriceWrapper>
-              </Summary>
-              {expireDate && <Countdown expireDate={expireDate} onTimeout={this.onTimeout} />}
-              {timedOut && (
-                <ReprovisionModal
-                  okClick={this.getProvisionCodes}
-                  cancelClick={this.goToTripOrganizer}
-                />
+              {step < 4 && (
+                <Summary>
+                  <SummaryData>
+                    <Title>
+                      <I18nText data={trip.title} />
+                    </Title>
+                    <Location>
+                      <MapMarker style={{ fill: '#6E7885' }} />
+                      <span>{formatLocation(trip.location)}</span>
+                    </Location>
+                    <Dates>{formatDate(trip.startDate, days)}</Dates>
+                    <Guests>
+                      {numberOfGuests} {numberOfGuests === 1 ? 'Guest' : 'Guests'}
+                    </Guests>
+                  </SummaryData>
+                  <TotalPriceWrapper>
+                    <TotalPrice>
+                      <PriceLine>Total Price Booked Items ${trip.basePrice.toFixed(2)}</PriceLine>
+                      <Taxes>* all taxes and fees are included</Taxes>
+                    </TotalPrice>
+                    <CancellationPolicy />
+                  </TotalPriceWrapper>
+                </Summary>
               )}
+              {step === 3 &&
+                expireDate && <Countdown expireDate={expireDate} onTimeout={this.onTimeout} />}
+              {step === 3 &&
+                timedOut && (
+                  <ReprovisionModal
+                    okClick={this.getProvisionCodes}
+                    cancelClick={this.goToTripOrganizer}
+                  />
+                )}
               {this.renderStep()}
             </Wrapper>
             {step < 3 && (

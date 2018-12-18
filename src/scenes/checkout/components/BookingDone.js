@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Button from 'shared_components/Button';
 import { CheckIcon } from 'shared_components/icons';
+import CheckoutTrip from './CheckoutTrip';
 
 const Wrapper = styled.div`
   flex: 1;
@@ -55,30 +56,38 @@ const IconWrapper = styled.div`
   }
 `;
 
-function print() {
-  window.print();
-}
+const NeedToPaySentence = styled.div`
+  font-size: 18px;
+  margin-bottom: 25px;
+  font-weight: 400;
+`;
 
-const BookingDone = ({ number, onChange }) => {
+const BookingDone = ({ number, onChange, trip }) => {
+  const needToBookExternalServices = Boolean(
+    trip.services.find(service => service.service.checkoutOptions.payAt !== 'please'),
+  );
+
   return (
     <React.Fragment>
       <Wrapper>
         <IconWrapper>
           <CheckIcon style={{ width: 72, height: 72 }} />
         </IconWrapper>
-        <Title>Your booking is done!</Title>
+        <Title>Your booking on Please is complete!</Title>
         <FirstLine>All the details will be sent to your email.</FirstLine>
         <SecondLine>Thank you for booking with Please.com.</SecondLine>
-        {/*There is no share screen <Button theme="fillLightGreen">Share to friends</Button>*/}
         <Button type="link" href="/account/trips/planned" theme="textLightGreen">
-          See your bookings
+          View your booking
         </Button>
       </Wrapper>
-      <Print>
-        <Button theme="fillLightGreen" onClick={print}>
-          Print
-        </Button>
-      </Print>
+      {needToBookExternalServices && (
+        <React.Fragment>
+          <NeedToPaySentence>
+            <strong>However</strong>, the following services still need to be booked separately:
+          </NeedToPaySentence>
+          <CheckoutTrip trip={trip} onlyExternalServices showTitle={false} />
+        </React.Fragment>
+      )}
     </React.Fragment>
   );
 };

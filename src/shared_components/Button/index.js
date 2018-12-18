@@ -267,9 +267,14 @@ export default class Button extends Component {
     if (this.props.element) {
       El = this.props.element;
     } else if (this.props.type === 'link') {
-      El = props => (
-        <Link to={this.props.href} target={this.props.target} children={this.props.children} />
-      );
+      const props = {
+        to: this.props.href,
+        href: this.props.href,
+        target: this.props.target,
+        children: this.props.children,
+        rel: this.props.noReferrer && 'noopener noreferrer',
+      };
+      El = _ => (this.props.external ? <a {...props} /> : <Link {...props} />);
     } else {
       El = props => (
         <Btn
