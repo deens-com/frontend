@@ -3,13 +3,19 @@
   "env": {
     "REACT_APP_NODE_ENV": "staging"
   },
-  "type": "static",
-  "static": {
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
-  }
+  "version": 2,
+  "routes": [
+    { "src": "^/static/(.*)", "dest": "/static/$1" },
+    { "src": "^/img/(.*)", "dest": "/img/$1" },
+    { "src": "^/favicon.ico", "dest": "/favicon.ico" },
+    { "src": "^/favicon(.*).png", "dest": "/favicon$1.png" },
+    { "src": "^/asset-manifest.json", "dest": "/asset-manifest.json" },
+    { "src": "^/manifest.json", "dest": "/manifest.json" },
+    {
+      "src": "^/service-worker.js",
+      "headers": { "cache-control": "s-maxage=0" },
+      "dest": "/service-worker.js"
+    },
+    { "src": "^/(.*)", "dest": "/index.html" }
+  ]
 }

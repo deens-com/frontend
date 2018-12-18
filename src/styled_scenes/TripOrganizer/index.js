@@ -980,7 +980,29 @@ export default class TripOrganizer extends Component {
             [newKey]: prevState.notes[value],
           };
         }, {});
-
+        console.log({
+          trip: {
+            ...prevState.trip,
+            duration: prevState.trip.duration - daysToMinutes(1),
+          },
+          notes,
+          optionsSelected,
+          daysByService,
+          days: prevState.days.filter(prevDay => prevDay.day !== day.day).map(
+            prevDay =>
+              prevDay.day < day.day
+                ? prevDay
+                : {
+                    ...prevDay,
+                    ...dayTitles(prevDay.day - 1, this.props.startDate),
+                    day: prevDay.day - 1,
+                    data: prevDay.data.map(serv => ({
+                      ...serv,
+                      day: prevDay.day - 1,
+                    })),
+                  },
+          ),
+        });
         return {
           trip: {
             ...prevState.trip,
@@ -997,6 +1019,10 @@ export default class TripOrganizer extends Component {
                     ...prevDay,
                     ...dayTitles(prevDay.day - 1, this.props.startDate),
                     day: prevDay.day - 1,
+                    data: prevDay.data.map(serv => ({
+                      ...serv,
+                      day: prevDay.day - 1,
+                    })),
                   },
           ),
         };

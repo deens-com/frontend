@@ -62,10 +62,10 @@ function ServiceActionButtons(props) {
         {props.serviceRecentlyAddedToTrip && (
           <SuccessMessage
             to={`/trips/organize/${
-              props.loggedIn ? props.serviceRecentlyAddedToTrip.objectId : ''
+              props.isLoggedIn ? props.serviceRecentlyAddedToTrip.objectId : ''
             }`}
           >
-            Added to <b>{props.loggedIn ? props.serviceRecentlyAddedToTrip.title : 'trip'}</b>
+            Added to <b>{props.isLoggedIn ? props.serviceRecentlyAddedToTrip.title : 'trip'}</b>
             <Icon name="check circle outline" />
           </SuccessMessage>
         )}

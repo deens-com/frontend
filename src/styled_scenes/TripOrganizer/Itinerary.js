@@ -404,6 +404,7 @@ export default class Itinerary extends Component {
                 <StartingPrice>Starts from ${dayData.service.basePrice}</StartingPrice>
                 <ServiceDaySelector
                   dayData={dayData}
+                  service={dayData.service}
                   daysByService={this.props.daysByService}
                   days={this.props.days}
                   removeService={this.props.removeService}
