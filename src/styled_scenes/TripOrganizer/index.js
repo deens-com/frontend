@@ -359,8 +359,6 @@ export default class TripOrganizer extends Component {
           notes: this.state.notes,
         };
 
-        console.log('t', trip);
-
         await this.save(trip);
 
         this.setState({
