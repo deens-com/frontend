@@ -19,6 +19,13 @@ const PopupTrigger = styled.div`
   cursor: pointer;
 `;
 
+const RemoveFromTrip = styled(DayListItem)`
+  color: red;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 10px;
+`;
+
 export default class ServiceDaySelector extends Component {
   constructor(props) {
     super(props);
@@ -29,20 +36,38 @@ export default class ServiceDaySelector extends Component {
 
   handleServiceDayChange = (event, data) => {
     if (!data.checked) {
-      if (this.props.daysByService[data.service._id].length === 1) {
+      if (this.props.daysByService[this.props.service._id].length === 1) {
         this.setState({
           modalData: {
-            service: data.service,
+            service: this.props.service,
             day: data.day,
           },
           popupOpen: false,
         });
         return;
       }
-      this.props.removeService(data.day, data.service._id);
+      this.props.removeService(data.day, this.props.service._id);
       return;
     }
-    this.props.addService(data.day, data.service);
+    this.props.addService(data.day, this.props.service);
+  };
+
+  removeServiceFromTrip = _ => {
+    this.props.days.forEach(day => {
+      const found = day.data.find(dayService => dayService.service._id === this.props.service._id);
+      if (found) {
+        this.props.removeService(day.day, this.props.service._id);
+      }
+    });
+  };
+
+  onDeleteClick = () => {
+    this.setState({
+      modalData: {
+        service: this.props.service,
+      },
+      popupOpen: false,
+    });
   };
 
   closeServiceModal = () => {
@@ -73,7 +98,8 @@ export default class ServiceDaySelector extends Component {
         <ConfirmationModal
           service={modalData && modalData.service}
           day={modalData && modalData.day}
-          removeService={this.props.removeService}
+          removeServiceFromDay={this.props.removeService}
+          removeService={this.removeServiceFromTrip}
           closeModal={this.closeServiceModal}
         />
         <Popup
@@ -85,6 +111,7 @@ export default class ServiceDaySelector extends Component {
           }
           content={
             <ul>
+              <RemoveFromTrip onClick={this.onDeleteClick}>Delete from Trip</RemoveFromTrip>
               {days.map(checkboxDay => (
                 <DayListItem key={checkboxDay.day}>
                   <Checkbox

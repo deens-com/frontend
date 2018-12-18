@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal } from 'semantic-ui-react';
 import I18nText from 'shared_components/I18nText';
 
-export default ({ service, day, removeService, closeModal }) => (
+export default ({ service, day, removeServiceFromDay, removeService, closeModal }) => (
   <Modal
     open={Boolean(service)}
     header={`Delete ${service && I18nText.translate(service.title)}`}
@@ -16,7 +16,11 @@ export default ({ service, day, removeService, closeModal }) => (
       },
       {
         onClick: () => {
-          removeService(day, service._id);
+          if (day) {
+            removeServiceFromDay(day);
+          } else {
+            removeService();
+          }
           closeModal();
         },
         key: 'delete',
