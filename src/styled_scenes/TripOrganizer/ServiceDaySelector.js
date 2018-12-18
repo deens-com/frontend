@@ -61,6 +61,8 @@ export default class ServiceDaySelector extends Component {
     });
   };
 
+  removeServiceFromDay = day => this.props.removeService(day, this.props.service._id);
+
   onDeleteClick = () => {
     this.setState({
       modalData: {
@@ -98,7 +100,7 @@ export default class ServiceDaySelector extends Component {
         <ConfirmationModal
           service={modalData && modalData.service}
           day={modalData && modalData.day}
-          removeServiceFromDay={this.props.removeService}
+          removeServiceFromDay={this.removeServiceFromDay}
           removeService={this.removeServiceFromTrip}
           closeModal={this.closeServiceModal}
         />
