@@ -50,17 +50,6 @@ const Price = styled.span`
   font-weight: bold;
 `;
 
-const PayAtVenue = styled.div`
-  color: #6e7885;
-  font-size: 12px;
-  background-color: #d3d7dc;
-  padding: 5px 15px;
-  border-radius: 3px;
-  display: inline-block;
-  margin-top: 10px;
-  font-weight: bold;
-`;
-
 const ServiceTitle = styled.div`
   font-size: 18px;
   font-weight: bold;
@@ -123,7 +112,6 @@ export class CheckoutTrip extends React.Component {
           <div>
             Average cost: <Price>${price.toFixed(2)} per person</Price>
           </div>
-          <PayAtVenue>Not included in the payment</PayAtVenue>
         </PriceWrapper>
       );
     }
