@@ -66,7 +66,7 @@ const FlexLink = styled(Link)`
   }
 `;
 
-const NewYorkLink = FlexLink.extend`
+const NewYorkLink = styled(FlexLink)`
   ${media.minSmall} {
     margin-bottom: 0;
     order: 2;
@@ -80,7 +80,7 @@ const SFLink = styled(Link)`
   }
 `;
 
-const CenterContainer = Column.extend`
+const CenterContainer = styled(Column)`
   flex-direction: column;
   order: 3;
   margin: 0;
@@ -96,7 +96,7 @@ const CenterContainer = Column.extend`
   }
 `;
 
-const Sydney = Row.extend`
+const Sydney = styled(Row)`
   background-image: url(${sydneyImg});
   flex: 1;
   margin-bottom: 10px;
@@ -112,7 +112,7 @@ const Sydney = Row.extend`
   }
 `;
 
-const NewYork = Row.extend`
+const NewYork = styled(Row)`
   background-image: url(${newYorkImg});
   margin-bottom: 10px;
   ${media.minSmall} {
@@ -126,12 +126,12 @@ const NewYork = Row.extend`
   }
 `;
 
-const SanFrancisco = Row.extend`
+const SanFrancisco = styled(Row)`
   background-image: url(${sanFranciscoImg});
   height: 190px;
 `;
 
-const London = Row.extend`
+const London = styled(Row)`
   background-image: url(${londonImg});
   height: 190px;
 `;

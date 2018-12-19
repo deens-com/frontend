@@ -53,12 +53,12 @@ const Arrow = styled.button`
   }
 `;
 
-const LeftArrow = Arrow.extend`
+const LeftArrow = styled(Arrow)`
   left: 35px;
   transform: translateY(-50%) rotate(180deg);
 `;
 
-const RightArrow = Arrow.extend`
+const RightArrow = styled(Arrow)`
   right: 35px;
   transform: translateY(-50%);
 `;

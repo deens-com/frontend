@@ -146,12 +146,12 @@ const AvailabilityBox = styled.div`
   padding: 5px;
 `;
 
-const CheckingAvailability = AvailabilityBox.extend`
+const CheckingAvailability = styled(AvailabilityBox)`
   background-color: #f7f7f7;
   color: #919191;
 `;
 
-const Availability = AvailabilityBox.extend`
+const Availability = styled(AvailabilityBox)`
   background-color: ${props => (props.available ? '#BAFFE8' : '#FFC3C3')};
   color: ${props => (props.available ? '#38D39F' : '#F65353')};
 `;
