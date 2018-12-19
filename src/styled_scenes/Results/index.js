@@ -15,7 +15,7 @@ import BrandFooter from './../../shared_components/BrandFooter';
 import Filters from './components/Filters';
 import Results from './components/Results';
 import MapMaker from './../../shared_components/MapMarker';
-import I18nText from 'shared_components/I18nText';
+import CreateServiceModal from './components/CreateServiceModal';
 
 // ACTIONS/CONFIG
 import { media } from '../../libs/styled';
@@ -52,12 +52,26 @@ const ServicesWrapper = styled.div`
 `;
 
 const GoBackToTrip = styled.span`
-  color: #4fb798;
-  margin: auto;
+  color: white;
+  margin-top: 15px;
+  margin-left: 20px;
+  padding: 3px 7px;
+  cursor: pointer;
+  display: inline-block;
+  background-color: #4ac4a1;
+  border-radius: 20px;
+`;
+
+const AddingServiceTopBar = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const CreateService = styled.div`
+  color: #4ac4a1;
   margin-top: 15px;
   margin-left: 20px;
   cursor: pointer;
-  display: inline-block;
 `;
 
 const MapToggle = styled.div`
@@ -145,6 +159,18 @@ export default class ResultsScene extends Component {
     this.setState({ showMap: !this.state.showMap });
   };
 
+  createExternalService = () => {
+    this.setState({
+      modalOpen: true,
+    });
+  };
+
+  closeExternalServiceModal = () => {
+    this.setState({
+      modalOpen: false,
+    });
+  };
+
   setMarkerHoverState(id, state) {
     this.setState({
       markers: this.state.markers.map(marker => {
@@ -198,9 +224,21 @@ export default class ResultsScene extends Component {
         </span>
         {props.routeState &&
           Boolean(props.routeState.tripId) && (
-            <GoBackToTrip onClick={this.goBackToTrip}>
-              Go back to <I18nText data={props.trip.title} />
-            </GoBackToTrip>
+            <AddingServiceTopBar>
+              <GoBackToTrip onClick={this.goBackToTrip}>Go back to trip</GoBackToTrip>
+              <CreateService onClick={this.createExternalService}>
+                I can't find my service
+              </CreateService>
+              {this.state.modalOpen && (
+                <CreateServiceModal
+                  day={props.routeState.day}
+                  trip={props.trip}
+                  goBackToTrip={this.goBackToTrip}
+                  open={this.state.modalOpen}
+                  closeModal={this.closeExternalServiceModal}
+                />
+              )}
+            </AddingServiceTopBar>
           )}
         <PageContent flex>
           <ServicesWrapper>
