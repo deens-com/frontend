@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import search from '../store/search/reducer';
+import trips from '../store/trips/reducer';
 import AccountReducer from '../scenes/account/reducers';
 import SessionsReducer from '../scenes/sessions/reducers';
 import RegistrationsReducer from '../scenes/registrations/reducers';
@@ -17,6 +18,7 @@ import SettingsReducer from './settings/reducers';
 
 const allReducers = combineReducers({
   search,
+  trips,
   SessionsReducer,
   RegistrationsReducer,
   ResultsReducer,

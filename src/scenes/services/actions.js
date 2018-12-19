@@ -42,12 +42,6 @@ export const set_service_unavailability_modal = bool => {
   };
 };
 
-export const userUnpurchasedTripsFetchStart = () => ({ type: 'USER_UNPURCHASED_TRIPS_FETCH' });
-export const userUnpurchasedTripsFetchFinish = trips => ({
-  type: 'USER_UNPURCHASED_TRIPS_FETCH_FINISH',
-  payload: trips,
-});
-
 const shouldServiceBeVisible = service => {
   const user = getSession();
   if (service.status === 'inactive') {
@@ -93,24 +87,6 @@ export const fetch_service = serviceId => async dispatch => {
       type: 'SERVICE_FETCH_ERROR',
       payload: e.response ? e.response.data : e,
     });
-  }
-};
-
-export const fetchMyTrips = () => async (dispatch, getState) => {
-  const state = getState();
-  if (state.ServicesReducer.userUnpurchasedTrips.isLoading) return;
-  dispatch(userUnpurchasedTripsFetchStart());
-  try {
-    const myTrips = await axios.get(`/trips?include=service`).catch(error => {
-      dispatch({ type: 'SERVICE_FETCH_ERROR', payload: error });
-    });
-    if (myTrips) {
-      const normalizedTrips = fetch_helpers.buildServicesJson(myTrips.data);
-      const myUnpurchasedTrips = normalizedTrips.filter(trip => !trip.booked);
-      dispatch(userUnpurchasedTripsFetchFinish(myUnpurchasedTrips));
-    }
-  } catch (error) {
-    console.log(error);
   }
 };
 
