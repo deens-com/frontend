@@ -28,6 +28,8 @@ import ServiceTags from './components/ServiceTags';
 import ServiceInformation from './components/ServiceInformation';
 import ServiceActionButtons from './components/ServiceActionButtons';
 
+import { waitUntilMapsLoaded, generateTripSlug } from 'libs/Utils';
+
 const DetailWrapper = styled.div`
   width: 100%;
   padding: 15px 15px 25px 15px;
@@ -251,6 +253,7 @@ class FoodDetailScene extends Component {
                 serviceRecentlyAddedToTrip={this.props.serviceRecentlyAddedToTrip}
                 serviceAlreadyAddedToTrip={this.props.serviceAlreadyAddedToTrip}
                 onBookNowClick={this.props.onBookNowClick}
+                isLoggedIn={this.props.isLoggedIn}
               />
               <ContactWrap>
                 <MapWrap>
@@ -261,6 +264,7 @@ class FoodDetailScene extends Component {
                     }}
                     defaultZoom={11}
                     bootstrapURLKeys={{ key: 'AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc' }}
+                    googleMapLoader={waitUntilMapsLoaded}
                   >
                     <MapMaker lat={latitude} lng={longitude} scale={1} color="#4fb798" />
                   </GoogleMapReact>
@@ -295,8 +299,8 @@ class FoodDetailScene extends Component {
                   <Row>
                     <Grid columns={4} doubling stackable>
                       {this.props.trips.map(trip => (
-                        <Grid.Column>
-                          <Link to={'/trips/' + trip.objectId}>
+                        <Grid.Column key={trip.objectId}>
+                          <Link to={'/trips/' + generateTripSlug(trip)}>
                             <TripCart key={trip.objectId} withTooltip withShadow item={trip} />
                           </Link>
                         </Grid.Column>

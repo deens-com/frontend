@@ -210,7 +210,7 @@ class TripCard extends Component {
       <Wrap>
         <Cart column className="card-animate">
           {Boolean(this.props.addToTrip) && (
-            <AddToTrip serviceId={item.objectId} data={this.props.addToTrip} />
+            <AddToTrip service={item} data={this.props.addToTrip} />
           )}
           <Thumb
             url={(item.media.length && getHeroImage(item).files.thumbnail.url) || ''}

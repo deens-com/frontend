@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -20,6 +21,10 @@ const emptyTrip = {
   duration: 1,
 };
 
+const PageContent = styled.div`
+  margin: 0 20px auto;
+`;
+
 class TripCreatorContainer extends Component {
   componentDidMount() {
     if (this.props.session.username) {
@@ -27,14 +32,16 @@ class TripCreatorContainer extends Component {
         history.push(`/trips/organize/${response.data._id}`);
       });
     } else {
-      history.push('/login');
+      history.push('/trips/organize');
     }
   }
   render() {
     return (
       <Page>
         <TopBar fixed />
-        <Loader inline="centered" active size="massive" />
+        <PageContent>
+          <Loader inline="centered" active size="massive" />
+        </PageContent>
         <BrandFooter withTopBorder withPadding />
       </Page>
     );

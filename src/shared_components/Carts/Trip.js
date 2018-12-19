@@ -16,7 +16,7 @@ import Thumb from './components/Thumb';
 // STYLES
 import { Cart, ContentWrap } from './styles';
 import { cardConfig } from 'libs/config';
-import { getHeroImage } from 'libs/Utils';
+import { getHeroImage, generateTripSlug } from 'libs/Utils';
 import { PinIcon } from 'shared_components/icons';
 import I18nText from 'shared_components/I18nText';
 
@@ -202,7 +202,7 @@ export default class TripCart extends Component {
         ) : (
           <Wrap>
             <Cart column className="card-animate">
-              <Link to={'/trips/' + this.props.item._id}>
+              <Link to={`/trips/${generateTripSlug(this.props.item)}`}>
                 <Thumb
                   url={getTripImage(this.props.item)}
                   tripCount={this.props.item.partOf}

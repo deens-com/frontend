@@ -7,6 +7,7 @@ import axios from 'libs/axios';
 import { Loader, Dimmer } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { media } from 'libs/styled';
+import { generateTripSlug } from 'libs/Utils';
 import { updateBottomChatPosition, calculateBottomPosition } from 'libs/Utils';
 
 import { Page } from 'shared_components/layout/Page';
@@ -22,6 +23,8 @@ import * as actions from './actions';
 import * as tripActions from '../trip/actions';
 import Button from 'shared_components/Button';
 import GuestsData from './components/GuestsData';
+import Countdown from './components/Countdown';
+import ReprovisionModal from './components/ReprovisionModal';
 import history from 'main/history';
 
 function formatDate(date, days) {
@@ -255,22 +258,22 @@ class CheckoutContainer extends React.Component {
   componentDidUpdate() {
     if (this.props.trip) {
       if (this.props.trip.bookingStatus === 'booked') {
-        history.replace(`/trips/${this.tripId}`);
+        history.replace(`/trips/${generateTripSlug(this.props.trip)}`);
         return;
       }
       if (!this.props.trip.startDate || !this.props.trip.adultCount) {
-        history.replace(`/trips/organize/${this.tripId}`);
+        this.goToTripOrganizer();
         return;
       }
 
       if (this.props.trip.services.length === 0) {
-        history.replace(`/trips/organize/${this.tripId}`);
+        this.goToTripOrganizer();
         return;
       }
 
       if (this.props.availability) {
         if (this.props.availability.some(service => !service.isAvailable)) {
-          history.replace(`/trips/organize/${this.tripId}`);
+          this.goToTripOrganizer();
           return;
         }
       } else if (!this.props.isCheckingAvailability) {
@@ -283,11 +286,16 @@ class CheckoutContainer extends React.Component {
     }
   }
 
+  goToTripOrganizer = () => {
+    history.replace(`/trips/organize/${this.tripId}`);
+  };
+
   getProvisionCodes = () => {
     this.setState(
       {
         loadingProvision: true,
         errorProvision: null,
+        timedOut: false,
       },
       async () => {
         try {
@@ -297,9 +305,22 @@ class CheckoutContainer extends React.Component {
             throw new Error('Some services could not be provisioned');
           }
 
+          const expireDate = provision.data.reduce((prevDate, element) => {
+            if (element.expireAt && element.expireAt < prevDate) {
+              return moment(element.expireAt).valueOf();
+            }
+            return prevDate;
+          }, null);
+
           this.setState({
             provision: provision.data,
             loadingProvision: false,
+            expireDate:
+              expireDate ||
+              moment()
+                .add(10, 'minutes')
+                .valueOf(),
+            timedOut: false,
           });
         } catch (error) {
           this.setState({
@@ -308,6 +329,13 @@ class CheckoutContainer extends React.Component {
         }
       },
     );
+  };
+
+  onTimeout = () => {
+    this.setState({
+      timedOut: true,
+      expireDate: null,
+    });
   };
 
   nextStep = () => {
@@ -359,7 +387,7 @@ class CheckoutContainer extends React.Component {
     if (step === 3) {
       return (
         <Dimmer.Dimmable dimmed={loadingProvision}>
-          <Dimmer active={loadingProvision}>
+          <Dimmer inverted active={loadingProvision}>
             <Loader />
           </Dimmer>
           <PaymentContainer
@@ -369,7 +397,6 @@ class CheckoutContainer extends React.Component {
             guests={guests}
             trip={trip}
           />
-          ;
         </Dimmer.Dimmable>
       );
     }
@@ -388,7 +415,7 @@ class CheckoutContainer extends React.Component {
 
   render() {
     const { trip, isLoading, isGDPRDismissed } = this.props;
-    const { days, step } = this.state;
+    const { days, step, expireDate, timedOut } = this.state;
     const numberOfGuests = this.calculateGuests();
     return (
       <Page topPush>
@@ -423,28 +450,39 @@ class CheckoutContainer extends React.Component {
                   </React.Fragment>
                 )}
               </Top>
-              <Summary>
-                <SummaryData>
-                  <Title>
-                    <I18nText data={trip.title} />
-                  </Title>
-                  <Location>
-                    <MapMarker style={{ fill: '#6E7885' }} />
-                    <span>{formatLocation(trip.location)}</span>
-                  </Location>
-                  <Dates>{formatDate(trip.startDate, days)}</Dates>
-                  <Guests>
-                    {numberOfGuests} {numberOfGuests === 1 ? 'Guest' : 'Guests'}
-                  </Guests>
-                </SummaryData>
-                <TotalPriceWrapper>
-                  <TotalPrice>
-                    <PriceLine>Total Price Booked Items ${trip.basePrice.toFixed(2)}</PriceLine>
-                    <Taxes>* all taxes and fees are included</Taxes>
-                  </TotalPrice>
-                  <CancellationPolicy />
-                </TotalPriceWrapper>
-              </Summary>
+              {step < 4 && (
+                <Summary>
+                  <SummaryData>
+                    <Title>
+                      <I18nText data={trip.title} />
+                    </Title>
+                    <Location>
+                      <MapMarker style={{ fill: '#6E7885' }} />
+                      <span>{formatLocation(trip.location)}</span>
+                    </Location>
+                    <Dates>{formatDate(trip.startDate, days)}</Dates>
+                    <Guests>
+                      {numberOfGuests} {numberOfGuests === 1 ? 'Guest' : 'Guests'}
+                    </Guests>
+                  </SummaryData>
+                  <TotalPriceWrapper>
+                    <TotalPrice>
+                      <PriceLine>Total Price Booked Items ${trip.basePrice.toFixed(2)}</PriceLine>
+                      <Taxes>* all taxes and fees are included</Taxes>
+                    </TotalPrice>
+                    <CancellationPolicy />
+                  </TotalPriceWrapper>
+                </Summary>
+              )}
+              {step === 3 &&
+                expireDate && <Countdown expireDate={expireDate} onTimeout={this.onTimeout} />}
+              {step === 3 &&
+                timedOut && (
+                  <ReprovisionModal
+                    okClick={this.getProvisionCodes}
+                    cancelClick={this.goToTripOrganizer}
+                  />
+                )}
               {this.renderStep()}
             </Wrapper>
             {step < 3 && (

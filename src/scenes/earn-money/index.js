@@ -15,6 +15,8 @@ import ReferAFriend from './ReferAFriend';
 import TopBar from '../../shared_components/TopBar';
 import { Page, PageWrapper, PageContent } from '../../shared_components/layout/Page';
 import BrandFooter from '../../shared_components/BrandFooter';
+import { Helmet } from 'react-helmet';
+import { websiteUrl } from 'libs/config';
 
 const PageTop = styled.div`
   width: 100%;
@@ -125,6 +127,17 @@ const InfoImage = styled.span`
 const EarnMoney = ({ loggedIn, userProfile }) => {
   return (
     <Page>
+      <Helmet>
+        <title>Earn money by creating trips | Please.com</title>
+        <link rel="canonical" href={`${websiteUrl}/earn-money`} />
+        <meta name="description" content="Create end-to-end trips, share them and earn money." />
+        <meta property="og:url" content={`${websiteUrl}/earn-money`} />
+        <meta property="og:title" content="Earn money by creating trips!" />
+        <meta
+          property="og:description"
+          content="Create end-to-end trips, share them and earn money."
+        />
+      </Helmet>
       <PageWrapper>
         <PageTop>
           <Header />

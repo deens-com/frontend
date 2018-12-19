@@ -318,7 +318,6 @@ class Filters extends Component {
   }
 
   handleGuestsNbChange = data => {
-    console.log('data', data);
     this.handleGuestsPopupClose();
     this.setState({
       adults: data.adults,

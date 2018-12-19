@@ -7,6 +7,8 @@ import TopBar from '../../shared_components/TopBar';
 import Logo from '../../shared_components/TopBar/Logo';
 import BrandFooter from '../../shared_components/BrandFooter';
 import { Divider } from 'semantic-ui-react';
+import { Helmet } from 'react-helmet';
+
 // ACTIONS/CONFIG
 
 // STYLES
@@ -25,6 +27,9 @@ const FooterWrapper = styled.footer`
 export default function NotFoundScene({ showScene }) {
   const innerElements = (
     <React.Fragment>
+      <Helmet>
+        <meta name="robots" content="noindex" />
+      </Helmet>
       <h1
         style={{
           textAlign: 'center',

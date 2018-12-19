@@ -3,9 +3,14 @@ import ServiceComponent from './../components/service_component';
 import * as services_actions from './../actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { withRouter } from 'react-router';
+import { withRouter, Redirect } from 'react-router';
 import { getSession } from 'libs/user-session';
 import NotFoundScene from 'styled_scenes/NotFound';
+import { Helmet } from 'react-helmet';
+import { websiteUrl } from 'libs/config';
+import I18nText from 'shared_components/I18nText';
+import { getHeroImage, generateServiceSlug } from 'libs/Utils';
+import { loadTrip } from 'libs/localStorage';
 
 class ServicesContainer extends Component {
   state = {
@@ -27,13 +32,8 @@ class ServicesContainer extends Component {
     this.props.resetServiceData();
   }
 
-  onAddServiceToTrip = ({ trip, day }) => {
-    const user = getSession();
-    if (user != null) {
-      this.props.addServiceToTrip({ trip, day });
-    } else {
-      this.props.history.push('/login');
-    }
+  onAddServiceToTrip = ({ trip, day }, isLoggedIn) => {
+    this.props.addServiceToTrip({ trip, day }, isLoggedIn);
   };
 
   onAddServiceToNewTrip = () => {
@@ -49,23 +49,66 @@ class ServicesContainer extends Component {
     if (this.props.serviceFetchError.code === 404) {
       return <NotFoundScene />;
     } else {
+      let helmet;
+      const { service } = this.props;
+      if (service._id) {
+        const location = service.location ? service.location.city || service.location.state : '';
+        const metaDescription = service.description
+          ? I18nText.translate(service.description)
+          : `${I18nText.translate(service.categories[0].names)}${service.location &&
+              ` in ${location}`}`;
+        const description = `${metaDescription.substring(
+          0,
+          Math.min(155, metaDescription.length),
+        )}...`;
+        const image = getHeroImage(service);
+        const url = `${websiteUrl}${this.props.location.pathname}`;
+        const title = `${I18nText.translate(service.title)}${service.location && `, ${location}`}`;
+        const isIncorrectUrl =
+          this.props.slug &&
+          `${this.props.match.params.slug}_${this.props.match.params.id}` !== this.props.slug;
+
+        helmet = (
+          <Helmet>
+            {this.props.slug && !isIncorrectUrl ? <link rel="canonical" href={url} /> : null}
+            <title>{title} | Please.com</title>
+            <meta name="description" content={description} />
+            <meta property="og:url" content={url} />
+            <meta property="og:title" content={title} />
+            <meta property="og:description" content={metaDescription} />
+            {image && <meta property="og:image" content={image.files.hero.url} />}
+          </Helmet>
+        );
+
+        if (isIncorrectUrl) {
+          return <Redirect to={`/services/${this.props.slug}`} />;
+        }
+      }
+
       return (
-        <ServiceComponent
-          {...this.props}
-          onAddServiceToTrip={this.onAddServiceToTrip}
-          onAddServiceToNewTrip={this.onAddServiceToNewTrip}
-        />
+        <React.Fragment>
+          {helmet}
+          <ServiceComponent
+            {...this.props}
+            onAddServiceToTrip={this.onAddServiceToTrip}
+            onAddServiceToNewTrip={this.onAddServiceToNewTrip}
+          />
+        </React.Fragment>
       );
     }
   }
 }
 
 const mapStateToProps = state => {
+  const service = state.ServicesReducer.service;
+  const isLoggedIn = state.SessionsReducer.loggedIn;
+
   return {
-    service: state.ServicesReducer.service,
+    service,
+    isLoggedIn,
     trips: state.ServicesReducer.trips.filter(trip => trip !== undefined),
     reviews: state.ServicesReducer.reviews,
-    myUnpurchasedTrips: state.ServicesReducer.userUnpurchasedTrips.data,
+    myUnpurchasedTrips: isLoggedIn ? state.ServicesReducer.userUnpurchasedTrips.data : [loadTrip()],
     serviceRecentlyAddedToTrip: state.ServicesReducer.serviceRecentlyAddedToTrip,
     serviceAlreadyAddedToTrip: state.ServicesReducer.serviceAlreadyAddedToTrip,
     isServiceUnavailableModalOpen: state.ServicesReducer.isServiceUnavailableModalOpen,
@@ -73,6 +116,7 @@ const mapStateToProps = state => {
     isPageLoading: state.ServicesReducer.isPageLoading,
     isLoading: state.ServicesReducer.isUpdatingTrip || state.ServicesReducer.isCreatingTrip,
     serviceFetchError: state.ServicesReducer.serviceFetchError,
+    slug: service._id && generateServiceSlug(service),
   };
 };
 

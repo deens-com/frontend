@@ -58,6 +58,10 @@ export const chargeStripeToken = (token, guests, complete = () => {}) => async (
 export const payWithPls = (guests, tripId) => {
   return async dispatch => {
     try {
+      dispatch({
+        type: types.MARK_TRIP_BOOKED_STATUS,
+        payload: statuses.STARTED,
+      });
       await axios({
         method: 'POST',
         url: `/payment/pls-charge/${tripId}`,

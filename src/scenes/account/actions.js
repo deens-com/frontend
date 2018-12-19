@@ -1,7 +1,5 @@
-import Parse from 'parse';
 import fetch_helpers from './../../libs/fetch_helpers';
 import history from './../../main/history';
-import { trackMetamaskConnected, trackLedgerConnected } from 'libs/analytics';
 import { serverBaseURL, env } from 'libs/config';
 import validator from 'validator';
 import axios from 'libs/axios';
@@ -162,6 +160,8 @@ export const clearMetamaskErrors = () => dispatch => {
   dispatch({ type: 'METAMASK_ERROR', payload: {} });
 };
 
+export const signData = () => {};
+/*
 // NOTE: for now it always signs "please"
 export const signData = () => async dispatch => {
   // clear metamask errors
@@ -194,7 +194,9 @@ export const signData = () => async dispatch => {
     }
   }
 };
-
+*/
+export const ledgerSignData = () => {};
+/*
 export const ledgerSignData = () => async dispatch => {
   dispatch({ type: 'LEDGER_ERROR', payload: {} });
 
@@ -224,3 +226,4 @@ export const ledgerSignData = () => async dispatch => {
     }
   }
 };
+*/

@@ -6,7 +6,12 @@ import { Link } from 'react-router-dom';
 import { media } from 'libs/styled';
 import { getCategory } from 'libs/categories';
 import { parseLocation } from 'libs/fetch_helpers';
-import { getHeroImage } from 'libs/Utils';
+import {
+  getHeroImage,
+  getPriceFromServiceOption,
+  getPeopleCount,
+  generateServiceSlug,
+} from 'libs/Utils';
 
 import I18nText from 'shared_components/I18nText';
 import { MapMarker } from 'shared_components/icons';
@@ -163,6 +168,8 @@ const Note = styled.div`
   padding: 20px 20px;
 `;
 
+const BookingId = styled.div``;
+
 export default class Itinerary extends Component {
   constructor(props) {
     super(props);
@@ -178,6 +185,18 @@ export default class Itinerary extends Component {
   };
 
   renderAvailability = (day, id) => {
+    if (this.props.bookedInformation) {
+      const service = this.props.trip.services.find(
+        service => service.day === day && service.service._id === id,
+      );
+
+      if (!service || !service.reservation) {
+        return null;
+      }
+
+      return <BookingId>Booking ID: {service.reservation.bookingId}</BookingId>;
+    }
+
     if (this.props.isCheckingAvailability) {
       return <CheckingAvailability>Checking availability...</CheckingAvailability>;
     }
@@ -196,6 +215,24 @@ export default class Itinerary extends Component {
         {isAvailable ? 'Available' : 'Unavailable'}
       </Availability>
     );
+  };
+
+  renderPrice = dayData => {
+    const service = dayData.service;
+
+    const bookedInformationPrice =
+      this.props.bookedInformation &&
+      this.props.bookedInformation[dayData.day] &&
+      this.props.bookedInformation[dayData.day][service._id] &&
+      this.props.bookedInformation[dayData.day][service._id].price;
+
+    const price = getPriceFromServiceOption(
+      service.basePrice,
+      bookedInformationPrice,
+      getPeopleCount(this.props.trip),
+    );
+
+    return <ServicePrice>${price.toFixed(2)}</ServicePrice>;
   };
 
   renderDay = (day, index) => (
@@ -226,7 +263,7 @@ export default class Itinerary extends Component {
               {this.renderAvailability(day.day, dayData.service._id)}
             </CategoryWrapper>
             <ServiceTitle>
-              <Link to={`/services/${dayData.service._id}`}>
+              <Link to={`/services/${generateServiceSlug(dayData.service)}`}>
                 <I18nText data={dayData.service.title} />
               </Link>
             </ServiceTitle>
@@ -253,9 +290,7 @@ export default class Itinerary extends Component {
                 <MapMarker />
                 {parseLocation(dayData.service.location)}
               </ServiceLocation>
-              {dayData.service.basePrice !== 0 && (
-                <ServicePrice>From ${dayData.service.basePrice}</ServicePrice>
-              )}
+              {this.renderPrice(dayData)}
             </ServiceFooter>
           </ServiceData>
         </Service>

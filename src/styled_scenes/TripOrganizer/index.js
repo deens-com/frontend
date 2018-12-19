@@ -9,6 +9,7 @@ import { getFromCoordinates } from 'libs/Utils';
 import { serverBaseURL } from 'libs/config';
 import axios from 'libs/axios';
 import { media } from 'libs/styled';
+import { saveTrip } from 'libs/localStorage';
 import axiosOriginal from 'axios';
 import history from '../../main/history';
 import {
@@ -118,11 +119,12 @@ function createTripState(props, state) {
     (props.trip.otherAttributes && props.trip.otherAttributes.selectedServiceOptions) || [];
   selectedServiceOptions.forEach(selected => {
     if (!optionsSelected[selected.day]) {
+      const service = props.trip.services.find(item => item.service._id === selected.serviceId);
       optionsSelected[selected.day] = {
         [selected.serviceId]: {
           availabilityCode: selected.availabilityCode,
           price: getPriceFromServiceOption(
-            props.trip.services.find(item => item.service._id === selected.serviceId).basePrice,
+            service ? service.basePrice : 0,
             selected.price,
             getPeopleCount(state.trip || props.trip),
           ),
@@ -216,11 +218,16 @@ const emptyTrip = {
   basePrice: 0,
   duration: 1,
 };
+
+const routeActions = {
+  book: 'book',
+  share: 'share',
+};
 export default class TripOrganizer extends Component {
   constructor(props) {
     super(props);
 
-    if (props.tripId === (props.trip && props.trip._id)) {
+    if (props.tripId === (props.trip && props.trip._id) || !props.tripId) {
       this.state = createTripState(props, {});
     } else {
       this.state = {
@@ -267,6 +274,17 @@ export default class TripOrganizer extends Component {
 
   componentDidMount() {
     updateBottomChatPosition(calculateBottomPosition(this.props.isGDPRDismissed, 60));
+
+    if (!this.props.tripId) {
+      this.checkAllServicesAvailability({
+        startDate: this.props.startDate,
+        guests: {
+          adults: this.state.trip.adultCount || this.props.adults,
+          children: this.state.trip.childrenCount || this.props.children,
+          infants: this.state.trip.infantCount || this.props.infants,
+        },
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -286,17 +304,19 @@ export default class TripOrganizer extends Component {
     }
   }
 
-  patchTrip = (action = 'autosave') => {
-    if (action === 'autosave' && this.state.isSaving) {
-      return;
-    }
+  blockUntilSaved = () => {
+    this.setState({
+      isBlockedUntilSaved: true,
+    });
+  };
 
+  patchTrip = (action = 'autosave') => {
     this.setState(
       action === 'autosave'
         ? {}
         : {
-            isSaving: action === 'share' || action === 'book',
-            isManualSaving: action === 'manual-save',
+            isBlockedUntilSaved: action === 'share' || action === 'book',
+            isSaving: true,
           },
       async () => {
         let selectedServiceOptions = [];
@@ -326,7 +346,10 @@ export default class TripOrganizer extends Component {
           services: this.state.days.reduce(
             (prev, day) => [
               ...prev,
-              ...day.data.map(dayData => ({ ...dayData, service: dayData.service._id })),
+              ...day.data.map(dayData => ({
+                ...dayData,
+                service: this.props.tripId ? dayData.service._id : dayData.service,
+              })),
             ],
             [],
           ),
@@ -336,14 +359,24 @@ export default class TripOrganizer extends Component {
           notes: this.state.notes,
         };
 
-        await axios.patch(`/trips/${trip._id}`, trip);
+        await this.save(trip);
 
-        if (action === 'autosave') {
+        this.setState({
+          isSaving: false,
+          savingPending: false,
+          isBlockedUntilSaved: false,
+        });
+
+        if (action === 'manual-save' || action === 'autosave') {
           return;
         }
 
-        if (action === 'manual-save') {
-          this.setState({ isManualSaving: false });
+        if (!this.props.tripId) {
+          history.push('/login', {
+            from: '/trips/organize',
+            message: 'Please login or register to continue',
+            action,
+          });
           return;
         }
 
@@ -351,12 +384,29 @@ export default class TripOrganizer extends Component {
           history.push(`/trips/share/${trip._id}`);
           return;
         }
-        history.push(`/trips/checkout/${trip._id}`);
+        history.push(`/trips/checkout/${trip._id}`, {
+          action: routeActions.book,
+        });
       },
     );
   };
 
-  autoPatchTrip = debounce(this.patchTrip, 2000);
+  save = async trip => {
+    if (this.props.tripId) {
+      await axios.patch(`/trips/${trip._id}`, trip);
+      return;
+    }
+    saveTrip(trip);
+  };
+
+  debouncedPatch = debounce(this.patchTrip, 2000);
+
+  autoPatchTrip = () => {
+    this.setState({
+      savingPending: true,
+    });
+    this.debouncedPatch();
+  };
 
   selectOption = (day, serviceId, optionCode, price) => {
     this.setState(
@@ -489,6 +539,7 @@ export default class TripOrganizer extends Component {
         day,
         duration: trip.duration,
         startDate: this.props.startDate.valueOf(),
+        isCreatingTripNotLoggedIn: !Boolean(trip._id),
       },
     );
   };
@@ -498,9 +549,11 @@ export default class TripOrganizer extends Component {
       return {
         availability: {
           ...prevState.availability,
-          data: prevState.availability.data.filter(
-            elem => elem.serviceId !== serviceId || elem.day !== day,
-          ),
+          data: prevState.availability.data
+            ? prevState.availability.data.filter(
+                elem => elem.serviceId !== serviceId || elem.day !== day,
+              )
+            : null,
           timestamp: new Date().getTime(),
         },
         days: prevState.days.map(elem => {
@@ -756,8 +809,8 @@ export default class TripOrganizer extends Component {
           trip: {
             ...prevState.trip,
             location: {
-              city: localities[0].long_name,
-              state: state[0].long_name,
+              city: (localities[0] || addressComponents[0]).long_name,
+              state: state.lenth > 0 ? state[0].long_name : '',
               countryCode: countries[0].short_name,
               geo: {
                 type: 'Point',
@@ -927,7 +980,29 @@ export default class TripOrganizer extends Component {
             [newKey]: prevState.notes[value],
           };
         }, {});
-
+        console.log({
+          trip: {
+            ...prevState.trip,
+            duration: prevState.trip.duration - daysToMinutes(1),
+          },
+          notes,
+          optionsSelected,
+          daysByService,
+          days: prevState.days.filter(prevDay => prevDay.day !== day.day).map(
+            prevDay =>
+              prevDay.day < day.day
+                ? prevDay
+                : {
+                    ...prevDay,
+                    ...dayTitles(prevDay.day - 1, this.props.startDate),
+                    day: prevDay.day - 1,
+                    data: prevDay.data.map(serv => ({
+                      ...serv,
+                      day: prevDay.day - 1,
+                    })),
+                  },
+          ),
+        });
         return {
           trip: {
             ...prevState.trip,
@@ -944,6 +1019,10 @@ export default class TripOrganizer extends Component {
                     ...prevDay,
                     ...dayTitles(prevDay.day - 1, this.props.startDate),
                     day: prevDay.day - 1,
+                    data: prevDay.data.map(serv => ({
+                      ...serv,
+                      day: prevDay.day - 1,
+                    })),
                   },
           ),
         };
@@ -1040,7 +1119,7 @@ export default class TripOrganizer extends Component {
           trip={trip}
           days={days}
           action={this.patchTrip}
-          isSaving={this.state.isManualSaving}
+          isSaving={this.state.isSaving || this.state.savingPending}
           changeDates={this.changeDates}
           changeGuests={this.changeGuests}
           startDate={startDate}
@@ -1072,6 +1151,8 @@ export default class TripOrganizer extends Component {
           addNote={this.addNote}
           editNote={this.editNote}
           deleteNote={this.deleteNote}
+          isSaving={this.state.isSaving || this.state.savingPending}
+          blockUntilSaved={this.blockUntilSaved}
         />
         <Cancellation>
           <CancellationPolicy />
@@ -1082,14 +1163,14 @@ export default class TripOrganizer extends Component {
 
   render() {
     const { isLoading, availability, tripId, isGDPRDismissed } = this.props;
-    const { trip, isSaving, days } = this.state;
+    const { trip, isBlockedUntilSaved, days } = this.state;
 
     const loading = isLoading || (!trip || trip._id !== tripId) || !availability;
 
     return (
       <Page>
         <TopBar fixed />
-        <Dimmer active={isSaving} page>
+        <Dimmer active={isBlockedUntilSaved} page>
           <Loader size="massive" />
         </Dimmer>
         {!loading && (

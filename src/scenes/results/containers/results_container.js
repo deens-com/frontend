@@ -4,6 +4,7 @@ import * as results_actions from './../actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { resetTrip } from '../../trip/actions';
+import { loadTrip } from 'libs/localStorage';
 
 class ResultsContainer extends Component {
   componentDidMount() {
@@ -87,13 +88,14 @@ class ResultsContainer extends Component {
 }
 
 const mapStateToProps = state => {
+  const trip = state.SessionsReducer.session.username ? state.TripReducer.trip : loadTrip();
   return {
     results: state.ResultsReducer.results,
     search_query: state.ResultsReducer.search_query,
     carousel_tags: state.ResultsReducer.carousel_tags,
     isLoadingResults: state.ResultsReducer.isLoadingResults,
     tagsOptions: state.ResultsReducer.tagsOptions,
-    trip: state.TripReducer.trip,
+    trip,
   };
 };
 

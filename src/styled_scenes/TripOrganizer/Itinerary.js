@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { Loader, Modal, TextArea, Popup } from 'semantic-ui-react';
 import { getCategory } from 'libs/categories';
 import { media } from 'libs/styled';
-import { getHeroImage } from 'libs/Utils';
+import { getHeroImage, generateServiceSlug } from 'libs/Utils';
 import I18nText from 'shared_components/I18nText';
 import Category from 'shared_components/Category';
 import Button from 'shared_components/Button';
@@ -182,17 +182,6 @@ const StartingPrice = styled.div`
   font-size: 14px;
 `;
 
-const PayAtVenue = styled.div`
-  color: #6e7885;
-  font-size: 12px;
-  background-color: #d3d7dc;
-  padding: 2px 5px;
-  border-radius: 3px;
-  display: inline-block;
-  margin-top: 10px;
-  font-weight: bold;
-`;
-
 const NoServices = styled.div`
   font-size: 18px;
   margin: 10px 0 50px;
@@ -231,6 +220,10 @@ export default class Itinerary extends Component {
         resetNoteDefaultValues: prevState.resetNoteDefaultValues + 1,
       }));
     }
+
+    if (this.state.isWaitingToSave && !this.props.isSaving) {
+      this.setState({ isWaitingToSave: false }, this.goToAddService);
+    }
   }
 
   handleDatesChange = dateRange => {
@@ -260,6 +253,15 @@ export default class Itinerary extends Component {
     this.setState({
       dayToDelete: null,
     });
+  };
+
+  goToAddService = day => {
+    if (this.props.isSaving) {
+      this.props.blockUntilSaved();
+      this.setState({ isWaitingToSave: true });
+      return;
+    }
+    this.props.goToAddService(day);
   };
 
   renderServiceFooter = (day, service) => {
@@ -327,11 +329,7 @@ export default class Itinerary extends Component {
           </DeleteDayButton>
         )}
       </DayHeader>
-      <Button
-        iconBefore="plus"
-        theme="fillLightGreen"
-        onClick={this.props.goToAddService.bind(null, day.day)}
-      >
+      <Button iconBefore="plus" theme="fillLightGreen" onClick={() => this.goToAddService(day.day)}>
         Add Service
       </Button>
       {(!this.props.notes || !this.props.notes[day.day]) && (
@@ -387,7 +385,7 @@ export default class Itinerary extends Component {
                 </AvailabilityWrapper>
               </CategoryWrapper>
               <ServiceTitle>
-                <Link to={`/services/${dayData.service._id}`}>
+                <Link to={`/services/${generateServiceSlug(dayData.service)}`}>
                   <I18nText data={dayData.service.title} />
                 </Link>
               </ServiceTitle>
@@ -395,17 +393,13 @@ export default class Itinerary extends Component {
                 <StartingPrice>Starts from ${dayData.service.basePrice}</StartingPrice>
                 <ServiceDaySelector
                   dayData={dayData}
+                  service={dayData.service}
                   daysByService={this.props.daysByService}
                   days={this.props.days}
                   removeService={this.props.removeService}
                   addService={this.props.addService}
                 />
               </LastLine>
-              {dayData.service.periods &&
-                dayData.service.periods[0] &&
-                dayData.service.periods[0].payAtService && (
-                  <PayAtVenue>Not included in the payment</PayAtVenue>
-                )}
             </ServiceData>
           </ServiceBody>
           {this.renderServiceFooter(day.day, dayData.service)}

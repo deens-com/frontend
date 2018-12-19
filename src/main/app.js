@@ -30,6 +30,8 @@ import Checkout from '../scenes/checkout';
 import PrivateRoute from './PrivateRoute';
 import { getCurrentUser } from '../scenes/sessions/actions';
 import GDPRNotification from './GDPRNotification';
+import pleaseImg from 'assets/please-travel-plan-trip.jpg';
+import { websiteUrl } from 'libs/config';
 
 const commonHOCs = comp => withErrorBoundary(withSegmentTracker(comp));
 
@@ -75,26 +77,34 @@ class App extends React.Component {
                   component={commonHOCs(TokenSale)}
                 />
                 <Route
+                  path={process.env.PUBLIC_URL + '/token-sale/smart-contract'}
+                  component={commonHOCs(TokenSale)}
+                />
+                <Route
                   path={process.env.PUBLIC_URL + '/cookie-policy'}
                   component={commonHOCs(CookiePolicy)}
                 />
                 <Route path={process.env.PUBLIC_URL + '/results'} component={commonHOCs(Results)} />
-                <Route
+                <PrivateRoute
                   path={process.env.PUBLIC_URL + '/services/new'}
                   component={commonHOCs(ServiceUpsert)}
                 />
-                <Route
+                <PrivateRoute
                   path={process.env.PUBLIC_URL + '/services/edit/:id'}
                   component={commonHOCs(ServiceUpsert)}
                 />
                 <Route
-                  path={process.env.PUBLIC_URL + '/services/:id'}
+                  path={process.env.PUBLIC_URL + '/services/:slug?_:id'}
                   component={commonHOCs(Services)}
                 />
                 <PrivateRoute
                   path={process.env.PUBLIC_URL + '/trips/organize/:id'}
                   component={commonHOCs(TripOrganizer)}
                   message="Please login or register to continue with your trip."
+                />
+                <Route
+                  path={process.env.PUBLIC_URL + '/trips/organize'}
+                  component={commonHOCs(TripOrganizer)}
                 />
                 <PrivateRoute
                   path={process.env.PUBLIC_URL + '/trips/share/:id'}
@@ -106,12 +116,14 @@ class App extends React.Component {
                   component={commonHOCs(Checkout)}
                   message="Please login or register to checkout your trip."
                 />
-                <PrivateRoute
+                <Route
                   path={process.env.PUBLIC_URL + '/trips/create'}
                   component={commonHOCs(TripCreator)}
-                  message="Please login or register to create a new trip."
                 />
-                <Route path={process.env.PUBLIC_URL + '/trips/:id'} component={commonHOCs(Trip)} />
+                <Route
+                  path={process.env.PUBLIC_URL + '/trips/:slug?_:id'}
+                  component={commonHOCs(Trip)}
+                />
                 <Route
                   path={process.env.PUBLIC_URL + '/users/:userName'}
                   component={commonHOCs(Users)}

@@ -16,6 +16,8 @@ import { Loader, Grid } from 'semantic-ui-react';
 import moment from 'moment';
 import { minutesToDays, getDaysByService } from 'styled_scenes/Trip/mapServicesToDays';
 import notFoundImg from '../not_found.png';
+import { loadTrip, saveTrip } from 'libs/localStorage';
+import { generateTripSlug, generateServiceSlug } from 'libs/Utils';
 
 // STYLES
 const Wrap = styled.div`
@@ -85,8 +87,14 @@ class Results extends Component {
       limit: props.search_query.limit || 0,
     };
 
-    if (props.routeState && props.trip && props.trip._id === props.routeState.tripId) {
-      this.daysByService = getDaysByService(props.trip.services);
+    const trip =
+      props.routeState && props.routeState.isCreatingTripNotLoggedIn ? loadTrip() : props.trip;
+
+    if (
+      props.routeState &&
+      (trip._id === props.routeState.tripId || props.routeState.isCreatingTripNotLoggedIn)
+    ) {
+      this.daysByService = getDaysByService(trip.services);
       this.days =
         props.routeState &&
         Array.from({ length: minutesToDays(props.routeState.duration) }).map((_, i) =>
@@ -96,7 +104,7 @@ class Results extends Component {
         );
       this.tripServices = props.trip.services.map(service => ({
         ...service,
-        service: service.service._id,
+        service: service.service,
       }));
     }
   }
@@ -141,24 +149,44 @@ class Results extends Component {
     }
   };
 
-  addToTrip = async (serviceId, day) => {
+  addToTrip = async (service, day) => {
     this.tripServices = [
       ...this.tripServices,
       {
-        service: serviceId,
+        service,
         day,
         notes: [],
         priority: 1,
       },
     ];
-    await axios.patch(`/trips/${this.props.trip._id}`, { services: this.tripServices });
+
+    if (this.props.trip._id) {
+      await axios.patch(`/trips/${this.props.trip._id}`, {
+        services: this.tripServices.map(service => ({ ...service, service: service.service._id })),
+      });
+      return;
+    }
+
+    saveTrip({
+      ...this.props.trip,
+      services: this.tripServices,
+    });
   };
 
   removeFromTrip = async (serviceId, day) => {
     this.tripServices = this.tripServices.filter(
-      service => service.service !== serviceId || service.day !== day,
+      service => service.service._id !== serviceId || service.day !== day,
     );
-    await axios.patch(`/trips/${this.props.trip._id}`, { services: this.tripServices });
+    if (this.props.trip._id) {
+      await axios.patch(`/trips/${this.props.trip._id}`, {
+        services: this.tripServices.map(service => ({ ...service, service: service._id })),
+      });
+      return;
+    }
+    saveTrip({
+      ...this.props.trip,
+      services: this.tripServices,
+    });
   };
 
   render() {
@@ -203,8 +231,8 @@ class Results extends Component {
                     <Link
                       to={
                         result.categories && result.categories.length
-                          ? '/services/' + result.objectId
-                          : '/trips/' + result.objectId
+                          ? '/services/' + generateServiceSlug(result)
+                          : '/trips/' + generateTripSlug(result)
                       }
                     >
                       {result.contractAddress && <Badge>Decentralized</Badge>}

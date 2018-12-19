@@ -10,6 +10,7 @@ import TopBar from 'shared_components/TopBar';
 import Input from 'shared_components/StyledInput';
 import I18nText from 'shared_components/I18nText';
 import Button from 'shared_components/Button';
+import { generateTripSlug } from 'libs/Utils';
 
 const PageContent = styled.div`
   max-width: 825px;
@@ -105,7 +106,7 @@ export default class Share extends React.Component {
 
       await axios.patch(`/trips/${this.props.trip._id}`, trip);
 
-      history.push(`/trips/${this.props.trip._id}`);
+      history.push(`/trips/${generateTripSlug(this.props.trip)}`);
     });
   };
 

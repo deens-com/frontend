@@ -1,9 +1,9 @@
-import Parse from 'parse';
 import fetch_helpers from '../../libs/fetch_helpers';
 import history from '../../main/history';
 import { trackServiceCreated } from 'libs/analytics';
 import { serverBaseURL } from '../../libs/config';
 import axios from 'libs/axios';
+import { generateServiceSlug } from 'libs/Utils';
 
 export const types = {
   SERVICE_CREATE_STARTED: 'SERVICE_CREATE_STARTED',
@@ -71,14 +71,14 @@ export const registerService = (values, history) => async (dispatch, getState) =
     });
 
     if (acceptETH) {
-      dispatch(deployContract(result, values, history));
+      //dispatch(deployContract(result, values, history));
     } else {
       dispatch({
         type: types.SERVICE_CREATE_SUCCESS,
         payload: result,
         meta: { analytics: trackServiceCreated(result) },
       });
-      history.push(`/services/${result.data._id}`);
+      history.push(`/services/${generateServiceSlug(result.data)}`);
     }
   } catch (error) {
     if (error.errors) {
@@ -134,10 +134,10 @@ export const saveServiceChanges = (serviceId, values, history) => async (dispatc
     });
 
     if (updatedService.acceptETH) {
-      dispatch(deployContract(result, updatedService, history));
+      //dispatch(deployContract(result, updatedService, history));
     } else {
       dispatch({ type: types.SERVICE_SAVE_SUCCESS, payload: result.data });
-      history.push(`/services/${result.data._id}`);
+      history.push(`/services/${generateServiceSlug(result.data)}`);
     }
   } catch (error) {
     if (error.errors) {
@@ -167,13 +167,14 @@ export const redeployContract = (values, serviceId, history) => async (dispatch,
   try {
     // Redeploy from styled_scenes/Account/Trips/shared/Carts/Location Or Redeploy from service creation form
     dispatch(submittingStateChanged(true));
-    let service = await fetch_helpers.build_query('Service').get(serviceId);
-    dispatch(deployContract(service, values, history));
+    // let service = await fetch_helpers.build_query('Service').get(serviceId);
+    //dispatch(deployContract(service, values, history));
   } catch (error) {
     console.log(error);
   }
 };
 
+/*
 export const deployContract = (service, values, history) => async (dispatch, getState) => {
   try {
     // TODO: @vlad if possible change this to use web3 as we're already using Web3 in other parts of the app
@@ -284,3 +285,4 @@ export const deployContract = (service, values, history) => async (dispatch, get
     });
   }
 };
+*/

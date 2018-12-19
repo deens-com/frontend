@@ -4,8 +4,8 @@ import { Icon, Popup } from 'semantic-ui-react';
 
 import history from 'main/history';
 import TripsListInDropDown from './TripsListInDropDown';
+import SingleTripDropdown from './SingleTripDropdown';
 import CustomColorSemanticButton from 'shared_components/CustomColorSemanticButton';
-import { getSession } from 'libs/user-session';
 
 export default class AddToTripButton extends React.Component {
   constructor(props) {
@@ -27,9 +27,6 @@ export default class AddToTripButton extends React.Component {
   };
 
   handleOutsideClick = e => {
-    console.log(e.target);
-    console.log('list', this.listRef.current);
-    console.log('days', this.daysRef.current);
     if (
       !this.listRef.current.contains(e.target) &&
       (!this.daysRef.current || !this.daysRef.current.contains(e.target))
@@ -43,9 +40,9 @@ export default class AddToTripButton extends React.Component {
     document.removeEventListener('mousedown', this.handleOutsideClick);
   };
 
-  onTripClickOverride = trip => {
+  onTripClickOverride = data => {
     this.handleClose();
-    this.props.onTripClick(trip);
+    this.props.onTripClick(data, this.props.isLoggedIn);
   };
 
   onNewTripClickOverride = () => {
@@ -53,15 +50,8 @@ export default class AddToTripButton extends React.Component {
     this.props.onNewTripClick();
   };
 
-  isLoggedIn = () => getSession() != null;
-
-  redirectToLogin = () => history.push('/login');
-
   render() {
     const { props } = this;
-
-    const isLoggedIn = this.isLoggedIn();
-    const clickProps = isLoggedIn ? {} : { onClick: this.redirectToLogin };
 
     const addToTripButton = (
       <CustomColorSemanticButton
@@ -69,7 +59,6 @@ export default class AddToTripButton extends React.Component {
         labelPosition="right"
         bgColor="rgb(95, 183, 158)"
         whiteText
-        {...clickProps}
         onClick={this.handleClose}
       >
         Add to trip
@@ -77,17 +66,19 @@ export default class AddToTripButton extends React.Component {
       </CustomColorSemanticButton>
     );
 
-    if (!isLoggedIn) {
-      return addToTripButton;
-    }
-
-    const listComponent = (
+    const listComponent = props.isLoggedIn ? (
       <TripsListInDropDown
         innerRef={this.listRef}
         daysRef={this.daysRef}
         trips={props.myUnpurchasedTrips}
         onTripClick={this.onTripClickOverride}
         onNewTripClick={this.onNewTripClickOverride}
+      />
+    ) : (
+      <SingleTripDropdown
+        innerRef={this.listRef}
+        trip={props.myUnpurchasedTrips[0]}
+        onSelect={this.onTripClickOverride}
       />
     );
 

@@ -1,4 +1,3 @@
-import Parse from 'parse';
 import axios from 'libs/axios';
 import validator from 'validator';
 import history from './../../main/history';
@@ -87,8 +86,8 @@ export const set_base_currency = currency => async dispatch => {
 };
 
 export const getCurrentUser = () => async dispatch => {
+  const session = getSession();
   try {
-    const session = getSession();
     if (session) {
       const currentUser = await axios.get('/users/me');
       if (currentUser.data) {
@@ -96,24 +95,25 @@ export const getCurrentUser = () => async dispatch => {
         dispatch(sessionsFetched({ session: userObject }));
 
         // Fresh chat data
-        window.fcWidget.setExternalId(userObject._id);
-        // To set user name
-        window.fcWidget.user.setFirstName(userObject.username);
-
-        // To set user email
-        window.fcWidget.user.setEmail(userObject.email);
+        if (window.fcWidget.user) {
+          try {
+            const chatUser = (await window.fcWidget.user.get()).data;
+            if (chatUser.firstName !== userObject.username) {
+              await window.fcWidget.user.clear();
+              await window.fcWidget.setExternalId(userObject._id);
+              await window.fcWidget.user.setFirstName(userObject.username);
+              await window.fcWidget.user.setEmail(userObject.email);
+            }
+          } catch (e) {
+            console.log(e);
+          }
+        }
       }
       return;
     }
     dispatch({ type: types.NOT_LOGGED_IN });
   } catch (error) {
-    if (
-      error.response &&
-      (error.response.data.message === 'jwt expired' ||
-        error.response.data.message === 'invalid auth mechanism')
-    ) {
-      dispatch(logOut());
-    }
+    dispatch(logOut());
   }
 };
 
@@ -253,6 +253,7 @@ export const loginRequest = (email, password, { from, action }) => {
   };
 };
 
+/*
 export const loginWithLedger = ({ from, action }) => async dispatch => {
   try {
     const { getLedgerPublicAddress, ledgerSignMessage } = await import('libs/web3-utils');
@@ -336,7 +337,7 @@ export const loginWithMetamask = () => async dispatch => {
     }
   }
 };
-
+*/
 export const clearErrors = () => dispatch => {
   dispatch({ type: types.LOGIN_ERROR, payload: {} });
   dispatch({ type: types.METAMASK_ERROR, payload: {} });
