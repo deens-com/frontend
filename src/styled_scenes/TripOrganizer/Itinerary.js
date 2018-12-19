@@ -182,17 +182,6 @@ const StartingPrice = styled.div`
   font-size: 14px;
 `;
 
-const PayAtVenue = styled.div`
-  color: #6e7885;
-  font-size: 12px;
-  background-color: #d3d7dc;
-  padding: 2px 5px;
-  border-radius: 3px;
-  display: inline-block;
-  margin-top: 10px;
-  font-weight: bold;
-`;
-
 const NoServices = styled.div`
   font-size: 18px;
   margin: 10px 0 50px;
@@ -411,11 +400,6 @@ export default class Itinerary extends Component {
                   addService={this.props.addService}
                 />
               </LastLine>
-              {dayData.service.periods &&
-                dayData.service.periods[0] &&
-                dayData.service.periods[0].payAtService && (
-                  <PayAtVenue>Not included in the payment</PayAtVenue>
-                )}
             </ServiceData>
           </ServiceBody>
           {this.renderServiceFooter(day.day, dayData.service)}
