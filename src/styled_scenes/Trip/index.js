@@ -37,7 +37,7 @@ const getCountryCount = services => {
   return countries.size;
 };
 
-const CustomPage = Page.extend`
+const CustomPage = styled(Page)`
   padding-bottom: 150px;
 `;
 const Wrapper = styled.div``;
