@@ -85,14 +85,25 @@ export const set_base_currency = currency => async dispatch => {
   });
 };
 
-export const getCurrentUser = () => async dispatch => {
+export const getCurrentUser = fetchReferralInfo => async dispatch => {
   const session = getSession();
   try {
     if (session) {
       const currentUser = await axios.get('/users/me');
       if (currentUser.data) {
         const userObject = fetch_helpers.buildUserJson(currentUser.data);
-        dispatch(sessionsFetched({ session: userObject }));
+        let referralInfo;
+        if (fetchReferralInfo) {
+          referralInfo = (await axios.get('/users/me/referral-info')).data;
+        }
+        dispatch(
+          sessionsFetched({
+            session: {
+              ...userObject,
+              referralInfo,
+            },
+          }),
+        );
 
         // Fresh chat data
         if (window.fcWidget.user) {

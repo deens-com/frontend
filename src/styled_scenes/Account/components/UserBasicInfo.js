@@ -11,7 +11,7 @@ import { Menu, Card, Button, Input } from 'semantic-ui-react';
 import ImgurAvatar from './../../../assets/no-avatar.png';
 import PlsIcon from 'assets/ic_pls.png';
 import NumberFormat from 'react-number-format';
-import { webUrl } from 'libs/config';
+import { websiteUrl } from 'libs/config';
 
 const AttributeTitle = styled.h6`
   font-size: 9px;
@@ -117,7 +117,7 @@ class UserBasicInfo extends Component {
   copyButtonHandler = () => {
     this.setState({ copyButtonText: 'Copied' });
 
-    copy(`${webUrl}/register?ref=${this.props.user_profile.referral}`);
+    copy(`${websiteUrl}/register?ref=${this.props.user_profile.referral}`);
   };
 
   render() {
@@ -260,10 +260,12 @@ class UserBasicInfo extends Component {
                 </CopyButton>
                 <br />
                 <br />
-                <small>
-                  There are {this.props.user_profile.referredUsersCount} users that signed up with
-                  your referral code.
-                </small>
+                {this.props.user_profile.referralInfo && (
+                  <small>
+                    There are {this.props.user_profile.referralInfo.usersWhoSignedUp} users that
+                    signed up with your referral code.
+                  </small>
+                )}
               </center>
             </div>
           </Menu>

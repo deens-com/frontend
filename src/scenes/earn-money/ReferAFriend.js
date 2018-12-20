@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Button from 'shared_components/Button';
 import copy from 'copy-to-clipboard';
-import { webUrl } from 'libs/config';
+import { websiteUrl } from 'libs/config';
 import StyledInput from 'shared_components/StyledInput';
 
 const Wrapper = styled.div`
@@ -35,7 +35,7 @@ export default class ReferAFriend extends React.Component {
   copyButtonHandler = () => {
     this.setState({ copyButtonText: 'Copied' });
 
-    copy(`${webUrl}/register?ref=${this.props.userProfile.referral}`);
+    copy(`${websiteUrl}/register?ref=${this.props.userProfile.referral}`);
     setTimeout(this.copiedTimeout, 2500);
   };
 
@@ -57,10 +57,12 @@ export default class ReferAFriend extends React.Component {
             </Button>
           </CopyButton>
         </Referral>
-        <small>
-          There are {this.props.userProfile.referredUsersCount} users that signed up with your
-          referral code.
-        </small>
+        {this.props.userProfile.referralInfo && (
+          <small>
+            There are {this.props.userProfile.referralInfo.usersWhoSignedUp} users that signed up
+            with your referral code.
+          </small>
+        )}
       </Wrapper>
     );
   }
