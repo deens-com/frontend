@@ -236,7 +236,7 @@ export default class Itinerary extends Component {
   };
 
   renderDay = (day, index) => (
-    <Day key={day.title} innerRef={this.r[index]}>
+    <Day key={day.title} ref={this.r[index]}>
       <DayTitle>{day.title}</DayTitle>
       {this.props.trip.notes &&
         this.props.trip.notes[day.day] && (

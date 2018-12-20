@@ -73,7 +73,7 @@ export default class CartThumb extends Component {
         <Thumb src={url} background />
         {/*withTooltip && (
           <TagWrap
-            innerRef={tag => {
+            ref={tag => {
               tag && this.setTagWidth(tag.offsetWidth);
             }}
             onMouseEnter={this.showTooltip}

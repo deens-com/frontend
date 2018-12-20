@@ -37,7 +37,7 @@ const Input = styled.input`
 export default ({ error, leftContent, rightContent, children, ...props }) => (
   <Wrapper error={error}>
     {leftContent}
-    {children || <Input innerRef={props.innerRef} {...props} />}
+    {children || <Input ref={props.innerRef} {...props} />}
     {rightContent}
   </Wrapper>
 );

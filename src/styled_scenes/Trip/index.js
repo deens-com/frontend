@@ -345,7 +345,7 @@ export default class Trip extends Component {
           <Loader size="massive" />
         </Dimmer>
         <Header innerRef={this.headerRef} trip={trip} owner={owner} />
-        <TripData innerRef={this.sentenceRef}>{this.renderSentence(startDate, endDate)}</TripData>
+        <TripData ref={this.sentenceRef}>{this.renderSentence(startDate, endDate)}</TripData>
         <Body>
           <TripDescription trip={trip} cities={cities} countries={countries} />
           <Itinerary

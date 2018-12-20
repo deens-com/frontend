@@ -209,7 +209,7 @@ export default class BuyTokens extends React.Component {
             <WalletContent>
               <WalletTitle>Your wallet address</WalletTitle>
               <AddressInput
-                innerRef={this.inputRef}
+                ref={this.inputRef}
                 disabled={Boolean(this.props.whitelistedAddress) || this.state.addedAddress}
                 value={this.props.whitelistedAddress}
               />
