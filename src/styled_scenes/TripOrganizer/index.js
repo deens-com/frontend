@@ -237,6 +237,7 @@ export default class TripOrganizer extends Component {
         availability: {},
         daysByService: {},
         pictureUploadError: null,
+        uploadingPicture: false,
         isCheckingList: [],
         notes: {},
       };
@@ -891,6 +892,9 @@ export default class TripOrganizer extends Component {
       this.setState({ pictureUploadError: 'File size should not exceed 3 Mb' });
       return;
     }
+    this.setState({
+      uploadingPicture: true,
+    });
     const formData = new FormData();
     formData.append('profilePicture', file);
     const uploadedFile = await axiosOriginal.post(`${serverBaseURL}/media`, formData, {});
@@ -898,9 +902,10 @@ export default class TripOrganizer extends Component {
     const url = uploadedFile.data.url;
     this.setState(
       prev => ({
+        pictureUploadError: null,
+        uploadingPicture: false,
         trip: {
           ...prev.trip,
-          pictureUploadError: null,
           media: [
             {
               type: 'image',
@@ -1051,6 +1056,7 @@ export default class TripOrganizer extends Component {
       pictureUploadError,
       isCheckingList,
       notes,
+      uploadingPicture,
     } = this.state;
 
     const hero = trip && getHeroImage(trip);
@@ -1080,20 +1086,26 @@ export default class TripOrganizer extends Component {
           </Message>
         )}
         <CoverImage url={img}>
-          <Button
-            element={({ children }) => <label htmlFor="cover-image">{children}</label>}
-            onClick={e => {}}
-            theme="allWhite"
-            iconBefore="camera"
-          >
-            Change Cover
-          </Button>
-          <input
-            id="cover-image"
-            accept=".jpg, .jpeg, .png"
-            type="file"
-            onChange={this.onFileSelect}
-          />
+          {uploadingPicture ? (
+            <Loader active inline="centered" />
+          ) : (
+            <React.Fragment>
+              <Button
+                element={({ children }) => <label htmlFor="cover-image">{children}</label>}
+                onClick={e => {}}
+                theme="allWhite"
+                iconBefore="camera"
+              >
+                Change Cover
+              </Button>
+              <input
+                id="cover-image"
+                accept=".jpg, .jpeg, .png"
+                type="file"
+                onChange={this.onFileSelect}
+              />
+            </React.Fragment>
+          )}
         </CoverImage>
         <FormInput>
           <Label>

@@ -150,7 +150,7 @@ export default class AddToTrip extends Component {
           </Button>
         </AddButton>
         <AddPanel
-          innerRef={this.panelRef}
+          ref={this.panelRef}
           isOpen={this.state.isOpen}
           onClick={this.panelClick}
           onMouseOver={e => e.stopPropagation()}

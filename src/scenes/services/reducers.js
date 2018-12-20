@@ -2,10 +2,6 @@ const initialState = {
   isPageLoading: false,
   service: {},
   trips: [],
-  userUnpurchasedTrips: {
-    isLoading: false,
-    data: [],
-  },
   ratings: [],
   reviews: [],
   serviceRecentlyAddedToTrip: null,
@@ -55,16 +51,6 @@ export default function ServicesReducer(state = initialState, action = {}) {
       return {
         ...state,
         reviews: action.payload.reviews,
-      };
-    case 'USER_UNPURCHASED_TRIPS_FETCH':
-      return {
-        ...state,
-        userUnpurchasedTrips: { ...state.userUnpurchasedTrips, isLoading: true },
-      };
-    case 'USER_UNPURCHASED_TRIPS_FETCH_FINISH':
-      return {
-        ...state,
-        userUnpurchasedTrips: { isLoading: false, data: action.payload },
       };
     case 'TRIP_UPDATING':
       return {

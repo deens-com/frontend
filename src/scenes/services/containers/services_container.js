@@ -11,6 +11,7 @@ import { websiteUrl } from 'libs/config';
 import I18nText from 'shared_components/I18nText';
 import { getHeroImage, generateServiceSlug } from 'libs/Utils';
 import { loadTrip } from 'libs/localStorage';
+import tripActions from 'store/trips/actions';
 
 class ServicesContainer extends Component {
   state = {
@@ -108,7 +109,7 @@ const mapStateToProps = state => {
     isLoggedIn,
     trips: state.ServicesReducer.trips.filter(trip => trip !== undefined),
     reviews: state.ServicesReducer.reviews,
-    myUnpurchasedTrips: isLoggedIn ? state.ServicesReducer.userUnpurchasedTrips.data : [loadTrip()],
+    myUnpurchasedTrips: isLoggedIn ? state.trips.userTrips.unbookedTrips : [loadTrip()],
     serviceRecentlyAddedToTrip: state.ServicesReducer.serviceRecentlyAddedToTrip,
     serviceAlreadyAddedToTrip: state.ServicesReducer.serviceAlreadyAddedToTrip,
     isServiceUnavailableModalOpen: state.ServicesReducer.isServiceUnavailableModalOpen,
@@ -121,7 +122,13 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators(services_actions, dispatch);
+  return bindActionCreators(
+    {
+      ...services_actions,
+      fetchMyTrips: tripActions.fetchUserTrips,
+    },
+    dispatch,
+  );
 };
 
 export default connect(

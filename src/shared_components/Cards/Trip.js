@@ -225,7 +225,7 @@ class TripCard extends Component {
             )}
 
             <Title
-              innerRef={x => {
+              ref={x => {
                 this.titleRef = x;
               }}
             >

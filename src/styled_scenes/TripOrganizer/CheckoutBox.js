@@ -72,7 +72,7 @@ const Field = styled.div`
   }
 `;
 
-const DropdownField = Field.extend`
+const DropdownField = styled(Field)`
   > div {
     color: #38d39f !important;
   }

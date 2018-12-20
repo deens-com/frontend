@@ -58,7 +58,7 @@ const Button = styled.button`
   }
 `;
 
-const ButtonLeft = Button.extend`
+const ButtonLeft = styled(Button)`
   left: 0px;
   cursor: pointer;
   ${media.minLarge} {
@@ -72,7 +72,7 @@ const ButtonLeft = Button.extend`
   }
 `;
 
-const ButtonRight = Button.extend`
+const ButtonRight = styled(Button)`
   right: 0px;
   cursor: pointer;
   ${media.minLarge} {
