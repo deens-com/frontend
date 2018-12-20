@@ -66,6 +66,7 @@ class TripOrganizerContainer extends Component {
         updatePath={this.props.updatePath}
         history={this.props.history}
         isGDPRDismissed={this.props.isGDPRDismissed}
+        gdprHeight={this.props.gdprHeight}
         isLoading={this.props.isLoading || this.isLoading}
         action={
           this.props.location && this.props.location.state && this.props.location.state.action
@@ -104,6 +105,7 @@ const mapStateToProps = (state, props) => {
     endDate: state.ResultsReducer.search_query.end_date,
     availability: state.TripReducer.availability,
     isGDPRDismissed: state.SettingsReducer.gdprDismissed,
+    gdprHeight: state.SettingsReducer.gdprHeight,
   };
 };
 

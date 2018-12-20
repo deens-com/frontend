@@ -130,12 +130,16 @@ export default class Trip extends Component {
       this.handleCustomizeClick();
     }
 
-    updateBottomChatPosition(calculateBottomPosition(this.props.isGDPRDismissed, 65) + 60);
+    updateBottomChatPosition(
+      calculateBottomPosition(this.props.isGDPRDismissed, this.props.gdprHeight, 65) + 60,
+    );
   }
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
-    updateBottomChatPosition(calculateBottomPosition(this.props.isGDPRDismissed, 0));
+    updateBottomChatPosition(
+      calculateBottomPosition(this.props.isGDPRDismissed, this.props.gdprHeight, 0),
+    );
   }
 
   handleScroll = () => {
@@ -363,7 +367,7 @@ export default class Trip extends Component {
   };
 
   render() {
-    const { trip, adults, children, infants, isGDPRDismissed } = this.props;
+    const { trip, adults, children, infants, isGDPRDismissed, gdprHeight } = this.props;
 
     if (!trip) {
       return (
@@ -382,7 +386,7 @@ export default class Trip extends Component {
       <CustomPage>
         <TopBar fixed />
         <DaySelector
-          bottom={calculateBottomPosition(isGDPRDismissed, 65)}
+          bottom={calculateBottomPosition(isGDPRDismissed, gdprHeight, 65)}
           days={days}
           trip={trip}
           goToDay={this.goToDay}
@@ -395,7 +399,7 @@ export default class Trip extends Component {
           endDate={this.props.endDate}
           booked={this.props.booked}
           onCustomizeClick={this.handleCustomizeClick}
-          bottom={calculateBottomPosition(isGDPRDismissed)}
+          bottom={calculateBottomPosition(isGDPRDismissed, gdprHeight)}
         />
       </CustomPage>
     );

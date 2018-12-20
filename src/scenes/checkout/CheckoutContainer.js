@@ -248,7 +248,9 @@ class CheckoutContainer extends React.Component {
 
   componentDidMount() {
     this.props.cleanPaymentStatus();
-    updateBottomChatPosition(calculateBottomPosition(this.props.isGDPRDismissed, 50));
+    updateBottomChatPosition(
+      calculateBottomPosition(this.props.isGDPRDismissed, this.props.gdprHeight, 50),
+    );
   }
 
   componentWillUnmount() {
@@ -414,7 +416,7 @@ class CheckoutContainer extends React.Component {
   }
 
   render() {
-    const { trip, isLoading, isGDPRDismissed } = this.props;
+    const { trip, isLoading, isGDPRDismissed, gdprHeight } = this.props;
     const { days, step, expireDate, timedOut } = this.state;
     const numberOfGuests = this.calculateGuests();
     return (
@@ -486,7 +488,7 @@ class CheckoutContainer extends React.Component {
               {this.renderStep()}
             </Wrapper>
             {step < 3 && (
-              <Footer bottom={calculateBottomPosition(isGDPRDismissed)}>
+              <Footer bottom={calculateBottomPosition(isGDPRDismissed, gdprHeight)}>
                 <Button
                   disabled={this.state.nextDisabled}
                   theme="fillLightGreen"
@@ -510,6 +512,7 @@ const mapStateToProps = state => ({
   isLoading: state.TripReducer.isLoading,
   session: state.SessionsReducer.session,
   isGDPRDismissed: state.SettingsReducer.gdprDismissed,
+  gdprHeight: state.SettingsReducer.gdprHeight,
   availability: state.TripReducer.availability.data,
   isCheckingAvailability: state.TripReducer.availability.isChecking,
 });

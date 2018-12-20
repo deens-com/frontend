@@ -24,6 +24,7 @@ const Wrapper = styled.div`
 
 const Images = styled.div`
   display: flex;
+  flex-wrap: wrap;
 `;
 
 const Image = styled.div`

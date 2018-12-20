@@ -170,6 +170,7 @@ const mapStateToProps = state => {
     availability: state.TripReducer.availability,
     isCloning: state.TripReducer.isCloning,
     isGDPRDismissed: state.SettingsReducer.gdprDismissed,
+    gdprHeight: state.SettingsReducer.gdprHeight,
     slug: trip && generateTripSlug(trip),
   };
 };

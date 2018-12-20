@@ -274,7 +274,9 @@ export default class TripOrganizer extends Component {
   }
 
   componentDidMount() {
-    updateBottomChatPosition(calculateBottomPosition(this.props.isGDPRDismissed, 60));
+    updateBottomChatPosition(
+      calculateBottomPosition(this.props.isGDPRDismissed, this.props.gdprHeight, 60),
+    );
 
     if (!this.props.tripId) {
       this.checkAllServicesAvailability({
@@ -302,6 +304,11 @@ export default class TripOrganizer extends Component {
           infants: this.state.trip.infantCount,
         },
       });
+    }
+    if (prevProps.gdprHeight !== this.props.gdprHeight) {
+      updateBottomChatPosition(
+        calculateBottomPosition(this.props.isGDPRDismissed, this.props.gdprHeight, 60),
+      );
     }
   }
 
@@ -1174,7 +1181,7 @@ export default class TripOrganizer extends Component {
   };
 
   render() {
-    const { isLoading, availability, tripId, isGDPRDismissed } = this.props;
+    const { isLoading, availability, tripId, isGDPRDismissed, gdprHeight } = this.props;
     const { trip, isBlockedUntilSaved, days } = this.state;
 
     const loading = isLoading || (!trip || trip._id !== tripId) || !availability;
@@ -1187,7 +1194,7 @@ export default class TripOrganizer extends Component {
         </Dimmer>
         {!loading && (
           <DaySelector
-            bottom={calculateBottomPosition(isGDPRDismissed)}
+            bottom={calculateBottomPosition(isGDPRDismissed, gdprHeight)}
             days={days}
             goToDay={this.goToDay}
             onAddDay={this.handleAddDay}

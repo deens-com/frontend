@@ -42,6 +42,7 @@ class App extends React.Component {
     return (
       <Provider store={store}>
         <React.Fragment>
+          <GDPRNotification />
           <Router history={history}>
             <ScrollToTop>
               <Switch>
@@ -120,7 +121,6 @@ class App extends React.Component {
               </Switch>
             </ScrollToTop>
           </Router>
-          <GDPRNotification />
         </React.Fragment>
       </Provider>
     );
