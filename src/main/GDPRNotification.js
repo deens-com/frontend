@@ -14,7 +14,6 @@ const Notification = styled.div`
   min-height: 50px;
   border-top: 1px solid #7dd7e5;
   width: 100%;
-  display: flex;
   align-items: center;
   justify-content: center;
   z-index: 10;
@@ -23,6 +22,7 @@ const Notification = styled.div`
   padding-top: 5px;
   padding-bottom: 5px;
   cursor: pointer;
+  display: ${props => (props.closed ? 'none' : 'flex')};
   ${media.minSmall} {
     padding-right: 0;
   }
@@ -47,9 +47,16 @@ const CloseButton = styled.span`
 `;
 
 class GDPRBanner extends React.Component {
+  constructor(props) {
+    super(props);
+    this.gdprRef = React.createRef();
+  }
+
   componentDidMount() {
     if (!this.props.closed) {
-      updateBottomChatPosition(calculateBottomPosition(false, 0));
+      const height = this.gdprRef.current.getBoundingClientRect().height;
+      updateBottomChatPosition(calculateBottomPosition(false, height, 0));
+      this.props.renderedGdpr(height);
     }
   }
 
@@ -61,12 +68,8 @@ class GDPRBanner extends React.Component {
   render() {
     const { closed } = this.props;
 
-    if (closed) {
-      return null;
-    }
-
     return (
-      <Notification id="gdpr-banner" onClick={this.dismiss}>
+      <Notification closed={closed} ref={this.gdprRef} onClick={this.dismiss}>
         <Text>
           This site uses cookies to provide you with a great user experience. By using Please.com
           you accept our use of{' '}
