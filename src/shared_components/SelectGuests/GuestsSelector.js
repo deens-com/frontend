@@ -155,7 +155,7 @@ export default class GuestsSelector extends React.Component {
     const { adults, infants, children } = this.state;
 
     return (
-      <SelectorWrapper relative={relative} innerRef={this.wrapperRef}>
+      <SelectorWrapper relative={relative} ref={this.wrapperRef}>
         <Row>
           <LeftColumn>
             Adults

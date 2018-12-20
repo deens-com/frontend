@@ -142,7 +142,7 @@ export default class Share extends React.Component {
                   </Label>
                   <Input error={this.state.errors.description}>
                     <TextArea
-                      innerRef={this.descInput}
+                      ref={this.descInput}
                       defaultValue={trip.description && I18nText.translate(trip.description)}
                     />
                   </Input>

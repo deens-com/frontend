@@ -319,7 +319,7 @@ export default class Itinerary extends Component {
 
   /*<AddServiceModal trip={this.props.trip} onServiceSelect={this.props.addService} day={day} />*/
   renderDay = (day, index) => (
-    <Day key={day.title} innerRef={this.r[index]}>
+    <Day key={day.title} ref={this.r[index]}>
       <DayHeader>
         <DayTitle>{day.title}</DayTitle>
         {this.props.days.length > 1 && (
