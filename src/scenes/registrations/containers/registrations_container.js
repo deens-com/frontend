@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import RegistrationsComponent from './../components/registrations_component';
-import * as registrations_actions from './../actions';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import validator from 'validator';
 import history from 'main/history';
 import { getSession } from 'libs/user-session';
+import axios from 'libs/axios';
 
-class RegistrationsContainer extends Component {
+export default class RegistrationsContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -16,6 +14,7 @@ class RegistrationsContainer extends Component {
       password: '',
       password_confirmation: '',
       errors: {},
+      isLoading: false,
       registered: false,
     };
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -23,19 +22,6 @@ class RegistrationsContainer extends Component {
     if (getSession()) {
       history.push('/');
     }
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.isLoading && !this.props.isLoading) {
-      this.setState({
-        registered: true,
-      });
-    }
-  }
-
-  componentDidMount() {
-    // clear registration errors
-    this.props.registrationFailed({});
   }
 
   validateEmailInput(target) {
@@ -78,7 +64,7 @@ class RegistrationsContainer extends Component {
     return this.state[name + '-error'];
   }
 
-  parseRegister = () => {
+  parseRegister = async () => {
     if (this.state.password !== this.state.password_confirmation) {
       this.setState({ errors: { message: 'Password does not match' } });
       return;
@@ -108,10 +94,34 @@ class RegistrationsContainer extends Component {
       return;
     }
     const email = this.state.email.toLowerCase();
-    this.props.postRegistration(this.state.username, email, this.state.password, {
-      from: this.props.from,
-      action: this.props.action,
-    });
+    try {
+      this.setState({
+        isLoading: true,
+        errors: {},
+      });
+      await axios.post('/users/signup', {
+        username: this.state.username,
+        email,
+        password: this.state.password,
+      });
+      this.setState({
+        isLoading: false,
+        registered: true,
+      });
+    } catch (error) {
+      this.setState({
+        isLoading: false,
+        errors: {
+          message:
+            (error.response &&
+              error.response.data &&
+              (error.response.data.message ||
+                error.response.data.error_description ||
+                error.response.data.description)) ||
+            error.message,
+        },
+      });
+    }
   };
 
   handleInputChange(event) {
@@ -124,18 +134,15 @@ class RegistrationsContainer extends Component {
     return (
       <div className="RegistrationsContainer">
         <RegistrationsComponent
-          session={this.props.registrationSession}
           username={this.state.username}
           email={this.state.email}
-          isLoading={this.props.isLoading}
+          isLoading={this.state.isLoading}
           registered={this.state.registered}
           password={this.state.password}
           password_confirmation={this.state.password_confirmation}
-          errors={this.props.errors}
           stateErrors={this.state.errors}
           handleInputChange={this.handleInputChange}
           onSubmitRegistration={this.parseRegister}
-          validationErrors={this.props.validationErrors}
           validateInput={this.validateInput}
           isInputInvalid={this.isInputInvalid}
           from={this.props.from}
@@ -146,20 +153,3 @@ class RegistrationsContainer extends Component {
     );
   }
 }
-
-const mapStateToProps = ({ RegistrationsReducer }) => {
-  return {
-    registrationSession: RegistrationsReducer.session,
-    errors: RegistrationsReducer.errors,
-    isLoading: RegistrationsReducer.isLoading,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(registrations_actions, dispatch);
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(RegistrationsContainer);
