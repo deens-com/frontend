@@ -3,7 +3,6 @@ import search from '../store/search/reducer';
 import trips from '../store/trips/reducer';
 import AccountReducer from '../scenes/account/reducers';
 import SessionsReducer from '../scenes/sessions/reducers';
-import RegistrationsReducer from '../scenes/registrations/reducers';
 import ResultsReducer from '../scenes/results/reducers';
 import TripReducer from '../scenes/trip/reducers';
 import ServicesReducer from '../scenes/services/reducers';
@@ -20,7 +19,6 @@ const allReducers = combineReducers({
   search,
   trips,
   SessionsReducer,
-  RegistrationsReducer,
   ResultsReducer,
   TripReducer,
   ServicesReducer,

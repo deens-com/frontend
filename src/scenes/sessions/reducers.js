@@ -1,5 +1,4 @@
 import * as sessions_actions from './actions';
-import * as registrations_actions from '../registrations/actions';
 
 // set default base currency
 let defaultBaseCurrency = { label: '$', value: 'USD', rates: {} };
@@ -25,7 +24,6 @@ export default function SessionsReducer(state = initialState, action = {}) {
   switch (action.type) {
     case sessions_actions.types.LOGIN_STARTS:
       return { ...state, isLoading: true };
-    case registrations_actions.types.REGISTRATION_SUCCESS:
     case sessions_actions.types.LOGIN_SUCCESS:
       return {
         ...state,
