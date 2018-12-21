@@ -2,7 +2,6 @@ import * as analytics from 'libs/analytics';
 import axios from 'libs/axios';
 import Cookies from 'js-cookie';
 
-
 export const types = {
   REGISTRATION_SUCCESS: 'REGISTRATION_SUCCESS',
   REGISTRATION_FAILED: 'REGISTRATION_FAILED',
@@ -47,7 +46,7 @@ export const postRegistration = (username, email, password, { from, action }) =>
       username: username,
       email: email,
       password: password,
-      referrer,
+      referrerCode: referrer,
     });
 
     dispatch(setLoading(false));
