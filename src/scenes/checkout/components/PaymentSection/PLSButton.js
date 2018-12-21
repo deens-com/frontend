@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 import Button from 'shared_components/Button';
 import PlsIcon from 'assets/ic_pls.svg';
 
+import { usdToPls } from 'libs/currency';
+
 const Wrap = styled.div`
   text-align: center;
   margin-top: 20px;
@@ -70,15 +72,21 @@ class PLSButton extends Component {
   };
 
   render() {
-    const { paymentError } = this.props;
+    const { paymentError, usdAmount } = this.props;
     return (
       <Wrap>
-        <BalanceTitle>PLS Balance</BalanceTitle>
+        <BalanceTitle>Your PLS Balance</BalanceTitle>
         <Balance>
           {this.props.plsBalance}
           <img src={PlsIcon} alt="PLS" />
         </Balance>
         <USDBalance>USD {(this.props.plsBalance * 0.036).toFixed(2)}</USDBalance>
+
+        <Balance>
+          You will pay {usdToPls(usdAmount)}
+          <img src={PlsIcon} alt="PLS" />
+        </Balance>
+        <USDBalance>USD {usdAmount.toFixed(2)}</USDBalance>
 
         <Button theme="fillLightGreen" onClick={this.handleClick}>
           Pay with PLS

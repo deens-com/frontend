@@ -152,7 +152,7 @@ const PLS_METHOD = 'pls';
 
 export default class PaymentSection extends Component {
   static propTypes = {
-    tripId: PropTypes.string.isRequired,
+    trip: PropTypes.string.isRequired,
     pricePerPerson: PropTypes.number.isRequired,
     totalPrice: PropTypes.number.isRequired,
     onPaymentClick: PropTypes.func.isRequired,
@@ -284,6 +284,7 @@ export default class PaymentSection extends Component {
                             tripId={trip._id}
                             onClick={this.props.payWithPls}
                             paymentError={paymentError}
+                            usdAmount={amount}
                           />
                         </ButtonWrapper>
                       )}
