@@ -16,18 +16,29 @@ const PasteUrlMessage = styled.div`
   margin-bottom: 15px;
 `;
 
-const NextButton = styled.div`
+const Buttons = styled.div`
   margin-top: 15px;
+  display: flex;
+  align-items: center;
 `;
+
+const CancelButton = styled.div`
+  color: #38d39f;
+  font-size: 14px;
+  margin-left: 15px;
+  cursor: pointer;
+`;
+
+const initialState = {
+  fetchingUrlData: false,
+  service: null,
+  tags: null,
+};
 
 export default class CreateServiceModal extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      fetchingUrlData: false,
-      service: null,
-      tags: null,
-    };
+    this.state = initialState;
 
     this.inputRef = React.createRef();
     this.geocoder = new window.google.maps.Geocoder();
@@ -179,9 +190,10 @@ export default class CreateServiceModal extends React.Component {
           Copy/Paste here the link to the service you want to add in your trip
         </PasteUrlMessage>
         <Input innerRef={this.inputRef} />
-        <NextButton>
+        <Buttons>
           <Button onClick={this.fetchUrlData}>Next</Button>
-        </NextButton>
+          <CancelButton onClick={this.props.closeModal}>Cancel</CancelButton>
+        </Buttons>
       </div>
     );
   }
@@ -226,7 +238,6 @@ export default class CreateServiceModal extends React.Component {
         >
           <Modal.Header>Add a service from another website</Modal.Header>
           <Modal.Content>
-            return
             <Dimmer.Dimmable>
               <Dimmer
                 inverted

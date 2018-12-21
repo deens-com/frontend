@@ -3,8 +3,9 @@ import ResultsComponent from './../components/results_component';
 import * as results_actions from './../actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { resetTrip } from '../../trip/actions';
+import { resetTrip, fetchTrip } from '../../trip/actions';
 import { loadTrip } from 'libs/localStorage';
+import { Loader } from 'semantic-ui-react';
 
 class ResultsContainer extends Component {
   componentDidMount() {
@@ -30,6 +31,9 @@ class ResultsContainer extends Component {
       text: this.props.text,
     };
     this.props.update_search_query(search_query);
+    if (this.hasToLoadTripYet()) {
+      this.props.fetchTrip(this.props.routeState.tripId);
+    }
   }
 
   componentWillUpdate(next_props) {
@@ -82,20 +86,33 @@ class ResultsContainer extends Component {
     );
   };
 
+  hasToLoadTripYet = () =>
+    this.props.routeState && this.props.routeState.tripId && !this.props.trip;
+
   render() {
-    return <ResultsComponent {...this.props} service_data={this.props.results} />;
+    if (this.hasToLoadTripYet()) {
+      return <Loader inline="centered" active />;
+    }
+
+    return (
+      <ResultsComponent
+        {...this.props}
+        service_data={this.props.results}
+        isLoadingResults={this.props.isLoadingResults || this.hasToLoadTripYet()}
+        trip={this.props.trip || loadTrip()}
+      />
+    );
   }
 }
 
 const mapStateToProps = state => {
-  const trip = state.SessionsReducer.session.username ? state.TripReducer.trip : loadTrip();
   return {
     results: state.ResultsReducer.results,
     search_query: state.ResultsReducer.search_query,
     carousel_tags: state.ResultsReducer.carousel_tags,
     isLoadingResults: state.ResultsReducer.isLoadingResults,
     tagsOptions: state.ResultsReducer.tagsOptions,
-    trip,
+    trip: state.TripReducer.trip,
   };
 };
 
@@ -104,6 +121,7 @@ const mapDispatchToProps = dispatch => {
     {
       ...results_actions,
       resetTrip,
+      fetchTrip,
     },
     dispatch,
   );
