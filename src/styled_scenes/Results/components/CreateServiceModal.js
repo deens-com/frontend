@@ -104,8 +104,7 @@ export default class CreateServiceModal extends React.Component {
             : service,
       );
 
-    await axios.patch(`/trips/${trip._id}`, {
-      ...trip,
+    await tripUtils.patchTrip(trip._id, {
       services: tripServices,
     });
 
