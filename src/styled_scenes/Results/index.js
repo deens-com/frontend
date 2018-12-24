@@ -26,20 +26,25 @@ import { waitUntilMapsLoaded } from 'libs/Utils';
 import { Page, PageContent } from './../../shared_components/layout/Page';
 
 const MapWrapper = styled.div`
-  width: 100%;
-  background: #5cb89e;
   display: flex;
   align-items: center;
   justify-content: center;
   height: calc(100vh - 70px - 1.8em - 60px);
+  right: 0;
   margin-top: 1.8em;
-
+  position: relative;
+  width: 100%;
   h3 {
     color: #fff;
     font-size: 52px;
     text-align: center;
     max-width: 400px;
   }
+`;
+
+const MapPlaceholder = styled.div`
+  display: none;
+  width: 100%;
 `;
 
 const ServicesWrapper = styled.div`
@@ -89,12 +94,17 @@ const defaultCenter = {
 const defaultZoom = 11;
 
 export default class ResultsScene extends Component {
-  state = {
-    center: defaultCenter,
-    zoom: defaultZoom,
-    markers: [],
-    showMap: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      center: defaultCenter,
+      zoom: defaultZoom,
+      markers: [],
+      showMap: false,
+    };
+    this.mapRef = React.createRef();
+    this.mapPlaceholderRef = React.createRef();
+  }
 
   static propTypes = {};
 
@@ -111,17 +121,40 @@ export default class ResultsScene extends Component {
       }));
   };
 
+  getZoomByRadius = () => {
+    const radius = Number(this.props.radiusInKm);
+
+    if (radius >= 100) {
+      return 9;
+    }
+
+    if (radius >= 50) {
+      return 10;
+    }
+
+    if (radius >= 20) {
+      return 11;
+    }
+
+    if (radius >= 10) {
+      return 12;
+    }
+
+    return 13;
+  };
+
   getCenterAndZoom = (markers, props) => {
+    const zoomByRadius = this.getZoomByRadius();
     if (!markers.length) {
       if (props.latitude && props.longitude) {
         const center = { lat: parseFloat(props.latitude), lng: parseFloat(props.longitude) };
-        return { center: center, zoom: defaultZoom };
+        return { center: center, zoom: zoomByRadius };
       } else {
-        return { center: defaultCenter, zoom: defaultZoom };
+        return { center: defaultCenter, zoom: zoomByRadius };
       }
     }
     if (markers.length === 1) {
-      return { center: markers[0], zoom: defaultZoom };
+      return { center: markers[0], zoom: zoomByRadius };
     }
     const bounds = new window.google.maps.LatLngBounds();
     for (const marker of markers) {
@@ -155,8 +188,87 @@ export default class ResultsScene extends Component {
     this.setState({ center, zoom, markers: [] });
   }
 
+  componentWillUnmount() {
+    if (this.state.showMap) {
+      window.removeEventListener('scroll', this.handleScroll);
+      window.removeEventListener('scroll', this.resizeHandler);
+    }
+  }
+
   toggleMap = () => {
-    this.setState({ showMap: !this.state.showMap });
+    this.setState(prevState => {
+      if (prevState.showMap) {
+        window.removeEventListener('scroll', this.handleScroll);
+        window.removeEventListener('scroll', this.resizeHandler);
+      } else {
+        this.unfixMap();
+        window.addEventListener('scroll', this.handleScroll);
+        window.addEventListener('scroll', this.resizeHandler);
+      }
+      return { showMap: !prevState.showMap };
+    });
+  };
+
+  resizeHandler = () => {
+    if (this.mapPosition === 'fixed') {
+      this.fixMap();
+      return;
+    }
+    this.unfixMap(this.mapPosition === 'initial');
+  };
+
+  fixMap = () => {
+    const style = this.mapRef.current.style;
+    style.position = 'fixed';
+    style.width = 'calc(50vw - 10px)';
+    style.height = 'calc(100vh - 70px)';
+    style.marginTop = '0';
+    style.top = '70px';
+
+    this.mapPlaceholderRef.current.style.display = 'flex';
+    this.mapPosition = 'fixed';
+  };
+
+  unfixMap = (initial = true) => {
+    const style = this.mapRef.current.style;
+    style.position = 'relative';
+    style.width = '100%';
+    style.height = initial ? 'calc(100vh - 70px - 1.8em - 60px)' : `calc(100vh - 70px - 105px)`;
+    style.marginTop = initial ? '1.8em' : '0';
+    style.top = initial ? '0' : null;
+    style.alignSelf = initial ? 'flex-start' : 'flex-end';
+
+    this.mapPlaceholderRef.current.style.display = 'none';
+    this.mapPosition = initial ? 'initial' : 'end';
+  };
+
+  handleScroll = () => {
+    const fullHeight = document.body.scrollHeight;
+    const scrolled = window.scrollY;
+
+    if (this.mapPosition === 'initial') {
+      if (scrolled >= 70) {
+        this.fixMap();
+        return;
+      }
+      return;
+    }
+    if (this.mapPosition === 'fixed') {
+      if (scrolled + window.innerHeight >= fullHeight - 105) {
+        this.unfixMap(false);
+        return;
+      }
+
+      if (scrolled < 70) {
+        this.unfixMap();
+        return;
+      }
+      return;
+    }
+    if (scrolled + window.innerHeight < fullHeight - 105) {
+      this.fixMap();
+      return;
+    }
   };
 
   createExternalService = () => {
@@ -202,6 +314,7 @@ export default class ResultsScene extends Component {
   render() {
     const { props } = this;
     const { center, zoom, markers } = this.state;
+
     return (
       <Page topPush>
         <TopBar {...props} fixed />
@@ -251,8 +364,8 @@ export default class ResultsScene extends Component {
               goBackToTrip={this.goBackToTrip}
             />
           </ServicesWrapper>
-
-          <MapWrapper style={{ display: this.state.showMap ? 'flex' : 'none' }}>
+          <MapPlaceholder ref={this.mapPlaceholderRef} />
+          <MapWrapper ref={this.mapRef} style={{ display: this.state.showMap ? 'flex' : 'none' }}>
             <GoogleMapReact
               center={center}
               zoom={zoom}
@@ -260,6 +373,15 @@ export default class ResultsScene extends Component {
                 key: 'AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc',
               }}
               googleMapLoader={waitUntilMapsLoaded}
+              options={
+                window.google
+                  ? {
+                      zoomControlOptions: {
+                        position: window.google.maps.ControlPosition.LEFT_CENTER,
+                      },
+                    }
+                  : {}
+              }
             >
               {markers.map(marker => (
                 <MapMaker {...marker} scale={1} color="#4fb798" />
