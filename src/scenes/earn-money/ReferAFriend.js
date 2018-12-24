@@ -35,7 +35,7 @@ export default class ReferAFriend extends React.Component {
   copyButtonHandler = () => {
     this.setState({ copyButtonText: 'Copied' });
 
-    copy(`${websiteUrl}/register?ref=${this.props.userProfile.referral}`);
+    copy(`${websiteUrl}/register?ref=${this.props.userProfile.myReferralCode}`);
     setTimeout(this.copiedTimeout, 2500);
   };
 
@@ -50,7 +50,7 @@ export default class ReferAFriend extends React.Component {
           Your referral code:
           <CopyButton>
             <InputWrap>
-              <StyledInput value={this.props.userProfile.referral} />
+              <StyledInput value={this.props.userProfile.myReferralCode} />
             </InputWrap>
             <Button type="submit" icon="copy" labelPosition="left" onClick={this.copyButtonHandler}>
               {this.state.copyButtonText}

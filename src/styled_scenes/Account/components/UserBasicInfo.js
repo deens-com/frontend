@@ -117,7 +117,7 @@ class UserBasicInfo extends Component {
   copyButtonHandler = () => {
     this.setState({ copyButtonText: 'Copied' });
 
-    copy(`${websiteUrl}/register?ref=${this.props.user_profile.referral}`);
+    copy(`${websiteUrl}/register?ref=${this.props.user_profile.myReferralCode}`);
   };
 
   render() {
@@ -248,7 +248,7 @@ class UserBasicInfo extends Component {
               <center>
                 Your referral code:
                 <CopyButton>
-                  <input value={this.props.user_profile.referral} />
+                  <input value={this.props.user_profile.myReferralCode} />
                   <Button
                     type="submit"
                     icon="copy"
