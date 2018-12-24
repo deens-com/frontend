@@ -10,6 +10,7 @@ import { serverBaseURL } from 'libs/config';
 import axios from 'libs/axios';
 import { media } from 'libs/styled';
 import { saveTrip } from 'libs/localStorage';
+import * as tripUtils from 'libs/trips';
 import axiosOriginal from 'axios';
 import history from '../../main/history';
 import {
@@ -401,7 +402,7 @@ export default class TripOrganizer extends Component {
 
   save = async trip => {
     if (this.props.tripId) {
-      await axios.patch(`/trips/${trip._id}`, trip);
+      await tripUtils.patchTrip(trip._id, trip);
       return;
     }
     saveTrip(trip);

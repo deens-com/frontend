@@ -773,6 +773,7 @@ export default withFormik({
       (service && service.location && service.location.formattedAddress) || undefined,
   }),
   validate,
+  validateOnChange: false,
   handleSubmit: (values, { props }) => {
     props.onSubmit(values);
   },

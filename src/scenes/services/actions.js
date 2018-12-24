@@ -112,7 +112,9 @@ export const addServiceToTrip = ({ trip, day }, loggedIn = true) => async (dispa
     dispatch({
       type: 'TRIP_UPDATING',
     });
-    const updatedTrip = await axios.patch(`/trips/${trip._id}`, updateParams);
+
+    const updatedTrip = await tripUtils.patchTrip(trip._id, updateParams);
+
     if (updatedTrip) {
       fetch_service(service._id)(dispatch);
       setAddedToTripMessage(trip)(dispatch);

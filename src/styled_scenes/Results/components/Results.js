@@ -18,6 +18,7 @@ import { minutesToDays, getDaysByService } from 'styled_scenes/Trip/mapServicesT
 import notFoundImg from '../not_found.png';
 import { loadTrip, saveTrip } from 'libs/localStorage';
 import { generateTripSlug, generateServiceSlug } from 'libs/Utils';
+import * as tripUtils from 'libs/trips';
 
 // STYLES
 const Wrap = styled.div`
@@ -161,7 +162,7 @@ class Results extends Component {
     ];
 
     if (this.props.trip._id) {
-      await axios.patch(`/trips/${this.props.trip._id}`, {
+      await tripUtils.patchTrip(this.props.trip._id, {
         services: this.tripServices.map(service => ({ ...service, service: service.service._id })),
       });
       return;
@@ -178,7 +179,7 @@ class Results extends Component {
       service => service.service._id !== serviceId || service.day !== day,
     );
     if (this.props.trip._id) {
-      await axios.patch(`/trips/${this.props.trip._id}`, {
+      await tripUtils.patchTrip(this.props.trip._id, {
         services: this.tripServices.map(service => ({ ...service, service: service._id })),
       });
       return;
