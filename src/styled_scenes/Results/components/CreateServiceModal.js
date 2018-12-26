@@ -137,7 +137,7 @@ export default class CreateServiceModal extends React.Component {
     this.checkIfExists(url);
 
     try {
-      const metadata = (await axios.post('/links/extract', { url })).data;
+      const metadata = (await axios.post('/links/extract', { url })).data || {};
 
       if (metadata.location) {
         const latlng = {
