@@ -1,4 +1,8 @@
-.modals.dimmer .ui.scrolling.modal.serviceModal {
-  margin: 75px auto !important;
-  background-color: green !important;
+.ui.modal.serviceModal {
+  margin: 100px auto 15px !important;
+}
+
+.ui.modal.serviceModal .content {
+  max-height: 75vh;
+  overflow-y: scroll;
 }

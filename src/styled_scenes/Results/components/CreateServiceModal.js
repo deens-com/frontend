@@ -126,7 +126,6 @@ export default class CreateServiceModal extends React.Component {
   fetchUrlData = async () => {
     this.setState({
       fetchingUrlData: true,
-      errorFetchingUrlData: false,
       service: null,
       importUrl: this.inputRef.current.value,
       unique: false,
@@ -137,7 +136,7 @@ export default class CreateServiceModal extends React.Component {
     this.checkIfExists(url);
 
     try {
-      const metadata = (await axios.post('/links/extract', { url })).data || {};
+      const metadata = (await axios.post('/links/extract', { url })).data;
 
       if (metadata.location) {
         const latlng = {
@@ -169,15 +168,14 @@ export default class CreateServiceModal extends React.Component {
 
         return;
       }
-
       this.setState({
         fetchingUrlData: false,
         service: fetchHelpers.buildServiceForView(fetchHelpers.createServiceFromUrl(metadata)),
       });
     } catch (e) {
       this.setState({
-        errorFetchingUrlData: true,
         fetchingUrlData: false,
+        service: {},
       });
     }
   };
