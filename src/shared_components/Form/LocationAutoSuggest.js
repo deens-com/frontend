@@ -80,13 +80,11 @@ export default class SemanticLocationControl extends Component {
     useStyledInput: false,
     onFocus: () => {},
     onBlur: () => {},
+    onKeyUp: () => {},
   };
 
   onAddressChange = address => {
-    const { onKeyUp } = this.props;
-    this.setState({ address }, () => {
-      if (onKeyUp) onKeyUp(address);
-    });
+    this.setState({ address });
   };
 
   onSelect = (address, placeId) => {
@@ -130,6 +128,13 @@ export default class SemanticLocationControl extends Component {
     this.props.onChange(address, type);
   };
 
+  handleKeyUp = event => {
+    if (event.key === 'Enter') {
+      this.onSelectSearch();
+    }
+    this.props.onKeyUp(event);
+  };
+
   render() {
     const { inputProps, inputStyles, onlyCities, useStyledInput, customStyle = {} } = this.props;
     return (
@@ -155,6 +160,7 @@ export default class SemanticLocationControl extends Component {
                     leftContent={<MapMarker style={{ fill: '#6E7885' }} />}
                     onFocus={this.handleOpen}
                     onBlur={this.handleClose}
+                    onKeyUp={this.handleKeyUp}
                   />
                 ) : (
                   <Ref innerRef={this.handleInputRef}>
@@ -169,6 +175,7 @@ export default class SemanticLocationControl extends Component {
                       style={inputStyles}
                       onFocus={this.handleOpen}
                       onBlur={this.handleClose}
+                      onKeyUp={this.handleKeyUp}
                     />
                   </Ref>
                 )}
