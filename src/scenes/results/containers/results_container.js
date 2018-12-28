@@ -3,7 +3,7 @@ import ResultsComponent from './../components/results_component';
 import searchActions from 'store/search/actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { resetTrip, fetchTrip } from '../../trip/actions';
+import tripActions from 'store/trips/actions';
 import { loadTrip } from 'libs/localStorage';
 import { Loader } from 'semantic-ui-react';
 import { updatePath } from 'store/search/helpers';
@@ -119,7 +119,7 @@ const mapStateToProps = state => {
     count: state.search.count,
     isLoadingResults: state.search.results.isLoading,
     tagsOptions: state.search.tags,
-    trip: state.TripReducer.trip,
+    trip: state.trips.trip,
   };
 };
 
@@ -127,8 +127,8 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
       ...searchActions,
-      resetTrip,
-      fetchTrip,
+      resetTrip: tripActions.resetTrip,
+      fetchTrip: tripActions.fetchTrip,
     },
     dispatch,
   );

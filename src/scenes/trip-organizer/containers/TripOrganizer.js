@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
-import * as actions from '../../trip/actions';
+import actions from 'store/trips/actions';
 import searchActions from 'store/search/actions';
 import { updatePath } from 'store/search/helpers';
 import moment from 'moment';
@@ -78,7 +78,7 @@ class TripOrganizerContainer extends Component {
 }
 
 const mapStateToProps = (state, props) => {
-  const trip = props.match.params.id ? state.TripReducer.trip : loadTrip();
+  const trip = props.match.params.id ? state.trips.trip : loadTrip();
 
   let startDate = state.search.searchQuery.start_date;
   if (!startDate) {
@@ -96,15 +96,15 @@ const mapStateToProps = (state, props) => {
   return {
     session: state.SessionsReducer.session,
     trip,
-    error: state.TripReducer.error,
-    isLoading: state.TripReducer.isLoading,
-    owner: state.TripReducer.owner,
+    error: state.trips.error,
+    isLoading: state.trips.isLoading,
+    owner: state.trips.owner,
     adults: state.search.searchQuery.adults,
     children: state.search.searchQuery.children,
     infants: state.search.searchQuery.infants,
     startDate,
     endDate: state.search.searchQuery.end_date,
-    availability: state.TripReducer.availability,
+    availability: state.trips.availability,
     isGDPRDismissed: state.SettingsReducer.gdprDismissed,
     gdprHeight: state.SettingsReducer.gdprHeight,
   };

@@ -4,7 +4,6 @@ import services from 'store/services/reducer';
 import trips from '../store/trips/reducer';
 import AccountReducer from '../scenes/account/reducers';
 import SessionsReducer from '../scenes/sessions/reducers';
-import TripReducer from '../scenes/trip/reducers';
 import UsersReducer from '../scenes/users/reducers';
 import ServiceUpsert from '../scenes/service-upsert/reducers';
 import CheckoutReducer from '../scenes/checkout/reducers';
@@ -19,7 +18,6 @@ const allReducers = combineReducers({
   trips,
   services,
   SessionsReducer,
-  TripReducer,
   UsersReducer,
   AccountReducer,
   ServiceUpsert,

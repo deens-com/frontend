@@ -22,7 +22,7 @@ export const chargeStripeToken = (token, guests, complete = () => {}) => async (
 ) => {
   if (!token || !token.id) return;
   const state = getState();
-  const { trip } = state.TripReducer;
+  const { trip } = state.trips;
   const currency = 'usd';
   const tripId = trip._id;
   try {

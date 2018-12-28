@@ -18,7 +18,7 @@ import 'react-dates/lib/css/_datepicker.css';
 import StyledInput from 'shared_components/StyledInput';
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
 import GuestsSelector from 'shared_components/SelectGuests/GuestsSelector';
-import * as results_actions from './../../../scenes/results/actions';
+import searchActions from 'store/search/actions';
 
 const radiusOptions = [1, 5, 10, 20, 50, 100];
 
@@ -1081,7 +1081,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators(results_actions, dispatch);
+  return bindActionCreators(searchActions, dispatch);
 };
 
 export default withRouter(
