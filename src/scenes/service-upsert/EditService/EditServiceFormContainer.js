@@ -34,10 +34,6 @@ class EditServiceFormContainer extends Component {
     }
   }
 
-  redeployFailedContract = (values, serviceId) => {
-    this.props.redeployContract(values, serviceId, this.props.history);
-  };
-
   onSubmit = values => {
     this.props.saveServiceChanges(this.getServiceId(), values, this.props.history);
   };
@@ -63,7 +59,6 @@ class EditServiceFormContainer extends Component {
           onSubmit={this.onSubmit}
           submitInFlight={isSubmitting}
           globalError={this.props.error}
-          onRedeployContract={this.redeployFailedContract}
           submitButtonText="Save"
           {...this.props}
         />

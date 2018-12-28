@@ -6,8 +6,8 @@ import { withRouter } from 'react-router-dom';
 import { Redirect } from 'react-router';
 import TripComponent from 'styled_scenes/Trip';
 import NotFound from 'styled_scenes/NotFound';
-import * as actions from '../actions';
-import { update_search_query_without_search } from '../../../scenes/results/actions';
+import actions from 'store/trips/actions';
+import searchActions from 'store/search/actions';
 import { getPriceFromServiceOption, getPeopleCount } from 'libs/Utils';
 import { Helmet } from 'react-helmet';
 import { websiteUrl } from 'libs/config';
@@ -154,21 +154,21 @@ class TripContainer extends Component {
 }
 
 const mapStateToProps = state => {
-  const trip = state.TripReducer.trip;
+  const trip = state.trips.trip;
 
   return {
     session: state.SessionsReducer.session,
     trip,
-    error: state.TripReducer.error,
-    isLoading: state.TripReducer.isLoading,
-    owner: state.TripReducer.owner,
-    adults: state.ResultsReducer.search_query.adults || 1,
-    children: state.ResultsReducer.search_query.children || 0,
-    infants: state.ResultsReducer.search_query.infants || 0,
-    startDate: state.ResultsReducer.search_query.start_date,
-    endDate: state.ResultsReducer.search_query.end_date,
-    availability: state.TripReducer.availability,
-    isCloning: state.TripReducer.isCloning,
+    error: state.trips.error,
+    isLoading: state.trips.isLoading,
+    owner: state.trips.owner,
+    adults: state.search.searchQuery.adults || 1,
+    children: state.search.searchQuery.children || 0,
+    infants: state.search.searchQuery.infants || 0,
+    startDate: state.search.searchQuery.start_date,
+    endDate: state.search.searchQuery.end_date,
+    availability: state.trips.availability,
+    isCloning: state.trips.isCloning,
     isGDPRDismissed: state.SettingsReducer.gdprDismissed,
     gdprHeight: state.SettingsReducer.gdprHeight,
     slug: trip && generateTripSlug(trip),
@@ -179,7 +179,7 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       ...actions,
-      changeDates: update_search_query_without_search,
+      changeDates: searchActions.updateSearchQuery,
     },
     dispatch,
   );

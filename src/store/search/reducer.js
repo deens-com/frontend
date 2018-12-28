@@ -1,39 +1,70 @@
-import { types } from './actions';
+import actions from './actions';
 import {
   asyncInitialState,
   actionStartState,
   actionSuccessState,
   actionErrorState,
-} from '../utils';
+} from 'store/utils';
 
 const initialState = {
-  trips: asyncInitialState(),
+  results: asyncInitialState([]),
+  count: null,
+  tagsOptions: [],
+  searchQuery: {
+    serviceTypes: [],
+    tags: [],
+    page: 0,
+    sortBy: '',
+  },
 };
+
+const types = actions.types;
 
 export default function search(state = initialState, action = {}) {
   switch (action.type) {
-    case types.searchTrips.start:
+    case types.search.start:
       return {
         ...state,
-        trips: {
-          ...state.trips,
-          ...actionStartState(action, initialState.trips.data),
+        results: {
+          ...state.results,
+          ...actionStartState(action, initialState.results.data),
         },
+        count: initialState.count,
+        tagsOptions: initialState.tagsOptions,
       };
-    case types.searchTrips.success:
+    case types.search.success:
+      console.log(action.payload);
       return {
         ...state,
-        trips: {
-          ...state.trips,
-          ...actionSuccessState(action, state.trips),
+        results: {
+          ...state.results,
+          ...actionSuccessState(
+            {
+              ...action,
+              payload: action.payload.results,
+            },
+            state.results,
+          ),
         },
+        count: action.payload.count,
+        tagsOptions: action.payload.tags,
       };
-    case types.searchTrips.error:
+    case types.search.error:
       return {
         ...state,
-        trips: {
-          ...state.trips,
-          ...actionErrorState(action, state.trips, initialState.trips),
+        results: {
+          ...state.results,
+          ...actionErrorState(action, state.results, initialState.results),
+        },
+        count: initialState.count,
+        tagsOptions: initialState.tagsOptions,
+      };
+    case types.updateQueryParams:
+      return {
+        ...state,
+        searchQuery: {
+          ...state.searchQuery,
+          ...action.payload,
         },
       };
     default:

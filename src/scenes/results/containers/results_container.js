@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import ResultsComponent from './../components/results_component';
-import * as results_actions from './../actions';
+import searchActions from 'store/search/actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { resetTrip, fetchTrip } from '../../trip/actions';
+import tripActions from 'store/trips/actions';
 import { loadTrip } from 'libs/localStorage';
 import { Loader } from 'semantic-ui-react';
+import { updatePath } from 'store/search/helpers';
 
 class ResultsContainer extends Component {
   componentDidMount() {
-    let search_query = {
+    let searchQuery = {
       type: this.props.serviceTypes,
       tags: this.props.tags,
       latitude: this.props.latitude,
@@ -30,7 +31,9 @@ class ResultsContainer extends Component {
       radiusInKm: this.props.radiusInKm,
       text: this.props.text,
     };
-    this.props.update_search_query(search_query);
+
+    this.props.updateSearchQuery(searchQuery);
+    this.props.fetchResults(searchQuery);
     if (this.hasToLoadTripYet()) {
       this.props.fetchTrip(this.props.routeState.tripId);
     }
@@ -38,7 +41,7 @@ class ResultsContainer extends Component {
 
   componentWillUpdate(next_props) {
     if (this.did_search_query_changed(this.props, next_props)) {
-      this.props.update_search_query({
+      const query = {
         type: next_props.serviceTypes,
         tags: next_props.tags,
         latitude: next_props.latitude,
@@ -58,7 +61,10 @@ class ResultsContainer extends Component {
         sortBy: next_props.sortBy,
         radiusInKm: next_props.radiusInKm,
         text: next_props.text,
-      });
+      };
+
+      this.props.updateSearchQuery(query);
+      this.props.fetchResults(query);
     }
   }
 
@@ -98,6 +104,7 @@ class ResultsContainer extends Component {
       <ResultsComponent
         {...this.props}
         service_data={this.props.results}
+        updatePath={updatePath}
         isLoadingResults={this.props.isLoadingResults || this.hasToLoadTripYet()}
         trip={this.props.trip || loadTrip()}
       />
@@ -107,21 +114,21 @@ class ResultsContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    results: state.ResultsReducer.results,
-    search_query: state.ResultsReducer.search_query,
-    carousel_tags: state.ResultsReducer.carousel_tags,
-    isLoadingResults: state.ResultsReducer.isLoadingResults,
-    tagsOptions: state.ResultsReducer.tagsOptions,
-    trip: state.TripReducer.trip,
+    results: state.search.results.data,
+    search_query: state.search.searchQuery,
+    count: state.search.count,
+    isLoadingResults: state.search.results.isLoading,
+    tagsOptions: state.search.tags,
+    trip: state.trips.trip,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      ...results_actions,
-      resetTrip,
-      fetchTrip,
+      ...searchActions,
+      resetTrip: tripActions.resetTrip,
+      fetchTrip: tripActions.fetchTrip,
     },
     dispatch,
   );

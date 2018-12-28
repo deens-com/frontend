@@ -18,7 +18,7 @@ import 'react-dates/lib/css/_datepicker.css';
 import StyledInput from 'shared_components/StyledInput';
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
 import GuestsSelector from 'shared_components/SelectGuests/GuestsSelector';
-import * as results_actions from './../../../scenes/results/actions';
+import searchActions from 'store/search/actions';
 
 const radiusOptions = [1, 5, 10, 20, 50, 100];
 
@@ -253,7 +253,7 @@ class Filters extends Component {
     Object.keys(param_object).forEach(param => {
       query_params[param] = param_object[param];
     });
-    this.props.update_path(query_params, this.props.history, this.props.routeState);
+    this.props.updatePath(query_params, this.props.history, this.props.routeState);
   }
 
   refetch_results_for_location(lat, lon, addr) {
@@ -261,7 +261,7 @@ class Filters extends Component {
     query_params.latitude = lat;
     query_params.longitude = lon;
     query_params.address = addr;
-    this.props.update_path(query_params, this.props.history, this.props.routeState);
+    this.props.updatePath(query_params, this.props.history, this.props.routeState);
   }
 
   refetch_results_for_guests({ adults, children, infants }) {
@@ -269,14 +269,14 @@ class Filters extends Component {
     query_params.adults = adults;
     query_params.children = children;
     query_params.infants = infants;
-    this.props.update_path(query_params, this.props.history, this.props.routeState);
+    this.props.updatePath(query_params, this.props.history, this.props.routeState);
   }
 
   refetch_results_for_dates(dateRange) {
     const query_params = this.get_query_params();
     query_params.start_date = dateRange.start_date;
     query_params.end_date = dateRange.end_date;
-    this.props.update_path(query_params, this.props.history, this.props.routeState);
+    this.props.updatePath(query_params, this.props.history, this.props.routeState);
   }
 
   debounced_refetch_results = debounce(param_object => {
@@ -1070,18 +1070,18 @@ class Filters extends Component {
 
 const mapStateToProps = state => {
   return {
-    results: state.ResultsReducer.results,
+    results: state.search.results.data,
     search_query: {
-      ...state.ResultsReducer.search_query,
-      adults: Number(state.ResultsReducer.search_query.adults) || undefined,
-      children: Number(state.ResultsReducer.search_query.children) || undefined,
-      infants: Number(state.ResultsReducer.search_query.infants) || undefined,
+      ...state.search.searchQuery,
+      adults: Number(state.search.searchQuery.adults) || undefined,
+      children: Number(state.search.searchQuery.children) || undefined,
+      infants: Number(state.search.searchQuery.infants) || undefined,
     },
   };
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators(results_actions, dispatch);
+  return bindActionCreators(searchActions, dispatch);
 };
 
 export default withRouter(

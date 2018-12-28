@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
-import * as actions from '../../trip/actions';
-import { update_search_query_without_search, update_path } from '../../../scenes/results/actions';
+import actions from 'store/trips/actions';
+import searchActions from 'store/search/actions';
+import { updatePath } from 'store/search/helpers';
 import moment from 'moment';
 import TripOrganizer from '../../../styled_scenes/TripOrganizer';
 import history from 'main/history';
@@ -63,7 +64,7 @@ class TripOrganizerContainer extends Component {
         children={this.props.children}
         infants={this.props.infants}
         changeDates={this.props.changeDates}
-        updatePath={this.props.updatePath}
+        updatePath={updatePath}
         history={this.props.history}
         isGDPRDismissed={this.props.isGDPRDismissed}
         gdprHeight={this.props.gdprHeight}
@@ -77,9 +78,9 @@ class TripOrganizerContainer extends Component {
 }
 
 const mapStateToProps = (state, props) => {
-  const trip = props.match.params.id ? state.TripReducer.trip : loadTrip();
+  const trip = props.match.params.id ? state.trips.trip : loadTrip();
 
-  let startDate = state.ResultsReducer.search_query.start_date;
+  let startDate = state.search.searchQuery.start_date;
   if (!startDate) {
     const tomorrow = moment()
       .add(1, 'days')
@@ -95,15 +96,15 @@ const mapStateToProps = (state, props) => {
   return {
     session: state.SessionsReducer.session,
     trip,
-    error: state.TripReducer.error,
-    isLoading: state.TripReducer.isLoading,
-    owner: state.TripReducer.owner,
-    adults: state.ResultsReducer.search_query.adults,
-    children: state.ResultsReducer.search_query.children,
-    infants: state.ResultsReducer.search_query.infants,
+    error: state.trips.error,
+    isLoading: state.trips.isLoading,
+    owner: state.trips.owner,
+    adults: state.search.searchQuery.adults,
+    children: state.search.searchQuery.children,
+    infants: state.search.searchQuery.infants,
     startDate,
-    endDate: state.ResultsReducer.search_query.end_date,
-    availability: state.TripReducer.availability,
+    endDate: state.search.searchQuery.end_date,
+    availability: state.trips.availability,
     isGDPRDismissed: state.SettingsReducer.gdprDismissed,
     gdprHeight: state.SettingsReducer.gdprHeight,
   };
@@ -113,8 +114,7 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       ...actions,
-      changeDates: update_search_query_without_search,
-      updatePath: update_path,
+      changeDates: searchActions.updateSearchQuery,
     },
     dispatch,
   );

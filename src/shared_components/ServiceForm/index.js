@@ -228,12 +228,6 @@ class ServiceForm extends Component {
     setFieldValue('duration', duration);
   };
 
-  redeploy = (values, serviceId) => {
-    this.props.resetErrors();
-    this.setState({ showGlobalError: false });
-    this.props.onRedeployContract(values, serviceId);
-  };
-
   addRule = e => {
     e.preventDefault();
     this.props.setFieldValue('rules', [...this.props.values.rules, '']);
@@ -276,12 +270,6 @@ class ServiceForm extends Component {
             <Modal.Header>There was an issue with creating your service</Modal.Header>
             <Modal.Content>{globalError.message}</Modal.Content>
             <Modal.Actions>
-              <Button
-                color="green"
-                onClick={() => this.redeploy(this.props.values, this.state.serviceId)}
-              >
-                Re-deploy
-              </Button>
               <Button color="red" onClick={this.handleModalClose}>
                 Close
               </Button>

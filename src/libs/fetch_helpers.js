@@ -1,4 +1,3 @@
-import Parse from 'parse';
 import { tagsColorMatcher } from './Utils';
 import placeholder from './../assets/placeholder350x350.svg';
 
@@ -338,12 +337,6 @@ const removeDuplicates = (myArr, prop) => {
   });
 };
 
-const build_query = model => {
-  let Model = Parse.Object.extend(model);
-  let query = new Parse.Query(Model);
-  return query;
-};
-
 export const statuses = {
   STARTED: 'started',
   SUCCESS: 'success',
@@ -385,7 +378,6 @@ export default {
   mapServiceObjects,
   buildServicesJson,
   removeDuplicates,
-  build_query,
   statuses,
   buildUserJson,
   createServiceFromUrl,

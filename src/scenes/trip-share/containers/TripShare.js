@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
-import * as actions from '../../trip/actions';
+import actions from 'store/trips/actions';
 import TripShare from '../../../styled_scenes/TripShare';
 
 class TripShareContainer extends Component {
@@ -26,9 +26,9 @@ class TripShareContainer extends Component {
 const mapStateToProps = state => {
   return {
     session: state.SessionsReducer.session,
-    trip: state.TripReducer.trip,
-    error: state.TripReducer.error,
-    isLoading: state.TripReducer.isLoading,
+    trip: state.trips.trip,
+    error: state.trips.error,
+    isLoading: state.trips.isLoading,
   };
 };
 

@@ -93,7 +93,7 @@ const HomeComponent = props => {
           itemType="http://schema.org/ItemList"
           padding="28px 0 0"
         >
-          <SectionTrips trips={props.trips.data} isLoading={props.trips.isLoading} />
+          <SectionTrips trips={props.trips} isLoading={props.isLoading} />
           <SectionTopDestinations />
         </PageContent>
         <BrandFooter />

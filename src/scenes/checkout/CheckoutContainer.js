@@ -20,7 +20,7 @@ import PaymentContainer from './PaymentContainer';
 import BookingDone from './components/BookingDone';
 import CheckoutTrip from './components/CheckoutTrip';
 import * as actions from './actions';
-import * as tripActions from '../trip/actions';
+import tripActions from 'store/trips/actions';
 import Button from 'shared_components/Button';
 import GuestsData from './components/GuestsData';
 import Countdown from './components/Countdown';
@@ -508,13 +508,13 @@ class CheckoutContainer extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  trip: state.TripReducer.trip,
-  isLoading: state.TripReducer.isLoading,
+  trip: state.trips.trip,
+  isLoading: state.trips.isLoading,
   session: state.SessionsReducer.session,
   isGDPRDismissed: state.SettingsReducer.gdprDismissed,
   gdprHeight: state.SettingsReducer.gdprHeight,
-  availability: state.TripReducer.availability.data,
-  isCheckingAvailability: state.TripReducer.availability.isChecking,
+  availability: state.trips.availability.data,
+  isCheckingAvailability: state.trips.availability.isChecking,
 });
 
 const mapDispatchToProps = dispatch =>
