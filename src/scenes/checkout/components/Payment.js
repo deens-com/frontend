@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { injectStripe } from 'react-stripe-elements';
 
 import PaymentSection from './PaymentSection';
-import * as actions from '../actions';
+import * as actions from 'store/checkout/actions';
 
 const PaymentContext = React.createContext();
 
@@ -84,8 +84,8 @@ class Payment extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  paymentError: state.CheckoutReducer.paymentError,
-  bookingStatus: state.CheckoutReducer.bookingStatus,
+  paymentError: state.checkout.paymentError,
+  bookingStatus: state.checkout.bookingStatus,
   plsBalance: state.SessionsReducer.session.plsBalance || 0,
 });
 

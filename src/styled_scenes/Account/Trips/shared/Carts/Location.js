@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router';
 import Truncate from 'react-truncate';
-import * as actions from './../../../../../scenes/service-upsert/actions';
+import * as actions from 'store/services-upsert/actions';
 import { Popup } from 'semantic-ui-react';
 
 // COMPONENTS
