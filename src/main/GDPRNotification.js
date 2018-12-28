@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { media } from 'libs/styled';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as actions from 'main/settings/actions';
+import * as actions from 'store/settings/actions';
 import { updateBottomChatPosition, calculateBottomPosition } from 'libs/Utils';
 import { CrossIcon } from 'shared_components/icons';
 
@@ -87,7 +87,7 @@ class GDPRBanner extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  closed: state.SettingsReducer.gdprDismissed,
+  closed: state.settings.gdprDismissed,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
