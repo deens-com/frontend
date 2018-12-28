@@ -7,14 +7,10 @@ import './index.css';
 import App from './main/app';
 import createHistory from 'history/createBrowserHistory';
 import { unregister as unregisterServiceWorker } from './registerServiceWorker';
-import Parse from 'parse';
 import * as Sentry from '@sentry/browser';
-import { serverBaseURL, isProd, isStaging } from './libs/config';
+import { isProd, isStaging } from './libs/config';
 import * as featureFlags from './libs/feature-flags';
 import { readSession } from 'libs/user-session';
-
-Parse.initialize('myAppId');
-Parse.serverURL = `${serverBaseURL}/parse`;
 
 const history = createHistory();
 

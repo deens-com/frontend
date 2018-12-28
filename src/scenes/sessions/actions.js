@@ -69,22 +69,6 @@ export const setLoginError = payload => {
   };
 };
 
-export const set_base_currency = currency => async dispatch => {
-  let er_query = fetch_helpers.build_query('ExchangeRate');
-  er_query.descending('createdAt');
-  er_query.first().then(result => {
-    currency.rates = fetch_helpers.normalizeParseResponseData(result);
-    // store to local storage
-    localStorage.setItem('currency', JSON.stringify(currency));
-    dispatch({
-      type: types.BASE_CURRENCY_SET,
-      payload: {
-        baseCurrency: currency,
-      },
-    });
-  });
-};
-
 export const getCurrentUser = () => async dispatch => {
   const session = getSession();
   try {

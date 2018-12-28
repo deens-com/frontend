@@ -72,16 +72,6 @@ export const trackTripBooked = tripId => {
   };
 };
 
-export const trackVoiceUsage = searchQuery => {
-  return {
-    eventType: EventTypes.track,
-    eventPayload: {
-      event: `Voice Query${commonSuffix}`,
-      properties: { voiceToText: searchQuery },
-    },
-  };
-};
-
 export const trackMetamaskConnected = () => {
   return {
     eventType: EventTypes.track,

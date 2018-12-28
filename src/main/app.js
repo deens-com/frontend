@@ -28,8 +28,6 @@ import Checkout from '../scenes/checkout';
 import PrivateRoute from './PrivateRoute';
 import { getCurrentUser } from '../scenes/sessions/actions';
 import GDPRNotification from './GDPRNotification';
-import pleaseImg from 'assets/please-travel-plan-trip.jpg';
-import { websiteUrl } from 'libs/config';
 
 const commonHOCs = comp => withErrorBoundary(withSegmentTracker(comp));
 

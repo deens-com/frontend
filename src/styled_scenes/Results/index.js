@@ -24,6 +24,7 @@ import { waitUntilMapsLoaded } from 'libs/Utils';
 
 // STYLES
 import { Page, PageContent } from './../../shared_components/layout/Page';
+import { updatePath } from 'store/search/helpers';
 
 const MapWrapper = styled.div`
   display: flex;
@@ -362,6 +363,7 @@ export default class ResultsScene extends Component {
               data={props.service_data}
               showMap={this.state.showMap}
               goBackToTrip={this.goBackToTrip}
+              updatePath={updatePath}
             />
           </ServicesWrapper>
           <MapPlaceholder ref={this.mapPlaceholderRef} />

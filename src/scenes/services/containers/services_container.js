@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ServiceComponent from './../components/service_component';
-import * as services_actions from './../actions';
+import serviceActions from 'store/services/actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter, Redirect } from 'react-router';
@@ -26,7 +26,6 @@ class ServicesContainer extends Component {
       this.props.fetchMyTrips();
     }
     this.props.setAddedToTripMessage(undefined);
-    //if (!this.props.abi) this.props.fetchServiceContractABI();
   }
 
   componentWillUnmount() {
@@ -101,22 +100,22 @@ class ServicesContainer extends Component {
 }
 
 const mapStateToProps = state => {
-  const service = state.ServicesReducer.service;
+  const service = state.services.service;
   const isLoggedIn = state.SessionsReducer.loggedIn;
 
   return {
     service,
     isLoggedIn,
-    trips: state.ServicesReducer.trips.filter(trip => trip !== undefined),
-    reviews: state.ServicesReducer.reviews,
+    trips: state.services.trips.filter(trip => trip !== undefined),
+    reviews: state.services.reviews,
     myUnpurchasedTrips: isLoggedIn ? state.trips.userTrips.unbookedTrips : [loadTrip()],
-    serviceRecentlyAddedToTrip: state.ServicesReducer.serviceRecentlyAddedToTrip,
-    serviceAlreadyAddedToTrip: state.ServicesReducer.serviceAlreadyAddedToTrip,
-    isServiceUnavailableModalOpen: state.ServicesReducer.isServiceUnavailableModalOpen,
-    abi: state.ServicesReducer.abi,
-    isPageLoading: state.ServicesReducer.isPageLoading,
-    isLoading: state.ServicesReducer.isUpdatingTrip || state.ServicesReducer.isCreatingTrip,
-    serviceFetchError: state.ServicesReducer.serviceFetchError,
+    serviceRecentlyAddedToTrip: state.services.serviceRecentlyAddedToTrip,
+    serviceAlreadyAddedToTrip: state.services.serviceAlreadyAddedToTrip,
+    isServiceUnavailableModalOpen: state.services.isServiceUnavailableModalOpen,
+    abi: state.services.abi,
+    isPageLoading: state.services.isPageLoading,
+    isLoading: state.services.isUpdatingTrip || state.services.isCreatingTrip,
+    serviceFetchError: state.services.serviceFetchError,
     slug: service._id && generateServiceSlug(service),
   };
 };
@@ -124,7 +123,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      ...services_actions,
+      ...serviceActions,
       fetchMyTrips: tripActions.fetchUserTrips,
     },
     dispatch,

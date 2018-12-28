@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Loader } from 'semantic-ui-react';
-import { update_search_query_without_search } from '../../../scenes/results/actions';
+import actions from 'store/search/actions';
 import axios from 'libs/axios';
 import TopBar from 'shared_components/TopBar';
 import BrandFooter from 'shared_components/BrandFooter';
@@ -57,7 +57,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      changeDates: update_search_query_without_search,
+      changeDates: actions.updateSearchQuery,
     },
     dispatch,
   );
