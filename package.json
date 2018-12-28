@@ -14,8 +14,8 @@
   "dependencies": {
     "@sentry/browser": "^4.4.1",
     "axios": "^0.18.0",
-    "babel-plugin-transform-semantic-ui-react-imports": "^1.3.1",
-    "babel-polyfill": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-plugin-semantic-ui-react-transform-imports": "^1.3.2",
     "clipboard-copy": "^2.0.0",
     "ethers": "^3.0.17",
     "fine-uploader": "^5.16.2",
@@ -53,7 +53,7 @@
     "react-redux": "^5.0.7",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
-    "react-scripts": "1.1.1",
+    "react-scripts": "2.1.1",
     "react-select": "^1.2.1",
     "react-slick": "^0.23.1",
     "react-stripe-elements": "2.0.1",
@@ -89,7 +89,8 @@
     "lint-staged": "lint-staged"
   },
   "devDependencies": {
-    "duplicate-package-checker-webpack-plugin": "^2.1.0",
+    "@babel/polyfill": "^7.2.5",
+    "duplicate-package-checker-webpack-plugin": "3.0.0",
     "enzyme": "^3.3.0",
     "fast-glob": "^2.2.4",
     "husky": "^1.0.0-rc.14",
@@ -98,8 +99,8 @@
     "react-app-rewire-lodash": "^2.0.0",
     "react-app-rewire-preload-plugin": "^1.0.0",
     "react-app-rewire-webpack-bundle-analyzer": "^1.0.1",
-    "react-app-rewired": "^1.5.2",
-    "webpack-bundle-analyzer": "^2.13.1",
+    "react-app-rewired": "^1.6.2",
+    "webpack-bundle-analyzer": "^3.0.3",
     "webpack-deadcode-plugin": "^0.1.9"
   },
   "resolutions": {
@@ -124,5 +125,11 @@
     "hooks": {
       "pre-commit": "./pre-commit.sh"
     }
-  }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
