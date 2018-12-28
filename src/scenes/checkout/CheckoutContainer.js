@@ -19,7 +19,7 @@ import { MapMarker, LeftArrow } from 'shared_components/icons';
 import PaymentContainer from './PaymentContainer';
 import BookingDone from './components/BookingDone';
 import CheckoutTrip from './components/CheckoutTrip';
-import * as actions from './actions';
+import * as actions from 'store/checkout/actions';
 import tripActions from 'store/trips/actions';
 import Button from 'shared_components/Button';
 import GuestsData from './components/GuestsData';
