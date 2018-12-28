@@ -16,4 +16,9 @@ export default {
   services: {
     get: get('/services'),
   },
+  users: {
+    kycToken: {
+      get: get('/users/kyc-token'),
+    },
+  },
 };

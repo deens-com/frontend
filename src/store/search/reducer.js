@@ -33,7 +33,6 @@ export default function search(state = initialState, action = {}) {
         tagsOptions: initialState.tagsOptions,
       };
     case types.search.success:
-      console.log(action.payload);
       return {
         ...state,
         results: {

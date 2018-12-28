@@ -2,13 +2,11 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 
-import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router';
 import { Loader } from 'semantic-ui-react';
 import history from 'main/history';
 import axios from 'libs/axios';
 
-import * as actions from './actions';
 import Information from './Information';
 import KYC from './KYC';
 import BuyTokens from './BuyTokens';
@@ -24,6 +22,8 @@ import TokenBought from './TokenBought';
 import TopBar from '../../shared_components/TopBar';
 import { Page, PageWrapper, PageContent } from '../../shared_components/layout/Page';
 import BrandFooter from '../../shared_components/BrandFooter';
+import fetchHelperFactory, { defaultState } from 'libs/fetchHelper';
+import api from 'libs/apiClient';
 import { icoReady } from 'libs/config';
 
 const PageTop = styled.div`
@@ -80,7 +80,16 @@ class TokenSale extends Component {
     super(props);
     this.state = {
       agreedTerms: false,
+      iframeToken: {
+        ...defaultState,
+        isLoading: false,
+      },
     };
+    this.fetchToken = fetchHelperFactory(
+      this.setState.bind(this),
+      'iframeToken',
+      api.users.kycToken.get,
+    );
   }
   componentDidMount() {
     if (this.props.kycState === 0 && this.props.oldKycToken) {
@@ -102,7 +111,7 @@ class TokenSale extends Component {
       });
       return;
     }
-    this.props.fetchIFrameToken();
+    this.fetchToken();
   };
 
   getTitle() {
@@ -131,7 +140,7 @@ class TokenSale extends Component {
   };
 
   renderContent() {
-    if (this.props.isLoadingToken || this.state.isLoading) {
+    if (this.props.isLoadingToken || this.state.iframeToken.isLoading) {
       return <Loader inline="centered" active size="big" />;
     }
 
@@ -159,9 +168,12 @@ class TokenSale extends Component {
       return <ThankYou />;
     }
 
-    if (this.props.kyc_token) {
+    if (this.state.iframeToken.data) {
       return (
-        <KYC kycToken={this.props.kyc_token} locationPathname={this.props.location.pathname} />
+        <KYC
+          kycToken={this.state.iframeToken.data.token}
+          locationPathname={this.props.location.pathname}
+        />
       );
     }
 
@@ -210,24 +222,13 @@ class TokenSale extends Component {
 
 const mapStateToProps = state => {
   return {
-    kyc_token: state.TokenSaleReducer.kyc_token,
     loggedIn: state.SessionsReducer.loggedIn,
     isLoadingUser: state.SessionsReducer.isLoading,
     kycState: state.SessionsReducer.session.kycValidated || 0,
     plsBalance: state.SessionsReducer.session.plsBalance,
     oldKycToken: state.SessionsReducer.session.kycToken,
     whitelistedAddresses: state.SessionsReducer.session.whitelistedIcoAddresses,
-    isLoadingToken: state.TokenSaleReducer.loading,
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(actions, dispatch);
-};
-
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(TokenSale),
-);
+export default withRouter(connect(mapStateToProps)(TokenSale));
