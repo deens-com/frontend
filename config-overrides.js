@@ -16,7 +16,7 @@ module.exports = function override(config, env) {
   // });
   config = injectBabelPlugin(
     [
-      'transform-semantic-ui-react-imports',
+      'semantic-ui-react-transform-imports',
       {
         convertMemberImports: true,
         importType: 'es',
@@ -26,7 +26,7 @@ module.exports = function override(config, env) {
     config,
   );
 
-  config.entry.unshift('babel-polyfill');
+  config.entry.unshift('@babel/polyfill');
 
   if (isProd) {
     config = rewireWebpackBundleAnalyzer(config, env, {

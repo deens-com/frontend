@@ -33,13 +33,13 @@ function redirect(to, action) {
 
 export const loginStarts = () => {
   return {
-    type: this.types.LOGIN_STARTS,
+    type: types.LOGIN_STARTS,
   };
 };
 
 export const sessionsFetched = session => {
   return {
-    type: this.types.LOGIN_SUCCESS,
+    type: types.LOGIN_SUCCESS,
     payload: session,
     meta: { analytics: identifyUsingSession(session.session) },
   };
