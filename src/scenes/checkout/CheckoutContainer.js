@@ -511,8 +511,8 @@ const mapStateToProps = state => ({
   trip: state.trips.trip,
   isLoading: state.trips.isLoading,
   session: state.SessionsReducer.session,
-  isGDPRDismissed: state.SettingsReducer.gdprDismissed,
-  gdprHeight: state.SettingsReducer.gdprHeight,
+  isGDPRDismissed: state.settings.gdprDismissed,
+  gdprHeight: state.settings.gdprHeight,
   availability: state.trips.availability.data,
   isCheckingAvailability: state.trips.availability.isChecking,
 });

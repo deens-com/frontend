@@ -105,8 +105,8 @@ const mapStateToProps = (state, props) => {
     startDate,
     endDate: state.search.searchQuery.end_date,
     availability: state.trips.availability,
-    isGDPRDismissed: state.SettingsReducer.gdprDismissed,
-    gdprHeight: state.SettingsReducer.gdprHeight,
+    isGDPRDismissed: state.settings.gdprDismissed,
+    gdprHeight: state.settings.gdprHeight,
   };
 };
 

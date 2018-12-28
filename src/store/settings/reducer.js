@@ -6,7 +6,7 @@ const initialState = {
   gdprHeight: 0,
 };
 
-export default function SettingsReducer(state = initialState, action = {}) {
+export default function settings(state = initialState, action = {}) {
   switch (action.type) {
     case types.DISMISS_GDPR: {
       return {

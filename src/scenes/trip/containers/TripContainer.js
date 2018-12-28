@@ -169,8 +169,8 @@ const mapStateToProps = state => {
     endDate: state.search.searchQuery.end_date,
     availability: state.trips.availability,
     isCloning: state.trips.isCloning,
-    isGDPRDismissed: state.SettingsReducer.gdprDismissed,
-    gdprHeight: state.SettingsReducer.gdprHeight,
+    isGDPRDismissed: state.settings.gdprDismissed,
+    gdprHeight: state.settings.gdprHeight,
     slug: trip && generateTripSlug(trip),
   };
 };
