@@ -51,6 +51,9 @@ class TripOrganizerContainer extends Component {
     if (this.props.trip && this.props.trip.bookingStatus === 'booked') {
       history.replace(`/trips/${generateTripSlug(this.props.trip)}`);
     }
+    if (this.props.trip && this.props.trip.owner !== this.props.session._id) {
+      history.replace(`/trips/${generateTripSlug(this.props.trip)}`);
+    }
   }
 
   render() {
