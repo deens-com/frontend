@@ -10,7 +10,7 @@ import { Image } from 'semantic-ui-react';
 // REDUX
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getCurrentUser, logOut } from 'scenes/sessions/actions';
+import { getCurrentUser, logOut } from 'store/session/actions';
 // ACTIONS/CONFIG
 import { Dropdown } from 'semantic-ui-react';
 
@@ -153,7 +153,7 @@ class DesktopDropDownMenu extends Component {
 }
 
 const mapStateToProps = state => ({
-  session: state.SessionsReducer.session,
+  session: state.session.session,
 });
 
 const mapDispatchToProps = dispatch => {

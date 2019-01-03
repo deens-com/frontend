@@ -97,7 +97,7 @@ const mapStateToProps = (state, props) => {
   }
 
   return {
-    session: state.SessionsReducer.session,
+    session: state.session.session,
     trip,
     error: state.trips.error,
     isLoading: state.trips.isLoading,

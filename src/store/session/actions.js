@@ -1,7 +1,7 @@
 import axios from 'libs/axios';
 import validator from 'validator';
-import history from './../../main/history';
-import fetch_helpers from './../../libs/fetch_helpers';
+import history from 'main/history';
+import fetch_helpers from 'libs/fetch_helpers';
 import { identifyUsingSession } from 'libs/analytics';
 import { serverBaseURL } from 'libs/config';
 import { saveSession, getSession, removeSession } from 'libs/user-session';
@@ -90,11 +90,11 @@ export const getCurrentUser = () => async dispatch => {
             const chatUser = (await window.fcWidget.user.get()).data;
             if (chatUser.firstName !== userObject.username) {
               await window.fcWidget.user.clear();
-              await setUserData();
+              await setUserData(userObject);
             }
           } catch (e) {
             if (e.status === 401) {
-              await setUserData();
+              await setUserData(userObject);
             }
           }
         }
@@ -103,6 +103,7 @@ export const getCurrentUser = () => async dispatch => {
     }
     dispatch({ type: types.NOT_LOGGED_IN });
   } catch (error) {
+    console.log(error);
     dispatch(logOut());
   }
 };

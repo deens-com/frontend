@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ResultsComponent from './../components/results_component';
+import ResultsComponent from './../components/Results';
 import searchActions from 'store/search/actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';

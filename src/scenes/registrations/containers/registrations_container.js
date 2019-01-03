@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import RegistrationsComponent from './../components/registrations_component';
+import RegistrationsComponent from './../components/Registrations';
 import validator from 'validator';
 import history from 'main/history';
 import { getSession } from 'libs/user-session';

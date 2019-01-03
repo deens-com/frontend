@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import * as accountActions from '../actions';
+import * as accountActions from 'store/account/actions';
 import AccountTripsScene from '../components/AccountTripsScene';
 
 class AccountTripsContainer extends Component {

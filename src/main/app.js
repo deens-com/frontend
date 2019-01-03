@@ -26,7 +26,7 @@ import ScrollToTop from './middlewares/ScrollToTop';
 import ServiceUpsert from '../scenes/service-upsert';
 import Checkout from '../scenes/checkout';
 import PrivateRoute from './PrivateRoute';
-import { getCurrentUser } from '../scenes/sessions/actions';
+import { getCurrentUser } from 'store/session/actions';
 import GDPRNotification from './GDPRNotification';
 
 const commonHOCs = comp => withErrorBoundary(withSegmentTracker(comp));

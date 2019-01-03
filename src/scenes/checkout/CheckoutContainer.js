@@ -510,7 +510,7 @@ class CheckoutContainer extends React.Component {
 const mapStateToProps = state => ({
   trip: state.trips.trip,
   isLoading: state.trips.isLoading,
-  session: state.SessionsReducer.session,
+  session: state.session.session,
   isGDPRDismissed: state.settings.gdprDismissed,
   gdprHeight: state.settings.gdprHeight,
   availability: state.trips.availability.data,

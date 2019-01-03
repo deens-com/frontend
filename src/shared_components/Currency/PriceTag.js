@@ -78,7 +78,7 @@ class PriceTag extends Component {
 }
 
 const mapStateToProps = state => ({
-  baseCurrency: state.SessionsReducer.baseCurrency,
+  baseCurrency: state.session.baseCurrency,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
