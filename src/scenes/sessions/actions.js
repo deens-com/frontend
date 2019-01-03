@@ -69,6 +69,12 @@ export const setLoginError = payload => {
   };
 };
 
+async function setUserData(userObject) {
+  await window.fcWidget.setExternalId(userObject._id);
+  await window.fcWidget.user.setFirstName(userObject.username);
+  await window.fcWidget.user.setEmail(userObject.email);
+}
+
 export const getCurrentUser = () => async dispatch => {
   const session = getSession();
   try {
@@ -84,12 +90,12 @@ export const getCurrentUser = () => async dispatch => {
             const chatUser = (await window.fcWidget.user.get()).data;
             if (chatUser.firstName !== userObject.username) {
               await window.fcWidget.user.clear();
-              await window.fcWidget.setExternalId(userObject._id);
-              await window.fcWidget.user.setFirstName(userObject.username);
-              await window.fcWidget.user.setEmail(userObject.email);
+              await setUserData();
             }
           } catch (e) {
-            console.log(e);
+            if (e.status === 401) {
+              await setUserData();
+            }
           }
         }
       }
