@@ -110,8 +110,8 @@ export default class RegistrationsContainer extends Component {
       });
     } catch (error) {
       const errorMessage =
-        error.response && error.response.data && error.response.data.code === 'invalid'
-          ? error.response.data.code
+        error.response && error.response.data && error.response.data.code === 'invalid_password'
+          ? error.response.data.policy
           : (error.response &&
               error.response.data &&
               (error.response.data.message ||
