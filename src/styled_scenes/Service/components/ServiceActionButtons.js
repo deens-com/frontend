@@ -54,7 +54,16 @@ function ServiceActionButtons(props) {
         onNewTripClick={props.onAddServiceToNewTrip}
         isLoggedIn={props.isLoggedIn}
       />
-      <Button icon labelPosition="right" color="blue" onClick={props.onBookNowClick}>
+      <Button
+        icon
+        labelPosition="right"
+        color="blue"
+        onClick={props.onBookNowClick}
+        target="_blank"
+        rel="noopener noreferrer"
+        as={props.externalCheckoutUrl ? 'a' : 'button'}
+        href={props.externalCheckoutUrl}
+      >
         Book Now
         <Icon name="shop" />
       </Button>
