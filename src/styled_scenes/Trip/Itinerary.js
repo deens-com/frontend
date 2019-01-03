@@ -280,7 +280,7 @@ export default class Itinerary extends Component {
                   <Tag
                     key={tag.label}
                     item={tag}
-                    href={`/results?service_types=trip&tags=${tag.label}`}
+                    href={`/results?serviceTypes=trip&tags=${tag.label}`}
                   />
                 ))}
               </ServiceTags>
