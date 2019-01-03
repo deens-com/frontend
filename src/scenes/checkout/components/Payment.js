@@ -86,7 +86,7 @@ class Payment extends React.Component {
 const mapStateToProps = state => ({
   paymentError: state.checkout.paymentError,
   bookingStatus: state.checkout.bookingStatus,
-  plsBalance: state.SessionsReducer.session.plsBalance || 0,
+  plsBalance: state.session.session.plsBalance || 0,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);

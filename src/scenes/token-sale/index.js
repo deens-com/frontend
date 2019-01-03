@@ -222,12 +222,12 @@ class TokenSale extends Component {
 
 const mapStateToProps = state => {
   return {
-    loggedIn: state.SessionsReducer.loggedIn,
-    isLoadingUser: state.SessionsReducer.isLoading,
-    kycState: state.SessionsReducer.session.kycValidated || 0,
-    plsBalance: state.SessionsReducer.session.plsBalance,
-    oldKycToken: state.SessionsReducer.session.kycToken,
-    whitelistedAddresses: state.SessionsReducer.session.whitelistedIcoAddresses,
+    loggedIn: state.session.loggedIn,
+    isLoadingUser: state.session.isLoading,
+    kycState: state.session.session.kycValidated || 0,
+    plsBalance: state.session.session.plsBalance,
+    oldKycToken: state.session.session.kycToken,
+    whitelistedAddresses: state.session.session.whitelistedIcoAddresses,
   };
 };
 

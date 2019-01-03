@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ServiceComponent from './../components/service_component';
+import ServiceComponent from '../components/Service';
 import serviceActions from 'store/services/actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -101,7 +101,7 @@ class ServicesContainer extends Component {
 
 const mapStateToProps = state => {
   const service = state.services.service;
-  const isLoggedIn = state.SessionsReducer.loggedIn;
+  const isLoggedIn = state.session.loggedIn;
 
   return {
     service,

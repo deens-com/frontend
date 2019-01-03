@@ -25,7 +25,7 @@ class TripShareContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    session: state.SessionsReducer.session,
+    session: state.session.session,
     trip: state.trips.trip,
     error: state.trips.error,
     isLoading: state.trips.isLoading,

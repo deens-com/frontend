@@ -20,7 +20,7 @@ const initialState = {
   isLoading: false,
 };
 
-export default function SessionsReducer(state = initialState, action = {}) {
+export default function session(state = initialState, action = {}) {
   switch (action.type) {
     case sessions_actions.types.LOGIN_STARTS:
       return { ...state, isLoading: true };

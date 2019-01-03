@@ -50,7 +50,7 @@ class TripCreatorContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    session: state.SessionsReducer.session,
+    session: state.session.session,
   };
 };
 
