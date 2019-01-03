@@ -280,6 +280,7 @@ export default class TripOrganizer extends Component {
     );
 
     if (!this.props.tripId) {
+      console.log('en cualquier lleca', this.props.startDate);
       this.checkAllServicesAvailability({
         startDate: this.props.startDate,
         guests: {
@@ -297,6 +298,7 @@ export default class TripOrganizer extends Component {
 
   componentDidUpdate(prevProps) {
     if (!prevProps.trip && this.props.trip) {
+      console.log('thispor', this.props.startDate);
       this.checkAllServicesAvailability({
         startDate: this.props.startDate,
         guests: {
@@ -662,6 +664,14 @@ export default class TripOrganizer extends Component {
 
   checkSingleService = async (data, startDate, guests, attempt = 1) => {
     try {
+      console.log('falopin', startDate, data);
+      console.log(
+        'averga',
+        startDate
+          .clone()
+          .add(data.day - 1, 'days')
+          .format('YYYY-MM-DD'),
+      );
       const result = await axios.post(`/services/${data.service._id}/availability`, {
         bookingDate: startDate
           .clone()
@@ -993,29 +1003,7 @@ export default class TripOrganizer extends Component {
             [newKey]: prevState.notes[value],
           };
         }, {});
-        console.log({
-          trip: {
-            ...prevState.trip,
-            duration: prevState.trip.duration - daysToMinutes(1),
-          },
-          notes,
-          optionsSelected,
-          daysByService,
-          days: prevState.days.filter(prevDay => prevDay.day !== day.day).map(
-            prevDay =>
-              prevDay.day < day.day
-                ? prevDay
-                : {
-                    ...prevDay,
-                    ...dayTitles(prevDay.day - 1, this.props.startDate),
-                    day: prevDay.day - 1,
-                    data: prevDay.data.map(serv => ({
-                      ...serv,
-                      day: prevDay.day - 1,
-                    })),
-                  },
-          ),
-        });
+
         return {
           trip: {
             ...prevState.trip,
