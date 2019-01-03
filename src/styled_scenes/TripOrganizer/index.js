@@ -664,14 +664,6 @@ export default class TripOrganizer extends Component {
 
   checkSingleService = async (data, startDate, guests, attempt = 1) => {
     try {
-      console.log('falopin', startDate, data);
-      console.log(
-        'averga',
-        startDate
-          .clone()
-          .add(data.day - 1, 'days')
-          .format('YYYY-MM-DD'),
-      );
       const result = await axios.post(`/services/${data.service._id}/availability`, {
         bookingDate: startDate
           .clone()
