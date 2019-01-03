@@ -118,7 +118,7 @@ const mapStateToProps = state => {
     search_query: state.search.searchQuery,
     count: state.search.count,
     isLoadingResults: state.search.results.isLoading,
-    tagsOptions: state.search.tags,
+    tagsOptions: state.search.tagsOptions,
     trip: state.trips.trip,
   };
 };
