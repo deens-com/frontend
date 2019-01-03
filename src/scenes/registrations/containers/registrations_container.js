@@ -111,7 +111,8 @@ export default class RegistrationsContainer extends Component {
     } catch (error) {
       const errorMessage =
         error.response && error.response.data && error.response.data.code === 'invalid_password'
-          ? error.response.data.policy
+          ? `Password requirements are:
+            ${error.response.data.policy.split('↵').join('\n')}`
           : (error.response &&
               error.response.data &&
               (error.response.data.message ||
