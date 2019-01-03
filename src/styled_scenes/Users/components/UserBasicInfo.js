@@ -34,7 +34,8 @@ const formatDate = date => moment(date).format('MMMM YYYY');
 const UserBasicInfo = ({ user = {} }) => {
   const name = user.fullName || user.username;
   // TODO: upload the image on our own infra
-  const dpUrl = (user.profilePicture && user.profilePicture.url) || ImgurAvatar;
+
+  const dpUrl = user.profilePicture || ImgurAvatar;
   const userLevel = user.userLevel || 'New user';
   return (
     <Wrapper>
