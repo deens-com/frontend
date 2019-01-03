@@ -17,8 +17,8 @@ class AccountSettingsContainer extends Component {
 }
 
 const mapStateToProps = state => ({
-  metaMaskError: state.AccountReducer.metaMaskError,
-  ledger_error: state.AccountReducer.ledger_error,
+  metaMaskError: state.account.metaMaskError,
+  ledger_error: state.account.ledger_error,
 });
 
 const mapDispatchToProps = dispatch => {

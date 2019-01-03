@@ -16,8 +16,8 @@ class AccountTripsContainer extends Component {
 }
 
 const mapStateToProps = state => ({
-  allTrips: state.AccountReducer.allTrips,
-  isLoadingTrips: state.AccountReducer.isLoadingTrips,
+  allTrips: state.account.allTrips,
+  isLoadingTrips: state.account.isLoadingTrips,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(accountActions, dispatch);
