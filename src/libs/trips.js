@@ -8,6 +8,18 @@ export const patchTrip = async (id, data) => {
 };
 
 export const addServiceToTrip = (tripServices, service, day) => {
+  const serviceId = typeof service !== 'object' ? service : service._id;
+
+  const alreadyAdded = tripServices.find(
+    tripService =>
+      (tripService.service === serviceId || tripService.service._id === serviceId) &&
+      tripService.day === day,
+  );
+
+  if (alreadyAdded) {
+    return tripServices;
+  }
+
   return [
     ...tripServices,
     {

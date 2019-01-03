@@ -27,8 +27,8 @@ class AccountServicesComponent extends Component {
 
 const mapStateToProps = state => {
   return {
-    user_services: state.AccountReducer.user_services,
-    isLoading: state.AccountReducer.isLoadingServices,
+    user_services: state.account.user_services,
+    isLoading: state.account.isLoadingServices,
   };
 };
 
