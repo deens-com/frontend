@@ -69,9 +69,9 @@ export default class RegistrationsContainer extends Component {
       this.setState({ errors: { message: 'Password does not match' } });
       return;
     }
-    if (this.state.password.length < 6) {
+    if (this.state.password.length < 8) {
       this.setState({
-        errors: { message: 'Password must be at least 6 characters long' },
+        errors: { message: 'Password must be at least 8 characters long' },
       });
       return;
     }
@@ -109,16 +109,20 @@ export default class RegistrationsContainer extends Component {
         registered: true,
       });
     } catch (error) {
-      this.setState({
-        isLoading: false,
-        errors: {
-          message:
-            (error.response &&
+      const errorMessage =
+        error.response && error.response.data && error.response.data.code === 'invalid'
+          ? error.response.data.code
+          : (error.response &&
               error.response.data &&
               (error.response.data.message ||
                 error.response.data.error_description ||
                 error.response.data.description)) ||
-            error.message,
+            error.message;
+
+      this.setState({
+        isLoading: false,
+        errors: {
+          message: errorMessage,
         },
       });
     }
