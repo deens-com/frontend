@@ -29,10 +29,10 @@ class TripCreatorContainer extends Component {
   componentDidMount() {
     if (this.props.session.username) {
       axios.post(`/trips`, emptyTrip).then(response => {
-        history.push(`/trips/organize/${response.data._id}`);
+        history.replace(`/trips/organize/${response.data._id}`);
       });
     } else {
-      history.push('/trips/organize');
+      history.replace('/trips/organize');
     }
   }
   render() {
