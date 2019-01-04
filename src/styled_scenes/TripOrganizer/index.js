@@ -280,7 +280,6 @@ export default class TripOrganizer extends Component {
     );
 
     if (!this.props.tripId) {
-      console.log('en cualquier lleca', this.props.startDate);
       this.checkAllServicesAvailability({
         startDate: this.props.startDate,
         guests: {
@@ -298,7 +297,6 @@ export default class TripOrganizer extends Component {
 
   componentDidUpdate(prevProps) {
     if (!prevProps.trip && this.props.trip) {
-      console.log('thispor', this.props.startDate);
       this.checkAllServicesAvailability({
         startDate: this.props.startDate,
         guests: {
