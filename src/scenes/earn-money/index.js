@@ -215,8 +215,8 @@ const EarnMoney = ({ loggedIn, userProfile }) => {
 
 const mapStateToProps = state => {
   return {
-    loggedIn: Boolean(state.SessionsReducer.session.username),
-    userProfile: state.SessionsReducer.session,
+    loggedIn: Boolean(state.session.session.username),
+    userProfile: state.session.session,
   };
 };
 
