@@ -19,7 +19,7 @@ const StaticFooter = styled.footer`
 
 class AccountContainer extends Component {
   componentDidMount() {
-    this.props.getCurrentUser();
+    this.props.getCurrentUser(true);
   }
 
   componentWillReceiveProps(nextProps) {

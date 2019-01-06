@@ -2,6 +2,8 @@ import React from 'react';
 import { Switch } from 'react-router';
 import { Route, Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import queryString from 'query-string';
+import Cookies from 'js-cookie';
 import store from './store';
 import history from 'main/history';
 import withSegmentTracker from './middlewares/with_segment_tracker';
@@ -32,8 +34,19 @@ import GDPRNotification from './GDPRNotification';
 const commonHOCs = comp => withErrorBoundary(withSegmentTracker(comp));
 
 class App extends React.Component {
+  checkForReferrerAndSet = () => {
+    const cookieReferrerId = 'please_referrer_id';
+    const params = queryString.parse(history.location.search);
+
+    if (params.ref) {
+      Cookies.set(cookieReferrerId, params.ref);
+    }
+  };
+
   componentDidMount() {
     getCurrentUser()(store.dispatch);
+
+    this.checkForReferrerAndSet();
   }
 
   render() {

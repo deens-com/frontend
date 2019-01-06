@@ -10,6 +10,7 @@ import shareImg from './images/share.jpg';
 import hostImg from './images/host.jpg';
 
 import CallToAction from './CallToAction';
+import ReferAFriend from './ReferAFriend';
 
 import TopBar from '../../shared_components/TopBar';
 import { Page, PageWrapper, PageContent } from '../../shared_components/layout/Page';
@@ -123,7 +124,7 @@ const InfoImage = styled.span`
   }
 `;
 
-const EarnMoney = ({ loggedIn }) => {
+const EarnMoney = ({ loggedIn, userProfile }) => {
   return (
     <Page>
       <Helmet>
@@ -166,6 +167,7 @@ const EarnMoney = ({ loggedIn }) => {
                 text="Refer a friend"
                 url="/"
                 loggedOutText="Log In to Invite Friends"
+                loggedInElement={<ReferAFriend userProfile={userProfile} />}
               />
             </InfoContent>
           </InfoBlock>
@@ -213,7 +215,8 @@ const EarnMoney = ({ loggedIn }) => {
 
 const mapStateToProps = state => {
   return {
-    loggedIn: Boolean(state.session.session.username),
+    loggedIn: Boolean(state.SessionsReducer.session.username),
+    userProfile: state.SessionsReducer.session,
   };
 };
 

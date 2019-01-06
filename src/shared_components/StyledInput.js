@@ -6,6 +6,7 @@ const Wrapper = styled.div`
   border-bottom: 1px solid ${props => (props.error ? '#D98181' : '#38d39f')};
   padding: 0 7px;
   border-radius: 5px 5px 0 0;
+  background-color: white;
   flex: 1;
   color: #3c434b;
   display: flex;

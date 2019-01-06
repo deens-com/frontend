@@ -17,7 +17,7 @@ class SessionsContainer extends Component {
     this.isInputInvalid = this.isInputInvalid.bind(this);
     this.isLoginError = this.isLoginError.bind(this);
 
-    this.props.getCurrentUser();
+    this.props.getCurrentUser(true);
   }
 
   parseLogin = event => {

@@ -36,4 +36,3 @@ export const icoReady = process.env.REACT_APP_ICO;
 
 export const websiteUrl =
   env === 'production' ? 'https://please.com' : `https://${window.location.hostname}`;
-//export const websiteUrl = process.env.PUBLIC_URL;
