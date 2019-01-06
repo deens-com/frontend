@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Cookies from 'js-cookie';
 import RegistrationsComponent from './../components/Registrations';
 import validator from 'validator';
 import history from 'main/history';
@@ -99,11 +100,17 @@ export default class RegistrationsContainer extends Component {
         isLoading: true,
         errors: {},
       });
+
+      const cookieReferrerId = 'please_referrer_id';
+      let referrer = Cookies.get(cookieReferrerId);
+
       await axios.post('/users/signup', {
         username: this.state.username,
         email,
         password: this.state.password,
+        referrerCode: referrer,
       });
+
       this.setState({
         isLoading: false,
         registered: true,
