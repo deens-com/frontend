@@ -28,10 +28,8 @@ import ScrollToTop from './middlewares/ScrollToTop';
 import ServiceUpsert from '../scenes/service-upsert';
 import Checkout from '../scenes/checkout';
 import PrivateRoute from './PrivateRoute';
-import { getCurrentUser } from '../scenes/sessions/actions';
+import { getCurrentUser } from 'store/session/actions';
 import GDPRNotification from './GDPRNotification';
-import pleaseImg from 'assets/please-travel-plan-trip.jpg';
-import { websiteUrl } from 'libs/config';
 
 const commonHOCs = comp => withErrorBoundary(withSegmentTracker(comp));
 
@@ -55,6 +53,7 @@ class App extends React.Component {
     return (
       <Provider store={store}>
         <React.Fragment>
+          <GDPRNotification />
           <Router history={history}>
             <ScrollToTop>
               <Switch>
@@ -133,7 +132,6 @@ class App extends React.Component {
               </Switch>
             </ScrollToTop>
           </Router>
-          <GDPRNotification />
         </React.Fragment>
       </Provider>
     );

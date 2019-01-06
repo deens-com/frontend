@@ -155,12 +155,12 @@ const AvailabilityBox = styled.div`
   font-weight: 700;
 `;
 
-const CheckingAvailability = AvailabilityBox.extend`
+const CheckingAvailability = styled(AvailabilityBox)`
   background-color: #f7f7f7;
   color: #919191;
 `;
 
-const Availability = AvailabilityBox.extend`
+const Availability = styled(AvailabilityBox)`
   background-color: ${props => (props.available ? '#BAFFE8' : '#FFC3C3')};
   color: ${props => (props.available ? '#38D39F' : '#F65353')};
 `;
@@ -319,7 +319,7 @@ export default class Itinerary extends Component {
 
   /*<AddServiceModal trip={this.props.trip} onServiceSelect={this.props.addService} day={day} />*/
   renderDay = (day, index) => (
-    <Day key={day.title} innerRef={this.r[index]}>
+    <Day key={day.title} ref={this.r[index]}>
       <DayHeader>
         <DayTitle>{day.title}</DayTitle>
         {this.props.days.length > 1 && (

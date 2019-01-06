@@ -6,7 +6,7 @@ import Parse from 'parse';
 import { Loader } from 'semantic-ui-react';
 import history from '../../../main/history';
 
-import * as actions from '../actions';
+import * as actions from 'store/services-upsert/actions';
 import ServiceForm from '../../../shared_components/ServiceForm';
 import NotFound from '../../../styled_scenes/NotFound';
 import { generateServiceSlug } from 'libs/Utils';
@@ -34,10 +34,6 @@ class EditServiceFormContainer extends Component {
     }
   }
 
-  redeployFailedContract = (values, serviceId) => {
-    this.props.redeployContract(values, serviceId, this.props.history);
-  };
-
   onSubmit = values => {
     this.props.saveServiceChanges(this.getServiceId(), values, this.props.history);
   };
@@ -63,7 +59,6 @@ class EditServiceFormContainer extends Component {
           onSubmit={this.onSubmit}
           submitInFlight={isSubmitting}
           globalError={this.props.error}
-          onRedeployContract={this.redeployFailedContract}
           submitButtonText="Save"
           {...this.props}
         />
@@ -73,13 +68,13 @@ class EditServiceFormContainer extends Component {
 }
 
 const mapStateToProps = state => ({
-  isLoading: state.ServiceUpsert.isLoading,
-  isSubmitting: state.ServiceUpsert.isSubmitting,
-  service: state.ServiceUpsert.service,
-  error: state.ServiceUpsert.error,
-  fetchError: state.ServiceUpsert.error,
-  userProfile: state.ServiceUpsert.userProfile,
-  serviceFormTagsOptions: state.ServiceUpsert.serviceFormTagsOptions,
+  isLoading: state.servicesUpsert.isLoading,
+  isSubmitting: state.servicesUpsert.isSubmitting,
+  service: state.servicesUpsert.service,
+  error: state.servicesUpsert.error,
+  fetchError: state.servicesUpsert.error,
+  userProfile: state.servicesUpsert.userProfile,
+  serviceFormTagsOptions: state.servicesUpsert.serviceFormTagsOptions,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);

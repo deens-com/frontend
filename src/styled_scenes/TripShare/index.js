@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { media } from 'libs/styled';
 import { Loader, Dimmer } from 'semantic-ui-react';
-import axios from 'libs/axios';
+import * as tripUtils from 'libs/trips';
 import history from 'main/history';
 import styled from 'styled-components';
 import { Page } from 'shared_components/layout/Page';
@@ -104,7 +104,7 @@ export default class Share extends React.Component {
         privacy: 'public',
       };
 
-      await axios.patch(`/trips/${this.props.trip._id}`, trip);
+      await tripUtils.patchTrip(this.props.trip._id, trip);
 
       history.push(`/trips/${generateTripSlug(this.props.trip)}`);
     });
@@ -142,7 +142,7 @@ export default class Share extends React.Component {
                   </Label>
                   <Input error={this.state.errors.description}>
                     <TextArea
-                      innerRef={this.descInput}
+                      ref={this.descInput}
                       defaultValue={trip.description && I18nText.translate(trip.description)}
                     />
                   </Input>

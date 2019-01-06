@@ -1,7 +1,7 @@
 import axios from 'libs/axios';
 import validator from 'validator';
-import history from './../../main/history';
-import fetch_helpers from './../../libs/fetch_helpers';
+import history from 'main/history';
+import fetch_helpers from 'libs/fetch_helpers';
 import { identifyUsingSession } from 'libs/analytics';
 import { serverBaseURL } from 'libs/config';
 import { saveSession, getSession, removeSession } from 'libs/user-session';
@@ -33,13 +33,13 @@ function redirect(to, action) {
 
 export const loginStarts = () => {
   return {
-    type: this.types.LOGIN_STARTS,
+    type: types.LOGIN_STARTS,
   };
 };
 
 export const sessionsFetched = session => {
   return {
-    type: this.types.LOGIN_SUCCESS,
+    type: types.LOGIN_SUCCESS,
     payload: session,
     meta: { analytics: identifyUsingSession(session.session) },
   };
@@ -69,21 +69,11 @@ export const setLoginError = payload => {
   };
 };
 
-export const set_base_currency = currency => async dispatch => {
-  let er_query = fetch_helpers.build_query('ExchangeRate');
-  er_query.descending('createdAt');
-  er_query.first().then(result => {
-    currency.rates = fetch_helpers.normalizeParseResponseData(result);
-    // store to local storage
-    localStorage.setItem('currency', JSON.stringify(currency));
-    dispatch({
-      type: types.BASE_CURRENCY_SET,
-      payload: {
-        baseCurrency: currency,
-      },
-    });
-  });
-};
+async function setUserData(userObject) {
+  await window.fcWidget.setExternalId(userObject._id);
+  await window.fcWidget.user.setFirstName(userObject.username);
+  await window.fcWidget.user.setEmail(userObject.email);
+}
 
 export const getCurrentUser = fetchReferralInfo => async dispatch => {
   const session = getSession();
@@ -111,12 +101,12 @@ export const getCurrentUser = fetchReferralInfo => async dispatch => {
             const chatUser = (await window.fcWidget.user.get()).data;
             if (chatUser.firstName !== userObject.username) {
               await window.fcWidget.user.clear();
-              await window.fcWidget.setExternalId(userObject._id);
-              await window.fcWidget.user.setFirstName(userObject.username);
-              await window.fcWidget.user.setEmail(userObject.email);
+              await setUserData(userObject);
             }
           } catch (e) {
-            console.log(e);
+            if (e.status === 401) {
+              await setUserData(userObject);
+            }
           }
         }
       }
@@ -124,6 +114,7 @@ export const getCurrentUser = fetchReferralInfo => async dispatch => {
     }
     dispatch({ type: types.NOT_LOGGED_IN });
   } catch (error) {
+    console.log(error);
     dispatch(logOut());
   }
 };

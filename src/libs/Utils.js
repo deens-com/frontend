@@ -208,9 +208,9 @@ export function getPriceFromServiceOption(base, price, peopleCount = 1) {
   return Number(price.value);
 }
 
-export function calculateBottomPosition(isGDPRDismissed, baseBottom = 0) {
+export function calculateBottomPosition(isGDPRDismissed, gdprHeight, baseBottom = 0) {
   if (!isGDPRDismissed) {
-    return baseBottom + document.getElementById('gdpr-banner').getBoundingClientRect().height;
+    return baseBottom + gdprHeight;
   }
   return baseBottom;
 }

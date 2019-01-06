@@ -1,0 +1,8 @@
+.ui.modal.serviceModal {
+  margin: 100px auto 15px !important;
+}
+
+.ui.modal.serviceModal .content {
+  max-height: 75vh;
+  overflow-y: scroll;
+}

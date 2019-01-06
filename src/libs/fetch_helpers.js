@@ -1,4 +1,3 @@
-import Parse from 'parse';
 import { tagsColorMatcher } from './Utils';
 import placeholder from './../assets/placeholder350x350.svg';
 
@@ -6,6 +5,29 @@ const normalizeParseResponseData = data => {
   let dataInJsonString = JSON.stringify(data);
   return JSON.parse(dataInJsonString);
 };
+
+const generateFiles = url => ({
+  thumbnail: {
+    url,
+    width: 215,
+    height: 140,
+  },
+  small: {
+    url,
+    width: 430,
+    height: 280,
+  },
+  large: {
+    url,
+    width: 860,
+    height: 560,
+  },
+  hero: {
+    url,
+    width: 860,
+    height: 560,
+  },
+});
 
 export const parseLocation = location =>
   location
@@ -49,7 +71,7 @@ const formatAddressLine = location => {
       location.address_components[1].long_name
     }`;
   }
-  return `${location.address_components[0].long_name}`;
+  return location.address_components[0].long_name;
 };
 
 const weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
@@ -66,32 +88,11 @@ const mapImage = (image, i) => {
     names: {
       'en-us': `Image ${i}`,
     },
-    files: {
-      thumbnail: {
-        url,
-        width: 215,
-        height: 140,
-      },
-      small: {
-        url,
-        width: 430,
-        height: 280,
-      },
-      large: {
-        url,
-        width: 860,
-        height: 560,
-      },
-      hero: {
-        url,
-        width: 860,
-        height: 560,
-      },
-    },
+    files: generateFiles(url),
   };
 };
 
-const createService = values => {
+const createService = (values, importedFromLink) => {
   const i18nLocale = 'en-us';
   return {
     categories: [
@@ -101,25 +102,12 @@ const createService = values => {
         },
       },
     ],
-    periods: [
-      {
-        startDate: new Date(values.startDate.setHours(0, 0, 0, 0)),
-        endDate: new Date(values.endDate.setHours(0, 0, 0, 0)),
-        startTime: values.openingTime,
-        endTime: values.closingTime,
-        maxCapacity: values.slots,
-        daysOfWeek: weekdays.reduce(
-          (prev, day) => ({
-            ...prev,
-            [day]: values.availableDays.includes(day),
-          }),
-          {},
-        ),
-      },
-    ],
+    tags: values.tags,
+    subtitle: { [i18nLocale]: values.subtitle },
+    title: { [i18nLocale]: values.title },
     basePrice: values.basePrice,
     location: {
-      line1: formatAddressLine(values.location),
+      line1: formatAddressLine(values.location) || values.formattedAddress,
       line2: '',
       postcode: values.postCode,
       city: values.city,
@@ -132,27 +120,63 @@ const createService = values => {
       formattedAddress: values.formattedAddress,
       id: values.location.place_id,
     },
+    media: values.media.map(mapImage),
+    description: { [i18nLocale]: values.description },
     baseCurrency: {
       name: 'US Dollar',
       code: 'USD',
       symbol: '$',
     },
-    description: { [i18nLocale]: values.description },
-    duration: values.category === 'Accommodation' ? 1 : values.duration,
-    instructions: {
-      ...(values.start ? { start: { [i18nLocale]: values.start } } : {}),
-      ...(values.end ? { end: { [i18nLocale]: values.end } } : {}),
-    },
-    rules: values.rules.map(rule => ({ [i18nLocale]: rule })),
-    tags: values.tags,
-    subtitle: { [i18nLocale]: values.subtitle },
-    title: { [i18nLocale]: values.title },
-    links: {
-      website: values.website,
-      facebook: values.facebook,
-      twitter: values.twitter,
-    },
-    media: values.media.map(mapImage),
+    duration: (values.category === 'Accommodation' ? 1 : values.duration) || 1,
+    periods: [
+      {
+        // This is hardcoded for services added from link
+        startDate: '2017-09-11T00:00:00.000Z',
+        endDate: '2019-09-11T00:00:00.000Z',
+        daysOfWeek: {
+          monday: true,
+          tuesday: true,
+          wednesday: true,
+          thursday: true,
+          friday: true,
+          saturday: true,
+          sunday: true,
+        },
+        priceCapacity: 1,
+        minCapacity: 1,
+        maxCapacity: 2,
+      },
+    ],
+    ...(!importedFromLink
+      ? {
+          instructions: {
+            ...(values.start ? { start: { [i18nLocale]: values.start } } : {}),
+            ...(values.end ? { end: { [i18nLocale]: values.end } } : {}),
+          },
+          rules: values.rules.map(rule => ({ [i18nLocale]: rule })),
+          periods: [
+            {
+              startDate: new Date(values.startDate.setHours(0, 0, 0, 0)),
+              endDate: new Date(values.endDate.setHours(0, 0, 0, 0)),
+              startTime: values.openingTime,
+              endTime: values.closingTime,
+              maxCapacity: values.slots,
+              daysOfWeek: weekdays.reduce(
+                (prev, day) => ({
+                  ...prev,
+                  [day]: values.availableDays.includes(day),
+                }),
+                {},
+              ),
+            },
+          ],
+          links: {
+            website: values.website,
+            facebook: values.facebook,
+            twitter: values.twitter,
+          },
+        }
+      : {}),
   };
 };
 
@@ -166,24 +190,32 @@ const buildServiceForView = service => {
     service.objectId = service._id;
     service.ratings = service.ratings;
     service.duration = service.duration;
-    service.dayList = Object.keys(service.periods[0].daysOfWeek).filter(
-      k => service.periods[0].daysOfWeek[k],
-    );
     if (service.rules && service.rules.length) {
       const rules = service.rules.map(rule => rule[i18nLocale]);
       service.rules = rules;
     }
-    service.start = service.instructions.start && service.instructions.start[i18nLocale];
-    service.end = service.instructions.end && service.instructions.end[i18nLocale];
-    service.facebook = service.links.facebook;
-    service.twitter = service.links.twitter;
-    service.website = service.links.website;
-    service.startDate = new Date(service.periods[0].startDate);
-    service.endDate = new Date(service.periods[0].endDate);
-    service.openingTime = service.periods[0].startTime;
-    service.closingTime = service.periods[0].endTime;
-    service.slots = service.periods[0].maxCapacity;
-    service.formattedAddress = service.location.formattedAddress;
+    if (service.periods && service.periods[0]) {
+      service.dayList = Object.keys(service.periods[0].daysOfWeek).filter(
+        k => service.periods[0].daysOfWeek[k],
+      );
+      service.startDate = new Date(service.periods[0].startDate);
+      service.endDate = new Date(service.periods[0].endDate);
+      service.openingTime = service.periods[0].startTime;
+      service.closingTime = service.periods[0].endTime;
+      service.slots = service.periods[0].maxCapacity;
+    }
+    if (service.instructions) {
+      service.start = service.instructions.start && service.instructions.start[i18nLocale];
+      service.end = service.instructions.end && service.instructions.end[i18nLocale];
+    }
+    if (service.links) {
+      service.facebook = service.links.facebook;
+      service.twitter = service.links.twitter;
+      service.website = service.links.website;
+    }
+    if (service.location) {
+      service.formattedAddress = service.location.formattedAddress;
+    }
     service.externalUrl = service.externalUrl && service.externalUrl[i18nLocale];
     if (service.categories && service.categories.length) {
       const categories = service.categories.map(category => category.names[i18nLocale]);
@@ -192,7 +224,6 @@ const buildServiceForView = service => {
   } catch (error) {
     console.log(error);
   }
-  console.log(service);
   return service;
 };
 
@@ -306,16 +337,35 @@ const removeDuplicates = (myArr, prop) => {
   });
 };
 
-const build_query = model => {
-  let Model = Parse.Object.extend(model);
-  let query = new Parse.Query(Model);
-  return query;
-};
-
 export const statuses = {
   STARTED: 'started',
   SUCCESS: 'success',
   ERROR: 'error',
+};
+
+const createServiceFromUrl = data => {
+  const i18nLocale = 'en-us';
+
+  return {
+    ...data,
+    title: {
+      [i18nLocale]: data.title,
+    },
+    subtitle: {
+      [i18nLocale]: '',
+    },
+    description: {
+      [i18nLocale]: data.description,
+    },
+    media: data.images.map((image, i) => ({
+      type: 'image',
+      hero: i === 0,
+      files: generateFiles(image.url),
+      names: {
+        [i18nLocale]: `Image ${i}`,
+      },
+    })),
+  };
 };
 
 export default {
@@ -328,7 +378,7 @@ export default {
   mapServiceObjects,
   buildServicesJson,
   removeDuplicates,
-  build_query,
   statuses,
   buildUserJson,
+  createServiceFromUrl,
 };

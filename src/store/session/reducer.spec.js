@@ -1,8 +1,8 @@
-import reducers from './reducers';
+import reducer from './reducer';
 
 describe('sessions reducer', () => {
   it('should handle initial state', () => {
-    expect(reducers(undefined, {})).toEqual({
+    expect(reducer(undefined, {})).toEqual({
       session: {},
       loginError: {},
       loggedIn: null,
@@ -18,7 +18,7 @@ describe('sessions reducer', () => {
 
   it('should handle LOGIN_ERROR', () => {
     expect(
-      reducers(undefined, {
+      reducer(undefined, {
         type: 'LOGIN_ERROR',
         payload: {
           code: 111,
@@ -41,7 +41,7 @@ describe('sessions reducer', () => {
 
   it('should handle LOGIN_SUCCESS', () => {
     expect(
-      reducers(undefined, {
+      reducer(undefined, {
         type: 'LOGIN_SUCCESS',
         payload: {
           session: {
@@ -71,7 +71,7 @@ describe('sessions reducer', () => {
       session: {},
     };
     expect(
-      reducers(initialState, {
+      reducer(initialState, {
         type: 'LOGIN_SUCCESS',
         payload: {
           session: {

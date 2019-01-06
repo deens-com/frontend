@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import ServiceComponent from './../components/service_component';
-import * as services_actions from './../actions';
+import ServiceComponent from '../components/Service';
+import serviceActions from 'store/services/actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter, Redirect } from 'react-router';
@@ -11,6 +11,7 @@ import { websiteUrl } from 'libs/config';
 import I18nText from 'shared_components/I18nText';
 import { getHeroImage, generateServiceSlug } from 'libs/Utils';
 import { loadTrip } from 'libs/localStorage';
+import tripActions from 'store/trips/actions';
 
 class ServicesContainer extends Component {
   state = {
@@ -25,7 +26,6 @@ class ServicesContainer extends Component {
       this.props.fetchMyTrips();
     }
     this.props.setAddedToTripMessage(undefined);
-    //if (!this.props.abi) this.props.fetchServiceContractABI();
   }
 
   componentWillUnmount() {
@@ -100,28 +100,34 @@ class ServicesContainer extends Component {
 }
 
 const mapStateToProps = state => {
-  const service = state.ServicesReducer.service;
-  const isLoggedIn = state.SessionsReducer.loggedIn;
+  const service = state.services.service;
+  const isLoggedIn = state.session.loggedIn;
 
   return {
     service,
     isLoggedIn,
-    trips: state.ServicesReducer.trips.filter(trip => trip !== undefined),
-    reviews: state.ServicesReducer.reviews,
-    myUnpurchasedTrips: isLoggedIn ? state.ServicesReducer.userUnpurchasedTrips.data : [loadTrip()],
-    serviceRecentlyAddedToTrip: state.ServicesReducer.serviceRecentlyAddedToTrip,
-    serviceAlreadyAddedToTrip: state.ServicesReducer.serviceAlreadyAddedToTrip,
-    isServiceUnavailableModalOpen: state.ServicesReducer.isServiceUnavailableModalOpen,
-    abi: state.ServicesReducer.abi,
-    isPageLoading: state.ServicesReducer.isPageLoading,
-    isLoading: state.ServicesReducer.isUpdatingTrip || state.ServicesReducer.isCreatingTrip,
-    serviceFetchError: state.ServicesReducer.serviceFetchError,
+    trips: state.services.trips.filter(trip => trip !== undefined),
+    reviews: state.services.reviews,
+    myUnpurchasedTrips: isLoggedIn ? state.trips.userTrips.unbookedTrips : [loadTrip()],
+    serviceRecentlyAddedToTrip: state.services.serviceRecentlyAddedToTrip,
+    serviceAlreadyAddedToTrip: state.services.serviceAlreadyAddedToTrip,
+    isServiceUnavailableModalOpen: state.services.isServiceUnavailableModalOpen,
+    abi: state.services.abi,
+    isPageLoading: state.services.isPageLoading,
+    isLoading: state.services.isUpdatingTrip || state.services.isCreatingTrip,
+    serviceFetchError: state.services.serviceFetchError,
     slug: service._id && generateServiceSlug(service),
   };
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators(services_actions, dispatch);
+  return bindActionCreators(
+    {
+      ...serviceActions,
+      fetchMyTrips: tripActions.fetchUserTrips,
+    },
+    dispatch,
+  );
 };
 
 export default connect(

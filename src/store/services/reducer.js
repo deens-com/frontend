@@ -56,16 +56,6 @@ export default function services(state = initialState, action = {}) {
         ...state,
         reviews: action.payload.reviews,
       };
-    case 'USER_UNPURCHASED_TRIPS_FETCH':
-      return {
-        ...state,
-        userUnpurchasedTrips: { ...state.userUnpurchasedTrips, isLoading: true },
-      };
-    case 'USER_UNPURCHASED_TRIPS_FETCH_FINISH':
-      return {
-        ...state,
-        userUnpurchasedTrips: { isLoading: false, data: action.payload },
-      };
     case 'TRIP_UPDATING':
       return {
         ...state,

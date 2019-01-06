@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
-import ResultsComponent from './../components/results_component';
-import * as results_actions from './../actions';
+import ResultsComponent from './../components/Results';
+import searchActions from 'store/search/actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { resetTrip } from '../../trip/actions';
+import tripActions from 'store/trips/actions';
 import { loadTrip } from 'libs/localStorage';
+import { Loader } from 'semantic-ui-react';
+import { updatePath } from 'store/search/helpers';
 
 class ResultsContainer extends Component {
   componentDidMount() {
-    let search_query = {
+    let searchQuery = {
       type: this.props.serviceTypes,
       tags: this.props.tags,
       latitude: this.props.latitude,
@@ -16,8 +18,8 @@ class ResultsContainer extends Component {
       adults: Number(this.props.adults),
       children: Number(this.props.children),
       infants: Number(this.props.infants),
-      start_date: this.props.start_date,
-      end_date: this.props.end_date,
+      start_date: Number(this.props.start_date),
+      end_date: Number(this.props.end_date),
       keywords: this.props.keywords,
       speech_query: this.props.speech_query,
       address: this.props.address,
@@ -29,12 +31,17 @@ class ResultsContainer extends Component {
       radiusInKm: this.props.radiusInKm,
       text: this.props.text,
     };
-    this.props.update_search_query(search_query);
+
+    this.props.updateSearchQuery(searchQuery);
+    this.props.fetchResults(searchQuery);
+    if (this.hasToLoadTripYet()) {
+      this.props.fetchTrip(this.props.routeState.tripId);
+    }
   }
 
   componentWillUpdate(next_props) {
     if (this.did_search_query_changed(this.props, next_props)) {
-      this.props.update_search_query({
+      const query = {
         type: next_props.serviceTypes,
         tags: next_props.tags,
         latitude: next_props.latitude,
@@ -42,8 +49,8 @@ class ResultsContainer extends Component {
         adults: Number(next_props.adults),
         children: Number(next_props.children),
         infants: Number(next_props.infants),
-        start_date: next_props.start_date,
-        end_date: next_props.end_date,
+        start_date: Number(next_props.start_date),
+        end_date: Number(next_props.end_date),
         keywords: next_props.keywords,
         speech_query: next_props.speech_query,
         address: next_props.address,
@@ -54,7 +61,10 @@ class ResultsContainer extends Component {
         sortBy: next_props.sortBy,
         radiusInKm: next_props.radiusInKm,
         text: next_props.text,
-      });
+      };
+
+      this.props.updateSearchQuery(query);
+      this.props.fetchResults(query);
     }
   }
 
@@ -82,28 +92,43 @@ class ResultsContainer extends Component {
     );
   };
 
+  hasToLoadTripYet = () =>
+    this.props.routeState && this.props.routeState.tripId && !this.props.trip;
+
   render() {
-    return <ResultsComponent {...this.props} service_data={this.props.results} />;
+    if (this.hasToLoadTripYet()) {
+      return <Loader inline="centered" active />;
+    }
+
+    return (
+      <ResultsComponent
+        {...this.props}
+        service_data={this.props.results}
+        updatePath={updatePath}
+        isLoadingResults={this.props.isLoadingResults || this.hasToLoadTripYet()}
+        trip={this.props.trip || loadTrip()}
+      />
+    );
   }
 }
 
 const mapStateToProps = state => {
-  const trip = state.SessionsReducer.session.username ? state.TripReducer.trip : loadTrip();
   return {
-    results: state.ResultsReducer.results,
-    search_query: state.ResultsReducer.search_query,
-    carousel_tags: state.ResultsReducer.carousel_tags,
-    isLoadingResults: state.ResultsReducer.isLoadingResults,
-    tagsOptions: state.ResultsReducer.tagsOptions,
-    trip,
+    results: state.search.results.data,
+    search_query: state.search.searchQuery,
+    count: state.search.count,
+    isLoadingResults: state.search.results.isLoading,
+    tagsOptions: state.search.tagsOptions,
+    trip: state.trips.trip,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      ...results_actions,
-      resetTrip,
+      ...searchActions,
+      resetTrip: tripActions.resetTrip,
+      fetchTrip: tripActions.fetchTrip,
     },
     dispatch,
   );

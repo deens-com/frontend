@@ -278,7 +278,7 @@ export default class Button extends Component {
     } else {
       El = props => (
         <Btn
-          innerRef={button => {
+          ref={button => {
             this.button = button;
           }}
           type={this.props.type}

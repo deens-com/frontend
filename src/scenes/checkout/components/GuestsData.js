@@ -47,7 +47,7 @@ const Group = styled.div`
   }
 `;
 
-const TitleSelection = Group.extend`
+const TitleSelection = styled(Group)`
   width: 100px;
   margin-left: 0;
 `;

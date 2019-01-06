@@ -1,50 +1,45 @@
-import Parse from 'parse';
 import history from 'main/history';
 import axios from 'libs/axios';
-import fetch_helpers from './../../libs/fetch_helpers';
-import { getSession } from './../../libs/user-session';
+import fetch_helpers from 'libs/fetch_helpers';
+import { getSession } from 'libs/user-session';
+import { saveTrip } from 'libs/localStorage';
+import * as tripUtils from 'libs/trips';
 
-export const trips_fetched = trips => {
+const trips_fetched = trips => {
   return {
     type: 'TRIPS_FETCHED',
     payload: trips,
   };
 };
 
-export const tripCreated = trip => {
+const tripCreated = trip => {
   return {
     type: 'TRIP_CREATED',
     payload: trip,
   };
 };
 
-export const reviews_fetched = reviews => {
+const reviews_fetched = reviews => {
   return {
     type: 'REVIEWS_FETCHED',
     payload: reviews,
   };
 };
 
-export const serviceFetchStart = () => ({ type: 'SERVICE_FETCH_START' });
-export const service_fetched = service => {
+const serviceFetchStart = () => ({ type: 'SERVICE_FETCH_START' });
+const service_fetched = service => {
   return {
     type: 'SERVICE_FETCHED',
     payload: service,
   };
 };
 
-export const set_service_unavailability_modal = bool => {
+const set_service_unavailability_modal = bool => {
   return {
     type: 'SERVICE_UNAVAILABILITY_MODAL_SET',
     payload: bool,
   };
 };
-
-export const userUnpurchasedTripsFetchStart = () => ({ type: 'USER_UNPURCHASED_TRIPS_FETCH' });
-export const userUnpurchasedTripsFetchFinish = trips => ({
-  type: 'USER_UNPURCHASED_TRIPS_FETCH_FINISH',
-  payload: trips,
-});
 
 const shouldServiceBeVisible = service => {
   const user = getSession();
@@ -60,7 +55,7 @@ const shouldServiceBeVisible = service => {
   return true;
 };
 
-export const fetch_service = serviceId => async dispatch => {
+const fetch_service = serviceId => async dispatch => {
   dispatch(serviceFetchStart());
   try {
     const service = await axios.get(`/services/${serviceId}?include=owner,tags`).catch(error => {
@@ -94,34 +89,31 @@ export const fetch_service = serviceId => async dispatch => {
   }
 };
 
-export const fetchMyTrips = () => async (dispatch, getState) => {
+const addServiceToTrip = ({ trip, day }, loggedIn = true) => async (dispatch, getState) => {
   const state = getState();
-  if (state.ServicesReducer.userUnpurchasedTrips.isLoading) return;
-  dispatch(userUnpurchasedTripsFetchStart());
-  try {
-    const myTrips = await axios.get(`/trips?include=service`).catch(error => {
-      dispatch({ type: 'SERVICE_FETCH_ERROR', payload: error });
-    });
-    if (myTrips) {
-      const normalizedTrips = fetch_helpers.buildServicesJson(myTrips.data);
-      const myUnpurchasedTrips = normalizedTrips.filter(trip => !trip.booked);
-      dispatch(userUnpurchasedTripsFetchFinish(myUnpurchasedTrips));
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
+  const { service } = state.services;
+  const serviceToAdd = loggedIn ? service._id : service;
 
-export const addServiceToTrip = ({ trip, day }) => async (dispatch, getState) => {
-  const state = getState();
-  const { service } = state.ServicesReducer;
-  const tripServices = trip.services.concat([{ service: service._id, day: day }]);
+  const tripServices = tripUtils.addServiceToTrip(trip.services, serviceToAdd, day);
+
+  if (!loggedIn) {
+    const newTrip = {
+      ...trip,
+      services: tripServices,
+    };
+    saveTrip(newTrip);
+    setAddedToTripMessage(newTrip)(dispatch);
+    return;
+  }
+
   const updateParams = { services: tripServices };
   try {
     dispatch({
       type: 'TRIP_UPDATING',
     });
-    const updatedTrip = await axios.patch(`/trips/${trip._id}`, updateParams);
+
+    const updatedTrip = await tripUtils.patchTrip(trip._id, updateParams);
+
     if (updatedTrip) {
       fetch_service(service._id)(dispatch);
       setAddedToTripMessage(trip)(dispatch);
@@ -132,9 +124,9 @@ export const addServiceToTrip = ({ trip, day }) => async (dispatch, getState) =>
   }
 };
 
-export const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (dispatch, getState) => {
+const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (dispatch, getState) => {
   const state = getState();
-  const { service } = state.ServicesReducer;
+  const { service } = state.services;
   if (!service) {
     console.error('No service found');
     return;
@@ -166,7 +158,7 @@ export const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (dispatch
   }
 };
 
-export const onBookNowClick = () => async (dispatch, getState) => {
+const onBookNowClick = () => async (dispatch, getState) => {
   const user = getSession();
   if (user) {
     createNewTrip({ redirectToCreatedTrip: true })(dispatch, getState);
@@ -178,21 +170,21 @@ export const onBookNowClick = () => async (dispatch, getState) => {
 /**
  * Shows "Service added to X trip" for 3 seconds
  */
-export const setAddedToTripMessage = trip => dispatch => {
+const setAddedToTripMessage = trip => dispatch => {
   dispatch({ type: 'SERVICE_RECENTLY_ADDED_TO_TRIP', payload: trip });
 };
 
-export const setAlreadyAddedToTrip = trip => dispatch => {
+const setAlreadyAddedToTrip = trip => dispatch => {
   dispatch({ type: 'SERVICE_ALREADY_ADDED_TO_TRIP', payload: trip });
 };
 
-export const toggleServiceAvailabilitymodal = bool => {
+const toggleServiceAvailabilitymodal = bool => {
   return dispatch => {
     dispatch(set_service_unavailability_modal(false));
   };
 };
 
-export const checkAvailability = (serviceId, slotsNb) => {
+const checkAvailability = (serviceId, slotsNb) => {
   return dispatch => {
     let service_availability_query = fetch_helpers.build_query('Service').get(serviceId);
     service_availability_query.then(response => {
@@ -208,11 +200,17 @@ export const checkAvailability = (serviceId, slotsNb) => {
   };
 };
 
-export const fetchServiceContractABI = () => async dispatch => {
-  const result = await Parse.Cloud.run('getLastContract');
-  dispatch({ type: 'SERVICE_CONTRACT_ABI', payload: result });
-};
-
 export const resetServiceData = () => async dispatch => {
   dispatch({ type: 'SERVICE/RESET' });
+};
+
+export default {
+  fetch_service,
+  addServiceToTrip,
+  createNewTrip,
+  onBookNowClick,
+  setAddedToTripMessage,
+  toggleServiceAvailabilitymodal,
+  checkAvailability,
+  resetServiceData,
 };

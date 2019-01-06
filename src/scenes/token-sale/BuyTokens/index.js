@@ -1,13 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import { media } from 'libs/styled';
-import { Segment } from 'semantic-ui-react';
+import axios from 'libs/axios';
+import { Segment, Loader } from 'semantic-ui-react';
 import Input from 'shared_components/StyledInput';
 import BuyButton from './BuyButton';
 import { Link } from 'react-router-dom';
-import round from 'lodash.round';
+import { plsValue, usdToPls } from 'libs/currency';
+import moment from 'moment';
 
-const plsValue = 0.036;
 const preIcoBonus = 20; // in %
 
 const Wrapper = styled.div`
@@ -77,12 +78,84 @@ const USDInput = styled.span`
   font-weight: bold;
 `;
 
+const HistoryTable = styled.table`
+  margin: auto;
+
+  tr {
+    td {
+      padding: 5px 20px;
+    }
+  }
+
+  tr:nth-child(1) {
+    font-weight: bold;
+  }
+
+  tr:nth-child(2n + 1) {
+    background-color: #00cc8e;
+  }
+
+  tr:nth-child(2n + 2) {
+    background-color: #b5ffe8;
+  }
+`;
+
+const History = styled.div`
+  padding: 20px;
+`;
+
 export default class BuyTokens extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       amount: 0,
+      loadingHistory: true,
+      errorHistory: false,
+      dataHistory: null,
     };
+    this.loadHistory();
+  }
+
+  loadHistory = async () => {
+    try {
+      const response = await axios.get('/payment/history/ico');
+
+      this.setState({
+        loadingHistory: false,
+        dataHistory: response.data,
+      });
+    } catch (e) {
+      this.setState({
+        loadingHistory: false,
+        errorHistory: true,
+      });
+    }
+  };
+
+  renderHistory() {
+    if (this.state.errorHistory) {
+      return 'There was an error loading the purchase history. Please refresh the page to try again.';
+    }
+
+    return (
+      <React.Fragment>
+        <h2 style={{ padding: 0 }}>Purchase History</h2>
+        <HistoryTable>
+          <tr>
+            <td>Date</td>
+            <td>Bought PLS</td>
+          </tr>
+          {this.state.dataHistory.map(data => {
+            return (
+              <tr key={data._id}>
+                <td>{moment(data.createdAt).format('LLL')}</td>
+                <td>{data.plsTokens}</td>
+              </tr>
+            );
+          })}
+        </HistoryTable>
+      </React.Fragment>
+    );
   }
 
   inputChange = event => {
@@ -91,7 +164,7 @@ export default class BuyTokens extends React.Component {
   };
 
   render() {
-    const plsToBuy = round(this.state.amount / plsValue, 8);
+    const plsToBuy = usdToPls(this.state.amount);
     const bonus = (Number(plsToBuy) * preIcoBonus) / 100;
     const total = (Number(plsToBuy) + Number(bonus)).toFixed(2);
     return (
@@ -136,6 +209,12 @@ export default class BuyTokens extends React.Component {
             </Table>
             <BuyButton amount={this.state.amount} onSuccess={this.props.onTokenBought} />
           </SegmentContent>
+        </Segment>
+        <Segment>
+          <History>
+            <Loader active={this.state.loadingHistory} />
+            {!this.state.loadingHistory && this.renderHistory()}
+          </History>
         </Segment>
       </Wrapper>
     );

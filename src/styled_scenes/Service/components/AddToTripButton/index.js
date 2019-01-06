@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Popup } from 'semantic-ui-react';
 
-import history from 'main/history';
 import TripsListInDropDown from './TripsListInDropDown';
 import SingleTripDropdown from './SingleTripDropdown';
 import CustomColorSemanticButton from 'shared_components/CustomColorSemanticButton';

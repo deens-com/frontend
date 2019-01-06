@@ -1,9 +1,7 @@
 const { injectBabelPlugin } = require('react-app-rewired');
-const webpack = require('webpack');
 
 const rewireStyledComponents = require('react-app-rewire-styled-components');
 const rewireWebpackBundleAnalyzer = require('react-app-rewire-webpack-bundle-analyzer');
-const rewirePreloadPlugin = require('react-app-rewire-preload-plugin');
 const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin');
 const DeadCodePlugin = require('webpack-deadcode-plugin');
 
@@ -16,7 +14,7 @@ module.exports = function override(config, env) {
   // });
   config = injectBabelPlugin(
     [
-      'transform-semantic-ui-react-imports',
+      'semantic-ui-react-transform-imports',
       {
         convertMemberImports: true,
         importType: 'es',
@@ -26,7 +24,7 @@ module.exports = function override(config, env) {
     config,
   );
 
-  config.entry.unshift('babel-polyfill');
+  config.entry.unshift('@babel/polyfill');
 
   if (isProd) {
     config = rewireWebpackBundleAnalyzer(config, env, {
@@ -35,19 +33,12 @@ module.exports = function override(config, env) {
     });
 
     config.plugins.push(
-      new webpack.optimize.CommonsChunkPlugin({
-        name: 'vendor',
-        minChunks: ({ resource }) => /node_modules/.test(resource),
-      }),
       new DuplicatePackageCheckerPlugin(),
       new DeadCodePlugin({
         patterns: ['src/**/*.(js|jsx|css)'],
         exclude: ['**/*.(stories|spec).(js|jsx)'],
       }),
     );
-
-    // Add preloading support
-    config = rewirePreloadPlugin(config, env, { rel: 'prefetch' });
   }
 
   return config;

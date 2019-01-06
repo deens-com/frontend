@@ -1,5 +1,7 @@
 import { types as actionTypes } from './actions';
 
+// We should remove this actions/reducer and handle that in the component
+
 const initialState = {
   isLoading: false,
   isSubmitting: false,

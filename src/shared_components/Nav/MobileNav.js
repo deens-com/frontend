@@ -13,7 +13,7 @@ import { Briefcase, Folder, AccountCircle, Settings } from '../icons';
 import { getSession } from 'libs/user-session';
 import { trackHeaderClick } from 'libs/analytics';
 import { bindActionCreators } from 'redux';
-import { logOut } from 'scenes/sessions/actions';
+import { logOut } from 'store/session/actions';
 import { icoReady } from 'libs/config';
 
 // STYLES

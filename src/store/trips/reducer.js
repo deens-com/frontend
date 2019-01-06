@@ -1,6 +1,14 @@
-import { types } from './actions';
+import actions from './actions';
+
+const { types } = actions;
 
 const initialState = {
+  userTrips: {
+    isLoading: false,
+    trips: null,
+    unbookedTrips: null,
+    error: null,
+  },
   trip: null,
   isLoading: false,
   error: null,
@@ -15,8 +23,37 @@ const initialState = {
   bookingStatus: null,
 };
 
-export default function TripsReducer(state = initialState, action = {}) {
+export default function services(state = initialState, action = {}) {
   switch (action.type) {
+    case types.FETCH_USER_TRIPS_START:
+      return {
+        ...state,
+        userTrips: {
+          isLoading: true,
+          trips: null,
+          unbookedTrips: null,
+          error: null,
+        },
+      };
+    case types.FETCH_USER_TRIPS_SUCCESS:
+      return {
+        ...state,
+        userTrips: {
+          isLoading: false,
+          trips: action.payload,
+          unbookedTrips: action.payload.filter(trip => trip.bookingStatus !== 'booked'),
+        },
+      };
+    case types.FETCH_USER_TRIPS_ERROR:
+      return {
+        ...state,
+        userTrips: {
+          isLoading: false,
+          trips: null,
+          unbookedTrips: null,
+          error: action.payload,
+        },
+      };
     case types.FETCH_TRIP_START: {
       return {
         ...state,
@@ -94,42 +131,6 @@ export default function TripsReducer(state = initialState, action = {}) {
           data: action.payload.data,
         },
       };
-
-      /*return {
-        ...state,
-        availability: {
-          ...state.availability,
-          data: action.payload.data.reduce((prev, service) => {
-            if (!prev[service.serviceId]) {
-              return {
-                ...prev,
-                [service.serviceId]: {
-                  isAvailable: service.isAvailable,
-                  options: service.groupedOptions,
-                },
-              };
-            }
-
-            return {
-              ...prev,
-              [service.serviceId]: (service.isAvailable && prev[service.serviceId].isAvailable) ?
-                {
-                  isAvailable: true,
-                  options: prev[service.serviceId].options.filter(option => service.groupedOptions.options.find(elem => (
-                    elem.price.value === option.price.value
-                    && elem.price.operator === option.price.operator
-                    && I18nText.translate(elem.title) === I18nText.translate(option.title)
-                  ))),
-                }
-                : {
-                  isAvailable: false,
-                  options: null,
-                },
-            };
-          }, {}),
-          isChecking: false,
-        },
-      };*/
     }
     case types.CHECK_AVAILABILITY_ERROR: {
       if (action.timestamp !== state.availability.timestamp) {

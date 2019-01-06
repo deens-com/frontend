@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import AccountProfileComponent from './../components/account_profile_component';
-import AccountServicesComponent from './../components/account_services_component';
+import AccountProfileComponent from './../components/AccountProfile';
+import AccountServicesComponent from './../components/AccountServices';
 import AccountSettingsContainer from './AccountSettingsContainer';
-import * as account_actions from './../actions';
-import * as session_actions from 'scenes/sessions/actions';
+import * as account_actions from 'store/account/actions';
+import * as session_actions from 'store/session/actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Route, withRouter } from 'react-router-dom';
@@ -69,9 +69,9 @@ class AccountContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    session: state.SessionsReducer.session,
-    isUploadingAvatar: state.SessionsReducer.isUploadingAvatar,
-    updateError: state.SessionsReducer.updateError,
+    session: state.session.session,
+    isUploadingAvatar: state.session.isUploadingAvatar,
+    updateError: state.session.updateError,
   };
 };
 

@@ -86,6 +86,11 @@ class ServiceForm extends Component {
       uploadingImages: false,
     };
     this.uploadingImagesSet = new Set();
+
+    if (this.props.creatingFromLink) {
+      const { setFieldValue } = props;
+      setFieldValue('isShortVersion', true);
+    }
   }
 
   static propTypes = {
@@ -94,6 +99,7 @@ class ServiceForm extends Component {
     globalError: PropTypes.object,
     userProfile: PropTypes.object,
     submitButtonText: PropTypes.string,
+    creatingFromLink: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -222,12 +228,6 @@ class ServiceForm extends Component {
     setFieldValue('duration', duration);
   };
 
-  redeploy = (values, serviceId) => {
-    this.props.resetErrors();
-    this.setState({ showGlobalError: false });
-    this.props.onRedeployContract(values, serviceId);
-  };
-
   addRule = e => {
     e.preventDefault();
     this.props.setFieldValue('rules', [...this.props.values.rules, '']);
@@ -249,6 +249,7 @@ class ServiceForm extends Component {
       handleSubmit,
       submitInFlight,
       service,
+      creatingFromLink,
     } = this.props;
 
     const defaultProps = {
@@ -269,12 +270,6 @@ class ServiceForm extends Component {
             <Modal.Header>There was an issue with creating your service</Modal.Header>
             <Modal.Content>{globalError.message}</Modal.Content>
             <Modal.Actions>
-              <Button
-                color="green"
-                onClick={() => this.redeploy(this.props.values, this.state.serviceId)}
-              >
-                Re-deploy
-              </Button>
               <Button color="red" onClick={this.handleModalClose}>
                 Close
               </Button>
@@ -409,16 +404,17 @@ class ServiceForm extends Component {
           </Form.Field>
 
           {/* Duration */}
-          {values.category !== 'Accommodation' && (
-            <DurationInput
-              onChange={this.changeDuration}
-              onTouch={this.handleDurationTouch}
-              defaultValue={Number(values.duration) || undefined}
-              touched={touched.duration}
-              error={errors.duration}
-              ErrorComponent={ErrorMsg}
-            />
-          )}
+          {values.category !== 'Accommodation' &&
+            !creatingFromLink && (
+              <DurationInput
+                onChange={this.changeDuration}
+                onTouch={this.handleDurationTouch}
+                defaultValue={Number(values.duration) || undefined}
+                touched={touched.duration}
+                error={errors.duration}
+                ErrorComponent={ErrorMsg}
+              />
+            )}
 
           {/* Price */}
           <Form.Field required>
@@ -434,211 +430,215 @@ class ServiceForm extends Component {
             {touched.basePrice && errors.basePrice && <ErrorMsg>{errors.basePrice}</ErrorMsg>}
           </Form.Field>
 
-          {/* Rules */}
-          <React.Fragment>
-            <RulesLabel>Rules</RulesLabel>
-            {values.rules.map((rule, index) => (
-              <Form.Group key={`rule-${index}`}>
-                <Form.Field style={{ flex: 1 }}>
-                  <label>{`Rule ${index + 1}`}</label>
+          {!creatingFromLink && (
+            <React.Fragment>
+              {/* Rules */}
+              <React.Fragment>
+                <RulesLabel>Rules</RulesLabel>
+                {values.rules.map((rule, index) => (
+                  <Form.Group key={`rule-${index}`}>
+                    <Form.Field style={{ flex: 1 }}>
+                      <label>{`Rule ${index + 1}`}</label>
+                      <Form.Input
+                        name={`rules[${index}]`}
+                        value={rule}
+                        error={!!(touched.rule && errors.rule)}
+                        {...defaultProps}
+                      />
+                      {touched.rule && errors.rule && <ErrorMsg>{errors.rule}</ErrorMsg>}
+                    </Form.Field>
+                    <Button
+                      color="red"
+                      size="mini"
+                      onClick={this.removeRule.bind(this, index)}
+                      style={{
+                        marginBottom: '3px',
+                        alignSelf: 'flex-end',
+                        height: '3em',
+                      }}
+                    >
+                      Remove
+                    </Button>
+                  </Form.Group>
+                ))}
+                <AddRuleContainer>
+                  <Button color="green" size="small" onClick={this.addRule}>
+                    Add rule
+                  </Button>
+                </AddRuleContainer>
+              </React.Fragment>
+
+              {/* Instruction */}
+              <Form.Field>
+                <label>Instructions given before your service start time</label>
+                <Form.TextArea name="start" value={values.start} {...defaultProps} />
+              </Form.Field>
+              <Form.Field>
+                <label>Instructions given before your service end time</label>
+                <Form.TextArea name="end" value={values.end} {...defaultProps} />
+              </Form.Field>
+
+              {/* Period date */}
+              <Form.Group widths="equal">
+                <Form.Field required>
+                  <LabelWithIcon>
+                    <span>Start date</span>
+                    <Icon>
+                      <HelpTooltip
+                        style={{ width: 16, height: 16 }}
+                        content="Starting date of your service"
+                      />
+                    </Icon>
+                  </LabelWithIcon>
+                  <DateInput
+                    onChange={this.handleStartDateChange}
+                    placeholder="Start date"
+                    label="Start date"
+                    leftIcon="date"
+                    value={values.startDate}
+                    innerRef={input => {
+                      this.startDateInput = input;
+                    }}
+                    dayPickerProps={{ disabledDays: { before: new Date() } }}
+                  />
+                  {touched.startDate && errors.startDate && <ErrorMsg>{errors.startDate}</ErrorMsg>}
+                </Form.Field>
+
+                <Form.Field required>
+                  <LabelWithIcon>
+                    <span>End date</span>
+                    <Icon>
+                      <HelpTooltip
+                        style={{ width: 16, height: 16 }}
+                        content="Ending date of your service"
+                      />
+                    </Icon>
+                  </LabelWithIcon>
+                  <DateInput
+                    onChange={this.handleEndDateChange}
+                    placeholder="End date"
+                    leftIcon="date"
+                    value={values.endDate}
+                    dayPickerProps={{
+                      disabledDays: { before: values.startDate || new Date() },
+                      month: values.startDate,
+                    }}
+                    innerRef={input => {
+                      this.endDateInput = input;
+                    }}
+                  />
+                  {touched.endDate && errors.endDate && <ErrorMsg>{errors.endDate}</ErrorMsg>}
+                </Form.Field>
+              </Form.Group>
+
+              {/* Available Days */}
+              <Form.Group grouped>
+                <Form.Field required>
+                  <label>Days this service is available</label>
+                  <Dropdown
+                    name="availableDays"
+                    placeholder="Select available days"
+                    selection
+                    multiple
+                    value={values.availableDays}
+                    options={weekDays}
+                    onChange={this.onDropDownChange}
+                    error={!!(touched.availableDays && errors.availableDays)}
+                  />
+                  {touched.availableDays &&
+                    errors.availableDays && <ErrorMsg>{errors.availableDays}</ErrorMsg>}
+                </Form.Field>
+              </Form.Group>
+
+              {/* Timings */}
+              <Form.Group widths="equal">
+                <Form.Field>
+                  <Form.Dropdown
+                    name="openingTime"
+                    label="Opening time"
+                    placeholder="Select opening time"
+                    selection
+                    value={values.openingTime}
+                    options={hoursDropdownOptions}
+                    onChange={this.onDropDownChange}
+                    error={!!(touched.openingTime && errors.openingTime)}
+                  />
+                  {touched.openingTime &&
+                    errors.openingTime && <ErrorMsg>{errors.openingTime}</ErrorMsg>}
+                </Form.Field>
+                <Form.Field>
+                  <Form.Dropdown
+                    name="closingTime"
+                    label="Closing time"
+                    placeholder="Select closing time"
+                    selection
+                    value={values.closingTime}
+                    options={hoursDropdownOptions}
+                    onChange={this.onDropDownChange}
+                    error={!!(touched.closingTime && errors.closingTime)}
+                  />
+                  {touched.closingTime &&
+                    errors.closingTime && <ErrorMsg>{errors.closingTime}</ErrorMsg>}
+                </Form.Field>
+              </Form.Group>
+
+              {/* Slots in a Day */}
+              <Form.Field required>
+                <LabelWithIcon>
+                  <span>Number of slots available</span>
+                  <Icon>
+                    <HelpTooltip
+                      style={{ width: 16, height: 16 }}
+                      content="Number of available slots"
+                    />
+                  </Icon>
+                </LabelWithIcon>
+                <Form.Input
+                  name="slots"
+                  type="number"
+                  min="0"
+                  value={values.slots}
+                  error={!!(touched.slots && errors.slots)}
+                  {...defaultProps}
+                />
+                {touched.slots && errors.slots && <ErrorMsg>{errors.slots}</ErrorMsg>}
+              </Form.Field>
+
+              {/* Links */}
+              <Form.Group widths="equal">
+                <Form.Field>
+                  <label>Facebook Link</label>
                   <Form.Input
-                    name={`rules[${index}]`}
-                    value={rule}
-                    error={!!(touched.rule && errors.rule)}
+                    name="facebook"
+                    value={values.facebook}
+                    error={!!(touched.facebook && errors.facebook)}
                     {...defaultProps}
                   />
-                  {touched.rule && errors.rule && <ErrorMsg>{errors.rule}</ErrorMsg>}
+                  {touched.facebook && errors.facebook && <ErrorMsg>{errors.facebook}</ErrorMsg>}
                 </Form.Field>
-                <Button
-                  color="red"
-                  size="mini"
-                  onClick={this.removeRule.bind(this, index)}
-                  style={{
-                    marginBottom: '3px',
-                    alignSelf: 'flex-end',
-                    height: '3em',
-                  }}
-                >
-                  Remove
-                </Button>
+                <Form.Field>
+                  <label>Twitter Link</label>
+                  <Form.Input
+                    name="twitter"
+                    value={values.twitter}
+                    error={!!(touched.twitter && errors.twitter)}
+                    {...defaultProps}
+                  />
+                  {touched.twitter && errors.twitter && <ErrorMsg>{errors.twitter}</ErrorMsg>}
+                </Form.Field>
+                <Form.Field>
+                  <label>Website Link</label>
+                  <Form.Input
+                    name="website"
+                    value={values.website}
+                    error={!!(touched.website && errors.website)}
+                    {...defaultProps}
+                  />
+                  {touched.website && errors.website && <ErrorMsg>{errors.website}</ErrorMsg>}
+                </Form.Field>
               </Form.Group>
-            ))}
-            <AddRuleContainer>
-              <Button color="green" size="small" onClick={this.addRule}>
-                Add rule
-              </Button>
-            </AddRuleContainer>
-          </React.Fragment>
-
-          {/* Instruction */}
-          <Form.Field>
-            <label>Instructions given before your service start time</label>
-            <Form.TextArea name="start" value={values.start} {...defaultProps} />
-          </Form.Field>
-          <Form.Field>
-            <label>Instructions given before your service end time</label>
-            <Form.TextArea name="end" value={values.end} {...defaultProps} />
-          </Form.Field>
-
-          {/* Period date */}
-          <Form.Group widths="equal">
-            <Form.Field required>
-              <LabelWithIcon>
-                <span>Start date</span>
-                <Icon>
-                  <HelpTooltip
-                    style={{ width: 16, height: 16 }}
-                    content="Starting date of your service"
-                  />
-                </Icon>
-              </LabelWithIcon>
-              <DateInput
-                onChange={this.handleStartDateChange}
-                placeholder="Start date"
-                label="Start date"
-                leftIcon="date"
-                value={values.startDate}
-                innerRef={input => {
-                  this.startDateInput = input;
-                }}
-                dayPickerProps={{ disabledDays: { before: new Date() } }}
-              />
-              {touched.startDate && errors.startDate && <ErrorMsg>{errors.startDate}</ErrorMsg>}
-            </Form.Field>
-
-            <Form.Field required>
-              <LabelWithIcon>
-                <span>End date</span>
-                <Icon>
-                  <HelpTooltip
-                    style={{ width: 16, height: 16 }}
-                    content="Ending date of your service"
-                  />
-                </Icon>
-              </LabelWithIcon>
-              <DateInput
-                onChange={this.handleEndDateChange}
-                placeholder="End date"
-                leftIcon="date"
-                value={values.endDate}
-                dayPickerProps={{
-                  disabledDays: { before: values.startDate || new Date() },
-                  month: values.startDate,
-                }}
-                innerRef={input => {
-                  this.endDateInput = input;
-                }}
-              />
-              {touched.endDate && errors.endDate && <ErrorMsg>{errors.endDate}</ErrorMsg>}
-            </Form.Field>
-          </Form.Group>
-
-          {/* Available Days */}
-          <Form.Group grouped>
-            <Form.Field required>
-              <label>Days this service is available</label>
-              <Dropdown
-                name="availableDays"
-                placeholder="Select available days"
-                selection
-                multiple
-                value={values.availableDays}
-                options={weekDays}
-                onChange={this.onDropDownChange}
-                error={!!(touched.availableDays && errors.availableDays)}
-              />
-              {touched.availableDays &&
-                errors.availableDays && <ErrorMsg>{errors.availableDays}</ErrorMsg>}
-            </Form.Field>
-          </Form.Group>
-
-          {/* Timings */}
-          <Form.Group widths="equal">
-            <Form.Field>
-              <Form.Dropdown
-                name="openingTime"
-                label="Opening time"
-                placeholder="Select opening time"
-                selection
-                value={values.openingTime}
-                options={hoursDropdownOptions}
-                onChange={this.onDropDownChange}
-                error={!!(touched.openingTime && errors.openingTime)}
-              />
-              {touched.openingTime &&
-                errors.openingTime && <ErrorMsg>{errors.openingTime}</ErrorMsg>}
-            </Form.Field>
-            <Form.Field>
-              <Form.Dropdown
-                name="closingTime"
-                label="Closing time"
-                placeholder="Select closing time"
-                selection
-                value={values.closingTime}
-                options={hoursDropdownOptions}
-                onChange={this.onDropDownChange}
-                error={!!(touched.closingTime && errors.closingTime)}
-              />
-              {touched.closingTime &&
-                errors.closingTime && <ErrorMsg>{errors.closingTime}</ErrorMsg>}
-            </Form.Field>
-          </Form.Group>
-
-          {/* Slots in a Day */}
-          <Form.Field required>
-            <LabelWithIcon>
-              <span>Number of slots available</span>
-              <Icon>
-                <HelpTooltip
-                  style={{ width: 16, height: 16 }}
-                  content="Number of available slots"
-                />
-              </Icon>
-            </LabelWithIcon>
-            <Form.Input
-              name="slots"
-              type="number"
-              min="0"
-              value={values.slots}
-              error={!!(touched.slots && errors.slots)}
-              {...defaultProps}
-            />
-            {touched.slots && errors.slots && <ErrorMsg>{errors.slots}</ErrorMsg>}
-          </Form.Field>
-
-          {/* Links */}
-          <Form.Group widths="equal">
-            <Form.Field>
-              <label>Facebook Link</label>
-              <Form.Input
-                name="facebook"
-                value={values.facebook}
-                error={!!(touched.facebook && errors.facebook)}
-                {...defaultProps}
-              />
-              {touched.facebook && errors.facebook && <ErrorMsg>{errors.facebook}</ErrorMsg>}
-            </Form.Field>
-            <Form.Field>
-              <label>Twitter Link</label>
-              <Form.Input
-                name="twitter"
-                value={values.twitter}
-                error={!!(touched.twitter && errors.twitter)}
-                {...defaultProps}
-              />
-              {touched.twitter && errors.twitter && <ErrorMsg>{errors.twitter}</ErrorMsg>}
-            </Form.Field>
-            <Form.Field>
-              <label>Website Link</label>
-              <Form.Input
-                name="website"
-                value={values.website}
-                error={!!(touched.website && errors.website)}
-                {...defaultProps}
-              />
-              {touched.website && errors.website && <ErrorMsg>{errors.website}</ErrorMsg>}
-            </Form.Field>
-          </Form.Group>
+            </React.Fragment>
+          )}
 
           <Form.Button color="green" disabled={submitInFlight || this.state.uploadingImages}>
             {this.props.submitButtonText}
@@ -650,19 +650,13 @@ class ServiceForm extends Component {
 }
 
 function validate(values) {
-  const requiredFields = [
-    'category',
-    'title',
-    'subtitle',
-    'description',
-    'duration',
-    'basePrice',
-    'availableDays',
-    'startDate',
-    'endDate',
-    'slots',
-    'latlong',
-  ];
+  const shortVersion = values.isShortVersion;
+
+  const requiredFields = ['category', 'title', 'subtitle', 'description', 'basePrice', 'latlong'];
+
+  if (!shortVersion) {
+    requiredFields.push('duration', 'availableDays', 'startDate', 'endDate', 'slots');
+  }
 
   const errors = checkRequiredFields(values, requiredFields);
 
@@ -697,7 +691,7 @@ function validate(values) {
   const dateFields = ['startDate', 'endDate'];
 
   for (const field of dateFields) {
-    if (!errors[field]) {
+    if (!errors[field] && (requiredFields.includes(field) || Boolean(values[field]))) {
       if (!(values[field] instanceof Date)) {
         errors[field] = 'Invalid date';
       } else if (field === 'endDate' && values.endDate < values.startDate) {
@@ -767,6 +761,7 @@ export default withFormik({
       (service && service.location && service.location.formattedAddress) || undefined,
   }),
   validate,
+  validateOnChange: false,
   handleSubmit: (values, { props }) => {
     props.onSubmit(values);
   },

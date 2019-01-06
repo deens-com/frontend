@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import validator from 'validator';
-import LoginFormComponent from './../components/login_form_component';
-import * as sessionsActions from './../actions';
+import LoginFormComponent from '../components/LoginForm';
+import * as sessionsActions from 'store/session/actions';
 
 class SessionsContainer extends Component {
   constructor(props) {
@@ -128,14 +128,14 @@ class SessionsContainer extends Component {
   }
 }
 
-const mapStateToProps = ({ SessionsReducer }) => {
+const mapStateToProps = ({ session }) => {
   return {
-    session: SessionsReducer.session,
-    loginError: SessionsReducer.loginError,
-    metaMaskError: SessionsReducer.metaMaskError,
-    ledgerError: SessionsReducer.ledgerError,
-    isLedgerLoaderDisplayed: SessionsReducer.isLedgerLoaderDisplayed,
-    isLoading: SessionsReducer.isLoading,
+    session: session.session,
+    loginError: session.loginError,
+    metaMaskError: session.metaMaskError,
+    ledgerError: session.ledgerError,
+    isLedgerLoaderDisplayed: session.isLedgerLoaderDisplayed,
+    isLoading: session.isLoading,
   };
 };
 

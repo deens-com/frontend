@@ -7,10 +7,6 @@ import { media } from './../../../libs/styled';
 
 import { Message } from 'semantic-ui-react';
 
-import * as results_actions from './../../../scenes/results/actions';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
 // COMPONENTS
 import { SearchIcon, CrossIcon } from '../../../shared_components/icons';
 import SemanticLocationControl from 'shared_components/Form/LocationAutoSuggest';
@@ -107,7 +103,7 @@ const suggestionStyle = {
   marginLeft: '-25px',
 };
 
-class HomeSearch extends Component {
+export default class HomeSearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -124,7 +120,6 @@ class HomeSearch extends Component {
     this.setSearch = this.setSearch.bind(this);
     this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
     this.handleLocationChange = this.handleLocationChange.bind(this);
-    this.handleKeywordsSearchSubmit = this.handleKeywordsSearchSubmit.bind(this);
     this.setKeyWords = this.setKeyWords.bind(this);
   }
 
@@ -156,14 +151,6 @@ class HomeSearch extends Component {
           this.handleSearchSubmit,
         );
       });
-  }
-
-  handleKeywordsSearchSubmit(ev) {
-    ev.preventDefault();
-    this.props.fetch_results({ speech_query: this.state.keywords });
-    if (this.props.toggleSearch) {
-      this.props.toggleSearch();
-    }
   }
 
   handleSearchSubmit() {
@@ -202,7 +189,7 @@ class HomeSearch extends Component {
 
   renderInputContent = () => {
     return (
-      <form style={{ flex: 1 }} onSubmit={this.handleKeywordsSearchSubmit}>
+      <form style={{ flex: 1 }}>
         <SemanticLocationControl
           onChange={this.handleLocationChange}
           {...locationProps}
@@ -243,22 +230,6 @@ class HomeSearch extends Component {
     );
   }
 }
-
-const mapStateToProps = state => {
-  return {
-    results: state.ResultsReducer.results,
-    search_query: state.ResultsReducer.search_query,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(results_actions, dispatch);
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(HomeSearch);
 
 // Props Validation
 HomeSearch.propTypes = {};

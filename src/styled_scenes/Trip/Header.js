@@ -61,7 +61,7 @@ const Header = ({ trip, owner, innerRef }) => {
   }
 
   return (
-    <Wrapper innerRef={innerRef} img={img}>
+    <Wrapper ref={innerRef} img={img}>
       <Title>
         <I18nText data={trip.title} />
       </Title>

@@ -90,11 +90,10 @@ const RegistrationsComponent = props => {
                       )}
                       <div className="login-header">Create your new account</div>
                       <br />
-                      {Object.keys(props.errors).length !== 0 && (
-                        <Message style={{ color: 'red' }}>{props.errors.error.message}</Message>
-                      )}
                       {Object.keys(props.stateErrors).length !== 0 && (
-                        <Message style={{ color: 'red' }}>{props.stateErrors.message}</Message>
+                        <Message style={{ color: 'red', whiteSpace: 'pre-line' }}>
+                          {props.stateErrors.message}
+                        </Message>
                       )}
                       <Form size="large">
                         <Form.Input

@@ -19,8 +19,8 @@ import { MapMarker, LeftArrow } from 'shared_components/icons';
 import PaymentContainer from './PaymentContainer';
 import BookingDone from './components/BookingDone';
 import CheckoutTrip from './components/CheckoutTrip';
-import * as actions from './actions';
-import * as tripActions from '../trip/actions';
+import * as actions from 'store/checkout/actions';
+import tripActions from 'store/trips/actions';
 import Button from 'shared_components/Button';
 import GuestsData from './components/GuestsData';
 import Countdown from './components/Countdown';
@@ -248,7 +248,9 @@ class CheckoutContainer extends React.Component {
 
   componentDidMount() {
     this.props.cleanPaymentStatus();
-    updateBottomChatPosition(calculateBottomPosition(this.props.isGDPRDismissed, 50));
+    updateBottomChatPosition(
+      calculateBottomPosition(this.props.isGDPRDismissed, this.props.gdprHeight, 50),
+    );
   }
 
   componentWillUnmount() {
@@ -414,7 +416,7 @@ class CheckoutContainer extends React.Component {
   }
 
   render() {
-    const { trip, isLoading, isGDPRDismissed } = this.props;
+    const { trip, isLoading, isGDPRDismissed, gdprHeight } = this.props;
     const { days, step, expireDate, timedOut } = this.state;
     const numberOfGuests = this.calculateGuests();
     return (
@@ -486,7 +488,7 @@ class CheckoutContainer extends React.Component {
               {this.renderStep()}
             </Wrapper>
             {step < 3 && (
-              <Footer bottom={calculateBottomPosition(isGDPRDismissed)}>
+              <Footer bottom={calculateBottomPosition(isGDPRDismissed, gdprHeight)}>
                 <Button
                   disabled={this.state.nextDisabled}
                   theme="fillLightGreen"
@@ -506,12 +508,13 @@ class CheckoutContainer extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  trip: state.TripReducer.trip,
-  isLoading: state.TripReducer.isLoading,
-  session: state.SessionsReducer.session,
-  isGDPRDismissed: state.SettingsReducer.gdprDismissed,
-  availability: state.TripReducer.availability.data,
-  isCheckingAvailability: state.TripReducer.availability.isChecking,
+  trip: state.trips.trip,
+  isLoading: state.trips.isLoading,
+  session: state.session.session,
+  isGDPRDismissed: state.settings.gdprDismissed,
+  gdprHeight: state.settings.gdprHeight,
+  availability: state.trips.availability.data,
+  isCheckingAvailability: state.trips.availability.isChecking,
 });
 
 const mapDispatchToProps = dispatch =>

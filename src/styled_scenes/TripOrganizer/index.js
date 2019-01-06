@@ -10,6 +10,7 @@ import { serverBaseURL } from 'libs/config';
 import axios from 'libs/axios';
 import { media } from 'libs/styled';
 import { saveTrip } from 'libs/localStorage';
+import * as tripUtils from 'libs/trips';
 import axiosOriginal from 'axios';
 import history from '../../main/history';
 import {
@@ -237,6 +238,7 @@ export default class TripOrganizer extends Component {
         availability: {},
         daysByService: {},
         pictureUploadError: null,
+        uploadingPicture: false,
         isCheckingList: [],
         notes: {},
       };
@@ -273,7 +275,9 @@ export default class TripOrganizer extends Component {
   }
 
   componentDidMount() {
-    updateBottomChatPosition(calculateBottomPosition(this.props.isGDPRDismissed, 60));
+    updateBottomChatPosition(
+      calculateBottomPosition(this.props.isGDPRDismissed, this.props.gdprHeight, 60),
+    );
 
     if (!this.props.tripId) {
       this.checkAllServicesAvailability({
@@ -301,6 +305,11 @@ export default class TripOrganizer extends Component {
           infants: this.state.trip.infantCount,
         },
       });
+    }
+    if (prevProps.gdprHeight !== this.props.gdprHeight) {
+      updateBottomChatPosition(
+        calculateBottomPosition(this.props.isGDPRDismissed, this.props.gdprHeight, 60),
+      );
     }
   }
 
@@ -393,7 +402,7 @@ export default class TripOrganizer extends Component {
 
   save = async trip => {
     if (this.props.tripId) {
-      await axios.patch(`/trips/${trip._id}`, trip);
+      await tripUtils.patchTrip(trip._id, trip);
       return;
     }
     saveTrip(trip);
@@ -891,6 +900,9 @@ export default class TripOrganizer extends Component {
       this.setState({ pictureUploadError: 'File size should not exceed 3 Mb' });
       return;
     }
+    this.setState({
+      uploadingPicture: true,
+    });
     const formData = new FormData();
     formData.append('profilePicture', file);
     const uploadedFile = await axiosOriginal.post(`${serverBaseURL}/media`, formData, {});
@@ -898,9 +910,10 @@ export default class TripOrganizer extends Component {
     const url = uploadedFile.data.url;
     this.setState(
       prev => ({
+        pictureUploadError: null,
+        uploadingPicture: false,
         trip: {
           ...prev.trip,
-          pictureUploadError: null,
           media: [
             {
               type: 'image',
@@ -980,29 +993,7 @@ export default class TripOrganizer extends Component {
             [newKey]: prevState.notes[value],
           };
         }, {});
-        console.log({
-          trip: {
-            ...prevState.trip,
-            duration: prevState.trip.duration - daysToMinutes(1),
-          },
-          notes,
-          optionsSelected,
-          daysByService,
-          days: prevState.days.filter(prevDay => prevDay.day !== day.day).map(
-            prevDay =>
-              prevDay.day < day.day
-                ? prevDay
-                : {
-                    ...prevDay,
-                    ...dayTitles(prevDay.day - 1, this.props.startDate),
-                    day: prevDay.day - 1,
-                    data: prevDay.data.map(serv => ({
-                      ...serv,
-                      day: prevDay.day - 1,
-                    })),
-                  },
-          ),
-        });
+
         return {
           trip: {
             ...prevState.trip,
@@ -1051,6 +1042,7 @@ export default class TripOrganizer extends Component {
       pictureUploadError,
       isCheckingList,
       notes,
+      uploadingPicture,
     } = this.state;
 
     const hero = trip && getHeroImage(trip);
@@ -1080,20 +1072,26 @@ export default class TripOrganizer extends Component {
           </Message>
         )}
         <CoverImage url={img}>
-          <Button
-            element={({ children }) => <label htmlFor="cover-image">{children}</label>}
-            onClick={e => {}}
-            theme="allWhite"
-            iconBefore="camera"
-          >
-            Change Cover
-          </Button>
-          <input
-            id="cover-image"
-            accept=".jpg, .jpeg, .png"
-            type="file"
-            onChange={this.onFileSelect}
-          />
+          {uploadingPicture ? (
+            <Loader active inline="centered" />
+          ) : (
+            <React.Fragment>
+              <Button
+                element={({ children }) => <label htmlFor="cover-image">{children}</label>}
+                onClick={e => {}}
+                theme="allWhite"
+                iconBefore="camera"
+              >
+                Change Cover
+              </Button>
+              <input
+                id="cover-image"
+                accept=".jpg, .jpeg, .png"
+                type="file"
+                onChange={this.onFileSelect}
+              />
+            </React.Fragment>
+          )}
         </CoverImage>
         <FormInput>
           <Label>
@@ -1162,7 +1160,7 @@ export default class TripOrganizer extends Component {
   };
 
   render() {
-    const { isLoading, availability, tripId, isGDPRDismissed } = this.props;
+    const { isLoading, availability, tripId, isGDPRDismissed, gdprHeight } = this.props;
     const { trip, isBlockedUntilSaved, days } = this.state;
 
     const loading = isLoading || (!trip || trip._id !== tripId) || !availability;
@@ -1175,7 +1173,7 @@ export default class TripOrganizer extends Component {
         </Dimmer>
         {!loading && (
           <DaySelector
-            bottom={calculateBottomPosition(isGDPRDismissed)}
+            bottom={calculateBottomPosition(isGDPRDismissed, gdprHeight)}
             days={days}
             goToDay={this.goToDay}
             onAddDay={this.handleAddDay}

@@ -3,17 +3,13 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router';
 
-import * as actions from '../actions';
+import * as actions from 'store/services-upsert/actions';
 
 import ServiceForm from '../../../shared_components/ServiceForm';
 
 class NewServiceFormContainer extends Component {
   onSubmit = values => {
     this.props.registerService(values, this.props.history);
-  };
-
-  redeployFailedContract = (values, serviceId) => {
-    this.props.redeployContract(values, serviceId, this.props.history);
   };
 
   componentDidMount() {
@@ -28,7 +24,6 @@ class NewServiceFormContainer extends Component {
         onSubmit={this.onSubmit}
         submitInFlight={this.props.isSubmitting}
         globalError={this.props.error}
-        onRedeployContract={this.redeployFailedContract}
         {...this.props}
       />
     );
@@ -36,10 +31,10 @@ class NewServiceFormContainer extends Component {
 }
 
 const mapStateToProps = state => ({
-  isSubmitting: state.ServiceUpsert.isSubmitting,
-  error: state.ServiceUpsert.error,
-  userProfile: state.ServiceUpsert.userProfile,
-  serviceFormTagsOptions: state.ServiceUpsert.serviceFormTagsOptions,
+  isSubmitting: state.servicesUpsert.isSubmitting,
+  error: state.servicesUpsert.error,
+  userProfile: state.servicesUpsert.userProfile,
+  serviceFormTagsOptions: state.servicesUpsert.serviceFormTagsOptions,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);

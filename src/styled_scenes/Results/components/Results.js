@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
-import axios from 'libs/axios';
 
 // COMPONENTS
 import Row from '../../../shared_components/layout/Row';
@@ -18,6 +17,7 @@ import { minutesToDays, getDaysByService } from 'styled_scenes/Trip/mapServicesT
 import notFoundImg from '../not_found.png';
 import { loadTrip, saveTrip } from 'libs/localStorage';
 import { generateTripSlug, generateServiceSlug } from 'libs/Utils';
+import * as tripUtils from 'libs/trips';
 
 // STYLES
 const Wrap = styled.div`
@@ -83,7 +83,7 @@ class Results extends Component {
       startDate: null,
       endDate: null,
       page: props.search_query.page || 0,
-      resultsCount: props.search_query.resultsCount || 0,
+      resultsCount: props.count || 0,
       limit: props.search_query.limit || 0,
     };
 
@@ -128,7 +128,7 @@ class Results extends Component {
       tags: this.props.search_query.tags,
       onlySmartContracts: this.props.search_query.onlySmartContracts,
       page: this.props.search_query.page || 0,
-      resultsCount: this.props.search_query.resultsCount || 0,
+      resultsCount: this.props.count || 0,
       limit: this.props.search_query.limit || 0,
       sortBy: this.props.search_query.sortBy,
       radiusInKm: this.props.search_query.radiusInKm,
@@ -139,7 +139,7 @@ class Results extends Component {
   refetch_results(param_object) {
     const query_params = this.get_query_params();
     query_params[Object.keys(param_object)[0]] = param_object[Object.keys(param_object)[0]];
-    this.props.update_path(query_params, this.props.history, this.props.routeState);
+    this.props.updatePath(query_params, this.props.history, this.props.routeState);
   }
 
   loadData = item => {
@@ -161,7 +161,7 @@ class Results extends Component {
     ];
 
     if (this.props.trip._id) {
-      await axios.patch(`/trips/${this.props.trip._id}`, {
+      await tripUtils.patchTrip(this.props.trip._id, {
         services: this.tripServices.map(service => ({ ...service, service: service.service._id })),
       });
       return;
@@ -178,7 +178,7 @@ class Results extends Component {
       service => service.service._id !== serviceId || service.day !== day,
     );
     if (this.props.trip._id) {
-      await axios.patch(`/trips/${this.props.trip._id}`, {
+      await tripUtils.patchTrip(this.props.trip._id, {
         services: this.tripServices.map(service => ({ ...service, service: service._id })),
       });
       return;
@@ -267,9 +267,7 @@ class Results extends Component {
           <PaginationWrap>
             {this.props.data.length ? (
               <ReactPaginate
-                pageCount={Math.ceil(
-                  this.props.search_query.resultsCount / this.props.search_query.limit,
-                )}
+                pageCount={Math.ceil(this.props.count / this.props.search_query.limit)}
                 marginPagesDisplayed={1}
                 pageRangeDisplayed={2}
                 onPageChange={this.loadData}

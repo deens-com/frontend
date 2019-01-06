@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Loader } from 'semantic-ui-react';
-import { update_search_query_without_search } from '../../../scenes/results/actions';
+import actions from 'store/search/actions';
 import axios from 'libs/axios';
 import TopBar from 'shared_components/TopBar';
 import BrandFooter from 'shared_components/BrandFooter';
@@ -29,10 +29,10 @@ class TripCreatorContainer extends Component {
   componentDidMount() {
     if (this.props.session.username) {
       axios.post(`/trips`, emptyTrip).then(response => {
-        history.push(`/trips/organize/${response.data._id}`);
+        history.replace(`/trips/organize/${response.data._id}`);
       });
     } else {
-      history.push('/trips/organize');
+      history.replace('/trips/organize');
     }
   }
   render() {
@@ -50,14 +50,14 @@ class TripCreatorContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    session: state.SessionsReducer.session,
+    session: state.session.session,
   };
 };
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      changeDates: update_search_query_without_search,
+      changeDates: actions.updateSearchQuery,
     },
     dispatch,
   );

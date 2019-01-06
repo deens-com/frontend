@@ -30,8 +30,8 @@ const PrivateRoute = ({ component: Component, session, message, loggedIn, ...res
 );
 
 const mapStateToProps = state => ({
-  session: state.SessionsReducer.session,
-  loggedIn: state.SessionsReducer.loggedIn,
+  session: state.session.session,
+  loggedIn: state.session.loggedIn,
 });
 
 export default connect(

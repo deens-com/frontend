@@ -17,6 +17,11 @@ const ItemTitle = styled.div`
   text-overflow: ellipsis;
 `;
 
+const Wrapper = styled.div`
+  max-height: 200px;
+  overflow-y: scroll;
+`;
+
 class TripsListInDropDown extends React.Component {
   state = { selectedTrip: null };
 
@@ -96,7 +101,7 @@ class TripsListInDropDown extends React.Component {
 
   render() {
     return (
-      <div ref={this.props.innerRef}>
+      <Wrapper ref={this.props.innerRef}>
         <List selection verticalAlign="middle" divided>
           {this.props.trips.map(this.renderItemWithPopup)}
           <List.Item onClick={this.props.onNewTripClick}>
@@ -106,7 +111,7 @@ class TripsListInDropDown extends React.Component {
             </List.Content>
           </List.Item>
         </List>
-      </div>
+      </Wrapper>
     );
   }
 }

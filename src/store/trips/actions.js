@@ -1,11 +1,15 @@
 import axios from 'libs/axios';
+import fetchHelpers from 'libs/fetch_helpers';
 import { serverBaseURL } from 'libs/config';
 import { parseTags } from 'libs/fetch_helpers';
 import history from './../../main/history';
 import moment from 'moment';
 import { saveTrip } from 'libs/localStorage';
 
-export const types = {
+const types = {
+  FETCH_USER_TRIPS_START: 'FETCH_USER_TRIPS_START',
+  FETCH_USER_TRIPS_SUCCESS: 'FETCH_USER_TRIPS_SUCCESS',
+  FETCH_USER_TRIPS_ERROR: 'FETCH_USER_TRIPS_ERROR',
   FETCH_TRIP_START: 'FETCH_TRIP_START',
   FETCH_TRIP_SUCCESS: 'FETCH_TRIP_SUCCESS',
   FETCH_TRIP_ERROR: 'FETCH_TRIP_ERROR',
@@ -24,47 +28,69 @@ export const types = {
   RESET_TRIP: 'RESET_TRIP',
 };
 
-export const fetchTripStart = () => {
+const fetchUserTripsStart = () => ({ type: types.FETCH_USER_TRIPS_START });
+
+const fetchUserTripsSuccess = trips => ({
+  type: types.FETCH_USER_TRIPS_SUCCESS,
+  payload: trips,
+});
+
+const fetchUserTripsError = error => ({
+  type: types.FETCH_USER_TRIPS_ERROR,
+  payload: error,
+});
+
+const fetchUserTrips = (serviceId, slotsNb) => async dispatch => {
+  dispatch(fetchUserTripsStart());
+  try {
+    const myTrips = await axios.get(`/trips?include=service`);
+    dispatch(fetchUserTripsSuccess(fetchHelpers.buildServicesJson(myTrips.data)));
+  } catch (e) {
+    dispatch(fetchUserTripsError(e));
+  }
+};
+
+const fetchTripStart = () => {
   return {
     type: types.FETCH_TRIP_START,
   };
 };
 
-export const fetchTripError = error => {
+const fetchTripError = error => {
   return {
     type: types.FETCH_TRIP_ERROR,
     payload: error.response.data,
   };
 };
 
-export const fetchTripSuccess = trip => {
+const fetchTripSuccess = trip => {
   return {
     type: types.FETCH_TRIP_SUCCESS,
     payload: trip,
   };
 };
 
-export const fetchOwnerStart = () => {
+const fetchOwnerStart = () => {
   return {
     type: types.FETCH_OWNER_START,
   };
 };
 
-export const fetchOwnerSuccess = owner => {
+const fetchOwnerSuccess = owner => {
   return {
     type: types.FETCH_OWNER_SUCCESS,
     payload: owner.data,
   };
 };
 
-export const checkAvailabilityStart = timestamp => {
+const checkAvailabilityStart = timestamp => {
   return {
     type: types.CHECK_AVAILABILITY_START,
     timestamp,
   };
 };
 
-export const checkAvailabilitySuccess = (payload, timestamp) => {
+const checkAvailabilitySuccess = (payload, timestamp) => {
   return {
     type: types.CHECK_AVAILABILITY_SUCCESS,
     payload,
@@ -72,7 +98,7 @@ export const checkAvailabilitySuccess = (payload, timestamp) => {
   };
 };
 
-export const checkAvailabilityError = (e, timestamp) => {
+const checkAvailabilityError = (e, timestamp) => {
   return {
     type: types.CHECK_AVAILABILITY_ERROR,
     payload: e,
@@ -80,58 +106,58 @@ export const checkAvailabilityError = (e, timestamp) => {
   };
 };
 
-export const cloneTripStart = () => {
+const cloneTripStart = () => {
   return {
     type: types.CLONE_TRIP_START,
   };
 };
 
-export const cloneTripSuccess = () => {
+const cloneTripSuccess = () => {
   return {
     type: types.CLONE_TRIP_SUCCESS,
   };
 };
 
-export const cloneTripError = e => {
+const cloneTripError = e => {
   return {
     type: types.CLONE_TRIP_ERROR,
     payload: e,
   };
 };
 
-export const selectOptionAction = payload => {
+const selectOptionAction = payload => {
   return {
     type: types.SELECT_OPTION,
     payload,
   };
 };
 
-export const patchTripStart = () => {
+const patchTripStart = () => {
   return {
     type: types.PATCH_TRIP_START,
   };
 };
 
-export const patchTripSuccess = () => {
+const patchTripSuccess = () => {
   return {
     type: types.PATCH_TRIP_SUCCESS,
   };
 };
 
-export const patchTripError = e => {
+const patchTripError = e => {
   return {
     type: types.PATCH_TRIP_ERROR,
     payload: e,
   };
 };
 
-export const resetTrip = () => async dispatch => {
+const resetTrip = () => async dispatch => {
   dispatch({
     type: types.RESET_TRIP,
   });
 };
 
-export const fetchTrip = id => async dispatch => {
+const fetchTrip = id => async dispatch => {
   dispatch(fetchTripStart());
   try {
     const trip = await axios.get(`${serverBaseURL}/trips/${id}?include=services,tags,reservations`);
@@ -162,7 +188,7 @@ export const fetchTrip = id => async dispatch => {
   }
 };
 
-export const checkAvailability = (id, startDate, peopleData, attempt = 1) => async dispatch => {
+const checkAvailability = (id, startDate, peopleData, attempt = 1) => async dispatch => {
   const timestamp = new Date().getTime();
   const { adults, children, infants } = peopleData;
 
@@ -185,7 +211,7 @@ export const checkAvailability = (id, startDate, peopleData, attempt = 1) => asy
   }
 };
 
-export const cloneTrip = (id, userId) => async dispatch => {
+const cloneTrip = (id, userId) => async dispatch => {
   dispatch(cloneTripStart());
   try {
     const newTrip = userId
@@ -205,7 +231,7 @@ export const cloneTrip = (id, userId) => async dispatch => {
   }
 };
 
-export const selectOption = (serviceId, optionCode) => async dispatch => {
+const selectOption = (serviceId, optionCode) => async dispatch => {
   dispatch(
     selectOptionAction({
       serviceId,
@@ -214,7 +240,7 @@ export const selectOption = (serviceId, optionCode) => async dispatch => {
   );
 };
 
-export const patchTrip = trip => async dispatch => {
+const patchTrip = trip => async dispatch => {
   dispatch(patchTripStart());
   try {
     await axios.post(`/trips/${trip._id}`, trip);
@@ -222,4 +248,15 @@ export const patchTrip = trip => async dispatch => {
   } catch (e) {
     dispatch(patchTripError(e));
   }
+};
+
+export default {
+  types,
+  fetchUserTrips,
+  patchTrip,
+  selectOption,
+  cloneTrip,
+  checkAvailability,
+  fetchTrip,
+  resetTrip,
 };

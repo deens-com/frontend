@@ -77,7 +77,7 @@ class MobileDropDownMenu extends Component {
 }
 
 const mapStateToProps = state => ({
-  session: state.SessionsReducer.session,
+  session: state.session.session,
 });
 
 export default connect(

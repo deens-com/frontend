@@ -35,10 +35,10 @@ const Input = styled.input`
   font-size: 14px;
 `;
 
-export default ({ error, leftContent, rightContent, children, ...props }) => (
+export default ({ error, leftContent, rightContent, children, innerRef, ...props }) => (
   <Wrapper error={error}>
     {leftContent}
-    {children || <Input innerRef={props.innerRef} {...props} />}
+    {children || <Input ref={innerRef} {...props} />}
     {rightContent}
   </Wrapper>
 );
