@@ -242,7 +242,7 @@ export function getHeroImage(service) {
 
 export async function waitUntilMapsLoaded() {
   if (!window.google || !window.google.maps) {
-    await new Promise(resolve => setTimeout(resolve, 250));
+    await new Promise(resolve => setTimeout(resolve, 50));
     return waitUntilMapsLoaded();
   }
   return window.google.maps;
