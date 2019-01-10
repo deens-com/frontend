@@ -513,10 +513,14 @@ class Filters extends Component {
   categoryPopupSelect = serviceTypes => {
     const serviceOptions = [
       { text: 'Accommodation', value: 'accommodation' },
-      { text: 'Trip', value: 'trip' },
       { text: 'Food', value: 'food' },
       { text: 'Activity', value: 'activity' },
     ];
+
+    if (!this.props.routeState) {
+      serviceOptions.push({ text: 'Trip', value: 'trip' });
+    }
+
     return (
       <div style={{ textTransform: 'capitalize' }}>
         <Dropdown
