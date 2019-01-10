@@ -40,7 +40,7 @@ const Wrapper = styled.div`
 function renderOption(option, basePrice) {
   return (
     <Content>
-      <Title>{I18nText.translate(option.subtitle || option.title)}</Title>
+      <Title>{I18nText.translate(option.title || option.subtitle)}</Title>
       <Price>${getPriceFromServiceOption(basePrice, option.price)}</Price>
     </Content>
   );
@@ -73,7 +73,7 @@ export default class Options extends Component {
 
   onDropdownChange = (event, data) => {
     const price = data.options.find(option => option.value === data.value).price;
-    this.props.onChange(this.props.day, this.props.serviceId, data.value, price);
+    this.props.onChange(this.props.day, this.props.instanceId, data.value, price);
   };
 
   render() {

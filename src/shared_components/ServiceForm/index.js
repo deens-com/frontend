@@ -306,7 +306,6 @@ class ServiceForm extends Component {
               defaultAddress={values.formattedAddress}
               onKeyUp={this.onLocationKeyUp}
               onChange={this.onLocationSelect}
-              onlyCities
             />
             {touched.latlong && errors.latlong && <ErrorMsg>{errors.latlong}</ErrorMsg>}
           </Form.Field>

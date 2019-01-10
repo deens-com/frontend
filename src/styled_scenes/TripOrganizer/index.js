@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Loader, Dimmer, Message } from 'semantic-ui-react';
 import { geocodeByPlaceId } from 'react-places-autocomplete';
 import { getFromCoordinates } from 'libs/Utils';
+import uniqBy from 'lodash.uniqby';
 
 import { serverBaseURL } from 'libs/config';
 import axios from 'libs/axios';
@@ -32,7 +33,6 @@ import mapServicesToDays, {
   minutesToDays,
   dayTitles,
   updateServiceDayNames,
-  getDaysByService,
 } from '../Trip/mapServicesToDays';
 import DaySelector from '../Trip/DaySelector';
 import CheckoutBox from './CheckoutBox';
@@ -114,33 +114,6 @@ const Required = () => <span style={{ color: 'red' }}>*</span>;
 const daysToMinutes = days => days * 60 * 24;
 
 function createTripState(props, state) {
-  const optionsSelected = {};
-
-  const selectedServiceOptions =
-    (props.trip.otherAttributes && props.trip.otherAttributes.selectedServiceOptions) || [];
-  selectedServiceOptions.forEach(selected => {
-    if (!optionsSelected[selected.day]) {
-      const service = props.trip.services.find(item => item.service._id === selected.serviceId);
-      optionsSelected[selected.day] = {
-        [selected.serviceId]: {
-          availabilityCode: selected.availabilityCode,
-          price: getPriceFromServiceOption(
-            service ? service.basePrice : 0,
-            selected.price,
-            getPeopleCount(state.trip || props.trip),
-          ),
-        },
-      };
-      return;
-    }
-    optionsSelected[selected.day][selected.serviceId] = {
-      availabilityCode: selected.availabilityCode,
-      price: selected.price,
-    };
-  });
-
-  const daysByService = getDaysByService(props.trip.services);
-
   return {
     ...state,
     trip: {
@@ -150,8 +123,6 @@ function createTripState(props, state) {
       infantCount: props.trip.infantCount || props.infants || 0,
     },
     days: mapServicesToDays(props.trip.services, props.trip.duration, props.trip.startDate),
-    optionsSelected,
-    daysByService,
     isCheckingList: [],
     notes: props.trip.notes ? props.trip.notes : {},
   };
@@ -161,27 +132,25 @@ const calculatePrice = prevState => ({
   ...prevState,
   trip: {
     ...prevState.trip,
-    basePrice: prevState.availability.data.reduce((price, elem) => {
-      const service = prevState.trip.services.find(item => item.service._id === elem.serviceId);
-
-      if (!service.service.periods[0].payAtService) {
-        const optionPrice = getPriceFromServiceOption(
-          service.service.basePrice,
-          prevState.optionsSelected[elem.day] &&
-            prevState.optionsSelected[elem.day][elem.serviceId] &&
-            prevState.optionsSelected[elem.day][elem.serviceId].price,
-          getPeopleCount(prevState.trip),
-        );
-        return price + optionPrice;
-      }
-      return price;
+    basePrice: prevState.days.reduce((price, dayData) => {
+      return (
+        price +
+        dayData.data.reduce((price, service) => {
+          if (service.service.checkoutOptions.payAt === 'please') {
+            if (service.selectedOption) {
+              return price + service.selectedOption.price;
+            }
+            return price + service.service.basePrice;
+          }
+          return price;
+        }, 0)
+      );
     }, 0),
   },
 });
 
-function pickFirstOption(data) {
-  // selectOption(value.day, value.serviceId, value.groupedOptions.options[0].otherAttributes.availabilityCode.code, value.groupedOptions.options[0].price);
-  return data.reduce((prev, value) => {
+function pickFirstOption(days, data) {
+  const dataByDay = data.reduce((prev, value) => {
     if (!value.groupedOptions || value.groupedOptions.options.length === 0) {
       return prev;
     }
@@ -209,6 +178,24 @@ function pickFirstOption(data) {
       },
     };
   }, {});
+
+  return days.map(day => {
+    if (dataByDay[day.day]) {
+      return {
+        ...day,
+        data: day.data.map(service => {
+          if (dataByDay[day.day] && dataByDay[day.day][service.service._id]) {
+            return {
+              ...service,
+              selectedOption: dataByDay[day.day][service.service._id],
+            };
+          }
+          return service;
+        }),
+      };
+    }
+    return day;
+  });
 }
 
 const emptyTrip = {
@@ -234,9 +221,7 @@ export default class TripOrganizer extends Component {
       this.state = {
         trip: props.trip || emptyTrip,
         days: [],
-        optionsSelected: {},
         availability: {},
-        daysByService: {},
         pictureUploadError: null,
         uploadingPicture: false,
         isCheckingList: [],
@@ -253,22 +238,6 @@ export default class TripOrganizer extends Component {
         props.tripId === (props.trip && props.trip._id))
     ) {
       newState = createTripState(props, state);
-    }
-
-    if (
-      props.availability &&
-      (!(state.availability && state.availability.timestamp) ||
-        props.availability.timestamp >= state.availability.timestamp)
-    ) {
-      const optionsSelected = props.availability.data
-        ? pickFirstOption(props.availability.data)
-        : state.optionsSelected;
-
-      newState = {
-        ...newState,
-        availability: props.availability,
-        optionsSelected,
-      };
     }
 
     return newState;
@@ -328,30 +297,8 @@ export default class TripOrganizer extends Component {
             isSaving: true,
           },
       async () => {
-        let selectedServiceOptions = [];
-
-        Object.keys(this.state.optionsSelected).forEach(day => {
-          Object.keys(this.state.optionsSelected[day]).forEach(serviceId => {
-            selectedServiceOptions.push({
-              day: parseInt(day, 10),
-              serviceId,
-              availabilityCode:
-                this.state.optionsSelected[day] &&
-                this.state.optionsSelected[day][serviceId] &&
-                (this.state.optionsSelected[day][serviceId].availabilityCode ||
-                  this.state.optionsSelected[day][serviceId]),
-              price:
-                this.state.optionsSelected[day][serviceId] &&
-                this.state.optionsSelected[day][serviceId].price,
-            });
-          });
-        });
-
         const trip = {
           ...this.state.trip,
-          otherAttributes: {
-            selectedServiceOptions,
-          },
           services: this.state.days.reduce(
             (prev, day) => [
               ...prev,
@@ -370,11 +317,11 @@ export default class TripOrganizer extends Component {
 
         await this.save(trip);
 
-        this.setState({
+        this.setState(prevState => ({
           isSaving: false,
           savingPending: false,
           isBlockedUntilSaved: false,
-        });
+        }));
 
         if (action === 'manual-save' || action === 'autosave') {
           return;
@@ -417,106 +364,33 @@ export default class TripOrganizer extends Component {
     this.debouncedPatch();
   };
 
-  selectOption = (day, serviceId, optionCode, price) => {
+  selectOption = (day, instanceId, optionCode, price) => {
     this.setState(
       prevState => ({
-        optionsSelected: {
-          ...prevState.optionsSelected,
-          [day]: {
-            ...prevState.optionsSelected[day],
-            [serviceId]: {
-              availabilityCode: optionCode,
-              price,
-            },
-          },
-        },
-      }),
-      () => {
-        this.setState(calculatePrice, this.autoPatchTrip);
-      },
-    );
-  };
-
-  addService = async (day, service) => {
-    this.setState(
-      prevState => ({
-        daysByService: {
-          ...prevState.daysByService,
-          [service._id]: [...(prevState.daysByService[service._id] || []), day],
-        },
         days: prevState.days.map(elem => {
           if (elem.day !== day) {
             return elem;
           }
+
           return {
             ...elem,
-            data: [
-              ...elem.data,
-              {
-                day,
-                priority: 1,
-                service,
-              },
-            ],
-          };
-        }),
-        isCheckingList: [...prevState.isCheckingList, `${day}-${service._id}`],
-      }),
-      async () => {
-        this.autoPatchTrip();
-        const availability =
-          this.props.startDate &&
-          (await axios.post(`${serverBaseURL}/services/${service._id}/availability`, {
-            bookingDate: this.props.startDate
-              .clone()
-              .add(day - 1, 'days')
-              .format('YYYY-MM-DD'),
-            adultCount: this.state.trip.adultCount,
-            childrenCount: this.state.trip.childrenCount,
-            infantCount: this.state.trip.infantCount,
-            peopleCount:
-              this.state.trip.adultCount +
-              this.state.trip.childrenCount +
-              this.state.trip.infantCount,
-          }));
-
-        this.setState(prevState => ({
-          ...(this.props.startDate
-            ? {
-                availability: {
-                  ...prevState.availability,
-                  data: [
-                    ...(prevState.availability.data || {}),
-                    {
-                      isAvailable: availability.data.isAvailable,
-                      groupedOptions: availability.data.groupedOptions,
-                      serviceId: service._id,
-                      day: day,
-                    },
-                  ],
-                  timestamp: new Date().getTime(),
-                },
-                isCheckingList: prevState.isCheckingList.filter(
-                  value => value !== `${day}-${service._id}`,
-                ),
-                ...(availability.data.groupedOptions &&
-                  availability.data.groupedOptions.options.length > 0 && {
-                    optionsSelected: {
-                      ...prevState.optionsSelected,
-                      [day]: {
-                        ...prevState.optionsSelected[day],
-                        [service._id]: {
-                          availabilityCode:
-                            availability.data.groupedOptions.options[0].otherAttributes
-                              .availabilityCode.code,
-                          price: availability.data.groupedOptions.options[0].price,
-                        },
+            data: elem.data.map(
+              elemData =>
+                elemData._id !== instanceId
+                  ? elemData
+                  : {
+                      ...elemData,
+                      selectedOption: {
+                        availabilityCode: optionCode,
+                        price,
                       },
                     },
-                  }),
-              }
-            : null),
-        }));
+            ),
+          };
+        }),
+      }),
+      () => {
+        this.setState(calculatePrice, this.autoPatchTrip);
       },
     );
   };
@@ -553,18 +427,25 @@ export default class TripOrganizer extends Component {
     );
   };
 
-  removeService = async (day, serviceId) => {
+  removeService = async (day, serviceId, instanceId) => {
     this.setState(prevState => {
+      const services = prevState.days
+        .find(elem => elem.day === day)
+        .data.filter(service => service.service._id === serviceId);
       return {
-        availability: {
-          ...prevState.availability,
-          data: prevState.availability.data
-            ? prevState.availability.data.filter(
-                elem => elem.serviceId !== serviceId || elem.day !== day,
-              )
-            : null,
-          timestamp: new Date().getTime(),
-        },
+        ...(services.length === 1
+          ? {
+              availability: {
+                ...prevState.availability,
+                data: prevState.availability.data
+                  ? prevState.availability.data.filter(
+                      elem => elem.serviceId !== serviceId || elem.day !== day,
+                    )
+                  : null,
+                timestamp: new Date().getTime(),
+              },
+            }
+          : null),
         days: prevState.days.map(elem => {
           if (elem.day !== day) {
             return elem;
@@ -572,15 +453,9 @@ export default class TripOrganizer extends Component {
 
           return {
             ...elem,
-            data: elem.data.filter(elemData => elemData.service._id !== serviceId),
+            data: elem.data.filter(elemData => elemData._id !== instanceId),
           };
         }),
-        daysByService: {
-          ...prevState.daysByService,
-          [serviceId]: prevState.daysByService[serviceId].filter(
-            dayByService => dayByService !== day,
-          ),
-        },
       };
     }, this.autoPatchTrip);
   };
@@ -683,7 +558,7 @@ export default class TripOrganizer extends Component {
     }
   };
 
-  checkAllServicesAvailability = ({ startDate, guests }) => {
+  checkAllServicesAvailabilityAsGuest = ({ startDate, guests }) => {
     const timestamp = new Date().getTime();
     this.setState(
       prevState => ({
@@ -693,14 +568,13 @@ export default class TripOrganizer extends Component {
           isChecking: true,
           timestamp,
         },
-        optionsSelected: {},
         isCheckingList: [],
       }),
       async () => {
         const days = this.state.days.reduce(
           (prev, day) => [
             ...prev,
-            ...day.data.map(data => ({
+            ...uniqBy(day.data, data => data.service._id).map(data => ({
               serviceId: data.service._id,
               day: day.day,
               request: this.checkSingleService(data, startDate, guests),
@@ -709,23 +583,81 @@ export default class TripOrganizer extends Component {
           [],
         );
         const availability = await Promise.all(days.map(day => day.request));
-        const data = days.map((day, index) => ({
+        const data = this.state.days.map((day, index) => ({
           day: day.day,
           serviceId: day.serviceId,
           ...availability[index].data,
         }));
-        const optionsSelected = pickFirstOption(data);
 
         this.setState(prevState =>
           calculatePrice({
             ...prevState,
+            days: pickFirstOption(prevState.days, data),
             availability: {
               data,
               error: null,
               isChecking: false,
               timestamp,
             },
-            optionsSelected,
+          }),
+        );
+      },
+    );
+  };
+
+  checkAllServicesAvailability = ({ startDate, guests }) => {
+    if (!this.props.tripId) {
+      return this.checkAllServicesAvailabilityAsGuest({ startDate, guests });
+    }
+
+    const timestamp = new Date().getTime();
+    this.setState(
+      prevState => ({
+        availability: {
+          ...prevState.availability,
+          data: [],
+          isChecking: true,
+          timestamp,
+        },
+        isCheckingList: [],
+      }),
+      async () => {
+        //const availability = await Promise.all(days.map(day => day.request));
+        /*const availability2 = await axios.post(`/trips/${this.state.trip._id}/availability`, {
+          bookingDate: startDate
+            .clone()
+            .format('YYYY-MM-DD'),
+          adultCount: guests.adults,
+          childCount: guests.children,
+          infantCount: guests.infants,
+          peopleCount: guests.adults + guests.children + guests.infants,
+        });*/
+        const checkdata = {
+          bookingDate: startDate.clone().format('YYYY-MM-DD'),
+          adultCount: guests.adults,
+          childCount: guests.children,
+          infantCount: guests.infants,
+          peopleCount: guests.adults + guests.children + guests.infants,
+        };
+        const response = await axios.get(
+          `/trips/${this.state.trip._id}/availability?bookingDate=${
+            checkdata.bookingDate
+          }&adultCount=${checkdata.adultCount}&childCount=${checkdata.childCount}&infantCount=${
+            checkdata.infantCount
+          }`,
+        );
+        const data = uniqBy(response.data, elem => `${elem.day}-${elem.serviceId}`);
+
+        this.setState(prevState =>
+          calculatePrice({
+            ...prevState,
+            days: pickFirstOption(prevState.days, data),
+            availability: {
+              data,
+              error: null,
+              isChecking: false,
+              timestamp,
+            },
           }),
         );
       },
@@ -790,12 +722,6 @@ export default class TripOrganizer extends Component {
                 data: [],
               },
         ],
-        optionsSelected: {
-          ...prevState.optionsSelected,
-          ...(prevState.days.length > 0
-            ? { [prevState.days[prevState.days.length - 1].day + 1]: {} }
-            : { 1: {} }),
-        },
       }),
       this.autoPatchTrip,
     );
@@ -867,15 +793,6 @@ export default class TripOrganizer extends Component {
 
     if (servicesAreAvailable) {
       return 'Please check that all services are available in selected dates';
-    }
-
-    const notSelected = options.some(
-      value =>
-        !(this.state.optionsSelected[value.day] && this.state.optionsSelected[value.day][value.id]),
-    );
-
-    if (notSelected) {
-      return 'You must select the options for each service to book';
     }
 
     return null;
@@ -954,33 +871,6 @@ export default class TripOrganizer extends Component {
   removeDay = day => {
     this.setState(
       prevState => {
-        const optionsSelected = Object.keys(prevState.optionsSelected).reduce(
-          (prevOptions, value) => {
-            if (value === day.day) {
-              return prevOptions;
-            }
-            return {
-              ...prevOptions,
-              [value < day.day ? value : value - 1]: prevState.optionsSelected[value],
-            };
-          },
-          {},
-        );
-
-        const daysByService = Object.keys(prevState.daysByService).reduce((prevDays, value) => {
-          const newValue = prevState.daysByService[value]
-            .filter(dayByService => dayByService !== day.day)
-            .map(dayByService => (dayByService < day.day ? dayByService : dayByService - 1));
-          if (newValue.length === 0) {
-            return prevDays;
-          }
-
-          return {
-            ...prevDays,
-            [value]: newValue,
-          };
-        }, {});
-
         const notes = Object.keys(prevState.notes).reduce((prevNotes, value) => {
           if (Number(value) === day.day) {
             return prevNotes;
@@ -1000,8 +890,6 @@ export default class TripOrganizer extends Component {
             duration: prevState.trip.duration - daysToMinutes(1),
           },
           notes,
-          optionsSelected,
-          daysByService,
           days: prevState.days.filter(prevDay => prevDay.day !== day.day).map(
             prevDay =>
               prevDay.day < day.day
@@ -1038,7 +926,6 @@ export default class TripOrganizer extends Component {
       availability,
       trip,
       days,
-      optionsSelected,
       pictureUploadError,
       isCheckingList,
       notes,
@@ -1106,7 +993,6 @@ export default class TripOrganizer extends Component {
           <SemanticLocationControl
             defaultAddress={location}
             onChange={this.handleLocationChange}
-            onlyCities
             useStyledInput
           />
         </FormInput>
@@ -1138,13 +1024,10 @@ export default class TripOrganizer extends Component {
           startDate={startDate}
           assignRefsToParent={this.assignRefs}
           days={days}
-          optionsSelected={optionsSelected}
           notes={notes}
           selectOption={this.selectOption}
-          addService={this.addService}
           goToAddService={this.goToAddService}
           removeService={this.removeService}
-          daysByService={this.state.daysByService}
           removeDay={this.removeDay}
           addNote={this.addNote}
           editNote={this.editNote}
@@ -1160,10 +1043,10 @@ export default class TripOrganizer extends Component {
   };
 
   render() {
-    const { isLoading, availability, tripId, isGDPRDismissed, gdprHeight } = this.props;
+    const { isLoading, tripId, isGDPRDismissed, gdprHeight } = this.props;
     const { trip, isBlockedUntilSaved, days } = this.state;
 
-    const loading = isLoading || (!trip || trip._id !== tripId) || !availability;
+    const loading = isLoading || (!trip || trip._id !== tripId);
 
     return (
       <Page>

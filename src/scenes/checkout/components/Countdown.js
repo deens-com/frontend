@@ -36,6 +36,10 @@ export default class Countdown extends React.Component {
   }
 
   tick = () => {
+    if (this.props.isPaying) {
+      return;
+    }
+
     const timeLeft = this.props.expireDate - moment().valueOf();
 
     if (timeLeft <= 0) {

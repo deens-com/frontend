@@ -30,6 +30,7 @@
     "lodash.debounce": "^4.0.8",
     "lodash.round": "^4.0.4",
     "lodash.throttle": "^4.1.1",
+    "lodash.uniqby": "^4.7.0",
     "moment": "^2.22.1",
     "now": "^12.1.12",
     "parse": "^1.11.1",

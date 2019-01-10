@@ -162,7 +162,7 @@ export class CheckoutTrip extends React.Component {
                       service.service.location.city ||
                       service.service.location.state}
                   </City>
-                  {service.service.checkoutOptions.payAt === 'external-provider' && (
+                  {service.service.checkoutOptions.payAt !== 'please' && (
                     <ButtonWrapper>
                       <Button
                         external

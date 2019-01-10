@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Modal } from 'semantic-ui-react';
 
-class ModalExampleCloseConfig extends Component {
+class ReprovisionModal extends Component {
   render() {
     return (
       <div>
@@ -31,4 +31,4 @@ class ModalExampleCloseConfig extends Component {
   }
 }
 
-export default ModalExampleCloseConfig;
+export default ReprovisionModal;

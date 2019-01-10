@@ -28,6 +28,7 @@ class Payment extends React.Component {
   };
 
   onSubmitWithCardDetails = async () => {
+    this.props.startPayment();
     this.setState({ isPaymentProcessing: true, paymentError: null });
     try {
       // TODO: @jaydp use the customer's name in the below line
@@ -37,11 +38,13 @@ class Payment extends React.Component {
       }
       this.onStripeTokenReceived(token, status => {
         this.setState({ isPaymentProcessing: false });
+        this.props.finishPayment();
         if (status === 'success') {
           this.props.nextStep();
         }
       });
     } catch (error) {
+      this.props.finishPayment();
       this.setState({
         isPaymentProcessing: false,
         paymentError: error,

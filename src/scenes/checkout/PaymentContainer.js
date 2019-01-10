@@ -23,6 +23,8 @@ const PaymentContainer = props => {
           nextStep={props.nextStep}
           guests={props.guests}
           trip={props.trip}
+          finishPayment={props.finishPayment}
+          startPayment={props.startPayment}
         />
       </Elements>
     </Wrapper>

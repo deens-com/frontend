@@ -264,7 +264,7 @@ export default class Itinerary extends Component {
     this.props.goToAddService(day);
   };
 
-  renderServiceFooter = (day, service) => {
+  renderServiceFooter = (day, service, selectedOption, instanceId) => {
     const availability =
       this.props.availability &&
       this.props.availability.find(elem => elem.serviceId === service._id && elem.day === day);
@@ -279,14 +279,9 @@ export default class Itinerary extends Component {
           basePrice={service.basePrice}
           options={availability.groupedOptions}
           onChange={this.props.selectOption}
-          value={
-            (this.props.optionsSelected[day] &&
-              this.props.optionsSelected[day][service._id] &&
-              this.props.optionsSelected[day][service._id].availabilityCode) ||
-            ''
-          }
-          serviceId={service._id}
+          value={(selectedOption && selectedOption.availabilityCode) || ''}
           day={day}
+          instanceId={instanceId}
         />
       </ServiceFooter>
     );
@@ -365,7 +360,7 @@ export default class Itinerary extends Component {
           </Note>
         )}
       {day.data.map(dayData => (
-        <Service key={dayData.service._id}>
+        <Service key={dayData._id}>
           <ServiceBody>
             {getHeroImage(dayData.service) && (
               <Image url={getHeroImage(dayData.service).files.small.url} />
@@ -394,7 +389,6 @@ export default class Itinerary extends Component {
                 <ServiceDaySelector
                   dayData={dayData}
                   service={dayData.service}
-                  daysByService={this.props.daysByService}
                   days={this.props.days}
                   removeService={this.props.removeService}
                   addService={this.props.addService}
@@ -402,7 +396,7 @@ export default class Itinerary extends Component {
               </LastLine>
             </ServiceData>
           </ServiceBody>
-          {this.renderServiceFooter(day.day, dayData.service)}
+          {this.renderServiceFooter(day.day, dayData.service, dayData.selectedOption, dayData._id)}
         </Service>
       ))}
       {day.data.length === 0 && (
@@ -455,7 +449,6 @@ Itinerary.propTypes = {
   startDate: PropTypes.object,
   assignRefsToParent: PropTypes.func.isRequired,
   selectOption: PropTypes.func.isRequired,
-  addService: PropTypes.func.isRequired,
   isCheckingList: PropTypes.array,
 };
 

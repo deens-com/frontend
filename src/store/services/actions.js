@@ -2,7 +2,7 @@ import history from 'main/history';
 import axios from 'libs/axios';
 import fetch_helpers from 'libs/fetch_helpers';
 import { getSession } from 'libs/user-session';
-import { saveTrip } from 'libs/localStorage';
+import { loadTrip, saveTrip } from 'libs/localStorage';
 import * as tripUtils from 'libs/trips';
 
 const trips_fetched = trips => {
@@ -94,11 +94,11 @@ const addServiceToTrip = ({ trip, day }, loggedIn = true) => async (dispatch, ge
   const { service } = state.services;
   const serviceToAdd = loggedIn ? service._id : service;
 
-  const tripServices = tripUtils.addServiceToTrip(trip.services, serviceToAdd, day);
-
   if (!loggedIn) {
+    const currentTrip = loadTrip();
+    const tripServices = tripUtils.addServiceToTrip(currentTrip.services, serviceToAdd, day);
     const newTrip = {
-      ...trip,
+      ...currentTrip,
       services: tripServices,
     };
     saveTrip(newTrip);
@@ -106,20 +106,18 @@ const addServiceToTrip = ({ trip, day }, loggedIn = true) => async (dispatch, ge
     return;
   }
 
-  const updateParams = { services: tripServices };
   try {
     dispatch({
       type: 'TRIP_UPDATING',
     });
 
-    const updatedTrip = await tripUtils.patchTrip(trip._id, updateParams);
+    const updatedTrip = await tripUtils.addServiceRequest(trip._id, day, service._id);
 
-    if (updatedTrip) {
+    if (updatedTrip.data && updatedTrip.data.success) {
       fetch_service(service._id)(dispatch);
       setAddedToTripMessage(trip)(dispatch);
     }
   } catch (error) {
-    setAlreadyAddedToTrip(trip)(dispatch);
     console.error(error);
   }
 };
@@ -172,10 +170,6 @@ const onBookNowClick = () => async (dispatch, getState) => {
  */
 const setAddedToTripMessage = trip => dispatch => {
   dispatch({ type: 'SERVICE_RECENTLY_ADDED_TO_TRIP', payload: trip });
-};
-
-const setAlreadyAddedToTrip = trip => dispatch => {
-  dispatch({ type: 'SERVICE_ALREADY_ADDED_TO_TRIP', payload: trip });
 };
 
 const toggleServiceAvailabilitymodal = bool => {

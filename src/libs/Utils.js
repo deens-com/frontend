@@ -63,13 +63,6 @@ export const oneWayDiff = (object1, object2) => {
   }, {});
 };
 
-/* Does not work as expected */
-export const uniqEs6 = arrArg => {
-  return arrArg.filter((elem, pos, arr) => {
-    return arr.indexOf(elem) === pos;
-  });
-};
-
 /**
  * A lot of times it's difficult to get the ISO date
  * out of the various date types we have

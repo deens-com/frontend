@@ -221,6 +221,7 @@ class CheckoutContainer extends React.Component {
       guests: [],
       provision: [],
       nextDisabled: false,
+      isPaying: false,
     };
 
     props.fetchTrip(this.tripId);
@@ -290,6 +291,18 @@ class CheckoutContainer extends React.Component {
 
   goToTripOrganizer = () => {
     history.replace(`/trips/organize/${this.tripId}`);
+  };
+
+  startPayment = () => {
+    this.setState({
+      isPaying: true,
+    });
+  };
+
+  finishPayment = () => {
+    this.setState({
+      isPaying: false,
+    });
   };
 
   getProvisionCodes = () => {
@@ -398,6 +411,8 @@ class CheckoutContainer extends React.Component {
             nextStep={this.nextStep}
             guests={guests}
             trip={trip}
+            startPayment={this.startPayment}
+            finishPayment={this.finishPayment}
           />
         </Dimmer.Dimmable>
       );
@@ -477,9 +492,16 @@ class CheckoutContainer extends React.Component {
                 </Summary>
               )}
               {step === 3 &&
-                expireDate && <Countdown expireDate={expireDate} onTimeout={this.onTimeout} />}
+                expireDate && (
+                  <Countdown
+                    isPaying={this.state.isPaying}
+                    expireDate={expireDate}
+                    onTimeout={this.onTimeout}
+                  />
+                )}
               {step === 3 &&
-                timedOut && (
+                timedOut &&
+                !this.state.isPaying && (
                   <ReprovisionModal
                     okClick={this.getProvisionCodes}
                     cancelClick={this.goToTripOrganizer}
