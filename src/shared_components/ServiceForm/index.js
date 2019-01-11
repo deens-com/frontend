@@ -238,6 +238,17 @@ class ServiceForm extends Component {
     this.props.setFieldValue('rules', this.props.values.rules.filter((_, i) => i !== index));
   };
 
+  renderSubmitText() {
+    if (this.props.submitInFlight) {
+      return 'Submitting...';
+    }
+    if (this.state.uploadingImages) {
+      return 'Uploading images...';
+    }
+
+    return this.props.submitButtonText;
+  }
+
   render() {
     const {
       values,
@@ -641,7 +652,7 @@ class ServiceForm extends Component {
           )}
 
           <Form.Button color="green" disabled={submitInFlight || this.state.uploadingImages}>
-            {this.props.submitButtonText}
+            {this.renderSubmitText()}
           </Form.Button>
         </Form>
       </FormWrapper>
