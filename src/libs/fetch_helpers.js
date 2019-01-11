@@ -153,7 +153,7 @@ const createService = (values, importedFromLink) => {
             ...(values.start ? { start: { [i18nLocale]: values.start } } : {}),
             ...(values.end ? { end: { [i18nLocale]: values.end } } : {}),
           },
-          rules: values.rules.map(rule => ({ [i18nLocale]: rule })),
+          rules: values.rules.filter(rule => Boolean(rule)).map(rule => ({ [i18nLocale]: rule })),
           periods: [
             {
               startDate: new Date(values.startDate.setHours(0, 0, 0, 0)),
