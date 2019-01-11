@@ -767,6 +767,7 @@ export default class TripOrganizer extends Component {
     }
 
     const checkingAvailability =
+      !this.state.availability ||
       this.state.availability.isChecking ||
       this.state.isCheckingList.length > 0 ||
       !this.state.availability.data;

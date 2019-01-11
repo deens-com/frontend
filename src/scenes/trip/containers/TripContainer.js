@@ -88,6 +88,7 @@ class TripContainer extends Component {
       cloneTrip,
       session,
       isGDPRDismissed,
+      gdprHeight,
     } = this.props;
 
     if (error) {
@@ -147,6 +148,7 @@ class TripContainer extends Component {
             this.props.location && this.props.location.state && this.props.location.state.action
           }
           isGDPRDismissed={isGDPRDismissed}
+          gdprHeight={gdprHeight}
         />
       </React.Fragment>
     );

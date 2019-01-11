@@ -131,7 +131,7 @@ export default class Trip extends Component {
     }
 
     updateBottomChatPosition(
-      calculateBottomPosition(this.props.isGDPRDismissed, this.props.gdprHeight, 65) + 60,
+      calculateBottomPosition(this.props.isGDPRDismissed, this.props.gdprHeight, 135),
     );
   }
 
