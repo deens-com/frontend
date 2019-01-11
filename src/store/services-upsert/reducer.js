@@ -58,11 +58,6 @@ export default (state = initialState, action) => {
         error: action.payload,
         isLoading: false,
       };
-    case 'service-upsert/USER_PROFILE_FETCHED':
-      return {
-        ...state,
-        userProfile: action.payload.userProfile,
-      };
     case actionTypes.TOGGLE_SUBMITTING_STATE:
       return {
         ...state,

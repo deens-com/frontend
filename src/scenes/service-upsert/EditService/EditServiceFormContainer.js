@@ -16,7 +16,6 @@ class EditServiceFormContainer extends Component {
 
   componentDidMount() {
     this.props.resetErrors();
-    this.props.fetchUserProfile();
     this.props.fetchService(this.getServiceId());
     this.props.fetchServiceFormTagsOptions();
   }
@@ -24,12 +23,7 @@ class EditServiceFormContainer extends Component {
   componentWillReceiveProps(nextProps) {
     const { service, userProfile } = nextProps;
 
-    if (
-      service &&
-      userProfile &&
-      service.owner &&
-      service.owner.objectId !== userProfile.objectId
-    ) {
+    if (service && userProfile && service.owner !== userProfile._id) {
       history.push('/account/services');
     }
   }
@@ -73,7 +67,7 @@ const mapStateToProps = state => ({
   service: state.servicesUpsert.service,
   error: state.servicesUpsert.error,
   fetchError: state.servicesUpsert.error,
-  userProfile: state.servicesUpsert.userProfile,
+  userProfile: state.session.session,
   serviceFormTagsOptions: state.servicesUpsert.serviceFormTagsOptions,
 });
 

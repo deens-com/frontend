@@ -24,13 +24,6 @@ export const types = {
   SERVICE_FORM_TAGS_FETCHED: 'SERVICE_FORM_TAGS_FETCHED',
 };
 
-export const user_profile_fetched = userProfile => {
-  return {
-    type: 'service-upsert/USER_PROFILE_FETCHED',
-    payload: userProfile,
-  };
-};
-
 export const submittingStateChanged = bool => {
   return {
     type: 'TOGGLE_SUBMITTING_STATE',
@@ -145,16 +138,6 @@ export const saveServiceChanges = (serviceId, values, history) => async (dispatc
     if (error.errors) {
       dispatch({ type: types.SERVICE_SAVE_ERROR, payload: error.errors });
     }
-  }
-};
-
-export const fetchUserProfile = () => async dispatch => {
-  try {
-    const user = await axios.get(`${serverBaseURL}/users/me`);
-
-    dispatch(user_profile_fetched({ user_profile: user.data }));
-  } catch (e) {
-    history.push('/login');
   }
 };
 
