@@ -89,8 +89,10 @@ const RightArrow = styled.span`
 export default class FoodImgSlider extends Component {
   constructor(props) {
     super(props);
+
+    const heroIndex = props.images.findIndex(image => Boolean(image.hero));
     this.state = {
-      index: props.images.findIndex(image => Boolean(image.hero)) || 0,
+      index: heroIndex !== -1 ? heroIndex : 0,
     };
 
     this.goToNext = this.goToNext.bind(this);
