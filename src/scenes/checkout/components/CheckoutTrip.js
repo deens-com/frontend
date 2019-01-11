@@ -79,16 +79,13 @@ const ButtonWrapper = styled.div`
   flex-grow: 0;
 `;
 
-function getPrice(trip, day, service) {
-  const selected =
-    trip.otherAttributes &&
-    trip.otherAttributes.selectedServiceOptions &&
-    trip.otherAttributes.selectedServiceOptions.find(
-      option => option.day === day.day && option.serviceId === service.service._id,
-    );
-
-  return selected
-    ? getPriceFromServiceOption(service.service.basePrice, selected.price, getPeopleCount(trip))
+function getPrice(trip, service) {
+  return service.selectedOption
+    ? getPriceFromServiceOption(
+        service.service.basePrice,
+        service.selectedOption.price,
+        getPeopleCount(trip),
+      )
     : service.service.basePrice;
 }
 
@@ -105,7 +102,7 @@ export class CheckoutTrip extends React.Component {
   };
 
   renderPrice = (trip, day, service) => {
-    const price = getPrice(trip, day, service);
+    const price = getPrice(trip, service);
     if (this.props.onlyExternalServices && service.service.checkoutOptions.payAt !== 'please') {
       return (
         <PriceWrapper>
