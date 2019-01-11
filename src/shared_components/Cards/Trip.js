@@ -7,6 +7,7 @@ import Truncate from 'react-truncate';
 import { Popup, Image } from 'semantic-ui-react';
 
 import { withRouter } from 'react-router-dom';
+import ReactResizeDetector from 'react-resize-detector';
 
 // COMPONENTS
 import Rating from '../Rating';
@@ -196,6 +197,12 @@ class TripCard extends Component {
     return false;
   };
 
+  onResize = () => {
+    if (this.truncate) {
+      this.truncate.onResize();
+    }
+  };
+
   renderContent() {
     const { item, isTrip } = this.props;
     const { average: rating, count } = (item && item.ratings) || 0;
@@ -208,6 +215,7 @@ class TripCard extends Component {
 
     return (
       <Wrap>
+        <ReactResizeDetector handleWidth onResize={this.onResize} />
         <Cart column className="card-animate">
           {Boolean(this.props.addToTrip) && (
             <AddToTrip service={item} data={this.props.addToTrip} />
@@ -240,7 +248,7 @@ class TripCard extends Component {
 
             {!this.isViewTypeOf('food') && (
               <Description>
-                <Truncate lines={cardConfig.descriptionLines}>
+                <Truncate ref={ref => (this.truncate = ref)} lines={cardConfig.descriptionLines}>
                   <I18nText data={item.subtitle.length > 0 ? item.subtitle : item.description} />
                 </Truncate>
               </Description>
