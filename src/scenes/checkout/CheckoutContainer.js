@@ -347,10 +347,10 @@ class CheckoutContainer extends React.Component {
   };
 
   onTimeout = () => {
-    this.setState({
-      timedOut: true,
+    this.setState(prevState => ({
+      timedOut: prevState.step === 3,
       expireDate: null,
-    });
+    }));
   };
 
   nextStep = () => {
