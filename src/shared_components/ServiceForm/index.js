@@ -97,7 +97,6 @@ class ServiceForm extends Component {
     onSubmit: PropTypes.func.isRequired,
     submitInFlight: PropTypes.bool.isRequired,
     globalError: PropTypes.object,
-    userProfile: PropTypes.object,
     submitButtonText: PropTypes.string,
     creatingFromLink: PropTypes.bool,
   };
