@@ -260,6 +260,14 @@ class CheckoutContainer extends React.Component {
 
   componentDidUpdate() {
     if (this.props.trip) {
+      if (this.props.trip && this.props.trip.owner !== this.props.session._id) {
+        if (this.props.trip.privacy === 'public') {
+          history.replace(`/trips/${generateTripSlug(this.props.trip)}`);
+          return;
+        }
+        history.replace('/');
+        return;
+      }
       if (this.props.trip.bookingStatus === 'booked') {
         history.replace(`/trips/${generateTripSlug(this.props.trip)}`);
         return;
