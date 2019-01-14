@@ -201,6 +201,9 @@ class TripCard extends Component {
     if (this.truncate) {
       this.truncate.onResize();
     }
+    if (this.truncateTitle) {
+      this.truncateTitle.onResize();
+    }
   };
 
   renderContent() {
@@ -240,6 +243,7 @@ class TripCard extends Component {
               <Truncate
                 onTruncate={!this.state.truncated && this.handleTruncate}
                 lines={cardConfig.titleLines}
+                ref={ref => (this.truncateTitle = ref)}
               >
                 <I18nText data={item.title} />
               </Truncate>
