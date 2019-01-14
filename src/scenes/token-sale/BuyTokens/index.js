@@ -80,23 +80,20 @@ const USDInput = styled.span`
 
 const HistoryTable = styled.table`
   margin: auto;
+  border-spacing: 0;
 
   tr {
     td {
       padding: 5px 20px;
+      border-top: 1px solid #e0e0e0;
     }
   }
 
   tr:nth-child(1) {
     font-weight: bold;
-  }
-
-  tr:nth-child(2n + 1) {
-    background-color: #00cc8e;
-  }
-
-  tr:nth-child(2n + 2) {
-    background-color: #b5ffe8;
+    td {
+      border: none;
+    }
   }
 `;
 
@@ -149,7 +146,7 @@ export default class BuyTokens extends React.Component {
             return (
               <tr key={data._id}>
                 <td>{moment(data.createdAt).format('LLL')}</td>
-                <td>{data.plsTokens}</td>
+                <td>{data.plsTokens.toFixed(2)}</td>
               </tr>
             );
           })}
