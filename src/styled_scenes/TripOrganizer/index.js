@@ -216,7 +216,9 @@ export default class TripOrganizer extends Component {
     super(props);
 
     if (props.tripId === (props.trip && props.trip._id) || !props.tripId) {
-      this.state = createTripState(props, {});
+      this.state = createTripState(props, {
+        availability: {},
+      });
     } else {
       this.state = {
         trip: props.trip || emptyTrip,
