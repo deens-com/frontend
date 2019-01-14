@@ -13,7 +13,6 @@ class NewServiceFormContainer extends Component {
   };
 
   componentDidMount() {
-    this.props.fetchUserProfile();
     this.props.resetErrors();
     this.props.fetchServiceFormTagsOptions();
   }
@@ -33,7 +32,6 @@ class NewServiceFormContainer extends Component {
 const mapStateToProps = state => ({
   isSubmitting: state.servicesUpsert.isSubmitting,
   error: state.servicesUpsert.error,
-  userProfile: state.servicesUpsert.userProfile,
   serviceFormTagsOptions: state.servicesUpsert.serviceFormTagsOptions,
 });
 
