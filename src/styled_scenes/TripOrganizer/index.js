@@ -122,7 +122,11 @@ function createTripState(props, state) {
       childrenCount: props.trip.childrenCount || props.children || 0,
       infantCount: props.trip.infantCount || props.infants || 0,
     },
-    days: mapServicesToDays(props.trip.services, props.trip.duration, props.trip.startDate),
+    days: mapServicesToDays(
+      props.trip.services,
+      props.trip.duration,
+      props.trip.startDate || props.startDate,
+    ),
     isCheckingList: [],
     notes: props.trip.notes ? props.trip.notes : {},
   };
