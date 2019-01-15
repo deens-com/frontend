@@ -55,24 +55,18 @@ const LoaderWrapper = styled.div`
   margin-top: 100px;
 `;
 
-class Trip extends Component {
-  static propTypes = {
-    trip: PropTypes.object.isRequired,
-  };
+const renderService = ({ service }, index) => (
+  <LocationCart item={service} index={index} key={service._id} />
+);
 
-  state = {
-    linkToViewTrip: `/trips/${generateTripSlug(this.props.trip)}`,
-    linkToEditTrip: `/trips/organize/${this.props.trip._id}`,
-    tripDates: getFormattedTripDates(this.props.trip),
-  };
-
+class Trip extends React.PureComponent {
   render() {
     const { trip } = this.props;
     return (
-      <SectionContent key={trip.objectId}>
+      <SectionContent key={trip._id}>
         <Divider />
         <TripTitleRow>
-          <Link to={this.state.linkToViewTrip}>
+          <Link to={`/trips/${generateTripSlug(trip)}`}>
             <InlineH2>
               <I18nText data={trip.title} />
             </InlineH2>
@@ -84,54 +78,81 @@ class Trip extends Component {
               icon
               labelPosition="left"
               size="tiny"
-              to={this.state.linkToEditTrip}
+              to={`/trips/organize/${trip._id}`}
             >
               <Icon name="edit" />
               Edit
             </Button>
           ) : null}
         </TripTitleRow>
-        <ColoredText>{this.state.tripDates}</ColoredText>
+        <ColoredText>{getFormattedTripDates(trip)}</ColoredText>
         <Label color={get_label_color(trip.status)}>Trip visibility: {trip.status}</Label>
         {trip.bookingStatus === 'booked' ? <Label color="olive">Booked</Label> : null}
-        <br />
-        <br />
         <CarouselWrapper>
           <Carousel sm_slides_nb={1} md_slides_nb={2} lg_slides_nb={4} xl_slides_nb={4}>
-            {trip.services.filter(({ service }) => !!service).map(({ service }, index) => (
-              <LocationCart item={service} index={index} key={service._id} />
-            ))}
+            {trip.services.map(renderService)}
           </Carousel>
         </CarouselWrapper>
-        {trip.services.length ? null : (
+        {trip.services.length > 0 ? null : (
           <EmptyServicesText>No scheduled services in this trip</EmptyServicesText>
         )}
-        <br />
       </SectionContent>
     );
   }
 }
 
-const TripSectionComponent = props => {
-  if (props.isLoadingTrips) {
+class TripSectionComponent extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      items: [],
+    };
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.isLoadingTrips && !this.props.isLoadingTrips) {
+      this.setState({
+        items: this.props.trips.slice(0, 1),
+      });
+      this.recursive();
+      return;
+    }
+  }
+
+  recursive = () => {
+    setTimeout(() => {
+      let hasMore = this.state.items.length + 1 < this.props.trips.length;
+      this.setState((prev, props) => ({
+        items: props.trips.slice(0, prev.items.length + 1),
+      }));
+      if (hasMore) this.recursive();
+    }, 0);
+  };
+
+  render() {
+    const props = this.props;
+
+    if (props.isLoadingTrips) {
+      return (
+        <LoaderWrapper>
+          <Loader active inline="centered" size="big">
+            Loading
+          </Loader>
+        </LoaderWrapper>
+      );
+    }
+    if (!this.state.items.length) {
+      return <p>You don't have any trips.</p>;
+    }
     return (
-      <LoaderWrapper>
-        <Loader active inline="centered" size="big">
-          Loading
-        </Loader>
-      </LoaderWrapper>
+      <section>
+        {this.state.items.map(trip => (
+          <Trip key={trip.objectId} trip={trip} />
+        ))}
+      </section>
     );
   }
-  if (!props.trips.length) {
-    return <p>You don't have any {props.tripsType} trips.</p>;
-  }
-  return (
-    <section>
-      {props.trips.map(trip => (
-        <Trip key={trip.objectId} trip={trip} />
-      ))}
-    </section>
-  );
-};
+}
 
 export default TripSectionComponent;

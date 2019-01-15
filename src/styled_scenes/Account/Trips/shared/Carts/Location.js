@@ -1,12 +1,8 @@
 // NPM
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { withRouter } from 'react-router';
 import Truncate from 'react-truncate';
-import * as actions from 'store/services-upsert/actions';
 import { Popup } from 'semantic-ui-react';
 
 // COMPONENTS
@@ -85,7 +81,7 @@ const ImageItem = styled.div`
 `;
 
 // MODULE
-class ServiceLocationCard extends Component {
+class ServiceLocationCard extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -153,10 +149,4 @@ class ServiceLocationCard extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
-const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withRouter(ServiceLocationCard));
+export default ServiceLocationCard;
