@@ -27,6 +27,25 @@ class Payment extends React.Component {
     this.props.chargeStripeToken(token, this.props.guests, complete);
   };
 
+  payWithPls = async (guests, tripId) => {
+    this.props.startPayment();
+    this.setState({ isPaymentProcessing: true, paymentError: null });
+    try {
+      const status = await this.props.payWithPls(guests, tripId);
+      this.setState({ isPaymentProcessing: false });
+      this.props.finishPayment();
+      if (status === 'success') {
+        this.props.nextStep();
+      }
+    } catch (e) {
+      this.props.finishPayment();
+      this.setState({
+        isPaymentProcessing: false,
+        paymentError: e,
+      });
+    }
+  };
+
   onSubmitWithCardDetails = async () => {
     this.props.startPayment();
     this.setState({ isPaymentProcessing: true, paymentError: null });
@@ -76,7 +95,7 @@ class Payment extends React.Component {
           showStripe={Boolean(this.props.stripe)}
           error={error}
           getProvisionCodes={getProvisionCodes}
-          payWithPls={this.props.payWithPls}
+          payWithPls={this.payWithPls}
           bookingStatus={this.props.bookingStatus}
           isPaymentProcessing={this.state.isPaymentProcessing}
           plsBalance={this.props.plsBalance}

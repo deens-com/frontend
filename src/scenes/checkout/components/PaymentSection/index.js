@@ -7,7 +7,6 @@ import history from 'main/history';
 import PriceTag from 'shared_components/Currency/PriceTag';
 import { media } from 'libs/styled';
 import { generateTripSlug } from 'libs/Utils';
-import BookedSuccessfullyPopup from '../BookedSuccessfullyPopup';
 import StripeCardDetails from '../StripeCardDetails';
 import CoinbaseButtonContainer from '../../CoinbaseButtonContainer';
 import PLSButton from './PLSButton';
@@ -57,14 +56,6 @@ const ChooseMethodTitle = styled.div`
     background: white;
     padding: 0 10px;
   }
-`;
-
-const RestaurantPayments = styled.div`
-  color: #6e7885;
-  font-size: 12px;
-  margin: auto;
-  text-align: center;
-  margin-bottom: 20px;
 `;
 
 const MainContent = styled.div`
@@ -216,9 +207,6 @@ export default class PaymentSection extends Component {
           <ChooseMethodTitle>
             <span>Choose Payment Method</span>
           </ChooseMethodTitle>
-          <RestaurantPayments>
-            <p>*Resturant payment is not included in the total price, please pay at restaurant</p>
-          </RestaurantPayments>
           <MainContent>
             <MethodSelector>
               <Method
@@ -294,7 +282,6 @@ export default class PaymentSection extends Component {
               </PriceTag>
             </StripWrap>
           </MainContent>
-          <BookedSuccessfullyPopup status={bookingStatus} />
         </Wrap>
       </Dimmer.Dimmable>
     );
