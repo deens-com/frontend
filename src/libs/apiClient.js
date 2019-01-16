@@ -1,6 +1,7 @@
 import axios from 'libs/axios';
 
 const get = url => params => axios.get(url, { params });
+const post = url => body => axios.post(url, body);
 
 // await axios.get(`${serverBaseURL}/search?include=${includes.join(',')}`)).data.trips
 export default {
@@ -12,6 +13,9 @@ export default {
   },
   trips: {
     get: get('/trips'),
+    addService: {
+      post: (id, body) => post(`/trips/${id}/add-service`)(body),
+    },
   },
   services: {
     get: get('/services'),

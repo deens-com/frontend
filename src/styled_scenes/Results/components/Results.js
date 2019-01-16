@@ -13,7 +13,7 @@ import ReactPaginate from 'react-paginate';
 import { media } from '../../../libs/styled';
 import { Loader, Grid } from 'semantic-ui-react';
 import moment from 'moment';
-import { minutesToDays, getDaysByService } from 'styled_scenes/Trip/mapServicesToDays';
+import { minutesToDays } from 'styled_scenes/Trip/mapServicesToDays';
 import notFoundImg from '../not_found.png';
 import { loadTrip, saveTrip } from 'libs/localStorage';
 import { generateTripSlug, generateServiceSlug } from 'libs/Utils';
@@ -94,7 +94,6 @@ class Results extends Component {
       props.routeState &&
       (trip._id === props.routeState.tripId || props.routeState.isCreatingTripNotLoggedIn)
     ) {
-      this.daysByService = getDaysByService(trip.services);
       this.days =
         props.routeState &&
         Array.from({ length: minutesToDays(props.routeState.duration) }).map((_, i) =>
@@ -161,9 +160,7 @@ class Results extends Component {
     ];
 
     if (this.props.trip._id) {
-      await tripUtils.patchTrip(this.props.trip._id, {
-        services: this.tripServices.map(service => ({ ...service, service: service.service._id })),
-      });
+      await tripUtils.addServiceRequest(this.props.trip._id, day, service._id);
       return;
     }
 
@@ -249,7 +246,6 @@ class Results extends Component {
                             id: this.props.routeState.tripId,
                             day: this.props.routeState.day,
                             days: this.days,
-                            daysByService: this.daysByService,
                             addToTrip: this.addToTrip,
                             removeFromTrip: this.removeFromTrip,
                             goBackToTrip: this.props.goBackToTrip,

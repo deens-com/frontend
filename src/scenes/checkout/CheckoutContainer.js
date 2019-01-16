@@ -221,6 +221,7 @@ class CheckoutContainer extends React.Component {
       guests: [],
       provision: [],
       nextDisabled: false,
+      isPaying: false,
     };
 
     props.fetchTrip(this.tripId);
@@ -259,6 +260,14 @@ class CheckoutContainer extends React.Component {
 
   componentDidUpdate() {
     if (this.props.trip) {
+      if (this.props.trip && this.props.trip.owner !== this.props.session._id) {
+        if (this.props.trip.privacy === 'public') {
+          history.replace(`/trips/${generateTripSlug(this.props.trip)}`);
+          return;
+        }
+        history.replace('/');
+        return;
+      }
       if (this.props.trip.bookingStatus === 'booked') {
         history.replace(`/trips/${generateTripSlug(this.props.trip)}`);
         return;
@@ -290,6 +299,18 @@ class CheckoutContainer extends React.Component {
 
   goToTripOrganizer = () => {
     history.replace(`/trips/organize/${this.tripId}`);
+  };
+
+  startPayment = () => {
+    this.setState({
+      isPaying: true,
+    });
+  };
+
+  finishPayment = () => {
+    this.setState({
+      isPaying: false,
+    });
   };
 
   getProvisionCodes = () => {
@@ -334,10 +355,10 @@ class CheckoutContainer extends React.Component {
   };
 
   onTimeout = () => {
-    this.setState({
-      timedOut: true,
+    this.setState(prevState => ({
+      timedOut: prevState.step === 3,
       expireDate: null,
-    });
+    }));
   };
 
   nextStep = () => {
@@ -398,6 +419,8 @@ class CheckoutContainer extends React.Component {
             nextStep={this.nextStep}
             guests={guests}
             trip={trip}
+            startPayment={this.startPayment}
+            finishPayment={this.finishPayment}
           />
         </Dimmer.Dimmable>
       );
@@ -477,9 +500,16 @@ class CheckoutContainer extends React.Component {
                 </Summary>
               )}
               {step === 3 &&
-                expireDate && <Countdown expireDate={expireDate} onTimeout={this.onTimeout} />}
+                expireDate && (
+                  <Countdown
+                    isPaying={this.state.isPaying}
+                    expireDate={expireDate}
+                    onTimeout={this.onTimeout}
+                  />
+                )}
               {step === 3 &&
-                timedOut && (
+                timedOut &&
+                !this.state.isPaying && (
                   <ReprovisionModal
                     okClick={this.getProvisionCodes}
                     cancelClick={this.goToTripOrganizer}

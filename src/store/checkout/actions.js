@@ -74,11 +74,13 @@ export const payWithPls = (guests, tripId) => {
         payload: statuses.SUCCESS,
         meta: { analytics: trackTripBooked(tripId) },
       });
+      return 'success';
     } catch (error) {
       dispatch({
         type: types.PAYMENT_ERROR,
         payload: error.response.data,
       });
+      return 'fail';
     }
   };
 };

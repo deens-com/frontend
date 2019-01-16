@@ -1,4 +1,5 @@
 import axios from 'libs/axios';
+import apiClient from 'libs/apiClient';
 
 export const patchTrip = async (id, data) => {
   return axios.patch(`/trips/${id}`, {
@@ -7,18 +8,22 @@ export const patchTrip = async (id, data) => {
   });
 };
 
-export const addServiceToTrip = (tripServices, service, day) => {
-  const serviceId = typeof service !== 'object' ? service : service._id;
+export const addServiceRequest = async (id, day, serviceId) => {
+  return apiClient.trips.addService.post(id, { day, serviceId });
+};
 
-  const alreadyAdded = tripServices.find(
-    tripService =>
-      (tripService.service === serviceId || tripService.service._id === serviceId) &&
-      tripService.day === day,
-  );
+function makeRandomUniqueId(tripServices) {
+  const temporalId = Math.ceil(Math.random() * 100000);
 
-  if (alreadyAdded) {
-    return tripServices;
+  if (tripServices.find(elem => elem._id === temporalId)) {
+    return makeRandomUniqueId(tripServices);
   }
+
+  return temporalId;
+}
+
+export const addServiceToTrip = (tripServices, service, day) => {
+  const temporalId = makeRandomUniqueId(tripServices);
 
   return [
     ...tripServices,
@@ -27,6 +32,7 @@ export const addServiceToTrip = (tripServices, service, day) => {
       day,
       notes: [],
       priority: 1,
+      _id: temporalId,
     },
   ];
 };

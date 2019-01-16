@@ -59,7 +59,6 @@ class TripOrganizerContainer extends Component {
   render() {
     return (
       <TripOrganizer
-        availability={this.props.availability}
         trip={this.props.trip}
         tripId={this.props.match.params.id}
         startDate={moment(this.props.startDate)}
@@ -107,7 +106,6 @@ const mapStateToProps = (state, props) => {
     infants: state.search.searchQuery.infants,
     startDate,
     endDate: state.search.searchQuery.end_date,
-    availability: state.trips.availability,
     isGDPRDismissed: state.settings.gdprDismissed,
     gdprHeight: state.settings.gdprHeight,
   };

@@ -15,30 +15,22 @@ import I18nText from 'shared_components/I18nText';
 import { generateTripSlug } from 'libs/Utils';
 
 function getBookedInformation(trip) {
-  const serviceOptions = trip.otherAttributes.selectedServiceOptions;
-  if (!serviceOptions) {
-    return {};
-  }
-  return serviceOptions.reduce((prev, option) => {
-    const serviceFound = trip.services.find(
-      service => service.service._id === option.serviceId && service.day === option.day,
-    );
-
-    if (!serviceFound) {
+  return trip.services.reduce((prev, service) => {
+    if (!service.selectedOption) {
       return prev;
     }
 
     const price = getPriceFromServiceOption(
-      serviceFound.basePrice,
-      option.price,
+      service.service.basePrice,
+      service.selectedOption.price,
       getPeopleCount(trip),
     );
 
-    if (!prev[option.day]) {
+    if (!prev[service.day]) {
       return {
         ...prev,
-        [option.day]: {
-          [option.serviceId]: {
+        [service.day]: {
+          [service.service._id]: {
             price,
           },
         },
@@ -46,9 +38,9 @@ function getBookedInformation(trip) {
     }
     return {
       ...prev,
-      [option.day]: {
-        ...prev[option.day],
-        [option.serviceId]: {
+      [service.day]: {
+        ...prev[service.day],
+        [service.service._id]: {
           price,
         },
       },
@@ -88,6 +80,7 @@ class TripContainer extends Component {
       cloneTrip,
       session,
       isGDPRDismissed,
+      gdprHeight,
     } = this.props;
 
     if (error) {
@@ -147,6 +140,7 @@ class TripContainer extends Component {
             this.props.location && this.props.location.state && this.props.location.state.action
           }
           isGDPRDismissed={isGDPRDismissed}
+          gdprHeight={gdprHeight}
         />
       </React.Fragment>
     );

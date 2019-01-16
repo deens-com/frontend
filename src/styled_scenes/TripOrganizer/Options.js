@@ -5,8 +5,8 @@ import { Dropdown } from 'semantic-ui-react';
 import I18nText from 'shared_components/I18nText';
 import { getPriceFromServiceOption } from 'libs/Utils';
 
-const Content = styled.span`
-  font-size: 12px;
+const Content = styled.div`
+  font-size: 14px;
 `;
 
 const GroupTitle = styled.span`
@@ -37,12 +37,33 @@ const Wrapper = styled.div`
   padding: 5px 10px;
 `;
 
+const OptionWrapper = styled.div``;
+
+const Metadata = styled.div`
+  font-size: 11px;
+  > b {
+    font-weight: bold;
+  }
+`;
+
 function renderOption(option, basePrice) {
   return (
-    <Content>
-      <Title>{I18nText.translate(option.subtitle || option.title)}</Title>
-      <Price>${getPriceFromServiceOption(basePrice, option.price)}</Price>
-    </Content>
+    <OptionWrapper>
+      <Content>
+        <Title>{I18nText.translate(option.title || option.subtitle)}</Title>
+        <Price>${getPriceFromServiceOption(basePrice, option.price)}</Price>
+      </Content>
+      {option.mealType && (
+        <Metadata>
+          <b>Meal type:</b> <I18nText data={option.mealType} />
+        </Metadata>
+      )}
+      {option.roomType && (
+        <Metadata>
+          <b>Room type:</b> <I18nText data={option.roomType} />
+        </Metadata>
+      )}
+    </OptionWrapper>
   );
 }
 
@@ -73,7 +94,7 @@ export default class Options extends Component {
 
   onDropdownChange = (event, data) => {
     const price = data.options.find(option => option.value === data.value).price;
-    this.props.onChange(this.props.day, this.props.serviceId, data.value, price);
+    this.props.onChange(this.props.day, this.props.instanceId, data.value, price);
   };
 
   render() {
