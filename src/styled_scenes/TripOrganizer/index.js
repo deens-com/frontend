@@ -541,81 +541,43 @@ export default class TripOrganizer extends Component {
     this.childRefs = refs;
   };
 
-  checkSingleService = async (data, startDate, guests, attempt = 1) => {
-    try {
-      const result = await axios.post(`/services/${data.service._id}/availability`, {
-        bookingDate: startDate
-          .clone()
-          .add(data.day - 1, 'days')
-          .format('YYYY-MM-DD'),
-        adultCount: guests.adults,
-        childCount: guests.children,
-        infantCount: guests.infants,
-        peopleCount: guests.adults + guests.children + guests.infants,
-      });
-      return result;
-    } catch (e) {
-      // Retry!
-      if (attempt < 3) {
-        // retry! this is a quick fix, we need a better way to handle errors
-        return this.checkSingleService(data, startDate, guests, attempt + 1);
-      }
-      return {};
+  requestAvailability = async data => {
+    if (this.props.tripId) {
+      return axios.get(
+        `/trips/${this.state.trip._id}/availability?bookingDate=${data.bookingDate}&adultCount=${
+          data.adultCount
+        }&childCount=${data.childCount}&infantCount=${data.infantCount}`,
+      );
     }
-  };
 
-  checkAllServicesAvailabilityAsGuest = ({ startDate, guests }) => {
-    const timestamp = new Date().getTime();
-    this.setState(
-      prevState => ({
-        availability: {
-          ...prevState.availability,
-          data: [],
-          isChecking: true,
-          timestamp,
-        },
-        isCheckingList: [],
-      }),
-      async () => {
-        const days = this.state.days.reduce(
-          (prev, day) => [
-            ...prev,
-            ...uniqBy(day.data, data => data.service._id).map(data => ({
-              serviceId: data.service._id,
-              day: day.day,
-              request: this.checkSingleService(data, startDate, guests),
-            })),
-          ],
-          [],
-        );
-        const availability = await Promise.all(days.map(day => day.request));
-        const data = this.state.days.map((day, index) => ({
-          day: day.day,
-          serviceId: day.serviceId,
-          ...availability[index].data,
-        }));
-
-        this.setState(prevState =>
-          calculatePrice({
-            ...prevState,
-            days: pickFirstOption(prevState.days, data),
-            availability: {
-              data,
-              error: null,
-              isChecking: false,
-              timestamp,
-            },
-          }),
-        );
+    const response = await axios.post('/trips/anonymous-availability', {
+      ...data,
+      tripData: {
+        ...this.state.trip,
+        services: this.state.trip.services.map(service => ({
+          ...service,
+          service: service.service._id,
+        })),
       },
-    );
+    });
+
+    // Why the API doesn't return the same as with logged in users, e.g. the day of the service?
+    const processedData = response.data.map(availability => {
+      const tripService = this.state.trip.services.find(
+        service => availability.serviceOrganizationId === service._id,
+      );
+      return {
+        ...availability,
+        day: tripService.day,
+      };
+    });
+    return {
+      ...response,
+      data: processedData,
+    };
   };
 
   checkAllServicesAvailability = ({ startDate, guests }) => {
-    if (!this.props.tripId) {
-      return this.checkAllServicesAvailabilityAsGuest({ startDate, guests });
-    }
-
     const timestamp = new Date().getTime();
     this.setState(
       prevState => ({
@@ -628,16 +590,6 @@ export default class TripOrganizer extends Component {
         isCheckingList: [],
       }),
       async () => {
-        //const availability = await Promise.all(days.map(day => day.request));
-        /*const availability2 = await axios.post(`/trips/${this.state.trip._id}/availability`, {
-          bookingDate: startDate
-            .clone()
-            .format('YYYY-MM-DD'),
-          adultCount: guests.adults,
-          childCount: guests.children,
-          infantCount: guests.infants,
-          peopleCount: guests.adults + guests.children + guests.infants,
-        });*/
         const checkdata = {
           bookingDate: startDate.clone().format('YYYY-MM-DD'),
           adultCount: guests.adults,
@@ -645,13 +597,8 @@ export default class TripOrganizer extends Component {
           infantCount: guests.infants,
           peopleCount: guests.adults + guests.children + guests.infants,
         };
-        const response = await axios.get(
-          `/trips/${this.state.trip._id}/availability?bookingDate=${
-            checkdata.bookingDate
-          }&adultCount=${checkdata.adultCount}&childCount=${checkdata.childCount}&infantCount=${
-            checkdata.infantCount
-          }`,
-        );
+        const response = await this.requestAvailability(checkdata);
+
         const data = uniqBy(response.data, elem => `${elem.day}-${elem.serviceId}`);
 
         this.setState(prevState =>
