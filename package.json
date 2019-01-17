@@ -16,6 +16,7 @@
     "axios": "^0.18.0",
     "babel-core": "^6.26.3",
     "babel-plugin-semantic-ui-react-transform-imports": "^1.3.2",
+    "bson-objectid": "^1.2.4",
     "clipboard-copy": "^2.0.0",
     "copy-to-clipboard": "^3.0.8",
     "ethers": "^3.0.17",

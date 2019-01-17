@@ -149,15 +149,7 @@ class Results extends Component {
   };
 
   addToTrip = async (service, day) => {
-    this.tripServices = [
-      ...this.tripServices,
-      {
-        service,
-        day,
-        notes: [],
-        priority: 1,
-      },
-    ];
+    this.tripServices = tripUtils.addServiceToTrip(this.tripServices, service, day);
 
     if (this.props.trip._id) {
       await tripUtils.addServiceRequest(this.props.trip._id, day, service._id);
