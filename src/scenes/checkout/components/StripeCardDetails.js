@@ -1,12 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  CardNumberElement,
-  CardExpiryElement,
-  CardCVCElement,
-  PostalCodeElement,
-  PaymentRequestButtonElement,
-} from 'react-stripe-elements';
+import { CardNumberElement, CardExpiryElement, CardCVCElement } from 'react-stripe-elements';
 import styled from 'styled-components';
 import { PaymentContextConsumer } from './Payment';
 
