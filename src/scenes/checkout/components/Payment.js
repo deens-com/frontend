@@ -50,8 +50,7 @@ class Payment extends React.Component {
     this.props.startPayment();
     this.setState({ isPaymentProcessing: true, paymentError: null });
     try {
-      // TODO: @jaydp use the customer's name in the below line
-      const { token, error } = await this.props.stripe.createToken({ name: 'Customer name' });
+      const { token, error } = await this.props.stripe.createToken({ name: this.props.username });
       if (error) {
         throw error;
       }
@@ -109,6 +108,7 @@ const mapStateToProps = state => ({
   paymentError: state.checkout.paymentError,
   bookingStatus: state.checkout.bookingStatus,
   plsBalance: state.session.session.plsBalance || 0,
+  username: state.session.session.username,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
