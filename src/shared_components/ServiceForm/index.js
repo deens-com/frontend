@@ -41,6 +41,12 @@ const weekDays = [
   { text: 'Sunday', value: 'sunday' },
 ];
 
+const refundTypes = [
+  { text: 'No refund', value: 'none' },
+  { text: 'Fixed value', value: 'fixed' },
+  { text: 'Percentage', value: 'percent' },
+];
+
 const ErrorMsg = styled.div`
   color: red;
 `;
@@ -649,6 +655,53 @@ class ServiceForm extends Component {
             </React.Fragment>
           )}
 
+          {/* Cancellation policy */}
+          <Form.Group widths="equal">
+            <Form.Field>
+              <label>Cancellation policy</label>
+              <Dropdown
+                name="refundType"
+                placeholder="Select refund type"
+                selection
+                value={values.refundType}
+                options={refundTypes}
+                onChange={this.onDropDownChange}
+              />
+            </Form.Field>
+            {values.refundType !== 'none' && (
+              <React.Fragment>
+                <Form.Field required>
+                  <label>{`Refund ${
+                    values.refundType === 'percent' ? 'percentage' : 'amount'
+                  }`}</label>
+                  <Form.Input
+                    name="refundAmount"
+                    value={values.refundAmount}
+                    error={!!(touched.refundAmount && errors.refundAmount)}
+                    placeholder={`Refund ${
+                      values.refundType === 'percent' ? 'percentage' : 'amount'
+                    }`}
+                    {...defaultProps}
+                  />
+                  {touched.refundAmount &&
+                    errors.refundAmount && <ErrorMsg>{errors.refundAmount}</ErrorMsg>}
+                </Form.Field>
+                <Form.Field required>
+                  <label>Duration (in days)</label>
+                  <Form.Input
+                    name="refundDuration"
+                    value={values.refundDuration}
+                    error={!!(touched.refundDuration && errors.refundDuration)}
+                    placeholder="Duration"
+                    {...defaultProps}
+                  />
+                  {touched.refundDuration &&
+                    errors.refundDuration && <ErrorMsg>{errors.refundDuration}</ErrorMsg>}
+                </Form.Field>
+              </React.Fragment>
+            )}
+          </Form.Group>
+
           <Form.Button color="green" disabled={submitInFlight || this.state.uploadingImages}>
             {this.renderSubmitText()}
           </Form.Button>
@@ -719,6 +772,27 @@ function validate(values) {
     errors.twitter = 'Must be a valid Twitter URL';
   }
 
+  if (values.refundType === 'percent') {
+    if (values.refundAmount < 0 || values.refundAmount > 100 || !values.refundAmount) {
+      errors.refundAmount = 'Refund percentage must be between 0 and 100';
+    }
+  }
+
+  if (values.refundType === 'amount') {
+    if (values.refundAmount < 0 || !values.refundAmount) {
+      errors.refundAmount = "Refund amount can't be lower than or equal to 0";
+    }
+  }
+
+  if (values.refundType !== 'none') {
+    if (values.refundDuration < 1 || !values.refundDuration) {
+      errors.refundDuration = 'Refund duration must be at least 1';
+    }
+  } else {
+    errors.refundDuration = null;
+    errors.refundAmount = null;
+  }
+
   return errors;
 }
 
@@ -768,6 +842,16 @@ export default withFormik({
     media: (service && service.media) || [],
     formattedAddress:
       (service && service.location && service.location.formattedAddress) || undefined,
+    refundType: 'none',
+    ...(service &&
+    service.periods[0].cancellationPolicies &&
+    service.periods[0].cancellationPolicies.length > 0
+      ? {
+          refundType: service.periods[0].cancellationPolicies[0].refundType,
+          refundDuration: Math.round(service.periods[0].cancellationPolicies[0].duration / 24 / 60), // Minutes to days
+          refundAmount: service.periods[0].cancellationPolicies[0].refundAmount,
+        }
+      : { refundType: 'none' }),
   }),
   validate,
   validateOnChange: false,
