@@ -131,8 +131,8 @@ const createService = (values, importedFromLink) => {
     periods: [
       {
         // This is hardcoded for services added from link
-        startDate: '2017-09-11T00:00:00.000Z',
-        endDate: '2019-09-11T00:00:00.000Z',
+        startDate: '2018-09-11T00:00:00.000Z',
+        endDate: '2020-09-11T00:00:00.000Z',
         daysOfWeek: {
           monday: true,
           tuesday: true,
@@ -168,6 +168,17 @@ const createService = (values, importedFromLink) => {
                 }),
                 {},
               ),
+              ...(values.refundType !== 'none'
+                ? {
+                    cancellationPolicies: [
+                      {
+                        duration: Number(values.refundDuration) * 24 * 60, // To minutes
+                        refundType: values.refundType,
+                        refundAmount: Number(values.refundAmount),
+                      },
+                    ],
+                  }
+                : null),
             },
           ],
           links: {
@@ -190,6 +201,7 @@ const buildServiceForView = service => {
     service.objectId = service._id;
     service.ratings = service.ratings;
     service.duration = service.duration;
+    service.refundType = 'none';
     if (service.rules && service.rules.length) {
       const rules = service.rules.map(rule => rule[i18nLocale]);
       service.rules = rules;
@@ -203,6 +215,17 @@ const buildServiceForView = service => {
       service.openingTime = service.periods[0].startTime;
       service.closingTime = service.periods[0].endTime;
       service.slots = service.periods[0].maxCapacity;
+
+      if (
+        service.periods[0].cancellationPolicies &&
+        service.periods[0].cancellationPolicies.length > 0
+      ) {
+        service.refundType = service.periods[0].cancellationPolicies[0].refundType;
+        service.refundDuration = Math.round(
+          service.periods[0].cancellationPolicies[0].duration / 24 / 60,
+        ); // Minutes to days
+        service.refundAmount = service.periods[0].cancellationPolicies[0].refundAmount;
+      }
     }
     if (service.instructions) {
       service.start = service.instructions.start && service.instructions.start[i18nLocale];
