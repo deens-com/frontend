@@ -36,3 +36,5 @@ export const icoReady = process.env.REACT_APP_ICO;
 
 export const websiteUrl =
   env === 'production' ? 'https://please.com' : `https://${window.location.hostname}`;
+
+export const prismicUrl = 'https://please.prismic.io/api/v2';

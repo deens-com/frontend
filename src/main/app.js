@@ -27,6 +27,7 @@ import Notfound from './../styled_scenes/NotFound';
 import ScrollToTop from './middlewares/ScrollToTop';
 import ServiceUpsert from '../scenes/service-upsert';
 import Checkout from '../scenes/checkout';
+import BlogPost from '../scenes/blog';
 import PrivateRoute from './PrivateRoute';
 import { getCurrentUser } from 'store/session/actions';
 import GDPRNotification from './GDPRNotification';
@@ -128,6 +129,7 @@ class App extends React.Component {
                   component={commonHOCs(Users)}
                 />
                 <Route path={process.env.PUBLIC_URL + '/account'} component={commonHOCs(Account)} />
+                <Route path={process.env.PUBLIC_URL + '/:slug'} component={commonHOCs(BlogPost)} />
                 <Route component={withErrorBoundary(Notfound)} />
               </Switch>
             </ScrollToTop>
