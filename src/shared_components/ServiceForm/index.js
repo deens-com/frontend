@@ -42,7 +42,7 @@ const weekDays = [
 ];
 
 const refundTypes = [
-  { text: 'No refund', value: 'none' },
+  { text: 'Non-refundable', value: 'none' },
   { text: 'Fixed value', value: 'fixed' },
   { text: 'Percentage', value: 'percent' },
 ];
@@ -677,13 +677,13 @@ class ServiceForm extends Component {
                   <Form.Input
                     name="refundAmount"
                     value={values.refundAmount}
-                    error={!!(touched.refundAmount && errors.refundAmount)}
-                    placeholder={`Refund ${
-                      values.refundType === 'percent' ? 'percentage' : 'amount'
+                    error={!!(touched.refundType && errors.refundAmount)}
+                    placeholder={`Cancellation fee ${
+                      values.refundType === 'percent' ? '(%)' : 'amount'
                     }`}
                     {...defaultProps}
                   />
-                  {touched.refundAmount &&
+                  {touched.refundType &&
                     errors.refundAmount && <ErrorMsg>{errors.refundAmount}</ErrorMsg>}
                 </Form.Field>
                 <Form.Field required>
@@ -691,11 +691,11 @@ class ServiceForm extends Component {
                   <Form.Input
                     name="refundDuration"
                     value={values.refundDuration}
-                    error={!!(touched.refundDuration && errors.refundDuration)}
+                    error={!!(touched.refundType && errors.refundDuration)}
                     placeholder="Duration"
                     {...defaultProps}
                   />
-                  {touched.refundDuration &&
+                  {touched.refundType &&
                     errors.refundDuration && <ErrorMsg>{errors.refundDuration}</ErrorMsg>}
                 </Form.Field>
               </React.Fragment>
@@ -718,6 +718,10 @@ function validate(values) {
 
   if (!shortVersion) {
     requiredFields.push('duration', 'availableDays', 'startDate', 'endDate', 'slots');
+  }
+
+  if (values.refundType !== 'none') {
+    requiredFields.push('refundDuration', 'refundAmount');
   }
 
   const errors = checkRequiredFields(values, requiredFields);
@@ -773,19 +777,19 @@ function validate(values) {
   }
 
   if (values.refundType === 'percent') {
-    if (values.refundAmount < 0 || values.refundAmount > 100 || !values.refundAmount) {
-      errors.refundAmount = 'Refund percentage must be between 0 and 100';
+    if (values.refundAmount < 0 || values.refundAmount > 100) {
+      errors.refundAmount = 'Cancellation fee (%) must be between 0 and 100';
     }
   }
 
   if (values.refundType === 'amount') {
-    if (values.refundAmount < 0 || !values.refundAmount) {
-      errors.refundAmount = "Refund amount can't be lower than or equal to 0";
+    if (values.refundAmount < 0) {
+      errors.refundAmount = "Cancellation fee can't be lower than or equal to 0";
     }
   }
 
   if (values.refundType !== 'none') {
-    if (values.refundDuration < 1 || !values.refundDuration) {
+    if (values.refundDuration < 1) {
       errors.refundDuration = 'Refund duration must be at least 1';
     }
   } else {
