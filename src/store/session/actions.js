@@ -96,7 +96,7 @@ export const getCurrentUser = fetchReferralInfo => async dispatch => {
         );
 
         // Fresh chat data
-        if (window.fcWidget.user) {
+        if (window.fcWidget && window.fcWidget.user) {
           try {
             const chatUser = (await window.fcWidget.user.get()).data;
             if (chatUser.firstName !== userObject.username) {

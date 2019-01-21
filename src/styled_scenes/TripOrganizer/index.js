@@ -561,20 +561,7 @@ export default class TripOrganizer extends Component {
       },
     });
 
-    // Why the API doesn't return the same as with logged in users, e.g. the day of the service?
-    const processedData = response.data.map(availability => {
-      const tripService = this.state.trip.services.find(
-        service => availability.serviceOrganizationId === service._id,
-      );
-      return {
-        ...availability,
-        day: tripService.day,
-      };
-    });
-    return {
-      ...response,
-      data: processedData,
-    };
+    return response;
   };
 
   checkAllServicesAvailability = ({ startDate, guests }) => {
@@ -599,7 +586,23 @@ export default class TripOrganizer extends Component {
         };
         const response = await this.requestAvailability(checkdata);
 
-        const data = uniqBy(response.data, elem => `${elem.day}-${elem.serviceId}`);
+        // Probably we should not use day but this implies lot of changes
+        const processedData = response.data.map(availability => {
+          let tripService = this.state.trip.services.find(
+            service => availability.serviceOrganizationId === service._id,
+          );
+          if (!tripService) {
+            this.state.trip.services.find(
+              service => console.log(service), //availability.serviceId === service.service._i
+            );
+          }
+          return {
+            ...availability,
+            day: tripService.day,
+          };
+        });
+
+        const data = uniqBy(processedData, elem => `${elem.day}-${elem.serviceId}`);
 
         this.setState(prevState =>
           calculatePrice({
