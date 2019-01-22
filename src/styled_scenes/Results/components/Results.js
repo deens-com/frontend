@@ -131,6 +131,8 @@ class Results extends Component {
       limit: this.props.search_query.limit || 0,
       sortBy: this.props.search_query.sortBy,
       radiusInKm: this.props.search_query.radiusInKm,
+      city: this.props.search_query.city,
+      country: this.props.search_query.country,
       text: this.props.search_query.text,
     };
   }
