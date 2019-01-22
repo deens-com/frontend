@@ -671,8 +671,8 @@ class ServiceForm extends Component {
             {values.refundType !== 'none' && (
               <React.Fragment>
                 <Form.Field required>
-                  <label>{`Refund ${
-                    values.refundType === 'percent' ? 'percentage' : 'amount'
+                  <label>{`Cancellation fee ${
+                    values.refundType === 'percent' ? '(%)' : 'amount'
                   }`}</label>
                   <Form.Input
                     name="refundAmount"
