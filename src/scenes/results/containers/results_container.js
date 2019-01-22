@@ -29,6 +29,8 @@ class ResultsContainer extends Component {
       limit: this.props.limit,
       sortBy: this.props.sortBy,
       radiusInKm: this.props.radiusInKm,
+      city: this.props.city,
+      country: this.props.country,
       text: this.props.text,
     };
 
@@ -60,6 +62,8 @@ class ResultsContainer extends Component {
         limit: next_props.limit,
         sortBy: next_props.sortBy,
         radiusInKm: next_props.radiusInKm,
+        city: next_props.city,
+        country: next_props.country,
         text: next_props.text,
       };
 
