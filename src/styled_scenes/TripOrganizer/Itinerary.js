@@ -163,10 +163,13 @@ const CheckingAvailability = styled(AvailabilityBox)`
 const Availability = styled(AvailabilityBox)`
   background-color: ${props => (props.available ? '#BAFFE8' : '#FFC3C3')};
   color: ${props => (props.available ? '#38D39F' : '#F65353')};
+  align-self: flex-end;
+  margin-right: 0;
 `;
 
 const AvailabilityWrapper = styled.div`
   display: flex;
+  flex-direction: column;
 `;
 
 const LastLine = styled.div`
@@ -180,6 +183,29 @@ const StartingPrice = styled.div`
   flex: 1;
   color: #3c434b;
   font-size: 14px;
+`;
+
+const CancellationPolicy = styled.div`
+  > div {
+    margin-bottom: 10px;
+  }
+`;
+
+const CancellationHighlight = styled.span`
+  color: #38d39f;
+  font-weight: bolder;
+`;
+
+const CancellationPolicyTrigger = styled.div`
+  color: #38d39f;
+  font-size: 12px;
+  cursor: pointer;
+`;
+
+const MayChange = styled.div`
+  margin-bottom: 0;
+  font-size: 10px;
+  color: #bdc0bd;
 `;
 
 const NoServices = styled.div`
@@ -287,6 +313,49 @@ export default class Itinerary extends Component {
     );
   };
 
+  minutesToHoursOrDays = minutes => {
+    if (minutes > 5760) {
+      return {
+        length: minutes / 60 / 24,
+        unit: 'days',
+      };
+    }
+    return {
+      length: minutes / 60,
+      unit: 'hours',
+    };
+  };
+
+  renderCancellationPolicy = policy => {
+    if (!policy) {
+      return <div>Non-refundable</div>;
+    }
+    const time = this.minutesToHoursOrDays(policy.duration);
+
+    return (
+      <React.Fragment>
+        <div>
+          You can cancel this service up to{' '}
+          <CancellationHighlight>
+            {time.length} {time.unit}
+          </CancellationHighlight>{' '}
+          before booking date.
+        </div>
+        <div>
+          You would get back{' '}
+          {policy.refundType === 'percent' ? (
+            <div>
+              <CancellationHighlight>{policy.refundAmount}%</CancellationHighlight> of the booking
+              price
+            </div>
+          ) : (
+            <CancellationHighlight>${policy.refundAmount}</CancellationHighlight>
+          )}
+        </div>
+      </React.Fragment>
+    );
+  };
+
   renderAvailability = (day, id) => {
     if (this.props.isCheckingAvailability || this.props.isCheckingList.includes(`${day}-${id}`)) {
       return (
@@ -300,15 +369,44 @@ export default class Itinerary extends Component {
       return null;
     }
 
+    let service = {};
+
     const thisAvailability =
       this.props.availability &&
       this.props.availability.find(elem => elem.day === day && elem.serviceId === id);
+
     const isAvailable = thisAvailability && thisAvailability.isAvailable;
 
+    if (isAvailable) {
+      service = this.props.trip.services.find(elem => elem.service._id === id);
+    }
+
     return (
-      <Availability available={isAvailable}>
-        {isAvailable ? 'Available' : 'Unavailable'}
-      </Availability>
+      <React.Fragment>
+        <Availability available={isAvailable}>
+          {isAvailable ? 'Available' : 'Unavailable'}
+        </Availability>
+        {isAvailable && (
+          <Popup
+            trigger={<CancellationPolicyTrigger>Cancellation policy</CancellationPolicyTrigger>}
+            content={
+              <CancellationPolicy>
+                {service.selectedOption && service.selectedOption.cancellationPolicies.length > 0
+                  ? this.renderCancellationPolicy(service.selectedOption.cancellationPolicies[0])
+                  : this.renderCancellationPolicy(
+                      service.service.periods[0].cancellationPolicies[0],
+                    )}
+                {thisAvailability.groupedOptions && (
+                  <MayChange>
+                    Cancellation policy may change when changing the selected option
+                  </MayChange>
+                )}
+              </CancellationPolicy>
+            }
+            position="top center"
+          />
+        )}
+      </React.Fragment>
     );
   };
 
