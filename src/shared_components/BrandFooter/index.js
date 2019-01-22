@@ -15,8 +15,15 @@ const Wrapper = styled.footer`
   display: flex;
   flex-direction: column;
   border-top: 1px solid ${props => (props.withTopBorder ? '#efeff0' : 'transparent')};
+  height: 65px;
 
-  ${media.minSmall} {
+  ${props =>
+    props.posRelative
+      ? `
+    position: relative;
+    margin-top: -65px;
+  `
+      : ''} ${media.minSmall} {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
@@ -62,9 +69,9 @@ const ALink = styled.a`
 `;
 
 // MODULE
-export default function Footer({ withTopBorder, withPadding }) {
+export default function Footer({ posRelative, withTopBorder, withPadding }) {
   return (
-    <Wrapper withTopBorder={withTopBorder} withPadding={withPadding}>
+    <Wrapper posRelative={posRelative} withTopBorder={withTopBorder} withPadding={withPadding}>
       <Nav>
         <div>
           <ALink
