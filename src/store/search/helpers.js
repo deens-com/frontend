@@ -19,7 +19,7 @@ const composeQuery = search_params => {
     text: typeof search_params.text === 'string' ? search_params.text : undefined,
     radiusInKm: search_params.radiusInKm || 10,
     city: search_params.city || undefined,
-    country: search_params.country || undefined,
+    countryCode: search_params.countryCode || undefined,
   };
   let query_arr = [];
   Object.entries(query_params).forEach(([key, value]) => {
