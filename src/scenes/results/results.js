@@ -91,7 +91,7 @@ class Results extends React.Component {
           limit={limit}
           sortBy={sortBy}
           city={city}
-          country={country}
+          countryCode={countryCode}
           radiusInKm={radiusInKm}
           text={text}
           routeState={this.routeState}
