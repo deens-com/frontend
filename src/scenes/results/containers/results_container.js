@@ -30,7 +30,7 @@ class ResultsContainer extends Component {
       sortBy: this.props.sortBy,
       radiusInKm: this.props.radiusInKm,
       city: this.props.city,
-      country: this.props.country,
+      countryCode: this.props.countryCode,
       text: this.props.text,
     };
 
@@ -63,7 +63,7 @@ class ResultsContainer extends Component {
         sortBy: next_props.sortBy,
         radiusInKm: next_props.radiusInKm,
         city: next_props.city,
-        country: next_props.country,
+        countryCode: next_props.countryCode,
         text: next_props.text,
       };
 

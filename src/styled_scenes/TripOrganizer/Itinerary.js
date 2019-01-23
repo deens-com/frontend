@@ -391,7 +391,9 @@ export default class Itinerary extends Component {
             trigger={<CancellationPolicyTrigger>Cancellation policy</CancellationPolicyTrigger>}
             content={
               <CancellationPolicy>
-                {service.selectedOption && service.selectedOption.cancellationPolicies.length > 0
+                {service.selectedOption &&
+                service.selectedOption.cancellationPolicies &&
+                service.selectedOption.cancellationPolicies.length > 0
                   ? this.renderCancellationPolicy(service.selectedOption.cancellationPolicies[0])
                   : this.renderCancellationPolicy(
                       service.service.periods[0].cancellationPolicies[0],

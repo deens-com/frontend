@@ -565,6 +565,9 @@ export default class TripOrganizer extends Component {
   };
 
   checkAllServicesAvailability = ({ startDate, guests }) => {
+    if (this.state.trip.services.length === 0) {
+      return;
+    }
     const timestamp = new Date().getTime();
     this.setState(
       prevState => ({

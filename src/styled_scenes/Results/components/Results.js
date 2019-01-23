@@ -132,7 +132,7 @@ class Results extends Component {
       sortBy: this.props.search_query.sortBy,
       radiusInKm: this.props.search_query.radiusInKm,
       city: this.props.search_query.city,
-      country: this.props.search_query.country,
+      countryCode: this.props.search_query.countryCode,
       text: this.props.search_query.text,
     };
   }
