@@ -10,6 +10,7 @@ import Carousel from './Carousel';
 import LocationCart from './Carts/Location';
 import { Loader } from 'semantic-ui-react';
 import I18nText from 'shared_components/I18nText';
+import InfiniteScroll from 'react-infinite-scroller';
 
 const get_label_color = status => {
   switch (status) {
@@ -102,54 +103,31 @@ class Trip extends React.PureComponent {
 }
 
 class TripSectionComponent extends React.PureComponent {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      items: [],
-    };
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.isLoadingTrips && !this.props.isLoadingTrips) {
-      this.setState({
-        items: this.props.trips.slice(0, 1),
-      });
-      this.recursive();
-      return;
-    }
-  }
-
-  recursive = () => {
-    setTimeout(() => {
-      let hasMore = this.state.items.length + 1 < this.props.trips.length;
-      this.setState((prev, props) => ({
-        items: props.trips.slice(0, prev.items.length + 1),
-      }));
-      if (hasMore) this.recursive();
-    }, 0);
-  };
-
   render() {
-    const props = this.props;
-
-    if (props.isLoadingTrips) {
-      return (
-        <LoaderWrapper>
-          <Loader active inline="centered" size="big">
-            Loading
-          </Loader>
-        </LoaderWrapper>
-      );
-    }
-    if (!this.state.items.length) {
+    if (this.props.trips.length === 0 && !this.props.isLoading && this.props.totalTrips === 0) {
       return <p>You don't have any trips.</p>;
     }
+
     return (
       <section>
-        {this.state.items.map(trip => (
-          <Trip key={trip.objectId} trip={trip} />
-        ))}
+        <InfiniteScroll
+          pageStart={0}
+          loadMore={this.props.fetchTrips}
+          hasMore={
+            this.props.totalTrips === null || this.props.totalTrips > this.props.trips.length
+          }
+          loader={
+            <LoaderWrapper>
+              <Loader active inline="centered" size="big">
+                Loading
+              </Loader>
+            </LoaderWrapper>
+          }
+        >
+          {this.props.trips.map(trip => (
+            <Trip key={trip._id} trip={trip} />
+          ))}
+        </InfiniteScroll>
       </section>
     );
   }
