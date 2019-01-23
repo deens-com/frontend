@@ -10,6 +10,7 @@ import { generateTripSlug } from 'libs/Utils';
 import StripeCardDetails from '../StripeCardDetails';
 import CoinbaseButtonContainer from '../../CoinbaseButtonContainer';
 import PLSButton from './PLSButton';
+import Button from 'shared_components/Button';
 
 import VisaLogo from '../logos/visa.svg';
 import MasterLogo from '../logos/mastercard.svg';
@@ -137,6 +138,10 @@ const PLSLogoWrapper = styled(Logos)`
   }
 `;
 
+const PayZeroWrapper = styled.div`
+  text-align: center;
+`;
+
 const CREDIT_CARD_METHOD = 'credit-card';
 const CRYPTO_METHOD = 'crypto';
 const PLS_METHOD = 'pls';
@@ -168,18 +173,109 @@ export default class PaymentSection extends Component {
     });
   };
 
+  renderPayment() {
+    const { trip, totalPrice, paymentError, guests, plsBalance } = this.props;
+
+    if (totalPrice === 0) {
+      return (
+        <PayZeroWrapper>
+          <Button
+            size="medium"
+            theme="fillLightGreen"
+            onClick={() => this.props.payWithPls(guests, trip._id)}
+          >
+            Book $0.00 trip
+          </Button>
+        </PayZeroWrapper>
+      );
+    }
+
+    return (
+      <React.Fragment>
+        <ChooseMethodTitle>
+          <span>Choose Payment Method</span>
+        </ChooseMethodTitle>
+        <MainContent>
+          <MethodSelector>
+            <Method
+              onClick={() => this.selectMethod(CREDIT_CARD_METHOD)}
+              selected={this.state.paymentMethod === CREDIT_CARD_METHOD}
+            >
+              <p>Credit Card</p>
+              <CreditCardLogos>
+                <img src={VisaLogo} alt="Visa" />
+                <img src={MasterLogo} alt="MasterCard" />
+                <img src={AmexLogo} alt="American Express" />
+                <img src={DiscoverLogo} alt="Discover" />
+                <img src={JcbLogo} alt="Japan Credit Bureau" />
+                <img src={DinersLogo} alt="Diners" />
+              </CreditCardLogos>
+            </Method>
+            <Method
+              onClick={() => this.selectMethod(CRYPTO_METHOD)}
+              selected={this.state.paymentMethod === CRYPTO_METHOD}
+            >
+              <p>Cryptocurrency</p>
+              <CryptoLogos>
+                <img src={BTCLogo} alt="Bitcoin" />
+                <img src={ETHLogo} alt="Ether" />
+                <img src={LTCLogo} alt="Litecoin" />
+                <img src={BCHLogo} alt="Bitcoin Cash" />
+              </CryptoLogos>
+            </Method>
+            <Method
+              onClick={() => this.selectMethod(PLS_METHOD)}
+              selected={this.state.paymentMethod === PLS_METHOD}
+            >
+              <p>PLS Tokens</p>
+              <PLSLogoWrapper>
+                <img src={PLSLogo} alt="PLS Token" />
+              </PLSLogoWrapper>
+            </Method>
+          </MethodSelector>
+          <StripWrap>
+            <PriceTag price={totalPrice}>
+              {({ convertedPrice, symbol }) => {
+                const amount = parseFloat(convertedPrice);
+                return (
+                  <React.Fragment>
+                    {this.state.paymentMethod === CREDIT_CARD_METHOD && (
+                      <StripeCardDetails
+                        amount={amount}
+                        symbol={symbol}
+                        showOrInText={this.state.canMakeAutoPayment}
+                        paymentError={paymentError}
+                      />
+                    )}
+                    {this.state.paymentMethod === CRYPTO_METHOD && (
+                      <ButtonWrapper>
+                        <CoinbaseButtonContainer tripId={trip._id} guests={guests} />
+                      </ButtonWrapper>
+                    )}
+                    {this.state.paymentMethod === PLS_METHOD && (
+                      <ButtonWrapper>
+                        <PLSButton
+                          plsBalance={plsBalance}
+                          guests={guests}
+                          tripId={trip._id}
+                          onClick={this.props.payWithPls}
+                          paymentError={paymentError}
+                          usdAmount={amount}
+                        />
+                      </ButtonWrapper>
+                    )}
+                  </React.Fragment>
+                );
+              }}
+            </PriceTag>
+          </StripWrap>
+        </MainContent>
+      </React.Fragment>
+    );
+  }
+
   render() {
-    const {
-      trip,
-      totalPrice,
-      paymentError,
-      guests,
-      plsBalance,
-      error,
-      getProvisionCodes,
-      bookingStatus,
-      isPaymentProcessing,
-    } = this.props;
+    const { trip, error, getProvisionCodes, bookingStatus, isPaymentProcessing } = this.props;
 
     return (
       <Dimmer.Dimmable dimmed={isPaymentProcessing}>
@@ -204,84 +300,7 @@ export default class PaymentSection extends Component {
               },
             ]}
           />
-          <ChooseMethodTitle>
-            <span>Choose Payment Method</span>
-          </ChooseMethodTitle>
-          <MainContent>
-            <MethodSelector>
-              <Method
-                onClick={() => this.selectMethod(CREDIT_CARD_METHOD)}
-                selected={this.state.paymentMethod === CREDIT_CARD_METHOD}
-              >
-                <p>Credit Card</p>
-                <CreditCardLogos>
-                  <img src={VisaLogo} alt="Visa" />
-                  <img src={MasterLogo} alt="MasterCard" />
-                  <img src={AmexLogo} alt="American Express" />
-                  <img src={DiscoverLogo} alt="Discover" />
-                  <img src={JcbLogo} alt="Japan Credit Bureau" />
-                  <img src={DinersLogo} alt="Diners" />
-                </CreditCardLogos>
-              </Method>
-              <Method
-                onClick={() => this.selectMethod(CRYPTO_METHOD)}
-                selected={this.state.paymentMethod === CRYPTO_METHOD}
-              >
-                <p>Cryptocurrency</p>
-                <CryptoLogos>
-                  <img src={BTCLogo} alt="Bitcoin" />
-                  <img src={ETHLogo} alt="Ether" />
-                  <img src={LTCLogo} alt="Litecoin" />
-                  <img src={BCHLogo} alt="Bitcoin Cash" />
-                </CryptoLogos>
-              </Method>
-              <Method
-                onClick={() => this.selectMethod(PLS_METHOD)}
-                selected={this.state.paymentMethod === PLS_METHOD}
-              >
-                <p>PLS Tokens</p>
-                <PLSLogoWrapper>
-                  <img src={PLSLogo} alt="PLS Token" />
-                </PLSLogoWrapper>
-              </Method>
-            </MethodSelector>
-            <StripWrap>
-              <PriceTag price={totalPrice}>
-                {({ convertedPrice, stripeMultiplier, selectedCurrency, symbol }) => {
-                  const amount = parseFloat(convertedPrice);
-                  return (
-                    <React.Fragment>
-                      {this.state.paymentMethod === CREDIT_CARD_METHOD && (
-                        <StripeCardDetails
-                          amount={amount}
-                          symbol={symbol}
-                          showOrInText={this.state.canMakeAutoPayment}
-                          paymentError={paymentError}
-                        />
-                      )}
-                      {this.state.paymentMethod === CRYPTO_METHOD && (
-                        <ButtonWrapper>
-                          <CoinbaseButtonContainer tripId={trip._id} guests={guests} />
-                        </ButtonWrapper>
-                      )}
-                      {this.state.paymentMethod === PLS_METHOD && (
-                        <ButtonWrapper>
-                          <PLSButton
-                            plsBalance={plsBalance}
-                            guests={guests}
-                            tripId={trip._id}
-                            onClick={this.props.payWithPls}
-                            paymentError={paymentError}
-                            usdAmount={amount}
-                          />
-                        </ButtonWrapper>
-                      )}
-                    </React.Fragment>
-                  );
-                }}
-              </PriceTag>
-            </StripWrap>
-          </MainContent>
+          {this.renderPayment()}
         </Wrap>
       </Dimmer.Dimmable>
     );
