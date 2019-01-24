@@ -234,6 +234,19 @@ export default class LoginFormComponent extends Component {
                         Sign Up
                       </Link>
                     </div>
+                    <Link
+                      to={{
+                        pathname: '/register',
+                        state: {
+                          message: this.props.message,
+                          from: this.props.from,
+                          action: this.props.action,
+                        },
+                      }}
+                      replace
+                    >
+                      Forgot password
+                    </Link>
                   </Grid.Column>
                 </Grid.Row>
               </Grid>

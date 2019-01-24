@@ -23,6 +23,7 @@ import TripShare from './../scenes/trip-share';
 import Users from './../scenes/users/users';
 import Services from './../scenes/services/services';
 import Registrations from './../scenes/registrations/registrations';
+import RecoverPassword from './../scenes/recover-password';
 import Notfound from './../styled_scenes/NotFound';
 import ScrollToTop from './middlewares/ScrollToTop';
 import ServiceUpsert from '../scenes/service-upsert';
@@ -67,6 +68,10 @@ class App extends React.Component {
                 <Route
                   path={process.env.PUBLIC_URL + '/register'}
                   component={commonHOCs(Registrations)}
+                />
+                <Route
+                  path={process.env.PUBLIC_URL + '/recover-password'}
+                  component={commonHOCs(RecoverPassword)}
                 />
                 <Route
                   path={process.env.PUBLIC_URL + '/earn-money'}
