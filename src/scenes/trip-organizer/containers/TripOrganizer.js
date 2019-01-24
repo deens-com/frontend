@@ -86,7 +86,7 @@ class TripOrganizerContainer extends Component {
 
 const mapStateToProps = (state, props) => {
   const trip = props.match.params.id ? state.trips.trip : loadTrip();
-  console.log('loaded', trip);
+
   let startDate = state.search.searchQuery.start_date;
   if (!startDate) {
     const tomorrow = moment()
