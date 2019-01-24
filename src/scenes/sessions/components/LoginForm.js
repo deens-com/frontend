@@ -59,6 +59,12 @@ const LoginContainer = styled.div`
   }
 `;
 
+const RecoverPassword = styled.span`
+  > a {
+    color: #1dbdbc;
+  }
+`;
+
 export default class LoginFormComponent extends Component {
   constructor(props) {
     super(props);
@@ -234,19 +240,21 @@ export default class LoginFormComponent extends Component {
                         Sign Up
                       </Link>
                     </div>
-                    <Link
-                      to={{
-                        pathname: '/register',
-                        state: {
-                          message: this.props.message,
-                          from: this.props.from,
-                          action: this.props.action,
-                        },
-                      }}
-                      replace
-                    >
-                      Forgot password
-                    </Link>
+                    <RecoverPassword>
+                      <Link
+                        to={{
+                          pathname: '/recover-password',
+                          state: {
+                            message: this.props.message,
+                            from: this.props.from,
+                            action: this.props.action,
+                          },
+                        }}
+                        replace
+                      >
+                        Forgot password
+                      </Link>
+                    </RecoverPassword>
                   </Grid.Column>
                 </Grid.Row>
               </Grid>
