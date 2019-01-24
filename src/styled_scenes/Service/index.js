@@ -261,6 +261,11 @@ class FoodDetailScene extends Component {
                     this.props.service.checkoutOptions &&
                     this.props.service.checkoutOptions.checkoutURL
                   }
+                  externalUrl={
+                    this.props.service &&
+                    this.props.service.externalUrl &&
+                    this.props.service.externalUrl['en-us']
+                  }
                   isLoggedIn={this.props.isLoggedIn}
                 />
                 <ContactWrap>
