@@ -382,11 +382,14 @@ export default class Itinerary extends Component {
     const isAvailable = thisAvailability && thisAvailability.isAvailable;
 
     if (dayData.selectedOption) {
-      option = thisAvailability.groupedOptions.options.find(
-        option =>
-          option.otherAttributes &&
-          option.otherAttributes.availabilityCode.code === dayData.selectedOption.availabilityCode,
-      );
+      option =
+        thisAvailability.groupedOptions &&
+        thisAvailability.groupedOptions.options.find(
+          option =>
+            option.otherAttributes &&
+            option.otherAttributes.availabilityCode.code ===
+              dayData.selectedOption.availabilityCode,
+        );
     }
 
     return (
