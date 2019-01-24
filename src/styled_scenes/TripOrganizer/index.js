@@ -1,3 +1,6 @@
+// Stuff that would improve the codebase:
+// 1- Remove trip from state, the trip should be able to be created from other stuff in the state
+
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import moment from 'moment';
@@ -14,13 +17,7 @@ import { saveTrip } from 'libs/localStorage';
 import * as tripUtils from 'libs/trips';
 import axiosOriginal from 'axios';
 import history from '../../main/history';
-import {
-  getPriceFromServiceOption,
-  getPeopleCount,
-  calculateBottomPosition,
-  updateBottomChatPosition,
-  getHeroImage,
-} from 'libs/Utils';
+import { calculateBottomPosition, updateBottomChatPosition, getHeroImage } from 'libs/Utils';
 
 import TopBar from 'shared_components/TopBar';
 import BrandFooter from 'shared_components/BrandFooter';
@@ -288,6 +285,8 @@ export default class TripOrganizer extends Component {
     }
   }
 
+  reduceDaysToServices = days => days.reduce((prev, day) => [...prev, ...day.data], []);
+
   blockUntilSaved = () => {
     this.setState({
       isBlockedUntilSaved: true,
@@ -305,16 +304,10 @@ export default class TripOrganizer extends Component {
       async () => {
         const trip = {
           ...this.state.trip,
-          services: this.state.days.reduce(
-            (prev, day) => [
-              ...prev,
-              ...day.data.map(dayData => ({
-                ...dayData,
-                service: this.props.tripId ? dayData.service._id : dayData.service,
-              })),
-            ],
-            [],
-          ),
+          services: this.reduceDaysToServices(this.state.days).map(elem => ({
+            ...elem,
+            service: elem.service._id || elem.service,
+          })),
           ...(this.props.startDate ? { startDate: this.props.startDate } : {}),
           duration: (this.state.days && daysToMinutes(this.state.days.length)) || 1,
           tags: this.state.trip.tags ? this.state.trip.tags.map(tag => tag._id) : [], // This could be done when loading the trip to avoid executing each time we save
@@ -594,11 +587,7 @@ export default class TripOrganizer extends Component {
           let tripService = this.state.trip.services.find(
             service => availability.serviceOrganizationId === service._id,
           );
-          if (!tripService) {
-            this.state.trip.services.find(
-              service => console.log(service), //availability.serviceId === service.service._i
-            );
-          }
+
           return {
             ...availability,
             day: tripService.day,
