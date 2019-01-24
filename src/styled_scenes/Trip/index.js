@@ -15,6 +15,7 @@ import TopBar from 'shared_components/TopBar';
 import { Page, PageContent } from 'shared_components/layout/Page';
 import GuestsSelector from 'shared_components/SelectGuests/GuestsSelector';
 import { media } from 'libs/styled';
+import { saveTrip } from 'libs/localStorage';
 
 import Header from './Header';
 import TripDescription from './TripDescription';
@@ -214,6 +215,13 @@ export default class Trip extends Component {
   };
 
   handleCustomizeClick = () => {
+    if (!this.props.currentUserId) {
+      saveTrip({
+        ...this.props.trip,
+      });
+      history.push(`/trips/organize/`);
+      return;
+    }
     if (this.props.trip.owner === this.props.currentUserId && !this.props.booked) {
       history.push(`/trips/organize/${this.props.trip._id}`);
       return;
