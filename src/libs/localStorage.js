@@ -18,6 +18,11 @@ export function removeTrip() {
   localStorage.removeItem(tripKey);
 }
 
+export function isTripSaved() {
+  const trip = JSON.parse(localStorage.getItem(tripKey));
+  return Boolean(trip && trip.services && trip.services.length > 0);
+}
+
 export function loadTrip() {
   const localStorageTrip = localStorage.getItem(tripKey);
   if (localStorageTrip) {

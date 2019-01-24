@@ -306,7 +306,7 @@ export default class TripOrganizer extends Component {
           ...this.state.trip,
           services: this.reduceDaysToServices(this.state.days).map(elem => ({
             ...elem,
-            service: elem.service._id || elem.service,
+            service: this.props.tripId ? elem.service._id : elem.service,
           })),
           ...(this.props.startDate ? { startDate: this.props.startDate } : {}),
           duration: (this.state.days && daysToMinutes(this.state.days.length)) || 1,
@@ -994,7 +994,7 @@ export default class TripOrganizer extends Component {
   render() {
     const { isLoading, tripId, isGDPRDismissed, gdprHeight } = this.props;
     const { trip, isBlockedUntilSaved, days } = this.state;
-
+    console.log(trip._id, tripId);
     const loading = isLoading || (!trip || trip._id !== tripId);
 
     return (
