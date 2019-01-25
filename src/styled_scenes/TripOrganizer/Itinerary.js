@@ -225,6 +225,10 @@ const addNoteTheme = {
   colorHover: '#C2AF4D',
 };
 
+const Policy = styled.div`
+  margin-bottom: 15px;
+`;
+
 export default class Itinerary extends Component {
   constructor(props) {
     super(props);
@@ -334,25 +338,29 @@ export default class Itinerary extends Component {
     return (price - policy.refundAmount).toFixed(2);
   }
 
-  renderCancellationPolicy = (policy, price) => {
-    if (!policy) {
+  renderCancellationPolicy = (policies, price) => {
+    if (!policies || policies.length === 0) {
       return <div>Non-refundable</div>;
     }
-    const time = this.minutesToHoursOrDays(policy.duration);
 
     return (
       <React.Fragment>
-        <div>
-          If you cancel{' '}
-          <CancellationHighlight>
-            {time.length} {time.unit}
-          </CancellationHighlight>{' '}
-          before check-in, you will be charged{' '}
-          <CancellationHighlight>
-            ${this.calculateCancellationCharge(policy, price)}
-          </CancellationHighlight>{' '}
-          of cancellation fee, to be deduced from refund amount.
-        </div>
+        {policies.map(policy => {
+          const time = this.minutesToHoursOrDays(policy.duration);
+          return (
+            <Policy>
+              If you cancel{' '}
+              <CancellationHighlight>
+                {time.length} {time.unit}
+              </CancellationHighlight>{' '}
+              before check-in, you will be charged{' '}
+              <CancellationHighlight>
+                ${this.calculateCancellationCharge(policy, price)}
+              </CancellationHighlight>{' '}
+              of cancellation fee, to be deduced from refund amount.
+            </Policy>
+          );
+        })}
       </React.Fragment>
     );
   };
@@ -404,7 +412,7 @@ export default class Itinerary extends Component {
               <CancellationPolicy>
                 {option && option.cancellationPolicies && option.cancellationPolicies.length > 0
                   ? this.renderCancellationPolicy(
-                      option.cancellationPolicies[0],
+                      option.cancellationPolicies,
                       getPriceFromServiceOption(
                         service.basePrice,
                         dayData.selectedOption.price,
@@ -412,7 +420,7 @@ export default class Itinerary extends Component {
                       ),
                     )
                   : this.renderCancellationPolicy(
-                      service.periods[0].cancellationPolicies[0],
+                      service.periods[0].cancellationPolicies,
                       getPriceFromServiceOption(service.basePrice, null, this.props.numberOfPeople),
                     )}
                 {thisAvailability.groupedOptions && (
