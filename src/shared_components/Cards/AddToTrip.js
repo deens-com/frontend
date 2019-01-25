@@ -109,7 +109,7 @@ export default class AddToTrip extends Component {
 
     await this.props.data.addToTrip(this.props.service, index + 1);
 
-    const actionDate = moment(dayName).format('MMM DD');
+    const actionDate = moment(dayName, 'MMMM DD').format('MMM DD');
 
     this.setState({
       actionDate,
