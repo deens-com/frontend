@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import moment from 'moment';
 import styled from 'styled-components';
 import history from 'main/history';
-import { Loader, Popup, Icon, Dimmer } from 'semantic-ui-react';
+import { Loader, Popup, Icon, Dimmer, Modal } from 'semantic-ui-react';
 import { SingleDatePicker } from 'react-dates';
 import { calculateBottomPosition, updateBottomChatPosition } from 'libs/Utils';
 
@@ -15,6 +15,7 @@ import TopBar from 'shared_components/TopBar';
 import { Page, PageContent } from 'shared_components/layout/Page';
 import GuestsSelector from 'shared_components/SelectGuests/GuestsSelector';
 import { media } from 'libs/styled';
+import { saveTrip, isTripSaved, loadTrip } from 'libs/localStorage';
 
 import Header from './Header';
 import TripDescription from './TripDescription';
@@ -116,6 +117,7 @@ export default class Trip extends Component {
     this.state = {
       isDatePopupOpen: false,
       isGuestsPopupOpen: false,
+      confirmCopyTripPopupOpen: false,
     };
 
     this.sentenceRef = React.createRef();
@@ -213,7 +215,29 @@ export default class Trip extends Component {
     this.setState({ isDatePopupOpen: true });
   };
 
-  handleCustomizeClick = () => {
+  continueExistingTrip = () => {
+    history.push(`/trips/organize/`);
+  };
+
+  copyNewTrip = () => {
+    this.handleCustomizeClick(null, true);
+  };
+
+  handleCustomizeClick = (event, force = false) => {
+    if (!this.props.currentUserId) {
+      if (isTripSaved() && !force) {
+        this.setState({
+          confirmCopyTripPopupOpen: true,
+        });
+        return;
+      } else {
+        saveTrip({
+          ...this.props.trip,
+        });
+      }
+      history.push(`/trips/organize/`);
+      return;
+    }
     if (this.props.trip.owner === this.props.currentUserId && !this.props.booked) {
       history.push(`/trips/organize/${this.props.trip._id}`);
       return;
@@ -390,6 +414,28 @@ export default class Trip extends Component {
           days={days}
           trip={trip}
           goToDay={this.goToDay}
+        />
+        <Modal
+          open={Boolean(this.state.confirmCopyTripPopupOpen)}
+          header={`Copy trip`}
+          content={`Would you like to continue your existing trip "${
+            loadTrip(trip).title['en-us']
+          }" or copy this one as a new trip?`}
+          size="small"
+          actions={[
+            {
+              key: 'continue',
+              content: 'Continue existing trip',
+              negative: true,
+              onClick: this.continueExistingTrip,
+            },
+            {
+              key: 'copy',
+              content: 'Copy this trip',
+              onClick: this.copyNewTrip,
+              positive: true,
+            },
+          ]}
         />
         <PageContent>{this.renderPageContent()}</PageContent>
         <FixedFooter

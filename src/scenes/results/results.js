@@ -49,7 +49,7 @@ class Results extends React.Component {
     let sortBy = search_params.sortBy || '';
     let radiusInKm = search_params.radiusInKm || 10;
     let city = search_params.city || '';
-    let country = search_params.country || '';
+    let countryCode = search_params.countryCode || '';
     let text = search_params.text || '';
 
     let helmet;
@@ -91,7 +91,7 @@ class Results extends React.Component {
           limit={limit}
           sortBy={sortBy}
           city={city}
-          country={country}
+          countryCode={countryCode}
           radiusInKm={radiusInKm}
           text={text}
           routeState={this.routeState}

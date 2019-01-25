@@ -12,6 +12,7 @@ const GridContainer = styled.div`
   grid-template-columns: 1fr 1fr;
   justify-items: center;
   margin-bottom: 24px;
+  row-gap: 10px;
 
   ${media.minSmall} {
     grid-template-columns: 160px 160px;
@@ -67,6 +68,19 @@ function ServiceActionButtons(props) {
         Book Now
         <Icon name="shop" />
       </Button>
+      {props.externalUrl && (
+        <Button
+          icon
+          labelPosition="right"
+          target="_blank"
+          rel="noopener noreferrer"
+          as="a"
+          href={props.externalUrl}
+        >
+          Read More
+          <Icon name="world" />
+        </Button>
+      )}
       <ErrorMsgDiv>
         {props.serviceRecentlyAddedToTrip && (
           <SuccessMessage

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Grid } from 'semantic-ui-react';
 import { withRouter } from 'react-router-dom';
-import history from 'main/history';
+import axios from 'libs/axios';
 
 import { Page, PageContent } from 'shared_components/layout/Page';
 import TopBar from 'shared_components/TopBar';
@@ -11,31 +10,41 @@ import UserBasicInfo from 'styled_scenes/Account/components/UserBasicInfo';
 import TripSectionComponent from 'styled_scenes/Account/Trips/shared/TripSectionComponent';
 
 class AccountTripsScene extends Component {
-  static propTypes = {
-    allTrips: PropTypes.array,
-    isLoadingTrips: PropTypes.bool.isRequired,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: false,
+      trips: [],
+      page: 0,
+      count: null,
+      limit: 10,
+    };
+  }
 
-  static defaultProps = {
-    allTrips: [],
-  };
-
-  getTrips = pathname => {
-    const { allTrips } = this.props;
-    let status = 'all';
-    if (pathname === '/account/trips/planned' || pathname === '/account/trips/completed') {
-      history.replace('/account/trips/all');
+  loadTrips = () => {
+    if (this.state.isLoading) {
+      return;
     }
-    return allTrips.filter(trip => {
-      if (status === 'all') return true;
-      const tripStatus = trip && trip.metaData && trip.metaData.status;
-      return tripStatus === status;
-    });
+    this.setState(
+      prevState => ({
+        isLoading: true,
+        page: prevState.page + 1,
+      }),
+      async () => {
+        const res = await axios.get('/trips', {
+          params: { include: 'services', page: this.state.page },
+        });
+
+        this.setState(prevState => ({
+          isLoading: false,
+          trips: [...prevState.trips, ...res.data.trips],
+          count: res.data.count,
+        }));
+      },
+    );
   };
 
   render() {
-    const { location, isLoadingTrips } = this.props;
-    const { pathname } = location;
     return (
       <div>
         <Page topPush>
@@ -50,8 +59,10 @@ class AccountTripsScene extends Component {
               <Grid.Column mobile={16} tablet={11} computer={12}>
                 <h1>My Trips</h1>
                 <TripSectionComponent
-                  isLoadingTrips={isLoadingTrips}
-                  trips={this.getTrips(pathname)}
+                  isLoadingTrips={this.state.isLoading}
+                  trips={this.state.trips}
+                  totalTrips={this.state.count}
+                  fetchTrips={this.loadTrips}
                 />
               </Grid.Column>
             </Grid>

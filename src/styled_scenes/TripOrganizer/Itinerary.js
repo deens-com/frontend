@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { Loader, Modal, TextArea, Popup } from 'semantic-ui-react';
 import { getCategory } from 'libs/categories';
 import { media } from 'libs/styled';
-import { getHeroImage, generateServiceSlug } from 'libs/Utils';
+import { getHeroImage, generateServiceSlug, getPriceFromServiceOption } from 'libs/Utils';
 import I18nText from 'shared_components/I18nText';
 import Category from 'shared_components/Category';
 import Button from 'shared_components/Button';
@@ -326,7 +326,15 @@ export default class Itinerary extends Component {
     };
   };
 
-  renderCancellationPolicy = policy => {
+  calculateCancellationCharge(policy, price) {
+    if (policy.refundType === 'percent') {
+      return price - ((price * policy.refundAmount) / 100).toFixed(2);
+    }
+
+    return (price - policy.refundAmount).toFixed(2);
+  }
+
+  renderCancellationPolicy = (policy, price) => {
     if (!policy) {
       return <div>Non-refundable</div>;
     }
@@ -335,28 +343,23 @@ export default class Itinerary extends Component {
     return (
       <React.Fragment>
         <div>
-          You can cancel this service up to{' '}
+          If you cancel{' '}
           <CancellationHighlight>
             {time.length} {time.unit}
           </CancellationHighlight>{' '}
-          before booking date.
-        </div>
-        <div>
-          You would get back{' '}
-          {policy.refundType === 'percent' ? (
-            <div>
-              <CancellationHighlight>{policy.refundAmount}%</CancellationHighlight> of the booking
-              price
-            </div>
-          ) : (
-            <CancellationHighlight>${policy.refundAmount}</CancellationHighlight>
-          )}
+          before check-in, you will be charged{' '}
+          <CancellationHighlight>
+            ${this.calculateCancellationCharge(policy, price)}
+          </CancellationHighlight>{' '}
+          of cancellation fee, to be deduced from refund amount.
         </div>
       </React.Fragment>
     );
   };
 
-  renderAvailability = (day, id) => {
+  renderAvailability = (day, dayData) => {
+    const id = dayData.service._id;
+
     if (this.props.isCheckingAvailability || this.props.isCheckingList.includes(`${day}-${id}`)) {
       return (
         <CheckingAvailability>
@@ -369,7 +372,8 @@ export default class Itinerary extends Component {
       return null;
     }
 
-    let service = {};
+    let service = dayData.service;
+    let option = null;
 
     const thisAvailability =
       this.props.availability &&
@@ -377,8 +381,15 @@ export default class Itinerary extends Component {
 
     const isAvailable = thisAvailability && thisAvailability.isAvailable;
 
-    if (isAvailable) {
-      service = this.props.trip.services.find(elem => elem.service._id === id);
+    if (dayData.selectedOption) {
+      option =
+        thisAvailability.groupedOptions &&
+        thisAvailability.groupedOptions.options.find(
+          option =>
+            option.otherAttributes &&
+            option.otherAttributes.availabilityCode.code ===
+              dayData.selectedOption.availabilityCode,
+        );
     }
 
     return (
@@ -391,10 +402,18 @@ export default class Itinerary extends Component {
             trigger={<CancellationPolicyTrigger>Cancellation policy</CancellationPolicyTrigger>}
             content={
               <CancellationPolicy>
-                {service.selectedOption && service.selectedOption.cancellationPolicies.length > 0
-                  ? this.renderCancellationPolicy(service.selectedOption.cancellationPolicies[0])
+                {option && option.cancellationPolicies && option.cancellationPolicies.length > 0
+                  ? this.renderCancellationPolicy(
+                      option.cancellationPolicies[0],
+                      getPriceFromServiceOption(
+                        service.basePrice,
+                        dayData.selectedOption.price,
+                        this.props.numberOfPeople,
+                      ),
+                    )
                   : this.renderCancellationPolicy(
-                      service.service.periods[0].cancellationPolicies[0],
+                      service.periods[0].cancellationPolicies[0],
+                      getPriceFromServiceOption(service.basePrice, null, this.props.numberOfPeople),
                     )}
                 {thisAvailability.groupedOptions && (
                   <MayChange>
@@ -474,7 +493,7 @@ export default class Itinerary extends Component {
                   lineHeight="17px"
                 />
                 <AvailabilityWrapper>
-                  {this.renderAvailability(day.day, dayData.service._id)}
+                  {this.renderAvailability(day.day, dayData)}
                 </AvailabilityWrapper>
               </CategoryWrapper>
               <ServiceTitle>

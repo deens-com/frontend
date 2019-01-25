@@ -49,7 +49,7 @@ class ResultsContainer extends Component {
       sortBy: props.sortBy,
       radiusInKm: props.radiusInKm,
       city: props.city,
-      country: props.country,
+      countryCode: props.countryCode,
       text: props.text,
     };
   }
