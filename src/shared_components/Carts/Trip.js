@@ -161,6 +161,7 @@ export default class TripCart extends Component {
   render() {
     const { owner } = this.props.item;
     const avatar = owner.profilePicture || ImgurAvatar;
+
     return (
       <div>
         {this.state.truncated ? (

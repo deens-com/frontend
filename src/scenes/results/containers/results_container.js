@@ -10,29 +10,7 @@ import { updatePath } from 'store/search/helpers';
 
 class ResultsContainer extends Component {
   componentDidMount() {
-    let searchQuery = {
-      type: this.props.serviceTypes,
-      tags: this.props.tags,
-      latitude: this.props.latitude,
-      longitude: this.props.longitude,
-      adults: Number(this.props.adults),
-      children: Number(this.props.children),
-      infants: Number(this.props.infants),
-      start_date: Number(this.props.start_date),
-      end_date: Number(this.props.end_date),
-      keywords: this.props.keywords,
-      speech_query: this.props.speech_query,
-      address: this.props.address,
-      onlySmartContracts: this.props.onlySmartContracts,
-      resultsCount: this.props.resultsCount,
-      page: this.props.page,
-      limit: this.props.limit,
-      sortBy: this.props.sortBy,
-      radiusInKm: this.props.radiusInKm,
-      city: this.props.city,
-      countryCode: this.props.countryCode,
-      text: this.props.text,
-    };
+    let searchQuery = this.createQuery(this.props);
 
     this.props.updateSearchQuery(searchQuery);
     this.props.fetchResults(searchQuery);
@@ -41,36 +19,46 @@ class ResultsContainer extends Component {
     }
   }
 
-  componentWillUpdate(next_props) {
-    if (this.did_search_query_changed(this.props, next_props)) {
-      const query = {
-        type: next_props.serviceTypes,
-        tags: next_props.tags,
-        latitude: next_props.latitude,
-        longitude: next_props.longitude,
-        adults: Number(next_props.adults),
-        children: Number(next_props.children),
-        infants: Number(next_props.infants),
-        start_date: Number(next_props.start_date),
-        end_date: Number(next_props.end_date),
-        keywords: next_props.keywords,
-        speech_query: next_props.speech_query,
-        address: next_props.address,
-        onlySmartContracts: next_props.onlySmartContracts,
-        resultsCount: next_props.resultsCount,
-        page: next_props.page,
-        limit: next_props.limit,
-        sortBy: next_props.sortBy,
-        radiusInKm: next_props.radiusInKm,
-        city: next_props.city,
-        countryCode: next_props.countryCode,
-        text: next_props.text,
-      };
+  componentWillUpdate(nextProps) {
+    if (this.did_search_query_changed(this.props, nextProps)) {
+      const query = this.createQuery(nextProps);
 
       this.props.updateSearchQuery(query);
       this.props.fetchResults(query);
     }
   }
+
+  createQuery(props) {
+    return {
+      type: props.serviceTypes,
+      tags: props.tags,
+      latitude: props.latitude,
+      longitude: props.longitude,
+      adults: Number(props.adults),
+      children: Number(props.children),
+      infants: Number(props.infants),
+      start_date: Number(props.start_date),
+      end_date: Number(props.end_date),
+      keywords: props.keywords,
+      speech_query: props.speech_query,
+      address: props.address,
+      onlySmartContracts: props.onlySmartContracts,
+      resultsCount: props.resultsCount,
+      page: props.page,
+      limit: props.limit,
+      sortBy: props.sortBy,
+      radiusInKm: props.radiusInKm,
+      city: props.city,
+      countryCode: props.countryCode,
+      text: props.text,
+    };
+  }
+
+  retryFetch = () => {
+    const searchQuery = this.createQuery(this.props);
+    this.props.updateSearchQuery(searchQuery);
+    this.props.fetchResults(searchQuery);
+  };
 
   did_search_query_changed = (current_props, next_props) => {
     return (
@@ -111,6 +99,7 @@ class ResultsContainer extends Component {
         updatePath={updatePath}
         isLoadingResults={this.props.isLoadingResults || this.hasToLoadTripYet()}
         trip={this.props.trip || loadTrip()}
+        retryFetch={this.retryFetch}
       />
     );
   }

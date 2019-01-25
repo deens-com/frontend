@@ -9,9 +9,6 @@ import Media from 'react-media';
 
 import history from 'main/history';
 // COMPONENTS
-import TopBar from './../../shared_components/TopBar';
-
-import BrandFooter from './../../shared_components/BrandFooter';
 import Filters from './components/Filters';
 import Results from './components/Results';
 import MapMaker from './../../shared_components/MapMarker';
@@ -23,7 +20,7 @@ import { waitUntilMapsLoaded } from 'libs/Utils';
 // import { foodList } from "../../data/food";
 
 // STYLES
-import { Page, PageContent } from './../../shared_components/layout/Page';
+import { PageContent } from './../../shared_components/layout/Page';
 import { updatePath } from 'store/search/helpers';
 
 const MapWrapper = styled.div`
@@ -113,11 +110,11 @@ export default class ResultsScene extends Component {
     return props.service_data
       .filter(({ latitude, longitude }) => latitude && longitude)
       .map(service => ({
-        key: service.objectId,
+        key: service._id,
         lat: parseFloat(service.geo.lat),
         lng: parseFloat(service.geo.lng),
         name: service.name,
-        id: service.objectId,
+        id: service._id,
         hover: false,
       }));
   };
@@ -317,8 +314,7 @@ export default class ResultsScene extends Component {
     const { center, zoom, markers } = this.state;
 
     return (
-      <Page topPush>
-        <TopBar {...props} fixed />
+      <React.Fragment>
         <span>
           <Filters {...props} />
           <Media query={`(min-width: 600px)`}>
@@ -391,8 +387,7 @@ export default class ResultsScene extends Component {
             </GoogleMapReact>
           </MapWrapper>
         </PageContent>
-        <BrandFooter withTopBorder withPadding />
-      </Page>
+      </React.Fragment>
     );
   }
 }

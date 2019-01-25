@@ -2,12 +2,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import { Loader } from 'semantic-ui-react';
 
 // COMPONENTS
-import Carousel from '../../../shared_components/Carousel';
-import LocationCart from '../../../shared_components/Carts/Trip';
+import ErrorHandler from 'shared_components/ErrorHandler';
+import TripCarousel from './TripCarousel';
 
 // ACTIONS/CONFIG
 
@@ -20,36 +19,32 @@ import {
   More,
 } from '../../../shared_components/layout/Page';
 
-const Center = styled.div`
-  text-align: center;
-`;
+export default class HomeSectionTrips extends React.Component {
+  render() {
+    const { isLoading, trips, retryFunction } = this.props;
 
-export default function HomeSectionTrips({ trips, isLoading }) {
-  return (
-    <PageWrapper>
-      <SectionWrap>
-        <SectionHeader>
-          <h3>Featured Customizable Trips</h3>
-          <More>
-            <Link to="/results?serviceTypes=trip">See All Trips</Link>
-          </More>
-        </SectionHeader>
-        <SectionContent>
-          {isLoading ? (
-            <Loader active inline="centered" size="big" />
-          ) : (
-            <Carousel sm_slides_nb={1} md_slides_nb={2} lg_slides_nb={3} xl_slides_nb={4}>
-              {trips.map(item => (
-                <Center key={item._id}>
-                  <LocationCart item={item} />
-                </Center>
-              ))}
-            </Carousel>
-          )}
-        </SectionContent>
-      </SectionWrap>
-    </PageWrapper>
-  );
+    return (
+      <PageWrapper>
+        <SectionWrap>
+          <SectionHeader>
+            <h3>Featured Customizable Trips</h3>
+            <More>
+              <Link to="/results?serviceTypes=trip">See All Trips</Link>
+            </More>
+          </SectionHeader>
+          <SectionContent>
+            {isLoading ? (
+              <Loader active inline="centered" size="big" />
+            ) : (
+              <ErrorHandler retryFunction={retryFunction}>
+                <TripCarousel trips={trips} />
+              </ErrorHandler>
+            )}
+          </SectionContent>
+        </SectionWrap>
+      </PageWrapper>
+    );
+  }
 }
 
 // Props Validation

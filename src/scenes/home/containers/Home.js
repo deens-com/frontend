@@ -19,6 +19,15 @@ export default class HomeContainer extends Component {
     this.fetchTrips({ include: 'owner' });
   }
 
+  getTrips = () => {
+    this.setState(
+      {
+        trip: defaultState,
+      },
+      () => this.fetchTrips({ include: 'owner' }),
+    );
+  };
+
   render() {
     return (
       <div className="HomeContainer">
@@ -29,6 +38,7 @@ export default class HomeContainer extends Component {
         <HomeComponent
           trips={this.state.trips.data && this.state.trips.data.trips}
           isLoading={this.state.trips.isLoading}
+          retryFunction={this.getTrips}
         />
       </div>
     );

@@ -217,7 +217,7 @@ class Results extends Component {
           ) : (
             <Grid columns={this.props.showMap ? 2 : 5} doubling stackable>
               {this.props.data.map((result, i) => (
-                <Grid.Column key={result.objectId}>
+                <Grid.Column key={result._id}>
                   <ResultItem>
                     <Link
                       to={
