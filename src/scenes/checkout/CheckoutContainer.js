@@ -13,7 +13,6 @@ import { updateBottomChatPosition, calculateBottomPosition } from 'libs/Utils';
 import { Page } from 'shared_components/layout/Page';
 import TopBar from 'shared_components/TopBar';
 import I18nText from 'shared_components/I18nText';
-import CancellationPolicy from 'shared_components/CancellationPolicy';
 import { formatLocation } from 'shared_components/Carts/Trip';
 import { MapMarker, LeftArrow } from 'shared_components/icons';
 import PaymentContainer from './PaymentContainer';
@@ -495,7 +494,6 @@ class CheckoutContainer extends React.Component {
                       <PriceLine>Total Price Booked Items ${trip.basePrice.toFixed(2)}</PriceLine>
                       <Taxes>* all taxes and fees are included</Taxes>
                     </TotalPrice>
-                    <CancellationPolicy />
                   </TotalPriceWrapper>
                 </Summary>
               )}

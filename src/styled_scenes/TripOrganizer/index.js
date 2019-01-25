@@ -37,7 +37,6 @@ import SemanticLocationControl from 'shared_components/Form/SemanticLocationCont
 import Button from 'shared_components/Button';
 import Input from 'shared_components/StyledInput';
 import debounce from 'lodash.debounce';
-import CancellationPolicy from 'shared_components/CancellationPolicy';
 
 const PageContent = styled.div`
   margin: 0 20px auto;
@@ -99,11 +98,6 @@ const TripItineraryTitle = styled.div`
     background: white;
     padding: 0 10px;
   }
-`;
-
-const Cancellation = styled.div`
-  text-align: center;
-  margin-bottom: 20px;
 `;
 
 const Required = () => <span style={{ color: 'red' }}>*</span>;
@@ -984,9 +978,6 @@ export default class TripOrganizer extends Component {
           isSaving={this.state.isSaving || this.state.savingPending}
           blockUntilSaved={this.blockUntilSaved}
         />
-        <Cancellation>
-          <CancellationPolicy />
-        </Cancellation>
       </React.Fragment>
     );
   };
