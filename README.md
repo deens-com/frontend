@@ -47,7 +47,7 @@ yarn lint-staged''' > .git/hooks/pre-commit
 
 ## Troubleshooting
 
-If you're stuck somewhere while working on something, create an issue or jump on to the [Telegram group](https://t.me/PleaseProtocol) and we'll help you out.
+If you're stuck somewhere while working on something, create an issue and we'll help you out.
 
 ## 🎓 License
 
@@ -55,4 +55,4 @@ Licensed under the GNU public license V3.0. See [LICENSE](LICENSE) for more info
 
 ### Big Thanks
 
-Cross-browser Testing Platform and Open Source <3 Provided by [Sauce Labs](https://saucelabs.com)
+Cross-browser Testing Platform Provided by [Sauce Labs](https://saucelabs.com) along with some great Open Source :heart:
