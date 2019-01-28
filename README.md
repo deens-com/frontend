@@ -45,7 +45,7 @@ $ echo '''#!/usr/bin/env bash
 yarn lint-staged''' > .git/hooks/pre-commit
 ```
 
-## Troubleshooting
+## :scream: Troubleshooting
 
 If you're stuck somewhere while working on something, create an issue and we'll help you out.
 
@@ -53,6 +53,6 @@ If you're stuck somewhere while working on something, create an issue and we'll 
 
 Licensed under the GNU public license V3.0. See [LICENSE](LICENSE) for more information.
 
-### Big Thanks
+### :clap: Big Thanks
 
 Cross-browser Testing Platform Provided by [Sauce Labs](https://saucelabs.com) along with some great Open Source :heart:
