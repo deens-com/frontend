@@ -53,6 +53,6 @@ If you're stuck somewhere while working on something, create an issue and we'll 
 
 Licensed under the GNU public license V3.0. See [LICENSE](LICENSE) for more information.
 
-### :clap: Big Thanks
+## :clap: Big Thanks
 
 Cross-browser Testing Platform Provided by [Sauce Labs](https://saucelabs.com) along with some great Open Source :heart:
