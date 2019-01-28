@@ -51,4 +51,8 @@ If you're stuck somewhere while working on something, create an issue or jump on
 
 ## 🎓 License
 
-Licensed under the MIT license. See [LICENSE](LICENSE) for more information.
+Licensed under the GNU public license V3.0. See [LICENSE](LICENSE) for more information.
+
+### Big Thanks
+
+Cross-browser Testing Platform and Open Source <3 Provided by [Sauce Labs](https://saucelabs.com)
