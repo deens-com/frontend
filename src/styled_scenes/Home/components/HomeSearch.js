@@ -111,6 +111,8 @@ export default class HomeSearch extends Component {
       address: '',
       latitude: undefined,
       longitude: undefined,
+      countryCode: undefined,
+      city: undefined,
       serviceType: undefined,
       keywords: '',
       show_banner: false,
@@ -141,8 +143,19 @@ export default class HomeSearch extends Component {
 
     geocodeByAddress(address)
       .then(results => {
-        this.setState({ address });
-        return getLatLng(results[0]);
+        const result = results[0];
+        const addressComponents = result.address_components;
+        const localities = addressComponents.filter(
+          c => c.types.includes('locality') || c.types.includes('postal_town'),
+        );
+        const countries = addressComponents.filter(c => c.types.includes('country'));
+
+        this.setState({
+          address,
+          city: (localities[0] || addressComponents[0]).long_name,
+          countryCode: countries[0].short_name,
+        });
+        return getLatLng(result);
       })
       .then(results => {
         const { lat, lng } = results;
@@ -158,6 +171,8 @@ export default class HomeSearch extends Component {
       address: this.state.address,
       latitude: this.state.latitude,
       longitude: this.state.longitude,
+      city: this.state.city,
+      countryCode: this.state.countryCode,
       serviceTypes: this.state.serviceType,
       text: this.state.text,
     };
