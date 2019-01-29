@@ -321,7 +321,7 @@ export default class TripOrganizer extends Component {
         }
 
         if (!this.props.tripId) {
-          history.push('/login', {
+          history.push('/register', {
             from: '/trips/organize',
             message: 'Please login or register to continue',
             action,

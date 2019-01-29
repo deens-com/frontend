@@ -14,7 +14,7 @@ const PrivateRoute = ({ component: Component, session, message, loggedIn, ...res
         return (
           <Redirect
             to={{
-              pathname: '/login',
+              pathname: '/register',
               state: {
                 from: props.location.pathname,
                 message: message || 'Please login or register to continue',

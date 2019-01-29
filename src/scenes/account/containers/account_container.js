@@ -24,7 +24,7 @@ class AccountContainer extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (!nextProps.session.email) {
-      history.push('/login');
+      history.push('/register');
     }
   }
 
