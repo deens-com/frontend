@@ -4,6 +4,7 @@ import { Image, List, Popup } from 'semantic-ui-react';
 import moment from 'moment';
 import styled from 'styled-components';
 import placeholder from './../../../../assets/placeholder350x350.svg';
+import I18nText from 'shared_components/I18nText';
 
 const getTripImage = trip => {
   if (trip.picture && trip.picture.url) return trip.picture.url;
@@ -27,7 +28,7 @@ class TripsListInDropDown extends React.Component {
 
   selectTrip(trip) {
     this.setState({
-      selectedTrip: trip.objectId,
+      selectedTrip: trip._id,
     });
   }
 
@@ -56,9 +57,15 @@ class TripsListInDropDown extends React.Component {
         <Image avatar src={getTripImage(trip)} />
         <List.Content>
           <List.Header>
-            <ItemTitle>{trip.title}</ItemTitle>
+            <ItemTitle>
+              <I18nText data={trip.title} />
+            </ItemTitle>
           </List.Header>
-          {description && <List.Description>{description}</List.Description>}
+          {description && (
+            <List.Description>
+              <I18nText data={description} />
+            </List.Description>
+          )}
         </List.Content>
       </List.Item>
     );
@@ -81,9 +88,9 @@ class TripsListInDropDown extends React.Component {
     }
     return (
       <Popup
-        key={trip.objectId}
+        key={trip._id}
         position="right center"
-        open={this.state.selectedTrip === trip.objectId}
+        open={this.state.selectedTrip === trip._id}
         trigger={item}
         keepInViewPort
       >

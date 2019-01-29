@@ -328,28 +328,14 @@ class Service extends Component {
                     <Row>
                       <Grid columns={4} doubling stackable>
                         {this.props.trips.map(trip => (
-                          <Grid.Column key={trip.objectId}>
+                          <Grid.Column key={trip._id}>
                             <Link to={'/trips/' + generateTripSlug(trip)}>
-                              <TripCart key={trip.objectId} withTooltip withShadow item={trip} />
+                              <TripCart key={trip._id} withTooltip withShadow item={trip} />
                             </Link>
                           </Grid.Column>
                         ))}
                       </Grid>
                     </Row>
-
-                    {/*
-                      <Carousel sm_slides_nb={1} md_slides_nb={2} lg_slides_nb={4} xl_slides_nb={4}>
-                        {/*this.props.trips.map(trip => (
-                          <TripCart
-                            item={trip}
-                            withShadow
-                            key={trip.title}
-                            size="small"
-                            href={'/trips/' + trip.objectId}
-                          />
-                        ))}
-                      </Carousel>
-                    */}
                   </CarouselColumnSpan>
                 </TripsWrap>
               ) : null}
