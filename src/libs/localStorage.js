@@ -23,14 +23,22 @@ export function isTripSaved() {
   return Boolean(trip && trip.services && trip.services.length > 0);
 }
 
-export function loadTrip() {
+export function loadTrip(withFullServices = true) {
   const localStorageTrip = localStorage.getItem(tripKey);
   if (localStorageTrip) {
     const trip = JSON.parse(localStorageTrip);
     if (trip._id) {
       delete trip._id;
     }
-    return trip;
+    return {
+      ...trip,
+      services: withFullServices
+        ? trip.services
+        : trip.services.map(service => ({
+            ...service,
+            service: service.service._id,
+          })),
+    };
   }
   return {
     title: {

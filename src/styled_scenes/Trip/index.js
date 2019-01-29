@@ -224,24 +224,26 @@ export default class Trip extends Component {
   };
 
   handleCustomizeClick = (event, force = false) => {
-    if (!this.props.currentUserId) {
-      if (isTripSaved() && !force) {
-        this.setState({
-          confirmCopyTripPopupOpen: true,
-        });
-        return;
-      } else {
-        saveTrip({
-          ...this.props.trip,
-        });
-      }
-      history.push(`/trips/organize/`);
-      return;
-    }
     if (this.props.trip.owner === this.props.currentUserId && !this.props.booked) {
       history.push(`/trips/organize/${this.props.trip._id}`);
       return;
     }
+
+    if (isTripSaved() && !force) {
+      this.setState({
+        confirmCopyTripPopupOpen: true,
+      });
+      return;
+    }
+
+    if (!this.props.currentUserId) {
+      saveTrip({
+        ...this.props.trip,
+      });
+      history.push(`/trips/organize/`);
+      return;
+    }
+
     this.props.cloneTrip(this.props.trip._id, this.props.currentUserId);
   };
 

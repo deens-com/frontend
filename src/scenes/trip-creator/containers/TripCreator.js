@@ -10,16 +10,7 @@ import TopBar from 'shared_components/TopBar';
 import BrandFooter from 'shared_components/BrandFooter';
 import { Page } from 'shared_components/layout/Page';
 import history from 'main/history';
-
-const emptyTrip = {
-  title: {
-    'en-us': 'New Trip',
-  },
-  services: [],
-  media: [],
-  basePrice: 0,
-  duration: 1,
-};
+import { loadTrip, removeTrip } from 'libs/localStorage';
 
 const PageContent = styled.div`
   margin: 0 20px auto;
@@ -28,7 +19,8 @@ const PageContent = styled.div`
 class TripCreatorContainer extends Component {
   componentDidMount() {
     if (this.props.session.username) {
-      axios.post(`/trips`, emptyTrip).then(response => {
+      axios.post(`/trips`, loadTrip(false)).then(response => {
+        removeTrip();
         history.replace(`/trips/organize/${response.data._id}`);
       });
     } else {
