@@ -5,6 +5,7 @@ import { Icon, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 import { media } from 'libs/styled';
+import I18nText from 'shared_components/I18nText';
 import AddToTripButton from './AddToTripButton';
 
 const GridContainer = styled.div`
@@ -84,17 +85,25 @@ function ServiceActionButtons(props) {
       <ErrorMsgDiv>
         {props.serviceRecentlyAddedToTrip && (
           <SuccessMessage
-            to={`/trips/organize/${
-              props.isLoggedIn ? props.serviceRecentlyAddedToTrip.objectId : ''
-            }`}
+            to={`/trips/organize/${props.isLoggedIn ? props.serviceRecentlyAddedToTrip._id : ''}`}
           >
-            Added to <b>{props.isLoggedIn ? props.serviceRecentlyAddedToTrip.title : 'trip'}</b>
+            Added to{' '}
+            <b>
+              {props.isLoggedIn ? (
+                <I18nText data={props.serviceRecentlyAddedToTrip.title} />
+              ) : (
+                'trip'
+              )}
+            </b>
             <Icon name="check circle outline" />
           </SuccessMessage>
         )}
         {props.serviceAlreadyAddedToTrip && (
-          <WarningMessage to={`/trips/organize/${props.serviceAlreadyAddedToTrip.objectId}`}>
-            Already added to <b>{props.serviceAlreadyAddedToTrip.title}</b>
+          <WarningMessage to={`/trips/organize/${props.serviceAlreadyAddedToTrip._id}`}>
+            Already added to{' '}
+            <b>
+              <I18nText data={props.serviceAlreadyAddedToTrip.title} />
+            </b>
           </WarningMessage>
         )}
       </ErrorMsgDiv>
