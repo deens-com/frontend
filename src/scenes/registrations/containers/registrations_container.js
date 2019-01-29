@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import Cookies from 'js-cookie';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as sessionsActions from 'store/session/actions';
 import RegistrationsComponent from './../components/Registrations';
 import validator from 'validator';
 import history from 'main/history';
 import { getSession } from 'libs/user-session';
 import axios from 'libs/axios';
 
-export default class RegistrationsContainer extends Component {
+class RegistrationsContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -115,6 +118,18 @@ export default class RegistrationsContainer extends Component {
         isLoading: false,
         registered: true,
       });
+      try {
+        this.props.loginRequest(email, this.state.password, {
+          from: this.props.from,
+          action: this.props.action,
+        });
+      } catch (e) {
+        history.replace('/login', {
+          message: this.props.message,
+          from: this.props.from,
+          action: this.props.action,
+        });
+      }
     } catch (error) {
       const errorMessage =
         error.response && error.response.data && error.response.data.code === 'invalid_password'
@@ -165,3 +180,17 @@ export default class RegistrationsContainer extends Component {
     );
   }
 }
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      loginRequest: sessionsActions.loginRequest,
+    },
+    dispatch,
+  );
+};
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(RegistrationsContainer);
