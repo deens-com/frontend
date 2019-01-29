@@ -43,9 +43,10 @@ const fetchUserTripsError = error => ({
 const fetchUserTrips = (serviceId, slotsNb) => async dispatch => {
   dispatch(fetchUserTripsStart());
   try {
-    const myTrips = await axios.get(`/trips?include=service`);
-    dispatch(fetchUserTripsSuccess(fetchHelpers.buildServicesJson(myTrips.data)));
+    const myTrips = await axios.get(`/trips`);
+    dispatch(fetchUserTripsSuccess(myTrips.data.trips));
   } catch (e) {
+    console.log('je', e);
     dispatch(fetchUserTripsError(e));
   }
 };
