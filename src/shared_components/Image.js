@@ -14,7 +14,15 @@ const Image = props => {
    * crop=true is set below as we are having a conflict with Coral images that's expecting that param to be true,
    *by default it's value is 'faces' and that will throw 505 for Coral images once the URL has been generated
    */
-  return <Imgix {...props} {...translatedProps} crop="true" auto={['compress']} />;
+  return (
+    <Imgix
+      {...props}
+      {...translatedProps}
+      crop="true"
+      auto={['compress']}
+      imgixParams={{ ...(props.circular ? { mask: 'ellipse' } : {}), ...props.imgIxParams }}
+    />
+  );
 };
 
 Image.propTypes = {

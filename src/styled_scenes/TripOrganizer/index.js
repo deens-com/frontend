@@ -985,7 +985,7 @@ export default class TripOrganizer extends Component {
   render() {
     const { isLoading, tripId, isGDPRDismissed, gdprHeight } = this.props;
     const { trip, isBlockedUntilSaved, days } = this.state;
-    console.log(trip._id, tripId);
+
     const loading = isLoading || (!trip || trip._id !== tripId);
 
     return (

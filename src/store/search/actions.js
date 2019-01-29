@@ -46,8 +46,8 @@ const fetchResults = searchQuery =>
       ...(searchForTrips ? { include: 'owner' } : {}),
     };
     const results = await (searchForTrips
-      ? api.search.get(params)
-      : api.search.services.get(params));
+      ? api.trips.search.get(params)
+      : api.services.search.get(params));
 
     const resultsArr = searchForTrips ? results.data.trips : results.data.services;
     const data = fetchHelpers.buildServicesJson(resultsArr);

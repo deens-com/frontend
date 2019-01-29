@@ -61,7 +61,6 @@ class TripOrganizerContainer extends Component {
   }
 
   render() {
-    console.log(this.props.isLoading, 'ff', this.isLoading);
     return (
       <TripOrganizer
         trip={this.props.trip}

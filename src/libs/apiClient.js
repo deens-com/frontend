@@ -4,21 +4,25 @@ const get = url => params => axios.get(url, { params });
 const post = url => body => axios.post(url, body);
 
 // await axios.get(`${serverBaseURL}/search?include=${includes.join(',')}`)).data.trips
+// GET endpoint are called like xxx.get(params, ...urlParams) where params are the query params
 export default {
-  search: {
-    get: get('/search'),
-    services: {
-      get: get('/search/services'),
-    },
-  },
   trips: {
     get: get('/trips'),
     addService: {
       post: (id, body) => post(`/trips/${id}/add-service`)(body),
     },
+    search: {
+      get: get('/search'),
+    },
   },
   services: {
     get: get('/services'),
+    search: {
+      get: get('/search/services'),
+    },
+    reviews: {
+      get: (params, { serviceId }) => get(`/services/${serviceId}/reviews`)(params),
+    },
   },
   users: {
     kycToken: {
