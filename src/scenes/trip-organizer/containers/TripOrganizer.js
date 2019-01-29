@@ -27,15 +27,17 @@ class TripOrganizerContainer extends Component {
             service: service.service._id,
           })),
         };
-        axios.post(`/trips`, tripToSave).then(response => {
-          if (props.location.state.action === 'book') {
-            history.push(`/trips/checkout/${response.data._id}`);
-            removeTrip();
-            return;
-          } else if (props.location.state.action === 'share') {
-            history.push(`/trips/share/${response.data._id}`);
-            removeTrip();
-            return;
+        axios.post('/trips', tripToSave).then(response => {
+          if (props.location.state) {
+            if (props.location.state.action === 'book') {
+              history.push(`/trips/checkout/${response.data._id}`);
+              removeTrip();
+              return;
+            } else if (props.location.state.action === 'share') {
+              history.push(`/trips/share/${response.data._id}`);
+              removeTrip();
+              return;
+            }
           }
           history.push(`/trips/organize/${response.data._id}`, this.props.location.state);
         });
