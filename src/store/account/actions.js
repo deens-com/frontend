@@ -54,7 +54,7 @@ export const fetch_user_profile = () => async dispatch => {
       const user = await axios.get('/users/me');
       dispatch(user_profile_fetched({ user_profile: user.data }));
     } else {
-      history.push('/login');
+      history.push('/register');
     }
   } catch (error) {
     console.log(error);
