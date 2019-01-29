@@ -13,22 +13,23 @@ import TopBar from './../../shared_components/TopBar';
 import BrandFooter from '../../shared_components/BrandFooter';
 import { BadgeIcon } from './icons';
 import TripCart from '../../shared_components/Cards/Trip';
-import Review from '../../shared_components/Review';
 // import Carousel from '../../shared_components/Carousel';
 import ImgSlider from './components/ImgSlider';
 import MapMaker from '../../shared_components/MapMarker';
+import ListsHandler from 'shared_components/ListsHandler';
+import Reviews from './components/Reviews';
 
 // ACTIONS/CONFIG
 import { media, sizes } from '../../libs/styled';
 
 // STYLES
 import { Page, PageContent } from '../../shared_components/layout/Page';
-import SmartContractDetails from './components/SmartContractDetails';
 import ServiceTags from './components/ServiceTags';
 import ServiceInformation from './components/ServiceInformation';
 import ServiceActionButtons from './components/ServiceActionButtons';
 
 import { waitUntilMapsLoaded, generateTripSlug } from 'libs/Utils';
+import api from 'libs/apiClient';
 
 const DetailWrapper = styled.div`
   width: 100%;
@@ -70,6 +71,10 @@ const Badge = styled.span`
   svg {
     fill: #fff;
   }
+`;
+
+const ReviewsTitle = styled.h2`
+  color: #4fb798;
 `;
 
 const ContactWrap = styled.div`
@@ -151,7 +156,7 @@ function formatDescription(description) {
 }
 
 // MODULE
-class FoodDetailScene extends Component {
+class Service extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -286,20 +291,31 @@ class FoodDetailScene extends Component {
                     <ServiceInformation service={this.props.service} />
                   </Contacts>
                 </ContactWrap>
-                <div>
-                  {this.props.reviews.length ? <h2>Reviews</h2> : null}
-                  {this.props.reviews.map(review => (
-                    <Review key={review.objectId} review={review} />
-                  ))}
-                </div>
-                <SmartContractDetails
-                  address={this.props.service.contractAddress}
-                  abi={this.props.abi}
-                />
               </DetailWrapper>
             </PageContent>
           </Container>
-
+          <Container>
+            <ReviewsTitle>Reviews</ReviewsTitle>
+            {this.props.service &&
+              this.props.service._id && (
+                <ListsHandler
+                  itemKey="reviews"
+                  apiFunction={api.services.reviews.get}
+                  urlParams={{
+                    serviceId: this.props.service._id,
+                  }}
+                  showLoader={false}
+                  render={({ items, fetchMore, totalCount, isLoading }) => (
+                    <Reviews
+                      reviews={items}
+                      fetchMore={fetchMore}
+                      totalCount={totalCount}
+                      isLoading={isLoading}
+                    />
+                  )}
+                />
+              )}
+          </Container>
           <div className="bg-grey1">
             <Container>
               {this.props.trips.length ? (
@@ -347,7 +363,7 @@ class FoodDetailScene extends Component {
 }
 
 // Props Validation
-FoodDetailScene.propTypes = {
+Service.propTypes = {
   myUnpurchasedTrips: PropTypes.array,
   onAddServiceToTrip: PropTypes.func.isRequired,
   onAddServiceToNewTrip: PropTypes.func.isRequired,
@@ -356,4 +372,4 @@ FoodDetailScene.propTypes = {
   onBookNowClick: PropTypes.func.isRequired,
 };
 
-export default FoodDetailScene;
+export default Service;
