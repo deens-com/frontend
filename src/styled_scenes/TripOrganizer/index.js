@@ -5,19 +5,17 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import moment from 'moment';
 import styled from 'styled-components';
-import { Loader, Dimmer, Message } from 'semantic-ui-react';
-import { geocodeByPlaceId } from 'react-places-autocomplete';
+import { Loader, Dimmer } from 'semantic-ui-react';
 import { getFromCoordinates } from 'libs/Utils';
+import { getLocationBasedOnPlaceId, getFormattedAddress } from 'libs/trips';
 import uniqBy from 'lodash.uniqby';
 
-import { serverBaseURL } from 'libs/config';
 import axios from 'libs/axios';
 import { media } from 'libs/styled';
 import { saveTrip } from 'libs/localStorage';
 import * as tripUtils from 'libs/trips';
-import axiosOriginal from 'axios';
 import history from '../../main/history';
-import { calculateBottomPosition, updateBottomChatPosition, getHeroImage } from 'libs/Utils';
+import { calculateBottomPosition, updateBottomChatPosition } from 'libs/Utils';
 
 import TopBar from 'shared_components/TopBar';
 import BrandFooter from 'shared_components/BrandFooter';
@@ -34,7 +32,6 @@ import mapServicesToDays, {
 import DaySelector from '../Trip/DaySelector';
 import CheckoutBox from './CheckoutBox';
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
-import Button from 'shared_components/Button';
 import Input from 'shared_components/StyledInput';
 import debounce from 'lodash.debounce';
 
@@ -51,26 +48,6 @@ const PageContent = styled.div`
   }
   @media only screen and (min-width: 1400px) {
     margin: 0 auto auto;
-  }
-`;
-
-const CoverImage = styled.div`
-  border-radius: 5px;
-  height: 162px;
-  background-image: linear-gradient(0, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)),
-    url(${props => props.url});
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 30px;
-  > input[type='file'] {
-    display: none;
-  }
-  > div {
-    flex-shrink: 1;
   }
 `;
 
@@ -157,6 +134,7 @@ function pickFirstOption(days, data) {
           [value.serviceId]: {
             availabilityCode: value.groupedOptions.options[0].otherAttributes.availabilityCode.code,
             price: value.groupedOptions.options[0].price,
+            cancellable: value.groupedOptions.options[0].cancellable,
           },
         },
       };
@@ -169,6 +147,7 @@ function pickFirstOption(days, data) {
         [value.serviceId]: {
           availabilityCode: value.groupedOptions.options[0].otherAttributes.availabilityCode.code,
           price: value.groupedOptions.options[0].price,
+          cancellable: value.groupedOptions.options[0].cancellable,
         },
       },
     };
@@ -219,8 +198,6 @@ export default class TripOrganizer extends Component {
         trip: props.trip || emptyTrip,
         days: [],
         availability: {},
-        pictureUploadError: null,
-        uploadingPicture: false,
         isCheckingList: [],
         notes: {},
       };
@@ -357,7 +334,7 @@ export default class TripOrganizer extends Component {
     this.debouncedPatch();
   };
 
-  selectOption = (day, instanceId, optionCode, price) => {
+  selectOption = (day, instanceId, optionCode, price, cancellable) => {
     this.setState(
       prevState => ({
         days: prevState.days.map(elem => {
@@ -376,6 +353,7 @@ export default class TripOrganizer extends Component {
                       selectedOption: {
                         availabilityCode: optionCode,
                         price,
+                        cancellable,
                       },
                     },
             ),
@@ -671,29 +649,13 @@ export default class TripOrganizer extends Component {
 
   handleLocationChange = async (address, placeId) => {
     try {
-      const results = await geocodeByPlaceId(placeId);
-      const currentResult = results[0];
-      const { address_components: addressComponents } = currentResult;
-      const localities = addressComponents.filter(
-        c => c.types.includes('locality') || c.types.includes('postal_town'),
-      );
-      const countries = addressComponents.filter(c => c.types.includes('country'));
-      const state = addressComponents.filter(c => c.types.includes('administrative_area_level_1'));
-      const { lat: latFn, lng: lngFn } = currentResult.geometry.location;
+      const location = await getLocationBasedOnPlaceId(placeId);
 
       this.setState(
         prevState => ({
           trip: {
             ...prevState.trip,
-            location: {
-              city: (localities[0] || addressComponents[0]).long_name,
-              state: state.lenth > 0 ? state[0].long_name : '',
-              countryCode: countries[0].short_name,
-              geo: {
-                type: 'Point',
-                coordinates: [lngFn(), latFn()],
-              },
-            },
+            location,
           },
         }),
         this.autoPatchTrip,
@@ -739,76 +701,6 @@ export default class TripOrganizer extends Component {
     }
 
     return null;
-  };
-
-  getShareError = () => {
-    if (!this.state.trip.location) {
-      return 'You need to add a location';
-    }
-
-    if (!this.state.trip.media || this.state.trip.media.length === 0) {
-      return 'You need to add an image';
-    }
-
-    return null;
-  };
-
-  onFileSelect = async e => {
-    const file = e.currentTarget.files[0];
-    if (!file) return;
-    if (file.size > 3000000) {
-      this.setState({ pictureUploadError: 'File size should not exceed 3 Mb' });
-      return;
-    }
-    this.setState({
-      uploadingPicture: true,
-    });
-    const formData = new FormData();
-    formData.append('profilePicture', file);
-    const uploadedFile = await axiosOriginal.post(`${serverBaseURL}/media`, formData, {});
-
-    const url = uploadedFile.data.url;
-    this.setState(
-      prev => ({
-        pictureUploadError: null,
-        uploadingPicture: false,
-        trip: {
-          ...prev.trip,
-          media: [
-            {
-              type: 'image',
-              hero: true,
-              names: {
-                'en-us': 'Trip image',
-              },
-              files: {
-                thumbnail: {
-                  url,
-                  width: 215,
-                  height: 140,
-                },
-                small: {
-                  url,
-                  width: 430,
-                  height: 280,
-                },
-                large: {
-                  url,
-                  width: 860,
-                  height: 560,
-                },
-                hero: {
-                  url,
-                  width: 860,
-                  height: 560,
-                },
-              },
-            },
-          ],
-        },
-      }),
-      this.autoPatchTrip,
-    );
   };
 
   removeDay = day => {
@@ -865,64 +757,12 @@ export default class TripOrganizer extends Component {
 
   renderPageContent = () => {
     const { startDate } = this.props;
-    const {
-      availability,
-      trip,
-      days,
-      pictureUploadError,
-      isCheckingList,
-      notes,
-      uploadingPicture,
-    } = this.state;
+    const { availability, trip, days, isCheckingList, notes } = this.state;
 
-    const hero = trip && getHeroImage(trip);
-    let img;
-
-    if (hero && hero.files) {
-      img = hero.files.hero ? hero.files.hero.url : trip.media.files.large.url;
-    }
-
-    let location = '';
-    if (trip.location && trip.location.city) {
-      location = trip.location.city;
-      if (trip.location.state) {
-        location = location.concat(`, ${trip.location.state}`);
-      }
-      if (trip.location.countryCode) {
-        location = location.concat(`, ${trip.location.countryCode}`);
-      }
-    }
+    let location = getFormattedAddress(trip.location);
 
     return (
       <React.Fragment>
-        {pictureUploadError && (
-          <Message negative>
-            <Message.Header>An error occured</Message.Header>
-            <p>{pictureUploadError}</p>
-          </Message>
-        )}
-        <CoverImage url={img}>
-          {uploadingPicture ? (
-            <Loader active inline="centered" />
-          ) : (
-            <React.Fragment>
-              <Button
-                element={({ children }) => <label htmlFor="cover-image">{children}</label>}
-                onClick={e => {}}
-                theme="allWhite"
-                iconBefore="camera"
-              >
-                Change Cover
-              </Button>
-              <input
-                id="cover-image"
-                accept=".jpg, .jpeg, .png"
-                type="file"
-                onChange={this.onFileSelect}
-              />
-            </React.Fragment>
-          )}
-        </CoverImage>
         <FormInput>
           <Label>
             Trip Name <Required />
@@ -955,7 +795,6 @@ export default class TripOrganizer extends Component {
           infants={trip.infantCount}
           price={(trip.basePrice || 0).toFixed(2)}
           bookError={this.getBookError()}
-          shareError={this.getShareError()}
           numberOfDays={minutesToDays(trip.duration)}
         />
         <Itinerary

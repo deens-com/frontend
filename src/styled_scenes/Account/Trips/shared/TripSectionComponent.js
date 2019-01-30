@@ -56,8 +56,8 @@ const LoaderWrapper = styled.div`
   margin-top: 100px;
 `;
 
-const renderService = ({ service }, index) => (
-  <LocationCart item={service} index={index} key={service._id} />
+const renderService = (service, index) => (
+  <LocationCart item={service.service} index={index} key={service._id} />
 );
 
 class Trip extends React.PureComponent {

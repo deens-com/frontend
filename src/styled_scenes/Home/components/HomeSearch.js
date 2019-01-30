@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
+import { parseLocationData } from 'libs/location';
 import history from './../../../main/history';
 import { media } from './../../../libs/styled';
 
@@ -144,16 +145,12 @@ export default class HomeSearch extends Component {
     geocodeByAddress(address)
       .then(results => {
         const result = results[0];
-        const addressComponents = result.address_components;
-        const localities = addressComponents.filter(
-          c => c.types.includes('locality') || c.types.includes('postal_town'),
-        );
-        const countries = addressComponents.filter(c => c.types.includes('country'));
+        const { city, countryCode } = parseLocationData(result);
 
         this.setState({
           address,
-          city: (localities[0] || addressComponents[0]).long_name,
-          countryCode: countries[0].short_name,
+          city,
+          countryCode,
         });
         return getLatLng(result);
       })

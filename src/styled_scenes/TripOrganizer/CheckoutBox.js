@@ -195,16 +195,7 @@ export default class CheckoutBox extends React.Component {
   }
 
   render() {
-    const {
-      startDate,
-      adults,
-      children,
-      infants,
-      bookError,
-      shareError,
-      numberOfDays,
-      days,
-    } = this.props;
+    const { startDate, adults, children, infants, bookError, numberOfDays, days } = this.props;
     const formattedStartDate = startDate ? startDate.format('MM/DD/YY') : 'Select date';
 
     const addDay = days[days.length - 1].data.some(
@@ -280,23 +271,19 @@ export default class CheckoutBox extends React.Component {
             </ButtonWrap>,
             bookError,
           )}
-          {this.renderButtonWithPopup(
-            <ButtonWrap>
-              <Button
-                disableClick={Boolean(shareError)}
-                size="medium"
-                type="button"
-                theme="white"
-                onClick={this.share}
-                width="100%"
-                align="center"
-                bold
-              >
-                Share and earn rewards
-              </Button>
-            </ButtonWrap>,
-            shareError,
-          )}
+          <ButtonWrap>
+            <Button
+              size="medium"
+              type="button"
+              theme="white"
+              onClick={this.share}
+              width="100%"
+              align="center"
+              bold
+            >
+              Share and earn rewards
+            </Button>
+          </ButtonWrap>
           <ButtonWrap>
             <Button
               disabled={Boolean(this.props.isSaving)}

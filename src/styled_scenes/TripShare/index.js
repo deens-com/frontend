@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { media } from 'libs/styled';
+//import axios from 'libs/axios';
 import { Loader, Dimmer } from 'semantic-ui-react';
 import * as tripUtils from 'libs/trips';
 import history from 'main/history';
@@ -10,7 +11,12 @@ import TopBar from 'shared_components/TopBar';
 import Input from 'shared_components/StyledInput';
 import I18nText from 'shared_components/I18nText';
 import Button from 'shared_components/Button';
-import { generateTripSlug } from 'libs/Utils';
+import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
+import { generateTripSlug, getHeroImage } from 'libs/Utils';
+import { Message } from 'semantic-ui-react';
+
+import axiosOriginal from 'axios';
+import { serverBaseURL } from 'libs/config';
 
 const PageContent = styled.div`
   max-width: 825px;
@@ -62,6 +68,26 @@ const Publish = styled.div`
   margin-top: 100px;
 `;
 
+const CoverImage = styled.div`
+  border-radius: 5px;
+  height: 162px;
+  background-image: linear-gradient(0, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)),
+    url(${props => props.url});
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+  > input[type='file'] {
+    display: none;
+  }
+  > div {
+    flex-shrink: 1;
+  }
+`;
+
 const Required = () => <span style={{ color: 'red' }}>*</span>;
 
 export default class Share extends React.Component {
@@ -75,19 +101,96 @@ export default class Share extends React.Component {
       errors: {
         description: null,
         title: null,
+        media: null,
+        location: null,
       },
+      uploadingPicture: false,
+      media: null,
+      location: null,
     };
   }
+
+  static getDerivedStateFromProps(props, state) {
+    if (props.trip && !state.location && !state.media) {
+      return {
+        location: props.trip.location,
+        media: props.trip.media.length > 0 ? props.trip.media : state.media,
+      };
+    }
+  }
+
+  onFileSelect = async e => {
+    const file = e.currentTarget.files[0];
+    if (!file) return;
+    if (file.size > 3000000) {
+      this.setState(prev => ({
+        errors: {
+          ...prev.errors,
+          media: 'File size should not exceed 3 Mb',
+        },
+      }));
+      return;
+    }
+    this.setState({
+      uploadingPicture: true,
+    });
+    const formData = new FormData();
+    formData.append('profilePicture', file);
+    const uploadedFile = await axiosOriginal.post(`${serverBaseURL}/media`, formData, {});
+    //const uploadedFile = await axios.post('/media', formData, {});
+
+    const url = uploadedFile.data.url;
+    this.setState(prev => ({
+      errors: {
+        ...prev.errors,
+        media: null,
+      },
+      uploadingPicture: false,
+      media: [
+        {
+          type: 'image',
+          hero: true,
+          names: {
+            'en-us': 'Trip image',
+          },
+          files: {
+            thumbnail: {
+              url,
+              width: 215,
+              height: 140,
+            },
+            small: {
+              url,
+              width: 430,
+              height: 280,
+            },
+            large: {
+              url,
+              width: 860,
+              height: 560,
+            },
+            hero: {
+              url,
+              width: 860,
+              height: 560,
+            },
+          },
+        },
+      ],
+    }));
+  };
 
   handlePublish = () => {
     const description = this.descInput.current.value;
     const title = this.nameInput.current.value;
 
-    if (!description || !title) {
+    if (!description || !title || !this.state.media || !this.state.location) {
       this.setState({
         errors: {
-          title: !title,
-          description: !description,
+          title: !title && 'You need to add a title',
+          description: !description && 'You need to add a description',
+          media: !this.state.media && 'You need to add an image to share your trip',
+          location: !this.state.location && 'You need to add an image to share your trip',
         },
       });
       return;
@@ -101,6 +204,8 @@ export default class Share extends React.Component {
         description: {
           'en-us': description,
         },
+        location: this.state.location,
+        media: this.state.media,
         privacy: 'public',
       };
 
@@ -108,6 +213,118 @@ export default class Share extends React.Component {
 
       history.push(`/trips/${generateTripSlug(this.props.trip)}`);
     });
+  };
+
+  handleLocationChange = async (address, placeId) => {
+    try {
+      const location = await tripUtils.getLocationBasedOnPlaceId(placeId);
+
+      this.setState(prev => ({
+        location,
+        errors: {
+          ...prev.errors,
+          location: null,
+        },
+      }));
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  isThereAnyError = () => {
+    return Boolean(
+      this.state.errors.media ||
+        this.state.errors.title ||
+        this.state.errors.location ||
+        this.state.errors.description,
+    );
+  };
+
+  renderContent = () => {
+    const { trip } = this.props;
+    const hero = getHeroImage({ media: this.state.media });
+    let img;
+
+    if (hero && hero.files) {
+      img = hero.files.hero ? hero.files.hero.url : trip.media.files.large.url;
+    }
+
+    const address = tripUtils.getFormattedAddress(this.state.location);
+
+    return (
+      <>
+        {this.isThereAnyError() && (
+          <Message negative>
+            <Message.Header>An error occured</Message.Header>
+            <p>{this.state.errors.media}</p>
+            <p>{this.state.errors.title}</p>
+            <p>{this.state.errors.location}</p>
+            <p>{this.state.errors.description}</p>
+          </Message>
+        )}
+
+        <CoverImage url={img}>
+          {this.state.uploadingPicture ? (
+            <Loader active inline="centered" />
+          ) : (
+            <React.Fragment>
+              <Button
+                element={({ children }) => <label htmlFor="cover-image">{children}</label>}
+                onClick={e => {}}
+                theme="allWhite"
+                iconBefore="camera"
+              >
+                Change Cover
+              </Button>
+              <input
+                id="cover-image"
+                accept=".jpg, .jpeg, .png"
+                type="file"
+                onChange={this.onFileSelect}
+              />
+            </React.Fragment>
+          )}
+        </CoverImage>
+        <Form>
+          <FormInput>
+            <Label>
+              Review Trip Name <Required />
+            </Label>
+            <Input
+              error={this.state.errors.title}
+              innerRef={this.nameInput}
+              defaultValue={I18nText.translate(trip.title)}
+            />
+          </FormInput>
+          <FormInput>
+            <Label>
+              Location <Required />
+            </Label>
+            <SemanticLocationControl
+              defaultAddress={address}
+              onChange={this.handleLocationChange}
+              useStyledInput
+            />
+          </FormInput>
+          <FormInput>
+            <Label>
+              Add a Description <Required />
+            </Label>
+            <Input error={this.state.errors.description}>
+              <TextArea
+                ref={this.descInput}
+                defaultValue={trip.description && I18nText.translate(trip.description)}
+              />
+            </Input>
+          </FormInput>
+          <Publish>
+            <Button onClick={this.handlePublish} theme="fillLightGreen">
+              Publish Trip
+            </Button>
+          </Publish>
+        </Form>
+      </>
+    );
   };
 
   render() {
@@ -124,38 +341,7 @@ export default class Share extends React.Component {
           </BackButton>
           <Content>
             <Title>Add additional information to your trip</Title>
-            {trip ? (
-              <Form>
-                <FormInput>
-                  <Label>
-                    Review Trip Name <Required />
-                  </Label>
-                  <Input
-                    error={this.state.errors.title}
-                    innerRef={this.nameInput}
-                    defaultValue={I18nText.translate(trip.title)}
-                  />
-                </FormInput>
-                <FormInput>
-                  <Label>
-                    Add a Description <Required />
-                  </Label>
-                  <Input error={this.state.errors.description}>
-                    <TextArea
-                      ref={this.descInput}
-                      defaultValue={trip.description && I18nText.translate(trip.description)}
-                    />
-                  </Input>
-                </FormInput>
-                <Publish>
-                  <Button onClick={this.handlePublish} theme="fillLightGreen">
-                    Publish Trip
-                  </Button>
-                </Publish>
-              </Form>
-            ) : (
-              <Loader active />
-            )}
+            {trip ? this.renderContent() : <Loader active />}
           </Content>
         </PageContent>
       </Page>

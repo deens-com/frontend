@@ -86,6 +86,7 @@ export default class Options extends Component {
           content: renderOption(option, props.basePrice),
           text: renderOption(option, props.basePrice),
           price: getPriceFromServiceOption(props.basePrice, option.price),
+          cancellable: option.cancellable,
         })),
         groupName: props.options.groupName,
       },
@@ -93,8 +94,9 @@ export default class Options extends Component {
   }
 
   onDropdownChange = (event, data) => {
-    const price = data.options.find(option => option.value === data.value).price;
-    this.props.onChange(this.props.day, this.props.instanceId, data.value, price);
+    const option = data.options.find(option => option.value === data.value);
+    const { price, cancellable } = option;
+    this.props.onChange(this.props.day, this.props.instanceId, data.value, price, cancellable);
   };
 
   render() {
