@@ -31,7 +31,7 @@ export const addServiceToTrip = (tripServices, service, day) => {
 export const getLocationBasedOnPlaceId = async placeId => {
   const results = await geocodeByPlaceId(placeId);
   const currentResult = results[0];
-  const { city, state, countryCode, country } = parseLocationData(currentResult);
+  const { city, state, countryCode } = parseLocationData(currentResult);
 
   const { lat: latFn, lng: lngFn } = currentResult.geometry.location;
 
@@ -39,7 +39,6 @@ export const getLocationBasedOnPlaceId = async placeId => {
     city,
     state,
     countryCode,
-    country,
     geo: {
       type: 'Point',
       coordinates: [lngFn(), latFn()],
@@ -65,8 +64,8 @@ export const getFormattedAddress = location => {
     if (location.state) {
       address = addToFormattedAddress(address, location.state);
     }
-    if (location.countryCode || location.country) {
-      address = addToFormattedAddress(address, location.country || location.countryCode);
+    if (location.countryCode) {
+      address = addToFormattedAddress(address, location.countryCode);
     }
   }
 
