@@ -120,8 +120,18 @@ class ServiceForm extends Component {
 
   onDropDownChange = (e, { name, value }) => {
     const { setFieldValue, setFieldTouched } = this.props;
+    setFieldValue(name, value, false);
+    setFieldTouched(name, true);
+  };
+
+  onMultiDropDownChange = (e, { name, value }) => {
+    const { setFieldValue } = this.props;
     setFieldValue(name, value);
-    setFieldTouched(name, true, false);
+  };
+
+  onBlur = (e, { name, value }) => {
+    const { setFieldTouched } = this.props;
+    setFieldTouched(name, true);
   };
 
   onLocationKeyUp = () => {
@@ -545,7 +555,8 @@ class ServiceForm extends Component {
                     multiple
                     value={values.availableDays}
                     options={weekDays}
-                    onChange={this.onDropDownChange}
+                    onChange={this.onMultiDropDownChange}
+                    onBlur={this.onBlur}
                     error={!!(touched.availableDays && errors.availableDays)}
                   />
                   {touched.availableDays &&
@@ -781,8 +792,8 @@ function validate(values) {
       errors.refundDuration = 'Refund duration must be at least 1';
     }
   } else {
-    errors.refundDuration = null;
-    errors.refundAmount = null;
+    delete errors.refundDuration;
+    delete errors.refundAmount;
   }
 
   return errors;
