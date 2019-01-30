@@ -14,12 +14,15 @@ export const parseLocationData = data => {
     res.country = countries[0].long_name;
     res.countryCode = countries[0].short_name;
   }
+
   if (localities[0] && localities[0].long_name) {
     res.city = localities[0].long_name;
   }
+
   if (postalCodes[0] && postalCodes[0].long_name) {
     res.postalCode = postalCodes[0].long_name;
   }
+
   if (state) {
     res.state = state;
   }

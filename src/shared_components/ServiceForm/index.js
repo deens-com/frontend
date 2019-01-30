@@ -6,6 +6,7 @@ import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete';
 import styled from 'styled-components';
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
 import HelpTooltip from 'shared_components/HelpTooltip';
+import { parseLocationData } from 'libs/location';
 import history from './../../main/history';
 import { checkRequiredFields } from 'libs/Utils';
 import i18n from './../../libs/i18n';
@@ -150,28 +151,14 @@ class ServiceForm extends Component {
         setFieldValue('location', currentResult);
         const latlngPromise = getLatLng(currentResult);
         setFieldValue('formattedAddress', currentResult.formatted_address);
-        const { address_components: addressComponents } = currentResult;
-        const localities = addressComponents.filter(
-          c => c.types.includes('locality') || c.types.includes('postal_town'),
-        );
-        const countries = addressComponents.filter(c => c.types.includes('country'));
-        const postalCodes = addressComponents.filter(c => c.types.includes('postal_code'));
-        const state = addressComponents.filter(c =>
-          c.types.includes('"administrative_area_level_1"'),
-        )[0];
-        if (countries[0] && countries[0].long_name) {
-          setFieldValue('country', countries[0].long_name);
-          setFieldValue('countryCode', countries[0].short_name);
-        }
-        if (localities[0] && localities[0].long_name) {
-          setFieldValue('city', localities[0].long_name);
-        }
-        if (postalCodes[0] && postalCodes[0].long_name) {
-          setFieldValue('postalCode', postalCodes[0].long_name);
-        }
-        if (state) {
-          setFieldValue('state', state);
-        }
+
+        const { country, countryCode, city, postalCode, state } = parseLocationData(currentResult);
+
+        setFieldValue('country', country);
+        setFieldValue('countryCode', countryCode);
+        setFieldValue('city', city);
+        setFieldValue('postalCode', postalCode);
+        setFieldValue('state', state);
         return latlngPromise;
       })
       .catch(err => {
@@ -319,6 +306,7 @@ class ServiceForm extends Component {
               </Icon>
             </LabelWithIcon>
             <SemanticLocationControl
+              onlyCities
               defaultAddress={values.formattedAddress}
               onKeyUp={this.onLocationKeyUp}
               onChange={this.onLocationSelect}
