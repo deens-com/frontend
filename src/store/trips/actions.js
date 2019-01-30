@@ -60,7 +60,7 @@ const fetchTripStart = () => {
 const fetchTripError = error => {
   return {
     type: types.FETCH_TRIP_ERROR,
-    payload: error.response.data,
+    payload: error.response ? error.response.data : error,
   };
 };
 

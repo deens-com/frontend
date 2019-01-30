@@ -168,6 +168,7 @@ const createService = (values, importedFromLink) => {
                 }),
                 {},
               ),
+              cancellable: values.refundType !== 'none',
               ...(values.refundType !== 'none'
                 ? {
                     cancellationPolicies: [
