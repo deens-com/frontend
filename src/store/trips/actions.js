@@ -1,5 +1,4 @@
 import axios from 'libs/axios';
-import fetchHelpers from 'libs/fetch_helpers';
 import { serverBaseURL } from 'libs/config';
 import { parseTags } from 'libs/fetch_helpers';
 import history from './../../main/history';
@@ -46,7 +45,6 @@ const fetchUserTrips = (serviceId, slotsNb) => async dispatch => {
     const myTrips = await axios.get(`/trips`);
     dispatch(fetchUserTripsSuccess(myTrips.data.trips));
   } catch (e) {
-    console.log('je', e);
     dispatch(fetchUserTripsError(e));
   }
 };
@@ -184,8 +182,10 @@ const fetchTrip = id => async dispatch => {
       console.error(e);
     }
   } catch (e) {
-    console.log(e);
     dispatch(fetchTripError(e));
+    if (e && !e.response) {
+      throw e;
+    }
   }
 };
 
