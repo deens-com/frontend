@@ -11,7 +11,7 @@ import { Menu, Card, Button, Input } from 'semantic-ui-react';
 import ImgurAvatar from './../../../assets/no-avatar.png';
 import PlsIcon from 'assets/ic_pls.png';
 import NumberFormat from 'react-number-format';
-import { websiteUrl } from 'libs/config';
+import { websiteUrl, icoReady } from 'libs/config';
 
 const AttributeTitle = styled.h6`
   font-size: 9px;
@@ -194,12 +194,16 @@ class UserBasicInfo extends Component {
             </Grid.Row>
           </Grid>
 
-          <br />
-          <BuyTokens>
-            <CustomButton theme="fillLightGreen" fontSize={12} type="link" href="/token-sale">
-              Buy tokens
-            </CustomButton>
-          </BuyTokens>
+          {icoReady && (
+            <>
+              <br />
+              <BuyTokens>
+                <CustomButton theme="fillLightGreen" fontSize={12} type="link" href="/token-sale">
+                  Buy tokens
+                </CustomButton>
+              </BuyTokens>
+            </>
+          )}
           <br />
           <Menu secondary fluid vertical style={{ paddingLeft: '10px' }}>
             <Link to="/account/trips/all" onClick={this.scrollDownMobileOnly}>
