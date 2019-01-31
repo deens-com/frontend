@@ -17,7 +17,7 @@ import TripCart from '../../shared_components/Cards/Trip';
 import ImgSlider from './components/ImgSlider';
 import MapMaker from '../../shared_components/MapMarker';
 import ListsHandler from 'shared_components/ListsHandler';
-import Reviews from './components/Reviews';
+import Reviews from 'shared_components/Reviews';
 
 // ACTIONS/CONFIG
 import { media, sizes } from '../../libs/styled';
