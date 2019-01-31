@@ -149,7 +149,21 @@ function formatLocation(location) {
 }
 
 const duration = minutes => {
-  return moment.duration(minutes || 0, 'minutes').humanize();
+  const humanizedDuration = moment.duration(minutes || 0, 'minutes').humanize();
+  let startsWithLetter = '';
+  if (humanizedDuration.startsWith('a ')) {
+    startsWithLetter = 'a';
+  }
+
+  if (humanizedDuration.startsWith('an ')) {
+    startsWithLetter = 'an';
+  }
+
+  if (startsWithLetter) {
+    return humanizedDuration.replace(startsWithLetter, '1');
+  }
+
+  return humanizedDuration;
 };
 
 class TripCard extends Component {
