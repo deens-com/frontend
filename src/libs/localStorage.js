@@ -2,14 +2,31 @@ import { env } from 'libs/config';
 
 const tripKey = `please-${env}-anonymous-trip`;
 
+function removeUselessFields(trip) {
+  delete trip._id;
+  delete trip.owner;
+  delete trip.bookingStatus;
+  delete trip.privacy;
+  delete trip.status;
+  delete trip.reviewCount;
+  delete trip.ratings;
+  delete trip.forkedBookingCounts;
+}
+
 export function saveTrip(trip) {
   const tripToSave = {
-    ...trip,
+    adultCount: trip.adultCount,
+    childrenCount: trip.childrenCount,
+    infantCount: trip.infantCount,
+    peopleCount: trip.peopleCount,
+    media: trip.media,
+    otherAttributes: trip.otherAttributes,
+    services: trip.services,
+    title: trip.title,
+    description: trip.description,
+    location: trip.location,
+    duration: trip.duration,
   };
-
-  if (tripToSave._id) {
-    delete tripToSave._id;
-  }
 
   localStorage.setItem(tripKey, JSON.stringify(tripToSave));
 }
@@ -27,9 +44,8 @@ export function loadTrip(withFullServices = true) {
   const localStorageTrip = localStorage.getItem(tripKey);
   if (localStorageTrip) {
     const trip = JSON.parse(localStorageTrip);
-    if (trip._id) {
-      delete trip._id;
-    }
+    removeUselessFields(trip);
+
     return {
       ...trip,
       services: withFullServices
