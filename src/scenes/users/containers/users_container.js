@@ -13,12 +13,17 @@ export default class UsersContainer extends Component {
   }
 
   fetchUser = async username => {
-    const response = await axios.get(`${serverBaseURL}/users/username/${username}`);
+    try {
+      const response = await axios.get(`${serverBaseURL}/users/username/${username}`);
 
-    this.setState({
-      user: response.data,
-      responseStatus: response.status,
-    });
+      this.setState({
+        user: response.data,
+      });
+    } catch (e) {
+      this.setState({
+        responseStatus: e.response ? e.response.status : 200,
+      });
+    }
   };
 
   render() {
