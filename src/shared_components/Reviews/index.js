@@ -42,6 +42,15 @@ const UserAndReview = styled.div`
   }
 `;
 
+const Service = styled.span`
+  a {
+    color: #4fb798;
+    &:hover {
+      color: #38d39f;
+    }
+  }
+`;
+
 const RatingWrapper = styled.div`
   flex: 1;
   display: flex;
@@ -71,10 +80,6 @@ const Empty = styled.div`
 `;
 
 class ServiceReviews extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   static propTypes = {
     reviews: PropTypes.arrayOf(
       PropTypes.shape({
@@ -89,6 +94,7 @@ class ServiceReviews extends React.Component {
     ).isRequired,
     fetchMore: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
+    showServiceInsteadOfUser: PropTypes.bool,
   };
 
   fetchMore = () => {
@@ -107,6 +113,14 @@ class ServiceReviews extends React.Component {
       <Link to={`/users/${review.user.name}`}>{user}</Link>
     ) : (
       user
+    );
+  }
+
+  renderService(review) {
+    return (
+      <Service>
+        <Link to={`/services/_${review.service}`}>In a service</Link>
+      </Service>
     );
   }
 
@@ -144,7 +158,9 @@ class ServiceReviews extends React.Component {
                 <span>Rating:</span>
                 <Rating rating={review.rating} marginBottom="2px" />
               </RatingWrapper>
-              {this.renderUser(review)}
+              {this.props.showServiceInsteadOfUser
+                ? this.renderService(review)
+                : this.renderUser(review)}
             </UserAndReview>
           </Review>
         ))}

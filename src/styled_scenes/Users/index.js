@@ -6,19 +6,17 @@ import UserBasicInfo from './components/UserBasicInfo';
 import StatusAndBio from './components/StatusAndBio';
 import UsersTripsServices from './components/UsersTripsServices';
 import { SectionWrap } from '../../shared_components/layout/Page';
-import Reviews from './components/Reviews';
+import Reviews from 'shared_components/Reviews';
+import ListsHandler from 'shared_components/ListsHandler';
+import api from 'libs/apiClient';
 
 const Wrapper = styled.div`
   margin-top: 24px;
 `;
 
-const UserScene = ({
-  user = {},
-  tripsBooked = [],
-  tripsAndServicesOffered = [],
-  givenReviews = [],
-  receivedReviews = [],
-}) => {
+const Title = styled.h1``;
+
+const UserScene = ({ user = {}, tripsBooked = [], tripsAndServicesOffered = [] }) => {
   const userName = user.username || 'User';
   return (
     <Wrapper>
@@ -38,16 +36,27 @@ const UserScene = ({
           {tripsAndServicesOffered.length > 0 && (
             <UsersTripsServices items={tripsAndServicesOffered} title="My trips and services" />
           )}
-          <Reviews
-            title="Reviews I have given"
-            reviews={givenReviews}
-            emptyText={`${userName} has not given any reviews yet`}
-          />
-          <Reviews
-            title="Reviews I have received"
-            reviews={receivedReviews}
-            emptyText={`${userName} has not received any reviews yet`}
-          />
+          <Title>Reviews given by the user</Title>
+          {user &&
+            user.username && (
+              <ListsHandler
+                itemKey="reviews"
+                apiFunction={api.users.username.reviews.get}
+                urlParams={{
+                  username: user.username,
+                }}
+                /*showLoader={false}*/
+                render={({ items, fetchMore, totalCount, isLoading }) => (
+                  <Reviews
+                    reviews={items}
+                    fetchMore={fetchMore}
+                    totalCount={totalCount}
+                    isLoading={isLoading}
+                    showServiceInsteadOfUser
+                  />
+                )}
+              />
+            )}
         </Grid.Column>
       </Grid>
     </Wrapper>

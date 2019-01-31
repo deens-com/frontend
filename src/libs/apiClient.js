@@ -28,5 +28,10 @@ export default {
     kycToken: {
       get: get('/users/kyc-token'),
     },
+    username: {
+      reviews: {
+        get: (params, { username }) => get(`/users/username/${username}/reviews`)(params),
+      },
+    },
   },
 };
