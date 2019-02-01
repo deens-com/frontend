@@ -651,56 +651,55 @@ class ServiceForm extends Component {
                   {touched.website && errors.website && <ErrorMsg>{errors.website}</ErrorMsg>}
                 </Form.Field>
               </Form.Group>
+
+              {/* Cancellation policy */}
+              <Form.Group widths="equal">
+                <Form.Field>
+                  <label>Cancellation policy</label>
+                  <Dropdown
+                    name="refundType"
+                    placeholder="Select refund type"
+                    selection
+                    value={values.refundType}
+                    options={refundTypes}
+                    onChange={this.onDropDownChange}
+                  />
+                </Form.Field>
+                {values.refundType !== 'none' && (
+                  <React.Fragment>
+                    <Form.Field required>
+                      <label>{`Cancellation fee ${
+                        values.refundType === 'percent' ? '(%)' : 'amount'
+                      }`}</label>
+                      <Form.Input
+                        name="refundAmount"
+                        value={values.refundAmount}
+                        error={!!(touched.refundType && errors.refundAmount)}
+                        placeholder={`Cancellation fee ${
+                          values.refundType === 'percent' ? '(%)' : 'amount'
+                        }`}
+                        {...defaultProps}
+                      />
+                      {touched.refundType &&
+                        errors.refundAmount && <ErrorMsg>{errors.refundAmount}</ErrorMsg>}
+                    </Form.Field>
+                    <Form.Field required>
+                      <label>Duration (in days)</label>
+                      <Form.Input
+                        name="refundDuration"
+                        value={values.refundDuration}
+                        error={!!(touched.refundType && errors.refundDuration)}
+                        placeholder="Duration"
+                        {...defaultProps}
+                      />
+                      {touched.refundType &&
+                        errors.refundDuration && <ErrorMsg>{errors.refundDuration}</ErrorMsg>}
+                    </Form.Field>
+                  </React.Fragment>
+                )}
+              </Form.Group>
             </React.Fragment>
           )}
-
-          {/* Cancellation policy */}
-          <Form.Group widths="equal">
-            <Form.Field>
-              <label>Cancellation policy</label>
-              <Dropdown
-                name="refundType"
-                placeholder="Select refund type"
-                selection
-                value={values.refundType}
-                options={refundTypes}
-                onChange={this.onDropDownChange}
-              />
-            </Form.Field>
-            {values.refundType !== 'none' && (
-              <React.Fragment>
-                <Form.Field required>
-                  <label>{`Cancellation fee ${
-                    values.refundType === 'percent' ? '(%)' : 'amount'
-                  }`}</label>
-                  <Form.Input
-                    name="refundAmount"
-                    value={values.refundAmount}
-                    error={!!(touched.refundType && errors.refundAmount)}
-                    placeholder={`Cancellation fee ${
-                      values.refundType === 'percent' ? '(%)' : 'amount'
-                    }`}
-                    {...defaultProps}
-                  />
-                  {touched.refundType &&
-                    errors.refundAmount && <ErrorMsg>{errors.refundAmount}</ErrorMsg>}
-                </Form.Field>
-                <Form.Field required>
-                  <label>Duration (in days)</label>
-                  <Form.Input
-                    name="refundDuration"
-                    value={values.refundDuration}
-                    error={!!(touched.refundType && errors.refundDuration)}
-                    placeholder="Duration"
-                    {...defaultProps}
-                  />
-                  {touched.refundType &&
-                    errors.refundDuration && <ErrorMsg>{errors.refundDuration}</ErrorMsg>}
-                </Form.Field>
-              </React.Fragment>
-            )}
-          </Form.Group>
-
           <Form.Button color="green" disabled={submitInFlight || this.state.uploadingImages}>
             {this.renderSubmitText()}
           </Form.Button>

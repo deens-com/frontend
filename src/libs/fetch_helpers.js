@@ -145,6 +145,7 @@ const createService = (values, importedFromLink) => {
         priceCapacity: 1,
         minCapacity: 1,
         maxCapacity: 2,
+        cancellable: false,
       },
     ],
     ...(!importedFromLink
@@ -384,7 +385,7 @@ const createServiceFromUrl = data => {
     media: data.images.map((image, i) => ({
       type: 'image',
       hero: i === 0,
-      files: generateFiles(image.url),
+      files: generateFiles(image.url || image),
       names: {
         [i18nLocale]: `Image ${i}`,
       },
