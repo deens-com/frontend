@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 import Rating from 'shared_components/Rating';
 import Button from 'shared_components/Button';
+import { generateServiceSlug } from 'libs/Utils';
 
 import AnonymousAvatar from 'assets/no-avatar.png';
 
@@ -119,7 +120,9 @@ class ServiceReviews extends React.Component {
   renderService(review) {
     return (
       <Service>
-        <Link to={`/services/_${review.service}`}>In a service</Link>
+        <Link to={`/services/${generateServiceSlug(review.service)}`}>
+          At ${review.service.title}
+        </Link>
       </Service>
     );
   }
