@@ -71,3 +71,24 @@ export const getFormattedAddress = location => {
 
   return address;
 };
+
+export const minutesToHoursOrDays = minutes => {
+  if (minutes > 5760) {
+    return {
+      length: minutes / 60 / 24,
+      unit: 'days',
+    };
+  }
+  return {
+    length: minutes / 60,
+    unit: 'hours',
+  };
+};
+
+export const calculateCancellationCharge = (policy, price) => {
+  if (policy.refundType === 'percent') {
+    return price - ((price * policy.refundAmount) / 100).toFixed(2);
+  }
+
+  return (price - policy.refundAmount).toFixed(2);
+};

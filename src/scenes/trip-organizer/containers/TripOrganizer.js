@@ -6,7 +6,7 @@ import actions from 'store/trips/actions';
 import searchActions from 'store/search/actions';
 import { updatePath } from 'store/search/helpers';
 import moment from 'moment';
-import TripOrganizer from '../../../styled_scenes/TripOrganizer';
+import TripOrganizer from 'styled_scenes/TripOrganizer';
 import history from 'main/history';
 import { loadTrip, removeTrip } from 'libs/localStorage';
 import axios from 'libs/axios';
