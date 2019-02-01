@@ -3,6 +3,8 @@ import { env } from 'libs/config';
 const tripKey = `please-${env}-anonymous-trip`;
 
 function removeUselessFields(trip) {
+  // this could be removed in the future
+  // it's for already saved trips to not break the app
   delete trip._id;
   delete trip.owner;
   delete trip.bookingStatus;
@@ -11,6 +13,7 @@ function removeUselessFields(trip) {
   delete trip.reviewCount;
   delete trip.ratings;
   delete trip.forkedBookingCounts;
+  delete trip.tags;
 }
 
 export function saveTrip(trip) {
