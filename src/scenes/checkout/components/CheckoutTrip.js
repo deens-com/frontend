@@ -2,9 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import moment from 'moment';
+import { Popup } from 'semantic-ui-react';
 import mapServicesToDays from '../../../styled_scenes/Trip/mapServicesToDays';
 import I18nText from 'shared_components/I18nText';
 import { MapMarker } from 'shared_components/icons';
+import { minutesToHoursOrDays, calculateCancellationCharge } from 'libs/trips';
 import { getPriceFromServiceOption, getPeopleCount } from 'libs/Utils';
 import { getCategory } from 'libs/categories';
 import Category from 'shared_components/Category';
@@ -79,6 +81,27 @@ const ButtonWrapper = styled.div`
   flex-grow: 0;
 `;
 
+const CancellationPolicy = styled.div`
+  > div {
+    margin-bottom: 10px;
+  }
+`;
+
+const CancellationPolicyTrigger = styled.div`
+  color: #38d39f;
+  font-size: 12px;
+  cursor: pointer;
+`;
+
+const CancellationHighlight = styled.span`
+  color: #38d39f;
+  font-weight: bolder;
+`;
+
+const Policy = styled.div`
+  margin-bottom: 15px;
+`;
+
 function getPrice(trip, service) {
   return service.selectedOption
     ? getPriceFromServiceOption(
@@ -99,6 +122,33 @@ export class CheckoutTrip extends React.Component {
 
   static defaultProps = {
     showTitle: true,
+  };
+
+  renderCancellationPolicy = (policies, price) => {
+    if (!policies || policies.length === 0) {
+      return <div>Non-refundable</div>;
+    }
+
+    return (
+      <React.Fragment>
+        {policies.map(policy => {
+          const time = minutesToHoursOrDays(policy.duration);
+          return (
+            <Policy>
+              If you cancel{' '}
+              <CancellationHighlight>
+                {time.length} {time.unit}
+              </CancellationHighlight>{' '}
+              before check-in, you will be charged{' '}
+              <CancellationHighlight>
+                ${calculateCancellationCharge(policy, price)}
+              </CancellationHighlight>{' '}
+              of cancellation fee, to be deduced from refund amount.
+            </Policy>
+          );
+        })}
+      </React.Fragment>
+    );
   };
 
   renderPrice = (trip, day, service) => {
@@ -172,6 +222,35 @@ export class CheckoutTrip extends React.Component {
                       </Button>
                     </ButtonWrapper>
                   )}
+                  <Popup
+                    trigger={
+                      <CancellationPolicyTrigger>Cancellation policy</CancellationPolicyTrigger>
+                    }
+                    content={
+                      <CancellationPolicy>
+                        {service.selectedOption &&
+                        service.selectedOption.cancellationPolicies &&
+                        service.selectedOption.cancellationPolicies.length > 0
+                          ? this.renderCancellationPolicy(
+                              service.selectedOption.cancellationPolicies,
+                              getPriceFromServiceOption(
+                                service.basePrice,
+                                service.selectedOption.price,
+                                this.props.numberOfPeople,
+                              ),
+                            )
+                          : this.renderCancellationPolicy(
+                              service.periods[0].cancellationPolicies,
+                              getPriceFromServiceOption(
+                                service.basePrice,
+                                null,
+                                this.props.numberOfPeople,
+                              ),
+                            )}
+                      </CancellationPolicy>
+                    }
+                    position="top center"
+                  />
                 </SecondLine>
                 {this.renderPrice(trip, day, service)}
               </Service>

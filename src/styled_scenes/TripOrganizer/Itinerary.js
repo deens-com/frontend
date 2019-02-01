@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { Loader, Modal, TextArea, Popup } from 'semantic-ui-react';
 import { getCategory } from 'libs/categories';
 import { media } from 'libs/styled';
+import { minutesToHoursOrDays, calculateCancellationCharge } from 'libs/trips';
 import { getHeroImage, generateServiceSlug, getPriceFromServiceOption } from 'libs/Utils';
 import I18nText from 'shared_components/I18nText';
 import Category from 'shared_components/Category';
@@ -317,27 +318,6 @@ export default class Itinerary extends Component {
     );
   };
 
-  minutesToHoursOrDays = minutes => {
-    if (minutes > 5760) {
-      return {
-        length: minutes / 60 / 24,
-        unit: 'days',
-      };
-    }
-    return {
-      length: minutes / 60,
-      unit: 'hours',
-    };
-  };
-
-  calculateCancellationCharge(policy, price) {
-    if (policy.refundType === 'percent') {
-      return price - ((price * policy.refundAmount) / 100).toFixed(2);
-    }
-
-    return (price - policy.refundAmount).toFixed(2);
-  }
-
   renderCancellationPolicy = (policies, price) => {
     if (!policies || policies.length === 0) {
       return <div>Non-refundable</div>;
@@ -346,7 +326,7 @@ export default class Itinerary extends Component {
     return (
       <React.Fragment>
         {policies.map(policy => {
-          const time = this.minutesToHoursOrDays(policy.duration);
+          const time = minutesToHoursOrDays(policy.duration);
           return (
             <Policy>
               If you cancel{' '}
@@ -355,7 +335,7 @@ export default class Itinerary extends Component {
               </CancellationHighlight>{' '}
               before check-in, you will be charged{' '}
               <CancellationHighlight>
-                ${this.calculateCancellationCharge(policy, price)}
+                ${calculateCancellationCharge(policy, price)}
               </CancellationHighlight>{' '}
               of cancellation fee, to be deduced from refund amount.
             </Policy>
