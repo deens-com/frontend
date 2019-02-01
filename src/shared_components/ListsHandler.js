@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import pluralize from 'pluralize';
 import { Loader } from 'semantic-ui-react';
 
 import ErrorHandler from 'shared_components/ErrorHandler';
@@ -26,6 +27,7 @@ export default class ListsHandler extends React.Component {
     urlParams: PropTypes.object,
     replacePreviousItemsOnFetchMore: PropTypes.bool,
     showLoader: PropTypes.bool,
+    haveIncludes: PropTypes.array,
   };
 
   static defaultProps = {
@@ -33,6 +35,7 @@ export default class ListsHandler extends React.Component {
     urlParams: {},
     replacePreviousItemsOnFetchMore: false,
     showLoader: true,
+    haveIncludes: null,
   };
 
   componentDidMount() {
@@ -40,11 +43,13 @@ export default class ListsHandler extends React.Component {
   }
 
   makeRequest = async (page = 1, limit = defaultLimit) => {
+    const { haveIncludes } = this.props;
     const response = await this.props.apiFunction(
       {
         page,
         limit,
         ...this.props.params,
+        ...(haveIncludes ? { include: haveIncludes } : {}),
       },
       this.props.urlParams,
     );
@@ -71,10 +76,29 @@ export default class ListsHandler extends React.Component {
       async () => {
         try {
           const data = await this.makeRequest(this.state.page);
+          let items = data[this.props.itemKey];
+
+          if (this.props.haveIncludes) {
+            // We should map the includes into the items
+            items = items.map(item => {
+              const includes = this.props.haveIncludes.reduce((prev, includeKey) => {
+                return {
+                  ...prev,
+                  [includeKey]: (data[includeKey] || data[pluralize(includeKey)]).find(
+                    include => include._id === item[includeKey],
+                  ),
+                };
+              }, {});
+              return {
+                ...item,
+                ...includes,
+              };
+            });
+          }
 
           this.setState(prevState => ({
             isLoading: false,
-            items: [...prevState.items, ...data[this.props.itemKey]],
+            items: [...prevState.items, ...items],
             totalCount: data.count,
           }));
         } catch (e) {

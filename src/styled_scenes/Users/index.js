@@ -45,6 +45,7 @@ const UserScene = ({ user = {}, tripsBooked = [], tripsAndServicesOffered = [] }
                 urlParams={{
                   username: user.username,
                 }}
+                haveIncludes={['service']}
                 /*showLoader={false}*/
                 render={({ items, fetchMore, totalCount, isLoading }) => (
                   <Reviews

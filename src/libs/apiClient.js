@@ -1,6 +1,20 @@
+import qs from 'qs';
 import axios from 'libs/axios';
 
-const get = url => params => axios.get(url, { params });
+const paramsSerializer = params => {
+  const searchParams = new URLSearchParams();
+  for (const key of Object.keys(params)) {
+    const param = params[key];
+    if (Array.isArray(param)) {
+      searchParams.append(key, param.join(','));
+    } else {
+      searchParams.append(key, param);
+    }
+  }
+  return searchParams.toString();
+};
+
+const get = url => params => console.log(params) || axios.get(url, { params, paramsSerializer });
 const post = url => body => axios.post(url, body);
 
 // await axios.get(`${serverBaseURL}/search?include=${includes.join(',')}`)).data.trips
