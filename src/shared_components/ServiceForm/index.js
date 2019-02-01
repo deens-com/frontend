@@ -847,6 +847,7 @@ export default withFormik({
       (service && service.location && service.location.formattedAddress) || undefined,
     refundType: 'none',
     ...(service &&
+    service.periods &&
     service.periods[0].cancellationPolicies &&
     service.periods[0].cancellationPolicies.length > 0
       ? {

@@ -77,18 +77,6 @@ export default class CreateServiceModal extends React.Component {
     this.props.goBackToTrip();
   };
 
-  checkIfExists = url => {
-    return axios
-      .post('/services/import/find', { url })
-      .then(response => this.addServiceToTrip(response.data))
-      .catch(_ =>
-        this.setState({
-          unique: true,
-          fetchingUnique: false,
-        }),
-      );
-  };
-
   fetchUrlData = async () => {
     this.setState({
       fetchingUrlData: true,
@@ -99,50 +87,63 @@ export default class CreateServiceModal extends React.Component {
     });
 
     const url = this.inputRef.current.value;
-    this.checkIfExists(url);
-
     try {
-      const metadata = (await axios.post('/links/extract', { url })).data;
-
-      if (metadata.location) {
-        const latlng = {
-          lat: parseFloat(metadata.location.latitude),
-          lng: parseFloat(metadata.location.longitude),
-        };
-
-        this.geocoder.geocode({ location: latlng }, (results, status) => {
-          if (status === 'OK') {
-            if (results[0]) {
-              this.setState({
-                fetchingUrlData: false,
-                service: fetchHelpers.buildServiceForView(
-                  fetchHelpers.createServiceFromUrl({
-                    ...metadata,
-                    location: parseLocationDataAndCoordinates(results[0], [latlng.lng, latlng.lat]),
-                  }),
-                ),
-              });
-              return;
-            }
-          }
-
-          this.setState({
-            fetchingUrlData: false,
-            service: fetchHelpers.buildServiceForView(fetchHelpers.createServiceFromUrl(metadata)),
-          });
+      const response = await axios.post('/services/import/find', { url });
+      this.addServiceToTrip(response.data);
+    } catch (e) {
+      try {
+        this.setState({
+          unique: true,
+          fetchingUnique: false,
         });
 
-        return;
+        const metadata = (await axios.post('/links/extract', { url })).data;
+
+        if (metadata.location) {
+          const latlng = {
+            lat: parseFloat(metadata.location.latitude),
+            lng: parseFloat(metadata.location.longitude),
+          };
+
+          this.geocoder.geocode({ location: latlng }, (results, status) => {
+            if (status === 'OK') {
+              if (results[0]) {
+                this.setState({
+                  fetchingUrlData: false,
+                  service: fetchHelpers.buildServiceForView(
+                    fetchHelpers.createServiceFromUrl({
+                      ...metadata,
+                      location: parseLocationDataAndCoordinates(results[0], [
+                        latlng.lng,
+                        latlng.lat,
+                      ]),
+                    }),
+                  ),
+                });
+                return;
+              }
+            }
+
+            this.setState({
+              fetchingUrlData: false,
+              service: fetchHelpers.buildServiceForView(
+                fetchHelpers.createServiceFromUrl(metadata),
+              ),
+            });
+          });
+
+          return;
+        }
+        this.setState({
+          fetchingUrlData: false,
+          service: fetchHelpers.buildServiceForView(fetchHelpers.createServiceFromUrl(metadata)),
+        });
+      } catch (e) {
+        this.setState({
+          fetchingUrlData: false,
+          service: {},
+        });
       }
-      this.setState({
-        fetchingUrlData: false,
-        service: fetchHelpers.buildServiceForView(fetchHelpers.createServiceFromUrl(metadata)),
-      });
-    } catch (e) {
-      this.setState({
-        fetchingUrlData: false,
-        service: {},
-      });
     }
   };
 
