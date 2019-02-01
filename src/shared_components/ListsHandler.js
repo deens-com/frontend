@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import pluralize from 'pluralize';
 import { Loader } from 'semantic-ui-react';
 
 import ErrorHandler from 'shared_components/ErrorHandler';
@@ -42,11 +43,13 @@ export default class ListsHandler extends React.Component {
   }
 
   makeRequest = async (page = 1, limit = defaultLimit) => {
+    const { haveIncludes } = this.props;
     const response = await this.props.apiFunction(
       {
         page,
         limit,
         ...this.props.params,
+        ...(haveIncludes ? { include: haveIncludes } : {}),
       },
       this.props.urlParams,
     );
@@ -81,7 +84,9 @@ export default class ListsHandler extends React.Component {
               const includes = this.props.haveIncludes.reduce((prev, includeKey) => {
                 return {
                   ...prev,
-                  [includeKey]: data[includeKey].find(include => include._id === item[includeKey]),
+                  [includeKey]: (data[includeKey] || data[pluralize(includeKey)]).find(
+                    include => include._id === item[includeKey],
+                  ),
                 };
               }, {});
               return {
