@@ -21,7 +21,6 @@ const Wrapper = styled.footer`
     props.posRelative
       ? `
     position: relative;
-    margin-top: -65px;
   `
       : ''} ${media.minSmall} {
     flex-direction: row;
