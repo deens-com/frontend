@@ -82,6 +82,7 @@ const HomeComponent = props => {
               theme="fillLightGreen"
               href="/trips/create"
               type="link"
+              dataTestid="Home__Button_CreateTripFromScratch"
             >
               or <strong>Create a trip from scratch</strong>
             </Button>

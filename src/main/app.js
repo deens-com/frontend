@@ -32,8 +32,10 @@ import BlogPost from '../scenes/blog';
 import PrivateRoute from './PrivateRoute';
 import { getCurrentUser } from 'store/session/actions';
 import GDPRNotification from './GDPRNotification';
+import { isProd } from 'libs/config';
 
-const commonHOCs = comp => withErrorBoundary(withSegmentTracker(comp));
+const commonHOCs = comp =>
+  isProd ? withErrorBoundary(withSegmentTracker(comp)) : withErrorBoundary(comp);
 
 class App extends React.Component {
   checkForReferrerAndSet = () => {

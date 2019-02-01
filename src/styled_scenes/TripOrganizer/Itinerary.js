@@ -419,7 +419,7 @@ export default class Itinerary extends Component {
 
   /*<AddServiceModal trip={this.props.trip} onServiceSelect={this.props.addService} day={day} />*/
   renderDay = (day, index) => (
-    <Day key={day.title} ref={this.r[index]}>
+    <Day data-testId="day" key={day.title} ref={this.r[index]}>
       <DayHeader>
         <DayTitle>{day.title}</DayTitle>
         {this.props.days.length > 1 && (
@@ -505,7 +505,9 @@ export default class Itinerary extends Component {
         </Service>
       ))}
       {day.data.length === 0 && (
-        <NoServices>There are no services selected for this day.</NoServices>
+        <NoServices data-testId="noServicesText">
+          There are no services selected for this day.
+        </NoServices>
       )}
     </Day>
   );
