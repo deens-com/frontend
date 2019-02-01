@@ -5,8 +5,7 @@ import { Segment } from 'semantic-ui-react';
 export const Page = styled.div`
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  padding-bottom: 65px;
+  min-height: calc(100vh - 65px);
 `;
 
 export const PageWrapper = styled.div`

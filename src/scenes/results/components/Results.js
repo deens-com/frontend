@@ -8,16 +8,18 @@ import ErrorHandler from 'shared_components/ErrorHandler';
 
 const ResultsComponent = props => {
   return (
-    <Page topPush>
-      <TopBar {...props} fixed />
-      <ErrorHandler
-        style={{ fontSize: 22, textAlign: 'center', margin: 'auto' }}
-        retryFunction={props.retryFetch}
-      >
-        <ResultsScene {...props} />
-      </ErrorHandler>
+    <>
+      <Page topPush>
+        <TopBar {...props} fixed />
+        <ErrorHandler
+          style={{ fontSize: 22, textAlign: 'center', margin: 'auto' }}
+          retryFunction={props.retryFetch}
+        >
+          <ResultsScene {...props} />
+        </ErrorHandler>
+      </Page>
       <BrandFooter withTopBorder withPadding posRelative />
-    </Page>
+    </>
   );
 };
 
