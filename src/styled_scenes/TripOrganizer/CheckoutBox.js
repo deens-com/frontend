@@ -217,7 +217,7 @@ export default class CheckoutBox extends React.Component {
           <Divider />
           <Field>
             <Label>Start Date</Label>
-            <Date data-testId="checkoutBoxDate">
+            <Date data-testid="checkoutBoxDate">
               <span onClick={() => this.onDateFocusChange({ focused: true })}>
                 <span>Start</span>
                 <SingleDatePicker
@@ -265,7 +265,7 @@ export default class CheckoutBox extends React.Component {
                 width="100%"
                 align="center"
                 bold
-                data-testId="checkoutBookButton"
+                data-testid="checkoutBookButton"
               >
                 Book
               </Button>

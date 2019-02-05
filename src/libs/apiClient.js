@@ -16,7 +16,7 @@ const paramsSerializer = params => {
   return searchParams.toString();
 };
 
-const get = url => params => console.log(params) || axios.get(url, { params, paramsSerializer });
+const get = url => params => axios.get(url, { params, paramsSerializer });
 const post = url => body => axios.post(url, body);
 
 // await axios.get(`${serverBaseURL}/search?include=${includes.join(',')}`)).data.trips
@@ -26,6 +26,10 @@ export default {
     get: get('/trips'),
     addService: {
       post: (id, body) => post(`/trips/${id}/add-service`)(body),
+    },
+    copy: {
+      post: (id, anonymous) =>
+        post(`/trips/${id}/copy?${anonymous ? paramsSerializer({ noSave: 1 }) : ''}`)(),
     },
     search: {
       get: get('/search'),

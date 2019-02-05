@@ -8,9 +8,10 @@ import { updatePath } from 'store/search/helpers';
 import moment from 'moment';
 import TripOrganizer from 'styled_scenes/TripOrganizer';
 import history from 'main/history';
-import { loadTrip, removeTrip } from 'libs/localStorage';
+import { loadTrip, removeTrip, isTripSaved } from 'libs/localStorage';
 import axios from 'libs/axios';
 import { generateTripSlug } from 'libs/Utils';
+import { getSession } from 'libs/user-session';
 
 class TripOrganizerContainer extends Component {
   constructor(props) {
@@ -18,7 +19,11 @@ class TripOrganizerContainer extends Component {
     if (props.match.params.id) {
       props.fetchTrip(props.match.params.id);
     } else {
-      if (this.props.session.username) {
+      if (getSession()) {
+        if (!isTripSaved()) {
+          return;
+        }
+
         this.isLoading = true;
         const tripToSave = {
           ...this.props.trip,
@@ -57,6 +62,7 @@ class TripOrganizerContainer extends Component {
         return;
       }
       if (
+        this.props.match.params.id &&
         this.props.trip &&
         this.props.session._id &&
         this.props.trip.owner !== this.props.session._id

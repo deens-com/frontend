@@ -768,7 +768,7 @@ export default class TripOrganizer extends Component {
             Trip Name <Required />
           </Label>
           <Input
-            data-testId="tripNameInput"
+            data-testid="tripNameInput"
             defaultValue={I18nText.translate(trip.title)}
             onChange={this.changeTripName}
           />
