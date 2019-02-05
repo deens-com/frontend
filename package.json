@@ -93,7 +93,8 @@
     "predeploy": "true || REACT_APP_NODE_ENV=production npm run build",
     "deploy": "true || gh-pages -d build --dotfiles true",
     "prettier-all": "prettier --write '**/*.{js,json,jsx,yml,yaml,md}'",
-    "lint-staged": "lint-staged"
+    "lint-staged": "lint-staged",
+    "test-dev": "cypress open --env NODE_ENV=development"
   },
   "devDependencies": {
     "@babel/polyfill": "^7.2.5",

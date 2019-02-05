@@ -1,0 +1,1346 @@
+{
+  "adultCount": 1,
+  "childrenCount": 0,
+  "infantCount": 0,
+  "media": [],
+  "services": [
+    {
+      "service": {
+        "importerOptions": { "importPrice": true, "importRating": true },
+        "status": "active",
+        "ratings": { "average": 0, "count": 0 },
+        "tags": [],
+        "isAveragePrice": true,
+        "isMostlyAvailable": true,
+        "checkoutOptions": { "payAt": "please" },
+        "_id": "5bb5f979a965f27332f93a18",
+        "rules": [],
+        "categories": [{ "names": { "en-us": "Accommodation" } }],
+        "coupons": [],
+        "media": [
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/1/fab4fb3fc0391137e87e0b972b6ce8f7/143272.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/1/fab4fb3fc0391137e87e0b972b6ce8f7/143272.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/1/fab4fb3fc0391137e87e0b972b6ce8f7/143272.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/1/fab4fb3fc0391137e87e0b972b6ce8f7/143272.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/1/fab4fb3fc0391137e87e0b972b6ce8f7/143272.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/1/924d25d073dcd67b0ddb1ffb7876b8d3/143272.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/1/924d25d073dcd67b0ddb1ffb7876b8d3/143272.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/1/924d25d073dcd67b0ddb1ffb7876b8d3/143272.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/1/924d25d073dcd67b0ddb1ffb7876b8d3/143272.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/1/924d25d073dcd67b0ddb1ffb7876b8d3/143272.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/1/43ef29a23a63ce461b7db7dcd65c8a8a/143272.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/1/43ef29a23a63ce461b7db7dcd65c8a8a/143272.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/1/43ef29a23a63ce461b7db7dcd65c8a8a/143272.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/1/43ef29a23a63ce461b7db7dcd65c8a8a/143272.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/1/43ef29a23a63ce461b7db7dcd65c8a8a/143272.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/1/40808fc7e11150f281977cc3cd42a894/143272.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/1/40808fc7e11150f281977cc3cd42a894/143272.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/1/40808fc7e11150f281977cc3cd42a894/143272.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/1/40808fc7e11150f281977cc3cd42a894/143272.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/1/40808fc7e11150f281977cc3cd42a894/143272.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/1/5d80404bf775040ff968971786187c52/143272.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/1/5d80404bf775040ff968971786187c52/143272.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/1/5d80404bf775040ff968971786187c52/143272.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/1/5d80404bf775040ff968971786187c52/143272.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/1/5d80404bf775040ff968971786187c52/143272.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/1/8aef0545279552d21aa08e47df8b6437/143272.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/1/8aef0545279552d21aa08e47df8b6437/143272.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/1/8aef0545279552d21aa08e47df8b6437/143272.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/1/8aef0545279552d21aa08e47df8b6437/143272.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/1/8aef0545279552d21aa08e47df8b6437/143272.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/48/0d53584ce98e9a56c3a41e620315f3bd/94ff60ad-61be-5639-910e-9782f51371a9.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/48/0d53584ce98e9a56c3a41e620315f3bd/94ff60ad-61be-5639-910e-9782f51371a9.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/48/0d53584ce98e9a56c3a41e620315f3bd/94ff60ad-61be-5639-910e-9782f51371a9.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/48/0d53584ce98e9a56c3a41e620315f3bd/94ff60ad-61be-5639-910e-9782f51371a9.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/48/0d53584ce98e9a56c3a41e620315f3bd/94ff60ad-61be-5639-910e-9782f51371a9.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          }
+        ],
+        "periods": [
+          {
+            "cancellationPolicies": [],
+            "groupedOptions": [],
+            "payAtService": false,
+            "_id": "5beb0c81976a4a0005f55b4d",
+            "startDate": "2017-09-11T00:00:00.000Z",
+            "endDate": "2019-09-11T00:00:00.000Z"
+          }
+        ],
+        "source": "5bb5f757b09a8472cf928c6d",
+        "owner": "5bb5f757411b29f575bf51e5",
+        "externalId": "1e49d1",
+        "basePrice": 98.6,
+        "baseCurrency": { "name": "US Dollar", "code": "USD", "symbol": "$" },
+        "location": "Salem, United States of America",
+        "description": "A central downtown locale and free Wi-Fi top the list of our guests' favorite features at the pet-friendly Knights Inn Salem. The two-story Knights Inn houses 42 rooms featuring coffeemakers hairdryers free local calls and flat-panel TVs. Wi-Fi is free property-wide. The hotel welcomes pets for a fee and parking is free. Less than four blocks east of Willamette University the Knights Inn is nestled in the heart of Salem. Guests are within a half-mile from the Oregon State Capitol building and just over one mile from Riverfront City Park situated on the banks of the Willamette River. Guests can head less than five miles south to tastings at the Honeywood Winery. Guests land at Portland International Airport less than 58 miles north of the hotel. The \"affordable\" rates \"perfect location\" and included free amenities like Wi-Fi and parking bring our guests to the Knights Inn Salem.",
+        "duration": 60,
+        "title": "Knights Inn Salem",
+        "createdAt": "2018-10-04T11:28:57.724Z",
+        "updatedAt": "2018-11-14T20:33:48.022Z",
+        "__v": 2,
+        "derivedPrices": {
+          "GBP": 75.53549,
+          "JPY": 10835.23091,
+          "EUR": 86.15076,
+          "USD": 98.6,
+          "PLS": 2738.88911
+        },
+        "excerpt": "A central downtown locale and free Wi-Fi top the list of our guests' favorite features at the pet-friendly Knights Inn Salem. The two-story Knights Inn houses 42 rooms featuring coffeemakers hairdryers free local calls and flat-panel TVs. Wi-Fi is free property-wide. The hotel welcomes pets for a fee and parking is free. Less than four blocks east of Willamette University the Knights Inn is nestled in the heart of Salem. Guests are within a half-mile from the Oregon State Capitol building and just over one mile from Riverfront City Park situated on the banks of the Willamette River. Guests can head less than five miles south to tastings at the Honeywood Winery. Guests land at Portland International Airport less than 58 miles north of the hotel. The \"affordable\" rates \"perfect location\" and included free amenities like Wi-Fi and parking bring our guests to the Knights Inn Salem.",
+        "subtitle": "",
+        "startInstructions": "",
+        "endInstructions": "",
+        "name": "Knights Inn Salem",
+        "objectId": "5bb5f979a965f27332f93a18",
+        "geo": { "lat": 44.93576, "lng": -123.02224 },
+        "latitude": 1,
+        "longitude": 1,
+        "type": "Accommodation",
+        "originalLocation": {
+          "postcode": null,
+          "city": "Salem",
+          "state": "Oregon",
+          "countryCode": "US",
+          "geo": { "coordinates": [-123.02224, 44.93576], "type": "Point" },
+          "formattedAddress": "1555 State Street",
+          "country": {
+            "_id": "5bcede894cf3099a25de7998",
+            "countryCode": "US",
+            "names": { "en-us": "United States of America" },
+            "__v": 0
+          },
+          "id": null
+        },
+        "pricePerSession": 98.6,
+        "openingTime": "00",
+        "closingTime": "23",
+        "image": "/static/media/placeholder350x350.6c50ad62.svg",
+        "mainPicture": "/static/media/placeholder350x350.6c50ad62.svg"
+      },
+      "day": 1,
+      "notes": [],
+      "priority": 1,
+      "_id": "5c58c379e55f82f200c61be4"
+    },
+    {
+      "service": {
+        "importerOptions": { "importPrice": true, "importRating": true },
+        "status": "active",
+        "ratings": { "average": 2, "count": 1 },
+        "tags": [],
+        "isAveragePrice": true,
+        "isMostlyAvailable": true,
+        "checkoutOptions": { "payAt": "please" },
+        "_id": "5bbf44b3026c99f5013b3d80",
+        "rules": [],
+        "categories": [{ "names": { "en-us": "Accommodation" } }],
+        "coupons": [],
+        "media": [
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/67/bead7bb9b20846134abbd50511d59427/344275.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/67/bead7bb9b20846134abbd50511d59427/344275.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/67/bead7bb9b20846134abbd50511d59427/344275.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/67/bead7bb9b20846134abbd50511d59427/344275.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/67/bead7bb9b20846134abbd50511d59427/344275.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/2/032d515c78d446356fec2e8348ea6f1f/1339396.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/2/032d515c78d446356fec2e8348ea6f1f/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/2/032d515c78d446356fec2e8348ea6f1f/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/2/032d515c78d446356fec2e8348ea6f1f/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/2/032d515c78d446356fec2e8348ea6f1f/1339396.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/2/7bcd980a8adb53b2293e728d587bc1a1/1339396.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/2/7bcd980a8adb53b2293e728d587bc1a1/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/2/7bcd980a8adb53b2293e728d587bc1a1/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/2/7bcd980a8adb53b2293e728d587bc1a1/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/2/7bcd980a8adb53b2293e728d587bc1a1/1339396.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/2/a81d8976f92403a3fef10addbcc60d14/1339396.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/2/a81d8976f92403a3fef10addbcc60d14/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/2/a81d8976f92403a3fef10addbcc60d14/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/2/a81d8976f92403a3fef10addbcc60d14/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/2/a81d8976f92403a3fef10addbcc60d14/1339396.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/2/bc9b49e80c2c7a4caace7c2789e1d9ac/1339396.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/2/bc9b49e80c2c7a4caace7c2789e1d9ac/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/2/bc9b49e80c2c7a4caace7c2789e1d9ac/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/2/bc9b49e80c2c7a4caace7c2789e1d9ac/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/2/bc9b49e80c2c7a4caace7c2789e1d9ac/1339396.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/2/62002a88bb5d55796e48ea1a487ab077/1339396.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/2/62002a88bb5d55796e48ea1a487ab077/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/2/62002a88bb5d55796e48ea1a487ab077/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/2/62002a88bb5d55796e48ea1a487ab077/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/2/62002a88bb5d55796e48ea1a487ab077/1339396.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/2/8f1f9246118a5850422e67ac35fab4cc/1339396.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/2/8f1f9246118a5850422e67ac35fab4cc/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/2/8f1f9246118a5850422e67ac35fab4cc/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/2/8f1f9246118a5850422e67ac35fab4cc/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/2/8f1f9246118a5850422e67ac35fab4cc/1339396.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/2/20375dfe72e366e77ec5c9d0e7d55270/1339396.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/2/20375dfe72e366e77ec5c9d0e7d55270/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/2/20375dfe72e366e77ec5c9d0e7d55270/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/2/20375dfe72e366e77ec5c9d0e7d55270/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/2/20375dfe72e366e77ec5c9d0e7d55270/1339396.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/2/d36d24165c2512a5cf462bc88fd16506/1339396.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/2/d36d24165c2512a5cf462bc88fd16506/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/2/d36d24165c2512a5cf462bc88fd16506/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/2/d36d24165c2512a5cf462bc88fd16506/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/2/d36d24165c2512a5cf462bc88fd16506/1339396.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/2/dc5b2859fa673d20330b95e252041722/1339396.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/2/dc5b2859fa673d20330b95e252041722/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/2/dc5b2859fa673d20330b95e252041722/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/2/dc5b2859fa673d20330b95e252041722/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/2/dc5b2859fa673d20330b95e252041722/1339396.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/2/df5729dafe8b75c8a9ccabee68824306/1339396.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/2/df5729dafe8b75c8a9ccabee68824306/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/2/df5729dafe8b75c8a9ccabee68824306/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/2/df5729dafe8b75c8a9ccabee68824306/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/2/df5729dafe8b75c8a9ccabee68824306/1339396.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/2/b8ec430378280c5f4ccce1fb147cdd9e/1339396.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/2/b8ec430378280c5f4ccce1fb147cdd9e/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/2/b8ec430378280c5f4ccce1fb147cdd9e/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/2/b8ec430378280c5f4ccce1fb147cdd9e/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/2/b8ec430378280c5f4ccce1fb147cdd9e/1339396.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/2/0a3fb676e258f4cfec4fd2b0956c99b7/1339396.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/2/0a3fb676e258f4cfec4fd2b0956c99b7/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/2/0a3fb676e258f4cfec4fd2b0956c99b7/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/2/0a3fb676e258f4cfec4fd2b0956c99b7/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/2/0a3fb676e258f4cfec4fd2b0956c99b7/1339396.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/2/ad655412ca6fe954e44ff915e8c99c2a/1339396.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/2/ad655412ca6fe954e44ff915e8c99c2a/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/2/ad655412ca6fe954e44ff915e8c99c2a/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/2/ad655412ca6fe954e44ff915e8c99c2a/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/2/ad655412ca6fe954e44ff915e8c99c2a/1339396.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/7/f184e6b6b848602aae6372b676eaca7e/US6ELY.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/7/f184e6b6b848602aae6372b676eaca7e/US6ELY.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/7/f184e6b6b848602aae6372b676eaca7e/US6ELY.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/7/f184e6b6b848602aae6372b676eaca7e/US6ELY.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/7/f184e6b6b848602aae6372b676eaca7e/US6ELY.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/7/dc080ad747566cd94410fd53591c6c0d/US6ELY.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/7/dc080ad747566cd94410fd53591c6c0d/US6ELY.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/7/dc080ad747566cd94410fd53591c6c0d/US6ELY.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/7/dc080ad747566cd94410fd53591c6c0d/US6ELY.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/7/dc080ad747566cd94410fd53591c6c0d/US6ELY.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/7/4afb92d5581debe1ff8dbde3d8c1d43a/US6ELY.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/7/4afb92d5581debe1ff8dbde3d8c1d43a/US6ELY.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/7/4afb92d5581debe1ff8dbde3d8c1d43a/US6ELY.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/7/4afb92d5581debe1ff8dbde3d8c1d43a/US6ELY.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/7/4afb92d5581debe1ff8dbde3d8c1d43a/US6ELY.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/2/14380ac9947b6c01f67ffb56a96c1196/1339396.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/2/14380ac9947b6c01f67ffb56a96c1196/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/2/14380ac9947b6c01f67ffb56a96c1196/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/2/14380ac9947b6c01f67ffb56a96c1196/1339396.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/2/14380ac9947b6c01f67ffb56a96c1196/1339396.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/7/dd13b467cdb44a1b382744471b31f277/US6ELY.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/7/dd13b467cdb44a1b382744471b31f277/US6ELY.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/7/dd13b467cdb44a1b382744471b31f277/US6ELY.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/7/dd13b467cdb44a1b382744471b31f277/US6ELY.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/7/dd13b467cdb44a1b382744471b31f277/US6ELY.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/7/dbc5cc8b8cb108219d8ab5c1ebe620bf/US6ELY.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/7/dbc5cc8b8cb108219d8ab5c1ebe620bf/US6ELY.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/7/dbc5cc8b8cb108219d8ab5c1ebe620bf/US6ELY.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/7/dbc5cc8b8cb108219d8ab5c1ebe620bf/US6ELY.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/7/dbc5cc8b8cb108219d8ab5c1ebe620bf/US6ELY.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/7/25110c3ab654b80d3d71f9c758ae3064/US6ELY.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/7/25110c3ab654b80d3d71f9c758ae3064/US6ELY.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/7/25110c3ab654b80d3d71f9c758ae3064/US6ELY.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/7/25110c3ab654b80d3d71f9c758ae3064/US6ELY.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/7/25110c3ab654b80d3d71f9c758ae3064/US6ELY.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/7/23b0ac80684ae6c52b8aab7d1438045d/US6ELY.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/7/23b0ac80684ae6c52b8aab7d1438045d/US6ELY.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/7/23b0ac80684ae6c52b8aab7d1438045d/US6ELY.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/7/23b0ac80684ae6c52b8aab7d1438045d/US6ELY.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/7/23b0ac80684ae6c52b8aab7d1438045d/US6ELY.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/7/dc912ac8e0fbc853968f7df18bdf25c6/US6ELY.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/7/dc912ac8e0fbc853968f7df18bdf25c6/US6ELY.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/7/dc912ac8e0fbc853968f7df18bdf25c6/US6ELY.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/7/dc912ac8e0fbc853968f7df18bdf25c6/US6ELY.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/7/dc912ac8e0fbc853968f7df18bdf25c6/US6ELY.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/1/d8ea446b22b729e265ff8cafd38ca37c/233359.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/1/d8ea446b22b729e265ff8cafd38ca37c/233359.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/1/d8ea446b22b729e265ff8cafd38ca37c/233359.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/1/d8ea446b22b729e265ff8cafd38ca37c/233359.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/1/d8ea446b22b729e265ff8cafd38ca37c/233359.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/1/d2f8a17a777796157f46c1e22e85ecb2/233359.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/1/d2f8a17a777796157f46c1e22e85ecb2/233359.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/1/d2f8a17a777796157f46c1e22e85ecb2/233359.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/1/d2f8a17a777796157f46c1e22e85ecb2/233359.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/1/d2f8a17a777796157f46c1e22e85ecb2/233359.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/1/ce91debc72506497d296c783b3218b48/233359.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/1/ce91debc72506497d296c783b3218b48/233359.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/1/ce91debc72506497d296c783b3218b48/233359.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/1/ce91debc72506497d296c783b3218b48/233359.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/1/ce91debc72506497d296c783b3218b48/233359.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/1/eccdf92ba2bfaf0a87457d1f9b898597/233359.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/1/eccdf92ba2bfaf0a87457d1f9b898597/233359.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/1/eccdf92ba2bfaf0a87457d1f9b898597/233359.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/1/eccdf92ba2bfaf0a87457d1f9b898597/233359.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/1/eccdf92ba2bfaf0a87457d1f9b898597/233359.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/4/96e4007f3416ac4be439858dd6a3e940/344275.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/4/96e4007f3416ac4be439858dd6a3e940/344275.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/4/96e4007f3416ac4be439858dd6a3e940/344275.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/4/96e4007f3416ac4be439858dd6a3e940/344275.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/4/96e4007f3416ac4be439858dd6a3e940/344275.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/4/3e02f8f4c9bc5c0970e0f5f7bcf89e30/344275.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/4/3e02f8f4c9bc5c0970e0f5f7bcf89e30/344275.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/4/3e02f8f4c9bc5c0970e0f5f7bcf89e30/344275.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/4/3e02f8f4c9bc5c0970e0f5f7bcf89e30/344275.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/4/3e02f8f4c9bc5c0970e0f5f7bcf89e30/344275.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          },
+          {
+            "type": "image",
+            "hero": true,
+            "names": {
+              "en-us": "https://assets.cosmos-data.com/63/7e8a44efc8a27ee94be6c4670faef129/5503833.jpg"
+            },
+            "files": {
+              "thumbnail": {
+                "url": "https://assets.cosmos-data.com/63/7e8a44efc8a27ee94be6c4670faef129/5503833.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "small": {
+                "url": "https://assets.cosmos-data.com/63/7e8a44efc8a27ee94be6c4670faef129/5503833.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "large": {
+                "url": "https://assets.cosmos-data.com/63/7e8a44efc8a27ee94be6c4670faef129/5503833.jpg",
+                "width": 674,
+                "height": 446
+              },
+              "hero": {
+                "url": "https://assets.cosmos-data.com/63/7e8a44efc8a27ee94be6c4670faef129/5503833.jpg",
+                "width": 674,
+                "height": 446
+              }
+            }
+          }
+        ],
+        "periods": [
+          {
+            "cancellationPolicies": [],
+            "groupedOptions": [],
+            "payAtService": false,
+            "_id": "5beae783976a4a0005f4b31d",
+            "startDate": "2017-09-11T00:00:00.000Z",
+            "endDate": "2019-09-11T00:00:00.000Z"
+          }
+        ],
+        "source": "5bb5f757b09a8472cf928c6d",
+        "owner": "5bb5f757411b29f575bf51e5",
+        "externalId": "1364fc",
+        "basePrice": 64.23,
+        "baseCurrency": { "name": "US Dollar", "code": "USD", "symbol": "$" },
+        "location": "Salem, United States of America",
+        "description": "The Hotel offers a quiet, comfortable, clean and friendly service during your stay. The Howard Johnson Salem is within a mile from Downtown Salem and close to Willamette University, Salem General Hospital and State Fair Ground and Expo Center. Enjoy the Hotels Amenities such as the Complimentary Deluxe Continental Breakfast, Outdoor Heated Seasonal Pool, and Fitness Center. All Guest Rooms have Wireless High Speed Internet Access, Coffeemaker, Iron and Ironing Board, Hairdryer and In-Room Safes for 1.50 fee. Pets allowed, designated ground floor rooms only. Guests are required to register pet upon check-in and we reserve the right to refuse service or cancel reservation at our discretion. The NON SMOKING, Award Winning Howard Johnson Salem Oregon is conveniently located off all major freeways - I-5, Highway 22 and Highway 99.",
+        "duration": 60,
+        "title": "Howard Johnson Inn Salem",
+        "createdAt": "2018-10-11T12:40:19.030Z",
+        "updatedAt": "2018-11-14T21:54:36.159Z",
+        "__v": 1,
+        "derivedPrices": {
+          "GBP": 49.20532,
+          "JPY": 7058.2848,
+          "EUR": 56.12032,
+          "USD": 64.23,
+          "PLS": 1784.16681
+        },
+        "excerpt": "The Hotel offers a quiet, comfortable, clean and friendly service during your stay. The Howard Johnson Salem is within a mile from Downtown Salem and close to Willamette University, Salem General Hospital and State Fair Ground and Expo Center. Enjoy the Hotels Amenities such as the Complimentary Deluxe Continental Breakfast, Outdoor Heated Seasonal Pool, and Fitness Center. All Guest Rooms have Wireless High Speed Internet Access, Coffeemaker, Iron and Ironing Board, Hairdryer and In-Room Safes for 1.50 fee. Pets allowed, designated ground floor rooms only. Guests are required to register pet upon check-in and we reserve the right to refuse service or cancel reservation at our discretion. The NON SMOKING, Award Winning Howard Johnson Salem Oregon is conveniently located off all major freeways - I-5, Highway 22 and Highway 99.",
+        "subtitle": "",
+        "startInstructions": "",
+        "endInstructions": "",
+        "name": "Howard Johnson Inn Salem",
+        "objectId": "5bbf44b3026c99f5013b3d80",
+        "geo": { "lat": 44.9246763733736, "lng": -123.016162365675 },
+        "latitude": 1,
+        "longitude": 1,
+        "type": "Accommodation",
+        "originalLocation": {
+          "postcode": "97302",
+          "city": "Salem",
+          "state": "Oregon",
+          "countryCode": "US",
+          "geo": { "coordinates": [-123.016162365675, 44.9246763733736], "type": "Point" },
+          "formattedAddress": "2250 Mission Street South East",
+          "country": {
+            "_id": "5bcede894cf3099a25de7998",
+            "countryCode": "US",
+            "names": { "en-us": "United States of America" },
+            "__v": 0
+          },
+          "id": null
+        },
+        "pricePerSession": 64.23,
+        "openingTime": "00",
+        "closingTime": "23",
+        "image": "/static/media/placeholder350x350.6c50ad62.svg",
+        "mainPicture": "/static/media/placeholder350x350.6c50ad62.svg"
+      },
+      "day": 2,
+      "notes": [],
+      "priority": 1,
+      "_id": "5c58c38fe55f82f200c61be5"
+    },
+    {
+      "service": {
+        "importerOptions": {
+          "importPrice": true,
+          "importRating": true,
+          "fromUrl": "https://www.expedia.com/New-York-Hotels-Radio-City-Apartments.h6842904.Hotel-Information"
+        },
+        "status": "active",
+        "ratings": { "average": 0, "count": 0 },
+        "tags": [],
+        "isAveragePrice": true,
+        "isMostlyAvailable": true,
+        "checkoutOptions": {
+          "payAt": "external-provider",
+          "checkoutURL": "https://www.tkqlhce.com/click-8956787-10581071?url=https%3A%2F%2Fwww.expedia.com%2FNew-York-Hotels-Radio-City-Apartments.h6842904.Hotel-Information"
+        },
+        "_id": "5c29fd44a4186ceb7847eed4",
+        "categories": [{ "names": { "en-us": "Accommodation" } }],
+        "subtitle": "3.5-star New York apartments in Midtown, walk to Radio City Music Hall",
+        "title": "Radio City Apartments ",
+        "basePrice": 111,
+        "location": "New York, United States of America",
+        "media": [],
+        "description": "Location\nLocated in Midtown, this apartment building is within a 10-minute walk of Radio City Music Hall, Rockefeller Center, and Broadway Theatre. Times Square is 0.4 mi (0.6 km) away. 49th St. Station and 47 - 50 Sts - Rockefeller Center Station are within a 5-minute walk.\n\nProperty Features\nAlong with a business center, this smoke-free apartment building has laundry facilities and a 24-hour front desk. WiFi in public areas is free. Additionally, express check-in, express check-out, and free newspapers are onsite.\n\nApartment Amenities\nEach apartment provides a refrigerator and a microwave, plus free WiFi and cable TV. Additional amenities include a coffee/tea maker, free local calls, and a hair dryer.\n\nLanguages Spoken\nEnglish",
+        "baseCurrency": { "name": "US Dollar", "code": "USD", "symbol": "$" },
+        "duration": 1,
+        "periods": [
+          {
+            "cancellationPolicies": [],
+            "groupedOptions": [],
+            "_id": "5c29fd44a4186c789647eed5",
+            "startDate": "2017-09-11T00:00:00.000Z",
+            "endDate": "2019-09-11T00:00:00.000Z",
+            "daysOfWeek": {
+              "monday": true,
+              "tuesday": true,
+              "wednesday": true,
+              "thursday": true,
+              "friday": true,
+              "saturday": true,
+              "sunday": true
+            },
+            "priceCapacity": 1,
+            "minCapacity": 1,
+            "maxCapacity": 2
+          }
+        ],
+        "source": "5bb64bdb32a52703c1c27a27",
+        "owner": "5c13678600904494041c2673",
+        "rules": [],
+        "coupons": [],
+        "externalId": "5c29fd44a4186ceb7847eed4",
+        "createdAt": "2018-12-31T11:28:04.186Z",
+        "updatedAt": "2019-01-01T12:35:53.034Z",
+        "__v": 0,
+        "derivedPrices": {
+          "GBP": 85.03488,
+          "JPY": 12197.87658,
+          "EUR": 96.98514,
+          "USD": 111,
+          "PLS": 3083.33358
+        },
+        "excerpt": "Location\nLocated in Midtown, this apartment building is within a 10-minute walk of Radio City Music Hall, Rockefeller Center, and Broadway Theatre. Times Square is 0.4 mi (0.6 km) away. 49th St. Station and 47 - 50 Sts - Rockefeller Center Station are within a 5-minute walk.\n\nProperty Features\nAlong with a business center, this smoke-free apartment building has laundry facilities and a 24-hour front desk. WiFi in public areas is free. Additionally, express check-in, express check-out, and free newspapers are onsite.\n\nApartment Amenities\nEach apartment provides a refrigerator and a microwave, plus free WiFi and cable TV. Additional amenities include a coffee/tea maker, free local calls, and a hair dryer.\n\nLanguages Spoken\nEnglish",
+        "startInstructions": "",
+        "endInstructions": "",
+        "name": "Radio City Apartments ",
+        "objectId": "5c29fd44a4186ceb7847eed4",
+        "geo": { "lat": 40.7127753, "lng": -74.0059728 },
+        "latitude": 1,
+        "longitude": 1,
+        "type": "Accommodation",
+        "originalLocation": {
+          "line1": "New York New York",
+          "line2": "",
+          "city": "New York",
+          "state": "",
+          "countryCode": "US",
+          "geo": { "coordinates": [-74.0059728, 40.7127753], "type": "Point" },
+          "formattedAddress": "New York, NY, USA",
+          "country": {
+            "_id": "5bcede894cf3099a25de7998",
+            "countryCode": "US",
+            "names": { "en-us": "United States of America" },
+            "__v": 0
+          },
+          "id": null
+        },
+        "pricePerSession": 111,
+        "openingTime": "00",
+        "closingTime": "23",
+        "image": "/static/media/placeholder350x350.6c50ad62.svg",
+        "mainPicture": "/static/media/placeholder350x350.6c50ad62.svg"
+      },
+      "day": 3,
+      "notes": [],
+      "priority": 1,
+      "_id": "5c58c3bce55f82f200c61be6"
+    }
+  ],
+  "title": { "en-us": "Trip to Salem and New York" },
+  "location": {
+    "city": "Salem",
+    "countryCode": "US",
+    "geo": { "type": "Point", "coordinates": [-123.03509630000002, 44.9428975] }
+  },
+  "duration": 4320
+}
