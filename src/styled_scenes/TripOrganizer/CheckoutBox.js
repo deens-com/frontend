@@ -265,6 +265,7 @@ export default class CheckoutBox extends React.Component {
                 width="100%"
                 align="center"
                 bold
+                data-testId="checkoutBookButton"
               >
                 Book
               </Button>

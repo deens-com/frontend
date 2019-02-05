@@ -400,7 +400,9 @@ export default class Itinerary extends Component {
                       ),
                     )
                   : this.renderCancellationPolicy(
-                      service.periods[0].cancellationPolicies,
+                      service.periods &&
+                        service.periods[0] &&
+                        service.periods[0].cancellationPolicies,
                       getPriceFromServiceOption(service.basePrice, null, this.props.numberOfPeople),
                     )}
                 {thisAvailability.groupedOptions && (

@@ -8,7 +8,9 @@ const paramsSerializer = params => {
     if (Array.isArray(param)) {
       searchParams.append(key, param.join(','));
     } else {
-      searchParams.append(key, param);
+      if (param !== undefined && param !== null) {
+        searchParams.append(key, param);
+      }
     }
   }
   return searchParams.toString();

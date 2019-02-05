@@ -301,7 +301,7 @@ export default class Button extends Component {
         fontSize={this.props.fontSize}
         customTheme={this.props.customTheme}
       >
-        <El>
+        <El {...this.props}>
           {this.props.iconBefore && <IconBefore>{this.getIcon(this.props.iconBefore)}</IconBefore>}
           <span>{this.props.text || this.props.children}</span>
           {this.props.iconAfter && <IconAfter>{this.getIcon(this.props.iconAfter)}</IconAfter>}
