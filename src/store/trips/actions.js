@@ -4,6 +4,7 @@ import { parseTags } from 'libs/fetch_helpers';
 import history from './../../main/history';
 import moment from 'moment';
 import { saveTrip } from 'libs/localStorage';
+import apiClient from 'libs/apiClient';
 
 const types = {
   FETCH_USER_TRIPS_START: 'FETCH_USER_TRIPS_START',
@@ -212,17 +213,17 @@ const checkAvailability = (id, startDate, peopleData, attempt = 1) => async disp
   }
 };
 
-const cloneTrip = (id, userId) => async dispatch => {
+const cloneTrip = (trip, userId) => async dispatch => {
   dispatch(cloneTripStart());
   try {
-    const newTrip = userId
-      ? await axios.post(`${serverBaseURL}/trips/copy/${id}`)
-      : await axios.get(`${serverBaseURL}/trips/${id}?include=services`);
+    const newTrip = await apiClient.trips.copy.post(trip._id, !userId);
 
     const newId = newTrip.data._id;
     if (!userId) {
-      delete newTrip.data._id;
-      saveTrip(newTrip.data);
+      saveTrip({
+        ...newTrip.data,
+        services: trip.services,
+      });
     }
     dispatch(cloneTripSuccess());
     history.push(`/trips/organize/${userId ? newId : ''}`);

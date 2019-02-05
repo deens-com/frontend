@@ -60,7 +60,7 @@ function ServiceActionButtons(props) {
         icon
         labelPosition="right"
         color="blue"
-        onClick={props.onBookNowClick}
+        onClick={props.externalCheckoutUrl ? null : props.onBookNowClick}
         target="_blank"
         rel="noopener noreferrer"
         as={props.externalCheckoutUrl ? 'a' : 'button'}

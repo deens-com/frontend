@@ -236,15 +236,7 @@ export default class Trip extends Component {
       return;
     }
 
-    if (!this.props.currentUserId) {
-      saveTrip({
-        ...this.props.trip,
-      });
-      history.push(`/trips/organize/`);
-      return;
-    }
-
-    this.props.cloneTrip(this.props.trip._id, this.props.currentUserId);
+    this.props.cloneTrip(this.props.trip, this.props.currentUserId);
   };
 
   goToDay = index => {
