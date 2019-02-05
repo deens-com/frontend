@@ -46,19 +46,24 @@ class TripOrganizerContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (!prevProps.match.params.id && this.props.match.params.id) {
-      this.isLoading = false;
-      this.props.fetchTrip(this.props.match.params.id);
-    }
-    if (this.props.trip && this.props.trip.bookingStatus === 'booked') {
-      history.replace(`/trips/${generateTripSlug(this.props.trip)}`);
-    }
-    if (
-      this.props.trip &&
-      this.props.session._id &&
-      this.props.trip.owner !== this.props.session._id
-    ) {
-      history.replace(`/trips/${generateTripSlug(this.props.trip)}`);
+    if (!this.isLoading) {
+      if (!prevProps.match.params.id && this.props.match.params.id) {
+        this.isLoading = false;
+        this.props.fetchTrip(this.props.match.params.id);
+        return;
+      }
+      if (this.props.trip && this.props.trip.bookingStatus === 'booked') {
+        history.replace(`/trips/${generateTripSlug(this.props.trip)}`);
+        return;
+      }
+      if (
+        this.props.trip &&
+        this.props.session._id &&
+        this.props.trip.owner !== this.props.session._id
+      ) {
+        history.replace(`/trips/${generateTripSlug(this.props.trip)}`);
+        return;
+      }
     }
   }
 
