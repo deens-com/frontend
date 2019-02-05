@@ -46,10 +46,12 @@ const Service = styled.div`
 const PriceWrapper = styled.div`
   margin-top: 10px;
   font-size: 14px;
+  display: flex;
 `;
 
 const Price = styled.span`
   font-weight: bold;
+  flex: 1;
 `;
 
 const ServiceTitle = styled.div`
@@ -155,19 +157,15 @@ export class CheckoutTrip extends React.Component {
     const price = getPrice(trip, service);
     if (this.props.onlyExternalServices && service.service.checkoutOptions.payAt !== 'please') {
       return (
-        <PriceWrapper>
-          <div>
-            Average cost: <Price>${price.toFixed(2)} per person</Price>
-          </div>
-        </PriceWrapper>
+        <div>
+          Average cost: <Price>${price.toFixed(2)} per person</Price>
+        </div>
       );
     }
     return (
-      <PriceWrapper>
-        <Price>
-          ${price.toFixed(2)} for {getPeopleCount(trip)} people
-        </Price>
-      </PriceWrapper>
+      <Price>
+        ${price.toFixed(2)} for {getPeopleCount(trip)} people
+      </Price>
     );
   };
 
@@ -222,6 +220,9 @@ export class CheckoutTrip extends React.Component {
                       </Button>
                     </ButtonWrapper>
                   )}
+                </SecondLine>
+                <PriceWrapper>
+                  {this.renderPrice(trip, day, service)}
                   <Popup
                     trigger={
                       <CancellationPolicyTrigger>Cancellation policy</CancellationPolicyTrigger>
@@ -253,8 +254,7 @@ export class CheckoutTrip extends React.Component {
                     }
                     position="top center"
                   />
-                </SecondLine>
-                {this.renderPrice(trip, day, service)}
+                </PriceWrapper>
               </Service>
             ))}
           </Day>
