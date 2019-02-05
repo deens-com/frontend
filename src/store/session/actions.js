@@ -47,14 +47,14 @@ export const sessionsFetched = session => {
 
 export const displayLedgerLoader = boolDisplay => {
   return {
-    type: this.types.TOGGLE_LEDGER_LOADER_DISPLAY,
+    type: types.TOGGLE_LEDGER_LOADER_DISPLAY,
     payload: boolDisplay,
   };
 };
 
 export const displayUpdateError = error => {
   return {
-    type: this.types.UPDATE_ERROR,
+    type: types.UPDATE_ERROR,
     payload: error,
   };
 };
