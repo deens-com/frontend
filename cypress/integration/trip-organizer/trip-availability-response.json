@@ -1,0 +1,249 @@
+[
+  {
+    "serviceId": "5bb5f979a965f27332f93a18",
+    "serviceOrganizationId": "5c58f0dfad3d5902665662d2",
+    "isAvailable": true,
+    "groupedOptions": {
+      "groupName": { "en-us": "Room Type" },
+      "required": true,
+      "options": [
+        {
+          "price": 81.25,
+          "subtitle": { "en-us": "Standard" },
+          "title": { "en-us": "Room, 2 Double Beds" },
+          "minCapacity": 1,
+          "maxCapacity": 1,
+          "mealType": { "en-us": "None" },
+          "roomType": { "en-us": "Single bed" },
+          "cancellable": false,
+          "cancellationPolicies": [
+            { "duration": 1440, "refundAmount": 0, "refundType": "percent" }
+          ],
+          "otherAttributes": {
+            "availabilityCode": {
+              "type": "private",
+              "source": "coral",
+              "code": "1e49d1_242598056474_1_11_2_1_0_0_1272357417_0_0-0-0_1-100_232.20190205_1_1_0_232_47a6faa9fa154370aadcdea8eee24d9b_"
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "serviceId": "5bbf44b3026c99f5013b3d80",
+    "serviceOrganizationId": "5c58f10bad3d5902665662d3",
+    "isAvailable": true,
+    "groupedOptions": {
+      "groupName": { "en-us": "Room Type" },
+      "required": true,
+      "options": [
+        {
+          "price": 90.56,
+          "subtitle": { "en-us": "Standard" },
+          "title": { "en-us": "Business Room, 1 King Bed, Non Smoking" },
+          "minCapacity": 1,
+          "maxCapacity": 1,
+          "mealType": { "en-us": "None" },
+          "roomType": { "en-us": "Single bed" },
+          "cancellable": false,
+          "cancellationPolicies": [
+            { "duration": 2880, "refundAmount": 0, "refundType": "percent" }
+          ],
+          "otherAttributes": {
+            "availabilityCode": {
+              "type": "private",
+              "source": "coral",
+              "code": "1364fc_243999812604_1_11_2_1_0_0_4138441156_0_0-0-0_2-100_232.20190206_1_1_0_232_70f22e2926fb4eaa860aa32a1e8cd774_"
+            }
+          }
+        },
+        {
+          "price": 102.62,
+          "subtitle": { "en-us": "Standard" },
+          "title": { "en-us": "Standard Room" },
+          "minCapacity": 1,
+          "maxCapacity": 1,
+          "mealType": { "en-us": "None" },
+          "roomType": { "en-us": "Single bed" },
+          "cancellable": false,
+          "cancellationPolicies": [
+            { "duration": 2880, "refundAmount": 0, "refundType": "percent" }
+          ],
+          "otherAttributes": {
+            "availabilityCode": {
+              "type": "private",
+              "source": "coral",
+              "code": "1364fc_54082908422559_1_11_2_1_0_0_430289064_1_0-0-0_2-100_232.20190206_1_1_0_232_70f22e2926fb4eaa860aa32a1e8cd774_"
+            }
+          }
+        },
+        {
+          "price": 105.02,
+          "subtitle": { "en-us": "Standard" },
+          "title": { "en-us": "Room, Non Smoking (2 King Beds)" },
+          "minCapacity": 1,
+          "maxCapacity": 1,
+          "mealType": { "en-us": "None" },
+          "roomType": { "en-us": "Single bed" },
+          "cancellable": false,
+          "cancellationPolicies": [
+            { "duration": 2880, "refundAmount": 0, "refundType": "percent" }
+          ],
+          "otherAttributes": {
+            "availabilityCode": {
+              "type": "private",
+              "source": "coral",
+              "code": "1364fc_54086459518051_1_11_2_1_0_0_3474643280_2_0-0-0_2-100_232.20190206_1_1_0_232_70f22e2926fb4eaa860aa32a1e8cd774_"
+            }
+          }
+        },
+        {
+          "price": 114.65,
+          "subtitle": { "en-us": "Standard" },
+          "title": { "en-us": "Standard Room" },
+          "minCapacity": 1,
+          "maxCapacity": 1,
+          "mealType": { "en-us": "None" },
+          "roomType": { "en-us": "Single bed" },
+          "cancellable": false,
+          "cancellationPolicies": [
+            { "duration": 2880, "refundAmount": 0, "refundType": "percent" }
+          ],
+          "otherAttributes": {
+            "availabilityCode": {
+              "type": "private",
+              "source": "coral",
+              "code": "1364fc_54087236944027_1_11_2_1_0_0_430289064_3_0-0-0_2-100_232.20190206_1_1_0_232_70f22e2926fb4eaa860aa32a1e8cd774_"
+            }
+          }
+        },
+        {
+          "price": 124.29,
+          "subtitle": { "en-us": "Standard" },
+          "title": { "en-us": "Standard Room" },
+          "minCapacity": 1,
+          "maxCapacity": 1,
+          "mealType": { "en-us": "None" },
+          "roomType": { "en-us": "Single bed" },
+          "cancellable": false,
+          "cancellationPolicies": [
+            { "duration": 2880, "refundAmount": 0, "refundType": "percent" }
+          ],
+          "otherAttributes": {
+            "availabilityCode": {
+              "type": "private",
+              "source": "coral",
+              "code": "1364fc_54091548689819_1_11_2_1_0_0_430289064_4_0-0-0_2-100_232.20190206_1_1_0_232_70f22e2926fb4eaa860aa32a1e8cd774_"
+            }
+          }
+        },
+        {
+          "price": 80.92,
+          "subtitle": { "en-us": "Standard" },
+          "title": { "en-us": "Room, 1 Queen Bed, Non Smoking" },
+          "minCapacity": 1,
+          "maxCapacity": 1,
+          "mealType": { "en-us": "Breakfast" },
+          "roomType": { "en-us": "Single bed" },
+          "cancellable": false,
+          "cancellationPolicies": [
+            { "duration": 2880, "refundAmount": 0, "refundType": "percent" }
+          ],
+          "otherAttributes": {
+            "availabilityCode": {
+              "type": "private",
+              "source": "coral",
+              "code": "1364fc_239610380903_1_11_2_1_1_0_4039800159_5_0-0-0_2-100_232.20190206_1_1_0_232_70f22e2926fb4eaa860aa32a1e8cd774_"
+            }
+          }
+        },
+        {
+          "price": 82.38,
+          "subtitle": { "en-us": "Standard" },
+          "title": { "en-us": "Room, 1 Queen Bed, Accessible, Non Smoking" },
+          "minCapacity": 1,
+          "maxCapacity": 1,
+          "mealType": { "en-us": "Breakfast" },
+          "roomType": { "en-us": "Single bed" },
+          "cancellable": false,
+          "cancellationPolicies": [
+            { "duration": 2880, "refundAmount": 0, "refundType": "percent" }
+          ],
+          "otherAttributes": {
+            "availabilityCode": {
+              "type": "private",
+              "source": "coral",
+              "code": "1364fc_243055665425_1_11_2_1_1_0_2786136864_6_0-0-0_2-100_232.20190206_1_1_0_232_70f22e2926fb4eaa860aa32a1e8cd774_"
+            }
+          }
+        },
+        {
+          "price": 84.31,
+          "subtitle": { "en-us": "Standard" },
+          "title": { "en-us": "Room, 1 King Bed, Non Smoking" },
+          "minCapacity": 1,
+          "maxCapacity": 1,
+          "mealType": { "en-us": "Breakfast" },
+          "roomType": { "en-us": "Single bed" },
+          "cancellable": false,
+          "cancellationPolicies": [
+            { "duration": 2880, "refundAmount": 0, "refundType": "percent" }
+          ],
+          "otherAttributes": {
+            "availabilityCode": {
+              "type": "private",
+              "source": "coral",
+              "code": "1364fc_241461582288_1_11_2_1_1_0_185952482_7_0-0-0_2-100_232.20190206_1_1_0_232_70f22e2926fb4eaa860aa32a1e8cd774_"
+            }
+          }
+        },
+        {
+          "price": 100.2,
+          "subtitle": { "en-us": "Standard" },
+          "title": { "en-us": "Upgraded, Room, 2 Queen Beds, Non Smoking" },
+          "minCapacity": 1,
+          "maxCapacity": 1,
+          "mealType": { "en-us": "Breakfast" },
+          "roomType": { "en-us": "Single bed" },
+          "cancellable": false,
+          "cancellationPolicies": [
+            { "duration": 2880, "refundAmount": 0, "refundType": "percent" }
+          ],
+          "otherAttributes": {
+            "availabilityCode": {
+              "type": "private",
+              "source": "coral",
+              "code": "1364fc_247857246744_1_11_2_1_1_0_2371831072_8_0-0-0_2-100_232.20190206_1_1_0_232_70f22e2926fb4eaa860aa32a1e8cd774_"
+            }
+          }
+        },
+        {
+          "price": 106.52,
+          "subtitle": { "en-us": "Standard" },
+          "title": { "en-us": "Upgraded, Room, 2 Queen Beds, Non Smoking" },
+          "minCapacity": 1,
+          "maxCapacity": 1,
+          "mealType": { "en-us": "Breakfast" },
+          "roomType": { "en-us": "Single bed" },
+          "cancellable": false,
+          "cancellationPolicies": [
+            { "duration": 2880, "refundAmount": 0, "refundType": "percent" }
+          ],
+          "otherAttributes": {
+            "availabilityCode": {
+              "type": "private",
+              "source": "coral",
+              "code": "1364fc_54085339413779_1_11_2_2_1_0_2371831072_9_0-0-0_2-100_232.20190206_1_1_0_232_70f22e2926fb4eaa860aa32a1e8cd774_"
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "serviceId": "5c29fd44a4186ceb7847eed4",
+    "serviceOrganizationId": "5c58f119ad3d5902665662d4",
+    "isAvailable": true
+  }
+]

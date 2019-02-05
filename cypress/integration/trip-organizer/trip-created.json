@@ -1,0 +1,64 @@
+{
+  "privacy": "private",
+  "status": "active",
+  "duration": 4320,
+  "ratings": { "average": 0, "count": 0 },
+  "reviewCount": 0,
+  "tags": [],
+  "paymentTransactions": [],
+  "childrenCount": 0,
+  "infantCount": 0,
+  "forkedBookingsCount": 0,
+  "_id": "5c58f13210dfca8453fb1a5b",
+  "adultCount": 1,
+  "media": [],
+  "services": [
+    {
+      "priority": 1,
+      "_id": "5c58f0dfad3d5902665662d2",
+      "service": "5bb5f979a965f27332f93a18",
+      "day": 1,
+      "notes": [],
+      "selectedOption": {
+        "availabilityCode": "1e49d1_242598056474_1_11_2_1_0_0_1272357417_0_0-0-0_1-100_232.20190205_1_1_0_232_4f807e50f27446639282affc75947a4f_",
+        "price": 81.25,
+        "cancellable": false,
+        "cancellationPolicies": []
+      }
+    },
+    {
+      "priority": 1,
+      "_id": "5c58f10bad3d5902665662d3",
+      "service": "5bbf44b3026c99f5013b3d80",
+      "day": 2,
+      "notes": [],
+      "selectedOption": {
+        "availabilityCode": "1364fc_243999812604_1_11_2_1_0_0_4138441156_0_0-0-0_2-100_232.20190206_1_1_0_232_6b099b2a73114c22a782674ece50195d_",
+        "price": 90.56,
+        "cancellable": false,
+        "cancellationPolicies": []
+      }
+    },
+    {
+      "priority": 1,
+      "_id": "5c58f119ad3d5902665662d4",
+      "service": "5c29fd44a4186ceb7847eed4",
+      "day": 3,
+      "notes": []
+    }
+  ],
+  "title": { "en-us": "New Trip" },
+  "location": {
+    "city": "Salem",
+    "countryCode": "US",
+    "geo": { "coordinates": [-123.03509630000002, 44.9428975], "type": "Point" },
+    "country": null,
+    "id": null
+  },
+  "basePrice": 171.81,
+  "owner": "5bf2ca837e431783c7fff753",
+  "parents": [],
+  "createdAt": "2019-02-05T02:13:06.634Z",
+  "updatedAt": "2019-02-05T02:13:06.634Z",
+  "__v": 0
+}
