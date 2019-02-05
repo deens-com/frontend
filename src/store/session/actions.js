@@ -5,7 +5,6 @@ import fetch_helpers from 'libs/fetch_helpers';
 import { identifyUsingSession } from 'libs/analytics';
 import { serverBaseURL } from 'libs/config';
 import { saveSession, getSession, removeSession } from 'libs/user-session';
-import axiosOriginal from 'axios';
 
 export const types = {
   LOGIN_STARTS: 'LOGIN_STARTS',
@@ -183,20 +182,11 @@ export const update_user_avatar = file => {
         let formData = new FormData();
         formData.append('profilePicture', file);
         dispatch({ type: 'AVATAR_UPLOAD_START' });
-        const uploadedFile = await axiosOriginal.post(`${serverBaseURL}/media`, formData, {});
+        const uploadedFile = await axios.post(`${serverBaseURL}/media`, formData, {});
         if (uploadedFile) {
           const pictureUrl = uploadedFile.data.url;
-          const updatedUser = await axiosOriginal
-            .patch(
-              `${serverBaseURL}/users/me`,
-              { profilePicture: pictureUrl },
-              {
-                headers: {
-                  Authorization: `Bearer ${session.accessToken}`,
-                  'Content-Type': 'application-json',
-                },
-              },
-            )
+          const updatedUser = await axios
+            .patch(`${serverBaseURL}/users/me`, { profilePicture: pictureUrl })
             .catch(error => {
               dispatch(displayUpdateError({ code: 422, error: error }));
             });

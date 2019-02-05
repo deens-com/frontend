@@ -18,3 +18,5 @@ axiosInstance.interceptors.request.use(config => {
 });
 
 export default axiosInstance;
+
+export const getAuthHeader = () => `Bearer ${getSession().accessToken}`;

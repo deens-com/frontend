@@ -15,7 +15,7 @@ import SemanticLocationControl from 'shared_components/Form/SemanticLocationCont
 import { generateTripSlug, getHeroImage } from 'libs/Utils';
 import { Message } from 'semantic-ui-react';
 
-import axiosOriginal from 'axios';
+import axios from 'libs/axios';
 import { serverBaseURL } from 'libs/config';
 
 const PageContent = styled.div`
@@ -136,8 +136,7 @@ export default class Share extends React.Component {
     });
     const formData = new FormData();
     formData.append('profilePicture', file);
-    const uploadedFile = await axiosOriginal.post(`${serverBaseURL}/media`, formData, {});
-    //const uploadedFile = await axios.post('/media', formData, {});
+    const uploadedFile = await axios.post(`/media`, formData, {});
 
     const url = uploadedFile.data.url;
     this.setState(prev => ({
