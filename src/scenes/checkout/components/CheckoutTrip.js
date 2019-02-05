@@ -240,7 +240,9 @@ export class CheckoutTrip extends React.Component {
                               ),
                             )
                           : this.renderCancellationPolicy(
-                              service.periods[0].cancellationPolicies,
+                              service.periods &&
+                                service.periods[0] &&
+                                service.periods[0].cancellationPolicies,
                               getPriceFromServiceOption(
                                 service.basePrice,
                                 null,

@@ -1,0 +1,6 @@
+{
+  "access_token": "correct_token",
+  "scope": "read:current_user update:current_user_metadata delete:current_user_metadata create:current_user_metadata create:current_user_device_credentials delete:current_user_device_credentials update:current_user_identities",
+  "expires_in": 2592000,
+  "token_type": "Bearer"
+}

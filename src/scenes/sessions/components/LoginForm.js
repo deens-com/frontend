@@ -124,6 +124,7 @@ export default class LoginFormComponent extends Component {
                         error={this.props.isInputInvalid('email')}
                         autoFocus
                         required
+                        data-testId="loginEmail"
                       />
                       <Form.Input
                         fluid
@@ -138,6 +139,7 @@ export default class LoginFormComponent extends Component {
                         error={this.props.isInputInvalid('password')}
                         minLength={6}
                         required
+                        data-testId="loginPassword"
                       />
 
                       {displayErrorMessage(
@@ -152,6 +154,7 @@ export default class LoginFormComponent extends Component {
                         onClick={this.props.submitLogin}
                         loading={this.props.isLoading}
                         disabled={this.props.isLoading}
+                        data-testId="loginSubmit"
                       >
                         Login
                       </Button>
