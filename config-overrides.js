@@ -25,6 +25,7 @@ module.exports = function override(config, env) {
   );
 
   config.entry.unshift('@babel/polyfill');
+  config.entry.unshift('url-search-params-polyfill');
 
   if (isProd) {
     config = rewireWebpackBundleAnalyzer(config, env, {
