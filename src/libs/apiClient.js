@@ -54,4 +54,15 @@ export default {
       },
     },
   },
+  media: {
+    post: async file => {
+      let formData = new FormData();
+      formData.append('file', file);
+      return axios.post('/media', formData, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+    },
+  },
 };
