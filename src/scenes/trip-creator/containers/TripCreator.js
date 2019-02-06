@@ -11,6 +11,7 @@ import BrandFooter from 'shared_components/BrandFooter';
 import { Page } from 'shared_components/layout/Page';
 import history from 'main/history';
 import { loadTrip, removeTrip } from 'libs/localStorage';
+import { getSession } from 'libs/user-session';
 
 const PageContent = styled.div`
   margin: 0 20px auto;
@@ -18,7 +19,7 @@ const PageContent = styled.div`
 
 class TripCreatorContainer extends Component {
   componentDidMount() {
-    if (this.props.session.username) {
+    if (getSession()) {
       axios.post(`/trips`, loadTrip(false)).then(response => {
         removeTrip();
         history.replace(`/trips/organize/${response.data._id}`);

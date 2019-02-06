@@ -1,28 +1,4 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add("login", (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add("dismiss", { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This is will overwrite an existing command --
-// Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+import moment from 'moment';
 
 Cypress.Commands.add('getTestElement', selector => {
   return cy.get(`[data-testid="${selector}"]`);
@@ -30,4 +6,43 @@ Cypress.Commands.add('getTestElement', selector => {
 
 Cypress.Commands.add('findTestElement', selector => {
   return cy.get(`[data-testid="${selector}"]`);
+});
+
+Cypress.Commands.add('login', () => {
+  cy.fixture('users/login-success').then(user => {
+    localStorage.setItem(`please-${Cypress.env('NODE_ENV')}-session`, JSON.stringify(user));
+  });
+});
+
+Cypress.Commands.add('logout', () => {
+  window.localStorage.removeItem(`please-${Cypress.env('NODE_ENV')}-session`);
+});
+
+Cypress.Commands.add('checkTripOrganizerIsEmpty', () => {
+  cy.getTestElement('tripNameInput').should('have.value', 'New Trip');
+  cy.findTestElement('day').should('have.length', 1);
+  cy.getTestElement('noServicesText').should('exist');
+
+  cy.getTestElement('checkoutBoxDate').within(checkoutBoxDate => {
+    cy.root()
+      .find('input')
+      .should('have.length', 2);
+
+    cy.root()
+      .get('input:enabled')
+      .should(
+        'have.value',
+        moment()
+          .add('days', 1)
+          .format('MM/DD/YY'),
+      );
+    cy.root()
+      .get('input:disabled')
+      .should(
+        'have.value',
+        moment()
+          .add('days', 2)
+          .format('MM/DD/YY'),
+      );
+  });
 });

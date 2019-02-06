@@ -16,59 +16,74 @@ import { getSession } from 'libs/user-session';
 class TripOrganizerContainer extends Component {
   constructor(props) {
     super(props);
-    if (props.match.params.id) {
-      props.fetchTrip(props.match.params.id);
-    } else {
-      if (getSession()) {
-        if (!isTripSaved()) {
-          return;
-        }
-
-        this.isLoading = true;
-        const tripToSave = {
-          ...this.props.trip,
-          services: this.props.trip.services.map(service => ({
-            ...service,
-            service: service.service._id,
-          })),
-        };
-        axios.post('/trips', tripToSave).then(response => {
-          if (props.location.state) {
-            if (props.location.state.action === 'book') {
-              history.push(`/trips/checkout/${response.data._id}`);
-              removeTrip();
-              return;
-            } else if (props.location.state.action === 'share') {
-              history.push(`/trips/share/${response.data._id}`);
-              removeTrip();
-              return;
-            }
-          }
-          history.push(`/trips/organize/${response.data._id}`, this.props.location.state);
-        });
+    this.state = {
+      isLoading: false,
+    };
+  }
+  componentDidMount() {
+    if (this.props.match.params.id) {
+      if (!getSession()) {
+        history.replace('/trips/organize');
+        return;
       }
+      this.props.fetchTrip(this.props.match.params.id);
+      return;
+    }
+    if (getSession()) {
+      if (!isTripSaved()) {
+        history.replace('/trips/create');
+        return;
+      }
+
+      this.setState({
+        isLoading: true,
+      });
+
+      const tripToSave = {
+        ...this.props.trip,
+        services: this.props.trip.services.map(service => ({
+          ...service,
+          service: service.service._id,
+        })),
+      };
+
+      axios.post('/trips', tripToSave).then(response => {
+        if (this.props.location.state) {
+          if (this.props.location.state.action === 'book') {
+            history.push(`/trips/checkout/${response.data._id}`);
+            removeTrip();
+            return;
+          } else if (this.props.location.state.action === 'share') {
+            history.push(`/trips/share/${response.data._id}`);
+            removeTrip();
+            return;
+          }
+        }
+        history.push(`/trips/organize/${response.data._id}`, this.props.location.state);
+      });
     }
   }
 
   componentDidUpdate(prevProps) {
-    if (!this.isLoading) {
+    if (!this.state.isLoading) {
       if (!prevProps.match.params.id && this.props.match.params.id) {
-        this.isLoading = false;
         this.props.fetchTrip(this.props.match.params.id);
         return;
       }
-      if (this.props.trip && this.props.trip.bookingStatus === 'booked') {
-        history.replace(`/trips/${generateTripSlug(this.props.trip)}`);
-        return;
-      }
-      if (
-        this.props.match.params.id &&
-        this.props.trip &&
-        this.props.session._id &&
-        this.props.trip.owner !== this.props.session._id
-      ) {
-        history.replace(`/trips/${generateTripSlug(this.props.trip)}`);
-        return;
+      if (this.props.trip && !prevProps.trip) {
+        if (this.props.trip && this.props.trip.bookingStatus === 'booked') {
+          history.replace(`/trips/${generateTripSlug(this.props.trip)}`);
+          return;
+        }
+        if (
+          this.props.match.params.id &&
+          this.props.trip &&
+          this.props.session._id &&
+          this.props.trip.owner !== this.props.session._id
+        ) {
+          history.replace('/');
+          return;
+        }
       }
     }
   }

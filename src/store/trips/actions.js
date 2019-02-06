@@ -79,7 +79,7 @@ const fetchOwnerStart = () => {
 const fetchOwnerSuccess = owner => {
   return {
     type: types.FETCH_OWNER_SUCCESS,
-    payload: owner.data,
+    payload: owner,
   };
 };
 
@@ -160,7 +160,7 @@ const resetTrip = () => async dispatch => {
 const fetchTrip = id => async dispatch => {
   dispatch(fetchTripStart());
   try {
-    const trip = await axios.get(`${serverBaseURL}/trips/${id}?include=services,tags,reservations`);
+    const trip = await axios.get(`/trips/${id}?include=services,tags,reservations`);
     dispatch(
       fetchTripSuccess({
         ...trip.data,
@@ -177,8 +177,8 @@ const fetchTrip = id => async dispatch => {
 
     try {
       dispatch(fetchOwnerStart());
-      const owner = await axios.get(`${serverBaseURL}/users/${trip.data.owner}`);
-      dispatch(fetchOwnerSuccess(owner));
+      const owner = await axios.get(`/users/${trip.data.owner}`);
+      dispatch(fetchOwnerSuccess(owner.data));
     } catch (e) {
       console.error(e);
     }
