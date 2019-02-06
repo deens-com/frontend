@@ -9,10 +9,11 @@ const Center = styled.div`
 
 export default ({ trips }) => (
   <Carousel sm_slides_nb={1} md_slides_nb={2} lg_slides_nb={3} xl_slides_nb={4}>
-    {trips.map(item => (
-      <Center key={item._id}>
-        <LocationCart item={item} />
-      </Center>
-    ))}
+    {trips &&
+      trips.map(item => (
+        <Center key={item._id}>
+          <LocationCart item={item} />
+        </Center>
+      ))}
   </Carousel>
 );
