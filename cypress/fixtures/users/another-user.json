@@ -1,0 +1,13 @@
+{
+  "kycValidated": 1,
+  "plsBalance": 1500,
+  "whitelistedIcoAddresses": ["address"],
+  "_id": "444",
+  "email": "another-email@please.com",
+  "username": "anotherPleaseUser",
+  "createdAt": "2018-11-19T14:36:51.848Z",
+  "profilePicture": "https://please-staging.imgix.net/338d7fce-5dbf-4e72-98ce-2746a3026694.jpeg",
+  "referral": "cRyQWmJBS",
+  "referredUsersCount": 0,
+  "myReferralCode": "40r6tqHv5oX"
+}

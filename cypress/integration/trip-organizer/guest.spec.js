@@ -1,11 +1,4 @@
-import moment from 'moment';
-import guestTrip from './trip-guest.json';
-import loginSuccess from './login-success.json';
-import usersMe from './users-me.json';
-import tripCreated from './trip-created.json';
-import tripResponse from './trip-response.json';
-import guestAvailability from './trip-guest-availability-response.json';
-import availability from './trip-availability-response.json';
+const tripId = '5c58f13210dfca8453fb1a5b';
 
 describe('Should go to trip organizer', function() {
   before(() => {
@@ -26,86 +19,32 @@ describe('Should go to trip organizer', function() {
   it('From homepage', function() {
     cy.contains('Create a trip from scratch').click();
     cy.url().should('include', '/trips/organize');
-    cy.getTestElement('tripNameInput').should('have.value', 'New Trip');
-    cy.findTestElement('day').should('have.length', 1);
-    cy.getTestElement('noServicesText').should('exist');
-
-    cy.getTestElement('checkoutBoxDate').within(checkoutBoxDate => {
-      cy.root()
-        .find('input')
-        .should('have.length', 2);
-
-      cy.root()
-        .get('input:enabled')
-        .should(
-          'have.value',
-          moment()
-            .add('days', 1)
-            .format('MM/DD/YY'),
-        );
-      cy.root()
-        .get('input:disabled')
-        .should(
-          'have.value',
-          moment()
-            .add('days', 2)
-            .format('MM/DD/YY'),
-        );
-    });
+    cy.checkTripOrganizerIsEmpty();
   });
 });
 
 describe('Should login to book the trip', function() {
-  before(() => {
-    window.localStorage.setItem(
-      `please-${Cypress.env('NODE_ENV')}-anonymous-trip`,
-      JSON.stringify(guestTrip),
-    );
-  });
-
   beforeEach(() => {
+    cy.fixture('trips/guest').then(guestTrip => {
+      localStorage.setItem(
+        `please-${Cypress.env('NODE_ENV')}-anonymous-trip`,
+        JSON.stringify(guestTrip),
+      );
+    });
+
     cy.server();
-    cy.route({
-      method: 'GET',
-      url: '/trips/anonymous-availability',
-      response: guestAvailability,
-    });
-
-    cy.route({
-      method: 'GET',
-      url: '/trips/5c58f13210dfca8453fb1a5b?include=services,tags,reservations',
-      response: tripResponse,
-    });
-
-    cy.route({
-      method: 'GET',
-      url: '/trips/5c58f13210dfca8453fb1a5b/availability?**',
-      response: availability,
-    });
-
-    cy.route({
-      method: 'POST',
-      url: '/trips',
-      response: tripCreated,
-    });
-
-    cy.route({
-      method: 'POST',
-      url: '/users/login',
-      response: loginSuccess,
-    });
-
-    cy.route({
-      method: 'GET',
-      url: '/users/me',
-      response: usersMe,
-    });
+    cy.route('GET', '/trips/anonymous-availability', 'fx:trips/guest-availability');
+    cy.route('GET', `/trips/${tripId}?include=services,tags,reservations`, 'fx:trips/get-includes');
+    cy.route('GET', `/trips/${tripId}/availability?**`, 'fx:trips/availability');
+    cy.route('POST', '/trips', 'fx:trips/created');
+    cy.route('POST', '/users/login', 'fx:users/login-success');
+    cy.route('GET', '/users/me', 'fx:users/me');
 
     cy.visit(`/trips/organize`);
   });
 
-  after(() => {
-    window.localStorage.removeItem(`please-${Cypress.env('NODE_ENV')}-anonymous-trip`);
+  afterEach(() => {
+    localStorage.removeItem(`please-${Cypress.env('NODE_ENV')}-anonymous-trip`);
   });
 
   it('Should be redirected to register page', function() {
