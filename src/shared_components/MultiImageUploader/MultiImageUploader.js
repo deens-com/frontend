@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { getAuthHeader } from 'libs/axios';
 import styled from 'styled-components';
 import FineUploaderTraditional from 'fine-uploader-wrappers';
 import Filename from 'react-fine-uploader/filename';
@@ -113,9 +114,15 @@ export default class MultiImageUploader extends Component {
         deleteFile: {
           enabled: true,
           endpoint: `${serverBaseURL}/media`,
+          customHeaders: {
+            Authorization: getAuthHeader(),
+          },
         },
         request: {
           endpoint: `${serverBaseURL}/media`,
+          customHeaders: {
+            Authorization: getAuthHeader(),
+          },
         },
         validation: {
           allowedExtensions,

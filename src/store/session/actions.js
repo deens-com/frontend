@@ -4,8 +4,8 @@ import history from 'main/history';
 import fetch_helpers from 'libs/fetch_helpers';
 import { identifyUsingSession } from 'libs/analytics';
 import { serverBaseURL } from 'libs/config';
+import apiClient from 'libs/apiClient';
 import { saveSession, getSession, removeSession } from 'libs/user-session';
-import axiosOriginal from 'axios';
 
 export const types = {
   LOGIN_STARTS: 'LOGIN_STARTS',
@@ -180,26 +180,15 @@ export const update_user_avatar = file => {
     const session = getSession();
     if (session) {
       try {
-        let formData = new FormData();
-        formData.append('profilePicture', file);
         dispatch({ type: 'AVATAR_UPLOAD_START' });
-        const uploadedFile = await axiosOriginal.post(`${serverBaseURL}/media`, formData, {});
+
+        const uploadedFile = await apiClient.media.post(file);
         if (uploadedFile) {
           const pictureUrl = uploadedFile.data.url;
-          const updatedUser = await axiosOriginal
-            .patch(
-              `${serverBaseURL}/users/me`,
-              { profilePicture: pictureUrl },
-              {
-                headers: {
-                  Authorization: `Bearer ${session.accessToken}`,
-                  'Content-Type': 'application-json',
-                },
-              },
-            )
-            .catch(error => {
-              dispatch(displayUpdateError({ code: 422, error: error }));
-            });
+          const updatedUser = await axios.patch(`${serverBaseURL}/users/me`, {
+            profilePicture: pictureUrl,
+          });
+
           if (updatedUser) {
             dispatch(sessionsFetched({ session: updatedUser.data }));
             dispatch(displayUpdateError({}));
@@ -207,8 +196,9 @@ export const update_user_avatar = file => {
           }
         }
       } catch (error) {
-        dispatch(displayUpdateError({ code: 422, error: error }));
-        console.log(error);
+        dispatch(
+          displayUpdateError({ code: 422, error: 'There was an error while uploading the file' }),
+        );
       }
     }
   };
