@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import history from 'main/history';
 import { Loader, Popup, Icon, Dimmer, Modal } from 'semantic-ui-react';
 import { SingleDatePicker } from 'react-dates';
-import { calculateBottomPosition, updateBottomChatPosition } from 'libs/Utils';
+import { updateBottomChatPosition } from 'libs/Utils';
 
 // COMPONENTS
 import TopBar from 'shared_components/TopBar';
@@ -132,16 +132,12 @@ export default class Trip extends Component {
       this.handleCustomizeClick();
     }
 
-    updateBottomChatPosition(
-      calculateBottomPosition(this.props.isGDPRDismissed, this.props.gdprHeight, 135),
-    );
+    updateBottomChatPosition(135);
   }
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
-    updateBottomChatPosition(
-      calculateBottomPosition(this.props.isGDPRDismissed, this.props.gdprHeight, 0),
-    );
+    updateBottomChatPosition(0);
   }
 
   handleScroll = () => {
@@ -403,12 +399,7 @@ export default class Trip extends Component {
     return (
       <CustomPage>
         <TopBar fixed />
-        <DaySelector
-          bottom={calculateBottomPosition(isGDPRDismissed, gdprHeight, 65)}
-          days={days}
-          trip={trip}
-          goToDay={this.goToDay}
-        />
+        <DaySelector bottom={65} days={days} trip={trip} goToDay={this.goToDay} />
         <Modal
           open={Boolean(this.state.confirmCopyTripPopupOpen)}
           header={`Copy trip`}
@@ -439,7 +430,6 @@ export default class Trip extends Component {
           endDate={this.props.endDate}
           booked={this.props.booked}
           onCustomizeClick={this.handleCustomizeClick}
-          bottom={calculateBottomPosition(isGDPRDismissed, gdprHeight)}
         />
       </CustomPage>
     );

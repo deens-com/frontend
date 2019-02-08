@@ -201,13 +201,6 @@ export function getPriceFromServiceOption(base, price, peopleCount = 1) {
   return Number(price.value);
 }
 
-export function calculateBottomPosition(isGDPRDismissed, gdprHeight, baseBottom = 0) {
-  if (!isGDPRDismissed) {
-    return baseBottom + gdprHeight;
-  }
-  return baseBottom;
-}
-
 export function getPeopleCount(trip) {
   return trip.adultCount + (trip.childrenCount || 0) + (trip.infantCount || 0) || 1;
 }

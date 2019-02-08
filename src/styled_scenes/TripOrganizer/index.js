@@ -15,7 +15,7 @@ import { media } from 'libs/styled';
 import { saveTrip } from 'libs/localStorage';
 import * as tripUtils from 'libs/trips';
 import history from '../../main/history';
-import { calculateBottomPosition, updateBottomChatPosition } from 'libs/Utils';
+import { updateBottomChatPosition } from 'libs/Utils';
 
 import TopBar from 'shared_components/TopBar';
 import BrandFooter from 'shared_components/BrandFooter';
@@ -217,9 +217,7 @@ export default class TripOrganizer extends Component {
   }
 
   componentDidMount() {
-    updateBottomChatPosition(
-      calculateBottomPosition(this.props.isGDPRDismissed, this.props.gdprHeight, 60),
-    );
+    updateBottomChatPosition(60);
 
     if (!this.props.tripId) {
       this.checkAllServicesAvailability({
@@ -249,9 +247,7 @@ export default class TripOrganizer extends Component {
       });
     }
     if (prevProps.gdprHeight !== this.props.gdprHeight) {
-      updateBottomChatPosition(
-        calculateBottomPosition(this.props.isGDPRDismissed, this.props.gdprHeight, 60),
-      );
+      updateBottomChatPosition(60);
     }
   }
 
@@ -891,12 +887,7 @@ export default class TripOrganizer extends Component {
           <Loader size="massive" />
         </Dimmer>
         {!loading && (
-          <DaySelector
-            bottom={calculateBottomPosition(isGDPRDismissed, gdprHeight)}
-            days={days}
-            goToDay={this.goToDay}
-            onAddDay={this.handleAddDay}
-          />
+          <DaySelector days={days} goToDay={this.goToDay} onAddDay={this.handleAddDay} />
         )}
         <PageContent>
           {loading ? <Loader inline="centered" active size="massive" /> : this.renderPageContent()}
