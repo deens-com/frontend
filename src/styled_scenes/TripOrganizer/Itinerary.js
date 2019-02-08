@@ -348,7 +348,7 @@ export default class Itinerary extends Component {
   renderAvailability = (day, dayData) => {
     const id = dayData.service._id;
 
-    if (this.props.isCheckingAvailability || this.props.isCheckingList.includes(`${day}-${id}`)) {
+    if (this.props.isCheckingAvailability) {
       return (
         <CheckingAvailability>
           <Loader inline="centered" size="mini" active />
@@ -382,7 +382,10 @@ export default class Itinerary extends Component {
 
     return (
       <React.Fragment>
-        <Availability available={isAvailable}>
+        <Availability
+          data-testid={`service${isAvailable ? 'Available' : 'Unavailable'}`}
+          available={isAvailable}
+        >
           {isAvailable ? 'Available' : 'Unavailable'}
         </Availability>
         {isAvailable && (
@@ -558,9 +561,4 @@ Itinerary.propTypes = {
   startDate: PropTypes.object,
   assignRefsToParent: PropTypes.func.isRequired,
   selectOption: PropTypes.func.isRequired,
-  isCheckingList: PropTypes.array,
-};
-
-Itinerary.defaultProps = {
-  isCheckingList: [],
 };

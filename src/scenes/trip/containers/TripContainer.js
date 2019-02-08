@@ -51,7 +51,7 @@ function getBookedInformation(trip) {
 class TripContainer extends Component {
   constructor(props) {
     super(props);
-    props.fetchTrip(props.match.params.id);
+    props.fetchTrip(props.match.params.id, true);
 
     if (props.startDate && props.adults) {
       props.checkAvailability(props.match.params.id, props.startDate, {

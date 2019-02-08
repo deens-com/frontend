@@ -11,62 +11,12 @@
   "forkedBookingsCount": 0,
   "_id": "5c58f13210dfca8453fb1a5b",
   "adultCount": 1,
-  "media": [
-    {
-      "type": "image",
-      "hero": true,
-      "names": { "en-us": "Trip image" },
-      "files": {
-        "thumbnail": {
-          "url": "https://please-staging.imgix.net/2405e802-4ee8-434d-863e-ad4124ea798e.jpeg",
-          "width": 215,
-          "height": 140
-        },
-        "small": {
-          "url": "https://please-staging.imgix.net/2405e802-4ee8-434d-863e-ad4124ea798e.jpeg",
-          "width": 430,
-          "height": 280
-        },
-        "large": {
-          "url": "https://please-staging.imgix.net/2405e802-4ee8-434d-863e-ad4124ea798e.jpeg",
-          "width": 860,
-          "height": 560
-        },
-        "hero": {
-          "url": "https://please-staging.imgix.net/2405e802-4ee8-434d-863e-ad4124ea798e.jpeg",
-          "width": 860,
-          "height": 560
-        }
-      }
-    }
-  ],
-  "otherAttributes": {
-    "selectedServiceOptions": [
-      {
-        "day": 1,
-        "serviceId": "5bb5f979a965f27332f93a18",
-        "availabilityCode": "1e49d1_242598056474_2_11_2_1_0_0_1272357417_0_0-0-0_2-100_232.20190103_1_1_0_232_31bee5c20bbe4aa4a010376d52d011f3_",
-        "price": { "operator": "=", "value": 81.25 }
-      },
-      {
-        "day": 2,
-        "serviceId": "5bb5f979a965f27332f93a18",
-        "availabilityCode": "1e49d1_246909800720_1_11_2_1_0_0_1272357417_0_0-0-0_10-100_232.20190104_1_1_0_232_70b96c5e45f9469b850a8095ff188662_",
-        "price": { "operator": "=", "value": 99.05 }
-      },
-      {
-        "day": 3,
-        "serviceId": "5bb5f979a965f27332f93a18",
-        "availabilityCode": "1e49d1_246909800720_1_11_2_1_0_0_1272357417_0_0-0-0_11-100_232.20190105_1_1_0_232_892c69d43e8247ff89d6290009567886_",
-        "price": { "operator": "=", "value": 99.05 }
-      }
-    ]
-  },
+  "media": [],
   "services": [
     {
       "priority": 1,
       "notes": [],
-      "_id": "5c49640304be0e7322237890",
+      "_id": "5c58f0dfad3d5902665662d2",
       "service": {
         "importerOptions": { "importPrice": true, "importRating": true },
         "status": "active",
@@ -323,9 +273,9 @@
         "updatedAt": "2018-11-14T20:33:48.022Z",
         "__v": 2,
         "derivedPrices": {
-          "GBP": 75.53549,
-          "EUR": 86.15076,
-          "JPY": 10835.23091,
+          "GBP": 76.04032,
+          "EUR": 86.53629,
+          "JPY": 10821.42395,
           "USD": 98.6,
           "PLS": 2738.88911
         }
@@ -333,8 +283,8 @@
       "day": 1,
       "selectedOption": {
         "cancellable": false,
-        "cancellationPolicies": [{ "duration": 2880, "refundAmount": 0, "refundType": "percent" }],
-        "availabilityCode": "1e49d1_242598056474_1_11_2_1_0_0_1272357417_0_0-0-0_2-100_232.20190205_1_1_0_232_ac2e560fa0e84427bc839b7bf592bc3f_",
+        "cancellationPolicies": [{ "duration": 1440, "refundAmount": 0, "refundType": "percent" }],
+        "availabilityCode": "1e49d1_242598056474_1_11_2_1_0_0_1272357417_0_0-0-0_1-100_232.20190205_1_1_0_232_a1a2ac3292484ef48da5b0a1a31fd154_",
         "price": 81.25,
         "title": { "en-us": "Room, 2 Double Beds" },
         "subtitle": { "en-us": "Standard" },
@@ -345,7 +295,7 @@
     {
       "priority": 1,
       "notes": [],
-      "_id": "5c58aae03b324ebb2b615e08",
+      "_id": "5c58f10bad3d5902665662d3",
       "service": {
         "importerOptions": { "importPrice": true, "importRating": true },
         "status": "active",
@@ -1269,30 +1219,29 @@
         "updatedAt": "2018-11-14T21:54:36.159Z",
         "__v": 1,
         "derivedPrices": {
-          "GBP": 49.20532,
-          "EUR": 56.12032,
-          "JPY": 7058.2848,
+          "GBP": 49.53418,
+          "EUR": 56.37146,
+          "JPY": 7049.29067,
           "USD": 64.23,
           "PLS": 1784.16681
         }
       },
       "day": 2,
-      "instructions": {},
       "selectedOption": {
         "cancellable": false,
         "cancellationPolicies": [{ "duration": 2880, "refundAmount": 0, "refundType": "percent" }],
-        "availabilityCode": "1364fc_241478359508_1_11_2_2_1_0_185952482_8_0-0-0_2-100_232.20190206_1_1_0_232_3f08702720ed41c1a6052f678e294b82_",
-        "price": 83.48,
-        "title": { "en-us": "Room, 1 King Bed, Non Smoking" },
+        "availabilityCode": "1364fc_243999812604_1_11_2_1_0_0_4138441156_0_0-0-0_2-100_232.20190206_1_1_0_232_8fe87ab14922469e9eaafff6f0b38460_",
+        "price": 90.56,
+        "title": { "en-us": "Business Room, 1 King Bed, Non Smoking" },
         "subtitle": { "en-us": "Standard" },
         "roomType": { "en-us": "Single bed" },
-        "mealType": { "en-us": "Breakfast" }
+        "mealType": { "en-us": "None" }
       }
     },
     {
       "priority": 1,
       "notes": [],
-      "_id": "5c58af0e3b324ea089615e18",
+      "_id": "5c58f119ad3d5902665662d4",
       "service": {
         "importerOptions": {
           "importPrice": true,
@@ -1367,28 +1316,21 @@
         "updatedAt": "2019-01-01T12:35:53.034Z",
         "__v": 0,
         "derivedPrices": {
-          "GBP": 85.03488,
-          "EUR": 96.98514,
-          "JPY": 12197.87658,
+          "GBP": 85.6032,
+          "EUR": 97.41915,
+          "JPY": 12182.33325,
           "USD": 111,
           "PLS": 3083.33358
         }
       },
-      "day": 3,
-      "instructions": {}
+      "day": 3
     }
   ],
-  "title": { "en-us": "Trip to Salem and New York" },
-  "description": {
-    "en-us": "A central downtown locale and free Wi-Fi top the list of our guests' favorite features at the pet-friendly Knights Inn Salem. The two-story Knights Inn houses 42 rooms featuring coffeemakers hairdryers free local calls and flat-panel TVs. Wi-Fi is free property-wide. The hotel welcomes pets for a fee and parking is free. Less than four blocks east of Willamette University the Knights Inn is nestled in the heart of Salem. Guests are within a half-mile from the Oregon State Capitol building and just over one mile from Riverfront City Park situated on the banks of the Willamette River. Guests can head less than five miles south to tastings at the Honeywood Winery. Guests land at Portland International Airport less than 58 miles north of the hotel. The \"affordable\" rates \"perfect location\" and included free amenities like Wi-Fi and parking bring our guests to the Knights Inn Salem."
-  },
+  "title": { "en-us": "New Trip" },
   "location": {
-    "postcode": null,
     "city": "Salem",
-    "state": "Oregon",
     "countryCode": "US",
-    "geo": { "coordinates": [-123.02224, 44.93576], "type": "Point" },
-    "formattedAddress": "1555 State Street",
+    "geo": { "coordinates": [-123.03509630000002, 44.9428975], "type": "Point" },
     "country": {
       "_id": "5bcede894cf3099a25de7998",
       "countryCode": "US",
@@ -1397,11 +1339,11 @@
     },
     "id": null
   },
-  "basePrice": 164.73,
+  "basePrice": 171.81,
   "owner": "555",
   "parents": [],
-  "createdAt": "2019-02-04T20:50:57.098Z",
-  "updatedAt": "2019-02-04T21:34:12.952Z",
-  "__v": 39,
+  "createdAt": "2019-02-05T02:13:06.634Z",
+  "updatedAt": "2019-02-05T02:22:42.314Z",
+  "__v": 1,
   "startDate": "2019-02-05T03:00:00.000Z"
 }

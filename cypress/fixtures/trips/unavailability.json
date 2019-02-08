@@ -2,53 +2,41 @@
   {
     "serviceId": "5bb5f979a965f27332f93a18",
     "serviceOrganizationId": "5c58f0dfad3d5902665662d2",
-    "isAvailable": true,
-    "groupedOptions": {
-      "groupName": { "en-us": "Room Type" },
-      "required": true,
-      "options": [
-        {
-          "price": 96.69,
-          "subtitle": { "en-us": "Standard" },
-          "title": { "en-us": "Room, 2 Double Beds" },
-          "minCapacity": 1,
-          "maxCapacity": 1,
-          "mealType": { "en-us": "None" },
-          "roomType": { "en-us": "Single bed" },
-          "cancellable": false,
-          "cancellationPolicies": [
-            { "duration": 2880, "refundAmount": 0, "refundType": "percent" }
-          ],
-          "otherAttributes": {
-            "availabilityCode": {
-              "type": "private",
-              "source": "coral",
-              "code": "1e49d1_246943354909_1_11_2_1_0_0_1272357417_0_0-0-0_2-100_232.20190208_1_1_0_232_bdd964671b414cccb78bbd29811cdbf3_"
-            }
-          }
-        }
-      ]
-    }
+    "isAvailable": false
   },
   {
     "serviceId": "5bbf44b3026c99f5013b3d80",
     "serviceOrganizationId": "5c58f10bad3d5902665662d3",
     "isAvailable": true,
     "groupedOptions": {
-      "groupName": { "en-us": "Room Type" },
+      "groupName": {
+        "en-us": "Room Type"
+      },
       "required": true,
       "options": [
         {
           "price": 99.23,
-          "subtitle": { "en-us": "Standard" },
-          "title": { "en-us": "Business Room, 1 King Bed, Non Smoking" },
+          "subtitle": {
+            "en-us": "Standard"
+          },
+          "title": {
+            "en-us": "Business Room, 1 King Bed, Non Smoking"
+          },
           "minCapacity": 1,
           "maxCapacity": 1,
-          "mealType": { "en-us": "None" },
-          "roomType": { "en-us": "Single bed" },
+          "mealType": {
+            "en-us": "None"
+          },
+          "roomType": {
+            "en-us": "Single bed"
+          },
           "cancellable": false,
           "cancellationPolicies": [
-            { "duration": 2880, "refundAmount": 0, "refundType": "percent" }
+            {
+              "duration": 2880,
+              "refundAmount": 0,
+              "refundType": "percent"
+            }
           ],
           "otherAttributes": {
             "availabilityCode": {
@@ -60,15 +48,27 @@
         },
         {
           "price": 111.29,
-          "subtitle": { "en-us": "Standard" },
-          "title": { "en-us": "Standard Room" },
+          "subtitle": {
+            "en-us": "Standard"
+          },
+          "title": {
+            "en-us": "Standard Room"
+          },
           "minCapacity": 1,
           "maxCapacity": 1,
-          "mealType": { "en-us": "None" },
-          "roomType": { "en-us": "Single bed" },
+          "mealType": {
+            "en-us": "None"
+          },
+          "roomType": {
+            "en-us": "Single bed"
+          },
           "cancellable": false,
           "cancellationPolicies": [
-            { "duration": 2880, "refundAmount": 0, "refundType": "percent" }
+            {
+              "duration": 2880,
+              "refundAmount": 0,
+              "refundType": "percent"
+            }
           ],
           "otherAttributes": {
             "availabilityCode": {
@@ -80,15 +80,27 @@
         },
         {
           "price": 113.68,
-          "subtitle": { "en-us": "Standard" },
-          "title": { "en-us": "Room, Non Smoking (2 King Beds)" },
+          "subtitle": {
+            "en-us": "Standard"
+          },
+          "title": {
+            "en-us": "Room, Non Smoking (2 King Beds)"
+          },
           "minCapacity": 1,
           "maxCapacity": 1,
-          "mealType": { "en-us": "None" },
-          "roomType": { "en-us": "Single bed" },
+          "mealType": {
+            "en-us": "None"
+          },
+          "roomType": {
+            "en-us": "Single bed"
+          },
           "cancellable": false,
           "cancellationPolicies": [
-            { "duration": 2880, "refundAmount": 0, "refundType": "percent" }
+            {
+              "duration": 2880,
+              "refundAmount": 0,
+              "refundType": "percent"
+            }
           ],
           "otherAttributes": {
             "availabilityCode": {
@@ -100,15 +112,27 @@
         },
         {
           "price": 123.31,
-          "subtitle": { "en-us": "Standard" },
-          "title": { "en-us": "Standard Room" },
+          "subtitle": {
+            "en-us": "Standard"
+          },
+          "title": {
+            "en-us": "Standard Room"
+          },
           "minCapacity": 1,
           "maxCapacity": 1,
-          "mealType": { "en-us": "None" },
-          "roomType": { "en-us": "Single bed" },
+          "mealType": {
+            "en-us": "None"
+          },
+          "roomType": {
+            "en-us": "Single bed"
+          },
           "cancellable": false,
           "cancellationPolicies": [
-            { "duration": 2880, "refundAmount": 0, "refundType": "percent" }
+            {
+              "duration": 2880,
+              "refundAmount": 0,
+              "refundType": "percent"
+            }
           ],
           "otherAttributes": {
             "availabilityCode": {
@@ -120,15 +144,27 @@
         },
         {
           "price": 132.96,
-          "subtitle": { "en-us": "Standard" },
-          "title": { "en-us": "Standard Room" },
+          "subtitle": {
+            "en-us": "Standard"
+          },
+          "title": {
+            "en-us": "Standard Room"
+          },
           "minCapacity": 1,
           "maxCapacity": 1,
-          "mealType": { "en-us": "None" },
-          "roomType": { "en-us": "Single bed" },
+          "mealType": {
+            "en-us": "None"
+          },
+          "roomType": {
+            "en-us": "Single bed"
+          },
           "cancellable": false,
           "cancellationPolicies": [
-            { "duration": 2880, "refundAmount": 0, "refundType": "percent" }
+            {
+              "duration": 2880,
+              "refundAmount": 0,
+              "refundType": "percent"
+            }
           ],
           "otherAttributes": {
             "availabilityCode": {
@@ -140,15 +176,27 @@
         },
         {
           "price": 89.61,
-          "subtitle": { "en-us": "Standard" },
-          "title": { "en-us": "Room, 1 Queen Bed, Non Smoking" },
+          "subtitle": {
+            "en-us": "Standard"
+          },
+          "title": {
+            "en-us": "Room, 1 Queen Bed, Non Smoking"
+          },
           "minCapacity": 1,
           "maxCapacity": 1,
-          "mealType": { "en-us": "Breakfast" },
-          "roomType": { "en-us": "Single bed" },
+          "mealType": {
+            "en-us": "Breakfast"
+          },
+          "roomType": {
+            "en-us": "Single bed"
+          },
           "cancellable": false,
           "cancellationPolicies": [
-            { "duration": 2880, "refundAmount": 0, "refundType": "percent" }
+            {
+              "duration": 2880,
+              "refundAmount": 0,
+              "refundType": "percent"
+            }
           ],
           "otherAttributes": {
             "availabilityCode": {
@@ -160,15 +208,27 @@
         },
         {
           "price": 91.06,
-          "subtitle": { "en-us": "Standard" },
-          "title": { "en-us": "Room, 1 Queen Bed, Accessible, Non Smoking" },
+          "subtitle": {
+            "en-us": "Standard"
+          },
+          "title": {
+            "en-us": "Room, 1 Queen Bed, Accessible, Non Smoking"
+          },
           "minCapacity": 1,
           "maxCapacity": 1,
-          "mealType": { "en-us": "Breakfast" },
-          "roomType": { "en-us": "Single bed" },
+          "mealType": {
+            "en-us": "Breakfast"
+          },
+          "roomType": {
+            "en-us": "Single bed"
+          },
           "cancellable": false,
           "cancellationPolicies": [
-            { "duration": 2880, "refundAmount": 0, "refundType": "percent" }
+            {
+              "duration": 2880,
+              "refundAmount": 0,
+              "refundType": "percent"
+            }
           ],
           "otherAttributes": {
             "availabilityCode": {
@@ -180,15 +240,27 @@
         },
         {
           "price": 93,
-          "subtitle": { "en-us": "Standard" },
-          "title": { "en-us": "Room, 1 King Bed, Non Smoking" },
+          "subtitle": {
+            "en-us": "Standard"
+          },
+          "title": {
+            "en-us": "Room, 1 King Bed, Non Smoking"
+          },
           "minCapacity": 1,
           "maxCapacity": 1,
-          "mealType": { "en-us": "Breakfast" },
-          "roomType": { "en-us": "Single bed" },
+          "mealType": {
+            "en-us": "Breakfast"
+          },
+          "roomType": {
+            "en-us": "Single bed"
+          },
           "cancellable": false,
           "cancellationPolicies": [
-            { "duration": 2880, "refundAmount": 0, "refundType": "percent" }
+            {
+              "duration": 2880,
+              "refundAmount": 0,
+              "refundType": "percent"
+            }
           ],
           "otherAttributes": {
             "availabilityCode": {
@@ -200,15 +272,27 @@
         },
         {
           "price": 108.88,
-          "subtitle": { "en-us": "Standard" },
-          "title": { "en-us": "Upgraded, Room, 2 Queen Beds, Non Smoking" },
+          "subtitle": {
+            "en-us": "Standard"
+          },
+          "title": {
+            "en-us": "Upgraded, Room, 2 Queen Beds, Non Smoking"
+          },
           "minCapacity": 1,
           "maxCapacity": 1,
-          "mealType": { "en-us": "Breakfast" },
-          "roomType": { "en-us": "Single bed" },
+          "mealType": {
+            "en-us": "Breakfast"
+          },
+          "roomType": {
+            "en-us": "Single bed"
+          },
           "cancellable": false,
           "cancellationPolicies": [
-            { "duration": 2880, "refundAmount": 0, "refundType": "percent" }
+            {
+              "duration": 2880,
+              "refundAmount": 0,
+              "refundType": "percent"
+            }
           ],
           "otherAttributes": {
             "availabilityCode": {
@@ -220,15 +304,27 @@
         },
         {
           "price": 115.74,
-          "subtitle": { "en-us": "Standard" },
-          "title": { "en-us": "Upgraded, Room, 2 Queen Beds, Non Smoking" },
+          "subtitle": {
+            "en-us": "Standard"
+          },
+          "title": {
+            "en-us": "Upgraded, Room, 2 Queen Beds, Non Smoking"
+          },
           "minCapacity": 1,
           "maxCapacity": 1,
-          "mealType": { "en-us": "Breakfast" },
-          "roomType": { "en-us": "Single bed" },
+          "mealType": {
+            "en-us": "Breakfast"
+          },
+          "roomType": {
+            "en-us": "Single bed"
+          },
           "cancellable": false,
           "cancellationPolicies": [
-            { "duration": 4320, "refundAmount": 0, "refundType": "percent" }
+            {
+              "duration": 4320,
+              "refundAmount": 0,
+              "refundType": "percent"
+            }
           ],
           "otherAttributes": {
             "availabilityCode": {
