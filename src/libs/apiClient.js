@@ -1,4 +1,3 @@
-import qs from 'qs';
 import axios from 'libs/axios';
 
 const paramsSerializer = params => {

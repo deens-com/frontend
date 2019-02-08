@@ -165,10 +165,6 @@ export default class CheckoutBox extends React.Component {
     });
   };
 
-  book = () => {
-    this.props.action('book');
-  };
-
   share = () => {
     this.props.action('share');
   };
@@ -261,7 +257,7 @@ export default class CheckoutBox extends React.Component {
                 size="medium"
                 type="button"
                 theme="fillLightGreen"
-                onClick={this.book}
+                onClick={this.props.book}
                 width="100%"
                 align="center"
                 bold

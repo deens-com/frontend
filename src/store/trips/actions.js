@@ -157,7 +157,7 @@ const resetTrip = () => async dispatch => {
   });
 };
 
-const fetchTrip = id => async dispatch => {
+const fetchTrip = (id, fetchOwner) => async dispatch => {
   dispatch(fetchTripStart());
   try {
     const trip = await axios.get(`/trips/${id}?include=services,tags,reservations`);
@@ -174,6 +174,10 @@ const fetchTrip = id => async dispatch => {
         })),
       }),
     );
+
+    if (!fetchOwner) {
+      return;
+    }
 
     try {
       dispatch(fetchOwnerStart());

@@ -31,6 +31,7 @@ import mapServicesToDays, {
 } from '../Trip/mapServicesToDays';
 import DaySelector from '../Trip/DaySelector';
 import CheckoutBox from './CheckoutBox';
+import PreBookModal from './PreBookModal';
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
 import Input from 'shared_components/StyledInput';
 import debounce from 'lodash.debounce';
@@ -95,7 +96,6 @@ function createTripState(props, state) {
       props.trip.duration,
       props.trip.startDate || props.startDate,
     ),
-    isCheckingList: [],
     notes: props.trip.notes ? props.trip.notes : {},
   };
 }
@@ -198,7 +198,6 @@ export default class TripOrganizer extends Component {
         trip: props.trip || emptyTrip,
         days: [],
         availability: {},
-        isCheckingList: [],
         notes: {},
       };
     }
@@ -542,7 +541,6 @@ export default class TripOrganizer extends Component {
           isChecking: true,
           timestamp,
         },
-        isCheckingList: [],
       }),
       async () => {
         const checkdata = {
@@ -568,17 +566,23 @@ export default class TripOrganizer extends Component {
 
         const data = uniqBy(processedData, elem => `${elem.day}-${elem.serviceId}`);
 
-        this.setState(prevState =>
-          calculatePrice({
-            ...prevState,
-            days: pickFirstOption(prevState.days, data),
-            availability: {
-              data,
-              error: null,
-              isChecking: false,
-              timestamp,
-            },
-          }),
+        this.setState(
+          prevState =>
+            calculatePrice({
+              ...prevState,
+              days: pickFirstOption(prevState.days, data),
+              availability: {
+                data,
+                error: null,
+                isChecking: false,
+                timestamp,
+              },
+            }),
+          () => {
+            if (this.state.showingPreBookModal) {
+              this.preBook();
+            }
+          },
         );
       },
     );
@@ -666,41 +670,78 @@ export default class TripOrganizer extends Component {
   };
 
   getBookError = () => {
-    if (!this.props.startDate) {
-      return 'You need to select a start date';
-    }
-
-    const checkingAvailability =
-      !this.state.availability ||
-      this.state.availability.isChecking ||
-      this.state.isCheckingList.length > 0 ||
-      !this.state.availability.data;
-
-    if (checkingAvailability) {
-      return 'We are checking the availability of the selected services';
-    }
-
-    if (!this.state.availability.data || this.state.availability.data.length === 0) {
+    if (this.state.trip.services && this.state.trip.services.length === 0) {
       return 'You have to add services to the current trip';
     }
 
-    const options = [];
-    const servicesAreAvailable = this.state.availability.data.some(value => {
-      if (value.groupedOptions) {
-        options.push({
-          day: value.day,
-          id: value.serviceId,
-        });
-      }
+    return null;
+  };
 
-      return !value.isAvailable;
-    });
+  preBook = () => {
+    const checkingAvailability =
+      !this.state.availability ||
+      this.state.availability.isChecking ||
+      !this.state.availability.data;
 
-    if (servicesAreAvailable) {
-      return 'Please check that all services are available in selected dates';
+    if (checkingAvailability) {
+      this.setState({
+        showingPreBookModal: true,
+      });
+      return;
     }
 
-    return null;
+    const servicesAreNotAvailable = this.state.availability.data.some(value => !value.isAvailable);
+
+    if (servicesAreNotAvailable) {
+      this.setState({
+        showingPreBookModal: true,
+      });
+      return;
+    }
+
+    this.setState({
+      showingPreBookModal: false,
+    });
+
+    this.patchTrip('book');
+  };
+
+  filterServicesFromDays = (days, services) => {
+    const dayServices = mapServicesToDays(
+      services,
+      this.state.trip.duration,
+      this.state.trip.startDate || this.props.startDate,
+    );
+
+    return days.map(elem => ({
+      ...elem,
+      data: elem.data.filter(elemData =>
+        dayServices
+          .find(dayService => elemData.day === dayService.day)
+          .data.find(day => day.serviceId === elemData.service._id),
+      ),
+    }));
+  };
+
+  removeUnavailableServicesAndBook = () => {
+    const servicesToKeep = this.state.availability.data.filter(value => value.isAvailable);
+
+    this.setState(
+      prevState => ({
+        availability: {
+          ...prevState.availability,
+          data: servicesToKeep,
+        },
+        days: this.filterServicesFromDays(prevState.days, servicesToKeep),
+      }),
+      () => this.patchTrip('book'),
+    );
+  };
+
+  hidePreBookModal = () => {
+    this.setState({
+      showingPreBookModal: false,
+    });
   };
 
   removeDay = day => {
@@ -757,7 +798,7 @@ export default class TripOrganizer extends Component {
 
   renderPageContent = () => {
     const { startDate } = this.props;
-    const { availability, trip, days, isCheckingList, notes } = this.state;
+    const { availability, trip, days, notes } = this.state;
 
     let location = getFormattedAddress(trip.location);
 
@@ -790,6 +831,7 @@ export default class TripOrganizer extends Component {
           trip={trip}
           days={days}
           action={this.patchTrip}
+          book={this.preBook}
           isSaving={this.state.isSaving || this.state.savingPending}
           changeDates={this.changeDates}
           changeGuests={this.changeGuests}
@@ -803,7 +845,6 @@ export default class TripOrganizer extends Component {
         />
         <Itinerary
           isCheckingAvailability={availability.isChecking}
-          isCheckingList={isCheckingList}
           availability={availability.data}
           trip={trip}
           numberOfPeople={trip.adultCount + trip.childrenCount + trip.infantCount}
@@ -821,20 +862,32 @@ export default class TripOrganizer extends Component {
           isSaving={this.state.isSaving || this.state.savingPending}
           blockUntilSaved={this.blockUntilSaved}
         />
+        {this.state.showingPreBookModal && (
+          <PreBookModal
+            continueFn={this.removeUnavailableServicesAndBook}
+            availability={this.state.availability}
+            filterServicesFromDays={this.filterServicesFromDays}
+            days={this.state.days}
+            hideModal={this.hidePreBookModal}
+          />
+        )}
       </React.Fragment>
     );
   };
 
   render() {
     const { isLoading, tripId, isGDPRDismissed, gdprHeight } = this.props;
-    const { trip, isBlockedUntilSaved, days } = this.state;
+    const { trip, isBlockedUntilSaved, days, showingPreBookModal, availability } = this.state;
 
     const loading = isLoading || (!trip || trip._id !== tripId);
 
     return (
       <Page>
         <TopBar fixed />
-        <Dimmer active={isBlockedUntilSaved} page>
+        <Dimmer
+          active={isBlockedUntilSaved || (showingPreBookModal && availability.isChecking)}
+          page
+        >
           <Loader size="massive" />
         </Dimmer>
         {!loading && (

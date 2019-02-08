@@ -282,9 +282,9 @@ export default class Button extends Component {
             this.button = button;
           }}
           type={this.props.type}
-          onClick={this.onClick}
           disabled={this.props.disabled}
           {...props}
+          onClick={this.onClick}
         />
       );
     }
