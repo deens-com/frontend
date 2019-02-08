@@ -8,7 +8,7 @@ import { Loader, Dimmer } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { media } from 'libs/styled';
 import { generateTripSlug } from 'libs/Utils';
-import { updateBottomChatPosition, calculateBottomPosition } from 'libs/Utils';
+import { updateBottomChatPosition } from 'libs/Utils';
 
 import { Page } from 'shared_components/layout/Page';
 import TopBar from 'shared_components/TopBar';
@@ -186,7 +186,7 @@ const Guests = styled.div`
 
 const Footer = styled.div`
   position: fixed;
-  bottom: ${props => props.bottom || 0}px;
+  bottom: 0;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -248,9 +248,7 @@ class CheckoutContainer extends React.Component {
 
   componentDidMount() {
     this.props.cleanPaymentStatus();
-    updateBottomChatPosition(
-      calculateBottomPosition(this.props.isGDPRDismissed, this.props.gdprHeight, 50),
-    );
+    updateBottomChatPosition(50);
   }
 
   componentWillUnmount() {
@@ -516,7 +514,7 @@ class CheckoutContainer extends React.Component {
               {this.renderStep()}
             </Wrapper>
             {step < 3 && (
-              <Footer bottom={calculateBottomPosition(isGDPRDismissed, gdprHeight)}>
+              <Footer>
                 <Button
                   disabled={this.state.nextDisabled}
                   theme="fillLightGreen"

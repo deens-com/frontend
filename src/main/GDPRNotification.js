@@ -4,12 +4,11 @@ import { media } from 'libs/styled';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from 'store/settings/actions';
-import { updateBottomChatPosition, calculateBottomPosition } from 'libs/Utils';
+import { updateBottomChatPosition } from 'libs/Utils';
 import { CrossIcon } from 'shared_components/icons';
 
 const Notification = styled.div`
   background-color: rgba(210, 236, 241, 0.98);
-  position: fixed;
   bottom: 0;
   min-height: 50px;
   border-top: 1px solid #7dd7e5;
@@ -50,15 +49,44 @@ class GDPRBanner extends React.Component {
   constructor(props) {
     super(props);
     this.gdprRef = React.createRef();
+    this.ticking = false;
   }
 
   componentDidMount() {
     if (!this.props.closed) {
-      const height = this.gdprRef.current.getBoundingClientRect().height;
-      updateBottomChatPosition(calculateBottomPosition(false, height, 0));
-      this.props.renderedGdpr(height);
+      this.sendRenderedHeight();
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!this.ticking) {
+        window.requestAnimationFrame(() => {
+          if (window.scrollY > 0 && this.props.height !== 0) {
+            this.props.renderedGdpr(0);
+          }
+          if (window.scrollY === 0 && this.props.height === 0) {
+            this.sendRenderedHeight();
+          }
+          this.ticking = false;
+        });
+      }
+      this.ticking = true;
+    });
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.closed && !this.props.closed) {
+      this.sendRenderedHeight();
     }
   }
+
+  sendRenderedHeight = () => {
+    const height = this.gdprRef.current.getBoundingClientRect().height;
+    this.props.renderedGdpr(height);
+  };
+
+  showAgain = () => {
+    this.props.showGdpr();
+  };
 
   dismiss = () => {
     updateBottomChatPosition();
@@ -88,6 +116,7 @@ class GDPRBanner extends React.Component {
 
 const mapStateToProps = state => ({
   closed: state.settings.gdprDismissed,
+  height: state.settings.gdprHeight,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);

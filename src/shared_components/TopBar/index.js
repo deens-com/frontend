@@ -1,6 +1,7 @@
 // NPM
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import styled, { css } from 'styled-components';
 
 // COMPONENTS
@@ -48,8 +49,9 @@ const InnerWrap = styled.header`
     css`
       left: 0;
       position: fixed;
-      top: 0;
       z-index: 10000;
+      top: ${props => props.fixedTop || 0}px;
+      transition: all 0.75s ease 0s;
     `};
 `;
 
@@ -59,7 +61,7 @@ const FixedPlaceholder = styled.div`
 `;
 
 // MODULE
-export default class TopBar extends Component {
+class TopBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -104,7 +106,7 @@ export default class TopBar extends Component {
   }
 
   render() {
-    const { home, fixed, noSearch } = this.props;
+    const { home, fixed, noSearch, isGDPRDismissed, gdprHeight } = this.props;
     const { showMenu, showSearchMobile } = this.state;
 
     return (
@@ -116,6 +118,7 @@ export default class TopBar extends Component {
           showMenu={showMenu}
           home={home}
           fixed={fixed}
+          fixedTop={!isGDPRDismissed && gdprHeight}
         >
           {!showSearchMobile && (
             <Logo
@@ -157,3 +160,10 @@ TopBar.defaultProps = {
   fixed: false,
   withPadding: false,
 };
+
+const mapStateToProps = state => ({
+  isGDPRDismissed: state.settings.gdprDismissed,
+  gdprHeight: state.settings.gdprHeight,
+});
+
+export default connect(mapStateToProps)(TopBar);

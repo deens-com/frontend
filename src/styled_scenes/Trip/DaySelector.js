@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Button from 'shared_components/Button';
+import { connect } from 'react-redux';
 import { media } from 'libs/styled';
 
 import mapServicesToDays from './mapServicesToDays';
@@ -27,7 +28,7 @@ const Wrapper = styled.div`
     width: auto;
     left: -18px;
     padding: 0;
-    top: 80px;
+    top: ${props => (props.fixedTop || 0) + 80}px;
     align-items: flex-start;
     background: transparent;
     > div {
@@ -47,8 +48,9 @@ class DaySelector extends React.Component {
 
   render() {
     const days = this.props.days || this.days;
+    const { isGDPRDismissed, gdprHeight } = this.props;
     return (
-      <Wrapper bottom={this.props.bottom}>
+      <Wrapper bottom={this.props.bottom} fixedTop={!isGDPRDismissed && gdprHeight}>
         {days.map((day, index) => (
           <Button
             theme={day.data.length > 0 ? 'fillLighterGreen' : 'fillLightRed'}
@@ -69,4 +71,10 @@ class DaySelector extends React.Component {
     );
   }
 }
-export default DaySelector;
+
+const mapStateToProps = state => ({
+  isGDPRDismissed: state.settings.gdprDismissed,
+  gdprHeight: state.settings.gdprHeight,
+});
+
+export default connect(mapStateToProps)(DaySelector);
