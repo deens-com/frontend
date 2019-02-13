@@ -12,7 +12,7 @@ import MobileDropdownMenu from '../Nav/MobileDropdownMenu';
 import Search from './Search';
 
 // ACTIONS/CONFIG
-import { media } from '../../libs/styled';
+import { media } from 'libs/styled';
 
 // STYLES
 const InnerWrap = styled.header`

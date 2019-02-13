@@ -9,10 +9,11 @@ export const Page = styled.div`
 `;
 
 export const PageWrapper = styled.div`
-  max-width: 1350px;
+  max-width: 1200px;
   width: 100%;
   margin: 0 auto;
   padding: ${props => props.padding || '0 10px'};
+  position: relative;
 `;
 
 export const PageContentStyles = styled.main`

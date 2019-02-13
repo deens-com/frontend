@@ -30,11 +30,11 @@ const Wrap = styled.div`
 `;
 
 const Thumb = styled(Image)`
-  padding-top: 65%;
   background: #f7f7f7;
   background-size: cover;
   background-position: center;
-  height: 100%;
+  height: 300px;
+  border-radius: 0 0 15px 0;
 `;
 
 // MODULE
@@ -71,6 +71,7 @@ export default class CartThumb extends Component {
     return (
       <Wrap withTooltip={withTooltip} onMouseLeave={this.hideTooltip}>
         <Thumb src={url} background />
+        {this.props.children}
         {/*withTooltip && (
           <TagWrap
             ref={tag => {

@@ -15,8 +15,9 @@ export default class HomeContainer extends Component {
 
     this.fetchTrips = fetchHelperFactory(this.setState.bind(this), 'trips', api.trips.search.get);
   }
+
   componentDidMount() {
-    this.fetchTrips({ include: 'owner' });
+    this.fetchTrips({ include: ['owner', 'tags'] });
   }
 
   getTrips = () => {

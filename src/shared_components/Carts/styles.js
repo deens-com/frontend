@@ -3,16 +3,8 @@ import styled, { css } from 'styled-components';
 import { media } from '../../libs/styled';
 
 export const ContentWrap = styled.div`
-  padding: 15px;
+  padding-top: 4px;
   height: 180px;
-
-  ${media.minSmall} {
-    padding: 20px;
-  }
-
-  ${media.minMedium} {
-    padding: 25px;
-  }
 `;
 
 export const More = styled.div`
@@ -38,20 +30,13 @@ export const CategoryThumb = styled.div`
 
 export const Cart = styled.div`
   background: ${props => props.background || 'white'};
-  border-radius: 4px;
+  border-radius: 15px 15px 0 0;
   overflow: hidden;
   display: flex;
   flex-direction: ${props => (props.column ? 'column' : 'row')};
   margin-bottom: 15px;
   text-align: ${props => props.centerText || 'left'};
   min-height: ${props => props.height || 'auto'};
-  box-shadow: 0 8px 25px 0 rgba(141, 141, 141, 0.22);
-  transition: box-shadow 0.1s ease-in, background 0.1s ease-in;
-
-  &:hover {
-    box-shadow: 0 8px 40px 0px rgba(141, 141, 141, 0.28);
-    background: ${props => props.hoverBg || 'white'};
-  }
 
   & > a {
     color: ${props => props.linkColor || 'inherit'};

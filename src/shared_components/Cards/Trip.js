@@ -19,6 +19,7 @@ import Thumb from './components/Thumb';
 // STYLES
 import { Cart, ContentWrap } from './styles';
 import { cardConfig } from 'libs/config';
+import { duration } from 'libs/trips';
 import { getHeroImage } from 'libs/Utils';
 import { PinIcon } from 'shared_components/icons';
 import I18nText from 'shared_components/I18nText';
@@ -147,24 +148,6 @@ function formatLocation(location) {
   }
   return location;
 }
-
-const duration = minutes => {
-  const humanizedDuration = moment.duration(minutes || 0, 'minutes').humanize();
-  let startsWithLetter = '';
-  if (humanizedDuration.startsWith('a ')) {
-    startsWithLetter = 'a';
-  }
-
-  if (humanizedDuration.startsWith('an ')) {
-    startsWithLetter = 'an';
-  }
-
-  if (startsWithLetter) {
-    return humanizedDuration.replace(startsWithLetter, '1');
-  }
-
-  return humanizedDuration;
-};
 
 class TripCard extends Component {
   constructor(props) {

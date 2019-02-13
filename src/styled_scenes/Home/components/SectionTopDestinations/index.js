@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 import { media } from 'libs/styled';
+import { H1, H2 } from 'libs/commonStyles';
+import { secondary } from 'libs/colors';
 
 import sydneyImg from './images/sydney.jpg';
 import sanFranciscoImg from './images/san-francisco.jpg';
@@ -136,9 +138,13 @@ const London = styled(Row)`
   height: 190px;
 `;
 
-const InnerText = styled.div`
-  margin: auto auto 18px 26px;
+const InnerText = styled(H1)`
+  margin: auto auto 18px 26px !important;
   color: white;
+`;
+
+const Title = styled(H2)`
+  color: ${secondary};
 `;
 
 const sydneyParams =
@@ -155,7 +161,7 @@ export default function HomeSectionTopDestinations() {
     <PageWrapper>
       <SectionWrap>
         <SectionHeader>
-          <h3>Top Destinations</h3>
+          <Title>Top Destinations</Title>
         </SectionHeader>
         <SectionContent>
           <FlexLink to={`/results?${sydneyParams}`}>

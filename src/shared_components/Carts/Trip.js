@@ -7,7 +7,6 @@ import { Popup, Image } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 // COMPONENTS
-import Rating from '../Rating';
 import PriceTag from '../Currency/PriceTag';
 import Thumb from './components/Thumb';
 
@@ -19,24 +18,28 @@ import { cardConfig } from 'libs/config';
 import { getHeroImage, generateTripSlug } from 'libs/Utils';
 import { PinIcon } from 'shared_components/icons';
 import I18nText from 'shared_components/I18nText';
+import { H6, P, PStrong, PSmall, PXSmall } from 'libs/commonStyles';
+import { lightText, primary, secondary } from 'libs/colors';
+import { duration } from 'libs/trips';
 
 import ImgurAvatar from './../../assets/no-avatar.png';
 
 const Wrap = styled.div`
   display: inline-block;
-  width: 300px;
+  width: 255px;
 `;
 
 // How did we come up with height: 104px?
 // the max number of lines Title can render is 4
 // rendered a title that long and saw how many pixels it takes 😜
-const Title = styled.h3`
-  font-size: 18px;
-  font-height: 21px;
-  color: #3c434b;
-  font-weight: bold;
-  margin-bottom: 12px;
+const Title = styled(H6)`
+  color: ${lightText};
+  padding: 0 5px 12px;
   max-height: ${cardConfig.titleHeight};
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.33);
   a {
     color: inherit;
   }
@@ -48,32 +51,15 @@ const Description = styled.div`
   color: #545454;
 `;
 
-const Price = styled.span`
-  color: #3c434b;
-  font-size: 14px;
-  line-height: 16px;
-  font-weight: bold;
-`;
-
 const Location = styled.span`
   color: #787878;
   display: flex;
   align-items: flex-start;
   margin-bottom: 5px;
+  margin-left: 5px;
   height: 44px;
   font-size: 12px;
   line-height: 14px;
-
-  svg {
-    display: inline-block;
-    width: 17px;
-    height: 17px;
-    margin-right: 2px;
-    fill: #d3d7dc;
-    position: relative;
-    left: -3px;
-    top: 3px;
-  }
 
   p {
     width: 100%;
@@ -82,41 +68,46 @@ const Location = styled.span`
   }
 `;
 
-const ContentFooter = styled.div`
-  margin-top: auto;
-  position: absolute;
-  bottom: 75px;
-`;
-
 const Author = styled.div`
-  border-top: 1px solid #e5e5e5;
-  margin: 0 22px;
-  height: 75px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+  border-radius: 5px 5px 5px 0;
+  > img {
+    border-radius: 4px 4px 0 0;
+    height: 33px;
+    width: 33px;
+  }
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: 1px solid white;
+  background-color: white;
 `;
 
-const AvatarWrapper = styled.div`
-  height: 43px;
-  width: 43px;
-`;
-
-const AuthorText = styled.div`
-  margin-left: 10px;
-  color: #3c434b;
-`;
-
-const Created = styled.p`
-  font-size: 10px;
-  line-height: 12px;
-  margin-bottom: 0;
-`;
-
-const Username = styled.p`
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
+const AuthorPro = styled.p`
+  color: ${primary};
   font-weight: bold;
+  font-size: 10px;
+  text-align: center;
+`;
+
+const Price = styled(PStrong)`
+  margin-bottom: 2px;
+`;
+
+const SecondLine = styled.div`
+  display: flex;
+`;
+
+const Tag = styled(PXSmall)`
+  display: inline-block;
+  color: ${secondary};
+  border: 1px solid ${secondary};
+  border-radius: 2px 2px 2px 0;
+  margin-right: 3px;
+  padding: 1px 3px;
+  margin-bottom: 5px;
+  &:last-child {
+    margin-right: 0;
+  }
 `;
 
 export function formatLocation(location) {
@@ -158,99 +149,65 @@ export default class TripCart extends Component {
     }
   };
 
-  render() {
+  renderTags() {
+    console.log();
+    return this.props.item.tags.map(tag => (
+      <Tag>
+        <I18nText data={tag.names} />
+      </Tag>
+    ));
+  }
+
+  renderCard() {
     const { owner } = this.props.item;
     const avatar = owner.profilePicture || ImgurAvatar;
 
     return (
+      <Wrap>
+        <Cart column className="card-animate">
+          <Thumb
+            url={getTripImage(this.props.item)}
+            tripCount={this.props.item.partOf}
+            withTooltip={this.props.withTooltip}
+          >
+            <Author>
+              <Image src={avatar} />
+              <AuthorPro>PRO</AuthorPro>
+            </Author>
+            <Title>
+              <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>
+                <I18nText data={this.props.item.title} />
+              </Truncate>
+            </Title>
+          </Thumb>
+          <ContentWrap>
+            <Price>
+              {' '}
+              <PriceTag unit="hidden" price={this.props.item.basePrice}>
+                {({ symbol, convertedPrice }) => `${symbol}${convertedPrice}`}
+              </PriceTag>{' '}
+              per day
+            </Price>
+            <SecondLine>
+              <P>{duration(this.props.item.duration)}</P>
+              <Location>
+                <PSmall>{formatLocation(this.props.item.location)}</PSmall>
+              </Location>
+            </SecondLine>
+            {this.renderTags()}
+          </ContentWrap>
+        </Cart>
+      </Wrap>
+    );
+  }
+
+  render() {
+    return (
       <div>
         {this.state.truncated ? (
-          <Popup
-            trigger={
-              <Wrap>
-                <Cart column className="card-animate">
-                  <Thumb
-                    url={getTripImage(this.props.item)}
-                    tripCount={this.props.item.partOf}
-                    withTooltip={this.props.withTooltip}
-                  />
-                  <ContentWrap>
-                    <Title>
-                      <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>
-                        <I18nText data={this.props.item.title} />
-                      </Truncate>
-                    </Title>
-                    <Location>
-                      <PinIcon />
-                      <p>
-                        <Truncate lines={cardConfig.locationLines}>
-                          {formatLocation(this.props.item.location)}
-                        </Truncate>
-                      </p>
-                    </Location>
-                    <Rating
-                      marginBottom="10px"
-                      rating={this.props.item.rating}
-                      count={this.props.item.reviews}
-                    />
-                    From <PriceTag unit="hidden" price={this.props.item.price} />
-                  </ContentWrap>
-                </Cart>
-              </Wrap>
-            }
-            content={this.props.item.title}
-          />
+          <Popup trigger={this.renderCard()} content={this.props.item.title} />
         ) : (
-          <Wrap>
-            <Cart column className="card-animate">
-              <Link to={`/trips/${generateTripSlug(this.props.item)}`}>
-                <Thumb
-                  url={getTripImage(this.props.item)}
-                  tripCount={this.props.item.partOf}
-                  withTooltip={this.props.withTooltip}
-                />
-                <ContentWrap>
-                  <Title>
-                    <Truncate lines={cardConfig.titleLines}>
-                      <I18nText data={this.props.item.title} />
-                    </Truncate>
-                  </Title>
-                  <Description>
-                    <Truncate lines={cardConfig.descriptionLines}>
-                      <I18nText data={this.props.item.description} />
-                    </Truncate>
-                  </Description>
-                  <ContentFooter>
-                    <Price>
-                      From{' '}
-                      <PriceTag unit="hidden" price={this.props.item.basePrice}>
-                        {({ symbol, convertedPrice }) => `${symbol}${convertedPrice}`}
-                      </PriceTag>
-                    </Price>
-                    <Location>
-                      <PinIcon />
-                      <p>
-                        <Truncate lines={cardConfig.locationLines}>
-                          {formatLocation(this.props.item.location)}
-                        </Truncate>
-                      </p>
-                    </Location>
-                  </ContentFooter>
-                </ContentWrap>
-              </Link>
-              <Link to={`/users/${owner.username}`}>
-                <Author>
-                  <AvatarWrapper>
-                    <Image src={avatar} circular />
-                  </AvatarWrapper>
-                  <AuthorText>
-                    <Created>Created by</Created>
-                    <Username>{owner.username}</Username>
-                  </AuthorText>
-                </Author>
-              </Link>
-            </Cart>
-          </Wrap>
+          this.renderCard()
         )}
       </div>
     );
