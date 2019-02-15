@@ -63,19 +63,13 @@ export default () => (
             </a>
           </LinkElement>
           <LinkElement>
-            <a target="_blank" rel="noopener noreferrer" href="https://please.com/">
-              Partners
-            </a>
+            <Link to="/partners">Partners</Link>
           </LinkElement>
           <LinkElement>
-            <a target="_blank" rel="noopener noreferrer" href="https://please.com/">
-              Affiliates
-            </a>
+            <Link to="/affiliates">Affiliates</Link>
           </LinkElement>
           <LinkElement>
-            <a target="_blank" rel="noopener noreferrer" href="https://please.com/">
-              Press
-            </a>
+            <Link to="/press">Press</Link>
           </LinkElement>
         </Column>
         <Column>
@@ -84,14 +78,10 @@ export default () => (
             <Link to="/cookie-policy">Use of Cookies</Link>
           </LinkElement>
           <LinkElement>
-            <a target="_blank" rel="noopener noreferrer" href="https://please.com/">
-              Terms & Conditions
-            </a>
+            <Link to="/terms-conditions">Terms & Conditions</Link>
           </LinkElement>
           <LinkElement>
-            <a target="_blank" rel="noopener noreferrer" href="https://please.com/">
-              Privacy Policy
-            </a>
+            <Link to="/privacy-policy">Privacy Policy</Link>
           </LinkElement>
         </Column>
         <Column>
