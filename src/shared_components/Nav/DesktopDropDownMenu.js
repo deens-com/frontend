@@ -7,12 +7,10 @@ import { withRouter } from 'react-router-dom';
 import Button from '../Button';
 import { Image } from 'semantic-ui-react';
 // COMMENT: the homeSearch is just for the time being
-// REDUX
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { getCurrentUser, logOut } from 'store/session/actions';
 // ACTIONS/CONFIG
 import { Dropdown } from 'semantic-ui-react';
+
+import { PStrong } from 'libs/commonStyles';
 
 import history from './../../main/history';
 import ImgurAvatar from './../../assets/no-avatar.png';
@@ -20,16 +18,12 @@ import ImgurAvatar from './../../assets/no-avatar.png';
 const Wrap = styled.div`
   align-items: center;
   display: flex;
-  padding-left: 15px;
   .Select-multi-value-wrapper {
     min-width: 37px;
   }
 
   > div {
     margin-top: 5px;
-  }
-  > div:first-child {
-    margin-right: 15px;
   }
   > div:nth-child(3) {
     margin-left: 15px;
@@ -50,19 +44,17 @@ const Wrap = styled.div`
 `;
 
 const AvatarWrapper = styled.div`
-  height: 30px;
-  width: 30px;
+  height: 38px;
+  width: 38px;
+  border-radius: 10px 10px 10px 0;
+  overflow: hidden;
   margin-left: 15px;
   margin-top: -5px;
   order: 2;
 `;
 
 // MODULE
-class DesktopDropDownMenu extends Component {
-  componentDidMount() {
-    this.props.getCurrentUser();
-  }
-
+export default class DesktopDropDownMenu extends Component {
   logout = () => {
     this.props.logOut();
   };
@@ -73,12 +65,7 @@ class DesktopDropDownMenu extends Component {
 
   trigger = () => (
     <AvatarWrapper>
-      <Image
-        src={this.props.session.profilePicture || ImgurAvatar}
-        circular
-        width={30}
-        height={30}
-      />
+      <Image src={this.props.session.profilePicture || ImgurAvatar} width={38} height={38} />
     </AvatarWrapper>
   );
 
@@ -87,14 +74,14 @@ class DesktopDropDownMenu extends Component {
       <Wrap>
         <Button
           type="link"
-          theme={this.props.isBackgroundWhite ? 'textLightGreen' : 'whiteTransparent'}
-          round
+          theme="primaryFilled"
           size="small"
           href="/login"
+          borderRadius="5px 0 0 0"
         >
           Login
         </Button>
-        <Button type="link" theme="mainFilled" round size="small" href="/register">
+        <Button borderRadius="0 5px 5px 0" type="link" size="small" href="/register">
           Sign up
         </Button>
       </Wrap>
@@ -104,16 +91,10 @@ class DesktopDropDownMenu extends Component {
   logged_in() {
     return (
       <Wrap>
-        {this.props.isBackgroundWhite && (
-          <Button type="link" theme="mainFilled" round size="small" href="/trips/create">
-            Create a Trip
-          </Button>
-        )}
-        <Dropdown
-          trigger={this.trigger()}
-          direction="left"
-          style={this.props.isBackgroundWhite ? { color: 'inherit' } : { color: 'white' }}
-        >
+        <Button type="link" theme="primaryFilled" size="small" href="/trips/create">
+          <PStrong>Create Trip</PStrong>
+        </Button>
+        <Dropdown trigger={this.trigger()} icon={null}>
           <Dropdown.Menu>
             <Dropdown.Item
               icon="plane"
@@ -151,18 +132,3 @@ class DesktopDropDownMenu extends Component {
     }
   }
 }
-
-const mapStateToProps = state => ({
-  session: state.session.session,
-});
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ getCurrentUser, logOut }, dispatch);
-};
-
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(DesktopDropDownMenu),
-);

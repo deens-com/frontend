@@ -7,12 +7,12 @@ const Center = styled.div`
   text-align: center;
 `;
 
-export default ({ trips }) => (
+export default ({ trips, hideAuthor }) => (
   <Carousel sm_slides_nb={1} md_slides_nb={2} lg_slides_nb={3} xl_slides_nb={4}>
     {trips &&
       trips.map(item => (
         <Center key={item._id}>
-          <LocationCart item={item} />
+          <LocationCart hideAuthor={hideAuthor} item={item} />
         </Center>
       ))}
   </Carousel>

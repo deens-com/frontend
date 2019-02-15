@@ -10,6 +10,8 @@ import MobileNav from '../Nav/MobileNav';
 import Logo from './Logo';
 import MobileDropdownMenu from '../Nav/MobileDropdownMenu';
 import Search from './Search';
+import { bindActionCreators } from 'redux';
+import { getCurrentUser, getCurrentUserTrip, logOut } from 'store/session/actions';
 
 // ACTIONS/CONFIG
 import { media } from 'libs/styled';
@@ -25,6 +27,7 @@ const InnerWrap = styled.header`
   padding: ${props => (props.home ? '0' : '10px')};
   width: 100%;
   z-index: 110;
+  ${props => (props.home ? 'left: 0;' : '')}
   ${props =>
     props.showMenu &&
     css`
@@ -45,14 +48,14 @@ const InnerWrap = styled.header`
         box-shadow: 0 8px 25px 0 rgba(141, 141, 141, 0.22);
       }
     `} ${props =>
-    props.fixed &&
-    css`
-      left: 0;
-      position: fixed;
-      z-index: 10000;
-      top: ${props => props.fixedTop || 0}px;
-      transition: all 0.75s ease 0s;
-    `};
+  props.fixed &&
+  css`
+    left: 0;
+    position: fixed;
+    z-index: 10000;
+    top: ${props => props.fixedTop || 0}px;
+    transition: all 0.75s ease 0s;
+  `};
 `;
 
 // So we don't need to add a margin to each page
@@ -72,6 +75,11 @@ class TopBar extends Component {
     this.toggleMenu = this.toggleMenu.bind(this);
     this.toggleSearch = this.toggleSearch.bind(this);
     this.toggleProfileMenu = this.toggleProfileMenu.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.getCurrentUser();
+    this.props.getCurrentUserTrip();
   }
 
   toggleMenu() {
@@ -136,7 +144,13 @@ class TopBar extends Component {
               isMobileSearchOpen={showSearchMobile}
             />
           )}
-          <DesktopNav home={home} theme="light" />
+          <DesktopNav
+            latestTrip={this.props.latestTrip}
+            home={home}
+            theme="light"
+            session={this.props.session}
+            logOut={this.props.logOut}
+          />
           {!showSearchMobile && (
             <MobileDropdownMenu isMenuOpen={showMenu} toggleMenu={this.toggleMenu} dark={!home} />
           )}
@@ -164,6 +178,15 @@ TopBar.defaultProps = {
 const mapStateToProps = state => ({
   isGDPRDismissed: state.settings.gdprDismissed,
   gdprHeight: state.settings.gdprHeight,
+  session: state.session.session,
+  latestTrip: state.session.latestTrip,
 });
 
-export default connect(mapStateToProps)(TopBar);
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({ getCurrentUser, getCurrentUserTrip, logOut }, dispatch);
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(TopBar);

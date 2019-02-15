@@ -1,10 +1,7 @@
 import styled, { css } from 'styled-components';
 
-import { media } from '../../libs/styled';
-
 export const ContentWrap = styled.div`
   padding-top: 4px;
-  height: 180px;
 `;
 
 export const More = styled.div`

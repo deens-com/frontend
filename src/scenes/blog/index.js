@@ -161,7 +161,10 @@ export default class BlogPost extends React.PureComponent {
     const { article } = this.state;
     let description;
     if (article) {
-      description = article.article.find(fraction => fraction.type === 'paragraph').text;
+      description = article.article.find(fraction => fraction.type === 'paragraph');
+      if (description) {
+        description = description.text;
+      }
     }
 
     return (

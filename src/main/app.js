@@ -49,7 +49,6 @@ class App extends React.Component {
 
   componentDidMount() {
     getCurrentUser()(store.dispatch);
-
     this.checkForReferrerAndSet();
   }
 

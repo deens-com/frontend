@@ -10,10 +10,12 @@ import { connect } from 'react-redux';
 // COMPONENTS
 import DesktopDropDownMenu from './DesktopDropDownMenu';
 // import CurrencySelector from '../Currency/Selector';
+import I18nText from 'shared_components/I18nText';
 
 // ACTIONS/CONFIG
 import { sizes } from '../../libs/styled';
-import { trackHeaderClick } from 'libs/analytics';
+import { lightText, primary, secondary } from 'libs/colors';
+import { PStrong } from 'libs/commonStyles';
 import { icoReady } from 'libs/config';
 
 // STYLES
@@ -81,8 +83,16 @@ const navItemStyle = `
   }
 `;
 
+const Divider = styled.span`
+  font-size: 18px;
+  color: ${props => (props.isBackgroundWhite ? secondary : lightText)};
+`;
+
 const NavLink = styled(Link)`
-  ${navItemStyle} margin-right: 15px;
+  ${navItemStyle} margin: 0 8px;
+  ${navItemStyle} p {
+    color: ${primary};
+  }
 `;
 
 const NavDropdown = styled.span`
@@ -118,6 +128,10 @@ const TopBarDesktopNav = function TopBarDesktopNav({
   theme,
   history,
   analytics,
+  session,
+  logOut,
+  tripInProgress,
+  latestTrip,
 }) {
   return (
     <Media
@@ -144,16 +158,44 @@ const TopBarDesktopNav = function TopBarDesktopNav({
                 </Dropdown.Menu>
               </Dropdown>
             )}
-            <NavLink
-              activeclassname="is-active"
-              to="/earn-money"
-              onClick={() => analytics(trackHeaderClick('Earn Money'))}
-            >
-              Earn Money
+            {session.username &&
+              tripInProgress && (
+                <>
+                  <Divider isBackgroundWhite={!home}>•</Divider>
+                  <NavLink activeclassname="is-active" to="/trips/organize/...">
+                    <PStrong>This is a trip name</PStrong>
+                  </NavLink>
+                </>
+              )}
+            {latestTrip && (
+              <>
+                <NavLink activeclassname="is-active" to={`/trips/organize/${latestTrip._id}`}>
+                  <PStrong>
+                    <I18nText data={latestTrip.title} />
+                  </PStrong>
+                </NavLink>
+                <Divider isBackgroundWhite={!home}>•</Divider>
+              </>
+            )}
+            <NavLink activeclassname="is-active" to="/earn-money">
+              <PStrong>Earn Money</PStrong>
             </NavLink>
+            {!session.username && (
+              <>
+                <Divider isBackgroundWhite={!home}>•</Divider>
+                <NavLink activeclassname="is-active" to="/trips/create">
+                  <PStrong>Create Trip</PStrong>
+                </NavLink>
+              </>
+            )}
           </Nav>
           <ActionsWrap>
-            <DesktopDropDownMenu isBackgroundWhite={!home} history={history} />
+            <DesktopDropDownMenu
+              session={session}
+              logOut={logOut}
+              isBackgroundWhite={!home}
+              history={history}
+            />
           </ActionsWrap>
         </Wrap>
       )}

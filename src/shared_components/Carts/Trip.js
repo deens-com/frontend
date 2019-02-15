@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Truncate from 'react-truncate';
 import { Popup, Image } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { addFavoriteTrip, removeFavoriteTrip } from 'store/session/actions';
 
 // COMPONENTS
 import PriceTag from '../Currency/PriceTag';
@@ -15,18 +17,20 @@ import Thumb from './components/Thumb';
 // STYLES
 import { Cart, ContentWrap } from './styles';
 import { cardConfig } from 'libs/config';
-import { getHeroImage, generateTripSlug } from 'libs/Utils';
-import { PinIcon } from 'shared_components/icons';
+import { getHeroImage, calculatePricePerDay, generateTripSlug } from 'libs/Utils';
+import { Heart } from 'shared_components/icons';
 import I18nText from 'shared_components/I18nText';
 import { H6, P, PStrong, PSmall, PXSmall } from 'libs/commonStyles';
-import { lightText, primary, secondary } from 'libs/colors';
+import { lightText, primary, secondary, darkText } from 'libs/colors';
 import { duration } from 'libs/trips';
-
+import Stars from 'shared_components/Rating/Stars';
+import { Link } from 'react-router-dom';
 import ImgurAvatar from './../../assets/no-avatar.png';
 
 const Wrap = styled.div`
   display: inline-block;
-  width: 255px;
+  width: calc(100% - 30px);
+  margin: 0 15px;
 `;
 
 // How did we come up with height: 104px?
@@ -45,21 +49,13 @@ const Title = styled(H6)`
   }
 `;
 
-const Description = styled.div`
-  font-size: 14px;
-  line-height: 16px;
-  color: #545454;
-`;
-
 const Location = styled.span`
   color: #787878;
   display: flex;
   align-items: flex-start;
-  margin-bottom: 5px;
   margin-left: 5px;
-  height: 44px;
   font-size: 12px;
-  line-height: 14px;
+  line-height: 16px;
 
   p {
     width: 100%;
@@ -91,10 +87,36 @@ const AuthorPro = styled.p`
 
 const Price = styled(PStrong)`
   margin-bottom: 2px;
+  flex-grow: 1;
+`;
+
+const FirstLine = styled.div`
+  display: flex;
+`;
+
+const Hearts = styled.div`
+  > svg {
+    color: ${primary};
+    margin-top: 1px;
+  }
+  display: flex;
+  flex-shrink: 0;
+`;
+
+const HeartsNumber = styled(PXSmall)`
+  margin-left: 6px;
+  color: ${darkText};
 `;
 
 const SecondLine = styled.div`
   display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+`;
+
+const Duration = styled(P)`
+  margin-bottom: 0;
+  flex-shrink: 0;
 `;
 
 const Tag = styled(PXSmall)`
@@ -107,6 +129,18 @@ const Tag = styled(PXSmall)`
   margin-bottom: 5px;
   &:last-child {
     margin-right: 0;
+  }
+`;
+
+const HeartWrapper = styled.div`
+  top: 10px;
+  left: 10px;
+  position: absolute;
+  > svg {
+    color: ${props => (props.filled ? primary : 'rgba(60, 217, 170, 0.2)')};
+    stroke: white;
+    stroke-width: 2px;
+    cursor: pointer;
   }
 `;
 
@@ -133,7 +167,7 @@ function getTripImage(item) {
   return getHeroImage(item).files.thumbnail.url;
 }
 
-export default class TripCart extends Component {
+class TripCart extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -149,8 +183,18 @@ export default class TripCart extends Component {
     }
   };
 
+  toggleFavorite = event => {
+    event.preventDefault();
+    //event.stopPropagation();
+    const tripId = this.props.item._id;
+    if (this.props.favoriteTrips[tripId]) {
+      this.props.removeFavoriteTrip(tripId);
+      return;
+    }
+    this.props.addFavoriteTrip(tripId);
+  };
+
   renderTags() {
-    console.log();
     return this.props.item.tags.map(tag => (
       <Tag>
         <I18nText data={tag.names} />
@@ -161,41 +205,60 @@ export default class TripCart extends Component {
   renderCard() {
     const { owner } = this.props.item;
     const avatar = owner.profilePicture || ImgurAvatar;
+    const isFavorite = this.props.favoriteTrips[this.props.item._id];
 
     return (
       <Wrap>
         <Cart column className="card-animate">
-          <Thumb
-            url={getTripImage(this.props.item)}
-            tripCount={this.props.item.partOf}
-            withTooltip={this.props.withTooltip}
-          >
-            <Author>
-              <Image src={avatar} />
-              <AuthorPro>PRO</AuthorPro>
-            </Author>
-            <Title>
-              <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>
-                <I18nText data={this.props.item.title} />
-              </Truncate>
-            </Title>
-          </Thumb>
-          <ContentWrap>
-            <Price>
-              {' '}
-              <PriceTag unit="hidden" price={this.props.item.basePrice}>
-                {({ symbol, convertedPrice }) => `${symbol}${convertedPrice}`}
-              </PriceTag>{' '}
-              per day
-            </Price>
-            <SecondLine>
-              <P>{duration(this.props.item.duration)}</P>
-              <Location>
-                <PSmall>{formatLocation(this.props.item.location)}</PSmall>
-              </Location>
-            </SecondLine>
-            {this.renderTags()}
-          </ContentWrap>
+          <Link to={`/trips/${generateTripSlug(this.props.item)}`}>
+            <Thumb
+              url={getTripImage(this.props.item)}
+              tripCount={this.props.item.partOf}
+              withTooltip={this.props.withTooltip}
+            >
+              <HeartWrapper filled={isFavorite}>
+                <Heart style={{ height: '24px', width: '21px' }} onClick={this.toggleFavorite} />
+              </HeartWrapper>
+              {this.props.hideAuthor ? null : (
+                <Author>
+                  <Image src={avatar} />
+                  <Stars
+                    length={3}
+                    rating={(owner.rating.average * 3) / 5}
+                    width={8.25}
+                    height={18}
+                  />
+                  {owner.level === 'pro' && <AuthorPro>PRO</AuthorPro>}
+                </Author>
+              )}
+              <Title>
+                <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>
+                  <I18nText data={this.props.item.title} />
+                </Truncate>
+              </Title>
+            </Thumb>
+            <ContentWrap>
+              <FirstLine>
+                <Price>
+                  ${calculatePricePerDay(this.props.item.basePrice, this.props.item.duration)} per
+                  day
+                </Price>
+                <Hearts>
+                  <Heart />
+                  <HeartsNumber>
+                    {isFavorite ? this.props.item.hearts + 1 : this.props.item.hearts}
+                  </HeartsNumber>
+                </Hearts>
+              </FirstLine>
+              <SecondLine>
+                <Duration>{duration(this.props.item.duration)}</Duration>
+                <Location>
+                  <PSmall>{formatLocation(this.props.item.location)}</PSmall>
+                </Location>
+              </SecondLine>
+              {this.renderTags()}
+            </ContentWrap>
+          </Link>
         </Cart>
       </Wrap>
     );
@@ -213,6 +276,27 @@ export default class TripCart extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    favoriteTrips: state.session.favoriteTrips,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      addFavoriteTrip,
+      removeFavoriteTrip,
+    },
+    dispatch,
+  );
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(TripCart);
 
 // Props Validation
 TripCart.propTypes = {

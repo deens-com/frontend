@@ -5,6 +5,10 @@ import fetch_helpers from 'libs/fetch_helpers';
 import { identifyUsingSession } from 'libs/analytics';
 import { serverBaseURL } from 'libs/config';
 import apiClient from 'libs/apiClient';
+import {
+  addFavoriteTrip as addFavoriteTripLocally,
+  removeFavoriteTrip as removeFavoriteTripLocally,
+} from 'libs/localStorage';
 import { saveSession, getSession, removeSession } from 'libs/user-session';
 
 export const types = {
@@ -20,6 +24,10 @@ export const types = {
   AVATAR_UPLOAD_START: 'AVATAR_UPLOAD_START',
   AVATAR_UPLOAD_FINISH: 'AVATAR_UPLOAD_FINISH',
   NOT_LOGGED_IN: 'NOT_LOGGED_IN',
+  LOADED_LATEST_TRIP: 'LOADED_LATEST_TRIP',
+  ADD_FAVORITE_TRIP: 'ADD_FAVORITE_TRIP',
+  REMOVE_FAVORITE_TRIP: 'REMOVE_FAVORITE_TRIP',
+  //LOADED_LATEST_TRIP: 'LOADED_FAVORITE_TRIPS',
 };
 
 function redirect(to, action) {
@@ -74,6 +82,14 @@ async function setUserData(userObject) {
   await window.fcWidget.user.setFirstName(userObject.username);
   await window.fcWidget.user.setEmail(userObject.email);
 }
+
+export const getCurrentUserTrip = () => async dispatch => {
+  const response = await apiClient.trips.get({ limit: 1 });
+  if (response.data.trips.length === 0) {
+    return;
+  }
+  dispatch({ type: types.LOADED_LATEST_TRIP, payload: response.data.trips[0] });
+};
 
 export const getCurrentUser = fetchReferralInfo => async dispatch => {
   const session = getSession();
@@ -235,6 +251,34 @@ export const loginRequest = (email, password, { from, action }) => {
         }),
       );
     }
+  };
+};
+
+export const addFavoriteTrip = id => {
+  return async (dispatch, getState) => {
+    dispatch({
+      type: types.ADD_FAVORITE_TRIP,
+      payload: id,
+    });
+    if (!getState().session.session.username) {
+      addFavoriteTripLocally(id);
+      return;
+    }
+    apiClient.trips.heart.post(id);
+  };
+};
+
+export const removeFavoriteTrip = id => {
+  return async (dispatch, getState) => {
+    dispatch({
+      type: types.REMOVE_FAVORITE_TRIP,
+      payload: id,
+    });
+    if (!getState().session.session.username) {
+      removeFavoriteTripLocally(id);
+      return;
+    }
+    apiClient.trips.heart.delete(id);
   };
 };
 

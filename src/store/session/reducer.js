@@ -18,6 +18,8 @@ const initialState = {
   isUploadingAvatar: false,
   loggedIn: null,
   isLoading: false,
+  latestTrip: null,
+  favoriteTrips: {},
 };
 
 export default function session(state = initialState, action = {}) {
@@ -79,6 +81,27 @@ export default function session(state = initialState, action = {}) {
       return {
         ...state,
         isUploadingAvatar: false,
+      };
+    case sessions_actions.types.LOADED_LATEST_TRIP:
+      return {
+        ...state,
+        latestTrip: action.payload,
+      };
+    case sessions_actions.types.ADD_FAVORITE_TRIP:
+      return {
+        ...state,
+        favoriteTrips: {
+          ...state.favoriteTrips,
+          [action.payload]: true,
+        },
+      };
+    case sessions_actions.types.REMOVE_FAVORITE_TRIP:
+      return {
+        ...state,
+        favoriteTrips: {
+          ...state.favoriteTrips,
+          [action.payload]: false,
+        },
       };
     default:
       return state;

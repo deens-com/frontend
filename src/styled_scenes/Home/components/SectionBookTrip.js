@@ -8,12 +8,18 @@ import Search from './HomeSearch';
 import map from '../images/findATripMap.svg';
 import customizeIcon from '../images/customizeTrip.svg';
 import bookIcon from '../images/bookTrip.svg';
+import { media } from 'libs/styled';
+
 // STYLES
 import { PageWrapper } from '../../../shared_components/layout/Page';
 
 const Section = styled.section`
   background-color: ${secondaryContrast};
-  padding: 25px 0;
+  padding-bottom: 25px;
+  ${media.minSmall} {
+    margin-top: 0;
+    padding-top: 25px;
+  }
   text-align: center;
   margin-bottom: 40px;
 `;
@@ -22,6 +28,11 @@ const Content = styled.div`
   display: flex;
   justify-content: space-around;
   margin-bottom: 25px;
+  flex-direction: column;
+  align-items: center;
+  ${media.minSmall} {
+    flex-direction: row;
+  }
 `;
 
 const Column = styled.div`
@@ -29,20 +40,36 @@ const Column = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 350px;
-  &:first-child {
-    margin-right: 30px;
+  > img {
+    margin-top: 20px;
+    ${media.minSmall} {
+      margin-top: 0;
+    }
   }
-  &:last-child {
-    margin-left: 30px;
+  ${media.minSmall} {
+    &:first-child {
+      margin-right: 30px;
+    }
+    &:last-child {
+      margin-left: 30px;
+    }
   }
 `;
 
 const Title = styled(H3)`
   color: ${secondary};
+  margin-top: 15px;
+  ${media.minSmall} {
+    margin-top: 25px;
+  }
 `;
 
 const Paragraph = styled(P)`
   color: ${lightText};
+  margin-bottom: 25px;
+  ${media.minSmall} {
+    margin-bottom: 0;
+  }
 `;
 
 export default class SectionBookTrip extends React.Component {

@@ -234,6 +234,14 @@ export async function waitUntilMapsLoaded() {
   return window.google.maps;
 }
 
+export function minutesToDays(duration) {
+  return Math.ceil(duration / (60 * 24)); // Duration is in minutes
+}
+
+export function calculatePricePerDay(price, duration) {
+  return (price / minutesToDays(duration)).toFixed(2);
+}
+
 function generateSlug(str) {
   str = str.replace(/^\s+|\s+$/g, ''); // trim
   str = str.toLowerCase();

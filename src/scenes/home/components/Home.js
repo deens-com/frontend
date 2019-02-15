@@ -10,6 +10,7 @@ import BrandFooter from 'shared_components/BrandFooter';
 import MobileHero from 'styled_scenes/Home/components/MobileHero';
 import HeroSlider from 'styled_scenes/Home/components/HeroSlider';
 import SectionTrips from 'styled_scenes/Home/components/SectionTrips';
+import FeaturedTripCreator from 'styled_scenes/Home/components/FeaturedTripCreator';
 import SectionTopDestinations from 'styled_scenes/Home/components/SectionTopDestinations';
 import SectionBookTrip from 'styled_scenes/Home/components/SectionBookTrip';
 
@@ -76,6 +77,7 @@ const HomeComponent = props => {
         />
         <SectionBookTrip />
         <SectionTopDestinations />
+        <FeaturedTripCreator />
       </PageContent>
       <BrandFooter />
     </>

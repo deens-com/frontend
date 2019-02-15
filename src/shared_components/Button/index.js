@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
+import { lightText, primary, primaryContrast } from 'libs/colors';
 
 // COMPONENTS
 import { ArrowIcon } from '../icons';
@@ -42,13 +43,21 @@ const colors = {
 };
 
 export const theme = {
-  mainFilled: {
-    background: colors.green,
-    backgroundHover: colors.greenActive,
-    border: colors.green,
-    borderHover: colors.green,
-    color: colors.white,
-    colorHover: colors.white,
+  primaryContrastFilled: {
+    background: primaryContrast,
+    backgroundHover: primary,
+    border: primaryContrast,
+    borderHover: primary,
+    color: lightText,
+    colorHover: lightText,
+  },
+  primaryFilled: {
+    background: primary,
+    backgroundHover: primaryContrast,
+    border: primary,
+    borderHover: primaryContrast,
+    color: lightText,
+    colorHover: lightText,
   },
   white: {
     background: 'transparent',
@@ -148,6 +157,13 @@ function getTheme(props) {
   return theme[props.theme];
 }
 
+function calculateBorderRadius(props) {
+  if (props.borderRadius) {
+    return props.borderRadius;
+  }
+  return props.round ? '25px' : '5px 5px 5px 0';
+}
+
 export const Wrap = styled.div`
   display: inline-block;
   width: ${props => props.width};
@@ -156,7 +172,7 @@ export const Wrap = styled.div`
   > label,
   > button,
   > a {
-    border-radius: ${props => (props.round ? '25px' : '3px')};
+    border-radius: ${calculateBorderRadius};
     cursor: ${props => (props.theme === 'disabled' ? 'default' : 'pointer')};
     display: inline-block;
     font-size: ${props => props.fontSize || (props.size ? size[props.size].fontSize : 'inherit')};
@@ -293,6 +309,7 @@ export default class Button extends Component {
       <Wrap
         theme={this.props.disabled || this.props.disableClick ? 'disabled' : this.props.theme}
         round={this.props.round}
+        borderRadius={this.props.borderRadius}
         size={this.props.size}
         padding={this.props.padding}
         align={this.props.align}
@@ -335,9 +352,9 @@ Button.propTypes = {
 };
 
 Button.defaultProps = {
-  theme: 'mainFilled',
+  theme: 'primaryContrastFilled',
   type: 'button',
-  round: true,
+  round: false,
   size: 'small',
   align: 'left',
   width: 'auto',

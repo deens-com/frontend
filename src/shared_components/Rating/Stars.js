@@ -2,6 +2,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { primary } from 'libs/colors';
 // COMPONENTS
 import Star from './Star';
 
@@ -9,14 +10,14 @@ import Star from './Star';
 
 // STYLES
 const Stars = styled.div`
-  margin-right: 5px;
+  justify-content: center;
   display: flex;
 `;
 
 const StarWrap = styled.div`
   display: inline-block;
-  height: 15px;
-  width: 14px;
+  height: ${props => props.height}px;
+  width: ${props => props.width}px;
   margin-right: 2px;
 
   &:last-child {
@@ -24,13 +25,25 @@ const StarWrap = styled.div`
   }
 `;
 
+const emptyColor = 'rgba(18, 84, 95, 0.25)';
+
+function getFill(rating, starNumber) {
+  if (starNumber <= rating) {
+    return primary;
+  }
+  if (starNumber > rating && starNumber < rating + 1) {
+    return 'url(#halfStarGradient)';
+  }
+  return emptyColor;
+}
+
 // MODULE
-export default function StarsWrap({ rating }) {
+export default function StarsWrap({ rating, length = 5, width = 14, height = 15 }) {
   return (
     <Stars>
-      {Array.apply(null, { length: 5 }).map((e, index) => (
-        <StarWrap key={index}>
-          <Star style={{ fill: index < Number(rating) ? '#50a18a' : '#d3d7dc' }} />
+      {Array.apply(null, { length }).map((e, index) => (
+        <StarWrap key={index} width={width} height={height}>
+          <Star style={{ fill: getFill(Number(rating), index + 1), width, height }} />
         </StarWrap>
       ))}
     </Stars>
