@@ -284,3 +284,10 @@ export function generateServiceSlug(service) {
 
   return `${generateSlug(`${text}${location ? ` in ${location}` : ''}`)}_${service._id}`;
 }
+
+export function parseTagsText(tags) {
+  return tags.map(tag => {
+    const tagName = tag.names['en-us'].charAt(0).toUpperCase() + tag.names['en-us'].substr(1);
+    return { text: tagName, value: tagName, _id: tag._id };
+  });
+}

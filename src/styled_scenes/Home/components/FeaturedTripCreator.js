@@ -13,6 +13,7 @@ import customizeIcon from '../images/customizeTrip.svg';
 import earnMoney from '../images/earnMoney.svg';
 import Button from 'shared_components/Button';
 import { Link } from 'react-router-dom';
+import { parseTagsText } from 'libs/Utils';
 
 import { PageWrapper, SectionWrap, SectionContent } from '../../../shared_components/layout/Page';
 
@@ -131,10 +132,25 @@ export default class FeaturedTripCreator extends React.Component {
     return api.users.username.trips.get(
       {
         ...params,
-        include: ['tags', 'owner'],
+        include: ['tags'],
       },
       { username: featuredTripCreator },
     );
+  };
+
+  parseResponse = response => {
+    const { data } = response;
+    // const tags = parseTagsText(data.tags)
+    return {
+      ...response,
+      data: {
+        ...data,
+        trips: data.trips.map(trip => ({
+          ...trip,
+          tags: trip.tags.map(tripTag => data.tags.find(tag => tripTag === tag._id)),
+        })),
+      },
+    };
   };
 
   render() {
@@ -170,6 +186,7 @@ export default class FeaturedTripCreator extends React.Component {
             <SectionContent>
               <ListsHandler
                 apiFunction={this.fetchTrips}
+                parseResponseFn={this.parseResponse}
                 itemKey="trips"
                 render={({ items }) => <TripCarousel hideAuthor trips={items} />}
               />

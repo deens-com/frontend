@@ -1,6 +1,7 @@
 import fetchHelpers from 'libs/fetch_helpers';
 import api from 'libs/apiClient';
 import { createAsyncActions, dispatchAsyncActions } from 'store/utils';
+import { parseTagsText } from 'libs/Utils';
 
 const SEARCH = 'SEARCH';
 const UPDATE_QUERY_PARAMS = 'UPDATE_QUERY_PARAMS';
@@ -52,12 +53,7 @@ const fetchResults = searchQuery =>
     const resultsArr = searchForTrips ? results.data.trips : results.data.services;
     const data = fetchHelpers.buildServicesJson(resultsArr);
 
-    const tagsOptions = results.data.tags.map(tag => {
-      return tag.names['en-us'].charAt(0).toUpperCase() + tag.names['en-us'].substr(1);
-    });
-    const tags = tagsOptions.map(item => {
-      return { text: item, value: item };
-    });
+    const tags = parseTagsText(results.data.tags);
 
     return {
       results: data,

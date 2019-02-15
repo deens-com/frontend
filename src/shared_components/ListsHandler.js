@@ -23,6 +23,7 @@ export default class ListsHandler extends React.Component {
     apiFunction: PropTypes.func.isRequired,
     render: PropTypes.func.isRequired,
     itemKey: PropTypes.string.isRequired,
+    parseResponseFn: PropTypes.func,
     limit: PropTypes.number,
     params: PropTypes.object,
     urlParams: PropTypes.object,
@@ -32,6 +33,7 @@ export default class ListsHandler extends React.Component {
   };
 
   static defaultProps = {
+    parseResponseFn: null,
     limit: defaultLimit,
     params: {},
     urlParams: {},
@@ -46,7 +48,7 @@ export default class ListsHandler extends React.Component {
 
   makeRequest = async (page = 1, limit) => {
     const { haveIncludes } = this.props;
-    const response = await this.props.apiFunction(
+    let response = await this.props.apiFunction(
       {
         page,
         limit,
@@ -55,6 +57,10 @@ export default class ListsHandler extends React.Component {
       },
       this.props.urlParams,
     );
+
+    if (this.props.parseResponseFn) {
+      response = this.props.parseResponseFn(response);
+    }
 
     return response.data;
   };

@@ -9,7 +9,6 @@ import { bindActionCreators } from 'redux';
 import { addFavoriteTrip, removeFavoriteTrip } from 'store/session/actions';
 
 // COMPONENTS
-import PriceTag from '../Currency/PriceTag';
 import Thumb from './components/Thumb';
 
 // ACTIONS/CONFIG
@@ -131,6 +130,14 @@ const Tag = styled(PXSmall)`
     margin-right: 0;
   }
 `;
+
+const BookableTag = styled(Tag)`
+  background-color: ${primary};
+  border: 1px solid ${primary};
+  color: ${lightText};
+`;
+
+const TagsLine = styled.div``;
 
 const HeartWrapper = styled.div`
   top: 10px;
@@ -256,7 +263,10 @@ class TripCart extends Component {
                   <PSmall>{formatLocation(this.props.item.location)}</PSmall>
                 </Location>
               </SecondLine>
-              {this.renderTags()}
+              <TagsLine>
+                <BookableTag>Fast Booking</BookableTag>
+                {this.renderTags()}
+              </TagsLine>
             </ContentWrap>
           </Link>
         </Cart>

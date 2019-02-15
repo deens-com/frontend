@@ -59,6 +59,9 @@ export default {
       trips: {
         get: (params, { username }) => get(`/users/username/${username}/trips`)(params),
       },
+      hearts: {
+        get: (params, { username }) => get(`/users/username/${username}/hearts`)(params),
+      },
     },
   },
   media: {
