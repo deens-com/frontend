@@ -179,6 +179,7 @@ class TripCart extends Component {
     super(props);
     this.state = {
       truncated: false,
+      sumToHearts: 0,
     };
   }
 
@@ -196,14 +197,20 @@ class TripCart extends Component {
     const tripId = this.props.item._id;
     if (this.props.favoriteTrips[tripId]) {
       this.props.removeFavoriteTrip(tripId);
+      this.setState(prevState => ({
+        sumToHearts: prevState.sumToHearts - 1,
+      }));
       return;
     }
     this.props.addFavoriteTrip(tripId);
+    this.setState(prevState => ({
+      sumToHearts: prevState.sumToHearts + 1,
+    }));
   };
 
   renderTags() {
     return this.props.item.tags.map(tag => (
-      <Tag>
+      <Tag key={I18nText.translate(tag.names)}>
         <I18nText data={tag.names} />
       </Tag>
     ));
@@ -213,6 +220,7 @@ class TripCart extends Component {
     const { owner } = this.props.item;
     const avatar = owner.profilePicture || ImgurAvatar;
     const isFavorite = this.props.favoriteTrips[this.props.item._id];
+    const hearts = this.props.item.hearts || 0;
 
     return (
       <Wrap>
@@ -252,9 +260,7 @@ class TripCart extends Component {
                 </Price>
                 <Hearts>
                   <Heart />
-                  <HeartsNumber>
-                    {isFavorite ? this.props.item.hearts + 1 : this.props.item.hearts}
-                  </HeartsNumber>
+                  <HeartsNumber>{hearts + this.state.sumToHearts}</HeartsNumber>
                 </Hearts>
               </FirstLine>
               <SecondLine>

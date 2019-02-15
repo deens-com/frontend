@@ -74,13 +74,16 @@ export function loadTrip(withFullServices = true) {
 export function addFavoriteTrip(id) {
   const savedTrips = localStorage.getItem(favoriteTripsKey);
   if (savedTrips) {
-    localStorage.setItem(favoriteTripsKey, {
-      ...JSON.parse(savedTrips),
-      [id]: true,
-    });
+    localStorage.setItem(
+      favoriteTripsKey,
+      JSON.stringify({
+        ...JSON.parse(savedTrips),
+        [id]: true,
+      }),
+    );
     return;
   }
-  localStorage.setItem(favoriteTripsKey, { [id]: true });
+  localStorage.setItem(favoriteTripsKey, JSON.stringify({ [id]: true }));
 }
 
 export function removeFavoriteTrip(id) {
@@ -88,8 +91,19 @@ export function removeFavoriteTrip(id) {
   if (!savedTrips) {
     return;
   }
-  localStorage.setItem(favoriteTripsKey, {
-    ...JSON.parse(savedTrips),
-    [id]: false,
-  });
+  localStorage.setItem(
+    favoriteTripsKey,
+    JSON.stringify({
+      ...JSON.parse(savedTrips),
+      [id]: false,
+    }),
+  );
+}
+
+export function getFavoriteTrips() {
+  return JSON.parse(localStorage.getItem(favoriteTripsKey));
+}
+
+export function clearFavoriteTrips() {
+  localStorage.removeItem(favoriteTripsKey);
 }

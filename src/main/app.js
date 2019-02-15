@@ -30,7 +30,7 @@ import ServiceUpsert from '../scenes/service-upsert';
 import Checkout from '../scenes/checkout';
 import BlogPost from '../scenes/blog';
 import PrivateRoute from './PrivateRoute';
-import { getCurrentUser } from 'store/session/actions';
+import { getCurrentUser, getFavoriteTrips } from 'store/session/actions';
 import GDPRNotification from './GDPRNotification';
 import { isProd } from 'libs/config';
 
@@ -49,6 +49,7 @@ class App extends React.Component {
 
   componentDidMount() {
     getCurrentUser()(store.dispatch);
+    getFavoriteTrips()(store.dispatch);
     this.checkForReferrerAndSet();
   }
 
