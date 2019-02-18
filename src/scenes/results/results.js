@@ -2,7 +2,7 @@ import React from 'react';
 import ResultsContainer from './containers/results_container';
 //import history from 'main/history'
 import queryString from 'qs';
-import { Helmet } from 'react-helmet';
+import Helmet from 'react-helmet-async';
 import { websiteUrl } from 'libs/config';
 
 class Results extends React.Component {

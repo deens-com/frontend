@@ -8,6 +8,7 @@ import validator from 'validator';
 import history from 'main/history';
 import { getSession } from 'libs/user-session';
 import axios from 'libs/axios';
+import headerActions from 'store/header/actions';
 
 class RegistrationsContainer extends Component {
   constructor(props) {
@@ -21,6 +22,7 @@ class RegistrationsContainer extends Component {
       isLoading: false,
       registered: false,
     };
+    this.props.changeHeader();
     this.handleInputChange = this.handleInputChange.bind(this);
     this.isInputInvalid = this.isInputInvalid.bind(this);
     if (getSession()) {
@@ -185,6 +187,7 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
       loginRequest: sessionsActions.loginRequest,
+      changeHeader: headerActions.changeHeader,
     },
     dispatch,
   );

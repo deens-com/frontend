@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { media } from 'libs/styled';
 
@@ -12,11 +13,11 @@ import hostImg from './images/host.jpg';
 import CallToAction from './CallToAction';
 import ReferAFriend from './ReferAFriend';
 
-import TopBar from '../../shared_components/TopBar';
-import { Page, PageWrapper, PageContent } from '../../shared_components/layout/Page';
+import { PageWrapper, PageContent } from '../../shared_components/layout/Page';
 import BrandFooter from '../../shared_components/BrandFooter';
-import { Helmet } from 'react-helmet';
+import Helmet from 'react-helmet-async';
 import { websiteUrl } from 'libs/config';
+import headerActions from 'store/header/actions';
 
 const PageTop = styled.div`
   width: 100%;
@@ -124,9 +125,13 @@ const InfoImage = styled.span`
   }
 `;
 
-const EarnMoney = ({ loggedIn, userProfile }) => {
+const EarnMoney = ({ loggedIn, userProfile, changeHeader }) => {
+  useEffect(() => {
+    changeHeader({ transparent: true });
+  });
+
   return (
-    <Page>
+    <React.Fragment>
       <Helmet>
         <title>Earn money by creating trips | Please.com</title>
         <link rel="canonical" href={`${websiteUrl}/earn-money`} />
@@ -141,7 +146,6 @@ const EarnMoney = ({ loggedIn, userProfile }) => {
       <PageWrapper>
         <PageTop>
           <Header />
-          <TopBar transparent />
           <HeaderText>
             <Title>Earn Money</Title>
             <Subtitle>
@@ -207,9 +211,9 @@ const EarnMoney = ({ loggedIn, userProfile }) => {
             </InfoContent>
           </InfoBlock>
         </PageContent>
-        <BrandFooter />
       </PageWrapper>
-    </Page>
+      <BrandFooter />
+    </React.Fragment>
   );
 };
 
@@ -220,4 +224,15 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(EarnMoney);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      changeHeader: headerActions.changeHeader,
+    },
+    dispatch,
+  );
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(EarnMoney);

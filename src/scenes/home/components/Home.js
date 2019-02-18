@@ -55,7 +55,6 @@ const HomeComponent = props => {
   return (
     <>
       <PageTop>
-        <TopBar transparent noSearch={true} />
         <Media query={`(min-width: ${sizes.large})`}>
           {matches => (matches ? <HeroSlider /> : <MobileHero />)}
         </Media>

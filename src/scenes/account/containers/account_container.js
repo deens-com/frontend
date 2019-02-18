@@ -4,6 +4,7 @@ import AccountServicesComponent from './../components/AccountServices';
 import AccountSettingsContainer from './AccountSettingsContainer';
 import * as account_actions from 'store/account/actions';
 import * as session_actions from 'store/session/actions';
+import headerActions from 'store/header/actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Route, withRouter } from 'react-router-dom';
@@ -20,6 +21,7 @@ const StaticFooter = styled.footer`
 class AccountContainer extends Component {
   componentDidMount() {
     this.props.getCurrentUser(true);
+    this.props.changeHeader();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -76,7 +78,10 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ ...account_actions, ...session_actions }, dispatch);
+  return bindActionCreators(
+    { ...account_actions, ...session_actions, changeHeader: headerActions.changeHeader },
+    dispatch,
+  );
 };
 
 export default withRouter(

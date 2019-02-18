@@ -17,10 +17,8 @@ import * as tripUtils from 'libs/trips';
 import history from '../../main/history';
 import { updateBottomChatPosition } from 'libs/Utils';
 
-import TopBar from 'shared_components/TopBar';
 import BrandFooter from 'shared_components/BrandFooter';
 
-import { Page } from 'shared_components/layout/Page';
 import I18nText from 'shared_components/I18nText';
 
 import Itinerary from './Itinerary';
@@ -872,14 +870,13 @@ export default class TripOrganizer extends Component {
   };
 
   render() {
-    const { isLoading, tripId, isGDPRDismissed, gdprHeight } = this.props;
+    const { isLoading, tripId } = this.props;
     const { trip, isBlockedUntilSaved, days, showingPreBookModal, availability } = this.state;
 
     const loading = isLoading || (!trip || trip._id !== tripId);
 
     return (
-      <Page>
-        <TopBar />
+      <>
         <Dimmer
           active={isBlockedUntilSaved || (showingPreBookModal && availability.isChecking)}
           page
@@ -893,7 +890,7 @@ export default class TripOrganizer extends Component {
           {loading ? <Loader inline="centered" active size="massive" /> : this.renderPageContent()}
         </PageContent>
         <BrandFooter withTopBorder withPadding />
-      </Page>
+      </>
     );
   }
 }

@@ -6,6 +6,8 @@ import { withRouter } from 'react-router';
 import { Loader } from 'semantic-ui-react';
 import history from 'main/history';
 import axios from 'libs/axios';
+import { bindActionCreators } from 'redux';
+import headerActions from 'store/header/actions';
 
 import Information from './Information';
 import KYC from './KYC';
@@ -19,7 +21,6 @@ import headerImg from './images/header.jpg';
 import TermsAgreement from './TermsAgreement';
 import ThankYou from './ThankYou';
 import TokenBought from './TokenBought';
-import TopBar from '../../shared_components/TopBar';
 import { Page, PageWrapper, PageContent } from '../../shared_components/layout/Page';
 import BrandFooter from '../../shared_components/BrandFooter';
 import fetchHelperFactory, { defaultState } from 'libs/fetchHelper';
@@ -95,11 +96,17 @@ class TokenSale extends Component {
     if (this.props.kycState === 0 && this.props.oldKycToken) {
       this.getToken();
     }
+    if (!this.props.loggedIn) {
+      this.props.changeHeader();
+    }
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.kycState === 0 && (!prevProps.oldKycToken && this.props.oldKycToken)) {
       this.getToken();
+    }
+    if (!prevProps.loggedIn && this.props.loggedIn) {
+      this.props.changeHeader({ transparent: true, noSearch: true });
     }
   }
 
@@ -182,7 +189,7 @@ class TokenSale extends Component {
 
   renderHeader() {
     if (this.props.loggedIn === null) {
-      return <TopBar />;
+      return;
     }
 
     const title = this.getTitle();
@@ -194,7 +201,6 @@ class TokenSale extends Component {
     return (
       <PageTop>
         <Header />
-        <TopBar transparent noSearch />
         <HeaderText>
           <Title>{title}</Title>
           <Subtitle>{subtitle}</Subtitle>
@@ -205,7 +211,7 @@ class TokenSale extends Component {
 
   render() {
     return (
-      <Page>
+      <React.Fragment>
         <PageWrapper>
           {this.renderHeader()}
           {this.props.loggedIn === null ? (
@@ -213,9 +219,9 @@ class TokenSale extends Component {
           ) : (
             <PageContent>{this.renderContent()}</PageContent>
           )}
-          <BrandFooter />
         </PageWrapper>
-      </Page>
+        <BrandFooter />
+      </React.Fragment>
     );
   }
 }
@@ -231,4 +237,13 @@ const mapStateToProps = state => {
   };
 };
 
-export default withRouter(connect(mapStateToProps)(TokenSale));
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({ changeHeader: headerActions.changeHeader }, dispatch);
+};
+
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(TokenSale),
+);

@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 import store from './store';
 import history from 'main/history';
 import { Router } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import { getCurrentUser, getFavoriteTrips } from 'store/session/actions';
 import GDPRNotification from './GDPRNotification';
 import Routes from './router';
@@ -28,16 +29,16 @@ class App extends React.Component {
 
   render() {
     return (
-      <Provider store={store}>
-        <React.Fragment>
-          <GDPRNotification />
-          <Router history={history}>
-            <Skeleton>
-              <Routes />
-            </Skeleton>
-          </Router>
-        </React.Fragment>
-      </Provider>
+      <HelmetProvider>
+        <Provider store={store}>
+          <React.Fragment>
+            <GDPRNotification />
+            <Router history={history}>
+              <Skeleton>{Routes}</Skeleton>
+            </Router>
+          </React.Fragment>
+        </Provider>
+      </HelmetProvider>
     );
   }
 }

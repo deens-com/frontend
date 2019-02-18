@@ -30,7 +30,7 @@ import withSegmentTracker from './middlewares/with_segment_tracker';
 const commonHOCs = comp =>
   isProd ? withErrorBoundary(withSegmentTracker(comp)) : withErrorBoundary(comp);
 
-export default () => (
+export default (
   <ScrollToTop>
     <Switch>
       <Route exact path={process.env.PUBLIC_URL + '/'} component={commonHOCs(Home)} />

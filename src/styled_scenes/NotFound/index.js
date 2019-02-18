@@ -1,18 +1,19 @@
 // NPM
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 // COMPONENTS
-import TopBar from '../../shared_components/TopBar';
-import Logo from '../../shared_components/TopBar/Logo';
 import BrandFooter from '../../shared_components/BrandFooter';
 import { Divider } from 'semantic-ui-react';
-import { Helmet } from 'react-helmet';
+import Helmet from 'react-helmet-async';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import headerActions from 'store/header/actions';
 
 // ACTIONS/CONFIG
 
 // STYLES
-import { Page, PageContent } from '../../shared_components/layout/Page';
+import { PageContent } from '../../shared_components/layout/Page';
 import styled from 'styled-components';
 
 const FooterWrapper = styled.footer`
@@ -24,7 +25,8 @@ const FooterWrapper = styled.footer`
 
 // MODULE
 // eslint-disable-next-line
-export default function NotFoundScene({ showScene }) {
+function NotFoundScene({ showScene, changeHeader }) {
+  useEffect(changeHeader, []);
   const innerElements = (
     <React.Fragment>
       <Helmet>
@@ -50,15 +52,7 @@ export default function NotFoundScene({ showScene }) {
   );
 
   if (!showScene) return innerElements;
-  return (
-    <Page>
-      <TopBar>
-        <Logo />
-        <span>Links</span>
-      </TopBar>
-      <PageContent>{innerElements}</PageContent>
-    </Page>
-  );
+  return <PageContent>{innerElements}</PageContent>;
 }
 
 // Props Validation
@@ -69,3 +63,16 @@ NotFoundScene.propTypes = {
 NotFoundScene.defaultProps = {
   showScene: true,
 };
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      changeHeader: headerActions.changeHeader,
+    },
+    dispatch,
+  );
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(NotFoundScene);

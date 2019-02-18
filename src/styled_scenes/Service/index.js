@@ -9,7 +9,6 @@ import { Link } from 'react-router-dom';
 import Row from './../../shared_components/layout/Row';
 
 // COMPONENTS
-import TopBar from './../../shared_components/TopBar';
 import BrandFooter from '../../shared_components/BrandFooter';
 import { BadgeIcon } from './icons';
 import TripCart from '../../shared_components/Cards/Trip';
@@ -23,7 +22,7 @@ import Reviews from 'shared_components/Reviews';
 import { media, sizes } from '../../libs/styled';
 
 // STYLES
-import { Page, PageContent } from '../../shared_components/layout/Page';
+import { PageContent } from '../../shared_components/layout/Page';
 import ServiceTags from './components/ServiceTags';
 import ServiceInformation from './components/ServiceInformation';
 import ServiceActionButtons from './components/ServiceActionButtons';
@@ -189,159 +188,153 @@ class Service extends Component {
     const longitude = (this.props.service.geo && this.props.service.geo.lng) || 0;
     return (
       <React.Fragment>
-        <Page>
-          <TopBar />
-
-          <Container>
-            <br />
-            <PageContent flex loading={this.props.isPageLoading || this.props.isLoading}>
+        <Container>
+          <br />
+          <PageContent flex loading={this.props.isPageLoading || this.props.isLoading}>
+            <Media
+              query={`(min-width: ${sizes.large})`}
+              render={() =>
+                this.props.service.media ? <ImgSlider images={this.props.service.media} /> : null
+              }
+            />
+            <DetailWrapper>
+              <HeaderWrap>
+                <h2>{this.props.service.title}</h2>
+                <PreserveWhiteSpace>{this.props.service.subtitle}</PreserveWhiteSpace>
+                <ServiceTags service={this.props.service} />
+                {!this.props.service.description ||
+                this.props.service.description.length < 1000 ||
+                this.state.moreDetails ? (
+                  <PreserveWhiteSpace>{this.props.service.description}</PreserveWhiteSpace>
+                ) : (
+                  <PreserveWhiteSpace>
+                    {formatDescription(this.props.service.description)}
+                    <DetailsLink
+                      onClick={() => this.setState(({ moreDetails }) => ({ moreDetails: true }))}
+                    >
+                      More...
+                    </DetailsLink>
+                  </PreserveWhiteSpace>
+                )}
+                {((this.props.service.startInstructions &&
+                  this.props.service.startInstructions !== 'none') ||
+                  (this.props.service.endInstructions &&
+                    this.props.service.endInstructions !== 'none')) && <h4>Instructions : </h4>}
+                <ul>
+                  {this.props.service.startInstructions &&
+                    this.props.service.startInstructions !== 'none' && (
+                      <li>On arrival : {this.props.service.startInstructions}</li>
+                    )}
+                  {this.props.service.endInstructions &&
+                    this.props.service.endInstructions !== 'none' && (
+                      <li>On departure : {this.props.service.endInstructions}</li>
+                    )}
+                </ul>
+                <br />
+                {this.props.service.rules &&
+                  this.props.service.rules.length > 0 && (
+                    <section>
+                      <h4>Rules : </h4>
+                      <ul>
+                        {this.props.service.rules &&
+                          this.props.service.rules.map(rule => <li>{rule}</li>)}
+                      </ul>
+                    </section>
+                  )}
+              </HeaderWrap>
               <Media
-                query={`(min-width: ${sizes.large})`}
+                query={`(max-width: ${sizes.large})`}
                 render={() =>
                   this.props.service.media ? <ImgSlider images={this.props.service.media} /> : null
                 }
               />
-              <DetailWrapper>
-                <HeaderWrap>
-                  <h2>{this.props.service.title}</h2>
-                  <PreserveWhiteSpace>{this.props.service.subtitle}</PreserveWhiteSpace>
-                  <ServiceTags service={this.props.service} />
-                  {!this.props.service.description ||
-                  this.props.service.description.length < 1000 ||
-                  this.state.moreDetails ? (
-                    <PreserveWhiteSpace>{this.props.service.description}</PreserveWhiteSpace>
-                  ) : (
-                    <PreserveWhiteSpace>
-                      {formatDescription(this.props.service.description)}
-                      <DetailsLink
-                        onClick={() => this.setState(({ moreDetails }) => ({ moreDetails: true }))}
-                      >
-                        More...
-                      </DetailsLink>
-                    </PreserveWhiteSpace>
-                  )}
-                  {((this.props.service.startInstructions &&
-                    this.props.service.startInstructions !== 'none') ||
-                    (this.props.service.endInstructions &&
-                      this.props.service.endInstructions !== 'none')) && <h4>Instructions : </h4>}
-                  <ul>
-                    {this.props.service.startInstructions &&
-                      this.props.service.startInstructions !== 'none' && (
-                        <li>On arrival : {this.props.service.startInstructions}</li>
-                      )}
-                    {this.props.service.endInstructions &&
-                      this.props.service.endInstructions !== 'none' && (
-                        <li>On departure : {this.props.service.endInstructions}</li>
-                      )}
-                  </ul>
-                  <br />
-                  {this.props.service.rules &&
-                    this.props.service.rules.length > 0 && (
-                      <section>
-                        <h4>Rules : </h4>
-                        <ul>
-                          {this.props.service.rules &&
-                            this.props.service.rules.map(rule => <li>{rule}</li>)}
-                        </ul>
-                      </section>
-                    )}
-                </HeaderWrap>
-                <Media
-                  query={`(max-width: ${sizes.large})`}
-                  render={() =>
-                    this.props.service.media ? (
-                      <ImgSlider images={this.props.service.media} />
-                    ) : null
-                  }
-                />
-                <ServiceActionButtons
-                  myUnpurchasedTrips={this.props.myUnpurchasedTrips}
-                  onAddServiceToTrip={this.props.onAddServiceToTrip}
-                  onAddServiceToNewTrip={this.props.onAddServiceToNewTrip}
-                  serviceRecentlyAddedToTrip={this.props.serviceRecentlyAddedToTrip}
-                  serviceAlreadyAddedToTrip={this.props.serviceAlreadyAddedToTrip}
-                  onBookNowClick={this.props.onBookNowClick}
-                  externalCheckoutUrl={
-                    this.props.service &&
-                    this.props.service.checkoutOptions &&
-                    this.props.service.checkoutOptions.checkoutURL
-                  }
-                  externalUrl={
-                    this.props.service &&
-                    this.props.service.externalUrl &&
-                    this.props.service.externalUrl['en-us']
-                  }
-                  isLoggedIn={this.props.isLoggedIn}
-                />
-                <ContactWrap>
-                  <MapWrap>
-                    <GoogleMapReact
-                      center={{
-                        lat: latitude,
-                        lng: longitude,
-                      }}
-                      defaultZoom={11}
-                      bootstrapURLKeys={{ key: 'AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc' }}
-                      googleMapLoader={waitUntilMapsLoaded}
-                    >
-                      <MapMaker lat={latitude} lng={longitude} scale={1} color="#4fb798" />
-                    </GoogleMapReact>
-                  </MapWrap>
-                  <Contacts>
-                    <ServiceInformation service={this.props.service} />
-                  </Contacts>
-                </ContactWrap>
-              </DetailWrapper>
-            </PageContent>
-          </Container>
+              <ServiceActionButtons
+                myUnpurchasedTrips={this.props.myUnpurchasedTrips}
+                onAddServiceToTrip={this.props.onAddServiceToTrip}
+                onAddServiceToNewTrip={this.props.onAddServiceToNewTrip}
+                serviceRecentlyAddedToTrip={this.props.serviceRecentlyAddedToTrip}
+                serviceAlreadyAddedToTrip={this.props.serviceAlreadyAddedToTrip}
+                onBookNowClick={this.props.onBookNowClick}
+                externalCheckoutUrl={
+                  this.props.service &&
+                  this.props.service.checkoutOptions &&
+                  this.props.service.checkoutOptions.checkoutURL
+                }
+                externalUrl={
+                  this.props.service &&
+                  this.props.service.externalUrl &&
+                  this.props.service.externalUrl['en-us']
+                }
+                isLoggedIn={this.props.isLoggedIn}
+              />
+              <ContactWrap>
+                <MapWrap>
+                  <GoogleMapReact
+                    center={{
+                      lat: latitude,
+                      lng: longitude,
+                    }}
+                    defaultZoom={11}
+                    bootstrapURLKeys={{ key: 'AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc' }}
+                    googleMapLoader={waitUntilMapsLoaded}
+                  >
+                    <MapMaker lat={latitude} lng={longitude} scale={1} color="#4fb798" />
+                  </GoogleMapReact>
+                </MapWrap>
+                <Contacts>
+                  <ServiceInformation service={this.props.service} />
+                </Contacts>
+              </ContactWrap>
+            </DetailWrapper>
+          </PageContent>
+        </Container>
+        <Container>
+          <ReviewsTitle>Reviews</ReviewsTitle>
+          {this.props.service &&
+            this.props.service._id && (
+              <ListsHandler
+                itemKey="reviews"
+                apiFunction={api.services.reviews.get}
+                urlParams={{
+                  serviceId: this.props.service._id,
+                }}
+                showLoader={false}
+                render={({ items, fetchMore, totalCount, isLoading }) => (
+                  <Reviews
+                    reviews={items}
+                    fetchMore={fetchMore}
+                    totalCount={totalCount}
+                    isLoading={isLoading}
+                  />
+                )}
+              />
+            )}
+        </Container>
+        <div className="bg-grey1">
           <Container>
-            <ReviewsTitle>Reviews</ReviewsTitle>
-            {this.props.service &&
-              this.props.service._id && (
-                <ListsHandler
-                  itemKey="reviews"
-                  apiFunction={api.services.reviews.get}
-                  urlParams={{
-                    serviceId: this.props.service._id,
-                  }}
-                  showLoader={false}
-                  render={({ items, fetchMore, totalCount, isLoading }) => (
-                    <Reviews
-                      reviews={items}
-                      fetchMore={fetchMore}
-                      totalCount={totalCount}
-                      isLoading={isLoading}
-                    />
-                  )}
-                />
-              )}
+            {this.props.trips.length ? (
+              <TripsWrap className="service-trips">
+                <Badge>
+                  <BadgeIcon />
+                </Badge>
+                <SelfAlignCenter>Part of trips</SelfAlignCenter>
+                <CarouselColumnSpan>
+                  <Row>
+                    <Grid columns={4} doubling stackable>
+                      {this.props.trips.map(trip => (
+                        <Grid.Column key={trip._id}>
+                          <Link to={'/trips/' + generateTripSlug(trip)}>
+                            <TripCart key={trip._id} withTooltip withShadow item={trip} />
+                          </Link>
+                        </Grid.Column>
+                      ))}
+                    </Grid>
+                  </Row>
+                </CarouselColumnSpan>
+              </TripsWrap>
+            ) : null}
           </Container>
-          <div className="bg-grey1">
-            <Container>
-              {this.props.trips.length ? (
-                <TripsWrap className="service-trips">
-                  <Badge>
-                    <BadgeIcon />
-                  </Badge>
-                  <SelfAlignCenter>Part of trips</SelfAlignCenter>
-                  <CarouselColumnSpan>
-                    <Row>
-                      <Grid columns={4} doubling stackable>
-                        {this.props.trips.map(trip => (
-                          <Grid.Column key={trip._id}>
-                            <Link to={'/trips/' + generateTripSlug(trip)}>
-                              <TripCart key={trip._id} withTooltip withShadow item={trip} />
-                            </Link>
-                          </Grid.Column>
-                        ))}
-                      </Grid>
-                    </Row>
-                  </CarouselColumnSpan>
-                </TripsWrap>
-              ) : null}
-            </Container>
-          </div>
-        </Page>
+        </div>
         <BrandFooter withTopBorder withPadding posRelative />
       </React.Fragment>
     );

@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, Grid, Message, Container } from 'semantic-ui-react';
 import styled from 'styled-components';
-import TopBar from './../../../shared_components/TopBar';
 import BrandFooter from './../../../shared_components/BrandFooter';
-import { Page } from './../../../shared_components/layout/Page';
 import { Link } from 'react-router-dom';
 import welcomeImage from '../../../assets/login/login.svg';
 
@@ -90,76 +88,71 @@ export default class LoginFormComponent extends Component {
 
   render() {
     return (
-      <section>
-        <Page>
-          <TopBar />
-          <Container>
-            <LoginContainer>
-              <br /> <br />
-              <Grid centered stackable verticalAlign="middle">
-                <Grid.Row columns={2}>
-                  <Grid.Column textAlign="center" floated="left">
-                    <img src={welcomeImage} alt="welcomeImage" className="login-img" />
-                    <div className="login-img-content">Plan your next trip with us!</div>
-                  </Grid.Column>
-                  <Grid.Column width="6" floated="right">
-                    {this.props.message && (
-                      <Message floating warning>
-                        {this.props.message}
-                      </Message>
-                    )}
-                    <div className="login-header">Log-in to your account</div>
-                    <br />
-                    <Form size="large" error={this.props.isLoginError()}>
-                      <Form.Input
-                        fluid
-                        icon="user"
-                        iconPosition="left"
-                        placeholder="E-mail address"
-                        type="email"
-                        name="email"
-                        id="email"
-                        onChange={this.props.handleInputChange}
-                        onBlur={this.props.validateInput}
-                        error={this.props.isInputInvalid('email')}
-                        autoFocus
-                        required
-                        data-testid="loginEmail"
-                      />
-                      <Form.Input
-                        fluid
-                        icon="lock"
-                        iconPosition="left"
-                        placeholder="Password"
-                        type="password"
-                        name="password"
-                        id="password"
-                        onChange={this.props.handleInputChange}
-                        onBlur={this.props.validateInput}
-                        error={this.props.isInputInvalid('password')}
-                        minLength={6}
-                        required
-                        data-testid="loginPassword"
-                      />
+      <React.Fragment>
+        <Container>
+          <LoginContainer>
+            <br /> <br />
+            <Grid centered stackable verticalAlign="middle">
+              <Grid.Row columns={2}>
+                <Grid.Column textAlign="center" floated="left">
+                  <img src={welcomeImage} alt="welcomeImage" className="login-img" />
+                  <div className="login-img-content">Plan your next trip with us!</div>
+                </Grid.Column>
+                <Grid.Column width="6" floated="right">
+                  {this.props.message && (
+                    <Message floating warning>
+                      {this.props.message}
+                    </Message>
+                  )}
+                  <div className="login-header">Log-in to your account</div>
+                  <br />
+                  <Form size="large" error={this.props.isLoginError()}>
+                    <Form.Input
+                      fluid
+                      icon="user"
+                      iconPosition="left"
+                      placeholder="E-mail address"
+                      type="email"
+                      name="email"
+                      id="email"
+                      onChange={this.props.handleInputChange}
+                      onBlur={this.props.validateInput}
+                      error={this.props.isInputInvalid('email')}
+                      autoFocus
+                      required
+                      data-testid="loginEmail"
+                    />
+                    <Form.Input
+                      fluid
+                      icon="lock"
+                      iconPosition="left"
+                      placeholder="Password"
+                      type="password"
+                      name="password"
+                      id="password"
+                      onChange={this.props.handleInputChange}
+                      onBlur={this.props.validateInput}
+                      error={this.props.isInputInvalid('password')}
+                      minLength={6}
+                      required
+                      data-testid="loginPassword"
+                    />
 
-                      {displayErrorMessage(
-                        this.props.isLoginError(),
-                        this.props.loginError.message,
-                      )}
+                    {displayErrorMessage(this.props.isLoginError(), this.props.loginError.message)}
 
-                      <Button
-                        className="green-btn pl-btn"
-                        fluid
-                        size="large"
-                        onClick={this.props.submitLogin}
-                        loading={this.props.isLoading}
-                        disabled={this.props.isLoading}
-                        data-testid="loginSubmit"
-                      >
-                        Login
-                      </Button>
-                    </Form>
-                    {/* commenting out metamask and ledger for now
+                    <Button
+                      className="green-btn pl-btn"
+                      fluid
+                      size="large"
+                      onClick={this.props.submitLogin}
+                      loading={this.props.isLoading}
+                      disabled={this.props.isLoading}
+                      data-testid="loginSubmit"
+                    >
+                      Login
+                    </Button>
+                  </Form>
+                  {/* commenting out metamask and ledger for now
                     <Divider horizontal>or</Divider>
                     <WithTopMargin>
                       {displayErrorMessage(
@@ -227,47 +220,46 @@ export default class LoginFormComponent extends Component {
                       </MetamaskButton>
                     </WithTopMargin> */}
 
-                    <div className="login-q-text">
-                      Don't have an account?&nbsp;&nbsp;
-                      <Link
-                        to={{
-                          pathname: '/register',
-                          state: {
-                            message: this.props.message,
-                            from: this.props.from,
-                            action: this.props.action,
-                          },
-                        }}
-                        replace
-                      >
-                        Sign Up
-                      </Link>
-                    </div>
-                    <RecoverPassword>
-                      <Link
-                        to={{
-                          pathname: '/recover-password',
-                          state: {
-                            message: this.props.message,
-                            from: this.props.from,
-                            action: this.props.action,
-                          },
-                        }}
-                        replace
-                      >
-                        Forgot password
-                      </Link>
-                    </RecoverPassword>
-                  </Grid.Column>
-                </Grid.Row>
-              </Grid>
-            </LoginContainer>
-          </Container>
-          <StaticFooter>
-            <BrandFooter withTopBorder withPadding />
-          </StaticFooter>
-        </Page>
-      </section>
+                  <div className="login-q-text">
+                    Don't have an account?&nbsp;&nbsp;
+                    <Link
+                      to={{
+                        pathname: '/register',
+                        state: {
+                          message: this.props.message,
+                          from: this.props.from,
+                          action: this.props.action,
+                        },
+                      }}
+                      replace
+                    >
+                      Sign Up
+                    </Link>
+                  </div>
+                  <RecoverPassword>
+                    <Link
+                      to={{
+                        pathname: '/recover-password',
+                        state: {
+                          message: this.props.message,
+                          from: this.props.from,
+                          action: this.props.action,
+                        },
+                      }}
+                      replace
+                    >
+                      Forgot password
+                    </Link>
+                  </RecoverPassword>
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+          </LoginContainer>
+        </Container>
+        <StaticFooter>
+          <BrandFooter withTopBorder withPadding />
+        </StaticFooter>
+      </React.Fragment>
     );
   }
 }
