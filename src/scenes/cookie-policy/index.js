@@ -27,7 +27,7 @@ const Content = styled.div`
 const EarnMoney = ({ loggedIn }) => {
   return (
     <Page>
-      <TopBar fixed noSearch />
+      <TopBar noSearch />
       <PageWrapper>
         <Content>
           <h1>Cookie Policy for Please.com</h1>

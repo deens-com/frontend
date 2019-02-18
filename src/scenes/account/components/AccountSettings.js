@@ -7,8 +7,8 @@ import TopBar from '../../../shared_components/TopBar';
 const AccountSettingsComponent = props => {
   return (
     <section>
-      <Page topPush>
-        <TopBar fixed />
+      <Page>
+        <TopBar />
         <PageContent padding="24px">
           <AccountSettingsScene {...props} />
         </PageContent>

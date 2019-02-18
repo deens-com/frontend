@@ -189,8 +189,8 @@ class Service extends Component {
     const longitude = (this.props.service.geo && this.props.service.geo.lng) || 0;
     return (
       <React.Fragment>
-        <Page topPush>
-          <TopBar fixed />
+        <Page>
+          <TopBar />
 
           <Container>
             <br />

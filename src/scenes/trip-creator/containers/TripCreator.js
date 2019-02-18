@@ -31,7 +31,7 @@ class TripCreatorContainer extends Component {
   render() {
     return (
       <Page>
-        <TopBar fixed />
+        <TopBar />
         <PageContent>
           <Loader inline="centered" active size="massive" />
         </PageContent>

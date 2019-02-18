@@ -7,8 +7,8 @@ import TopBar from '../../../shared_components/TopBar';
 const UserComponent = props => {
   return (
     <section>
-      <Page topPush>
-        <TopBar fixed />
+      <Page>
+        <TopBar />
         <PageContent padding="24px">
           <UserScene {...props} />
         </PageContent>

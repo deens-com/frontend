@@ -440,8 +440,8 @@ class CheckoutContainer extends React.Component {
     const { days, step, expireDate, timedOut } = this.state;
     const numberOfGuests = this.calculateGuests();
     return (
-      <Page topPush>
-        <TopBar fixed />
+      <Page>
+        <TopBar />
         {isLoading || !trip ? (
           <Loader inline="centered" active />
         ) : (

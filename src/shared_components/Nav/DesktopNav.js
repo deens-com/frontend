@@ -25,7 +25,7 @@ const Wrap = styled.div`
   margin-left: auto;
 
   ${props =>
-    props.home &&
+    props.transparent &&
     css`
       flex: 1;
       justify-content: flex-end;
@@ -38,7 +38,7 @@ const Wrap = styled.div`
 const Nav = styled.nav`
   color: inherit;
   ${props =>
-    props.home &&
+    props.transparent &&
     css`
       color: white;
       > a {
@@ -122,7 +122,7 @@ const DropdownTrigger = () => <NavDropdown activeclassname="is-active">Token Sal
 
 // MODULE
 const TopBarDesktopNav = function TopBarDesktopNav({
-  home,
+  transparent,
   language,
   currency,
   theme,
@@ -137,8 +137,8 @@ const TopBarDesktopNav = function TopBarDesktopNav({
     <Media
       query={`(min-width: ${sizes.large})`}
       render={() => (
-        <Wrap home={home}>
-          <Nav home={home}>
+        <Wrap transparent={transparent}>
+          <Nav transparent={transparent}>
             {icoReady && (
               <Dropdown
                 trigger={DropdownTrigger()}
@@ -161,7 +161,7 @@ const TopBarDesktopNav = function TopBarDesktopNav({
             {session.username &&
               tripInProgress && (
                 <>
-                  <Divider isBackgroundWhite={!home}>•</Divider>
+                  <Divider isBackgroundWhite={!transparent}>•</Divider>
                   <NavLink activeclassname="is-active" to="/trips/organize/...">
                     <PStrong>This is a trip name</PStrong>
                   </NavLink>
@@ -174,7 +174,7 @@ const TopBarDesktopNav = function TopBarDesktopNav({
                     <I18nText data={latestTrip.title} />
                   </PStrong>
                 </NavLink>
-                <Divider isBackgroundWhite={!home}>•</Divider>
+                <Divider isBackgroundWhite={!transparent}>•</Divider>
               </>
             )}
             <NavLink activeclassname="is-active" to="/earn-money">
@@ -182,7 +182,7 @@ const TopBarDesktopNav = function TopBarDesktopNav({
             </NavLink>
             {!session.username && (
               <>
-                <Divider isBackgroundWhite={!home}>•</Divider>
+                <Divider isBackgroundWhite={!transparent}>•</Divider>
                 <NavLink activeclassname="is-active" to="/trips/create">
                   <PStrong>Create Trip</PStrong>
                 </NavLink>
@@ -193,7 +193,7 @@ const TopBarDesktopNav = function TopBarDesktopNav({
             <DesktopDropDownMenu
               session={session}
               logOut={logOut}
-              isBackgroundWhite={!home}
+              isBackgroundWhite={!transparent}
               history={history}
             />
           </ActionsWrap>
@@ -205,7 +205,7 @@ const TopBarDesktopNav = function TopBarDesktopNav({
 
 // Props Validation
 TopBarDesktopNav.propTypes = {
-  home: PropTypes.bool.isRequired,
+  transparent: PropTypes.bool.isRequired,
   language: PropTypes.string,
   theme: PropTypes.string,
   currency: PropTypes.string,

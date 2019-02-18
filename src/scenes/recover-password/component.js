@@ -64,8 +64,8 @@ const RecoveredBox = styled.div`
 const RecoverPassword = props => {
   return (
     <section>
-      <Page topPush>
-        <TopBar fixed />
+      <Page>
+        <TopBar />
         <Container>
           <LoginContainer>
             <br /> <br />

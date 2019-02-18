@@ -183,7 +183,7 @@ export default class BlogPost extends React.PureComponent {
         <PageWrapper>
           <PageTop>
             <Header image={article ? article.image.url : ''} />
-            <TopBar home />
+            <TopBar transparent />
             {article ? (
               <HeaderText>
                 <Title>{article.title[0].text}</Title>

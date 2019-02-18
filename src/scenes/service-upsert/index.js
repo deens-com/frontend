@@ -12,8 +12,8 @@ const NewServiceScene = ({ location }) => {
   const isNewService = location.pathname === '/services/new';
   const isEditService = location.pathname.startsWith('/services/edit/');
   return (
-    <Page topPush>
-      <TopBar fixed />
+    <Page>
+      <TopBar />
       <PageContent padding="24px">
         <Container text>
           {isNewService && (

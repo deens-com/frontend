@@ -879,7 +879,7 @@ export default class TripOrganizer extends Component {
 
     return (
       <Page>
-        <TopBar fixed />
+        <TopBar />
         <Dimmer
           active={isBlockedUntilSaved || (showingPreBookModal && availability.isChecking)}
           page

@@ -91,8 +91,8 @@ export default class LoginFormComponent extends Component {
   render() {
     return (
       <section>
-        <Page topPush>
-          <TopBar fixed />
+        <Page>
+          <TopBar />
           <Container>
             <LoginContainer>
               <br /> <br />

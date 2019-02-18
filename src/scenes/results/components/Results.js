@@ -9,7 +9,7 @@ import ErrorHandler from 'shared_components/ErrorHandler';
 const ResultsComponent = props => {
   return (
     <>
-      <Page topPush>
+      <Page>
         <TopBar {...props} fixed />
         <ErrorHandler
           style={{ fontSize: 22, textAlign: 'center', margin: 'auto' }}

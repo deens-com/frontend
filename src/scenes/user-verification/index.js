@@ -49,8 +49,8 @@ const IconWrapper = styled.div`
 const TripCreator = props => {
   const params = queryString.parse(props.location.search, { ignoreQueryPrefix: true });
   return (
-    <Page topPush>
-      <TopBar fixed />
+    <Page>
+      <TopBar />
       <PageContent padding="24px">
         <Wrapper>
           {params.success === 'true' ? (

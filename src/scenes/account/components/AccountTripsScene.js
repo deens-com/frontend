@@ -47,8 +47,8 @@ class AccountTripsScene extends Component {
   render() {
     return (
       <div>
-        <Page topPush>
-          <TopBar fixed />
+        <Page>
+          <TopBar />
           <PageContent padding="24px">
             <Grid centered columns={2}>
               <Grid.Column mobile={16} tablet={5} computer={4}>

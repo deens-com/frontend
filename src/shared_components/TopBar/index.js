@@ -12,6 +12,7 @@ import MobileDropdownMenu from '../Nav/MobileDropdownMenu';
 import Search from './Search';
 import { bindActionCreators } from 'redux';
 import { getCurrentUser, getCurrentUserTrip, logOut } from 'store/session/actions';
+import { PageWrapper } from 'shared_components/layout/Page';
 
 // ACTIONS/CONFIG
 import { media } from 'libs/styled';
@@ -19,22 +20,22 @@ import { media } from 'libs/styled';
 // STYLES
 const InnerWrap = styled.header`
   align-items: center;
-  background: ${props => (props.home && !props.showMenu ? 'transparent' : 'white')};
-  position: ${props => props.home && !props.showMenu && 'absolute'};
+  background: ${props => (props.transparent && !props.showMenu ? 'transparent' : 'white')};
+  position: ${props => props.transparent && !props.showMenu && 'absolute'};
   display: flex;
-  justify-content: ${props => (props.home ? 'space-between' : 'flext-start')};
+  justify-content: ${props => (props.transparent ? 'space-between' : 'flext-start')};
   height: 65px;
-  padding: ${props => (props.home ? '0' : '10px')};
+  padding: ${props => (props.transparent ? '0' : '10px')};
   width: 100%;
   z-index: 110;
-  ${props => (props.home ? 'left: 0;' : '')}
+  ${props => (props.transparent ? 'left: 0;' : '')}
   ${props =>
     props.showMenu &&
     css`
       position: fixed;
       top: 0;
     `} ${media.minMedium} {
-    height: ${props => (props.home ? 95 : 70)}px;
+    height: ${props => (props.transparent ? 95 : 70)}px;
     padding: ${props => (props.fixed ? '0 25px' : '0')};
   }
 
@@ -114,26 +115,28 @@ class TopBar extends Component {
   }
 
   render() {
-    const { home, fixed, noSearch, isGDPRDismissed, gdprHeight } = this.props;
+    const { transparent, noSearch, isGDPRDismissed, gdprHeight } = this.props;
     const { showMenu, showSearchMobile } = this.state;
 
+    const Wrapper = transparent ? PageWrapper : React.Fragment;
+
     return (
-      <React.Fragment>
+      <Wrapper>
         <InnerWrap
           // eslint-disable-next-line
           role="baner"
-          showShadow={fixed && !showMenu}
+          showShadow={!transparent && !showMenu}
           showMenu={showMenu}
-          home={home}
-          fixed={fixed}
+          transparent={transparent}
+          fixed={!transparent}
           fixedTop={!isGDPRDismissed && gdprHeight}
         >
           {!showSearchMobile && (
             <Logo
               menuIsOpened={showMenu}
               toggleMenu={this.toggleMenu}
-              applyFixation={showMenu && !fixed}
-              flex={Boolean(home)}
+              applyFixation={showMenu && transparent}
+              flex={Boolean(transparent)}
             />
           )}
           {!noSearch && (
@@ -146,32 +149,34 @@ class TopBar extends Component {
           )}
           <DesktopNav
             latestTrip={this.props.latestTrip}
-            home={home}
+            transparent={transparent}
             theme="light"
             session={this.props.session}
             logOut={this.props.logOut}
           />
           {!showSearchMobile && (
-            <MobileDropdownMenu isMenuOpen={showMenu} toggleMenu={this.toggleMenu} dark={!home} />
+            <MobileDropdownMenu
+              isMenuOpen={showMenu}
+              toggleMenu={this.toggleMenu}
+              dark={!transparent}
+            />
           )}
         </InnerWrap>
         <MobileNav toggleMenu={this.toggleMenu} showProfileMenu={showMenu} />
-        {fixed && <FixedPlaceholder />}
-      </React.Fragment>
+        {!transparent && <FixedPlaceholder />}
+      </Wrapper>
     );
   }
 }
 
 // Props Validation
 TopBar.propTypes = {
-  home: PropTypes.bool,
-  fixed: PropTypes.bool,
+  transparent: PropTypes.bool,
   withPadding: PropTypes.bool,
 };
 
 TopBar.defaultProps = {
-  home: false,
-  fixed: false,
+  transparent: false,
   withPadding: false,
 };
 

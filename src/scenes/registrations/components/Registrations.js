@@ -56,8 +56,8 @@ const RegistrationsComponent = props => {
   const disableFields = props.isLoading || props.registered;
   return (
     <section>
-      <Page topPush>
-        <TopBar fixed />
+      <Page>
+        <TopBar />
         <Container>
           <LoginContainer>
             <br /> <br />

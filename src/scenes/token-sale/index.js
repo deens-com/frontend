@@ -182,7 +182,7 @@ class TokenSale extends Component {
 
   renderHeader() {
     if (this.props.loggedIn === null) {
-      return <TopBar fixed />;
+      return <TopBar />;
     }
 
     const title = this.getTitle();
@@ -194,7 +194,7 @@ class TokenSale extends Component {
     return (
       <PageTop>
         <Header />
-        <TopBar home noSearch />
+        <TopBar transparent noSearch />
         <HeaderText>
           <Title>{title}</Title>
           <Subtitle>{subtitle}</Subtitle>

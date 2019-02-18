@@ -20,8 +20,8 @@ const PageContainer = styled.div`
 
 const ErrorPage = () => {
   return (
-    <Page topPush>
-      <TopBar fixed />
+    <Page>
+      <TopBar />
       <PageContent>
         <PageContainer>
           <Title>Something went wrong :-(</Title>

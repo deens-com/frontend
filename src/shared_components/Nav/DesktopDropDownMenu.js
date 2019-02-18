@@ -94,7 +94,7 @@ export default class DesktopDropDownMenu extends Component {
         <Button type="link" theme="primaryFilled" size="small" href="/trips/create">
           <PStrong>Create Trip</PStrong>
         </Button>
-        <Dropdown trigger={this.trigger()} icon={null}>
+        <Dropdown direction="left" trigger={this.trigger()} icon={null}>
           <Dropdown.Menu>
             <Dropdown.Item
               icon="plane"

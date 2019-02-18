@@ -328,7 +328,7 @@ export default class Share extends React.Component {
     const { trip } = this.props;
     return (
       <Page>
-        <TopBar fixed />
+        <TopBar />
         <PageContent>
           <Dimmer active={this.state.isSaving} page>
             <Loader size="massive" />

@@ -386,7 +386,7 @@ export default class Trip extends Component {
     if (!trip) {
       return (
         <Page>
-          <TopBar fixed />
+          <TopBar />
           <PageContent>
             <Loader inline="centered" active />
           </PageContent>
@@ -398,7 +398,7 @@ export default class Trip extends Component {
 
     return (
       <CustomPage>
-        <TopBar fixed />
+        <TopBar />
         <DaySelector bottom={65} days={days} trip={trip} goToDay={this.goToDay} />
         <Modal
           open={Boolean(this.state.confirmCopyTripPopupOpen)}

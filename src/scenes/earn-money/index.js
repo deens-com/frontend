@@ -141,7 +141,7 @@ const EarnMoney = ({ loggedIn, userProfile }) => {
       <PageWrapper>
         <PageTop>
           <Header />
-          <TopBar home />
+          <TopBar transparent />
           <HeaderText>
             <Title>Earn Money</Title>
             <Subtitle>
