@@ -42,7 +42,7 @@ const Title = styled(H6)`
   position: absolute;
   bottom: 0;
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.33);
+  background-color: rgba(0, 0, 0, 0.33);
   a {
     color: inherit;
   }
@@ -123,9 +123,12 @@ const Tag = styled(PXSmall)`
   color: ${secondary};
   border: 1px solid ${secondary};
   border-radius: 2px 2px 2px 0;
-  margin-right: 3px;
   padding: 1px 3px;
+`;
+
+const TagLink = styled(Link)`
   margin-bottom: 5px;
+  margin-right: 3px;
   &:last-child {
     margin-right: 0;
   }
@@ -135,6 +138,8 @@ const BookableTag = styled(Tag)`
   background-color: ${primary};
   border: 1px solid ${primary};
   color: ${lightText};
+  margin-bottom: 5px;
+  margin-right: 3px;
 `;
 
 const TagsLine = styled.div``;
@@ -210,9 +215,14 @@ class TripCart extends Component {
 
   renderTags() {
     return this.props.item.tags.map(tag => (
-      <Tag key={I18nText.translate(tag.names)}>
-        <I18nText data={tag.names} />
-      </Tag>
+      <TagLink
+        to={`/results?tags=${I18nText.translate(tag.names)}&serviceTypes=trip`}
+        key={I18nText.translate(tag.names)}
+      >
+        <Tag>
+          <I18nText data={tag.names} />
+        </Tag>
+      </TagLink>
     ));
   }
 
