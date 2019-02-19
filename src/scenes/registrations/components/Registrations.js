@@ -1,6 +1,4 @@
 import React from 'react';
-import { Page } from './../../../shared_components/layout/Page';
-import TopBar from './../../../shared_components/TopBar';
 import BrandFooter from './../../../shared_components/BrandFooter';
 import { Button, Form, Grid, Message, Container } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
@@ -56,125 +54,122 @@ const RegistrationsComponent = props => {
   const disableFields = props.isLoading || props.registered;
   return (
     <section>
-      <Page topPush>
-        <TopBar fixed />
-        <Container>
-          <LoginContainer>
-            <br /> <br />
-            <Grid centered stackable verticalAlign="middle">
-              <Grid.Row columns={2}>
-                <Grid.Column textAlign="center" floated="left">
-                  <img src={welcomeImage} alt="welcomeImage" className="login-img" />
-                  <div className="login-img-content">Plan your next trip with us!</div>
-                </Grid.Column>
-                <Grid.Column width="6" floated="right">
-                  {props.message && (
-                    <Message floating warning>
-                      {props.message}
-                    </Message>
-                  )}
-                  <div className="login-header">Create your new account</div>
-                  <br />
-                  {Object.keys(props.stateErrors).length !== 0 && (
-                    <Message style={{ color: 'red', whiteSpace: 'pre-line' }}>
-                      {props.stateErrors.message}
-                    </Message>
-                  )}
-                  <Form size="large">
-                    <Form.Input
-                      fluid
-                      icon="user"
-                      iconPosition="left"
-                      placeholder="Username"
-                      type="text"
-                      name="username"
-                      id="username"
-                      onChange={props.handleInputChange}
-                      autoFocus
-                      disabled={disableFields}
-                      required
-                    />
-                    <Form.Input
-                      fluid
-                      icon="user"
-                      iconPosition="left"
-                      placeholder="E-mail address"
-                      type="email"
-                      name="email"
-                      id="email"
-                      onChange={props.handleInputChange}
-                      onBlur={props.validateInput}
-                      error={props.isInputInvalid('email')}
-                      disabled={disableFields}
-                      required
-                    />
-                    <Form.Input
-                      fluid
-                      icon="lock"
-                      iconPosition="left"
-                      placeholder="Password"
-                      type="password"
-                      name="password"
-                      id="password"
-                      onChange={props.handleInputChange}
-                      onBlur={props.validateInput}
-                      error={props.isInputInvalid('password')}
-                      minLength={6}
-                      disabled={disableFields}
-                      required
-                    />
-                    <Form.Input
-                      fluid
-                      icon="lock"
-                      iconPosition="left"
-                      placeholder="Password confirmation"
-                      type="password"
-                      name="password_confirmation"
-                      id="password_confirmation"
-                      onChange={props.handleInputChange}
-                      onBlur={props.validateInput}
-                      error={props.isInputInvalid('password')}
-                      disabled={disableFields}
-                      minLength={6}
-                      required
-                    />
+      <Container>
+        <LoginContainer>
+          <br /> <br />
+          <Grid centered stackable verticalAlign="middle">
+            <Grid.Row columns={2}>
+              <Grid.Column textAlign="center" floated="left">
+                <img src={welcomeImage} alt="welcomeImage" className="login-img" />
+                <div className="login-img-content">Plan your next trip with us!</div>
+              </Grid.Column>
+              <Grid.Column width="6" floated="right">
+                {props.message && (
+                  <Message floating warning>
+                    {props.message}
+                  </Message>
+                )}
+                <div className="login-header">Create your new account</div>
+                <br />
+                {Object.keys(props.stateErrors).length !== 0 && (
+                  <Message style={{ color: 'red', whiteSpace: 'pre-line' }}>
+                    {props.stateErrors.message}
+                  </Message>
+                )}
+                <Form size="large">
+                  <Form.Input
+                    fluid
+                    icon="user"
+                    iconPosition="left"
+                    placeholder="Username"
+                    type="text"
+                    name="username"
+                    id="username"
+                    onChange={props.handleInputChange}
+                    autoFocus
+                    disabled={disableFields}
+                    required
+                  />
+                  <Form.Input
+                    fluid
+                    icon="user"
+                    iconPosition="left"
+                    placeholder="E-mail address"
+                    type="email"
+                    name="email"
+                    id="email"
+                    onChange={props.handleInputChange}
+                    onBlur={props.validateInput}
+                    error={props.isInputInvalid('email')}
+                    disabled={disableFields}
+                    required
+                  />
+                  <Form.Input
+                    fluid
+                    icon="lock"
+                    iconPosition="left"
+                    placeholder="Password"
+                    type="password"
+                    name="password"
+                    id="password"
+                    onChange={props.handleInputChange}
+                    onBlur={props.validateInput}
+                    error={props.isInputInvalid('password')}
+                    minLength={6}
+                    disabled={disableFields}
+                    required
+                  />
+                  <Form.Input
+                    fluid
+                    icon="lock"
+                    iconPosition="left"
+                    placeholder="Password confirmation"
+                    type="password"
+                    name="password_confirmation"
+                    id="password_confirmation"
+                    onChange={props.handleInputChange}
+                    onBlur={props.validateInput}
+                    error={props.isInputInvalid('password')}
+                    disabled={disableFields}
+                    minLength={6}
+                    required
+                  />
 
-                    <Button
-                      className="green-btn pl-btn"
-                      loading={props.isLoading || props.registered}
-                      disabled={disableFields}
-                      fluid
-                      size="large"
-                      onClick={props.onSubmitRegistration}
-                    >
-                      Register
-                    </Button>
-                  </Form>
+                  <Button
+                    className="green-btn pl-btn"
+                    loading={props.isLoading || props.registered}
+                    disabled={disableFields}
+                    fluid
+                    size="large"
+                    onClick={props.onSubmitRegistration}
+                  >
+                    Register
+                  </Button>
+                </Form>
 
-                  <div className="login-q-text">
-                    Already have an account ?&nbsp;&nbsp;
-                    <Link
-                      to={{
-                        pathname: '/login',
-                        state: {
-                          message: props.message,
-                          from: props.from,
-                          action: props.action,
-                        },
-                      }}
-                    >
-                      Sign In
-                    </Link>
-                  </div>
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
-          </LoginContainer>
-        </Container>
-        <StaticFooter>
-          <BrandFooter withTopBorder withPadding />
-        </StaticFooter>
-      </Page>
+                <div className="login-q-text">
+                  Already have an account ?&nbsp;&nbsp;
+                  <Link
+                    to={{
+                      pathname: '/login',
+                      state: {
+                        message: props.message,
+                        from: props.from,
+                        action: props.action,
+                      },
+                    }}
+                  >
+                    Sign In
+                  </Link>
+                </div>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </LoginContainer>
+      </Container>
+      <StaticFooter>
+        <BrandFooter withTopBorder withPadding />
+      </StaticFooter>
     </section>
   );
 };

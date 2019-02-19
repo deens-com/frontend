@@ -13,14 +13,9 @@ export default class AccountProfileComponent extends Component {
 
   render() {
     return (
-      <section>
-        <Page topPush>
-          <TopBar fixed />
-          <PageContent padding="24px">
-            <AccountProfileScene {...this.props} />
-          </PageContent>
-        </Page>
-      </section>
+      <PageContent padding="24px">
+        <AccountProfileScene {...this.props} />
+      </PageContent>
     );
   }
 }

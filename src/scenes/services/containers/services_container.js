@@ -6,12 +6,13 @@ import { bindActionCreators } from 'redux';
 import { withRouter, Redirect } from 'react-router';
 import { getSession } from 'libs/user-session';
 import NotFoundScene from 'styled_scenes/NotFound';
-import { Helmet } from 'react-helmet';
+import Helmet from 'react-helmet-async';
 import { websiteUrl } from 'libs/config';
 import I18nText from 'shared_components/I18nText';
 import { getHeroImage, generateServiceSlug } from 'libs/Utils';
 import { loadTrip } from 'libs/localStorage';
 import tripActions from 'store/trips/actions';
+import headerActions from 'store/header/actions';
 
 class ServicesContainer extends Component {
   state = {
@@ -19,6 +20,7 @@ class ServicesContainer extends Component {
   };
 
   componentDidMount() {
+    this.props.changeHeader();
     const service_id = this.props.match.params.id;
     this.props.fetch_service(service_id);
     const user = getSession();
@@ -125,6 +127,7 @@ const mapDispatchToProps = dispatch => {
     {
       ...serviceActions,
       fetchMyTrips: tripActions.fetchUserTrips,
+      changeHeader: headerActions.changeHeader,
     },
     dispatch,
   );

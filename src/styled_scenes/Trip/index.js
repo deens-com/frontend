@@ -8,14 +8,11 @@ import { Loader, Popup, Icon, Dimmer, Modal } from 'semantic-ui-react';
 import { SingleDatePicker } from 'react-dates';
 import { updateBottomChatPosition } from 'libs/Utils';
 
-// COMPONENTS
-import TopBar from 'shared_components/TopBar';
-
 // STYLES
 import { Page, PageContent } from 'shared_components/layout/Page';
 import GuestsSelector from 'shared_components/SelectGuests/GuestsSelector';
 import { media } from 'libs/styled';
-import { saveTrip, isTripSaved, loadTrip } from 'libs/localStorage';
+import { isTripSaved, loadTrip } from 'libs/localStorage';
 
 import Header from './Header';
 import TripDescription from './TripDescription';
@@ -385,12 +382,9 @@ export default class Trip extends Component {
 
     if (!trip) {
       return (
-        <Page>
-          <TopBar fixed />
-          <PageContent>
-            <Loader inline="centered" active />
-          </PageContent>
-        </Page>
+        <PageContent>
+          <Loader inline="centered" active />
+        </PageContent>
       );
     }
 
@@ -398,7 +392,6 @@ export default class Trip extends Component {
 
     return (
       <CustomPage>
-        <TopBar fixed />
         <DaySelector bottom={65} days={days} trip={trip} goToDay={this.goToDay} />
         <Modal
           open={Boolean(this.state.confirmCopyTripPopupOpen)}

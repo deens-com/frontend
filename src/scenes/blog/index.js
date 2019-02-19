@@ -3,13 +3,15 @@ import styled from 'styled-components';
 import prismic from 'prismic-javascript';
 import { RichText } from 'prismic-reactjs';
 import { Loader } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { media } from 'libs/styled';
+import headerActions from 'store/header/actions';
 
-import TopBar from 'shared_components/TopBar';
-import { Page, PageWrapper, PageContent } from 'shared_components/layout/Page';
+import { PageWrapper, PageContent } from 'shared_components/layout/Page';
 import BrandFooter from 'shared_components/BrandFooter';
-import { Helmet } from 'react-helmet';
+import Helmet from 'react-helmet-async';
 import Notfound from 'styled_scenes/NotFound';
 import { websiteUrl, prismicUrl } from 'libs/config';
 
@@ -129,7 +131,7 @@ const PostContent = styled.div`
   }
 `;
 
-export default class BlogPost extends React.PureComponent {
+class BlogPost extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -139,6 +141,7 @@ export default class BlogPost extends React.PureComponent {
   }
 
   componentDidMount() {
+    this.props.changeHeader({ transparent: true });
     prismic.getApi(prismicUrl).then(async api => {
       try {
         const article = await api.getByUID('article', this.props.match.params.slug);
@@ -168,7 +171,7 @@ export default class BlogPost extends React.PureComponent {
     }
 
     return (
-      <Page>
+      <React.Fragment>
         {article && (
           <Helmet>
             <title>{article.title[0].text} | Please.com</title>
@@ -183,7 +186,6 @@ export default class BlogPost extends React.PureComponent {
         <PageWrapper>
           <PageTop>
             <Header image={article ? article.image.url : ''} />
-            <TopBar home />
             {article ? (
               <HeaderText>
                 <Title>{article.title[0].text}</Title>
@@ -196,9 +198,18 @@ export default class BlogPost extends React.PureComponent {
           <PageContent>
             <PostContent>{article ? RichText.render(article.article) : null}</PostContent>
           </PageContent>
-          <BrandFooter />
         </PageWrapper>
-      </Page>
+        <BrandFooter />
+      </React.Fragment>
     );
   }
 }
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({ changeHeader: headerActions.changeHeader }, dispatch);
+};
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(BlogPost);

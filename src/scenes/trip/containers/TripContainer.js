@@ -9,10 +9,11 @@ import NotFound from 'styled_scenes/NotFound';
 import actions from 'store/trips/actions';
 import searchActions from 'store/search/actions';
 import { getPriceFromServiceOption, getPeopleCount } from 'libs/Utils';
-import { Helmet } from 'react-helmet';
+import Helmet from 'react-helmet-async';
 import { websiteUrl } from 'libs/config';
 import I18nText from 'shared_components/I18nText';
 import { generateTripSlug } from 'libs/Utils';
+import headerActions from 'store/header/actions';
 
 function getBookedInformation(trip) {
   return trip.services.reduce((prev, service) => {
@@ -51,6 +52,7 @@ function getBookedInformation(trip) {
 class TripContainer extends Component {
   constructor(props) {
     super(props);
+    props.changeHeader();
     props.fetchTrip(props.match.params.id, true);
 
     if (props.startDate && props.adults) {
@@ -174,6 +176,7 @@ const mapDispatchToProps = dispatch =>
     {
       ...actions,
       changeDates: searchActions.updateSearchQuery,
+      changeHeader: headerActions.changeHeader,
     },
     dispatch,
   );

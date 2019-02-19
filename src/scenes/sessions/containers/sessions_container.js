@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import validator from 'validator';
 import LoginFormComponent from '../components/LoginForm';
 import * as sessionsActions from 'store/session/actions';
+import headerActions from 'store/header/actions';
 
 class SessionsContainer extends Component {
   constructor(props) {
@@ -16,6 +17,7 @@ class SessionsContainer extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.isInputInvalid = this.isInputInvalid.bind(this);
     this.isLoginError = this.isLoginError.bind(this);
+    this.props.changeHeader();
 
     this.props.getCurrentUser(true);
   }
@@ -140,7 +142,10 @@ const mapStateToProps = ({ session }) => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators(sessionsActions, dispatch);
+  return bindActionCreators(
+    { ...sessionsActions, changeHeader: headerActions.changeHeader },
+    dispatch,
+  );
 };
 
 export default connect(

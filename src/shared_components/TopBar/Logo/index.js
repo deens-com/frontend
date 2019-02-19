@@ -15,6 +15,8 @@ const Wrap = styled.div`
   margin-right: 25px;
   z-index: 21;
   flex-grow: 0;
+  display: flex;
+  align-items: center;
 `;
 
 // const ArrowWrap = styled.span`

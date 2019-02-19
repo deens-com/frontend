@@ -7,6 +7,7 @@ import servicesUpsert from 'store/services-upsert/reducer';
 import checkout from 'store/checkout/reducer';
 import account from 'store/account/reducer';
 import session from 'store/session/reducer';
+import header from 'store/header/reducer';
 
 const allReducers = combineReducers({
   search,
@@ -17,6 +18,7 @@ const allReducers = combineReducers({
   checkout,
   session,
   account,
+  header,
 });
 
 export default allReducers;

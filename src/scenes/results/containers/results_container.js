@@ -7,9 +7,11 @@ import tripActions from 'store/trips/actions';
 import { loadTrip } from 'libs/localStorage';
 import { Loader } from 'semantic-ui-react';
 import { updatePath } from 'store/search/helpers';
+import headerActions from 'store/header/actions';
 
 class ResultsContainer extends Component {
   componentDidMount() {
+    this.props.changeHeader();
     let searchQuery = this.createQuery(this.props);
 
     this.props.updateSearchQuery(searchQuery);
@@ -122,6 +124,7 @@ const mapDispatchToProps = dispatch => {
       ...searchActions,
       resetTrip: tripActions.resetTrip,
       fetchTrip: tripActions.fetchTrip,
+      changeHeader: headerActions.changeHeader,
     },
     dispatch,
   );

@@ -1,6 +1,4 @@
 import React from 'react';
-import { Page } from 'shared_components/layout/Page';
-import TopBar from 'shared_components/TopBar';
 import BrandFooter from 'shared_components/BrandFooter';
 import { Button, Form, Grid, Message, Container } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
@@ -63,92 +61,89 @@ const RecoveredBox = styled.div`
 
 const RecoverPassword = props => {
   return (
-    <section>
-      <Page topPush>
-        <TopBar fixed />
-        <Container>
-          <LoginContainer>
-            <br /> <br />
-            <Grid centered stackable verticalAlign="middle">
-              <Grid.Row columns={2}>
-                <Grid.Column textAlign="center" floated="left">
-                  <img src={welcomeImage} alt="welcomeImage" className="login-img" />
-                  <div className="login-img-content">Plan your next trip with us!</div>
-                </Grid.Column>
-                <Grid.Column width="6" floated="right">
-                  {props.recovered ? (
-                    <RecoveredBox>
-                      Please check your email to recover your password: {props.email}
-                    </RecoveredBox>
-                  ) : (
-                    <React.Fragment>
-                      {props.message && (
-                        <Message floating warning>
-                          {props.message}
-                        </Message>
-                      )}
-                      <div className="login-header">Recover your password</div>
-                      <br />
-                      {Object.keys(props.stateErrors).length !== 0 && (
-                        <Message style={{ color: 'red', whiteSpace: 'pre-line' }}>
-                          {props.stateErrors.message}
-                        </Message>
-                      )}
-                      <Form size="large">
-                        <Form.Input
-                          fluid
-                          icon="user"
-                          iconPosition="left"
-                          placeholder="E-mail address"
-                          type="email"
-                          name="email"
-                          id="email"
-                          onChange={props.handleInputChange}
-                          onBlur={props.validateInput}
-                          error={props.isInputInvalid('email')}
-                          required
-                        />
+    <React.Fragment>
+      <Container>
+        <LoginContainer>
+          <br /> <br />
+          <Grid centered stackable verticalAlign="middle">
+            <Grid.Row columns={2}>
+              <Grid.Column textAlign="center" floated="left">
+                <img src={welcomeImage} alt="welcomeImage" className="login-img" />
+                <div className="login-img-content">Plan your next trip with us!</div>
+              </Grid.Column>
+              <Grid.Column width="6" floated="right">
+                {props.recovered ? (
+                  <RecoveredBox>
+                    Please check your email to recover your password: {props.email}
+                  </RecoveredBox>
+                ) : (
+                  <React.Fragment>
+                    {props.message && (
+                      <Message floating warning>
+                        {props.message}
+                      </Message>
+                    )}
+                    <div className="login-header">Recover your password</div>
+                    <br />
+                    {Object.keys(props.stateErrors).length !== 0 && (
+                      <Message style={{ color: 'red', whiteSpace: 'pre-line' }}>
+                        {props.stateErrors.message}
+                      </Message>
+                    )}
+                    <Form size="large">
+                      <Form.Input
+                        fluid
+                        icon="user"
+                        iconPosition="left"
+                        placeholder="E-mail address"
+                        type="email"
+                        name="email"
+                        id="email"
+                        onChange={props.handleInputChange}
+                        onBlur={props.validateInput}
+                        error={props.isInputInvalid('email')}
+                        required
+                      />
 
-                        <Button
-                          className="green-btn pl-btn"
-                          loading={props.isLoading}
-                          disabled={props.isLoading}
-                          fluid
-                          size="large"
-                          onClick={props.onSubmit}
-                        >
-                          Recover password
-                        </Button>
-                      </Form>
+                      <Button
+                        className="green-btn pl-btn"
+                        loading={props.isLoading}
+                        disabled={props.isLoading}
+                        fluid
+                        size="large"
+                        onClick={props.onSubmit}
+                      >
+                        Recover password
+                      </Button>
+                    </Form>
 
-                      <div className="login-q-text">
-                        Don't have an account?&nbsp;&nbsp;
-                        <Link
-                          to={{
-                            pathname: '/register',
-                            state: {
-                              message: props.message,
-                              from: props.from,
-                              action: props.action,
-                            },
-                          }}
-                          replace
-                        >
-                          Sign Up
-                        </Link>
-                      </div>
-                    </React.Fragment>
-                  )}
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
-          </LoginContainer>
-        </Container>
-        <StaticFooter>
-          <BrandFooter withTopBorder withPadding />
-        </StaticFooter>
-      </Page>
-    </section>
+                    <div className="login-q-text">
+                      Don't have an account?&nbsp;&nbsp;
+                      <Link
+                        to={{
+                          pathname: '/register',
+                          state: {
+                            message: props.message,
+                            from: props.from,
+                            action: props.action,
+                          },
+                        }}
+                        replace
+                      >
+                        Sign Up
+                      </Link>
+                    </div>
+                  </React.Fragment>
+                )}
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </LoginContainer>
+      </Container>
+      <StaticFooter>
+        <BrandFooter withTopBorder withPadding />
+      </StaticFooter>
+    </React.Fragment>
   );
 };
 

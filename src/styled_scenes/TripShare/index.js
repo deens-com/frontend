@@ -6,8 +6,6 @@ import { Loader, Dimmer } from 'semantic-ui-react';
 import * as tripUtils from 'libs/trips';
 import history from 'main/history';
 import styled from 'styled-components';
-import { Page } from 'shared_components/layout/Page';
-import TopBar from 'shared_components/TopBar';
 import Input from 'shared_components/StyledInput';
 import I18nText from 'shared_components/I18nText';
 import Button from 'shared_components/Button';
@@ -327,21 +325,18 @@ export default class Share extends React.Component {
   render() {
     const { trip } = this.props;
     return (
-      <Page>
-        <TopBar fixed />
-        <PageContent>
-          <Dimmer active={this.state.isSaving} page>
-            <Loader size="massive" />
-          </Dimmer>
-          <BackButton to={`/trips/organize/${this.props.tripId}`} replace>
-            Back to customization
-          </BackButton>
-          <Content>
-            <Title>Add additional information to your trip</Title>
-            {trip ? this.renderContent() : <Loader active />}
-          </Content>
-        </PageContent>
-      </Page>
+      <PageContent>
+        <Dimmer active={this.state.isSaving} page>
+          <Loader size="massive" />
+        </Dimmer>
+        <BackButton to={`/trips/organize/${this.props.tripId}`} replace>
+          Back to customization
+        </BackButton>
+        <Content>
+          <Title>Add additional information to your trip</Title>
+          {trip ? this.renderContent() : <Loader active />}
+        </Content>
+      </PageContent>
     );
   }
 }

@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import TopBar from '../../shared_components/TopBar';
-import { Page, PageWrapper } from '../../shared_components/layout/Page';
+import { bindActionCreators } from 'redux';
+import headerActions from 'store/header/actions';
+
+import { PageWrapper } from '../../shared_components/layout/Page';
 import BrandFooter from '../../shared_components/BrandFooter';
 
 const Content = styled.div`
   max-width: 700px;
   margin: auto;
+  margin-bottom: 25px;
 
   h1,
   h3 {
@@ -24,10 +27,12 @@ const Content = styled.div`
   }
 `;
 
-const EarnMoney = ({ loggedIn }) => {
+const CookiePolicy = ({ loggedIn, changeHeader }) => {
+  useEffect(() => {
+    changeHeader({ noSearch: true });
+  });
   return (
-    <Page>
-      <TopBar fixed noSearch />
+    <React.Fragment>
       <PageWrapper>
         <Content>
           <h1>Cookie Policy for Please.com</h1>
@@ -203,9 +208,9 @@ const EarnMoney = ({ loggedIn }) => {
             clicking the contact us bubble at the bottom of this page
           </p>
         </Content>
-        <BrandFooter />
       </PageWrapper>
-    </Page>
+      <BrandFooter />
+    </React.Fragment>
   );
 };
 
@@ -215,4 +220,15 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(EarnMoney);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      changeHeader: headerActions.changeHeader,
+    },
+    dispatch,
+  );
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(CookiePolicy);

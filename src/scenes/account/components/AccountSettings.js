@@ -6,14 +6,9 @@ import TopBar from '../../../shared_components/TopBar';
 
 const AccountSettingsComponent = props => {
   return (
-    <section>
-      <Page topPush>
-        <TopBar fixed />
-        <PageContent padding="24px">
-          <AccountSettingsScene {...props} />
-        </PageContent>
-      </Page>
-    </section>
+    <PageContent padding="24px">
+      <AccountSettingsScene {...props} />
+    </PageContent>
   );
 };
 

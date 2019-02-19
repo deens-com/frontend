@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import HomeComponent from './../components/Home';
-import { Helmet } from 'react-helmet';
+import Helmet from 'react-helmet-async';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { websiteUrl } from 'libs/config';
 import api from 'libs/apiClient';
 import fetchHelperFactory, { defaultState } from 'libs/fetchHelper';
+import headerActions from 'store/header/actions';
 
-export default class HomeContainer extends Component {
+class HomeContainer extends Component {
   constructor(props) {
     super(props);
 
@@ -18,6 +21,7 @@ export default class HomeContainer extends Component {
 
   componentDidMount() {
     this.fetchTrips({ include: ['owner', 'tags'] });
+    this.props.changeHeader({ transparent: true, noSearch: true });
   }
 
   getTrips = () => {
@@ -45,3 +49,16 @@ export default class HomeContainer extends Component {
     );
   }
 }
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      changeHeader: headerActions.changeHeader,
+    },
+    dispatch,
+  );
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(HomeContainer);
