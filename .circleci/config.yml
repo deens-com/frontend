@@ -37,10 +37,10 @@ jobs:
             curl -i -H "Authorization: token ${GIT_TOKEN}" -H "Content-Type: application/json" --request POST --data "{\"state\": \"pending\", \"description\": \"Waiting for build to finish\", \"context\": \"ci/deploy-feature\"}" https://api.github.com/repos/PleaseDotCom/frontend/statuses/${CIRCLE_SHA1}
             curl -i -H "Authorization: token ${GIT_TOKEN}" -H "Content-Type: application/json" --request POST --data "{\"state\": \"pending\", \"description\": \"Waiting for deployment to finish\", \"context\": \"ci/regression-tests\"}" https://api.github.com/repos/PleaseDotCom/frontend/statuses/${CIRCLE_SHA1}
 
-      - run:
-          name: Run Tests
-          command: |
-            yarn test
+      #- run:
+      #    name: Run Tests
+      #    command: |
+      #      yarn test
       - run:
           name: Configure Git
           command: |

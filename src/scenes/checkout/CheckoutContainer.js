@@ -20,6 +20,7 @@ import BookingDone from './components/BookingDone';
 import CheckoutTrip from './components/CheckoutTrip';
 import * as actions from 'store/checkout/actions';
 import tripActions from 'store/trips/actions';
+import headerActions from 'store/header/actions';
 import Button from 'shared_components/Button';
 import GuestsData from './components/GuestsData';
 import Countdown from './components/Countdown';
@@ -248,6 +249,7 @@ class CheckoutContainer extends React.Component {
 
   componentDidMount() {
     this.props.cleanPaymentStatus();
+    this.props.changeHeader({ noSearch: true });
     updateBottomChatPosition(50);
   }
 
@@ -436,99 +438,94 @@ class CheckoutContainer extends React.Component {
   }
 
   render() {
-    const { trip, isLoading, isGDPRDismissed, gdprHeight } = this.props;
+    const { trip, isLoading } = this.props;
     const { days, step, expireDate, timedOut } = this.state;
     const numberOfGuests = this.calculateGuests();
-    return (
-      <Page topPush>
-        <TopBar fixed />
-        {isLoading || !trip ? (
-          <Loader inline="centered" active />
-        ) : (
-          <React.Fragment>
-            <Wrapper>
-              <Top>
-                {step < 4 && (
-                  <React.Fragment>
-                    <BackButton to={`/trips/organize/${this.tripId}`} replace>
-                      <BackIcon>
-                        <LeftArrow />
-                      </BackIcon>
-                      <span>Back to customization</span>
-                    </BackButton>
-                    <Steps>
-                      <Step active={step === 1}>
-                        <span>1</span> Review Booking
-                      </Step>
-                      <StepSeparator />
-                      <Step active={step === 2}>
-                        <span>2</span> Guest Details
-                      </Step>
-                      <StepSeparator />
-                      <Step active={step === 3}>
-                        <span>3</span> Payment
-                      </Step>
-                    </Steps>
-                  </React.Fragment>
-                )}
-              </Top>
-              {step < 4 && (
-                <Summary>
-                  <SummaryData>
-                    <Title>
-                      <I18nText data={trip.title} />
-                    </Title>
-                    <Location>
-                      <MapMarker style={{ fill: '#6E7885' }} />
-                      <span>{formatLocation(trip.location)}</span>
-                    </Location>
-                    <Dates>{formatDate(trip.startDate, days)}</Dates>
-                    <Guests>
-                      {numberOfGuests} {numberOfGuests === 1 ? 'Guest' : 'Guests'}
-                    </Guests>
-                  </SummaryData>
-                  <TotalPriceWrapper>
-                    <TotalPrice>
-                      <PriceLine>Total Price Booked Items ${trip.basePrice.toFixed(2)}</PriceLine>
-                      <Taxes>* all taxes and fees are included</Taxes>
-                    </TotalPrice>
-                  </TotalPriceWrapper>
-                </Summary>
-              )}
-              {step === 3 &&
-                expireDate && (
-                  <Countdown
-                    isPaying={this.state.isPaying}
-                    expireDate={expireDate}
-                    onTimeout={this.onTimeout}
-                  />
-                )}
-              {step === 3 &&
-                timedOut &&
-                !this.state.isPaying && (
-                  <ReprovisionModal
-                    okClick={this.getProvisionCodes}
-                    cancelClick={this.goToTripOrganizer}
-                  />
-                )}
-              {this.renderStep()}
-            </Wrapper>
-            {step < 3 && (
-              <Footer>
-                <Button
-                  disabled={this.state.nextDisabled}
-                  theme="fillLightGreen"
-                  onClick={this.nextStep}
-                  size="small"
-                  bold
-                >
-                  Next
-                </Button>
-              </Footer>
+    return isLoading || !trip ? (
+      <Loader inline="centered" active />
+    ) : (
+      <React.Fragment>
+        <Wrapper>
+          <Top>
+            {step < 4 && (
+              <React.Fragment>
+                <BackButton to={`/trips/organize/${this.tripId}`} replace>
+                  <BackIcon>
+                    <LeftArrow />
+                  </BackIcon>
+                  <span>Back to customization</span>
+                </BackButton>
+                <Steps>
+                  <Step active={step === 1}>
+                    <span>1</span> Review Booking
+                  </Step>
+                  <StepSeparator />
+                  <Step active={step === 2}>
+                    <span>2</span> Guest Details
+                  </Step>
+                  <StepSeparator />
+                  <Step active={step === 3}>
+                    <span>3</span> Payment
+                  </Step>
+                </Steps>
+              </React.Fragment>
             )}
-          </React.Fragment>
+          </Top>
+          {step < 4 && (
+            <Summary>
+              <SummaryData>
+                <Title>
+                  <I18nText data={trip.title} />
+                </Title>
+                <Location>
+                  <MapMarker style={{ fill: '#6E7885' }} />
+                  <span>{formatLocation(trip.location)}</span>
+                </Location>
+                <Dates>{formatDate(trip.startDate, days)}</Dates>
+                <Guests>
+                  {numberOfGuests} {numberOfGuests === 1 ? 'Guest' : 'Guests'}
+                </Guests>
+              </SummaryData>
+              <TotalPriceWrapper>
+                <TotalPrice>
+                  <PriceLine>Total Price Booked Items ${trip.basePrice.toFixed(2)}</PriceLine>
+                  <Taxes>* all taxes and fees are included</Taxes>
+                </TotalPrice>
+              </TotalPriceWrapper>
+            </Summary>
+          )}
+          {step === 3 &&
+            expireDate && (
+              <Countdown
+                isPaying={this.state.isPaying}
+                expireDate={expireDate}
+                onTimeout={this.onTimeout}
+              />
+            )}
+          {step === 3 &&
+            timedOut &&
+            !this.state.isPaying && (
+              <ReprovisionModal
+                okClick={this.getProvisionCodes}
+                cancelClick={this.goToTripOrganizer}
+              />
+            )}
+          {this.renderStep()}
+        </Wrapper>
+        {step < 3 && (
+          <Footer>
+            <Button
+              disabled={this.state.nextDisabled}
+              theme="fillLightGreen"
+              onClick={this.nextStep}
+              size="small"
+              bold
+            >
+              Next
+            </Button>
+          </Footer>
         )}
-      </Page>
+      </React.Fragment>
     );
   }
 }
@@ -549,6 +546,7 @@ const mapDispatchToProps = dispatch =>
       ...actions,
       fetchTrip: tripActions.fetchTrip,
       checkAvailability: tripActions.checkAvailability,
+      changeHeader: headerActions.changeHeader,
     },
     dispatch,
   );

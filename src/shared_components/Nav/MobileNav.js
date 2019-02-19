@@ -242,7 +242,7 @@ class MobileNav extends Component {
   render() {
     if (!this.props.showProfileMenu) return null;
     const { analytics } = this.props;
-
+    console.log(icoReady);
     return (
       <Media
         query={`(max-width: ${sizes.large})`}

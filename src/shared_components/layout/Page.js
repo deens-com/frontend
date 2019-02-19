@@ -10,9 +10,10 @@ export const Page = styled.div`
 
 export const PageWrapper = styled.div`
   max-width: 1350px;
-  width: 100%;
+  width: calc(100% - 20px);
   margin: 0 auto;
-  padding: ${props => props.padding || '0 10px'};
+  padding: 0 10px;
+  position: relative;
 `;
 
 export const PageContentStyles = styled.main`

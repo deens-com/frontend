@@ -1,6 +1,7 @@
 import { env } from 'libs/config';
 
 const tripKey = `please-${env}-anonymous-trip`;
+const favoriteTripsKey = `please-${env}-favorite-trips`;
 
 function removeUselessFields(trip) {
   // this could be removed in the future
@@ -61,11 +62,48 @@ export function loadTrip(withFullServices = true) {
   }
   return {
     title: {
-      'en-us': 'New Trip',
+      'en-us': 'Unnamed Trip',
     },
     services: [],
     media: [],
     basePrice: 0,
     duration: 1,
   };
+}
+
+export function addFavoriteTrip(id) {
+  const savedTrips = localStorage.getItem(favoriteTripsKey);
+  if (savedTrips) {
+    localStorage.setItem(
+      favoriteTripsKey,
+      JSON.stringify({
+        ...JSON.parse(savedTrips),
+        [id]: true,
+      }),
+    );
+    return;
+  }
+  localStorage.setItem(favoriteTripsKey, JSON.stringify({ [id]: true }));
+}
+
+export function removeFavoriteTrip(id) {
+  const savedTrips = localStorage.getItem(favoriteTripsKey);
+  if (!savedTrips) {
+    return;
+  }
+  localStorage.setItem(
+    favoriteTripsKey,
+    JSON.stringify({
+      ...JSON.parse(savedTrips),
+      [id]: false,
+    }),
+  );
+}
+
+export function getFavoriteTrips() {
+  return JSON.parse(localStorage.getItem(favoriteTripsKey));
+}
+
+export function clearFavoriteTrips() {
+  localStorage.removeItem(favoriteTripsKey);
 }

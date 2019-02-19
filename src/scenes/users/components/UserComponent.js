@@ -1,19 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import UserScene from './../../../styled_scenes/Users';
-import { Page, PageContent } from './../../../shared_components/layout/Page';
-import TopBar from '../../../shared_components/TopBar';
+import { PageContent } from './../../../shared_components/layout/Page';
 
 const UserComponent = props => {
   return (
-    <section>
-      <Page topPush>
-        <TopBar fixed />
-        <PageContent padding="24px">
-          <UserScene {...props} />
-        </PageContent>
-      </Page>
-    </section>
+    <PageContent padding="24px">
+      <UserScene {...props} />
+    </PageContent>
   );
 };
 

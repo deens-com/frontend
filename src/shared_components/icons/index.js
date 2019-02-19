@@ -37,8 +37,7 @@ export const ArrowIcon = SvgWithProps(({ ariaHidden, focusable, role, style }) =
     role={role}
     style={style}
   >
-    <path d="M17 10H1c-.6 0-1-.4-1-1s.4-1 1-1h16c.6 0 1 .4 1 1s-.4 1-1 1z" />
-    <path d="M11 16c-.3 0-.5-.1-.7-.3-.4-.4-.4-1 0-1.4L15.6 9l-5.3-5.3c-.4-.4-.4-1 0-1.4s1-.4 1.4 0l6 6c.4.4.4 1 0 1.4l-6 6c-.2.2-.4.3-.7.3z" />
+    <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
   </svg>
 ));
 
@@ -434,6 +433,20 @@ export const CopyToClipboard = SvgWithProps(({ ariaHidden, focusable, role, styl
     viewBox="0 0 24 24"
   >
     <path d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z" />
+  </svg>
+));
+
+export const Heart = SvgWithProps(({ onClick, ariaHidden, focusable, role, style }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden={ariaHidden}
+    focusable={focusable.toString()}
+    role={role}
+    style={style}
+    onClick={onClick}
+    viewBox="0 0 24 24"
+  >
+    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z" />
   </svg>
 ));
 

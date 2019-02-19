@@ -46,29 +46,24 @@ class AccountTripsScene extends Component {
 
   render() {
     return (
-      <div>
-        <Page topPush>
-          <TopBar fixed />
-          <PageContent padding="24px">
-            <Grid centered columns={2}>
-              <Grid.Column mobile={16} tablet={5} computer={4}>
-                <SectionWrap>
-                  <UserBasicInfo user_profile={this.props.user} />
-                </SectionWrap>
-              </Grid.Column>
-              <Grid.Column mobile={16} tablet={11} computer={12}>
-                <h1>My Trips</h1>
-                <TripSectionComponent
-                  isLoadingTrips={this.state.isLoading}
-                  trips={this.state.trips}
-                  totalTrips={this.state.count}
-                  fetchTrips={this.loadTrips}
-                />
-              </Grid.Column>
-            </Grid>
-          </PageContent>
-        </Page>
-      </div>
+      <PageContent padding="24px">
+        <Grid centered columns={2}>
+          <Grid.Column mobile={16} tablet={5} computer={4}>
+            <SectionWrap>
+              <UserBasicInfo user_profile={this.props.user} />
+            </SectionWrap>
+          </Grid.Column>
+          <Grid.Column mobile={16} tablet={11} computer={12}>
+            <h1>My Trips</h1>
+            <TripSectionComponent
+              isLoadingTrips={this.state.isLoading}
+              trips={this.state.trips}
+              totalTrips={this.state.count}
+              fetchTrips={this.loadTrips}
+            />
+          </Grid.Column>
+        </Grid>
+      </PageContent>
     );
   }
 }

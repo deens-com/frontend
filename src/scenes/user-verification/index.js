@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import queryString from 'qs';
 import styled from 'styled-components';
 import Button from 'shared_components/Button';
 import { CheckIcon } from 'shared_components/icons';
-import { Page, PageContent } from 'shared_components/layout/Page';
-import TopBar from 'shared_components/TopBar';
+import { PageContent } from 'shared_components/layout/Page';
 import BrandFooter from 'shared_components/BrandFooter';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import headerActions from 'store/header/actions';
 
 const Wrapper = styled.div`
   flex: 1;
@@ -48,9 +50,11 @@ const IconWrapper = styled.div`
 
 const TripCreator = props => {
   const params = queryString.parse(props.location.search, { ignoreQueryPrefix: true });
+  useEffect(() => {
+    props.changeHeader();
+  });
   return (
-    <Page topPush>
-      <TopBar fixed />
+    <>
       <PageContent padding="24px">
         <Wrapper>
           {params.success === 'true' ? (
@@ -73,8 +77,19 @@ const TripCreator = props => {
         </Wrapper>
       </PageContent>
       <BrandFooter withTopBorder withPadding />
-    </Page>
+    </>
   );
 };
 
-export default TripCreator;
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      changeHeader: headerActions.changeHeader,
+    },
+    dispatch,
+  );
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(TripCreator);

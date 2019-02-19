@@ -1,3 +1,4 @@
+import moment from 'moment';
 import axios from 'libs/axios';
 import apiClient from 'libs/apiClient';
 import { parseLocationData } from 'libs/location';
@@ -9,6 +10,24 @@ export const patchTrip = async (id, data) => {
     ...data,
     ...(data.tags && { tags: data.tags.map(tag => (typeof tag === 'object' ? tag._id : tag)) }),
   });
+};
+
+export const duration = minutes => {
+  const humanizedDuration = moment.duration(minutes || 0, 'minutes').humanize();
+  let startsWithLetter = '';
+  if (humanizedDuration.startsWith('a ')) {
+    startsWithLetter = 'a';
+  }
+
+  if (humanizedDuration.startsWith('an ')) {
+    startsWithLetter = 'an';
+  }
+
+  if (startsWithLetter) {
+    return humanizedDuration.replace(startsWithLetter, '1');
+  }
+
+  return humanizedDuration;
 };
 
 export const addServiceRequest = async (id, day, serviceId) => {

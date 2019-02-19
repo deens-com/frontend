@@ -18,11 +18,10 @@ import { placeholderMixin } from '../../../libs/styled';
 const Input = styled.input`
   appearance: none;
   background: none;
-  border-radius: 3px;
   border: 0;
   display: block;
   font-family: inherit;
-  font-size: inherit;
+  font-size: 16px;
   font-weight: inherit;
   outline: none;
   padding-top: 3px;
@@ -38,7 +37,6 @@ const Wrapper = styled.div`
   position: relative;
   max-width: 504px;
   margin: auto;
-  padding-bottom: 45px;
 `;
 
 const TypeIcon = styled.div`
@@ -51,10 +49,9 @@ const TypeIcon = styled.div`
   height: 40px;
   justify-content: center;
   line-height: 40px;
-  margin-right: 10px;
+  margin-right: 15px;
   overflow: hidden;
   width: 40px;
-  margin-top: -3px;
 
   &:last-child {
     margin-right: 0;
@@ -65,7 +62,8 @@ const SearchBg = styled.div`
   position: relative;
   align-items: center;
   background: #fff;
-  border-radius: 4px;
+  border-radius: 10px;
+  border-bottom-left-radius: 0;
   box-shadow: 0 8px 25px 0 rgba(141, 141, 141, 0.22);
   display: flex;
   min-height: 54px;
@@ -86,8 +84,7 @@ const locationProps = {
     border: 0,
   },
   inputProps: {
-    placeholder: 'Search for a destination',
-    icon: 'false',
+    placeholder: 'Type a city or country',
     as: Input,
   },
 };
@@ -201,15 +198,13 @@ export default class HomeSearch extends Component {
 
   renderInputContent = () => {
     return (
-      <form style={{ flex: 1 }}>
-        <SemanticLocationControl
-          onChange={this.handleLocationChange}
-          {...locationProps}
-          customStyle={suggestionStyle}
-          onFocus={this.onFocus}
-          onBlur={this.onBlur}
-        />
-      </form>
+      <SemanticLocationControl
+        onChange={this.handleLocationChange}
+        {...locationProps}
+        customStyle={suggestionStyle}
+        onFocus={this.onFocus}
+        onBlur={this.onBlur}
+      />
     );
   };
 

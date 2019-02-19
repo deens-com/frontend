@@ -4,10 +4,14 @@ import validator from 'validator';
 import history from 'main/history';
 import { getSession } from 'libs/user-session';
 import axios from 'libs/axios';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import headerActions from 'store/header/actions';
 
-export default class RegistrationsContainer extends Component {
+class RegistrationsContainer extends Component {
   constructor(props) {
     super(props);
+    props.changeHeader();
     this.state = {
       email: '',
       errors: {},
@@ -118,3 +122,16 @@ export default class RegistrationsContainer extends Component {
     );
   }
 }
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      changeHeader: headerActions.changeHeader,
+    },
+    dispatch,
+  );
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(RegistrationsContainer);

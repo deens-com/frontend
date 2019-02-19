@@ -138,7 +138,6 @@ const Carousel = props => {
   const settings = {
     infinite: false,
     speed: 500,
-    dots: true,
     lazyLoad: 'ondemand',
     //centerMode: true,
     //initialSlide: 0,
@@ -150,7 +149,6 @@ const Carousel = props => {
         settings: {
           slidesToShow: props.sm_slides_nb,
           slidesToScroll: props.sm_slides_nb,
-          dots: false,
         },
       },
       {
@@ -158,7 +156,6 @@ const Carousel = props => {
         settings: {
           slidesToShow: props.md_slides_nb,
           slidesToScroll: props.md_slides_nb,
-          dots: false,
         },
       },
       {
@@ -166,7 +163,6 @@ const Carousel = props => {
         settings: {
           slidesToShow: props.lg_slides_nb,
           slidesToScroll: props.lg_slides_nb,
-          dots: false,
         },
       },
       {

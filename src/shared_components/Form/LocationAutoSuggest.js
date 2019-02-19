@@ -26,9 +26,12 @@ const ListWrapper = styled.ul`
 `;
 
 const ListItem = styled.li`
-  height: 3em;
+  padding: 0.5em 0;
   cursor: pointer;
   order: ${props => props.order || 1};
+  &:hover {
+    background-color: #f5f5f5;
+  }
 `;
 
 const GreyIcon = styled(Icon)`
@@ -202,72 +205,17 @@ export default class SemanticLocationControl extends Component {
               </ListItem>
               {!(Boolean(this.state.address) && suggestions.length === 0) && (
                 <React.Fragment>
-                  <article {...getSuggestionItemProps(suggestions.length > 0 && suggestions[0])}>
-                    <ListItem
-                      onClick={() => this.onSelectSuggestion(suggestions[0].description, 'trip')}
-                    >
-                      <ListSpan>
-                        <GreyIcon name="travel" />
-                        &nbsp;
-                        <p>
-                          <b>Trips near</b> {suggestions.length > 0 && suggestions[0].description}
-                        </p>
-                      </ListSpan>
-                    </ListItem>
-                    <ListItem
-                      onClick={() =>
-                        this.onSelectSuggestion(suggestions[0].description, 'accommodation')
-                      }
-                    >
-                      <ListSpan>
-                        <GreyIcon name="building" />
-                        &nbsp;
-                        <p>
-                          <b>Accommodations near</b>{' '}
-                          {suggestions.length > 0 && suggestions[0].description}
-                        </p>
-                      </ListSpan>
-                    </ListItem>
-                    <ListItem
-                      onClick={() => this.onSelectSuggestion(suggestions[0].description, 'food')}
-                    >
-                      <ListSpan>
-                        <GreyIcon name="food" />
-                        &nbsp;
-                        <p>
-                          <b>Food near</b> {suggestions.length > 0 && suggestions[0].description}
-                        </p>
-                      </ListSpan>
-                    </ListItem>
-                    <ListItem
-                      onClick={() =>
-                        this.onSelectSuggestion(suggestions[0].description, 'activity')
-                      }
-                    >
-                      <ListSpan>
-                        <GreyIcon name="globe" />
-                        &nbsp;
-                        <p>
-                          <b>Activities near</b>{' '}
-                          {suggestions.length > 0 && suggestions[0].description}
-                        </p>
-                      </ListSpan>
-                    </ListItem>
-                  </article>
-
-                  {suggestions.slice(1, 4).map(suggestion => (
+                  {suggestions.map((suggestion, i) => (
                     <ListItem
                       {...getSuggestionItemProps(suggestion)}
                       key={suggestion.placeId}
                       onClick={() => this.onSelectSuggestion(suggestion.description, 'trip')}
-                      order={3}
+                      order={i === 0 ? 1 : 3}
                     >
                       <ListSpan>
-                        <GreyIcon name="travel" />
+                        <GreyIcon name="map marker alternate" />
                         &nbsp;
-                        <p>
-                          <b>Trips near</b> {suggestion.description}
-                        </p>
+                        <p>{suggestion.description}</p>
                       </ListSpan>
                     </ListItem>
                   ))}

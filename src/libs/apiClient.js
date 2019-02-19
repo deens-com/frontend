@@ -17,6 +17,7 @@ const paramsSerializer = params => {
 
 const get = url => params => axios.get(url, { params, paramsSerializer });
 const post = url => body => axios.post(url, body);
+const deleteEndpoint = url => body => axios.delete(url, body);
 
 // await axios.get(`${serverBaseURL}/search?include=${includes.join(',')}`)).data.trips
 // GET endpoint are called like xxx.get(params, ...urlParams) where params are the query params
@@ -32,6 +33,10 @@ export default {
     },
     search: {
       get: get('/search'),
+    },
+    heart: {
+      post: id => post(`/trips/${id}/heart`)(),
+      delete: id => deleteEndpoint(`/trips/${id}/heart`)(),
     },
   },
   services: {
@@ -50,6 +55,12 @@ export default {
     username: {
       reviews: {
         get: (params, { username }) => get(`/users/username/${username}/reviews`)(params),
+      },
+      trips: {
+        get: (params, { username }) => get(`/users/username/${username}/trips`)(params),
+      },
+      hearts: {
+        get: (params, { username }) => get(`/users/username/${username}/hearts`)(params),
       },
     },
   },

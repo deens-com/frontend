@@ -3,142 +3,101 @@ import React from 'react';
 import styled from 'styled-components';
 
 // COMPONENTS
+import { Link } from 'react-router-dom';
 import { Logo } from '../icons';
 import { Instagram, Twitter, Facebook } from './icons';
 
 // ACTIONS/CONFIG
 import { media } from '../../libs/styled';
+import { primary, secondary, secondaryContrast, lightText } from 'libs/colors';
+import { H6, P, PSmall } from 'libs/commonStyles';
+import { PageWrapper } from 'shared_components/layout/Page';
 
-// STYLES
-const Wrapper = styled.footer`
-  padding: ${props => (props.withPadding ? '20px' : '10px 0 15px 0')};
-  display: flex;
-  flex-direction: column;
-  border-top: 1px solid ${props => (props.withTopBorder ? '#efeff0' : 'transparent')};
-  height: 65px;
-
-  ${props =>
-    props.posRelative
-      ? `
-    position: relative;
-  `
-      : ''} ${media.minSmall} {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
+const Wrapper = styled.div`
+  background-color: ${secondaryContrast};
+  padding-top: 35px;
+  padding-bottom: 10px;
 `;
 
-const Company = styled.div`
+const ColumnWrapper = styled.footer`
   display: flex;
-  align-items: center;
-  margin-bottom: 15px;
+`;
 
-  ${media.minSmall} {
+const Column = styled.div`
+  flex: 1;
+  > h6 {
+    color: ${secondary};
+    margin-bottom: 14px;
+  }
+
+  > p {
+    margin-bottom: 8px;
+  }
+
+  > p:last-child {
     margin-bottom: 0;
   }
+`;
 
-  svg {
-    display: block;
-    width: auto;
-    height: 50px;
-    margin-right: 15px;
-  }
-
-  span {
-    font-size: 14px;
-    font-weight: 500;
-    color: #61676d;
+const LinkElement = styled(P)`
+  > a {
+    color: ${primary};
   }
 `;
 
-const Nav = styled.div`
-  display: flex;
-  align-items: center;
-
-  & > div:first-child {
-    margin-right: 25px;
-  }
+const Copyright = styled(PSmall)`
+  color: ${lightText};
+  text-align: center;
+  margin-top: 25px;
 `;
 
-const ALink = styled.a`
-  font-size: 14px;
-  display: inline-block;
-  padding: 5px 15px;
-`;
-
-// MODULE
-export default function Footer({ posRelative, withTopBorder, withPadding }) {
-  return (
-    <Wrapper posRelative={posRelative} withTopBorder={withTopBorder} withPadding={withPadding}>
-      <Nav>
-        <div>
-          <ALink
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://vision.please.com/assets/terms.pdf"
-          >
-            Terms
-          </ALink>
-          <ALink
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://vision.please.com/assets/privacy.pdf"
-          >
-            Privacy
-          </ALink>
-          <ALink target="_blank" rel="noopener noreferrer" href="https://help.please.com/">
-            Help
-          </ALink>
-        </div>
-      </Nav>
-      <Company>
-        <Logo style={{ width: '120px', marginRight: '10px' }} />
-        <span>© Please.com</span>
-      </Company>
-      <div>
-        <ALink
-          href="https://www.facebook.com/PleaseTrips/"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          <Facebook
-            style={{
-              height: '16px',
-              width: '16px',
-              display: 'block',
-              fill: 'rgb(118, 118, 118)',
-            }}
-          />
-        </ALink>
-        <ALink href="https://twitter.com/PleaseTrips/" rel="noopener noreferrer" target="_blank">
-          <Twitter
-            style={{
-              height: '16px',
-              width: '16px',
-              display: 'block',
-              fill: 'rgb(118, 118, 118)',
-            }}
-          />
-        </ALink>
-        <ALink
-          href="https://www.instagram.com/PleaseTrips/"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          <Instagram
-            style={{
-              height: '16px',
-              width: '16px',
-              display: 'block',
-              fill: 'rgb(118, 118, 118)',
-            }}
-          />
-        </ALink>
-      </div>
-    </Wrapper>
-  );
-}
-
-// Props Validation
-Footer.propTypes = {};
+export default () => (
+  <Wrapper>
+    <PageWrapper>
+      <ColumnWrapper>
+        <Column>
+          <H6>Network</H6>
+          <LinkElement>
+            <a target="_blank" rel="noopener noreferrer" href="https://blog.please.com/">
+              Our Blog
+            </a>
+          </LinkElement>
+          <LinkElement>
+            <Link to="/partners">Partners</Link>
+          </LinkElement>
+          <LinkElement>
+            <Link to="/affiliates">Affiliates</Link>
+          </LinkElement>
+          <LinkElement>
+            <Link to="/press">Press</Link>
+          </LinkElement>
+        </Column>
+        <Column>
+          <H6>Legal</H6>
+          <LinkElement>
+            <Link to="/cookie-policy">Use of Cookies</Link>
+          </LinkElement>
+          <LinkElement>
+            <Link to="/terms-conditions">Terms & Conditions</Link>
+          </LinkElement>
+          <LinkElement>
+            <Link to="/privacy-policy">Privacy Policy</Link>
+          </LinkElement>
+        </Column>
+        <Column>
+          <H6>Contact</H6>
+          <LinkElement>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://pleaseassist.freshdesk.com/support/home"
+            >
+              Help Center
+            </a>
+          </LinkElement>
+        </Column>
+      </ColumnWrapper>
+      <Copyright>© 2019 Please.com. All rights reserved.</Copyright>
+    </PageWrapper>
+  </Wrapper>
+);

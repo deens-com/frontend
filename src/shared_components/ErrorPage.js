@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { Page, PageContent } from 'shared_components/layout/Page';
-import TopBar from 'shared_components/TopBar';
+import { PageContent } from 'shared_components/layout/Page';
 import BrandFooter from 'shared_components/BrandFooter';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import headerActions from 'store/header/actions';
 
 const Title = styled.h1`
   text-align: center;
@@ -18,19 +20,30 @@ const PageContainer = styled.div`
   justify-items: center;
 `;
 
-const ErrorPage = () => {
+const ErrorPage = ({ changeHeader }) => {
+  useEffect(() => {
+    changeHeader();
+  });
   return (
-    <Page topPush>
-      <TopBar fixed />
-      <PageContent>
-        <PageContainer>
-          <Title>Something went wrong :-(</Title>
-          <p>We are sorry about this, our engineers have been informed about it.</p>
-        </PageContainer>
-        <BrandFooter />
-      </PageContent>
-    </Page>
+    <PageContent>
+      <PageContainer>
+        <Title>Something went wrong :-(</Title>
+        <p>We are sorry about this, our engineers have been informed about it.</p>
+      </PageContainer>
+      <BrandFooter />
+    </PageContent>
   );
 };
 
-export default ErrorPage;
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      changeHeader: headerActions.changeHeader,
+    },
+    dispatch,
+  );
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(ErrorPage);

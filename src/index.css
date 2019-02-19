@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Muli:200,300,400,600,700');
+@import url('https://fonts.googleapis.com/css?family=Nunito:400,700|Roboto:300,400,500,700,900');
 
 /* body {
   margin: 0;
@@ -23,8 +23,8 @@ body,
 } */
 
 body {
-  color: #3c434b;
-  font-family: 'Muli', sans-serif !important;
+  color: #262626;
+  font-family: 'Nunito', sans-serif;
   font-weight: 300;
   font-size: 16px;
   word-wrap: break-word;
@@ -40,7 +40,8 @@ h3,
 h4,
 h5,
 h6 {
-  font-weight: 500;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
 }
 
 a {
@@ -70,14 +71,17 @@ p {
 }
 
 /* Issue with slick slider */
+.slick-slide,
 .slick-slide:focus,
-.slick-slide > div,
+.slick-slide div,
+.slick-slide div:focus,
 .slick-slide a {
-  outline: 0 !important;
+  outline: none;
 }
 
 .slick-list {
   padding: 10px 0;
+  margin: 0 -15px;
 }
 
 .text-center {
@@ -93,6 +97,6 @@ p {
 }
 
 .ui.button {
-  font-family: 'Muli', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-weight: 400;
 }

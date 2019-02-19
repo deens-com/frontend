@@ -23,6 +23,8 @@ export default class ListsHandler extends React.Component {
     apiFunction: PropTypes.func.isRequired,
     render: PropTypes.func.isRequired,
     itemKey: PropTypes.string.isRequired,
+    parseResponseFn: PropTypes.func,
+    limit: PropTypes.number,
     params: PropTypes.object,
     urlParams: PropTypes.object,
     replacePreviousItemsOnFetchMore: PropTypes.bool,
@@ -31,6 +33,8 @@ export default class ListsHandler extends React.Component {
   };
 
   static defaultProps = {
+    parseResponseFn: null,
+    limit: defaultLimit,
     params: {},
     urlParams: {},
     replacePreviousItemsOnFetchMore: false,
@@ -42,9 +46,9 @@ export default class ListsHandler extends React.Component {
     this.fetchMore();
   }
 
-  makeRequest = async (page = 1, limit = defaultLimit) => {
+  makeRequest = async (page = 1, limit) => {
     const { haveIncludes } = this.props;
-    const response = await this.props.apiFunction(
+    let response = await this.props.apiFunction(
       {
         page,
         limit,
@@ -53,6 +57,10 @@ export default class ListsHandler extends React.Component {
       },
       this.props.urlParams,
     );
+
+    if (this.props.parseResponseFn) {
+      response = this.props.parseResponseFn(response);
+    }
 
     return response.data;
   };
@@ -75,9 +83,11 @@ export default class ListsHandler extends React.Component {
       }),
       async () => {
         try {
-          const data = await this.makeRequest(this.state.page);
+          const data = await this.makeRequest(this.state.page, this.props.limit);
           let items = data[this.props.itemKey];
-
+          if (!items) {
+            throw new Error(`Could not find items with key '${this.props.itemKey}'`);
+          }
           if (this.props.haveIncludes) {
             // We should map the includes into the items
             items = items.map(item => {
@@ -103,7 +113,7 @@ export default class ListsHandler extends React.Component {
           }));
         } catch (e) {
           this.setState({
-            error: e.response.data,
+            error: e.response ? e.response.data : e,
             isLoading: false,
           });
         }

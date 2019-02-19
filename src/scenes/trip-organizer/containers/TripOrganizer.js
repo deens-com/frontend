@@ -12,6 +12,7 @@ import { loadTrip, removeTrip, isTripSaved } from 'libs/localStorage';
 import axios from 'libs/axios';
 import { generateTripSlug } from 'libs/Utils';
 import { getSession } from 'libs/user-session';
+import headerActions from 'store/header/actions';
 
 class TripOrganizerContainer extends Component {
   constructor(props) {
@@ -21,6 +22,7 @@ class TripOrganizerContainer extends Component {
     };
   }
   componentDidMount() {
+    this.props.changeHeader();
     if (this.props.match.params.id) {
       if (!getSession()) {
         history.replace('/trips/organize');
@@ -148,6 +150,7 @@ const mapDispatchToProps = dispatch =>
     {
       ...actions,
       changeDates: searchActions.updateSearchQuery,
+      changeHeader: headerActions.changeHeader,
     },
     dispatch,
   );

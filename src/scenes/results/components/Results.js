@@ -9,15 +9,12 @@ import ErrorHandler from 'shared_components/ErrorHandler';
 const ResultsComponent = props => {
   return (
     <>
-      <Page topPush>
-        <TopBar {...props} fixed />
-        <ErrorHandler
-          style={{ fontSize: 22, textAlign: 'center', margin: 'auto' }}
-          retryFunction={props.retryFetch}
-        >
-          <ResultsScene {...props} />
-        </ErrorHandler>
-      </Page>
+      <ErrorHandler
+        style={{ fontSize: 22, textAlign: 'center', margin: 'auto' }}
+        retryFunction={props.retryFetch}
+      >
+        <ResultsScene {...props} />
+      </ErrorHandler>
       <BrandFooter withTopBorder withPadding posRelative />
     </>
   );

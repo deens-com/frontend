@@ -234,6 +234,14 @@ export async function waitUntilMapsLoaded() {
   return window.google.maps;
 }
 
+export function minutesToDays(duration) {
+  return Math.ceil(duration / (60 * 24)); // Duration is in minutes
+}
+
+export function calculatePricePerDay(price, duration) {
+  return (price / minutesToDays(duration)).toFixed(2);
+}
+
 function generateSlug(str) {
   str = str.replace(/^\s+|\s+$/g, ''); // trim
   str = str.toLowerCase();
@@ -275,4 +283,11 @@ export function generateServiceSlug(service) {
   const location = locationObj && (locationObj.city || locationObj.state);
 
   return `${generateSlug(`${text}${location ? ` in ${location}` : ''}`)}_${service._id}`;
+}
+
+export function parseTagsText(tags) {
+  return tags.map(tag => {
+    const tagName = tag.names['en-us'].charAt(0).toUpperCase() + tag.names['en-us'].substr(1);
+    return { text: tagName, value: tagName, _id: tag._id };
+  });
 }
