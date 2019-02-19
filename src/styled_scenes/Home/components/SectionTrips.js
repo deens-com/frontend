@@ -28,7 +28,7 @@ const SectionHeader = styled.header`
   margin-bottom: 20px;
 `;
 
-export default class HomeSectionTrips extends React.Component {
+export default class HomeSectionTrips extends React.PureComponent {
   render() {
     const { isLoading, trips, retryFunction } = this.props;
 
@@ -48,13 +48,9 @@ export default class HomeSectionTrips extends React.Component {
         <PageWrapper>
           <SectionWrap>
             <SectionContent>
-              {isLoading ? (
-                <Loader active inline="centered" size="big" />
-              ) : (
-                <ErrorHandler retryFunction={retryFunction}>
-                  <TripCarousel trips={trips} />
-                </ErrorHandler>
-              )}
+              <ErrorHandler retryFunction={retryFunction}>
+                <TripCarousel trips={trips} isLoading={isLoading} />
+              </ErrorHandler>
             </SectionContent>
           </SectionWrap>
         </PageWrapper>

@@ -29,12 +29,20 @@ const Wrap = styled.div`
     `};
 `;
 
-const Thumb = styled(Image)`
+const thumbStyles = `
   background: #f7f7f7;
   background-size: cover;
   background-position: center;
   height: 300px;
   border-radius: 0 0 15px 0;
+`;
+
+const Thumb = styled(Image)`
+  ${thumbStyles};
+`;
+
+const ThumbPlaceholder = styled.div`
+  ${thumbStyles};
 `;
 
 // MODULE
@@ -66,36 +74,12 @@ export default class CartThumb extends Component {
   }
 
   render() {
-    const { url, withTooltip } = this.props;
+    const { url, withTooltip, isPlaceholder } = this.props;
 
     return (
-      <Wrap withTooltip={withTooltip} onMouseLeave={this.hideTooltip}>
-        <Thumb src={url} background />
+      <Wrap isPlaceholder={isPlaceholder} withTooltip={withTooltip} onMouseLeave={this.hideTooltip}>
+        {isPlaceholder ? <ThumbPlaceholder /> : <Thumb src={url} background />}
         {this.props.children}
-        {/*withTooltip && (
-          <TagWrap
-            ref={tag => {
-              tag && this.setTagWidth(tag.offsetWidth);
-            }}
-            onMouseEnter={this.showTooltip}
-          >
-            <IconWrap>
-              <BagIcon />
-            </IconWrap>
-            <CountWrap>{tripCount}</CountWrap>
-          </TagWrap>
-        )*/}
-        {/*withTooltip &&
-          tooltipVisible && (
-            <Media
-              query={`(min-width: ${sizes.large})`}
-              render={() => (
-                <Tooltip left={this.state.tagWidth + 30}>
-                  Part of <Link to="/">{tripCount}</Link> trips
-                </Tooltip>
-              )}
-            />
-          )*/}
       </Wrap>
     );
   }
@@ -104,12 +88,10 @@ export default class CartThumb extends Component {
 // Props Validation
 CartThumb.propTypes = {
   url: PropTypes.string.isRequired,
-  tripCount: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   withTooltip: PropTypes.bool,
 };
 
 // Default props
 CartThumb.defaultProps = {
-  tripCount: '0',
   withTooltip: false,
 };

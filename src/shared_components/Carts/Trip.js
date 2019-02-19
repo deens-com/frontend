@@ -1,7 +1,7 @@
 // NPM
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Truncate from 'react-truncate';
 import { Popup, Image } from 'semantic-ui-react';
 import { connect } from 'react-redux';
@@ -30,11 +30,45 @@ const Wrap = styled.div`
   display: inline-block;
   width: calc(100% - 30px);
   margin: 0 15px;
+  position: relative;
+  &:focus {
+    border: 0;
+    outline: 0;
+  }
+  ${props =>
+    props.isPlaceholder &&
+    css`
+      @keyframes slide {
+        0% {
+          transform: translateX(-100%);
+        }
+        100% {
+          transform: translateX(100%);
+        }
+      }
+
+      &:after {
+        content: '';
+        top: 0;
+        transform: translateX(100%);
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        z-index: 1;
+        animation: slide 1s infinite;
+        animation-delay: 0;
+        background: linear-gradient(
+          to right,
+          rgba(255, 255, 255, 0) 0%,
+          rgba(255, 255, 255, 0.8) 50%,
+          rgba(60, 217, 184, 0) 99%,
+          rgba(60, 217, 184, 0) 100%
+        );
+        will-change: transform;
+      }
+    `};
 `;
 
-// How did we come up with height: 104px?
-// the max number of lines Title can render is 4
-// rendered a title that long and saw how many pixels it takes 😜
 const Title = styled(H6)`
   color: ${lightText};
   padding: 0 5px 12px;
@@ -43,6 +77,8 @@ const Title = styled(H6)`
   bottom: 0;
   width: 100%;
   background-color: rgba(0, 0, 0, 0.33);
+  min-height: 50px;
+  border-radius: 0 0 15px 0;
   a {
     color: inherit;
   }
@@ -63,7 +99,7 @@ const Location = styled.span`
   }
 `;
 
-const Author = styled.div`
+const Author = styled(Link)`
   border-radius: 5px 5px 5px 0;
   > img {
     border-radius: 4px 4px 0 0;
@@ -75,6 +111,7 @@ const Author = styled.div`
   right: 10px;
   border: 1px solid white;
   background-color: white;
+  box-shadow: 0 0 1px;
 `;
 
 const AuthorPro = styled.p`
@@ -156,6 +193,26 @@ const HeartWrapper = styled.div`
   }
 `;
 
+// Placeholders
+const ImagePlaceholder = styled.img`
+  background-color: #cacaca;
+`;
+
+const FirstLinePlaceholder = styled.div`
+  background-color: #cacaca;
+  width: 60%;
+  height: 20px;
+  margin-bottom: 5px;
+  border-radius: 5px 5px 5px 0;
+`;
+
+const SecondLinePlaceholder = styled.div`
+  background-color: #cacaca;
+  width: 30%;
+  height: 18px;
+  border-radius: 5px 5px 5px 0;
+`;
+
 export function formatLocation(location) {
   let result = '';
   if (!location) {
@@ -213,7 +270,46 @@ class TripCart extends Component {
     }));
   };
 
+  renderThumb() {
+    const { isPlaceholder, hideAuthor } = this.props;
+    const owner = isPlaceholder ? {} : this.props.item.owner;
+    const avatar = owner.profilePicture || ImgurAvatar;
+    const isFavorite = isPlaceholder ? false : this.props.favoriteTrips[this.props.item._id];
+
+    return (
+      <Thumb
+        placeholder={isPlaceholder}
+        url={isPlaceholder ? '' : getTripImage(this.props.item)}
+        withTooltip={this.props.withTooltip}
+      >
+        <HeartWrapper filled={isFavorite}>
+          <Heart style={{ height: '24px', width: '21px' }} onClick={this.toggleFavorite} />
+        </HeartWrapper>
+        {hideAuthor ? null : (
+          <Author to={`/users/${owner.username}`}>
+            {isPlaceholder ? <ImagePlaceholder /> : <Image src={avatar} />}
+            <Stars
+              length={3}
+              rating={((isPlaceholder ? 0 : owner.rating.average) * 3) / 5}
+              width={8.25}
+              height={18}
+            />
+            {owner.level === 'pro' && <AuthorPro>PRO</AuthorPro>}
+          </Author>
+        )}
+        <Title>
+          <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>
+            {!isPlaceholder && <I18nText data={this.props.item.title} />}
+          </Truncate>
+        </Title>
+      </Thumb>
+    );
+  }
+
   renderTags() {
+    if (this.props.isPlaceholder) {
+      return;
+    }
     return this.props.item.tags.map(tag => (
       <TagLink
         to={`/results?tags=${I18nText.translate(tag.names)}&serviceTypes=trip`}
@@ -226,65 +322,52 @@ class TripCart extends Component {
     ));
   }
 
-  renderCard() {
-    const { owner } = this.props.item;
-    const avatar = owner.profilePicture || ImgurAvatar;
-    const isFavorite = this.props.favoriteTrips[this.props.item._id];
-    const hearts = this.props.item.hearts || 0;
-
+  renderContent() {
+    if (this.props.isPlaceholder) {
+      return (
+        <>
+          <FirstLinePlaceholder />
+          <SecondLinePlaceholder />
+        </>
+      );
+    }
+    const hearts = this.props.item.hearts;
     return (
-      <Wrap>
+      <>
+        <FirstLine>
+          <Price>
+            ${calculatePricePerDay(this.props.item.basePrice, this.props.item.duration)} per day
+          </Price>
+          <Hearts>
+            <Heart />
+            <HeartsNumber>{hearts + this.state.sumToHearts}</HeartsNumber>
+          </Hearts>
+        </FirstLine>
+        <SecondLine>
+          <Duration>{duration(this.props.item.duration)}</Duration>
+          <Location>
+            <PSmall>{formatLocation(this.props.item.location)}</PSmall>
+          </Location>
+        </SecondLine>
+        <TagsLine>
+          <BookableTag>Fast Booking</BookableTag>
+          {this.renderTags()}
+        </TagsLine>
+      </>
+    );
+  }
+
+  renderCard() {
+    const { isPlaceholder } = this.props;
+    const LinkWrap = isPlaceholder ? ({ children }) => children : Link;
+    const linkUrl = isPlaceholder ? '' : `/trips/${generateTripSlug(this.props.item)}`;
+    return (
+      <Wrap isPlaceholder={isPlaceholder}>
         <Cart column className="card-animate">
-          <Link to={`/trips/${generateTripSlug(this.props.item)}`}>
-            <Thumb
-              url={getTripImage(this.props.item)}
-              tripCount={this.props.item.partOf}
-              withTooltip={this.props.withTooltip}
-            >
-              <HeartWrapper filled={isFavorite}>
-                <Heart style={{ height: '24px', width: '21px' }} onClick={this.toggleFavorite} />
-              </HeartWrapper>
-              {this.props.hideAuthor ? null : (
-                <Author>
-                  <Image src={avatar} />
-                  <Stars
-                    length={3}
-                    rating={(owner.rating.average * 3) / 5}
-                    width={8.25}
-                    height={18}
-                  />
-                  {owner.level === 'pro' && <AuthorPro>PRO</AuthorPro>}
-                </Author>
-              )}
-              <Title>
-                <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>
-                  <I18nText data={this.props.item.title} />
-                </Truncate>
-              </Title>
-            </Thumb>
-            <ContentWrap>
-              <FirstLine>
-                <Price>
-                  ${calculatePricePerDay(this.props.item.basePrice, this.props.item.duration)} per
-                  day
-                </Price>
-                <Hearts>
-                  <Heart />
-                  <HeartsNumber>{hearts + this.state.sumToHearts}</HeartsNumber>
-                </Hearts>
-              </FirstLine>
-              <SecondLine>
-                <Duration>{duration(this.props.item.duration)}</Duration>
-                <Location>
-                  <PSmall>{formatLocation(this.props.item.location)}</PSmall>
-                </Location>
-              </SecondLine>
-              <TagsLine>
-                <BookableTag>Fast Booking</BookableTag>
-                {this.renderTags()}
-              </TagsLine>
-            </ContentWrap>
-          </Link>
+          <LinkWrap to={linkUrl}>
+            {this.renderThumb()}
+            <ContentWrap>{this.renderContent()}</ContentWrap>
+          </LinkWrap>
         </Cart>
       </Wrap>
     );
@@ -338,12 +421,14 @@ TripCart.propTypes = {
   }),
   withTooltip: PropTypes.bool,
   href: PropTypes.string,
-  withShadow: PropTypes.bool,
+  hideAuthor: PropTypes.bool,
+  isPlaceholder: PropTypes.bool,
 };
 
 // Default props
 TripCart.defaultProps = {
   withTooltip: false,
-  withShadow: false,
+  hideAuthor: false,
   href: '/',
+  isPlaceholder: true,
 };

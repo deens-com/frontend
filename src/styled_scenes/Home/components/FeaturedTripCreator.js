@@ -188,7 +188,10 @@ export default class FeaturedTripCreator extends React.Component {
                 apiFunction={this.fetchTrips}
                 parseResponseFn={this.parseResponse}
                 itemKey="trips"
-                render={({ items }) => <TripCarousel hideAuthor trips={items} />}
+                showLoader={false}
+                render={({ items, isLoading }) => (
+                  <TripCarousel isLoading={isLoading} hideAuthor trips={items} />
+                )}
               />
             </SectionContent>
           </SectionWrap>

@@ -71,10 +71,12 @@ p {
 }
 
 /* Issue with slick slider */
+.slick-slide,
 .slick-slide:focus,
-.slick-slide > div,
+.slick-slide div,
+.slick-slide div:focus,
 .slick-slide a {
-  outline: 0 !important;
+  outline: none;
 }
 
 .slick-list {
