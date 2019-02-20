@@ -69,6 +69,30 @@ export default class ListsHandler extends React.Component {
     this.fetchMore(true);
   };
 
+  parseItems = (items, data) => {
+    if (this.props.mapIncludes) {
+      return this.props.mapIncludes(items, data);
+    }
+    if (this.props.haveIncludes) {
+      // We should map the includes into the items
+      return items.map(item => {
+        const includes = this.props.haveIncludes.reduce((prev, includeKey) => {
+          return {
+            ...prev,
+            [includeKey]: (data[includeKey] || data[pluralize(includeKey)]).find(
+              include => include._id === item[includeKey],
+            ),
+          };
+        }, {});
+        return {
+          ...item,
+          ...includes,
+        };
+      });
+    }
+    return items;
+  };
+
   fetchMore = (retry = false) => {
     if (typeof retry !== 'boolean') {
       console.warn('ListHandler component: retry should be boolean on fetchMore');
@@ -88,23 +112,8 @@ export default class ListsHandler extends React.Component {
           if (!items) {
             throw new Error(`Could not find items with key '${this.props.itemKey}'`);
           }
-          if (this.props.haveIncludes) {
-            // We should map the includes into the items
-            items = items.map(item => {
-              const includes = this.props.haveIncludes.reduce((prev, includeKey) => {
-                return {
-                  ...prev,
-                  [includeKey]: (data[includeKey] || data[pluralize(includeKey)]).find(
-                    include => include._id === item[includeKey],
-                  ),
-                };
-              }, {});
-              return {
-                ...item,
-                ...includes,
-              };
-            });
-          }
+
+          items = this.parseItems(items, data);
 
           this.setState(prevState => ({
             isLoading: false,

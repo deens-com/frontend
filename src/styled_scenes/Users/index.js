@@ -10,6 +10,15 @@ import Reviews from 'shared_components/Reviews';
 import ListsHandler from 'shared_components/ListsHandler';
 import api from 'libs/apiClient';
 
+function mapReviewerIntoReview(items, data) {
+  return items.map(item => {
+    return {
+      ...item,
+      reviewer: data.users.find(user => user._id === item.reviewer),
+    };
+  });
+}
+
 const Wrapper = styled.div`
   margin-top: 24px;
 `;
@@ -17,7 +26,6 @@ const Wrapper = styled.div`
 const Title = styled.h1``;
 
 const UserScene = ({ user = {}, tripsBooked = [], tripsAndServicesOffered = [] }) => {
-  const userName = user.username || 'User';
   return (
     <Wrapper>
       <Grid centered columns={2}>
@@ -28,11 +36,29 @@ const UserScene = ({ user = {}, tripsBooked = [], tripsAndServicesOffered = [] }
         </Grid.Column>
         <Grid.Column mobile={16} tablet={11} computer={12}>
           <StatusAndBio user={user} />
-          <UsersTripsServices
-            items={tripsBooked}
-            title="Where I have been"
-            emptyText={`${userName} has not traveled yet`}
-          />
+          <Title>Reviews given to the user</Title>
+          {user &&
+            user.username && (
+              <ListsHandler
+                itemKey="reviews"
+                apiFunction={api.reviews.username.users.received.get}
+                urlParams={{
+                  username: user.username,
+                }}
+                haveIncludes={['user']}
+                mapIncludes={mapReviewerIntoReview}
+                render={({ items, fetchMore, totalCount, isLoading }) => (
+                  <Reviews
+                    reviews={items}
+                    fetchMore={fetchMore}
+                    totalCount={totalCount}
+                    isLoading={isLoading}
+                    emptyText="This user has not been rated yet."
+                    userKey="reviewer"
+                  />
+                )}
+              />
+            )}
           {tripsAndServicesOffered.length > 0 && (
             <UsersTripsServices items={tripsAndServicesOffered} title="My trips and services" />
           )}
@@ -53,6 +79,7 @@ const UserScene = ({ user = {}, tripsBooked = [], tripsAndServicesOffered = [] }
                     fetchMore={fetchMore}
                     totalCount={totalCount}
                     isLoading={isLoading}
+                    emptyText="This user has not reviewed anything yet."
                     showServiceInsteadOfUser
                   />
                 )}
