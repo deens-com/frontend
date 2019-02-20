@@ -183,7 +183,11 @@ const TopBarDesktopNav = function TopBarDesktopNav({
             {!session.username && (
               <>
                 <Divider isBackgroundWhite={!transparent}>•</Divider>
-                <NavLink activeclassname="is-active" to="/trips/create">
+                <NavLink
+                  data-testid="createTripHeaderButton"
+                  activeclassname="is-active"
+                  to="/trips/create"
+                >
                   <PStrong>Create Trip</PStrong>
                 </NavLink>
               </>

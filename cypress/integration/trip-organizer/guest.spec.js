@@ -17,7 +17,7 @@ describe('Should go to trip organizer', function() {
   });
 
   it('From homepage', function() {
-    cy.contains('Create a trip from scratch').click();
+    cy.getTestElement('createTripHeaderButton').click();
     cy.url().should('include', '/trips/organize');
     cy.checkTripOrganizerIsEmpty();
   });
