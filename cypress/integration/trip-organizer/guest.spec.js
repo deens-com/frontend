@@ -37,6 +37,7 @@ describe('Should login to book the trip', function() {
     cy.route('GET', `/trips/${tripId}?include=services,tags,reservations`, 'fx:trips/get-includes');
     cy.route('GET', `/trips/${tripId}/availability?**`, 'fx:trips/availability');
     cy.route('POST', '/trips', 'fx:trips/created');
+    cy.route('PATCH', '/trips', 'fx:trips/created');
     cy.route('POST', '/users/login', 'fx:users/login-success');
     cy.route('GET', '/users/me', 'fx:users/me');
 

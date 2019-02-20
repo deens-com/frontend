@@ -165,6 +165,7 @@ const Tag = styled(PXSmall)`
 
 const TagLink = styled(Link)`
   margin-bottom: 5px;
+  line-height: 1.8em;
   margin-right: 3px;
   &:last-child {
     margin-right: 0;
@@ -181,7 +182,7 @@ const BookableTag = styled(Tag)`
 
 const TagsLine = styled.div`
   overflow: hidden;
-  height: 52px;
+  height: calc(3.6em + 5px);
 `;
 
 const HeartWrapper = styled.div`
