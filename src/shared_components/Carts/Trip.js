@@ -179,7 +179,10 @@ const BookableTag = styled(Tag)`
   margin-right: 3px;
 `;
 
-const TagsLine = styled.div``;
+const TagsLine = styled.div`
+  overflow: hidden;
+  height: 52px;
+`;
 
 const HeartWrapper = styled.div`
   top: 10px;
