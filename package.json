@@ -96,7 +96,7 @@
     "prettier-all": "prettier --write '**/*.{js,json,jsx,yml,yaml,md}'",
     "lint-staged": "lint-staged",
     "test-dev": "cypress open --env NODE_ENV=development",
-    "test-ci": "cypress run --env NODE_ENV=development"
+    "test-ci": "cypress run --config video=false --env NODE_ENV=development"
   },
   "devDependencies": {
     "@babel/polyfill": "^7.2.5",
