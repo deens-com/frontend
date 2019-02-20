@@ -64,6 +64,16 @@ export default {
       },
     },
   },
+  reviews: {
+    username: {
+      users: {
+        received: {
+          get: (params, { username }) =>
+            get(`/reviews/username/${username}/users/received`)(params),
+        },
+      },
+    },
+  },
   media: {
     post: async file => {
       let formData = new FormData();

@@ -97,6 +97,13 @@ class ServiceReviews extends React.Component {
     fetchMore: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
     showServiceInsteadOfUser: PropTypes.bool,
+    emptyText: PropTypes.string,
+    userKey: PropTypes.string,
+  };
+
+  static defaultProps = {
+    emptyText: 'This service does not have any review yet.',
+    userKey: 'user',
   };
 
   fetchMore = () => {
@@ -106,13 +113,20 @@ class ServiceReviews extends React.Component {
   renderUser(review) {
     const user = (
       <User>
-        <Username>{review.user.name}</Username>
-        <Image src={review.user.image || AnonymousAvatar} circular />
+        <Username>{review[this.props.userKey].name}</Username>
+        <Image
+          src={
+            review[this.props.userKey].image ||
+            review[this.props.userKey].profilePicture ||
+            AnonymousAvatar
+          }
+          circular
+        />
       </User>
     );
 
-    return review.user.type === 'internal' ? (
-      <Link to={`/users/${review.user.name}`}>{user}</Link>
+    return review[this.props.userKey].type === 'internal' ? (
+      <Link to={`/users/${review[this.props.userKey].name}`}>{user}</Link>
     ) : (
       user
     );
@@ -150,7 +164,7 @@ class ServiceReviews extends React.Component {
     }
 
     if (!this.props.isLoading && this.props.totalCount === 0) {
-      return <Empty>This service does not have any review yet.</Empty>;
+      return <Empty>{this.props.emptyText}</Empty>;
     }
     return (
       <>
