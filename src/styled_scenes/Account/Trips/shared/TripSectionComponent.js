@@ -72,7 +72,7 @@ class Trip extends React.PureComponent {
               <I18nText data={trip.title} />
             </InlineH2>
           </Link>
-          {trip.bookingStatus !== 'booked' ? (
+          {!trip.bookingStatus ? (
             <Button
               as={Link}
               basic
@@ -86,9 +86,10 @@ class Trip extends React.PureComponent {
             </Button>
           ) : null}
         </TripTitleRow>
-        <ColoredText>{getFormattedTripDates(trip)}</ColoredText>
+        {trip.startDate && <ColoredText>{getFormattedTripDates(trip)}</ColoredText>}
         <Label color={get_label_color(trip.status)}>Trip visibility: {trip.status}</Label>
         {trip.bookingStatus === 'booked' ? <Label color="olive">Booked</Label> : null}
+        {trip.bookingStatus === 'cancelled-by-user' ? <Label color="red">Cancelled</Label> : null}
         <CarouselWrapper>
           <Carousel sm_slides_nb={1} md_slides_nb={2} lg_slides_nb={4} xl_slides_nb={4}>
             {trip.services.map(renderService)}
