@@ -86,11 +86,15 @@ async function setUserData(userObject) {
 }
 
 export const getCurrentUserTrip = () => async dispatch => {
-  const response = await apiClient.trips.get({ limit: 1 });
-  if (response.data.trips.length === 0) {
+  try {
+    const response = await apiClient.trips.get({ limit: 1 });
+    if (response.data.trips.length === 0) {
+      return;
+    }
+    dispatch({ type: types.LOADED_LATEST_TRIP, payload: response.data.trips[0] });
+  } catch (e) {
     return;
   }
-  dispatch({ type: types.LOADED_LATEST_TRIP, payload: response.data.trips[0] });
 };
 
 export const getFavoriteTrips = () => async dispatch => {
