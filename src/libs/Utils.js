@@ -141,7 +141,7 @@ export function checkRequiredFields(values, requiredFields) {
  * @returns {string}
  */
 export function getFormattedTripDates(trip) {
-  const startMoment = moment(getISODateString(trip.beginDate));
+  const startMoment = moment(getISODateString(trip.startDate));
   const endMoment = startMoment.clone().add(trip.dayCount, 'days');
   return `${startMoment.format('LL')} - ${endMoment.format('LL')}`;
 }
