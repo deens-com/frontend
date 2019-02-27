@@ -25,18 +25,15 @@ export function getDaysByService(services) {
   }, {});
 }
 
+export function getDayDate(dayNumber, date, short) {
+  const dayDate = moment(date).add(dayNumber - 1, 'days');
+  return short ? dayDate.format('MMM DD') : dayDate.format('dddd, MMMM DD');
+}
+
 export function dayTitles(dayNumber, date) {
   return {
-    title: date
-      ? moment(date)
-          .add(dayNumber - 1, 'days')
-          .format('MMM DD, dddd')
-      : `Day ${dayNumber}`,
-    shortTitle: date
-      ? moment(date)
-          .add(dayNumber - 1, 'days')
-          .format('MMM DD')
-      : `Day ${dayNumber}`,
+    title: date ? getDayDate(dayNumber, date, false) : `Day ${dayNumber}`,
+    shortTitle: date ? getDayDate(dayNumber, date, true) : `Day ${dayNumber}`,
   };
 }
 
@@ -45,6 +42,23 @@ export function updateServiceDayNames(days, date) {
     ...day,
     ...dayTitles(day.day, date),
   }));
+}
+
+export function mapServicesByDay(services) {
+  return services.reduce((prevObj, service) => {
+    const prevValue = prevObj[service.day];
+
+    return {
+      ...prevObj,
+      [service.day]: [...(prevValue || []), service],
+    };
+  }, {});
+}
+
+export function mapDaysToServices(days) {
+  return Object.keys(days).reduce((prev, day) => {
+    return [...prev, ...days[day]];
+  }, []);
 }
 
 export default function mapServicesToDays(services, duration, date) {

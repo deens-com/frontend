@@ -217,13 +217,13 @@ export function updateBottomChatPosition(bottom = 0) {
 }
 
 /*
-* Get hero image
+* Get hero image from service or trip
 */
-export function getHeroImage(service) {
-  if (!service.media) {
+export function getHeroImage(element) {
+  if (!element.media) {
     return null;
   }
-  return service.media.find(media => media.hero === true) || service.media[0];
+  return element.media.find(media => media.hero === true) || element.media[0];
 }
 
 export async function waitUntilMapsLoaded() {

@@ -42,6 +42,7 @@ h5,
 h6 {
   font-family: 'Roboto', sans-serif;
   font-weight: 700;
+  margin: 0;
 }
 
 a {
@@ -56,6 +57,7 @@ a:hover {
 
 p {
   line-height: 1.48;
+  margin: 0;
 }
 
 .semantic-popup-wrapper::before {

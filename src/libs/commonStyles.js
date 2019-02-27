@@ -40,6 +40,11 @@ export const PSmall = styled.p`
   font-weight: normal;
 `;
 
+export const PSmallStrong = styled.p`
+  font-size: 14px;
+  font-weight: 700;
+`;
+
 export const PXSmall = styled.p`
   font-size: 12px;
   font-weight: normal;
