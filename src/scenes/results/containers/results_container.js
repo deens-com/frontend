@@ -51,6 +51,7 @@ class ResultsContainer extends Component {
       sortBy: props.sortBy,
       radiusInKm: props.radiusInKm,
       city: props.city,
+      state: props.state,
       countryCode: props.countryCode,
       text: props.text,
     };

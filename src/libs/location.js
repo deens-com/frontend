@@ -30,6 +30,33 @@ export const parseLocationData = data => {
   return res;
 };
 
+export const getSearchParams = googleMapsResult => {
+  const { address_components: addressComponents, geometry } = googleMapsResult;
+  const region = getAddressComponent(addressComponents, 'sublocality', 'long_name');
+  const city = getAddressComponent(addressComponents, 'locality', 'long_name');
+  const state = getAddressComponent(addressComponents, 'administrative_area_level_1', 'long_name');
+  const countryCode = getAddressComponent(addressComponents, 'country', 'short_name');
+  const latitude = geometry.location.lat();
+  const longitude = geometry.location.lng();
+
+  if (region) {
+    return { latitude, longitude };
+  } else if ((city || state) && countryCode) {
+    return { city, state, countryCode };
+  } else {
+    throw new Error('we should have never reached here');
+  }
+};
+
+function getAddressComponent(addressComponents, componentName, property) {
+  const component = addressComponents.find(component => component.types.includes(componentName));
+
+  if (component && component[property]) {
+    return component[property];
+  }
+  return undefined;
+}
+
 export const parseLocationDataAndCoordinates = function(data, lngLat) {
   let res = parseLocationData(data);
 
