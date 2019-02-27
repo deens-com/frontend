@@ -39,10 +39,17 @@ export const getSearchParams = googleMapsResult => {
   const latitude = geometry.location.lat();
   const longitude = geometry.location.lng();
 
+  const allUndefined = {
+    city: undefined,
+    state: undefined,
+    countryCode: undefined,
+    latitude: undefined,
+    longitude: undefined,
+  };
   if (region) {
-    return { latitude, longitude };
+    return { ...allUndefined, latitude, longitude };
   } else if ((city || state) && countryCode) {
-    return { city, state, countryCode };
+    return { ...allUndefined, city, state, countryCode };
   } else {
     throw new Error('we should have never reached here');
   }

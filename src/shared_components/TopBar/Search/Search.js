@@ -1,6 +1,7 @@
 // NPM
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { getSearchParams } from 'libs/location';
 import history from './../../../main/history';
 
 // COMPONENTS
@@ -148,24 +149,20 @@ export default class DesktopSearch extends Component {
       this.setState({ text, address: null }, this.handleSearchSubmit);
       return;
     }
-    geocodeByAddress(address)
-      .then(results => {
-        this.setState({ address, text: null });
-        return getLatLng(results[0]);
-      })
-      .then(results => {
-        const { lat, lng } = results;
-        this.setState(
-          { address, latitude: lat, longitude: lng, serviceType },
-          this.handleSearchSubmit,
-        );
-      });
+    geocodeByAddress(address).then(results => {
+      const result = results[0];
+      const searchParams = getSearchParams(result);
+      this.setState({ address, serviceType, ...searchParams, text: null }, this.handleSearchSubmit);
+    });
   }
   handleSearchSubmit() {
     const query_params = {
       address: this.state.address,
       latitude: this.state.latitude,
       longitude: this.state.longitude,
+      city: this.state.city,
+      state: this.state.state,
+      countryCode: this.state.countryCode,
       serviceTypes: this.state.serviceType,
       text: this.state.text,
     };
