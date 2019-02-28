@@ -48,7 +48,7 @@ export const getSearchParams = googleMapsResult => {
   };
   if (region) {
     return { ...allUndefined, latitude, longitude };
-  } else if ((city || state) && countryCode) {
+  } else if (city || state || countryCode) {
     return { ...allUndefined, city, state, countryCode };
   } else {
     throw new Error('we should have never reached here');
