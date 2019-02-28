@@ -8,7 +8,8 @@ import styled from 'styled-components';
 import { Popup, Dropdown, Icon, Dimmer } from 'semantic-ui-react';
 import { DateRangePicker } from 'react-dates';
 import a from 'indefinite';
-import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
+import { geocodeByAddress } from 'react-places-autocomplete';
+import { getSearchParams } from 'libs/location';
 import { parseLocationData } from 'libs/location';
 import moment from 'moment';
 import Media from 'react-media';
@@ -246,6 +247,7 @@ class Filters extends Component {
       sortBy: this.props.search_query.sortBy,
       radiusInKm: this.props.search_query.radiusInKm,
       city: this.props.search_query.city,
+      state: this.props.search_query.state,
       countryCode: this.props.search_query.countryCode,
       text: this.props.search_query.text,
     };
@@ -259,12 +261,13 @@ class Filters extends Component {
     this.props.updatePath(query_params, this.props.history, this.props.routeState);
   }
 
-  refetch_results_for_location(lat, lon, addr, countryCode, city) {
+  refetch_results_for_location(lat, lon, addr, countryCode, city, state) {
     const query_params = this.get_query_params();
     query_params.latitude = lat;
     query_params.longitude = lon;
     query_params.address = addr;
     query_params.city = city;
+    query_params.state = state;
     query_params.countryCode = countryCode;
     this.props.updatePath(query_params, this.props.history, this.props.routeState);
   }
@@ -301,28 +304,13 @@ class Filters extends Component {
   }
 
   handleLocationChange(address) {
-    let addr = '';
-    let countryCode = '';
-    let city = '';
-    geocodeByAddress(address)
-      .then(results => {
-        const locationData = parseLocationData(results[0]);
-        addr = locationData.formattedAddress;
-        countryCode = locationData.countryCode;
-        city = locationData.city;
-
-        this.setState({
-          address: addr,
-          countryCode,
-          city,
-        });
-        return getLatLng(results[0]);
-      })
-      .then(results => {
-        const { lat, lng } = results;
-        this.setState({ latitude: lat, longitude: lng });
-        this.refetch_results_for_location(lat, lng, addr, countryCode, city);
-      });
+    geocodeByAddress(address).then(results => {
+      const result = results[0];
+      const searchParams = getSearchParams(result);
+      this.setState({ address, ...searchParams });
+      const { latitude, longitude, city, state, countryCode } = searchParams;
+      this.refetch_results_for_location(latitude, longitude, address, countryCode, city, state);
+    });
   }
 
   handleServiceTypeChange(event, data) {
