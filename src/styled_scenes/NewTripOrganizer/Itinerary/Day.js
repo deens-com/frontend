@@ -109,10 +109,12 @@ const AddDayBox = styled.div`
 `;
 
 const DeleteDay = styled.div`
-  margin-left: 5px;
+  margin-left: 8px;
   cursor: pointer;
   > svg {
     fill: ${error} !important;
+    height: 0.8em;
+    width: 0.8em;
   }
 `;
 
