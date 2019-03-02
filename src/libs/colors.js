@@ -6,3 +6,4 @@ export const tertiary = '#656F76';
 export const tertiaryContrast = '#515B62';
 export const darkText = '#262626';
 export const lightText = '#FFFFFF';
+export const error = '#F65353';

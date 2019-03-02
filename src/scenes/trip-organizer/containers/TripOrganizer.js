@@ -112,7 +112,7 @@ class TripOrganizerContainer extends Component {
       <TripOrganizer
         trip={this.props.trip}
         tripId={this.props.match.params.id}
-        startDate={moment(this.props.startDate)}
+        startDate={moment(this.props.startDate).toJSON()}
         adults={this.props.adults || 1}
         children={this.props.children}
         infants={this.props.infants}

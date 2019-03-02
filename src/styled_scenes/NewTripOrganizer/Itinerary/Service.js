@@ -2,16 +2,73 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import I18nText from 'shared_components/I18nText';
-import { Draggable } from 'react-beautiful-dnd';
+import { DragSource, DropTarget } from 'react-dnd';
 import { types } from '../constants';
 import { P, PSmallStrong, PXSmall } from 'libs/commonStyles';
-import { lightText, primary, secondaryContrast, secondary } from 'libs/colors';
+import { lightText, primary, primaryContrast, secondaryContrast } from 'libs/colors';
 import { Drag } from 'shared_components/icons';
 import Stars from 'shared_components/Rating/Stars';
+
+const serviceSource = {
+  beginDrag(props) {
+    props.startDraggingService(props.data.day, props.data._id, props.index);
+
+    return {
+      id: props.data._id,
+      day: props.data.day,
+    };
+  },
+  isDragging(props, monitor) {
+    return props.data._id === monitor.getItem().id;
+  },
+  endDrag(props) {
+    props.endDraggingService();
+  },
+};
+
+function collect(connect, monitor) {
+  return {
+    connectDragSource: connect.dragSource(),
+    connectDragPreview: connect.dragPreview(),
+    isDragging: monitor.isDragging(),
+  };
+}
+
+const serviceTarget = {
+  hover(props, monitor) {
+    if (monitor.getItemType() !== types.SERVICE) {
+      return;
+    }
+    if (monitor.getItem().id !== props.data._id) {
+      props.changeServicePosition(
+        props.draggingState.day,
+        props.draggingState.position,
+        props.data.day,
+        props.index,
+      );
+      props.changeDraggingService(props.data.day, props.index);
+    }
+  },
+};
+
+const connectTarget = connect => {
+  return {
+    connectDropTarget: connect.dropTarget(),
+  };
+};
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+const DraggingBox = styled.div`
+  margin-top: 35px;
+  background-color: ${primary};
+  border: 1px solid ${primaryContrast};
+  width: 190px;
+  height: 225px;
+  border-radius: 10px 10px 10px 0;
 `;
 
 const ServiceBox = styled.div`
@@ -23,18 +80,6 @@ const ServiceBox = styled.div`
   height: 225px;
   position: relative;
   overflow: hidden;
-`;
-
-const ServiceOptions = styled.div`
-  display: flex;
-  height: 35px;
-  border-radius: 5px 5px 0 0;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  border-bottom: 0;
-  box-shadow: 1px 1px rgba(0, 0, 0, 0.05);
-  background-color: white;
-  padding: 8px;
-  margin: auto;
 `;
 
 const ServiceData = styled.div`
@@ -86,43 +131,80 @@ function getPriceText(type) {
   return 'per person';
 }
 
-const Service = ({ data, index }) => {
-  //console.log(data)
+const serviceOptionsStyle = {
+  display: 'flex',
+  height: '35px',
+  borderRadius: '5px 5px 0 0',
+  border: '1px solid rgba(0, 0, 0, 0.05)',
+  borderBottom: 0,
+  boxShadow: '1px 1px rgba(0, 0, 0, 0.05)',
+  backgroundColor: 'white',
+  padding: '8px',
+  margin: 'auto',
+  cursor: 'grabbing',
+};
+
+const Service = ({
+  data,
+  index,
+  draggingState,
+  connectDragSource,
+  connectDragPreview,
+  isDragging,
+  connectDropTarget,
+}) => {
   const fastBookable =
     data.service.checkoutOptions && data.service.checkoutOptions.payAt === 'please';
-  return (
-    <Draggable draggableId={`service-${data._id}`} index={index} type={types.SERVICE}>
-      {provided => (
-        <Wrapper {...provided.draggableProps} ref={provided.innerRef}>
-          <ServiceOptions {...provided.dragHandleProps}>
-            <Drag style={{ width: '18px', height: '18px' }} />
-          </ServiceOptions>
-          <ServiceBox img={data.service.media[0].files.thumbnail.url}>
-            <ServiceData>
-              <ServiceTitle>
-                <I18nText data={data.service.title} />
-              </ServiceTitle>
-              <RatingAndPrice>
-                <Price>
-                  <PSmallStrong>${data.service.basePrice}</PSmallStrong>
-                  <PXSmall>{getPriceText(data.service.categories[0].names['en-us'])}</PXSmall>
-                </Price>
-                <StarsWrapper>
-                  <Stars rating={3} />
-                  {fastBookable && <BookableTag>Fast Booking</BookableTag>}
-                </StarsWrapper>
-              </RatingAndPrice>
-            </ServiceData>
-          </ServiceBox>
-        </Wrapper>
-      )}
-    </Draggable>
+
+  return connectDragPreview(
+    connectDropTarget(
+      <div>
+        {isDragging ? (
+          <DraggingBox />
+        ) : (
+          <Wrapper>
+            {connectDragSource(
+              <div style={serviceOptionsStyle}>
+                <Drag style={{ width: '18px', height: '18px' }} />
+              </div>,
+            )}
+            <ServiceBox img={data.service.media[0].files.thumbnail.url}>
+              <ServiceData>
+                <ServiceTitle>
+                  <I18nText data={data.service.title} />
+                </ServiceTitle>
+                <RatingAndPrice>
+                  <Price>
+                    <PSmallStrong>${data.service.basePrice}</PSmallStrong>
+                    <PXSmall>{getPriceText(data.service.categories[0].names['en-us'])}</PXSmall>
+                  </Price>
+                  <StarsWrapper>
+                    <Stars rating={3} />
+                    {fastBookable && <BookableTag>Fast Booking</BookableTag>}
+                  </StarsWrapper>
+                </RatingAndPrice>
+              </ServiceData>
+            </ServiceBox>
+          </Wrapper>
+        )}
+      </div>,
+    ),
   );
 };
 
 Service.propTypes = {
   data: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
+  draggingState: PropTypes.shape({
+    day: PropTypes.number.isRequired,
+    id: PropTypes.string,
+    position: PropTypes.number,
+  }),
+  startDraggingService: PropTypes.func.isRequired,
+  changeDraggingService: PropTypes.func.isRequired,
+  endDraggingService: PropTypes.func.isRequired,
 };
 
-export default Service;
+export default DropTarget(types.SERVICE, serviceTarget, connectTarget)(
+  DragSource(types.SERVICE, serviceSource, collect)(Service),
+);

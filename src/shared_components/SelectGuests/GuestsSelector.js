@@ -1,14 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 import { PlusIcon, MinusIcon } from 'shared_components/icons';
+import { primary } from 'libs/colors';
 
 const SelectorWrapper = styled.div`
   position: ${props => (props.relative ? 'relative' : 'absolute')};
   background-color: white;
-  box-shadow: ${props =>
-    props.relative ? 'none' : '1px 1px 1px rgba(0, 0, 0, 0.3), -1px 1px 1px rgba(0, 0, 0, 0.3)'};
+  box-shadow: ${props => (props.relative ? 'none' : '0 0 5px rgba(0,0,0,0.3)')};
   width: 100%;
   max-width: 300px;
+  min-width: 250px;
   margin: auto;
   left: 0;
   right: 0;
@@ -37,9 +38,9 @@ const RightColumn = styled.div`
 `;
 
 const IconButton = styled.button`
-  border: 1px solid #6fcf97;
-  color: #6fcf97;
-  border-radius: 20px;
+  border: 1px solid ${primary};
+  color: ${primary};
+  border-radius: 5px 5px 5px 0;
   width: 32px;
   height: 32px;
   background-color: white;
@@ -48,7 +49,7 @@ const IconButton = styled.button`
   align-items: center;
   outline: 0;
   :hover:enabled {
-    background-color: #6fcf97;
+    background-color: ${primary};
     color: white;
     cursor: pointer;
   }
