@@ -165,15 +165,17 @@ class Results extends Component {
   };
 
   removeFromTrip = async (serviceId, day) => {
-    this.tripServices = this.tripServices.filter(
-      service => service.service._id !== serviceId || service.day !== day,
+    const serviceToDelete = this.tripServices.find(
+      service => service.service._id === serviceId && service.day !== day,
     );
+
+    this.tripServices.filter(service => service._id === serviceToDelete._id);
+
     if (this.props.trip._id) {
-      await tripUtils.patchTrip(this.props.trip._id, {
-        services: this.tripServices.map(service => ({ ...service, service: service._id })),
-      });
+      await tripUtils.removeServiceRequest(this.props.trip._id, serviceToDelete._id);
       return;
     }
+
     saveTrip({
       ...this.props.trip,
       services: this.tripServices,

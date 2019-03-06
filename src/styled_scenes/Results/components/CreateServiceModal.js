@@ -58,21 +58,7 @@ export default class CreateServiceModal extends React.Component {
 
     const trip = this.props.trip;
 
-    const tripServices = tripUtils
-      .addServiceToTrip(trip.services, serviceToAdd, this.props.day)
-      .map(
-        service =>
-          typeof service.service === 'object'
-            ? {
-                ...service,
-                service: service.service._id,
-              }
-            : service,
-      );
-
-    await tripUtils.patchTrip(trip._id, {
-      services: tripServices,
-    });
+    await tripUtils.addServiceRequest(trip._id, serviceToAdd.day, serviceToAdd.service._id);
 
     this.props.goBackToTrip();
   };

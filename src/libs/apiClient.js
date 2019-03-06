@@ -18,15 +18,13 @@ const paramsSerializer = params => {
 const get = url => params => axios.get(url, { params, paramsSerializer });
 const post = url => body => axios.post(url, body);
 const deleteEndpoint = url => body => axios.delete(url, body);
+const patch = url => body => axios.patch(url, body);
 
 // await axios.get(`${serverBaseURL}/search?include=${includes.join(',')}`)).data.trips
 // GET endpoint are called like xxx.get(params, ...urlParams) where params are the query params
 export default {
   trips: {
     get: get('/trips'),
-    addService: {
-      post: (id, body) => post(`/trips/${id}/add-service`)(body),
-    },
     copy: {
       post: (id, anonymous) =>
         post(`/trips/${id}/copy?${anonymous ? paramsSerializer({ noSave: 1 }) : ''}`)(),
@@ -37,6 +35,19 @@ export default {
     heart: {
       post: id => post(`/trips/${id}/heart`)(),
       delete: id => deleteEndpoint(`/trips/${id}/heart`)(),
+    },
+    // edit trip
+    patch: (id, body) => patch(`/trips/${id}/`)(body),
+    serviceOrganizations: {
+      post: (id, body) => post(`/trips/${id}/service-organizations`)(body),
+      delete: (id, servOrgIds = []) =>
+        deleteEndpoint(`/trips/${id}/service-organizations/${servOrgIds.join(',')}`)(),
+      rearrange: {
+        post: (id, body) => post(`/trips/${id}/service-organizations/rearrange`)(body),
+      },
+      availabilityCode: {
+        post: (id, body) => post(`/trips/${id}/service-organizations/availability-code`)(body),
+      },
     },
   },
   services: {

@@ -29,7 +29,6 @@ import Input from 'shared_components/StyledInput';
 import debounce from 'lodash.debounce';*/
 import apiClient from 'libs/apiClient';
 import arrayMove from 'array-move';
-import axios from 'libs/axios';
 import { getHeroImage } from 'libs/Utils';
 import Itinerary from './Itinerary';
 import { getFromCoordinates } from 'libs/Utils';
@@ -62,7 +61,7 @@ function createStateBasedOnTrip(props) {
     },
     image: heroImage ? heroImage.files.hero.url : null,
     draggingDay: false,
-    isSaving: false,
+    isSaving: 0,
   };
 }
 
@@ -138,19 +137,13 @@ export default class TripOrganizer extends React.Component {
         };
       },
       () => {
-        this.saveTrip({
-          services: this.parseServicesForSaving(),
-        });
+        this.saveRearrangeServices();
       },
     );
   };
 
   changeServicePosition = (currentDay, currentPosition, nextDay, nextPosition) => {
-    const saveTrip = () => {
-      this.saveTrip({
-        services: this.parseServicesForSaving(),
-      });
-    };
+    const saveTrip = this.saveRearrangeServices;
 
     if (currentDay === nextDay) {
       this.setState(prevState => {
@@ -215,8 +208,8 @@ export default class TripOrganizer extends React.Component {
         };
       },
       () => {
+        this.saveRearrangeServices();
         this.saveTrip({
-          services: this.parseServicesForSaving(),
           duration: this.state.tripData.duration,
         });
       },
@@ -252,8 +245,8 @@ export default class TripOrganizer extends React.Component {
         };
       },
       () => {
+        this.saveRearrangeServices();
         this.saveTrip({
-          services: this.parseServicesForSaving(),
           duration: this.state.tripData.duration,
         });
       },
@@ -264,6 +257,7 @@ export default class TripOrganizer extends React.Component {
     return mapDaysToServices(this.state.services).map(service => ({
       ...service,
       service: service.service._id,
+      serviceOrgId: service._id,
     }));
   };
 
@@ -360,15 +354,34 @@ export default class TripOrganizer extends React.Component {
     this.saveTrip(newData);
   };
 
+  addIsSaving = () => {
+    this.setState(prevState => ({
+      isSaving: prevState.isSaving++,
+    }));
+  };
+
+  removeIsSaving = () => {
+    this.setState(prevState => ({
+      isSaving: prevState.isSaving--,
+    }));
+  };
+
   saveTrip = async dataToSave => {
-    this.setState({
-      isSaving: true,
-    });
-    await axios.patch(`/trips/${this.props.trip._id}`, dataToSave).then(response => {
-      this.setState({
-        isSaving: false,
-      });
-    });
+    this.addIsSaving();
+
+    await apiClient.patch(`/trips/${this.props.trip._id}`, dataToSave);
+
+    this.removeIsSaving();
+  };
+
+  saveRearrangeServices = async () => {
+    this.addIsSaving();
+
+    const dataToSave = this.parseServicesForSaving();
+
+    await apiClient.trips.serviceOrganizations.rearrange.post(this.props.trip._id, dataToSave);
+
+    this.removeIsSaving();
   };
 
   book = () => {};
@@ -411,7 +424,7 @@ export default class TripOrganizer extends React.Component {
           price={tripData.basePrice.toFixed(2)}
           book={this.book}
           share={this.share}
-          isSaving={this.state.isSaving}
+          isSaving={Boolean(this.state.isSaving)}
         />
       </>
     );
