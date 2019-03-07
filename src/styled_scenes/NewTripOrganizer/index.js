@@ -2,8 +2,8 @@
 // 1- Remove trip from state, the trip should be able to be created from other stuff in the state
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 /*import ReactDOM from 'react-dom';
-import moment from 'moment';
 import styled from 'styled-components';
 import { Loader, Dimmer } from 'semantic-ui-react';
 import { getFromCoordinates } from 'libs/Utils';
@@ -27,9 +27,11 @@ import PreBookModal from './PreBookModal';
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
 import Input from 'shared_components/StyledInput';
 import debounce from 'lodash.debounce';*/
+import moment from 'moment';
 import apiClient from 'libs/apiClient';
 import arrayMove from 'array-move';
 import { getHeroImage } from 'libs/Utils';
+import { saveTrip } from 'libs/localStorage';
 import Itinerary from './Itinerary';
 import { getFromCoordinates } from 'libs/Utils';
 import Header from './Header';
@@ -62,15 +64,177 @@ function createStateBasedOnTrip(props) {
     image: heroImage ? heroImage.files.hero.url : null,
     draggingDay: false,
     isSaving: 0,
+    isCheckingAvailability: 0,
   };
+}
+
+function formatMedia(url) {
+  return [
+    {
+      type: 'image',
+      hero: true,
+      names: {
+        'en-us': 'Trip image',
+      },
+      files: {
+        thumbnail: {
+          url,
+          width: 215,
+          height: 140,
+        },
+        small: {
+          url,
+          width: 430,
+          height: 280,
+        },
+        large: {
+          url,
+          width: 860,
+          height: 560,
+        },
+        hero: {
+          url,
+          width: 860,
+          height: 560,
+        },
+      },
+    },
+  ];
+}
+
+function addAvailabilityData(services, availability) {
+  const availabilityById = availability.reduce(
+    (prevObj, service) => ({
+      ...prevObj,
+      [service.serviceOrganizationId]: service,
+    }),
+    {},
+  );
+
+  return mapServicesByDay(
+    mapDaysToServices(services).map(service => ({
+      ...service,
+      availability: availabilityById[service._id],
+    })),
+  );
 }
 
 export default class TripOrganizer extends React.Component {
   constructor(props) {
     super(props);
-
+    console.log(props.trip);
     this.state = createStateBasedOnTrip(props);
   }
+
+  propTypes = {
+    trip: PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+    }).isRequired,
+    tripId: PropTypes.string,
+  };
+
+  componentDidMount() {
+    this.checkAvailability();
+  }
+
+  // GENERAL ACTIONS
+
+  saveTrip = async dataToSave => {
+    this.addIsSaving();
+
+    if (this.props.tripId) {
+      await apiClient.trips.patch(this.props.trip._id, dataToSave);
+    } else {
+      this.localSave();
+    }
+
+    this.removeIsSaving();
+  };
+
+  saveRearrangeServices = async () => {
+    this.addIsSaving();
+
+    const dataToSave = this.parseServicesForSaving();
+
+    if (this.props.tripId) {
+      await apiClient.trips.serviceOrganizations.rearrange.post(this.props.trip._id, dataToSave);
+    } else {
+      this.localSave();
+    }
+
+    this.removeIsSaving();
+    this.checkAvailability();
+  };
+
+  saveRemovedServices = async (serviceOrgIds = []) => {
+    if (serviceOrgIds.length === 0) {
+      return;
+    }
+    this.addIsSaving();
+
+    if (this.props.tripId) {
+      await apiClient.trips.serviceOrganizations.delete(this.props.trip._id, serviceOrgIds);
+    } else {
+      this.localSave();
+    }
+
+    this.removeIsSaving();
+  };
+
+  localSave = () => {
+    console.log(this.state);
+    saveTrip({
+      ...this.state.tripData,
+      title: addLang(this.state.tripData.title),
+      description: addLang(this.state.tripData.description),
+      media: formatMedia(this.state.image),
+      services: mapDaysToServices(this.state.services),
+    });
+  };
+
+  book = () => {};
+  share = () => {};
+
+  requestAvailability = async () => {
+    const { startDate, adultCount, infantCount, childrenCount } = this.state.tripData;
+    const bookingDate = moment(startDate).format('YYYY-MM-DD');
+    const peopleCount = adultCount + infantCount + childrenCount;
+    const data = { bookingDate, adultCount, childrenCount, infantCount, peopleCount };
+
+    if (this.props.tripId) {
+      return apiClient.trips.availability.get(this.props.trip._id, data);
+    }
+
+    return apiClient.trips.availability.anonymous.post({
+      ...data,
+      tripData: {
+        ...this.state.tripData,
+        services: this.parseServicesForSaving(),
+      },
+    });
+  };
+
+  checkAvailability = async () => {
+    const checkingTime = new Date().valueOf();
+
+    this.setState({
+      checkingAvailability: checkingTime,
+    });
+
+    const response = await this.requestAvailability();
+
+    this.setState(prevState => {
+      if (checkingTime === prevState.checkingAvailability) {
+        return {
+          checkingAvailability: 0,
+          services: addAvailabilityData(prevState.services, response.data),
+        };
+      }
+      return {};
+    });
+  };
+
+  // SINGLE ACTIONS
 
   goToAddService = day => {
     const { history, trip } = this.props;
@@ -180,12 +344,16 @@ export default class TripOrganizer extends React.Component {
   };
 
   removeDay = day => {
+    const removedServices = [];
     this.setState(
       prevState => {
         const duration = prevState.tripData.duration - 60 * 24;
         const services = mapServicesByDay(
           mapDaysToServices(prevState.services)
             .filter(service => {
+              if (service.day === day) {
+                removedServices.push(service._id);
+              }
               return service.day !== day;
             })
             .map(service => {
@@ -207,11 +375,12 @@ export default class TripOrganizer extends React.Component {
           },
         };
       },
-      () => {
-        this.saveRearrangeServices();
+      async () => {
+        await this.saveRemovedServices(removedServices);
         this.saveTrip({
           duration: this.state.tripData.duration,
         });
+        this.saveRearrangeServices();
       },
     );
   };
@@ -265,93 +434,81 @@ export default class TripOrganizer extends React.Component {
     const uploadedFile = await apiClient.media.post(file);
 
     const url = uploadedFile.data.url;
-    this.setState({
-      image: url,
-    });
-
-    this.saveTrip({
-      media: [
-        {
-          type: 'image',
-          hero: true,
-          names: {
-            'en-us': 'Trip image',
-          },
-          files: {
-            thumbnail: {
-              url,
-              width: 215,
-              height: 140,
-            },
-            small: {
-              url,
-              width: 430,
-              height: 280,
-            },
-            large: {
-              url,
-              width: 860,
-              height: 560,
-            },
-            hero: {
-              url,
-              width: 860,
-              height: 560,
-            },
-          },
-        },
-      ],
-    });
+    this.setState(
+      {
+        image: url,
+      },
+      () => {
+        this.saveTrip({
+          media: formatMedia(url),
+        });
+      },
+    );
   };
 
   editTitle = title => {
-    this.setState(prevState => ({
-      tripData: {
-        ...prevState.tripData,
-        title,
+    this.setState(
+      prevState => ({
+        tripData: {
+          ...prevState.tripData,
+          title,
+        },
+      }),
+      () => {
+        this.saveTrip({ title: addLang(title) });
       },
-    }));
-    this.saveTrip({ title: addLang(title) });
+    );
   };
 
   editDescription = description => {
-    this.setState(prevState => ({
-      tripData: {
-        ...prevState.tripData,
-        description,
+    this.setState(
+      prevState => ({
+        tripData: {
+          ...prevState.tripData,
+          description,
+        },
+      }),
+      () => {
+        this.saveTrip({ description: addLang(description) });
       },
-    }));
-
-    this.saveTrip({ description: addLang(description) });
+    );
   };
 
-  changeGuests = data => {
+  changeGuests = async data => {
     const newData = {
       adultCount: data.adults,
       childrenCount: data.children,
       infantCount: data.infants,
     };
-    this.setState(prevState => ({
-      tripData: {
-        ...prevState.tripData,
-        ...newData,
+    this.setState(
+      prevState => ({
+        tripData: {
+          ...prevState.tripData,
+          ...newData,
+        },
+      }),
+      async () => {
+        await this.saveTrip(newData);
+        await this.checkAvailability();
       },
-    }));
-
-    this.saveTrip(newData);
+    );
   };
 
-  onChangeDate = date => {
+  onChangeDate = async date => {
     const newData = { startDate: date.toJSON() };
 
-    this.setState(prevState => ({
-      tripData: {
-        ...prevState.tripData,
-        ...newData,
+    this.setState(
+      prevState => ({
+        tripData: {
+          ...prevState.tripData,
+          ...newData,
+        },
+      }),
+      async () => {
+        await this.saveTrip(newData);
+        await this.checkAvailability();
       },
-    }));
-
-    this.saveTrip(newData);
+    );
   };
 
   addIsSaving = () => {
@@ -366,26 +523,7 @@ export default class TripOrganizer extends React.Component {
     }));
   };
 
-  saveTrip = async dataToSave => {
-    this.addIsSaving();
-
-    await apiClient.patch(`/trips/${this.props.trip._id}`, dataToSave);
-
-    this.removeIsSaving();
-  };
-
-  saveRearrangeServices = async () => {
-    this.addIsSaving();
-
-    const dataToSave = this.parseServicesForSaving();
-
-    await apiClient.trips.serviceOrganizations.rearrange.post(this.props.trip._id, dataToSave);
-
-    this.removeIsSaving();
-  };
-
-  book = () => {};
-  share = () => {};
+  // RENDER
 
   render() {
     const { draggingDay, tripData, services, image } = this.state;

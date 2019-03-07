@@ -36,8 +36,21 @@ export default {
       post: id => post(`/trips/${id}/heart`)(),
       delete: id => deleteEndpoint(`/trips/${id}/heart`)(),
     },
+    availability: {
+      get: (id, { bookingDate, adultCount, infantCount, childrenCount, peopleCount }) =>
+        get(`/trips/${id}/availability`)({
+          bookingDate,
+          adultCount,
+          infantCount,
+          childrenCount,
+          peopleCount,
+        }),
+      anonymous: {
+        post: body => post(`/trips/anonymous-availability`)(body),
+      },
+    },
     // edit trip
-    patch: (id, body) => patch(`/trips/${id}/`)(body),
+    patch: (id, body) => patch(`/trips/${id}`)(body),
     serviceOrganizations: {
       post: (id, body) => post(`/trips/${id}/service-organizations`)(body),
       delete: (id, servOrgIds = []) =>

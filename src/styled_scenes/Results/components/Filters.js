@@ -167,8 +167,6 @@ class Filters extends Component {
 
     this.state = {
       address: props.search_query.address || undefined,
-      latitude: props.search_query.latitude || undefined,
-      longitude: props.search_query.longitude || undefined,
       start_date: props.search_query.start_date ? props.search_query.start_date : moment().format(),
       end_date: props.search_query.end_date
         ? props.search_query.end_date
@@ -238,8 +236,6 @@ class Filters extends Component {
       adults: Number(this.props.search_query.adults),
       children: Number(this.props.search_query.children),
       infants: Number(this.props.search_query.infants),
-      latitude: this.props.search_query.latitude,
-      longitude: this.props.search_query.longitude,
       address: this.props.search_query.address,
       tags: this.props.search_query.tags,
       onlySmartContracts: this.props.search_query.onlySmartContracts,
@@ -259,10 +255,8 @@ class Filters extends Component {
     this.props.updatePath(query_params, this.props.history, this.props.routeState);
   }
 
-  refetch_results_for_location(lat, lon, addr, countryCode, city) {
+  refetch_results_for_location(addr, countryCode, city) {
     const query_params = this.get_query_params();
-    query_params.latitude = lat;
-    query_params.longitude = lon;
     query_params.address = addr;
     query_params.city = city;
     query_params.countryCode = countryCode;
@@ -319,9 +313,7 @@ class Filters extends Component {
         return getLatLng(results[0]);
       })
       .then(results => {
-        const { lat, lng } = results;
-        this.setState({ latitude: lat, longitude: lng });
-        this.refetch_results_for_location(lat, lng, addr, countryCode, city);
+        this.refetch_results_for_location(addr, countryCode, city);
       });
   }
 
@@ -356,7 +348,7 @@ class Filters extends Component {
   };
 
   clear_address() {
-    this.setState({ latitude: '', longitude: '', address: '' });
+    this.setState({ address: '', countryCode: '', city: '' });
     this.refetch_results_for_location('', '', '');
   }
 
