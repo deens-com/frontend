@@ -1,7 +1,7 @@
 // Stuff that would improve the codebase:
 // 1- Remove trip from state, the trip should be able to be created from other stuff in the state
 
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 /*import ReactDOM from 'react-dom';
 import styled from 'styled-components';
@@ -56,15 +56,21 @@ function createStateBasedOnTrip(props) {
       title: props.trip.title['en-us'],
       description: props.trip.description ? props.trip.description['en-us'] : '',
       location: props.trip.location,
-      adultCount: props.trip.adultCount || props.adults,
-      childrenCount: props.trip.childrenCount || props.children,
-      infantCount: props.trip.infantCount || props.infants,
+      adultCount: props.trip.adultCount || props.adults || 1,
+      childrenCount: props.trip.childrenCount || props.children || 0,
+      infantCount: props.trip.infantCount || props.infants || 0,
       basePrice: props.trip.basePrice || 0,
     },
     image: heroImage ? heroImage.files.hero.url : null,
     draggingDay: false,
+    // transportation methods
+    fromService: {},
+    toService: {},
+    // this booleans are numbers so we can make many requests.
+    // probably it would be better to have timestamps to avoid race conditions
     isSaving: 0,
     isCheckingAvailability: 0,
+    isLoadingTransportation: 0,
   };
 }
 
@@ -77,29 +83,28 @@ function formatMedia(url) {
         'en-us': 'Trip image',
       },
       files: {
-        thumbnail: {
+        original: {
           url,
-          width: 215,
-          height: 140,
-        },
-        small: {
-          url,
-          width: 430,
-          height: 280,
-        },
-        large: {
-          url,
-          width: 860,
-          height: 560,
         },
         hero: {
           url,
-          width: 860,
-          height: 560,
         },
       },
     },
   ];
+}
+
+function makeTransportationState(transportation) {
+  return {
+    toService: transportation.reduce(
+      (prevObj, transport) => ({ ...prevObj, [transport.toServiceOrgId]: transport }),
+      {},
+    ),
+    fromService: transportation.reduce(
+      (prevObj, transport) => ({ ...prevObj, [transport.fromServiceOrgId]: transport }),
+      {},
+    ),
+  };
 }
 
 function addAvailabilityData(services, availability) {
@@ -119,10 +124,11 @@ function addAvailabilityData(services, availability) {
   );
 }
 
+export const TripContext = React.createContext();
+
 export default class TripOrganizer extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props.trip);
     this.state = createStateBasedOnTrip(props);
   }
 
@@ -135,9 +141,22 @@ export default class TripOrganizer extends React.Component {
 
   componentDidMount() {
     this.checkAvailability();
+    this.getTransportation();
   }
 
   // GENERAL ACTIONS
+
+  addIsSaving = () => {
+    this.setState(prevState => ({
+      isSaving: prevState.isSaving++,
+    }));
+  };
+
+  removeIsSaving = () => {
+    this.setState(prevState => ({
+      isSaving: prevState.isSaving--,
+    }));
+  };
 
   saveTrip = async dataToSave => {
     this.addIsSaving();
@@ -181,8 +200,37 @@ export default class TripOrganizer extends React.Component {
     this.removeIsSaving();
   };
 
+  saveAvailabilityCode = async (serviceOrgId, availabilityCode) => {
+    this.addIsSaving();
+
+    const services = this.props.tripId
+      ? (await apiClient.trips.serviceOrganizations.availabilityCode.post(this.props.trip._id, [
+          { serviceOrgId, availabilityCode },
+        ])).data
+      : this.localSave().services;
+
+    this.removeIsSaving();
+
+    return services;
+  };
+
+  getTransportation = async () => {
+    this.setState(prevState => ({
+      isLoadingTransportation: prevState.isLoadingTransportation + 1,
+    }));
+
+    // implement anonymous!!
+    const transportation = this.props.tripId
+      ? (await apiClient.trips.calculateDistances.post(this.props.trip._id)).data
+      : [];
+
+    this.setState(prevState => ({
+      isLoadingTransportation: prevState.isLoadingTransportation - 1,
+      ...makeTransportationState(transportation),
+    }));
+  };
+
   localSave = () => {
-    console.log(this.state);
     saveTrip({
       ...this.state.tripData,
       title: addLang(this.state.tripData.title),
@@ -511,25 +559,40 @@ export default class TripOrganizer extends React.Component {
     );
   };
 
-  addIsSaving = () => {
-    this.setState(prevState => ({
-      isSaving: prevState.isSaving++,
-    }));
-  };
-
-  removeIsSaving = () => {
-    this.setState(prevState => ({
-      isSaving: prevState.isSaving--,
-    }));
+  selectOption = (service, option) => {
+    this.setState(
+      prevState => ({
+        services: {
+          ...prevState.services,
+          [service.day]: prevState.services[service.day].map(
+            currentService =>
+              service._id !== currentService._id
+                ? currentService
+                : {
+                    ...currentService,
+                    selectedOption: option,
+                  },
+          ),
+        },
+      }),
+      async () => {
+        await this.saveAvailabilityCode(service._id, option.otherAttributes.availabilityCode.code);
+      },
+    );
   };
 
   // RENDER
 
   render() {
-    const { draggingDay, tripData, services, image } = this.state;
+    const { draggingDay, tripData, services, image, isLoadingTransportation } = this.state;
 
     return (
-      <>
+      <TripContext.Provider
+        value={{
+          tripData: tripData,
+          isLoadingTransportation: Boolean(isLoadingTransportation),
+        }}
+      >
         <Header
           onEditTitle={this.editTitle}
           onEditDescription={this.editDescription}
@@ -557,6 +620,9 @@ export default class TripOrganizer extends React.Component {
           changeDayPosition={this.changeDayPosition}
           goToAddService={this.goToAddService}
           removeDay={this.removeDay}
+          selectOption={this.selectOption}
+          fromService={this.state.fromService}
+          toService={this.state.toService}
         />
         <Footer
           price={tripData.basePrice.toFixed(2)}
@@ -564,7 +630,7 @@ export default class TripOrganizer extends React.Component {
           share={this.share}
           isSaving={Boolean(this.state.isSaving)}
         />
-      </>
+      </TripContext.Provider>
     );
   }
 }

@@ -49,6 +49,9 @@ export default {
         post: body => post(`/trips/anonymous-availability`)(body),
       },
     },
+    calculateDistances: {
+      post: (id, body) => post(`/trips/${id}/calculate-distances`)(body),
+    },
     // edit trip
     patch: (id, body) => patch(`/trips/${id}`)(body),
     serviceOrganizations: {

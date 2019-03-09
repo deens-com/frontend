@@ -5,9 +5,10 @@ import I18nText from 'shared_components/I18nText';
 import { DragSource, DropTarget } from 'react-dnd';
 import { types } from '../constants';
 import { P, PSmallStrong, PXSmall } from 'libs/commonStyles';
-import { lightText, primary, primaryContrast, secondaryContrast } from 'libs/colors';
+import { lightText, primary, primaryContrast, secondaryContrast, error } from 'libs/colors';
 import { Drag } from 'shared_components/icons';
 import Stars from 'shared_components/Rating/Stars';
+import ServiceOptions from './ServiceOptions';
 
 const serviceSource = {
   beginDrag(props) {
@@ -60,6 +61,7 @@ const connectTarget = connect => {
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  position: relative;
 `;
 
 const DraggingBox = styled.div`
@@ -76,10 +78,23 @@ const ServiceBox = styled.div`
   background-size: cover;
   background-position: center;
   border-radius: 10px 10px 10px 0;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
   width: 190px;
   height: 225px;
   position: relative;
   overflow: hidden;
+  ${props =>
+    props.isNotAvailable &&
+    `
+    border: 2px solid ${error};
+  `};
+`;
+
+const NotAvailable = styled(PXSmall)`
+  position: absolute;
+  bottom: -25px;
+  right: 0;
+  color: ${error};
 `;
 
 const ServiceData = styled.div`
@@ -152,9 +167,15 @@ const Service = ({
   connectDragPreview,
   isDragging,
   connectDropTarget,
+  selectOption,
 }) => {
   const fastBookable =
     data.service.checkoutOptions && data.service.checkoutOptions.payAt === 'please';
+  const isAvailable = !data.availability || data.availability.isAvailable;
+  const options =
+    data.availability &&
+    data.availability.groupedOptions &&
+    data.availability.groupedOptions.options;
 
   return connectDragPreview(
     connectDropTarget(
@@ -168,7 +189,10 @@ const Service = ({
                 <Drag style={{ width: '18px', height: '18px' }} />
               </div>,
             )}
-            <ServiceBox img={data.service.media[0].files.thumbnail.url}>
+            <ServiceBox
+              isNotAvailable={!isAvailable}
+              img={data.service.media[0].files.thumbnail.url}
+            >
               <ServiceData>
                 <ServiceTitle>
                   <I18nText data={data.service.title} />
@@ -185,6 +209,10 @@ const Service = ({
                 </RatingAndPrice>
               </ServiceData>
             </ServiceBox>
+            {!isAvailable && <NotAvailable>Not available</NotAvailable>}
+            {options && (
+              <ServiceOptions selectOption={selectOption} options={options} serviceData={data} />
+            )}
           </Wrapper>
         )}
       </div>,
@@ -203,6 +231,7 @@ Service.propTypes = {
   startDraggingService: PropTypes.func.isRequired,
   changeDraggingService: PropTypes.func.isRequired,
   endDraggingService: PropTypes.func.isRequired,
+  selectOption: PropTypes.func.isRequired,
 };
 
 export default DropTarget(types.SERVICE, serviceTarget, connectTarget)(

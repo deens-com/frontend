@@ -18,7 +18,7 @@ function removeUselessFields(trip) {
 }
 
 export function saveTrip(trip) {
-  const tripToSave = {
+  const tripToSave = JSON.stringify({
     adultCount: trip.adultCount,
     childrenCount: trip.childrenCount,
     infantCount: trip.infantCount,
@@ -30,9 +30,10 @@ export function saveTrip(trip) {
     description: trip.description,
     location: trip.location,
     duration: trip.duration,
-  };
+  });
 
-  localStorage.setItem(tripKey, JSON.stringify(tripToSave));
+  localStorage.setItem(tripKey, tripToSave);
+  return tripToSave;
 }
 
 export function removeTrip() {

@@ -32,6 +32,9 @@ const Itinerary = ({
   addNewDay,
   changeServicePosition,
   changeDayPosition,
+  selectOption,
+  fromService,
+  toService,
 }) => {
   const numberOfDays = minutesToDays(duration);
   const [days, setDays] = useState(generateDaysArray(numberOfDays));
@@ -78,6 +81,9 @@ const Itinerary = ({
           endDragging={endDragging}
           goToAddService={goToAddService}
           removeDay={removeDay}
+          selectOption={selectOption}
+          fromService={fromService}
+          toService={toService}
         />
       ))}
     </Days>
@@ -99,6 +105,9 @@ Itinerary.propTypes = {
   changeDayPosition: PropTypes.func.isRequired,
   goToAddService: PropTypes.func.isRequired,
   removeDay: PropTypes.func.isRequired,
+  selectOption: PropTypes.func.isRequired,
+  fromService: PropTypes.object,
+  toService: PropTypes.object,
   summaryView: PropTypes.bool,
 };
 

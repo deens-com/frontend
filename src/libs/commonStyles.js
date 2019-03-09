@@ -15,6 +15,11 @@ export const H2Subtitle = styled.h2`
   font-weight: 300;
 `;
 
+export const H2SubtitleStrong = styled.h2`
+  font-size: 24px;
+  font-weight: 700;
+`;
+
 export const H3 = styled.h3`
   font-size: 24px;
   font-weight: 700;

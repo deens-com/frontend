@@ -9,7 +9,8 @@ import { primary, secondary, primaryContrast, error } from 'libs/colors';
 import { H3, P } from 'libs/commonStyles';
 import { Drag, TrashCan } from 'shared_components/icons';
 import AddButton from '../AddButton';
-
+import Transportation from './Transportation';
+//<Transportation key={data._id} serviceId={data._id} toService={toService}></Transportation>
 const DraggableDay = styled.div`
   background-color: white;
   display: inline-block;
@@ -137,6 +138,9 @@ const Day = ({
   connectDropDayTarget,
   connectDragDayPreview,
   connectDragDaySource,
+  selectOption,
+  fromService,
+  toService,
 }) => {
   const addDay = useCallback(() => {
     addNewDay(day);
@@ -186,9 +190,9 @@ const Day = ({
                       endDraggingService={endDragging}
                       draggingState={draggingState}
                       changeServicePosition={changeServicePosition}
-                      key={data._id}
                       data={data}
                       index={index}
+                      selectOption={selectOption}
                     />
                   ))}
                   <AddServiceBox onClick={() => goToAddService(day)}>
@@ -230,6 +234,7 @@ Day.propTypes = {
   isDraggingThisDay: PropTypes.bool.isRequired,
   changeDayPosition: PropTypes.func.isRequired,
   goToAddService: PropTypes.func.isRequired,
+  selectOption: PropTypes.func.isRequired,
 };
 
 const serviceDragAndDrop = {
