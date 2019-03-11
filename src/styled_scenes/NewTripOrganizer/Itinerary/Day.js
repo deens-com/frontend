@@ -10,7 +10,7 @@ import { H3, P } from 'libs/commonStyles';
 import { Drag, TrashCan } from 'shared_components/icons';
 import AddButton from '../AddButton';
 import Transportation from './Transportation';
-//<Transportation key={data._id} serviceId={data._id} toService={toService}></Transportation>
+
 const DraggableDay = styled.div`
   background-color: white;
   display: inline-block;
@@ -139,6 +139,7 @@ const Day = ({
   connectDragDayPreview,
   connectDragDaySource,
   selectOption,
+  selectTransport,
   fromService,
   toService,
 }) => {
@@ -184,16 +185,23 @@ const Day = ({
               <ServicesWrapper hidden={!isNotDraggingAnyDay}>
                 <Services>
                   {services.map((data, index) => (
-                    <Service
-                      startDraggingService={startDragging}
-                      changeDraggingService={changeDragging}
-                      endDraggingService={endDragging}
-                      draggingState={draggingState}
-                      changeServicePosition={changeServicePosition}
-                      data={data}
-                      index={index}
-                      selectOption={selectOption}
-                    />
+                    <Transportation
+                      key={data._id}
+                      selectTransport={selectTransport}
+                      serviceId={data._id}
+                      toService={toService}
+                    >
+                      <Service
+                        startDraggingService={startDragging}
+                        changeDraggingService={changeDragging}
+                        endDraggingService={endDragging}
+                        draggingState={draggingState}
+                        changeServicePosition={changeServicePosition}
+                        data={data}
+                        index={index}
+                        selectOption={selectOption}
+                      />
+                    </Transportation>
                   ))}
                   <AddServiceBox onClick={() => goToAddService(day)}>
                     <AddButton />
@@ -235,6 +243,7 @@ Day.propTypes = {
   changeDayPosition: PropTypes.func.isRequired,
   goToAddService: PropTypes.func.isRequired,
   selectOption: PropTypes.func.isRequired,
+  selectTransport: PropTypes.func.isRequired,
 };
 
 const serviceDragAndDrop = {

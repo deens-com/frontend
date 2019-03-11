@@ -52,6 +52,9 @@ export default {
     calculateDistances: {
       post: (id, body) => post(`/trips/${id}/calculate-distances`)(body),
     },
+    transports: {
+      post: (id, body) => post(`/trips/${id}/transports`)(body),
+    },
     // edit trip
     patch: (id, body) => patch(`/trips/${id}`)(body),
     serviceOrganizations: {

@@ -183,6 +183,7 @@ export default class TripOrganizer extends React.Component {
 
     this.removeIsSaving();
     this.checkAvailability();
+    this.getTransportation();
   };
 
   saveRemovedServices = async (serviceOrgIds = []) => {
@@ -198,6 +199,7 @@ export default class TripOrganizer extends React.Component {
     }
 
     this.removeIsSaving();
+    this.getTransportation();
   };
 
   saveAvailabilityCode = async (serviceOrgId, availabilityCode) => {
@@ -227,6 +229,23 @@ export default class TripOrganizer extends React.Component {
     this.setState(prevState => ({
       isLoadingTransportation: prevState.isLoadingTransportation - 1,
       ...makeTransportationState(transportation),
+    }));
+  };
+
+  setTransportation = async body => {
+    this.setState(prevState => ({
+      isLoadingTransportation: prevState.isLoadingTransportation + 1,
+    }));
+
+    // implement anonymous!!
+    const transportation = this.props.tripId
+      ? (await apiClient.trips.transports.post(this.props.trip._id, body)).data
+      : [];
+
+    await this.getTransportation();
+
+    this.setState(prevState => ({
+      isLoadingTransportation: prevState.isLoadingTransportation - 1,
     }));
   };
 
@@ -581,6 +600,16 @@ export default class TripOrganizer extends React.Component {
     );
   };
 
+  selectTransport = async (transport, fromServiceId, toServiceId) => {
+    const requestBody = {
+      position: 'middle',
+      fromServiceOrganizationId: fromServiceId,
+      toServiceOrganizationId: toServiceId,
+      transportMode: transport,
+    };
+    await this.setTransportation(requestBody);
+  };
+
   // RENDER
 
   render() {
@@ -621,6 +650,7 @@ export default class TripOrganizer extends React.Component {
           goToAddService={this.goToAddService}
           removeDay={this.removeDay}
           selectOption={this.selectOption}
+          selectTransport={this.selectTransport}
           fromService={this.state.fromService}
           toService={this.state.toService}
         />

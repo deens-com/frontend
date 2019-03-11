@@ -291,3 +291,11 @@ export function parseTagsText(tags) {
     return { text: tagName, value: tagName, _id: tag._id };
   });
 }
+
+export function getKmFromMeters(meters) {
+  if (typeof meters !== 'number') {
+    return null;
+  }
+
+  return (meters / 1000).toFixed(1);
+}

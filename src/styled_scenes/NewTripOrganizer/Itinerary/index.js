@@ -33,6 +33,7 @@ const Itinerary = ({
   changeServicePosition,
   changeDayPosition,
   selectOption,
+  selectTransport,
   fromService,
   toService,
 }) => {
@@ -82,6 +83,7 @@ const Itinerary = ({
           goToAddService={goToAddService}
           removeDay={removeDay}
           selectOption={selectOption}
+          selectTransport={selectTransport}
           fromService={fromService}
           toService={toService}
         />

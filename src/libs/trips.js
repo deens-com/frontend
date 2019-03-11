@@ -108,6 +108,17 @@ export const minutesToHoursOrDays = minutes => {
   };
 };
 
+export const secondsToHoursAndMinutes = seconds => {
+  if (typeof seconds !== 'number') {
+    return null;
+  }
+
+  return {
+    hours: Math.floor(seconds / 3600),
+    minutes: Math.floor((seconds % 3600) / 60),
+  };
+};
+
 export const calculateCancellationCharge = (policy, price) => {
   if (policy.refundType === 'percent') {
     return price - ((price * policy.refundAmount) / 100).toFixed(2);
