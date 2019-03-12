@@ -50,6 +50,7 @@ const Services = styled.div`
   display: flex;
   width: 100%;
   flex-wrap: wrap;
+  margin-top: -40px;
   > div > div {
     margin-left: 15px;
     margin-right: 15px;

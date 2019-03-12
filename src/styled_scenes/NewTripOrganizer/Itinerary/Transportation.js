@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Loader, Popup } from 'semantic-ui-react';
 import { P, PSmall } from 'libs/commonStyles';
-import { primary } from 'libs/colors';
+import { primary, secondary, primaryContrast, disabled, tertiaryContrast } from 'libs/colors';
 import { Settings } from 'shared_components/icons';
 import Walk from 'assets/walk.svg';
 import Bike from 'assets/bike.svg';
@@ -13,12 +13,14 @@ import transportIcon from 'assets/service-icons/transport.svg';
 import { getKmFromMeters } from 'libs/Utils';
 import { secondsToHoursAndMinutes } from 'libs/trips';
 import TextDivisor from 'shared_components/TextDivisor';
+import { Car as CarIcon, Walk as WalkIcon, Bike as BikeIcon } from 'shared_components/icons';
 
 import { TripContext } from '../';
 
 const Wrapper = styled.div`
   display: flex;
   margin-top: 40px;
+  flex-wrap: wrap;
 `;
 
 const TransportBox = styled.div`
@@ -45,6 +47,39 @@ const BottomText = styled.div`
   text-align: ${props => (props.centered ? 'centered' : 'left')};
 `;
 
+const TransportOptions = styled.div`
+  display: flex;
+`;
+
+const TransportSelect = styled.button`
+  border: 0;
+  outline: 0;
+  width: 35px;
+  height: 35px;
+  border-radius: 5px 5px 5px 0;
+  background-color: ${props => (props.selected ? primary : 'white')};
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  margin-left: 10px;
+  cursor: ${props => (props.selected ? 'initial' : 'pointer')};
+  > svg {
+    color: ${props => (props.selected ? 'white' : primary)};
+    margin: auto;
+  }
+  &:hover {
+    background-color: ${props => (props.selected ? primary : primaryContrast)};
+    > svg {
+      color: white;
+    }
+  }
+  &:focus {
+    outline: 0;
+    border: 0;
+  }
+  &:first-child {
+    margin-left: 0;
+  }
+`;
+
 const Options = styled.div`
   position: relative;
   display: flex;
@@ -59,14 +94,15 @@ const Options = styled.div`
   align-items: center;
   svg {
     margin-left: 15px;
-    cursor: pointer;
-    color: ${primary};
+    cursor: ${props => (props.isLoading ? 'initial' : 'pointer')};
+    color: ${props => (props.isLoading ? disabled : primary)};
   }
 `;
 
 const TimeAndDistance = styled.div`
   display: flex;
   flex-wrap: wrap;
+  font-style: italic;
 `;
 
 const Icon = styled.img`
@@ -97,7 +133,6 @@ function getIconAndText(data) {
 }
 
 const renderTime = time => {
-  console.log('jeje', time);
   if (!time) {
     return null;
   }
@@ -111,15 +146,25 @@ const renderTime = time => {
 
 const Transportation = ({ children, serviceId, toService, selectTransport }) => {
   const isLoading = useContext(TripContext).isLoadingTransportation;
+  const [isShowingTooltip, setShowingTooltip] = useState(false);
   const data = toService[serviceId];
   const { text, icon } = getIconAndText(data);
   const distance = getKmFromMeters(data && data.route && data.route.distanceInMeters);
   const time = secondsToHoursAndMinutes(data && data.route && data.route.baseTimeInSeconds);
+  const selected = data && data.route && data.route.transportMode;
+
+  const showTooltip = () => {
+    if (isLoading) {
+      return;
+    }
+    setShowingTooltip(true);
+  };
+  const hideTooltip = () => setShowingTooltip(false);
 
   return (
     <Wrapper>
       <TransportBox>
-        <Options>
+        <Options isLoading={isLoading}>
           <img alt="Transportation" src={transportIcon} />
           <Popup
             trigger={
@@ -129,31 +174,52 @@ const Transportation = ({ children, serviceId, toService, selectTransport }) => 
             }
             content={
               <div>
-                Change transport
-                <button
-                  onClick={() =>
-                    selectTransport('car', toService[serviceId].fromServiceOrgId, serviceId)
-                  }
-                >
-                  Car
-                </button>
-                <button
-                  onClick={() =>
-                    selectTransport('bicycle', toService[serviceId].fromServiceOrgId, serviceId)
-                  }
-                >
-                  Bike
-                </button>
-                <button
-                  onClick={() =>
-                    selectTransport('walking', toService[serviceId].fromServiceOrgId, serviceId)
-                  }
-                >
-                  Walk
-                </button>
+                <P style={{ color: secondary }}>Change transport</P>
+                <TransportOptions>
+                  <TransportSelect
+                    selected={selected === 'car'}
+                    onClick={() => {
+                      // remove duplication!!
+                      if (selected === 'car') {
+                        return;
+                      }
+                      selectTransport('car', toService[serviceId].fromServiceOrgId, serviceId);
+                      hideTooltip();
+                    }}
+                  >
+                    <CarIcon />
+                  </TransportSelect>
+                  <TransportSelect
+                    selected={selected === 'bicycle'}
+                    onClick={() => {
+                      if (selected === 'bicycle') {
+                        return;
+                      }
+                      selectTransport('bicycle', toService[serviceId].fromServiceOrgId, serviceId);
+                      hideTooltip();
+                    }}
+                  >
+                    <BikeIcon />
+                  </TransportSelect>
+                  <TransportSelect
+                    selected={selected === 'walking'}
+                    onClick={() => {
+                      if (selected === 'walking') {
+                        return;
+                      }
+                      selectTransport('walking', toService[serviceId].fromServiceOrgId, serviceId);
+                      hideTooltip();
+                    }}
+                  >
+                    <WalkIcon />
+                  </TransportSelect>
+                </TransportOptions>
               </div>
             }
             on="click"
+            open={isShowingTooltip}
+            onOpen={showTooltip}
+            onClose={hideTooltip}
             hideOnScroll
           />
         </Options>

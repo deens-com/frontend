@@ -5,7 +5,7 @@ import I18nText from 'shared_components/I18nText';
 import { Modal, Popup } from 'semantic-ui-react';
 import { P, PStrong, PSmallStrong, PXSmall, H2SubtitleStrong } from 'libs/commonStyles';
 import { getHeroImage, generateServiceSlug, getPriceFromServiceOption } from 'libs/Utils';
-import { lightText, primary, primaryContrast, secondaryContrast, error } from 'libs/colors';
+import { lightText, primary, secondary, secondaryContrast, error } from 'libs/colors';
 import { minutesToHoursOrDays, calculateCancellationCharge } from 'libs/trips';
 import Button from 'shared_components/Button';
 import { TripContext } from '../';
@@ -13,7 +13,7 @@ import { TripContext } from '../';
 const OptionsBox = styled.div`
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
   margin-top: -8px;
-  padding-top: 8px;
+  padding: 8px 0;
 `;
 
 const ModalBody = styled.div`
@@ -21,11 +21,15 @@ const ModalBody = styled.div`
 `;
 
 const ChangeOptionsButton = styled.button`
+  cursor: pointer;
   border: 0;
   border-radius: 0 0 5px 0;
   padding: 10px 6px;
   background-color: ${primary};
   color: ${lightText};
+  &:focus {
+    outline: 0;
+  }
 `;
 
 const OptionDescription = styled.div`
@@ -41,7 +45,7 @@ const Options = styled.div`
 
 const Option = styled.div`
   display: flex;
-  background-color: white;
+  background-color: ${props => (props.selected ? secondary : 'white')};
   flex-direction: row;
   border-radius: 5px 5px 5px 0;
   align-items: center;
@@ -67,7 +71,7 @@ const CancellationPolicy = styled.div`
 `;
 
 const CancellationHighlight = styled.span`
-  color: #38d39f;
+  color: ${primary};
   font-weight: bolder;
 `;
 const Policy = styled.div`
@@ -75,13 +79,22 @@ const Policy = styled.div`
 `;
 
 const CancellationPolicyTrigger = styled.div`
-  color: #38d39f;
-  font-size: 12px;
+  color: ${primary};
+  text-decoration: underline;
+  text-decoration-style: dotted;
   cursor: pointer;
 `;
 
 const ButtonWrapper = styled.div`
-  text-align: right;
+  color: white;
+  min-height: 38px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+`;
+
+const SelectedOption = styled(PXSmall)`
+  margin: 10px 5px;
 `;
 
 const renderCancellationPolicy = (policies, price) => {
@@ -113,20 +126,27 @@ const renderCancellationPolicy = (policies, price) => {
 
 const ServiceOptions = ({ selectOption, serviceData, options }) => {
   const tripData = useContext(TripContext).tripData;
-  const selectedOption = useState(
+  const [selectedOption, setSelectedOption] = useState(
     serviceData.selectedOption && serviceData.selectedOption.availabilityCode,
   );
+  const [isModalOpen, setModalOpen] = useState(false);
 
+  const fullSelectedOption = options.find(
+    opt => opt.otherAttributes.availabilityCode.code === selectedOption,
+  );
   const service = serviceData.service;
 
   return (
     <OptionsBox>
       <Modal
+        open={isModalOpen}
         trigger={
           <ChangeOptionsButton>
             <PSmallStrong>Change Options</PSmallStrong>
           </ChangeOptionsButton>
         }
+        onOpen={() => setModalOpen(true)}
+        onClose={() => setModalOpen(false)}
       >
         <OptionDescription>
           <Modal.Content image>
@@ -138,9 +158,10 @@ const ServiceOptions = ({ selectOption, serviceData, options }) => {
                 <GuestsAndRooms />
                 <Options>
                   {options.map(option => {
-                    console.log(option);
                     return (
-                      <Option>
+                      <Option
+                        selected={selectedOption === option.otherAttributes.availabilityCode.code}
+                      >
                         <RoomType>
                           <I18nText data={option.roomType} />
                         </RoomType>
@@ -180,19 +201,49 @@ const ServiceOptions = ({ selectOption, serviceData, options }) => {
                         />
                         <Price>${option.price}</Price>
                         <ButtonWrapper>
-                          <Button onClick={() => selectOption(serviceData, option)}>
-                            <PStrong>Select</PStrong>
-                          </Button>
+                          {selectedOption === option.otherAttributes.availabilityCode.code ? (
+                            <PStrong>Selected</PStrong>
+                          ) : (
+                            <Button
+                              theme="primaryFilled"
+                              onClick={() => {
+                                setSelectedOption(option.otherAttributes.availabilityCode.code);
+                                selectOption(serviceData, option);
+                              }}
+                            >
+                              <PStrong>Select</PStrong>
+                            </Button>
+                          )}
                         </ButtonWrapper>
                       </Option>
                     );
                   })}
                 </Options>
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <Button
+                    disabled={!fullSelectedOption}
+                    theme="primaryFilled"
+                    onClick={() => {
+                      if (!fullSelectedOption) {
+                        return;
+                      }
+                      setModalOpen(false);
+                      selectOption(serviceData, fullSelectedOption);
+                    }}
+                  >
+                    <PStrong>Apply</PStrong>
+                  </Button>
+                </div>
               </ModalBody>
             </Modal.Description>
           </Modal.Content>
         </OptionDescription>
       </Modal>
+      {fullSelectedOption && (
+        <SelectedOption>
+          <I18nText data={fullSelectedOption.title} />
+        </SelectedOption>
+      )}
     </OptionsBox>
   );
 };
@@ -216,8 +267,8 @@ ServiceOptions.propTypes = {
   options: PropTypes.arrayOf(
     PropTypes.shape({
       price: PropTypes.number.isRequired,
-      roomType: PropTypes.string,
-      mealType: PropTypes.string,
+      roomType: PropTypes.object,
+      mealType: PropTypes.object,
     }),
   ),
   selectOption: PropTypes.func.isRequired,

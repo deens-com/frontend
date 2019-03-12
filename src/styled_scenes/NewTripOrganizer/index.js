@@ -124,6 +124,21 @@ function addAvailabilityData(services, availability) {
   );
 }
 
+function getServiceInstancesById(services) {
+  return services.reduce((prevObj, service) => {
+    return {
+      ...prevObj,
+      [service.service._id]: [
+        ...prevObj[service.service._id],
+        {
+          id: service._id,
+          day: service.day,
+        },
+      ],
+    };
+  }, {});
+}
+
 export const TripContext = React.createContext();
 
 export default class TripOrganizer extends React.Component {
@@ -158,6 +173,19 @@ export default class TripOrganizer extends React.Component {
     }));
   };
 
+  addIsLoadingTransports = () => {
+    this.setState(prevState => ({
+      isLoadingTransportation: prevState.isLoadingTransportation + 1,
+    }));
+  };
+
+  removeIsLoadingTransports = transportation => {
+    this.setState(prevState => ({
+      isLoadingTransportation: prevState.isLoadingTransportation - 1,
+      ...(transportation && makeTransportationState(transportation)),
+    }));
+  };
+
   saveTrip = async dataToSave => {
     this.addIsSaving();
 
@@ -172,6 +200,7 @@ export default class TripOrganizer extends React.Component {
 
   saveRearrangeServices = async () => {
     this.addIsSaving();
+    this.addIsLoadingTransports();
 
     const dataToSave = this.parseServicesForSaving();
 
@@ -184,6 +213,7 @@ export default class TripOrganizer extends React.Component {
     this.removeIsSaving();
     this.checkAvailability();
     this.getTransportation();
+    this.removeIsLoadingTransports();
   };
 
   saveRemovedServices = async (serviceOrgIds = []) => {
@@ -217,25 +247,18 @@ export default class TripOrganizer extends React.Component {
   };
 
   getTransportation = async () => {
-    this.setState(prevState => ({
-      isLoadingTransportation: prevState.isLoadingTransportation + 1,
-    }));
+    this.addIsLoadingTransports();
 
     // implement anonymous!!
     const transportation = this.props.tripId
       ? (await apiClient.trips.calculateDistances.post(this.props.trip._id)).data
       : [];
 
-    this.setState(prevState => ({
-      isLoadingTransportation: prevState.isLoadingTransportation - 1,
-      ...makeTransportationState(transportation),
-    }));
+    this.removeIsLoadingTransports(transportation);
   };
 
   setTransportation = async body => {
-    this.setState(prevState => ({
-      isLoadingTransportation: prevState.isLoadingTransportation + 1,
-    }));
+    this.addIsLoadingTransports();
 
     // implement anonymous!!
     const transportation = this.props.tripId
@@ -244,9 +267,7 @@ export default class TripOrganizer extends React.Component {
 
     await this.getTransportation();
 
-    this.setState(prevState => ({
-      isLoadingTransportation: prevState.isLoadingTransportation - 1,
-    }));
+    this.removeIsLoadingTransports();
   };
 
   localSave = () => {
@@ -580,20 +601,29 @@ export default class TripOrganizer extends React.Component {
 
   selectOption = (service, option) => {
     this.setState(
-      prevState => ({
-        services: {
-          ...prevState.services,
-          [service.day]: prevState.services[service.day].map(
-            currentService =>
-              service._id !== currentService._id
-                ? currentService
-                : {
-                    ...currentService,
-                    selectedOption: option,
-                  },
-          ),
-        },
-      }),
+      prevState => {
+        const newDays = {};
+        for (let day in prevState.services) {
+          console.log(prevState.services[day]);
+          //newDays[day] = prevState.services[day]
+        }
+        return {};
+        /*const services = getServiceInstancesById(mapDaysToServices(prevState.services))
+        return {
+          services: {
+            ...prevState.services,
+            [service.day]: prevState.services[service.day].map(
+              currentService =>
+                service._id !== currentService._id
+                  ? currentService
+                  : {
+                      ...currentService,
+                      selectedOption: option,
+                    },
+            ),
+          },
+        }*/
+      },
       async () => {
         await this.saveAvailabilityCode(service._id, option.otherAttributes.availabilityCode.code);
       },

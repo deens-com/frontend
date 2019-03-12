@@ -4,6 +4,9 @@ export const secondary = '#65AFBB';
 export const secondaryContrast = '#12545F';
 export const tertiary = '#656F76';
 export const tertiaryContrast = '#515B62';
+
 export const darkText = '#262626';
 export const lightText = '#FFFFFF';
+
 export const error = '#F65353';
+export const disabled = '#C4C4C4';

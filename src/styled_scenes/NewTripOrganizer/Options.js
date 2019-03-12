@@ -5,12 +5,27 @@ import moment from 'moment';
 import { SingleDatePicker } from 'react-dates';
 import SelectGuests from 'shared_components/SelectGuests';
 import { DropArrow } from 'shared_components/icons';
-import { PStrong } from 'libs/commonStyles';
+import { PStrong, PSmall } from 'libs/commonStyles';
 import { darkText } from 'libs/colors';
+import Toggle from 'shared_components/ToggleSwitch';
 
 const Wrapper = styled.div`
   display: flex;
   margin: 20px 40px 0;
+`;
+
+const LeftSide = styled.div`
+  justify-self: flex-start;
+  flex: 1;
+  display: flex;
+`;
+
+const RightSide = styled.div`
+  justify-self: flex-end;
+  flex-grow: 1;
+  justify-content: flex-end;
+  display: flex;
+  align-items: center;
 `;
 
 const FakeDropdown = styled.div`
@@ -73,40 +88,52 @@ const Options = ({ adults, children, infants, onChangeGuests, startDate, onChang
 
   return (
     <Wrapper>
-      <SelectGuests
-        adults={adults}
-        infants={infants}
-        children={children}
-        onApply={onChangeGuests}
-        renderTrigger={({ triggerPopup }) => (
-          <FakeDropdown onClick={triggerPopup}>
-            <PStrong>{adults + children + infants} Guests</PStrong>
-            <DropArrow />
-          </FakeDropdown>
-        )}
-      />
-      <DatePicker>
-        {startDate && (
-          <DepartureDate onClick={() => onDateFocusChange({ focused: true })}>
-            Departure date:
-          </DepartureDate>
-        )}
-        <SingleDatePicker
-          id="startDate"
-          date={moment(startDate)}
-          onDateChange={onChangeDate}
-          focused={dateFocused}
-          onFocusChange={onDateFocusChange}
-          placeholder={formattedDate}
-          isDayBlocked={isDayBlocked}
-          numberOfMonths={1}
-          small
-          noBorder
-          /*withPortal*/
-          anchorDirection="right"
-          displayFormat="MM/DD/YY"
+      <LeftSide>
+        <SelectGuests
+          adults={adults}
+          infants={infants}
+          children={children}
+          onApply={onChangeGuests}
+          renderTrigger={({ triggerPopup }) => (
+            <FakeDropdown onClick={triggerPopup}>
+              <PStrong>{adults + children + infants} Guests</PStrong>
+              <DropArrow />
+            </FakeDropdown>
+          )}
         />
-      </DatePicker>
+        <DatePicker>
+          {startDate && (
+            <DepartureDate onClick={() => onDateFocusChange({ focused: true })}>
+              Departure date:
+            </DepartureDate>
+          )}
+          <SingleDatePicker
+            id="startDate"
+            date={moment(startDate)}
+            onDateChange={onChangeDate}
+            focused={dateFocused}
+            onFocusChange={onDateFocusChange}
+            placeholder={formattedDate}
+            isDayBlocked={isDayBlocked}
+            numberOfMonths={1}
+            small
+            noBorder
+            /*withPortal*/
+            anchorDirection="right"
+            displayFormat="MM/DD/YY"
+          />
+        </DatePicker>
+      </LeftSide>
+      <RightSide>
+        <Toggle
+          defaultValue
+          onSwitch={e => {
+            console.log(e);
+          }}
+        >
+          <PSmall>Add Transports</PSmall>
+        </Toggle>
+      </RightSide>
     </Wrapper>
   );
 };
