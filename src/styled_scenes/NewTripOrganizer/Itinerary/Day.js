@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useContext } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { DragSource, DropTarget } from 'react-dnd';
@@ -8,8 +8,11 @@ import { getDayDate } from 'styled_scenes/Trip/mapServicesToDays';
 import { primary, secondary, primaryContrast, error } from 'libs/colors';
 import { H3, P } from 'libs/commonStyles';
 import { Drag, TrashCan } from 'shared_components/icons';
+import locationIcon from 'assets/location.svg';
 import AddButton from '../AddButton';
 import Transportation from './Transportation';
+import LocationEdit from './LocationEdit';
+import { TripContext } from '..';
 
 const DraggableDay = styled.div`
   background-color: white;
@@ -20,6 +23,25 @@ const ServicesWrapper = styled.div`
   display: ${props => (props.hidden ? 'none' : 'flex')};
   min-height: 225px;
   margin: 10px 0 64px;
+`;
+
+const Location = styled.div`
+  background: white;
+  background-size: cover;
+  background-position: center;
+  border-radius: 10px 10px 10px 0;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1), 0 0 1px rgba(0, 0, 0, 0.1);
+  width: 190px;
+  height: 260px;
+  margin: 40px 30px 0 0;
+  position: relative;
+  overflow: hidden;
+  padding: 10px;
+  text-align: center;
+  > img {
+    margin: 50px auto;
+    padding-left: 15px;
+  }
 `;
 
 const DraggingBox = styled.div`
@@ -52,8 +74,8 @@ const Services = styled.div`
   flex-wrap: wrap;
   margin-top: -40px;
   > div > div {
-    margin-left: 15px;
-    margin-right: 15px;
+    margin-right: 30px;
+    margin-top: 40px;
   }
   > div {
     &:first-child {
@@ -71,6 +93,7 @@ const Services = styled.div`
 
 const AddServiceBox = styled.div`
   border-radius: 10px 10px 10px 0;
+  margin-top: 75px;
   width: 190px;
   height: 225px;
   position: relative;
@@ -143,10 +166,13 @@ const Day = ({
   selectTransport,
   fromService,
   toService,
+  isLastDay,
 }) => {
   const addDay = useCallback(() => {
     addNewDay(day);
   });
+
+  const { tripData, changeInitialLocation, changeFinalLocation } = useContext(TripContext);
 
   return (
     <>
@@ -185,25 +211,58 @@ const Day = ({
             <div>
               <ServicesWrapper hidden={!isNotDraggingAnyDay}>
                 <Services>
-                  {services.map((data, index) => (
-                    <Transportation
-                      key={data._id}
-                      selectTransport={selectTransport}
-                      serviceId={data._id}
-                      toService={toService}
-                    >
-                      <Service
-                        startDraggingService={startDragging}
-                        changeDraggingService={changeDragging}
-                        endDraggingService={endDragging}
-                        draggingState={draggingState}
-                        changeServicePosition={changeServicePosition}
-                        data={data}
-                        index={index}
-                        selectOption={selectOption}
+                  {day === 1 && (
+                    <Location>
+                      <img alt="Start location" src={locationIcon} />
+                      <LocationEdit
+                        onChange={changeInitialLocation}
+                        location={tripData.userStartLocation}
                       />
-                    </Transportation>
+                    </Location>
+                  )}
+                  {services.map((data, index) => (
+                    <React.Fragment key={data._id}>
+                      <Transportation
+                        selectTransport={selectTransport}
+                        serviceId={data._id}
+                        toService={toService}
+                        fromService={fromService}
+                        isFirst={index === 0 && day === 1}
+                      >
+                        <Service
+                          startDraggingService={startDragging}
+                          changeDraggingService={changeDragging}
+                          endDraggingService={endDragging}
+                          draggingState={draggingState}
+                          changeServicePosition={changeServicePosition}
+                          data={data}
+                          index={index}
+                          selectOption={selectOption}
+                        />
+                      </Transportation>
+                      {isLastDay && (
+                        <Transportation
+                          key={data._id}
+                          selectTransport={selectTransport}
+                          serviceId={data._id}
+                          toService={toService}
+                          fromService={fromService}
+                          overrideData={fromService[data._id]}
+                          isFirst={index === 0 && day === 1}
+                          isLast={index + 1 === services.length && isLastDay}
+                        />
+                      )}
+                    </React.Fragment>
                   ))}
+                  {isLastDay && (
+                    <Location>
+                      <img alt="Start location" src={locationIcon} />
+                      <LocationEdit
+                        onChange={changeFinalLocation}
+                        location={tripData.userEndLocation}
+                      />
+                    </Location>
+                  )}
                   <AddServiceBox onClick={() => goToAddService(day)}>
                     <AddButton />
                   </AddServiceBox>
@@ -245,6 +304,7 @@ Day.propTypes = {
   goToAddService: PropTypes.func.isRequired,
   selectOption: PropTypes.func.isRequired,
   selectTransport: PropTypes.func.isRequired,
+  isLastDay: PropTypes.bool.isRequired,
 };
 
 const serviceDragAndDrop = {

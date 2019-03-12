@@ -76,7 +76,15 @@ const DepartureDate = styled(PStrong)`
 const now = moment().add(1, 'days');
 const isDayBlocked = date => date.valueOf() <= now.valueOf();
 
-const Options = ({ adults, children, infants, onChangeGuests, startDate, onChangeDate }) => {
+const Options = ({
+  adults,
+  children,
+  infants,
+  onChangeGuests,
+  startDate,
+  onChangeDate,
+  changeShowTransport,
+}) => {
   const formattedDate = startDate
     ? ` ${moment(startDate).format('MM/DD/YY')}`
     : 'Select departure date';
@@ -125,12 +133,7 @@ const Options = ({ adults, children, infants, onChangeGuests, startDate, onChang
         </DatePicker>
       </LeftSide>
       <RightSide>
-        <Toggle
-          defaultValue
-          onSwitch={e => {
-            console.log(e);
-          }}
-        >
+        <Toggle defaultValue onSwitch={changeShowTransport}>
           <PSmall>Add Transports</PSmall>
         </Toggle>
       </RightSide>
@@ -142,6 +145,7 @@ Options.propTypes = {
   onChangeGuests: PropTypes.func.isRequired,
   adults: PropTypes.number.isRequired,
   onChangeDate: PropTypes.func.isRequired,
+  changeShowTransport: PropTypes.func.isRequired,
   startDate: PropTypes.string,
   children: PropTypes.number,
   infants: PropTypes.number,

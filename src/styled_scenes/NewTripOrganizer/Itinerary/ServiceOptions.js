@@ -97,7 +97,7 @@ const SelectedOption = styled(PXSmall)`
   margin: 10px 5px;
 `;
 
-const renderCancellationPolicy = (policies, price) => {
+const renderCancellationPolicy = (policies, price, key) => {
   if (!policies || policies.length === 0) {
     return <div>Non-refundable</div>;
   }
@@ -107,7 +107,7 @@ const renderCancellationPolicy = (policies, price) => {
       {policies.map(policy => {
         const time = minutesToHoursOrDays(policy.duration);
         return (
-          <Policy>
+          <Policy key={key}>
             If you cancel up to{' '}
             <CancellationHighlight>
               {time.length} {time.unit}
@@ -161,6 +161,7 @@ const ServiceOptions = ({ selectOption, serviceData, options }) => {
                     return (
                       <Option
                         selected={selectedOption === option.otherAttributes.availabilityCode.code}
+                        key={option.otherAttributes.availabilityCode.code}
                       >
                         <RoomType>
                           <I18nText data={option.roomType} />
@@ -184,6 +185,7 @@ const ServiceOptions = ({ selectOption, serviceData, options }) => {
                                       option.price,
                                       tripData.adults + tripData.infants + tripData.children,
                                     ),
+                                    option.otherAttributes.availabilityCode.code,
                                   )
                                 : renderCancellationPolicy(
                                     service.periods &&
@@ -194,6 +196,7 @@ const ServiceOptions = ({ selectOption, serviceData, options }) => {
                                       null,
                                       this.props.numberOfPeople,
                                     ),
+                                    option.otherAttributes.availabilityCode.code,
                                   )}
                             </CancellationPolicy>
                           }
@@ -208,7 +211,6 @@ const ServiceOptions = ({ selectOption, serviceData, options }) => {
                               theme="primaryFilled"
                               onClick={() => {
                                 setSelectedOption(option.otherAttributes.availabilityCode.code);
-                                selectOption(serviceData, option);
                               }}
                             >
                               <PStrong>Select</PStrong>
@@ -249,20 +251,22 @@ const ServiceOptions = ({ selectOption, serviceData, options }) => {
 };
 
 ServiceOptions.propTypes = {
-  service: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    basePrice: PropTypes.number.isRequired,
-    periods: PropTypes.arrayOf(
-      PropTypes.shape({
-        cancellationPolicies: PropTypes.arrayOf(
-          PropTypes.shape({
-            duration: PropTypes.number.isRequired,
-            refundType: PropTypes.string.isRequired,
-            refundAmount: PropTypes.number.isRequired,
-          }),
-        ),
-      }),
-    ),
+  serviceData: PropTypes.shape({
+    service: PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      basePrice: PropTypes.number.isRequired,
+      periods: PropTypes.arrayOf(
+        PropTypes.shape({
+          cancellationPolicies: PropTypes.arrayOf(
+            PropTypes.shape({
+              duration: PropTypes.number.isRequired,
+              refundType: PropTypes.string.isRequired,
+              refundAmount: PropTypes.number.isRequired,
+            }),
+          ),
+        }),
+      ),
+    }).isRequired,
   }).isRequired,
   options: PropTypes.arrayOf(
     PropTypes.shape({

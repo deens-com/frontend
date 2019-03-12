@@ -86,6 +86,7 @@ const Itinerary = ({
           selectTransport={selectTransport}
           fromService={fromService}
           toService={toService}
+          isLastDay={index + 1 === days.length}
         />
       ))}
     </Days>

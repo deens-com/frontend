@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import I18nText from 'shared_components/I18nText';
@@ -9,6 +9,7 @@ import { lightText, primary, primaryContrast, secondaryContrast, error } from 'l
 import { Drag } from 'shared_components/icons';
 import Stars from 'shared_components/Rating/Stars';
 import ServiceOptions from './ServiceOptions';
+import { TripContext } from '../';
 
 const serviceSource = {
   beginDrag(props) {
@@ -169,6 +170,7 @@ const Service = ({
   connectDropTarget,
   selectOption,
 }) => {
+  const { isCheckingAvailability } = useContext(TripContext);
   const fastBookable =
     data.service.checkoutOptions && data.service.checkoutOptions.payAt === 'please';
   const isAvailable = !data.availability || data.availability.isAvailable;
@@ -190,7 +192,7 @@ const Service = ({
               </div>,
             )}
             <ServiceBox
-              isNotAvailable={!isAvailable}
+              isNotAvailable={!isCheckingAvailability && !isAvailable}
               img={data.service.media[0].files.thumbnail.url}
             >
               <ServiceData>
@@ -209,9 +211,17 @@ const Service = ({
                 </RatingAndPrice>
               </ServiceData>
             </ServiceBox>
-            {!isAvailable && <NotAvailable>Not available</NotAvailable>}
-            {options && (
-              <ServiceOptions selectOption={selectOption} options={options} serviceData={data} />
+            {!isCheckingAvailability && (
+              <>
+                {!isAvailable && <NotAvailable>Not available</NotAvailable>}
+                {options && (
+                  <ServiceOptions
+                    selectOption={selectOption}
+                    options={options}
+                    serviceData={data}
+                  />
+                )}
+              </>
             )}
           </Wrapper>
         )}

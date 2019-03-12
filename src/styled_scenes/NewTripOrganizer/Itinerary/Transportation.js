@@ -17,12 +17,6 @@ import { Car as CarIcon, Walk as WalkIcon, Bike as BikeIcon } from 'shared_compo
 
 import { TripContext } from '../';
 
-const Wrapper = styled.div`
-  display: flex;
-  margin-top: 40px;
-  flex-wrap: wrap;
-`;
-
 const TransportBox = styled.div`
   display: flex;
   flex-direction: column;
@@ -110,13 +104,9 @@ const Icon = styled.img`
 `;
 
 function getIconAndText(data) {
-  if (!data) {
-    return {};
-  }
-
   const notFound = { text: 'Oops! We could not find a route', icon: SadFace };
 
-  if (!data.route) {
+  if (!data || !data.route) {
     return notFound;
   }
 
@@ -144,10 +134,20 @@ const renderTime = time => {
   return `${time.minutes}mn`;
 };
 
-const Transportation = ({ children, serviceId, toService, selectTransport }) => {
-  const isLoading = useContext(TripContext).isLoadingTransportation;
+const Transportation = ({
+  children,
+  serviceId,
+  toService,
+  selectTransport,
+  isFirst,
+  isLast,
+  overrideData,
+}) => {
+  const context = useContext(TripContext);
+  const isLoading = context.isLoadingTransportation;
+  const showingTransports = context.showingTransports;
   const [isShowingTooltip, setShowingTooltip] = useState(false);
-  const data = toService[serviceId];
+  const data = overrideData ? overrideData : toService[serviceId];
   const { text, icon } = getIconAndText(data);
   const distance = getKmFromMeters(data && data.route && data.route.distanceInMeters);
   const time = secondsToHoursAndMinutes(data && data.route && data.route.baseTimeInSeconds);
@@ -161,94 +161,122 @@ const Transportation = ({ children, serviceId, toService, selectTransport }) => 
   };
   const hideTooltip = () => setShowingTooltip(false);
 
+  if (!showingTransports) {
+    return children || null;
+  }
+
+  let position = 'middle';
+  if (isFirst) {
+    position = 'first';
+  } else if (isLast) {
+    position = 'last';
+  }
+
   return (
-    <Wrapper>
-      <TransportBox>
-        <Options isLoading={isLoading}>
-          <img alt="Transportation" src={transportIcon} />
-          <Popup
-            trigger={
-              <span>
-                <Settings style={{ width: '20px', height: '20px' }} />
-              </span>
-            }
-            content={
-              <div>
-                <P style={{ color: secondary }}>Change transport</P>
-                <TransportOptions>
-                  <TransportSelect
-                    selected={selected === 'car'}
-                    onClick={() => {
-                      // remove duplication!!
-                      if (selected === 'car') {
-                        return;
-                      }
-                      selectTransport('car', toService[serviceId].fromServiceOrgId, serviceId);
-                      hideTooltip();
-                    }}
-                  >
-                    <CarIcon />
-                  </TransportSelect>
-                  <TransportSelect
-                    selected={selected === 'bicycle'}
-                    onClick={() => {
-                      if (selected === 'bicycle') {
-                        return;
-                      }
-                      selectTransport('bicycle', toService[serviceId].fromServiceOrgId, serviceId);
-                      hideTooltip();
-                    }}
-                  >
-                    <BikeIcon />
-                  </TransportSelect>
-                  <TransportSelect
-                    selected={selected === 'walking'}
-                    onClick={() => {
-                      if (selected === 'walking') {
-                        return;
-                      }
-                      selectTransport('walking', toService[serviceId].fromServiceOrgId, serviceId);
-                      hideTooltip();
-                    }}
-                  >
-                    <WalkIcon />
-                  </TransportSelect>
-                </TransportOptions>
-              </div>
-            }
-            on="click"
-            open={isShowingTooltip}
-            onOpen={showTooltip}
-            onClose={hideTooltip}
-            hideOnScroll
-          />
-        </Options>
-        <TransportContent>
-          {isLoading ? (
-            <Loader active />
-          ) : (
-            <>
-              <Icon src={icon} />
-              <BottomText centered={!data || !data.route}>
-                <P>{text}</P>
-                {data &&
-                  data.route && (
-                    <TimeAndDistance>
-                      <PSmall>{renderTime(time)}</PSmall>
-                      <TextDivisor />
-                      <PSmall>
-                        {distance}
-                        km
-                      </PSmall>
-                    </TimeAndDistance>
-                  )}
-              </BottomText>
-            </>
-          )}
-        </TransportContent>
-      </TransportBox>
+    <>
+      <div>
+        <TransportBox>
+          <Options isLoading={isLoading}>
+            <img alt="Transportation" src={transportIcon} />
+            <Popup
+              trigger={
+                <span>
+                  <Settings style={{ width: '20px', height: '20px' }} />
+                </span>
+              }
+              content={
+                <div>
+                  <P style={{ color: secondary }}>Change transport</P>
+                  <TransportOptions>
+                    <TransportSelect
+                      selected={selected === 'car'}
+                      onClick={() => {
+                        // remove duplication!!
+                        if (selected === 'car') {
+                          return;
+                        }
+                        selectTransport(
+                          'car',
+                          toService[serviceId].fromServiceOrgId,
+                          serviceId,
+                          position,
+                        );
+                        hideTooltip();
+                      }}
+                    >
+                      <CarIcon />
+                    </TransportSelect>
+                    <TransportSelect
+                      selected={selected === 'bicycle'}
+                      onClick={() => {
+                        if (selected === 'bicycle') {
+                          return;
+                        }
+                        selectTransport(
+                          'bicycle',
+                          toService[serviceId].fromServiceOrgId,
+                          serviceId,
+                          position,
+                        );
+                        hideTooltip();
+                      }}
+                    >
+                      <BikeIcon />
+                    </TransportSelect>
+                    <TransportSelect
+                      selected={selected === 'walking'}
+                      onClick={() => {
+                        if (selected === 'walking') {
+                          return;
+                        }
+                        selectTransport(
+                          'walking',
+                          toService[serviceId].fromServiceOrgId,
+                          serviceId,
+                          position,
+                        );
+                        hideTooltip();
+                      }}
+                    >
+                      <WalkIcon />
+                    </TransportSelect>
+                  </TransportOptions>
+                </div>
+              }
+              on="click"
+              open={isShowingTooltip}
+              onOpen={showTooltip}
+              onClose={hideTooltip}
+              hideOnScroll
+            />
+          </Options>
+          <TransportContent>
+            {isLoading ? (
+              <Loader active />
+            ) : (
+              <>
+                <Icon src={icon} />
+                <BottomText centered={!data || !data.route}>
+                  <P>{text}</P>
+                  {data &&
+                    data.route && (
+                      <TimeAndDistance>
+                        <PSmall>{renderTime(time)}</PSmall>
+                        <TextDivisor />
+                        <PSmall>
+                          {distance}
+                          km
+                        </PSmall>
+                      </TimeAndDistance>
+                    )}
+                </BottomText>
+              </>
+            )}
+          </TransportContent>
+        </TransportBox>
+      </div>
       {children}
-    </Wrapper>
+    </>
   );
 };
 
