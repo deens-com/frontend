@@ -240,18 +240,19 @@ const Day = ({
                           selectOption={selectOption}
                         />
                       </Transportation>
-                      {isLastDay && (
-                        <Transportation
-                          key={data._id}
-                          selectTransport={selectTransport}
-                          serviceId={data._id}
-                          toService={toService}
-                          fromService={fromService}
-                          overrideData={fromService[data._id]}
-                          isFirst={index === 0 && day === 1}
-                          isLast={index + 1 === services.length && isLastDay}
-                        />
-                      )}
+                      {isLastDay &&
+                        index + 1 === services.length && (
+                          <Transportation
+                            key={data._id}
+                            selectTransport={selectTransport}
+                            serviceId={data._id}
+                            toService={toService}
+                            fromService={fromService}
+                            overrideData={fromService[data._id]}
+                            isFirst={index === 0 && day === 1}
+                            isLast={index + 1 === services.length && isLastDay}
+                          />
+                        )}
                     </React.Fragment>
                   ))}
                   {isLastDay && (
