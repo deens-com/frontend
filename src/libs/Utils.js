@@ -170,10 +170,7 @@ export function getLargeImageFromMedia(media) {
  */
 export function getFromCoordinates(coordinates) {
   if (!coordinates) {
-    return {
-      lat: null,
-      lng: null,
-    };
+    return null;
   }
   return {
     lat: coordinates[1] || null,

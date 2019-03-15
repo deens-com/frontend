@@ -260,6 +260,7 @@ const Day = ({
                       <LocationEdit
                         onChange={changeFinalLocation}
                         location={tripData.userEndLocation}
+                        isFinal
                       />
                     </Location>
                   )}
