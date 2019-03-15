@@ -619,10 +619,11 @@ export default class TripOrganizer extends React.Component {
         };
       },
       async () => {
-        const servicesWithSelectedOptions = await this.saveAvailabilityCode(
+        const servicesWithSelectedOptions = (await this.saveAvailabilityCode(
           service._id,
           option.otherAttributes.availabilityCode.code,
-        );
+        )).services.filter(service => Boolean(service.selectedOption));
+
         this.setState(prevState => ({
           services: mapServicesByDay(
             mapDaysToServices(prevState.services).map(serv => {

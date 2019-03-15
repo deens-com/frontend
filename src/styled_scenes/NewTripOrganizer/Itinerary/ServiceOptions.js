@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import I18nText from 'shared_components/I18nText';
@@ -130,6 +130,13 @@ const ServiceOptions = ({ selectOption, serviceData, options }) => {
     serviceData.selectedOption && serviceData.selectedOption.availabilityCode,
   );
   const [isModalOpen, setModalOpen] = useState(false);
+
+  useEffect(
+    () => {
+      setSelectedOption(serviceData.selectedOption && serviceData.selectedOption.availabilityCode);
+    },
+    [serviceData.selectedOption],
+  );
 
   const fullSelectedOption = options.find(
     opt => opt.otherAttributes.availabilityCode.code === selectedOption,
