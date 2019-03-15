@@ -25,7 +25,7 @@ export function saveTrip(trip) {
     peopleCount: trip.peopleCount,
     media: trip.media,
     otherAttributes: trip.otherAttributes,
-    services: trip.services,
+    services: trip.services || [],
     title: trip.title,
     description: trip.description,
     location: trip.location,

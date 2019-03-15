@@ -104,7 +104,7 @@ const Map = ({ showingMap, servicesByDay, numberOfDays }) => {
   const [isShowingFilters, setShowFilters] = useState(0);
 
   const mapStartLocation = getFromCoordinates(
-    startLocation || services[0].service.location.geo.coordinates,
+    startLocation || (services[0] && services[0].service.location.geo.coordinates),
   );
   const [center, setCenter] = useState(mapStartLocation);
 
