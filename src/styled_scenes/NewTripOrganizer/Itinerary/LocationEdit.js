@@ -23,7 +23,7 @@ const NotEditing = styled.div`
   }
 `;
 
-export default ({ location, onChange }) => {
+export default ({ location, onChange, isFinal }) => {
   const [isEditing, setEditing] = useState(false);
   const [savingData, setSavingData] = useState(null);
 
@@ -57,7 +57,7 @@ export default ({ location, onChange }) => {
         />
       ) : (
         <NotEditing onClick={() => setEditing(true)}>
-          <P>{place || 'Please select an initial location'}</P>
+          <P>{place || `Please select ${isFinal ? 'a final' : 'an initial'} location`}</P>
           <PencilIcon />
         </NotEditing>
       )}
