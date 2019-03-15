@@ -17,6 +17,8 @@ import { TripContext } from '..';
 const DraggableDay = styled.div`
   background-color: white;
   display: inline-block;
+  z-index: 1;
+  position: relative;
 `;
 
 const ServicesWrapper = styled.div`

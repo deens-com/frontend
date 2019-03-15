@@ -74,7 +74,6 @@ class Footer extends React.Component {
   }
 
   render() {
-    console.log(this.props.isCheckingAvailability);
     return (
       <>
         <Wrapper>
