@@ -201,7 +201,7 @@ const ServiceOptions = ({ selectOption, serviceData, options }) => {
                                     getPriceFromServiceOption(
                                       service.basePrice,
                                       null,
-                                      this.props.numberOfPeople,
+                                      tripData.adults + tripData.infants + tripData.children,
                                     ),
                                     option.otherAttributes.availabilityCode.code,
                                   )}
