@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { Popup, Dropdown, Icon, Dimmer } from 'semantic-ui-react';
 import { DateRangePicker } from 'react-dates';
 import a from 'indefinite';
-import { geocodeByAddress } from 'react-places-autocomplete';
+import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { getSearchParams } from 'libs/location';
 import { parseLocationData } from 'libs/location';
 import moment from 'moment';
@@ -257,7 +257,7 @@ class Filters extends Component {
     this.props.updatePath(query_params, this.props.history, this.props.routeState);
   }
 
-  refetch_results_for_location(addr, countryCode, city) {
+  refetch_results_for_location(addr, countryCode, city, state) {
     const query_params = this.get_query_params();
     query_params.address = addr;
     query_params.city = city;
@@ -301,12 +301,14 @@ class Filters extends Component {
     let addr = '';
     let countryCode = '';
     let city = '';
+    let state = '';
     geocodeByAddress(address)
       .then(results => {
         const locationData = parseLocationData(results[0]);
         addr = locationData.formattedAddress;
         countryCode = locationData.countryCode;
         city = locationData.city;
+        state = locationData.state;
 
         this.setState({
           address: addr,
@@ -316,7 +318,7 @@ class Filters extends Component {
         return getLatLng(results[0]);
       })
       .then(results => {
-        this.refetch_results_for_location(addr, countryCode, city);
+        this.refetch_results_for_location(addr, countryCode, city, state);
       });
   }
 
@@ -352,7 +354,7 @@ class Filters extends Component {
 
   clear_address() {
     this.setState({ address: '', countryCode: '', city: '' });
-    this.refetch_results_for_location('', '', '');
+    this.refetch_results_for_location('', '', '', '');
   }
 
   clearDates = () => {
