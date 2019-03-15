@@ -20,6 +20,7 @@ export default class SemanticLocationControl extends Component {
     inputProps: PropTypes.object,
     inputStyles: PropTypes.object,
     onlyCities: PropTypes.bool,
+    onBlur: PropTypes.func,
   };
 
   static defaultProps = {
@@ -56,13 +57,16 @@ export default class SemanticLocationControl extends Component {
   };
 
   closeMenu = () => {
+    if (this.props.onBlur) {
+      this.props.onBlur();
+    }
     this.setState({
       isOpen: false,
     });
   };
 
   render() {
-    const { inputProps, inputStyles, onlyCities, useStyledInput } = this.props;
+    const { inputProps, inputStyles, onlyCities, useStyledInput, autoFocus } = this.props;
     const { isOpen } = this.state;
 
     return (
@@ -100,6 +104,7 @@ export default class SemanticLocationControl extends Component {
                   style={inputStyles}
                   onFocus={this.openMenu}
                   onBlur={this.closeMenu}
+                  autoFocus={autoFocus}
                 />
               )
             }

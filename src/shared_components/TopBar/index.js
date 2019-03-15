@@ -13,6 +13,7 @@ import Search from './Search';
 import { bindActionCreators } from 'redux';
 import { getCurrentUser, getCurrentUserTrip, logOut } from 'store/session/actions';
 import { PageWrapper } from 'shared_components/layout/Page';
+import { secondaryContrast } from 'libs/colors';
 
 // ACTIONS/CONFIG
 import { media } from 'libs/styled';
@@ -27,7 +28,8 @@ const Content = styled.div`
 // STYLES
 const Wrapper = styled.header`
   align-items: center;
-  background: ${props => (props.transparent && !props.showMenu ? 'transparent' : 'white')};
+  background: ${props =>
+    props.transparent && !props.showMenu ? 'transparent' : secondaryContrast};
   position: ${props => props.transparent && !props.showMenu && 'absolute'};
   display: flex;
   justify-content: ${props => (props.transparent ? 'space-between' : 'flex-start')};
@@ -69,7 +71,7 @@ const Wrapper = styled.header`
 
 // So we don't need to add a margin to each page
 const FixedPlaceholder = styled.div`
-  margin-top: 85px;
+  margin-top: ${props => (props.noMargin ? '70px' : '85px')};
 `;
 
 // MODULE
@@ -123,7 +125,7 @@ class TopBar extends Component {
   }
 
   render() {
-    const { transparent, noSearch, isGDPRDismissed, gdprHeight } = this.props;
+    const { transparent, noSearch, isGDPRDismissed, gdprHeight, noMargin } = this.props;
     const { showMenu, showSearchMobile } = this.state;
 
     const InnerWrap = transparent || noSearch ? PageWrapper : React.Fragment;
@@ -174,7 +176,7 @@ class TopBar extends Component {
           </InnerWrap>
         </Wrapper>
         <MobileNav toggleMenu={this.toggleMenu} showProfileMenu={showMenu} />
-        {!transparent && <FixedPlaceholder />}
+        {!transparent && <FixedPlaceholder noMargin={noMargin} />}
       </React.Fragment>
     );
   }
@@ -184,11 +186,13 @@ class TopBar extends Component {
 TopBar.propTypes = {
   transparent: PropTypes.bool,
   withPadding: PropTypes.bool,
+  noMargin: PropTypes.bool,
 };
 
 TopBar.defaultProps = {
   transparent: false,
   withPadding: false,
+  noMargin: false,
 };
 
 const mapStateToProps = state => ({

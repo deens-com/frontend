@@ -139,7 +139,14 @@ export default class SemanticLocationControl extends Component {
   };
 
   render() {
-    const { inputProps, inputStyles, onlyCities, useStyledInput, customStyle = {} } = this.props;
+    const {
+      inputProps,
+      inputStyles,
+      onlyCities,
+      useStyledInput,
+      customStyle = {},
+      autoFocus,
+    } = this.props;
     return (
       <PlacesAutocomplete
         value={this.state.address}
@@ -179,6 +186,7 @@ export default class SemanticLocationControl extends Component {
                       onFocus={this.handleOpen}
                       onBlur={this.handleClose}
                       onKeyUp={this.handleKeyUp}
+                      autoFocus={autoFocus}
                     />
                   </Ref>
                 )}

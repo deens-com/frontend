@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Nunito:400,700|Roboto:300,400,500,700,900');
+@import url('https://fonts.googleapis.com/css?family=Nunito:400,700|Roboto:300,400,400i,500,700,900');
 
 /* body {
   margin: 0;
@@ -42,6 +42,7 @@ h5,
 h6 {
   font-family: 'Roboto', sans-serif;
   font-weight: 700;
+  margin: 0;
 }
 
 a {
@@ -56,6 +57,7 @@ a:hover {
 
 p {
   line-height: 1.48;
+  margin: 0;
 }
 
 .semantic-popup-wrapper::before {

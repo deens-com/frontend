@@ -3,6 +3,7 @@ import actions from './actions';
 const initialState = {
   transparent: false,
   noSearch: false,
+  noMargin: false,
 };
 
 const types = actions.types;

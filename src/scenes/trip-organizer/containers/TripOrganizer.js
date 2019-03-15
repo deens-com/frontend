@@ -3,16 +3,29 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 import actions from 'store/trips/actions';
+import styled from 'styled-components';
 import searchActions from 'store/search/actions';
 import { updatePath } from 'store/search/helpers';
 import moment from 'moment';
-import TripOrganizer from 'styled_scenes/TripOrganizer';
+import TripOrganizer from 'styled_scenes/NewTripOrganizer';
 import history from 'main/history';
+import { Loader } from 'semantic-ui-react';
 import { loadTrip, removeTrip, isTripSaved } from 'libs/localStorage';
 import axios from 'libs/axios';
 import { generateTripSlug } from 'libs/Utils';
 import { getSession } from 'libs/user-session';
 import headerActions from 'store/header/actions';
+import BrandFooter from 'shared_components/BrandFooter';
+
+const Wrapper = styled.div`
+  min-height: calc(100vh - 85px);
+  display: flex;
+  flex-direction: column;
+`;
+
+const ContentWrapper = styled.div`
+  flex-grow: 1;
+`;
 
 class TripOrganizerContainer extends Component {
   constructor(props) {
@@ -22,7 +35,7 @@ class TripOrganizerContainer extends Component {
     };
   }
   componentDidMount() {
-    this.props.changeHeader();
+    this.props.changeHeader({ noMargin: true });
     if (this.props.match.params.id) {
       if (!getSession()) {
         history.replace('/trips/organize');
@@ -90,12 +103,16 @@ class TripOrganizerContainer extends Component {
     }
   }
 
-  render() {
+  renderContent() {
+    if (this.state.isLoading || !this.props.trip) {
+      return <Loader size="massive" active />;
+    }
+
     return (
       <TripOrganizer
         trip={this.props.trip}
         tripId={this.props.match.params.id}
-        startDate={moment(this.props.startDate)}
+        startDate={moment(this.props.startDate).toJSON()}
         adults={this.props.adults || 1}
         children={this.props.children}
         infants={this.props.infants}
@@ -109,6 +126,15 @@ class TripOrganizerContainer extends Component {
           this.props.location && this.props.location.state && this.props.location.state.action
         }
       />
+    );
+  }
+
+  render() {
+    return (
+      <Wrapper>
+        <ContentWrapper>{this.renderContent()}</ContentWrapper>
+        <BrandFooter />
+      </Wrapper>
     );
   }
 }

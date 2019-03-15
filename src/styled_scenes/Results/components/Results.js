@@ -67,8 +67,6 @@ class Results extends Component {
       filteredData: [],
       totalItems: 0,
       address: props.search_query.address || undefined,
-      latitude: props.search_query.latitude || undefined,
-      longitude: props.search_query.longitude || undefined,
       start_date: props.search_query.start_date ? props.search_query.start_date : moment().format(),
       end_date: props.search_query.end_date
         ? props.search_query.end_date
@@ -121,8 +119,6 @@ class Results extends Component {
       adults: this.props.search_query.adults,
       children: this.props.search_query.children,
       infants: this.props.search_query.infants,
-      latitude: this.props.search_query.latitude,
-      longitude: this.props.search_query.longitude,
       address: this.props.search_query.address,
       tags: this.props.search_query.tags,
       onlySmartContracts: this.props.search_query.onlySmartContracts,
@@ -166,15 +162,17 @@ class Results extends Component {
   };
 
   removeFromTrip = async (serviceId, day) => {
-    this.tripServices = this.tripServices.filter(
-      service => service.service._id !== serviceId || service.day !== day,
+    const serviceToDelete = this.tripServices.find(
+      service => service.service._id === serviceId && service.day !== day,
     );
+
+    this.tripServices.filter(service => service._id === serviceToDelete._id);
+
     if (this.props.trip._id) {
-      await tripUtils.patchTrip(this.props.trip._id, {
-        services: this.tripServices.map(service => ({ ...service, service: service._id })),
-      });
+      await tripUtils.removeServiceRequest(this.props.trip._id, serviceToDelete._id);
       return;
     }
+
     saveTrip({
       ...this.props.trip,
       services: this.tripServices,

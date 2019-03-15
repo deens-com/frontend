@@ -217,13 +217,13 @@ export function updateBottomChatPosition(bottom = 0) {
 }
 
 /*
-* Get hero image
+* Get hero image from service or trip
 */
-export function getHeroImage(service) {
-  if (!service.media) {
+export function getHeroImage(element) {
+  if (!element.media) {
     return null;
   }
-  return service.media.find(media => media.hero === true) || service.media[0];
+  return element.media.find(media => media.hero === true) || element.media[0];
 }
 
 export async function waitUntilMapsLoaded() {
@@ -290,4 +290,12 @@ export function parseTagsText(tags) {
     const tagName = tag.names['en-us'].charAt(0).toUpperCase() + tag.names['en-us'].substr(1);
     return { text: tagName, value: tagName, _id: tag._id };
   });
+}
+
+export function getKmFromMeters(meters) {
+  if (typeof meters !== 'number') {
+    return null;
+  }
+
+  return (meters / 1000).toFixed(1);
 }

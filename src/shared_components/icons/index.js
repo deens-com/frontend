@@ -357,6 +357,8 @@ export const SilverWare = SvgWithProps(({ ariaHidden, focusable, role, style }) 
   </svg>
 ));
 
+export const Food = SilverWare;
+
 export const RunningPerson = SvgWithProps(({ ariaHidden, focusable, role, style }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -369,6 +371,23 @@ export const RunningPerson = SvgWithProps(({ ariaHidden, focusable, role, style 
     <path d="M13.5,5.5C14.59,5.5 15.5,4.58 15.5,3.5C15.5,2.38 14.59,1.5 13.5,1.5C12.39,1.5 11.5,2.38 11.5,3.5C11.5,4.58 12.39,5.5 13.5,5.5M9.89,19.38L10.89,15L13,17V23H15V15.5L12.89,13.5L13.5,10.5C14.79,12 16.79,13 19,13V11C17.09,11 15.5,10 14.69,8.58L13.69,7C13.29,6.38 12.69,6 12,6C11.69,6 11.5,6.08 11.19,6.08L6,8.28V13H8V9.58L9.79,8.88L8.19,17L3.29,16L2.89,18L9.89,19.38Z" />
   </svg>
 ));
+
+export const Activity = RunningPerson;
+
+export const Bed = SvgWithProps(({ ariaHidden, focusable, role, style }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden={ariaHidden}
+    focusable={focusable.toString()}
+    role={role}
+    style={style}
+    viewBox="0 0 24 24"
+  >
+    <path d="M19,7H11V14H3V5H1V20H3V17H21V20H23V11A4,4 0 0,0 19,7M7,13A3,3 0 0,0 10,10A3,3 0 0,0 7,7A3,3 0 0,0 4,10A3,3 0 0,0 7,13Z" />
+  </svg>
+));
+
+export const Accommodation = Bed;
 
 export const TrashCan = SvgWithProps(({ ariaHidden, focusable, role, style }) => (
   <svg
@@ -447,6 +466,120 @@ export const Heart = SvgWithProps(({ onClick, ariaHidden, focusable, role, style
     viewBox="0 0 24 24"
   >
     <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z" />
+  </svg>
+));
+
+export const Drag = SvgWithProps(({ onClick, ariaHidden, focusable, role, style }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden={ariaHidden}
+    focusable={focusable.toString()}
+    role={role}
+    style={style}
+    onClick={onClick}
+    viewBox="0 0 18 18"
+  >
+    <circle cx="16" cy="16" r="2" fill="black" fillOpacity="0.15" />
+    <circle cx="16" cy="9" r="2" fill="black" fillOpacity="0.15" />
+    <circle cx="16" cy="2" r="2" fill="black" fillOpacity="0.15" />
+    <circle cx="9" cy="16" r="2" fill="black" fillOpacity="0.15" />
+    <circle cx="9" cy="9" r="2" fill="black" fillOpacity="0.15" />
+    <circle cx="9" cy="2" r="2" fill="black" fillOpacity="0.15" />
+    <circle cx="2" cy="16" r="2" fill="black" fillOpacity="0.15" />
+    <circle cx="2" cy="9" r="2" fill="black" fillOpacity="0.15" />
+    <circle cx="2" cy="2" r="2" fill="black" fillOpacity="0.15" />
+  </svg>
+));
+
+export const Car = SvgWithProps(({ onClick, ariaHidden, focusable, role, style }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden={ariaHidden}
+    focusable={focusable.toString()}
+    role={role}
+    style={style}
+    onClick={onClick}
+    viewBox="0 0 24 24"
+  >
+    <path d="M16,6H6L1,12V15H3A3,3 0 0,0 6,18A3,3 0 0,0 9,15H15A3,3 0 0,0 18,18A3,3 0 0,0 21,15H23V12C23,10.89 22.11,10 21,10H19L16,6M6.5,7.5H10.5V10H4.5L6.5,7.5M12,7.5H15.5L17.46,10H12V7.5M6,13.5A1.5,1.5 0 0,1 7.5,15A1.5,1.5 0 0,1 6,16.5A1.5,1.5 0 0,1 4.5,15A1.5,1.5 0 0,1 6,13.5M18,13.5A1.5,1.5 0 0,1 19.5,15A1.5,1.5 0 0,1 18,16.5A1.5,1.5 0 0,1 16.5,15A1.5,1.5 0 0,1 18,13.5Z" />
+  </svg>
+));
+
+export const Walk = SvgWithProps(({ onClick, ariaHidden, focusable, role, style }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden={ariaHidden}
+    focusable={focusable.toString()}
+    role={role}
+    style={style}
+    onClick={onClick}
+    viewBox="0 0 24 24"
+  >
+    <path d="M14.12,10H19V8.2H15.38L13.38,4.87C13.08,4.37 12.54,4.03 11.92,4.03C11.74,4.03 11.58,4.06 11.42,4.11L6,5.8V11H7.8V7.33L9.91,6.67L6,22H7.8L10.67,13.89L13,17V22H14.8V15.59L12.31,11.05L13.04,8.18M14,3.8C15,3.8 15.8,3 15.8,2C15.8,1 15,0.2 14,0.2C13,0.2 12.2,1 12.2,2C12.2,3 13,3.8 14,3.8Z" />
+  </svg>
+));
+
+export const Bike = SvgWithProps(({ onClick, ariaHidden, focusable, role, style }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden={ariaHidden}
+    focusable={focusable.toString()}
+    role={role}
+    style={style}
+    onClick={onClick}
+    viewBox="0 0 24 24"
+  >
+    <path d="M5,20.5A3.5,3.5 0 0,1 1.5,17A3.5,3.5 0 0,1 5,13.5A3.5,3.5 0 0,1 8.5,17A3.5,3.5 0 0,1 5,20.5M5,12A5,5 0 0,0 0,17A5,5 0 0,0 5,22A5,5 0 0,0 10,17A5,5 0 0,0 5,12M14.8,10H19V8.2H15.8L13.86,4.93C13.57,4.43 13,4.1 12.4,4.1C11.93,4.1 11.5,4.29 11.2,4.6L7.5,8.29C7.19,8.6 7,9 7,9.5C7,10.13 7.33,10.66 7.85,10.97L11.2,13V18H13V11.5L10.75,9.85L13.07,7.5M19,20.5A3.5,3.5 0 0,1 15.5,17A3.5,3.5 0 0,1 19,13.5A3.5,3.5 0 0,1 22.5,17A3.5,3.5 0 0,1 19,20.5M19,12A5,5 0 0,0 14,17A5,5 0 0,0 19,22A5,5 0 0,0 24,17A5,5 0 0,0 19,12M16,4.8C17,4.8 17.8,4 17.8,3C17.8,2 17,1.2 16,1.2C15,1.2 14.2,2 14.2,3C14.2,4 15,4.8 16,4.8Z" />
+  </svg>
+));
+
+export const ArrivalFlag = SvgWithProps(({ onClick, ariaHidden, focusable, role, style }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden={ariaHidden}
+    focusable={focusable.toString()}
+    role={role}
+    style={style}
+    onClick={onClick}
+    viewBox="0 0 19 19"
+  >
+    <path
+      d="M2.35721 18.5222C2.14026 18.5222 1.96436 18.3463 1.96436 18.1294V0.843662C1.96436 0.626707 2.14026 0.450806 2.35721 0.450806C2.57417 0.450806 2.75007 0.626707 2.75007 0.843662V18.1294C2.75007 18.3463 2.57417 18.5222 2.35721 18.5222Z"
+      fill="#444444"
+    />
+    <path d="M6.28571 2.02222H2.75V5.55793H6.28571V2.02222Z" fill="#444444" />
+    <path d="M9.82135 2.02222H6.28564V5.55793H9.82135V2.02222Z" fill="#E6E6E6" />
+    <path d="M13.357 2.02222H9.82129V5.55793H13.357V2.02222Z" fill="#444444" />
+    <path d="M16.8926 2.02222H13.3569V5.55793H16.8926V2.02222Z" fill="#E6E6E6" />
+    <path d="M6.28571 5.55786H2.75V9.09357H6.28571V5.55786Z" fill="#E6E6E6" />
+    <path d="M9.82135 5.55798H6.28564V9.0937H9.82135V5.55798Z" fill="#444444" />
+    <path d="M13.357 5.55798H9.82129V9.09369H13.357V5.55798Z" fill="#E6E6E6" />
+    <path d="M16.8926 5.55798H13.3569V9.09369H16.8926V5.55798Z" fill="#444444" />
+    <path d="M6.28571 9.09363H2.75V12.6293H6.28571V9.09363Z" fill="#444444" />
+    <path d="M9.82135 9.09363H6.28564V12.6293H9.82135V9.09363Z" fill="#E6E6E6" />
+    <path d="M13.357 9.09363H9.82129V12.6293H13.357V9.09363Z" fill="#444444" />
+    <path d="M16.8926 9.09363H13.3569V12.6293H16.8926V9.09363Z" fill="#E6E6E6" />
+  </svg>
+));
+
+export const DepartureFlag = SvgWithProps(({ onClick, ariaHidden, focusable, role, style }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden={ariaHidden}
+    focusable={focusable.toString()}
+    role={role}
+    style={style}
+    onClick={onClick}
+    viewBox="0 0 19 19"
+  >
+    <path
+      d="M15.7143 12.2367H3.14286C2.92589 12.2367 2.75 12.0608 2.75 11.8439V2.41532C2.75 2.19835 2.92589 2.02246 3.14286 2.02246H15.7143C15.9312 2.02246 16.1071 2.19835 16.1071 2.41532V11.8439C16.1071 12.0608 15.9312 12.2367 15.7143 12.2367Z"
+      fill="#72C472"
+    />
+    <path
+      d="M3.14286 18.5225C2.9259 18.5225 2.75 18.3466 2.75 18.1296V0.843907C2.75 0.626951 2.9259 0.45105 3.14286 0.45105C3.35981 0.45105 3.53571 0.626951 3.53571 0.843907V18.1296C3.53571 18.3466 3.35981 18.5225 3.14286 18.5225Z"
+      fill="#444444"
+    />
   </svg>
 ));
 
