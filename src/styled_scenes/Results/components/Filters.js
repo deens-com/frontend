@@ -8,7 +8,8 @@ import styled from 'styled-components';
 import { Popup, Dropdown, Icon, Dimmer } from 'semantic-ui-react';
 import { DateRangePicker } from 'react-dates';
 import a from 'indefinite';
-import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
+import { geocodeByAddress } from 'react-places-autocomplete';
+import { getSearchParams } from 'libs/location';
 import { parseLocationData } from 'libs/location';
 import moment from 'moment';
 import Media from 'react-media';
@@ -242,6 +243,7 @@ class Filters extends Component {
       sortBy: this.props.search_query.sortBy,
       radiusInKm: this.props.search_query.radiusInKm,
       city: this.props.search_query.city,
+      state: this.props.search_query.state,
       countryCode: this.props.search_query.countryCode,
       text: this.props.search_query.text,
     };
@@ -259,6 +261,7 @@ class Filters extends Component {
     const query_params = this.get_query_params();
     query_params.address = addr;
     query_params.city = city;
+    query_params.state = state;
     query_params.countryCode = countryCode;
     this.props.updatePath(query_params, this.props.history, this.props.routeState);
   }

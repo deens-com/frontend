@@ -35,8 +35,9 @@ const composeSearchParams = searchParams => ({
   text: searchParams.text || undefined,
   sortBy: searchParams.sortBy || undefined,
   radiusInKm: searchParams.radiusInKm || 10,
-  city: searchParams.city || '',
-  countryCode: searchParams.countryCode || '',
+  city: searchParams.city || undefined,
+  state: searchParams.state || undefined,
+  countryCode: searchParams.countryCode || undefined,
 });
 
 const fetchResults = searchQuery =>

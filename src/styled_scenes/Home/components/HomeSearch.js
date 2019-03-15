@@ -1,8 +1,8 @@
 // NPM
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
-import { parseLocationData } from 'libs/location';
+import { geocodeByAddress } from 'react-places-autocomplete';
+import { getSearchParams } from 'libs/location';
 import history from './../../../main/history';
 import { media } from './../../../libs/styled';
 
@@ -139,25 +139,11 @@ export default class HomeSearch extends Component {
       return;
     }
 
-    geocodeByAddress(address)
-      .then(results => {
-        const result = results[0];
-        const { city, countryCode } = parseLocationData(result);
-
-        this.setState({
-          address,
-          city,
-          countryCode,
-        });
-        return getLatLng(result);
-      })
-      .then(results => {
-        const { lat, lng } = results;
-        this.setState(
-          { address, latitude: lat, longitude: lng, serviceType },
-          this.handleSearchSubmit,
-        );
-      });
+    geocodeByAddress(address).then(results => {
+      const result = results[0];
+      const searchParams = getSearchParams(result);
+      this.setState({ serviceType, ...searchParams }, this.handleSearchSubmit);
+    });
   }
 
   handleSearchSubmit() {
@@ -166,6 +152,7 @@ export default class HomeSearch extends Component {
       latitude: this.state.latitude,
       longitude: this.state.longitude,
       city: this.state.city,
+      state: this.state.state,
       countryCode: this.state.countryCode,
       serviceTypes: this.state.serviceType,
       text: this.state.text,
