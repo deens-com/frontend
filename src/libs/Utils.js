@@ -169,6 +169,12 @@ export function getLargeImageFromMedia(media) {
  * @returns {Object} An object with the coordinates
  */
 export function getFromCoordinates(coordinates) {
+  if (!coordinates) {
+    return {
+      lat: null,
+      lng: null,
+    };
+  }
   return {
     lat: coordinates[1] || null,
     lng: coordinates[0] || null,
