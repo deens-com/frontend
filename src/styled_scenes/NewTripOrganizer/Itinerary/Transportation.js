@@ -35,6 +35,7 @@ const TransportContent = styled.div`
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1), 0 0 1px rgba(0, 0, 0, 0.1);
   text-align: center;
   padding: 0 4px;
+  z-index: 0;
 `;
 
 const BottomText = styled.div`

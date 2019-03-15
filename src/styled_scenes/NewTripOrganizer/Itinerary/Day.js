@@ -99,7 +99,6 @@ const AddServiceBox = styled.div`
   position: relative;
   overflow: hidden;
   border: 1px dashed ${primary};
-  align-self: flex-end;
   display: flex;
   justify-content: center;
   align-items: center;

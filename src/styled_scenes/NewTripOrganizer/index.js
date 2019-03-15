@@ -39,6 +39,7 @@ import Footer from './Footer';
 import { mapServicesByDay, mapDaysToServices } from '../Trip/mapServicesToDays';
 import Options from './Options';
 import I18nText from 'shared_components/I18nText';
+import { StickyContainer, Sticky } from 'react-sticky';
 
 function addLang(text) {
   return {
@@ -61,12 +62,14 @@ function createStateBasedOnTrip(props) {
       infantCount: props.trip.infantCount || props.infants || 0,
       basePrice: props.trip.basePrice || 0,
       userStartLocation: props.trip.userStartLocation || null,
-      userEndLocation: props.trip.userStartLocation || null,
+      userEndLocation: props.trip.userEndLocation || null,
     },
     image: heroImage ? heroImage.files.hero.url : null,
+    // UI
     draggingDay: false,
-    // transportation methods
+    showingMap: false,
     showingTransports: true,
+    // transportation methods
     fromService: {},
     toService: {},
     // this booleans are numbers so we can make many requests.
@@ -671,6 +674,12 @@ export default class TripOrganizer extends React.Component {
     });
   };
 
+  changeShowMap = value => {
+    this.setState({
+      showingMap: value,
+    });
+  };
+
   selectTransport = async (transport, fromServiceId, toServiceId, position = 'middle') => {
     const requestBody = {
       position,
@@ -705,47 +714,58 @@ export default class TripOrganizer extends React.Component {
           changeFinalLocation: this.changeFinalLocation,
         }}
       >
-        <Header
-          onEditTitle={this.editTitle}
-          onEditDescription={this.editDescription}
-          location={tripData.location}
-          title={tripData.title}
-          description={tripData.description}
-          image={image}
-          onImageUpload={this.uploadImage}
-        />
-        <Options
-          onChangeDate={this.onChangeDate}
-          onChangeGuests={this.changeGuests}
-          adults={tripData.adultCount}
-          children={tripData.childrenCount}
-          infants={tripData.infantCount}
-          startDate={tripData.startDate}
-          changeShowTransport={this.changeShowTransport}
-        />
-        <Itinerary
-          addNewDay={this.addNewDay}
-          summaryView={draggingDay}
-          tripStartDate={tripData.startDate}
-          services={services}
-          duration={tripData.duration}
-          changeServicePosition={this.changeServicePosition}
-          changeDayPosition={this.changeDayPosition}
-          goToAddService={this.goToAddService}
-          removeDay={this.removeDay}
-          selectOption={this.selectOption}
-          selectTransport={this.selectTransport}
-          fromService={this.state.fromService}
-          toService={this.state.toService}
-        />
-        <Footer
-          price={tripData.basePrice.toFixed(2)}
-          book={this.book}
-          share={this.share}
-          isSaving={Boolean(this.state.isSaving)}
-          isCheckingAvailability={Boolean(isCheckingAvailability)}
-          /*isCheckingAvailability={true}*/
-        />
+        <StickyContainer>
+          <Header
+            onEditTitle={this.editTitle}
+            onEditDescription={this.editDescription}
+            title={tripData.title}
+            description={tripData.description}
+            image={image}
+            onImageUpload={this.uploadImage}
+          />
+          <Sticky disableCompensation topOffset={70}>
+            {({ style, isSticky }) => (
+              <div>
+                <Options
+                  onChangeDate={this.onChangeDate}
+                  onChangeGuests={this.changeGuests}
+                  adults={tripData.adultCount}
+                  children={tripData.childrenCount}
+                  infants={tripData.infantCount}
+                  startDate={tripData.startDate}
+                  changeShowTransport={this.changeShowTransport}
+                  changeShowMap={this.changeShowMap}
+                  style={style}
+                  isSticky={isSticky}
+                />
+              </div>
+            )}
+          </Sticky>
+          <Itinerary
+            addNewDay={this.addNewDay}
+            summaryView={draggingDay}
+            tripStartDate={tripData.startDate}
+            services={services}
+            duration={tripData.duration}
+            changeServicePosition={this.changeServicePosition}
+            changeDayPosition={this.changeDayPosition}
+            goToAddService={this.goToAddService}
+            removeDay={this.removeDay}
+            selectOption={this.selectOption}
+            selectTransport={this.selectTransport}
+            fromService={this.state.fromService}
+            toService={this.state.toService}
+            showingMap={this.state.showingMap}
+          />
+          <Footer
+            price={tripData.basePrice.toFixed(2)}
+            book={this.book}
+            share={this.share}
+            isSaving={Boolean(this.state.isSaving)}
+            isCheckingAvailability={Boolean(isCheckingAvailability)}
+            /*isCheckingAvailability={true}*/
+          />
+        </StickyContainer>
       </TripContext.Provider>
     );
   }

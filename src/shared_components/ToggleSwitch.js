@@ -49,7 +49,7 @@ const ChildWrapper = styled.span`
   margin-left: 36px;
 `;
 
-const Toggle = ({ children, onSwitch, defaultValue }) => {
+const Toggle = ({ children, onSwitch, checkedByDefault }) => {
   const ref = useRef(null);
   const switchValue = useCallback(
     () => {
@@ -63,7 +63,7 @@ const Toggle = ({ children, onSwitch, defaultValue }) => {
 
   return (
     <Wrapper>
-      <input defaultChecked={defaultValue} ref={ref} onChange={switchValue} type="checkbox" />
+      <input defaultChecked={checkedByDefault} ref={ref} onChange={switchValue} type="checkbox" />
       <Slider />
       {children && <ChildWrapper>{children}</ChildWrapper>}
     </Wrapper>
@@ -73,11 +73,11 @@ const Toggle = ({ children, onSwitch, defaultValue }) => {
 Toggle.propTypes = {
   onSwitch: PropTypes.func.isRequired,
   children: PropTypes.node,
-  defaultValue: PropTypes.bool,
+  checkedByDefault: PropTypes.bool,
 };
 
 Toggle.defaultProps = {
-  defaultValue: false,
+  checkedByDefault: false,
 };
 
 export default Toggle;

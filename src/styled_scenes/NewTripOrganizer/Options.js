@@ -9,9 +9,22 @@ import { PStrong, PSmall } from 'libs/commonStyles';
 import { darkText } from 'libs/colors';
 import Toggle from 'shared_components/ToggleSwitch';
 
+const StickyPlaceholder = styled.div`
+  display: flex;
+  height: 66px;
+`;
+
 const Wrapper = styled.div`
   display: flex;
-  margin: 20px 40px 0;
+  padding: 20px 40px 10px;
+  background-color: white;
+  z-index: 3;
+  ${props =>
+    props.isSticky &&
+    `
+    box-shadow: 0 1px 1px 1px rgba(0,0,0,0.4);
+    margin-top: 70px;
+  `};
 `;
 
 const LeftSide = styled.div`
@@ -26,6 +39,9 @@ const RightSide = styled.div`
   justify-content: flex-end;
   display: flex;
   align-items: center;
+  > *:first-child {
+    margin-right: 10px;
+  }
 `;
 
 const FakeDropdown = styled.div`
@@ -84,6 +100,9 @@ const Options = ({
   startDate,
   onChangeDate,
   changeShowTransport,
+  changeShowMap,
+  isSticky,
+  style,
 }) => {
   const formattedDate = startDate
     ? ` ${moment(startDate).format('MM/DD/YY')}`
@@ -95,49 +114,55 @@ const Options = ({
   };
 
   return (
-    <Wrapper>
-      <LeftSide>
-        <SelectGuests
-          adults={adults}
-          infants={infants}
-          children={children}
-          onApply={onChangeGuests}
-          renderTrigger={({ triggerPopup }) => (
-            <FakeDropdown onClick={triggerPopup}>
-              <PStrong>{adults + children + infants} Guests</PStrong>
-              <DropArrow />
-            </FakeDropdown>
-          )}
-        />
-        <DatePicker>
-          {startDate && (
-            <DepartureDate onClick={() => onDateFocusChange({ focused: true })}>
-              Departure date:
-            </DepartureDate>
-          )}
-          <SingleDatePicker
-            id="startDate"
-            date={moment(startDate)}
-            onDateChange={onChangeDate}
-            focused={dateFocused}
-            onFocusChange={onDateFocusChange}
-            placeholder={formattedDate}
-            isDayBlocked={isDayBlocked}
-            numberOfMonths={1}
-            small
-            noBorder
-            /*withPortal*/
-            anchorDirection="right"
-            displayFormat="MM/DD/YY"
+    <>
+      {isSticky && <StickyPlaceholder />}
+      <Wrapper style={style} isSticky={isSticky}>
+        <LeftSide>
+          <SelectGuests
+            adults={adults}
+            infants={infants}
+            children={children}
+            onApply={onChangeGuests}
+            renderTrigger={({ triggerPopup }) => (
+              <FakeDropdown onClick={triggerPopup}>
+                <PStrong>{adults + children + infants} Guests</PStrong>
+                <DropArrow />
+              </FakeDropdown>
+            )}
           />
-        </DatePicker>
-      </LeftSide>
-      <RightSide>
-        <Toggle defaultValue onSwitch={changeShowTransport}>
-          <PSmall>Add Transports</PSmall>
-        </Toggle>
-      </RightSide>
-    </Wrapper>
+          <DatePicker>
+            {startDate && (
+              <DepartureDate onClick={() => onDateFocusChange({ focused: true })}>
+                Departure date:
+              </DepartureDate>
+            )}
+            <SingleDatePicker
+              id="startDate"
+              date={moment(startDate)}
+              onDateChange={onChangeDate}
+              focused={dateFocused}
+              onFocusChange={onDateFocusChange}
+              placeholder={formattedDate}
+              isDayBlocked={isDayBlocked}
+              numberOfMonths={1}
+              small
+              noBorder
+              /*withPortal*/
+              anchorDirection="right"
+              displayFormat="MM/DD/YY"
+            />
+          </DatePicker>
+        </LeftSide>
+        <RightSide>
+          <Toggle checkedByDefault onSwitch={changeShowTransport}>
+            <PSmall>Add Transports</PSmall>
+          </Toggle>
+          <Toggle onSwitch={changeShowMap}>
+            <PSmall>Show map</PSmall>
+          </Toggle>
+        </RightSide>
+      </Wrapper>
+    </>
   );
 };
 
@@ -146,12 +171,15 @@ Options.propTypes = {
   adults: PropTypes.number.isRequired,
   onChangeDate: PropTypes.func.isRequired,
   changeShowTransport: PropTypes.func.isRequired,
+  changeShowMap: PropTypes.func.isRequired,
   startDate: PropTypes.string,
   children: PropTypes.number,
   infants: PropTypes.number,
+  isSticky: PropTypes.bool,
 };
 
 Options.defaultProps = {
+  isSticky: false,
   children: 0,
   infants: 0,
   startDate: null,

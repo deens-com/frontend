@@ -47,15 +47,7 @@ const More = styled.div`
   }
 `;
 
-const Header = ({
-  location,
-  title,
-  image,
-  description,
-  onEditTitle,
-  onEditDescription,
-  onImageUpload,
-}) => {
+const Header = ({ title, image, description, onEditTitle, onEditDescription, onImageUpload }) => {
   const [isUploading, setIsUploading] = useState(false);
 
   const onFileSelect = async e => {
@@ -113,21 +105,20 @@ Header.propTypes = {
   onEditTitle: PropTypes.func.isRequired,
   onImageUpload: PropTypes.func.isRequired,
   onEditDescription: PropTypes.func.isRequired,
-  location: PropTypes.shape({
+  /*location: PropTypes.shape({
     city: PropTypes.string,
     countryCode: PropTypes.string,
     geo: PropTypes.shape({
       coordinates: PropTypes.arrayOf(PropTypes.number),
       type: PropTypes.string,
     }),
-  }),
+  }),*/
   title: PropTypes.string,
   description: PropTypes.string,
   image: PropTypes.string,
 };
 
 Header.defaultProps = {
-  location: null,
   title: '',
   description: '',
   image: '',

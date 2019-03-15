@@ -12,7 +12,7 @@ const Wrapper = styled.div`
   left: 0;
   margin: auto;
   height: 70px;
-  z-index: 2;
+  z-index: 5;
   width: 100%;
   background-color: ${secondaryContrast};
   border-top: 1px solid ${secondary};
@@ -59,6 +59,7 @@ const CheckingAvailability = styled.div`
   opacity: ${props => (props.checking ? 1 : 0)};
   transform: translateY(${props => (props.checking ? '0' : '150px')});
   transition: 1s ease-in-out;
+  z-index: 3;
   > p {
     margin-bottom: 35px;
   }

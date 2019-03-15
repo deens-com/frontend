@@ -253,7 +253,7 @@ const ServiceOptions = ({ selectOption, serviceData, options }) => {
 ServiceOptions.propTypes = {
   serviceData: PropTypes.shape({
     service: PropTypes.shape({
-      title: PropTypes.string.isRequired,
+      title: PropTypes.object.isRequired,
       basePrice: PropTypes.number.isRequired,
       periods: PropTypes.arrayOf(
         PropTypes.shape({
