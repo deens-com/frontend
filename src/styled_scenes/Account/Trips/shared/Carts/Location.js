@@ -18,7 +18,8 @@ import CityCountry from 'shared_components/CityCountry';
 // STYLES
 import { Cart } from './styles';
 import { cardConfig } from 'libs/config';
-import { getLargeImageFromMedia, generateServiceSlug } from 'libs/Utils';
+import { generateServiceSlug } from 'libs/Utils';
+import { getImageUrlFromMedia } from 'libs/media'
 import NewPriceTag from 'shared_components/Currency/NewPriceTag';
 
 const ContentWrap = styled.div`
@@ -109,7 +110,7 @@ class ServiceLocationCard extends React.PureComponent {
         <RelativeCard withShadow={withShadow} column>
           <ImageGridContainer>
             <ImageItem>
-              {this.wrapWithLink(<Thumb url={getLargeImageFromMedia(item.media)} />)}
+              {this.wrapWithLink(<Thumb url={getImageUrlFromMedia(item.media, 'large')} />)}
             </ImageItem>
           </ImageGridContainer>
           <ContentWrap>

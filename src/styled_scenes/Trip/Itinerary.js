@@ -7,11 +7,11 @@ import { media } from 'libs/styled';
 import { getCategory } from 'libs/categories';
 import { parseLocation } from 'libs/fetch_helpers';
 import {
-  getHeroImage,
   getPriceFromServiceOption,
   getPeopleCount,
   generateServiceSlug,
 } from 'libs/Utils';
+import { getHeroImageUrlFromMedia } from 'libs/media'
 
 import I18nText from 'shared_components/I18nText';
 import { MapMarker } from 'shared_components/icons';
@@ -249,8 +249,8 @@ export default class Itinerary extends Component {
           <ServiceDescription>
             <I18nText data={dayData.service.description} />
           </ServiceDescription>
-          {getHeroImage(dayData.service) && (
-            <Image url={getHeroImage(dayData.service).files.small.url} />
+          {getHeroImageUrlFromMedia(dayData.service.media) && (
+            <Image url={getHeroImageUrlFromMedia(dayData.service.media)} />
           )}
           <ServiceData>
             <CategoryWrapper>

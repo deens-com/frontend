@@ -7,7 +7,8 @@ import { Loader, Modal, TextArea, Popup } from 'semantic-ui-react';
 import { getCategory } from 'libs/categories';
 import { media } from 'libs/styled';
 import { minutesToHoursOrDays, calculateCancellationCharge } from 'libs/trips';
-import { getHeroImage, generateServiceSlug, getPriceFromServiceOption } from 'libs/Utils';
+import { generateServiceSlug, getPriceFromServiceOption } from 'libs/Utils';
+import { getHeroImageUrlFromMedia } from 'libs/media' 
 import I18nText from 'shared_components/I18nText';
 import Category from 'shared_components/Category';
 import Button from 'shared_components/Button';
@@ -472,8 +473,8 @@ export default class Itinerary extends Component {
       {day.data.map(dayData => (
         <Service key={dayData._id}>
           <ServiceBody>
-            {getHeroImage(dayData.service) && (
-              <Image url={getHeroImage(dayData.service).files.small.url} />
+            {getHeroImageUrlFromMedia(dayData.service.media) && (
+              <Image url={getHeroImageUrlFromMedia(dayData.service.media)} />
             )}
             <ServiceData>
               <CategoryWrapper>

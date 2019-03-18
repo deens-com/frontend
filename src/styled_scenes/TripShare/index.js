@@ -10,7 +10,8 @@ import Input from 'shared_components/StyledInput';
 import I18nText from 'shared_components/I18nText';
 import Button from 'shared_components/Button';
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
-import { generateTripSlug, getHeroImage } from 'libs/Utils';
+import { generateTripSlug } from 'libs/Utils';
+import { getHeroImageUrlFromMedia } from 'libs/media'
 import { Message } from 'semantic-ui-react';
 
 import apiClient from 'libs/apiClient';
@@ -149,25 +150,8 @@ export default class Share extends React.Component {
             'en-us': 'Trip image',
           },
           files: {
-            thumbnail: {
+            original: {
               url,
-              width: 215,
-              height: 140,
-            },
-            small: {
-              url,
-              width: 430,
-              height: 280,
-            },
-            large: {
-              url,
-              width: 860,
-              height: 560,
-            },
-            hero: {
-              url,
-              width: 860,
-              height: 560,
             },
           },
         },
@@ -237,12 +221,7 @@ export default class Share extends React.Component {
 
   renderContent = () => {
     const { trip } = this.props;
-    const hero = getHeroImage({ media: this.state.media });
-    let img;
-
-    if (hero && hero.files) {
-      img = hero.files.hero ? hero.files.hero.url : trip.media.files.large.url;
-    }
+    const img = getHeroImageUrlFromMedia(this.state.media);
 
     const address = tripUtils.getFormattedAddress(this.state.location);
 

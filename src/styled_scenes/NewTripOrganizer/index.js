@@ -30,7 +30,7 @@ import debounce from 'lodash.debounce';*/
 import moment from 'moment';
 import apiClient from 'libs/apiClient';
 import arrayMove from 'array-move';
-import { getHeroImage } from 'libs/Utils';
+import { getHeroImageUrlFromMedia } from 'libs/media';
 import { saveTrip } from 'libs/localStorage';
 import Itinerary from './Itinerary';
 import { getFromCoordinates } from 'libs/Utils';
@@ -48,7 +48,7 @@ function addLang(text) {
 }
 
 function createStateBasedOnTrip(props) {
-  const heroImage = getHeroImage(props.trip);
+  const heroImage = getHeroImageUrlFromMedia(props.trip && props.trip.media);
   return {
     services: mapServicesByDay(props.trip.services),
     tripData: {
@@ -64,7 +64,7 @@ function createStateBasedOnTrip(props) {
       userStartLocation: props.trip.userStartLocation || null,
       userEndLocation: props.trip.userEndLocation || null,
     },
-    image: heroImage ? heroImage.files.hero.url : null,
+    image: heroImage || null,
     // UI
     draggingDay: false,
     showingMap: false,

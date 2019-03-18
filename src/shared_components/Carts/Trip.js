@@ -16,7 +16,8 @@ import Thumb from './components/Thumb';
 // STYLES
 import { Cart, ContentWrap } from './styles';
 import { cardConfig } from 'libs/config';
-import { getHeroImage, calculatePricePerDay, generateTripSlug } from 'libs/Utils';
+import { calculatePricePerDay, generateTripSlug } from 'libs/Utils';
+import { getImageUrlFromMedia } from 'libs/media'
 import { Heart } from 'shared_components/icons';
 import I18nText from 'shared_components/I18nText';
 import { H6, P, PStrong, PSmall, PXSmall } from 'libs/commonStyles';
@@ -237,7 +238,7 @@ function getTripImage(item) {
   if (!item.media || item.media.length === 0) {
     return '';
   }
-  return getHeroImage(item).files.thumbnail.url;
+  return getImageUrlFromMedia(item.media, 'thumbnail');
 }
 
 class TripCart extends Component {

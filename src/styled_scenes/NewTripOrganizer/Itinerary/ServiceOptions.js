@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import I18nText from 'shared_components/I18nText';
 import { Modal, Popup } from 'semantic-ui-react';
 import { P, PStrong, PSmallStrong, PXSmall, H2SubtitleStrong } from 'libs/commonStyles';
-import { getHeroImage, generateServiceSlug, getPriceFromServiceOption } from 'libs/Utils';
+import { getPriceFromServiceOption } from 'libs/Utils';
 import { lightText, primary, secondary, secondaryContrast, error } from 'libs/colors';
 import { minutesToHoursOrDays, calculateCancellationCharge } from 'libs/trips';
 import Button from 'shared_components/Button';

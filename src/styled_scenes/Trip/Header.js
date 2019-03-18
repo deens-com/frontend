@@ -4,7 +4,7 @@ import { Image } from 'semantic-ui-react';
 import { media } from 'libs/styled';
 import I18nText from 'shared_components/I18nText';
 import ImgurAvatar from 'assets/no-avatar.png';
-import { getHeroImage } from 'libs/Utils';
+import { getHeroImageUrlFromMedia } from 'libs/media';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -54,11 +54,8 @@ const Username = styled.p`
 `;
 
 const Header = ({ trip, owner, innerRef }) => {
-  const hero = trip && getHeroImage(trip);
-  let img;
-  if (hero && hero.files) {
-    img = hero.files.hero ? hero.files.hero.url : trip.media.files.large.url;
-  }
+  const hero = trip && getHeroImageUrlFromMedia(trip.media);
+  const img = hero;
 
   return (
     <Wrapper ref={innerRef} img={img}>
