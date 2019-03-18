@@ -9,6 +9,7 @@ import placeholder from './../../../assets/placeholder350x350.svg';
 
 // ACTIONS/CONFIG
 import { media } from '../../../libs/styled';
+import { getImageUrlFromMedia } from 'libs/media'
 
 // STYLES
 const Wrap = styled.div`
@@ -136,10 +137,10 @@ export default class FoodImgSlider extends Component {
           )}
         <Image
           src={
-            (this.props.images &&
-              this.props.images.length &&
-              this.props.images[this.state.index].files.hero.url) ||
-            placeholder
+            (
+              getImageUrlFromMedia(this.props.images, 'hero', false, this.state.index) ||
+              placeholder
+            )
           }
           sizes="42vw"
           alt="service main picture"

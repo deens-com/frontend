@@ -7,25 +7,8 @@ const normalizeParseResponseData = data => {
 };
 
 const generateFiles = url => ({
-  thumbnail: {
+  original: {
     url,
-    width: 215,
-    height: 140,
-  },
-  small: {
-    url,
-    width: 430,
-    height: 280,
-  },
-  large: {
-    url,
-    width: 860,
-    height: 560,
-  },
-  hero: {
-    url,
-    width: 860,
-    height: 560,
   },
 });
 

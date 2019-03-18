@@ -11,6 +11,7 @@ import DeleteButton from 'react-fine-uploader/delete-button';
 import Thumbnail from 'react-fine-uploader/thumbnail';
 import FileInput from 'react-fine-uploader/file-input';
 import { serverBaseURL } from 'libs/config';
+import { getImageUrlFromMedia } from 'libs/media'
 import Button from 'shared_components/Button';
 
 const allowedExtensions = ['jpeg', 'jpg', 'gif', 'png'];
@@ -203,7 +204,7 @@ export default class MultiImageUploader extends Component {
       id: i,
       hero: element.hero,
       name: element.names[i18nLocale],
-      thumbnailUrl: element.files.thumbnail.url,
+      thumbnailUrl: getImageUrlFromMedia(element, 'thumbnail'),
     }));
     const isHero = files.find(elem => elem.hero);
 

@@ -20,7 +20,7 @@ import Thumb from './components/Thumb';
 import { Cart, ContentWrap } from './styles';
 import { cardConfig } from 'libs/config';
 import { duration } from 'libs/trips';
-import { getHeroImage } from 'libs/Utils';
+import { getImageUrlFromMedia } from 'libs/media';
 import { PinIcon } from 'shared_components/icons';
 import I18nText from 'shared_components/I18nText';
 import AddToTrip from './AddToTrip';
@@ -221,7 +221,7 @@ class TripCard extends Component {
             <AddToTrip service={item} data={this.props.addToTrip} />
           )}
           <Thumb
-            url={(item.media.length && getHeroImage(item).files.thumbnail.url) || ''}
+            url={(item.media.length && getImageUrlFromMedia(item.media,)) || ''}
             tripCount={item.partOf}
             withTooltip={this.props.withTooltip}
           />

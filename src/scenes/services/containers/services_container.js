@@ -9,7 +9,8 @@ import NotFoundScene from 'styled_scenes/NotFound';
 import Helmet from 'react-helmet-async';
 import { websiteUrl } from 'libs/config';
 import I18nText from 'shared_components/I18nText';
-import { getHeroImage, generateServiceSlug } from 'libs/Utils';
+import { generateServiceSlug } from 'libs/Utils';
+import { getHeroImageUrlFromMedia } from 'libs/media';
 import { loadTrip } from 'libs/localStorage';
 import tripActions from 'store/trips/actions';
 import headerActions from 'store/header/actions';
@@ -63,7 +64,7 @@ class ServicesContainer extends Component {
           0,
           Math.min(155, metaDescription.length),
         )}...`;
-        const image = getHeroImage(service);
+        const image = getHeroImageUrlFromMedia(service.media);
         const url = `${websiteUrl}${this.props.location.pathname}`;
         const title = `${I18nText.translate(service.title)}${service.location && `, ${location}`}`;
         const isIncorrectUrl =
@@ -78,7 +79,7 @@ class ServicesContainer extends Component {
             <meta property="og:url" content={url} />
             <meta property="og:title" content={title} />
             <meta property="og:description" content={metaDescription} />
-            {image && <meta property="og:image" content={image.files.hero.url} />}
+            {image && <meta property="og:image" content={image} />}
           </Helmet>
         );
 

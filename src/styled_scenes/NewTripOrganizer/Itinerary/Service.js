@@ -10,6 +10,7 @@ import { Drag } from 'shared_components/icons';
 import Stars from 'shared_components/Rating/Stars';
 import ServiceOptions from './ServiceOptions';
 import { TripContext } from '../';
+import { getImageUrlFromMedia } from 'libs/media'
 
 const serviceSource = {
   beginDrag(props) {
@@ -193,7 +194,7 @@ const Service = ({
             )}
             <ServiceBox
               isNotAvailable={!isCheckingAvailability && !isAvailable}
-              img={data.service.media[0].files.thumbnail.url}
+              img={getImageUrlFromMedia(data.service.media)}
             >
               <ServiceData>
                 <ServiceTitle>

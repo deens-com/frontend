@@ -155,13 +155,6 @@ export function reloadPage() {
   }
 }
 
-/**
- * Gets the large size image from the media array
- * @returns {string | undefined}
- */
-export function getLargeImageFromMedia(media) {
-  return media && media[0] && media[0].files && media[0].files.large && media[0].files.large.url;
-}
 
 /**
  * Gets latitude and longitude from trip or service coordinates
@@ -217,16 +210,6 @@ export function updateBottomChatPosition(bottom = 0) {
     chat.style.bottom = `${bottom + 15}px`;
     chat.style.zIndex = 15;
   }
-}
-
-/*
-* Get hero image from service or trip
-*/
-export function getHeroImage(element) {
-  if (!element.media) {
-    return null;
-  }
-  return element.media.find(media => media.hero === true) || element.media[0];
 }
 
 export async function waitUntilMapsLoaded() {
