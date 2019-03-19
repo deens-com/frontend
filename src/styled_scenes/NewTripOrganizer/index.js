@@ -697,7 +697,7 @@ export default class TripOrganizer extends React.Component {
             image={image}
             onImageUpload={this.uploadImage}
           />
-          <Sticky disableCompensation topOffset={70}>
+          <Sticky disableCompensation topOffset={160}>
             {({ style, isSticky }) => (
               <div>
                 <Options

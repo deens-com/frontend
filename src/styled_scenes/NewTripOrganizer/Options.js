@@ -24,7 +24,6 @@ const Wrapper = styled.div`
     props.isSticky &&
     `
     box-shadow: 0 1px 1px 1px rgba(0,0,0,0.4);
-    margin-top: 70px;
   `};
 `;
 
