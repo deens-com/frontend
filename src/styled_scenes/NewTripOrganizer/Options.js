@@ -19,6 +19,7 @@ const Wrapper = styled.div`
   padding: 20px 40px 10px;
   background-color: white;
   z-index: 3;
+  position: relative;
   ${props =>
     props.isSticky &&
     `
@@ -77,7 +78,7 @@ const DatePicker = styled(FakeDropdown)`
     cursor: pointer;
   }
   > div > div > div {
-    background-color: transparent;
+    background-color: white;
     > div {
       background-color: transparent;
     }
