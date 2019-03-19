@@ -12,6 +12,7 @@ import locationIcon from 'assets/location.svg';
 import AddButton from '../AddButton';
 import Transportation from './Transportation';
 import LocationEdit from './LocationEdit';
+import AddServiceBox from './AddServiceBox';
 import { TripContext } from '..';
 
 const DraggableDay = styled.div`
@@ -93,25 +94,6 @@ const Services = styled.div`
   }
 `;
 
-const AddServiceBox = styled.div`
-  border-radius: 10px 10px 10px 0;
-  margin-top: 75px;
-  width: 190px;
-  height: 225px;
-  position: relative;
-  overflow: hidden;
-  border: 1px dashed ${primary};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  &:hover {
-    background-color: ${secondary};
-    border: 1px solid ${secondary};
-  }
-  transition: background-color 0.2s ease, border-color 0.2s ease;
-`;
-
 const AddDayBox = styled.div`
   margin: auto;
   border-radius: 10px 10px 10px 0;
@@ -169,9 +151,19 @@ const Day = ({
   toService,
   isLastDay,
 }) => {
-  const addDay = useCallback(() => {
-    addNewDay(day);
-  });
+  const addDay = useCallback(
+    () => {
+      addNewDay(day);
+    },
+    [day],
+  );
+
+  const onAddService = useCallback(
+    type => {
+      goToAddService(day, type);
+    },
+    [day],
+  );
 
   const { tripData, changeInitialLocation, changeFinalLocation } = useContext(TripContext);
 
@@ -266,9 +258,7 @@ const Day = ({
                       />
                     </Location>
                   )}
-                  <AddServiceBox onClick={() => goToAddService(day)}>
-                    <AddButton />
-                  </AddServiceBox>
+                  <AddServiceBox goToAddService={onAddService} />
                 </Services>
               </ServicesWrapper>
             </div>,
