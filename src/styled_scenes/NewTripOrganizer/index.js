@@ -231,7 +231,7 @@ export default class TripOrganizer extends React.Component {
       ? (await apiClient.trips.serviceOrganizations.availabilityCode.post(this.props.trip._id, [
           { serviceOrgId, availabilityCode },
         ])).data
-      : this.localSave().services;
+      : this.localSave();
 
     this.removeIsSaving();
 
@@ -262,7 +262,7 @@ export default class TripOrganizer extends React.Component {
     this.removeIsLoadingTransports();
   };
 
-  localSave = () => {
+  localSave = () => (
     saveTrip({
       ...this.state.tripData,
       title: addLang(this.state.tripData.title),
@@ -270,7 +270,7 @@ export default class TripOrganizer extends React.Component {
       media: formatMedia(this.state.image),
       services: mapDaysToServices(this.state.services),
     });
-  };
+  )
 
   book = () => {};
   share = () => {};
