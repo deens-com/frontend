@@ -728,7 +728,6 @@ export default class TripOrganizer extends React.Component {
           share={this.share}
           isSaving={Boolean(this.state.isSaving)}
           isCheckingAvailability={Boolean(isCheckingAvailability)}
-          /*isCheckingAvailability={true}*/
         />
       </TripContext.Provider>
     );

@@ -17,6 +17,7 @@ const Wrapper = styled.div`
   background-color: ${secondaryContrast};
   padding-top: 35px;
   padding-bottom: 10px;
+  margin-bottom: ${props => props.marginBottom}px;
 `;
 
 const ColumnWrapper = styled.footer`
@@ -51,8 +52,8 @@ const Copyright = styled(PSmall)`
   margin-top: 25px;
 `;
 
-export default () => (
-  <Wrapper>
+export default ({ marginBottom = 0 }) => (
+  <Wrapper marginBottom={marginBottom}>
     <PageWrapper>
       <ColumnWrapper>
         <Column>

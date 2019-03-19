@@ -133,7 +133,7 @@ class TripOrganizerContainer extends Component {
     return (
       <Wrapper>
         <ContentWrapper>{this.renderContent()}</ContentWrapper>
-        <BrandFooter />
+        <BrandFooter marginBottom={70} />
       </Wrapper>
     );
   }
