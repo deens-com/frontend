@@ -4,6 +4,7 @@ const initialState = {
   transparent: false,
   noSearch: false,
   noMargin: false,
+  forceNotFixed: false,
 };
 
 const types = actions.types;

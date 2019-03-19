@@ -1,12 +1,41 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Checkbox } from 'semantic-ui-react';
-import { activity, accommodation, food, tertiary } from 'libs/colors';
+import { Settings } from 'shared_components/icons';
+import { primary, activity, accommodation, food, tertiary } from 'libs/colors';
 import { Activity, Food, Accommodation } from 'shared_components/icons';
 
-const FiltersContent = styled.div`
+const Wrapper = styled.div`
+  position: absolute;
   display: flex;
+  padding: 10px;
+`
+
+const FiltersButton = styled.div`
+  z-index: 2;
+  position: relative;
+  margin-right: 10px;
+  background-color: white;
+  border-radius: 5px 5px 5px 0;
+  width: 40px;
+  height: 40px;
+  color: ${primary};
+  font-size: 30px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  cursor: pointer;
+`;
+
+const FiltersContent = styled.div`
+  display: ${props => props.show ? 'flex' : 'none'};
   max-height: 400px;
+  background-color: white;
+  z-index: 2;
+  padding: 10px;
+  border-radius: 5px 5px 5px 0;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.25);
+
   > div > * {
     margin-bottom: 10px;
     &:last-child {
@@ -50,12 +79,13 @@ const CheckLabel = styled.span`
   }
 `;
 
-const Filters = ({ numberOfDays, setFilters, defaultFilters }) => {
+const Filters = ({ setFilters, defaultFilters }) => {
   const [accommodationState, setAccommodation] = useState(defaultFilters.accommodation);
   const [activityState, setActivity] = useState(defaultFilters.activity);
   const [foodState, setFood] = useState(defaultFilters.food);
 
   const [daysState, setDays] = useState(defaultFilters.days);
+  const [isShowingFilters, setShowFilters] = useState(false);
 
   const setNewFilters = changes => {
     setFilters({
@@ -117,69 +147,74 @@ const Filters = ({ numberOfDays, setFilters, defaultFilters }) => {
   };
 
   return (
-    <FiltersContent>
-      <FiltersType>
-        <SelectAll>
+    <Wrapper>
+      <FiltersButton onClick={() => setShowFilters(!isShowingFilters)}>
+        <Settings />
+      </FiltersButton>
+      <FiltersContent show={isShowingFilters}>
+        <FiltersType>
+          <SelectAll>
+            <Checkbox
+              checked={accommodationState && activityState && foodState}
+              onChange={checkAllTypes}
+              label="Select all"
+            />
+          </SelectAll>
           <Checkbox
-            checked={accommodationState && activityState && foodState}
-            onChange={checkAllTypes}
-            label="Select all"
+            checked={accommodationState}
+            onChange={checkAccommodation}
+            label={{
+              children: (
+                <CheckLabel color={accommodation}>
+                  <Accommodation />
+                  Accommodations
+                </CheckLabel>
+              ),
+            }}
           />
-        </SelectAll>
-        <Checkbox
-          checked={accommodationState}
-          onChange={checkAccommodation}
-          label={{
-            children: (
-              <CheckLabel color={accommodation}>
-                <Accommodation />
-                Accommodations
-              </CheckLabel>
-            ),
-          }}
-        />
-        <Checkbox
-          checked={activityState}
-          onChange={checkActivity}
-          label={{
-            children: (
-              <CheckLabel color={activity}>
-                <Activity />
-                Activities
-              </CheckLabel>
-            ),
-          }}
-        />
-        <Checkbox
-          checked={foodState}
-          onChange={checkFood}
-          label={{
-            children: (
-              <CheckLabel color={food}>
-                <Food />
-                Food
-              </CheckLabel>
-            ),
-          }}
-        />
-      </FiltersType>
-      <FiltersDay>
-        <SelectAll>
           <Checkbox
-            checked={!daysState.includes(false)}
-            onChange={checkAllDays}
-            label="Select all"
+            checked={activityState}
+            onChange={checkActivity}
+            label={{
+              children: (
+                <CheckLabel color={activity}>
+                  <Activity />
+                  Activities
+                </CheckLabel>
+              ),
+            }}
           />
-        </SelectAll>
-        {daysState.map((day, i) => (
           <Checkbox
-            checked={day}
-            onChange={(_, { checked }) => checkDay(i, checked)}
-            label={{ children: <CheckLabel color={food}>Day {i + 1}</CheckLabel> }}
+            checked={foodState}
+            onChange={checkFood}
+            label={{
+              children: (
+                <CheckLabel color={food}>
+                  <Food />
+                  Food
+                </CheckLabel>
+              ),
+            }}
           />
-        ))}
-      </FiltersDay>
-    </FiltersContent>
+        </FiltersType>
+        <FiltersDay>
+          <SelectAll>
+            <Checkbox
+              checked={!daysState.includes(false)}
+              onChange={checkAllDays}
+              label="Select all"
+            />
+          </SelectAll>
+          {daysState.map((day, i) => (
+            <Checkbox
+              checked={day}
+              onChange={(_, { checked }) => checkDay(i, checked)}
+              label={{ children: <CheckLabel color={food}>Day {i + 1}</CheckLabel> }}
+            />
+          ))}
+        </FiltersDay>
+      </FiltersContent>
+    </Wrapper>
   );
 };
 

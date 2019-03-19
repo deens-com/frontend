@@ -9,22 +9,12 @@ import { PStrong, PSmall } from 'libs/commonStyles';
 import { darkText } from 'libs/colors';
 import Toggle from 'shared_components/ToggleSwitch';
 
-const StickyPlaceholder = styled.div`
-  display: flex;
-  height: 66px;
-`;
-
 const Wrapper = styled.div`
   display: flex;
   padding: 20px 40px 10px;
   background-color: white;
   z-index: 3;
-  ${props =>
-    props.isSticky &&
-    `
-    box-shadow: 0 1px 1px 1px rgba(0,0,0,0.4);
-    margin-top: 70px;
-  `};
+  position: relative;
 `;
 
 const LeftSide = styled.div`
@@ -77,7 +67,7 @@ const DatePicker = styled(FakeDropdown)`
     cursor: pointer;
   }
   > div > div > div {
-    background-color: transparent;
+    background-color: white;
     > div {
       background-color: transparent;
     }
@@ -101,8 +91,6 @@ const Options = ({
   onChangeDate,
   changeShowTransport,
   changeShowMap,
-  isSticky,
-  style,
 }) => {
   const formattedDate = startDate
     ? ` ${moment(startDate).format('MM/DD/YY')}`
@@ -114,55 +102,52 @@ const Options = ({
   };
 
   return (
-    <>
-      {isSticky && <StickyPlaceholder />}
-      <Wrapper style={style} isSticky={isSticky}>
-        <LeftSide>
-          <SelectGuests
-            adults={adults}
-            infants={infants}
-            children={children}
-            onApply={onChangeGuests}
-            renderTrigger={({ triggerPopup }) => (
-              <FakeDropdown onClick={triggerPopup}>
-                <PStrong>{adults + children + infants} Guests</PStrong>
-                <DropArrow />
-              </FakeDropdown>
-            )}
+    <Wrapper>
+      <LeftSide>
+        <SelectGuests
+          adults={adults}
+          infants={infants}
+          children={children}
+          onApply={onChangeGuests}
+          renderTrigger={({ triggerPopup }) => (
+            <FakeDropdown onClick={triggerPopup}>
+              <PStrong>{adults + children + infants} Guests</PStrong>
+              <DropArrow />
+            </FakeDropdown>
+          )}
+        />
+        <DatePicker>
+          {startDate && (
+            <DepartureDate onClick={() => onDateFocusChange({ focused: true })}>
+              Departure date:
+            </DepartureDate>
+          )}
+          <SingleDatePicker
+            id="startDate"
+            date={moment(startDate)}
+            onDateChange={onChangeDate}
+            focused={dateFocused}
+            onFocusChange={onDateFocusChange}
+            placeholder={formattedDate}
+            isDayBlocked={isDayBlocked}
+            numberOfMonths={1}
+            small
+            noBorder
+            /*withPortal*/
+            anchorDirection="right"
+            displayFormat="MM/DD/YY"
           />
-          <DatePicker>
-            {startDate && (
-              <DepartureDate onClick={() => onDateFocusChange({ focused: true })}>
-                Departure date:
-              </DepartureDate>
-            )}
-            <SingleDatePicker
-              id="startDate"
-              date={moment(startDate)}
-              onDateChange={onChangeDate}
-              focused={dateFocused}
-              onFocusChange={onDateFocusChange}
-              placeholder={formattedDate}
-              isDayBlocked={isDayBlocked}
-              numberOfMonths={1}
-              small
-              noBorder
-              /*withPortal*/
-              anchorDirection="right"
-              displayFormat="MM/DD/YY"
-            />
-          </DatePicker>
-        </LeftSide>
-        <RightSide>
-          <Toggle checkedByDefault onSwitch={changeShowTransport}>
-            <PSmall>Add Transports</PSmall>
-          </Toggle>
-          <Toggle onSwitch={changeShowMap}>
-            <PSmall>Show map</PSmall>
-          </Toggle>
-        </RightSide>
-      </Wrapper>
-    </>
+        </DatePicker>
+      </LeftSide>
+      <RightSide>
+        <Toggle checkedByDefault onSwitch={changeShowTransport}>
+          <PSmall>Add Transports</PSmall>
+        </Toggle>
+        <Toggle onSwitch={changeShowMap}>
+          <PSmall>Show map</PSmall>
+        </Toggle>
+      </RightSide>
+    </Wrapper>
   );
 };
 
@@ -175,11 +160,9 @@ Options.propTypes = {
   startDate: PropTypes.string,
   children: PropTypes.number,
   infants: PropTypes.number,
-  isSticky: PropTypes.bool,
 };
 
 Options.defaultProps = {
-  isSticky: false,
   children: 0,
   infants: 0,
   startDate: null,

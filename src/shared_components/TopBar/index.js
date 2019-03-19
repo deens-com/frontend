@@ -45,7 +45,7 @@ const Wrapper = styled.header`
       top: 0;
     `} ${media.minMedium} {
     height: ${props => (props.transparent ? 95 : 70)}px;
-    padding: ${props => (props.fixed ? '0 25px' : '0')};
+    padding: ${props => (props.fixed || !props.transparent ? '0 25px' : '0')};
   }
 
   ${props =>
@@ -125,7 +125,7 @@ class TopBar extends Component {
   }
 
   render() {
-    const { transparent, noSearch, isGDPRDismissed, gdprHeight, noMargin } = this.props;
+    const { transparent, noSearch, isGDPRDismissed, gdprHeight, noMargin, forceNotFixed } = this.props;
     const { showMenu, showSearchMobile } = this.state;
 
     const InnerWrap = transparent || noSearch ? PageWrapper : React.Fragment;
@@ -137,7 +137,7 @@ class TopBar extends Component {
           showShadow={!transparent && !showMenu}
           showMenu={showMenu}
           transparent={transparent}
-          fixed={!transparent}
+          fixed={!transparent && !forceNotFixed}
           fixedTop={!isGDPRDismissed && gdprHeight}
         >
           <InnerWrap>
@@ -176,7 +176,7 @@ class TopBar extends Component {
           </InnerWrap>
         </Wrapper>
         <MobileNav toggleMenu={this.toggleMenu} showProfileMenu={showMenu} />
-        {!transparent && <FixedPlaceholder noMargin={noMargin} />}
+        {!transparent || forceNotFixed && <FixedPlaceholder noMargin={noMargin} />}
       </React.Fragment>
     );
   }
@@ -187,12 +187,14 @@ TopBar.propTypes = {
   transparent: PropTypes.bool,
   withPadding: PropTypes.bool,
   noMargin: PropTypes.bool,
+  forceNotFixed: PropTypes.bool,
 };
 
 TopBar.defaultProps = {
   transparent: false,
   withPadding: false,
   noMargin: false,
+  forceNotFixed: false,
 };
 
 const mapStateToProps = state => ({

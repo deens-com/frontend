@@ -35,7 +35,7 @@ class TripOrganizerContainer extends Component {
     };
   }
   componentDidMount() {
-    this.props.changeHeader({ noMargin: true });
+    this.props.changeHeader({ noMargin: true, forceNotFixed: true });
     if (this.props.match.params.id) {
       if (!getSession()) {
         history.replace('/trips/organize');
@@ -133,7 +133,7 @@ class TripOrganizerContainer extends Component {
     return (
       <Wrapper>
         <ContentWrapper>{this.renderContent()}</ContentWrapper>
-        <BrandFooter />
+        <BrandFooter marginBottom={70} />
       </Wrapper>
     );
   }

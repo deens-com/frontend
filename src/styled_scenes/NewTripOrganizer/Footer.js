@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { Loader } from 'semantic-ui-react';
-import { primary, primaryContrast, secondary, secondaryContrast, lightText } from 'libs/colors';
-import { PStrong, PSmall } from 'libs/commonStyles';
+import { primary, primaryContrast, secondary, secondaryContrast, lightText, darkText } from 'libs/colors';
+import { PStrong, PSmall, P } from 'libs/commonStyles';
 import Button from 'shared_components/Button';
+import LoadingDots from 'shared_components/LoadingDots'
 
 const Wrapper = styled.div`
   position: fixed;
@@ -40,28 +40,25 @@ const SaveText = styled(PStrong)`
 `;
 
 const CheckingAvailability = styled.div`
-  width: 100%;
+  width: auto;
   text-align: center;
-  color: ${lightText};
+  display: flex;
+  color: ${darkText};
   padding: 10px;
-  max-width: 250px;
-  height: 150px;
-  left: 0;
-  right: 0;
-  bottom: 70px;
+  right: 20px;
+  bottom: 94px;
   position: fixed;
   margin-left: auto;
   margin-right: auto;
-  background-color: ${primary};
-  border: 1px solid ${primaryContrast};
+  background-color: #65AFBB4C;
   border-bottom: 0;
-  border-radius: 5px 5px 0 0;
+  border-radius: 5px;
   opacity: ${props => (props.checking ? 1 : 0)};
-  transform: translateY(${props => (props.checking ? '0' : '150px')});
   transition: 1s ease-in-out;
   z-index: 3;
   > p {
-    margin-bottom: 35px;
+    text-shadow: 1px 1px 10px white;
+    margin-right: 10px;
   }
 `;
 
@@ -96,8 +93,8 @@ class Footer extends React.Component {
           <SaveText>{this.saveButtonText()}</SaveText>
         </Wrapper>
         <CheckingAvailability checking={this.props.isCheckingAvailability}>
-          <PStrong>Checking availability, please wait...</PStrong>
-          <Loader active={this.props.isCheckingAvailability} inverted inline="centered" />
+          <P>Checking availability</P>
+          <LoadingDots />
         </CheckingAvailability>
       </>
     );

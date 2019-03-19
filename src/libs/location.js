@@ -1,3 +1,5 @@
+import { fitBounds } from 'google-map-react/utils';
+
 export const parseLocationData = data => {
   let res = {};
   const { address_components: addressComponents } = data;
@@ -74,3 +76,28 @@ export const parseLocationDataAndCoordinates = function(data, lngLat) {
 
   return res;
 };
+
+const calculateMapBounds = (markers) => {
+  const bounds = new window.google.maps.LatLngBounds();
+  for (const marker of markers) {
+    bounds.extend(new window.google.maps.LatLng(marker.lat, marker.lng));
+  }
+  return {
+    ne: { lat: bounds.getNorthEast().lat(), lng: bounds.getNorthEast().lng() },
+    sw: { lat: bounds.getSouthWest().lat(), lng: bounds.getSouthWest().lng() },
+  };
+}
+
+export const getCenterAndZoom = (markers, defaultCenter, defaultZoom = 14, size = { width: 400, height: 800 }) => {
+  if (!markers.length) {
+    return { center: defaultCenter, zoom: defaultZoom };
+  }
+  if (markers.length === 1) {
+    return { center: markers[0], zoom: defaultZoom };
+  }
+  const bounds = calculateMapBounds(markers)
+  const { center, zoom } = fitBounds(bounds, size);
+
+  // if we zoom more than 14, it's too much zoomed into a really small location
+  return { center, zoom: Math.min(zoom, 14) };
+}

@@ -7,16 +7,22 @@ import uniqBy from 'lodash.uniqby';
 import { waitUntilMapsLoaded } from 'libs/Utils';
 import { mapDaysToServices } from 'styled_scenes/Trip/mapServicesToDays';
 import { getFromCoordinates } from 'libs/Utils';
-import { primary } from 'libs/colors';
 import { TripContext } from '../../';
 import throttle from 'lodash.throttle';
-import { Settings } from 'shared_components/icons';
 import MapMarker from './MapMarker';
 import Filters from './Filters';
 import { generateDaysArray } from '../';
+import { getCenterAndZoom } from 'libs/location'
 
-const topMargin = 70 + 66; // header + options
+const topMargin = 0;
+const topOffset = 308; // when do we fix the map?
 const bottomMargin = 70;
+
+const getMapSize = () => {
+  const width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0) / 2;
+  const height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - (bottomMargin + topMargin);
+  return { width, height }
+}
 
 const wrapperStyles = props => `
   display: ${props.display};
@@ -40,23 +46,6 @@ const Wrapper = styled.div`
 
 const WrapperPlaceholder = styled.div`
   ${wrapperStyles};
-`;
-
-const FiltersButton = styled.div`
-  z-index: 2;
-  position: absolute;
-  left: 10px;
-  top: 10px;
-  background-color: white;
-  border-radius: 5px 5px 5px 0;
-  width: 40px;
-  height: 40px;
-  color: ${primary};
-  font-size: 30px;
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  cursor: pointer;
 `;
 
 function getMarkerProps(marker, i) {
@@ -116,13 +105,10 @@ const Map = ({ showingMap, servicesByDay, numberOfDays }) => {
 
   const [isFixed, setFixed] = useState(false);
   const [services, setServices] = useState(mapDaysToServices(servicesByDay));
-  const [isShowingFilters, setShowFilters] = useState(0);
 
   const mapStartLocation = getFromCoordinates(
     startLocation || (services[0] && services[0].service.location.geo.coordinates),
   );
-  const [zoom, setZoom] = useState(mapStartLocation || services.length > 0 ? 11 : 3);
-  const [center, setCenter] = useState(mapStartLocation || { lat: 0, lng: 0 });
 
   const servicesToMarkers = services.map(service => ({
     ...getFromCoordinates(service.service.location.geo.coordinates),
@@ -138,12 +124,25 @@ const Map = ({ showingMap, servicesByDay, numberOfDays }) => {
 
   const [markers, setMarkers] = useState(getMarkers());
 
+  const [zoom, setZoom] = useState(getCenterAndZoom(markers, mapStartLocation, 11, getMapSize()).zoom);
+  const [center, setCenter] = useState(getCenterAndZoom(markers, mapStartLocation, 11, getMapSize()).center);
+
   const [filters, setFilters] = useState({
     accommodation: true,
     activity: true,
     food: true,
     days: generateDaysArray(numberOfDays).map(_ => true),
   });
+
+  useEffect(
+    () => {
+      setFilters({
+        ...filters,
+        days: generateDaysArray(numberOfDays).map(_ => true),
+      })
+    },
+    [numberOfDays]
+  )
 
   useEffect(
     () => {
@@ -204,14 +203,14 @@ const Map = ({ showingMap, servicesByDay, numberOfDays }) => {
         const scrolled = window.scrollY;
 
         if (!isFixed) {
-          if (scrolled >= topMargin) {
+          if (scrolled >= topOffset) {
             setFixed(true);
             return;
           }
           return;
         }
         if (isFixed) {
-          if (scrolled < topMargin) {
+          if (scrolled < topOffset) {
             setFixed(false);
             return;
           }
@@ -239,19 +238,7 @@ const Map = ({ showingMap, servicesByDay, numberOfDays }) => {
   return (
     <>
       <Wrapper display={display} fixed={isFixed}>
-        <Popup
-          trigger={
-            <FiltersButton>
-              <Settings />
-            </FiltersButton>
-          }
-          content={
-            <Filters defaultFilters={filters} setFilters={setFilters} numberOfDays={numberOfDays} />
-          }
-          flowing
-          on="click"
-          position="right center"
-        />
+        <Filters defaultFilters={filters} setFilters={setFilters} />
         <GoogleMapReact
           center={center}
           zoom={zoom}
