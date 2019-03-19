@@ -11,9 +11,9 @@ import Button from 'shared_components/Button';
 import { TripContext } from '../';
 
 const OptionsBox = styled.div`
-  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: ${props => props.hasSelectedOption ? '1px 1px 3px rgba(0, 0, 0, 0.3)' : 'none'};
   margin-top: -8px;
-  padding: 8px 0;
+  padding: 8px 0 ${props => props.hasSelectedOption ? '8px' : '0'};
 `;
 
 const ModalBody = styled.div`
@@ -144,12 +144,12 @@ const ServiceOptions = ({ selectOption, serviceData, options }) => {
   const service = serviceData.service;
 
   return (
-    <OptionsBox>
+    <OptionsBox hasSelectedOption={Boolean(selectedOption)}>
       <Modal
         open={isModalOpen}
         trigger={
           <ChangeOptionsButton>
-            <PSmallStrong>Change Options</PSmallStrong>
+            <PSmallStrong>{selectedOption ? 'Change Options' : 'Select Options'}</PSmallStrong>
           </ChangeOptionsButton>
         }
         onOpen={() => setModalOpen(true)}
