@@ -15,7 +15,7 @@ const Wrapper = styled.header`
 
 const Overlay = styled.div`
   display: flex;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.7);
   width: 100%;
   padding: 25px 40px;
   text-align: center;
