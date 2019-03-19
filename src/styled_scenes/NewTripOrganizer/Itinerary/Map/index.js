@@ -7,10 +7,8 @@ import uniqBy from 'lodash.uniqby';
 import { waitUntilMapsLoaded } from 'libs/Utils';
 import { mapDaysToServices } from 'styled_scenes/Trip/mapServicesToDays';
 import { getFromCoordinates } from 'libs/Utils';
-import { primary } from 'libs/colors';
 import { TripContext } from '../../';
 import throttle from 'lodash.throttle';
-import { Settings } from 'shared_components/icons';
 import MapMarker from './MapMarker';
 import Filters from './Filters';
 import { generateDaysArray } from '../';
@@ -48,23 +46,6 @@ const Wrapper = styled.div`
 
 const WrapperPlaceholder = styled.div`
   ${wrapperStyles};
-`;
-
-const FiltersButton = styled.div`
-  z-index: 2;
-  position: absolute;
-  left: 10px;
-  top: 10px;
-  background-color: white;
-  border-radius: 5px 5px 5px 0;
-  width: 40px;
-  height: 40px;
-  color: ${primary};
-  font-size: 30px;
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  cursor: pointer;
 `;
 
 function getMarkerProps(marker, i) {
@@ -124,7 +105,6 @@ const Map = ({ showingMap, servicesByDay, numberOfDays }) => {
 
   const [isFixed, setFixed] = useState(false);
   const [services, setServices] = useState(mapDaysToServices(servicesByDay));
-  const [isShowingFilters, setShowFilters] = useState(0);
 
   const mapStartLocation = getFromCoordinates(
     startLocation || (services[0] && services[0].service.location.geo.coordinates),
@@ -153,6 +133,16 @@ const Map = ({ showingMap, servicesByDay, numberOfDays }) => {
     food: true,
     days: generateDaysArray(numberOfDays).map(_ => true),
   });
+
+  useEffect(
+    () => {
+      setFilters({
+        ...filters,
+        days: generateDaysArray(numberOfDays).map(_ => true),
+      })
+    },
+    [numberOfDays]
+  )
 
   useEffect(
     () => {
@@ -248,19 +238,7 @@ const Map = ({ showingMap, servicesByDay, numberOfDays }) => {
   return (
     <>
       <Wrapper display={display} fixed={isFixed}>
-        <Popup
-          trigger={
-            <FiltersButton>
-              <Settings />
-            </FiltersButton>
-          }
-          content={
-            <Filters defaultFilters={filters} setFilters={setFilters} numberOfDays={numberOfDays} />
-          }
-          flowing
-          on="click"
-          position="right center"
-        />
+        <Filters defaultFilters={filters} setFilters={setFilters} />
         <GoogleMapReact
           center={center}
           zoom={zoom}
