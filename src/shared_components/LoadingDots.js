@@ -2,25 +2,24 @@ import React from 'react'
 import styled from 'styled-components'
 
 const Dots = styled.div`
-	position:relative;
-	margin: auto;
-	text-align:center;
+  position:relative;
+  margin: auto;
+  display: flex;
 
 @keyframes loading {
-	0%, 100% {
-		transform: initial;
-		opacity: 0.4;
-	}
+  0%, 100% {
+    transform: initial;
+    opacity: 0.4;
+  }
 
-	50% {
-		transform: scale(2);
-		opacity: 1;
-	}
+  50% {
+    transform: scale(2);
+    opacity: 1;
+  }
 }
 `
 
 const Dot = styled.span`
-  display:inline-block;
   width:3px;
   height:3px;
   border-radius:50%;
