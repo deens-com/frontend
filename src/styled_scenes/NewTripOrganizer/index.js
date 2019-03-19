@@ -1,32 +1,5 @@
-// Stuff that would improve the codebase:
-// 1- Remove trip from state, the trip should be able to be created from other stuff in the state
-
 import React from 'react';
 import PropTypes from 'prop-types';
-/*import ReactDOM from 'react-dom';
-import styled from 'styled-components';
-import { Loader, Dimmer } from 'semantic-ui-react';
-import { getFromCoordinates } from 'libs/Utils';
-import { getLocationBasedOnPlaceId, getFormattedAddress } from 'libs/trips';
-import uniqBy from 'lodash.uniqby';
-
-import axios from 'libs/axios';
-import { media } from 'libs/styled';
-import { saveTrip } from 'libs/localStorage';
-import * as tripUtils from 'libs/trips';
-import history from '../../main/history';
-import { updateBottomChatPosition } from 'libs/Utils';
-
-import BrandFooter from 'shared_components/BrandFooter';
-
-
-import Itinerary from './Itinerary';
-import DaySelector from '../Trip/DaySelector';
-import CheckoutBox from './CheckoutBox';
-import PreBookModal from './PreBookModal';
-import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
-import Input from 'shared_components/StyledInput';
-import debounce from 'lodash.debounce';*/
 import moment from 'moment';
 import apiClient from 'libs/apiClient';
 import arrayMove from 'array-move';
@@ -262,15 +235,14 @@ export default class TripOrganizer extends React.Component {
     this.removeIsLoadingTransports();
   };
 
-  localSave = () => (
+  localSave = () =>
     saveTrip({
       ...this.state.tripData,
       title: addLang(this.state.tripData.title),
       description: addLang(this.state.tripData.description),
       media: formatMedia(this.state.image),
       services: mapDaysToServices(this.state.services),
-    })
-  )
+    });
 
   book = () => {};
   share = () => {};
@@ -323,7 +295,7 @@ export default class TripOrganizer extends React.Component {
 
   // SINGLE ACTIONS
 
-  goToAddService = day => {
+  goToAddService = (day, type = 'accommodation') => {
     const { history, trip } = this.props;
     const coord =
       trip.location &&
@@ -338,7 +310,7 @@ export default class TripOrganizer extends React.Component {
 
     this.props.updatePath(
       {
-        type: ['accommodation'],
+        type: [type],
         latitude: coord && coord.lat,
         longitude: coord && coord.lng,
         address,
