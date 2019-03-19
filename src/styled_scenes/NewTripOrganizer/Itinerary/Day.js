@@ -106,10 +106,10 @@ const AddDayBox = styled.div`
   align-items: center;
   margin-bottom: 72px;
   cursor: pointer;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  transition: opacity 0.2s ease;
+  opacity: 0.5;
   &:hover {
-    background-color: ${secondary};
-    border: 1px solid ${secondary};
+    opacity: 1;
   }
 `;
 
