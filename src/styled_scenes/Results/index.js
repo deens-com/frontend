@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 //import Media from 'react-media';
 import styled from 'styled-components';
 import GoogleMapReact from 'google-map-react';
-import { fitBounds } from 'google-map-react/utils';
 import { Checkbox } from 'semantic-ui-react';
 import Media from 'react-media';
+import { getCenterAndZoom } from 'libs/location'
 
 import history from 'main/history';
 // COMPONENTS
@@ -142,30 +142,9 @@ export default class ResultsScene extends Component {
 
   getCenterAndZoom = (markers, props) => {
     const zoomByRadius = this.getZoomByRadius();
-    if (!markers.length) {
-      if (props.latitude && props.longitude) {
-        const center = { lat: parseFloat(props.latitude), lng: parseFloat(props.longitude) };
-        return { center: center, zoom: zoomByRadius };
-      } else {
-        return { center: defaultCenter, zoom: zoomByRadius };
-      }
-    }
-    if (markers.length === 1) {
-      return { center: markers[0], zoom: zoomByRadius };
-    }
-    const bounds = new window.google.maps.LatLngBounds();
-    for (const marker of markers) {
-      bounds.extend(new window.google.maps.LatLng(marker.lat, marker.lng));
-    }
-    const newBounds = {
-      ne: { lat: bounds.getNorthEast().lat(), lng: bounds.getNorthEast().lng() },
-      sw: { lat: bounds.getSouthWest().lat(), lng: bounds.getSouthWest().lng() },
-    };
-    // TODO: @jaydp dynamically calculate this width and height
-    const size = { width: 400, height: 800 };
-    const { center, zoom } = fitBounds(newBounds, size);
-    // if we zoom more than 14, it's too much zoomed into a really small location
-    return { center, zoom: Math.min(zoom, 14) };
+    const center = (props.latitude && props.longitude) ? { lat: parseFloat(props.latitude), lng: parseFloat(props.longitude) } : defaultCenter;
+
+    return getCenterAndZoom(markers, center, zoomByRadius)
   };
 
   componentWillReceiveProps(nextProps) {

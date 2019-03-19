@@ -14,9 +14,17 @@ import { Settings } from 'shared_components/icons';
 import MapMarker from './MapMarker';
 import Filters from './Filters';
 import { generateDaysArray } from '../';
+import { getCenterAndZoom } from 'libs/location'
 
-const topMargin = 70 + 66; // header + options
+const topMargin = 0;
+const topOffset = 308; // when do we fix the map?
 const bottomMargin = 70;
+
+const getMapSize = () => {
+  const width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0) / 2;
+  const height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - (bottomMargin + topMargin);
+  return { width, height }
+}
 
 const wrapperStyles = props => `
   display: ${props.display};
@@ -121,8 +129,6 @@ const Map = ({ showingMap, servicesByDay, numberOfDays }) => {
   const mapStartLocation = getFromCoordinates(
     startLocation || (services[0] && services[0].service.location.geo.coordinates),
   );
-  const [zoom, setZoom] = useState(mapStartLocation || services.length > 0 ? 11 : 3);
-  const [center, setCenter] = useState(mapStartLocation || { lat: 0, lng: 0 });
 
   const servicesToMarkers = services.map(service => ({
     ...getFromCoordinates(service.service.location.geo.coordinates),
@@ -137,6 +143,9 @@ const Map = ({ showingMap, servicesByDay, numberOfDays }) => {
   ];
 
   const [markers, setMarkers] = useState(getMarkers());
+
+  const [zoom, setZoom] = useState(getCenterAndZoom(markers, mapStartLocation, 11, getMapSize()).zoom);
+  const [center, setCenter] = useState(getCenterAndZoom(markers, mapStartLocation, 11, getMapSize()).center);
 
   const [filters, setFilters] = useState({
     accommodation: true,
@@ -204,14 +213,14 @@ const Map = ({ showingMap, servicesByDay, numberOfDays }) => {
         const scrolled = window.scrollY;
 
         if (!isFixed) {
-          if (scrolled >= topMargin) {
+          if (scrolled >= topOffset) {
             setFixed(true);
             return;
           }
           return;
         }
         if (isFixed) {
-          if (scrolled < topMargin) {
+          if (scrolled < topOffset) {
             setFixed(false);
             return;
           }
