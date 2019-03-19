@@ -1,3 +1,4 @@
+import I18nText from 'shared_components/I18nText'
 import { tagsColorMatcher } from './Utils';
 import placeholder from './../assets/placeholder350x350.svg';
 
@@ -22,8 +23,9 @@ export const parseLocation = location =>
 export const parseTags = tags =>
   tags.map(tag => {
     const i18nLocale = 'en-us';
-    const tagBg = tagsColorMatcher(tag.names);
+    const tagBg = tagsColorMatcher(I18nText.translate(tag.names));
     return {
+      id: tag._id,
       label: tag.names[i18nLocale].charAt(0).toUpperCase() + tag.names[i18nLocale].slice(1),
       hoverBg: tagBg,
       background: tagBg,
