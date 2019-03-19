@@ -6,7 +6,7 @@ import Service from './Service';
 import { types } from '../constants';
 import { getDayDate } from 'styled_scenes/Trip/mapServicesToDays';
 import { primary, secondary, primaryContrast, error } from 'libs/colors';
-import { H3, P } from 'libs/commonStyles';
+import { H2, H2Subtitle, P } from 'libs/commonStyles';
 import { Drag, TrashCan } from 'shared_components/icons';
 import locationIcon from 'assets/location.svg';
 import AddButton from '../AddButton';
@@ -52,7 +52,7 @@ const DraggingBox = styled.div`
   border-radius: 10px 10px 10px 0;
   width: 100%;
   max-width: 400px;
-  > h3 {
+  > h2 {
     opacity: 0.7;
     margin-left: 30px;
   }
@@ -61,6 +61,7 @@ const DraggingBox = styled.div`
 const TitleWrapper = styled.div`
   display: flex;
   align-items: center;
+  margin-bottom: 15px;
 `;
 const Divider = styled.span`
   color: ${secondary};
@@ -169,14 +170,14 @@ const Day = ({
           <div>
             {isDraggingThisDay ? (
               <DraggingBox>
-                <H3>Day {day}</H3>
+                <H2>Day {day}</H2>
               </DraggingBox>
             ) : (
               <DraggableDay>
                 <TitleWrapper>
-                  <H3>Day {day}</H3>
+                  <H2>Day {day}</H2>
                   <Divider>•</Divider>
-                  <P>{getDayDate(day, tripStartDate)}</P>
+                  <H2Subtitle>{getDayDate(day, tripStartDate)}</H2Subtitle>
                   <DeleteDay onClick={() => removeDay(day)}>
                     <TrashCan />
                   </DeleteDay>
