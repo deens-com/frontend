@@ -269,7 +269,7 @@ export default class TripOrganizer extends React.Component {
       description: addLang(this.state.tripData.description),
       media: formatMedia(this.state.image),
       services: mapDaysToServices(this.state.services),
-    });
+    })
   )
 
   book = () => {};
