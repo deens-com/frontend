@@ -76,11 +76,11 @@ function formatMedia(url) {
 function makeTransportationState(transportation) {
   return {
     toService: transportation.reduce(
-      (prevObj, transport) => ({ ...prevObj, [transport.toServiceOrgId]: transport }),
+      (prevObj, transport) => transport.toServiceOrgId ? ({ ...prevObj, [transport.toServiceOrgId]: transport }) : prevObj,
       {},
     ),
     fromService: transportation.reduce(
-      (prevObj, transport) => ({ ...prevObj, [transport.fromServiceOrgId]: transport }),
+      (prevObj, transport) => transport.fromServiceOrgId ? ({ ...prevObj, [transport.fromServiceOrgId]: transport }) : prevObj,
       {},
     ),
   };
@@ -660,6 +660,7 @@ export default class TripOrganizer extends React.Component {
       toServiceOrganizationId: toServiceId,
       transportMode: transport,
     };
+
     await this.setTransportation(requestBody);
   };
 

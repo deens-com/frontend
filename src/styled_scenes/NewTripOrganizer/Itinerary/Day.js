@@ -18,7 +18,6 @@ import { TripContext } from '..';
 const DraggableDay = styled.div`
   background-color: white;
   display: inline-block;
-  z-index: 1;
   position: relative;
 `;
 
@@ -62,9 +61,6 @@ const DraggingBox = styled.div`
 const TitleWrapper = styled.div`
   display: flex;
   align-items: center;
-  > h3 {
-    margin-left: 15px;
-  }
 `;
 const Divider = styled.span`
   color: ${secondary};
@@ -169,37 +165,25 @@ const Day = ({
 
   return (
     <>
-      {connectDropDayTarget(
         <div>
-          {connectDragDayPreview(
-            <div>
-              {isDraggingThisDay ? (
-                <DraggingBox>
+          <div>
+            {isDraggingThisDay ? (
+              <DraggingBox>
+                <H3>Day {day}</H3>
+              </DraggingBox>
+            ) : (
+              <DraggableDay>
+                <TitleWrapper>
                   <H3>Day {day}</H3>
-                </DraggingBox>
-              ) : (
-                <DraggableDay>
-                  <TitleWrapper>
-                    {connectDragDaySource(
-                      <div>
-                        <Drag />
-                      </div>,
-                    )}
-                    <H3>Day {day}</H3>
-                    <Divider>•</Divider>
-                    <P>{getDayDate(day, tripStartDate)}</P>
-                    <DeleteDay onClick={() => removeDay(day)}>
-                      <TrashCan />
-                    </DeleteDay>
-                  </TitleWrapper>
-                </DraggableDay>
-              )}
-            </div>,
-            {
-              offsetX: 0,
-              offsetY: 0,
-            },
-          )}
+                  <Divider>•</Divider>
+                  <P>{getDayDate(day, tripStartDate)}</P>
+                  <DeleteDay onClick={() => removeDay(day)}>
+                    <TrashCan />
+                  </DeleteDay>
+                </TitleWrapper>
+              </DraggableDay>
+            )}
+          </div>
           {connectDropServiceTarget(
             <div>
               <ServicesWrapper hidden={!isNotDraggingAnyDay}>
@@ -263,8 +247,7 @@ const Day = ({
               </ServicesWrapper>
             </div>,
           )}
-        </div>,
-      )}
+        </div>
       <AddDayBox onClick={addDay} hidden={!isNotDraggingAnyDay}>
         <AddButton />
       </AddDayBox>

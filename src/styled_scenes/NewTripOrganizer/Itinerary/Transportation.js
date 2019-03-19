@@ -139,6 +139,7 @@ const Transportation = ({
   children,
   serviceId,
   toService,
+  fromService,
   selectTransport,
   isFirst,
   isLast,
@@ -173,6 +174,21 @@ const Transportation = ({
     position = 'last';
   }
 
+  const onTransportSelect = selectedTransport => {
+    if (selected === selectedTransport) {
+      return;
+    }
+    const serviceDictionary = isLast ? fromService : toService
+
+    selectTransport(
+      selectedTransport,
+      isFirst ? undefined : serviceDictionary[serviceId].fromServiceOrgId,
+      isLast ? undefined : serviceId,
+      position,
+    );
+    hideTooltip();
+  }
+
   return (
     <>
       <div>
@@ -191,53 +207,19 @@ const Transportation = ({
                   <TransportOptions>
                     <TransportSelect
                       selected={selected === 'car'}
-                      onClick={() => {
-                        // remove duplication!!
-                        if (selected === 'car') {
-                          return;
-                        }
-                        selectTransport(
-                          'car',
-                          toService[serviceId].fromServiceOrgId,
-                          serviceId,
-                          position,
-                        );
-                        hideTooltip();
-                      }}
+                      onClick={() => onTransportSelect('car')}
                     >
                       <CarIcon />
                     </TransportSelect>
                     <TransportSelect
                       selected={selected === 'bicycle'}
-                      onClick={() => {
-                        if (selected === 'bicycle') {
-                          return;
-                        }
-                        selectTransport(
-                          'bicycle',
-                          toService[serviceId].fromServiceOrgId,
-                          serviceId,
-                          position,
-                        );
-                        hideTooltip();
-                      }}
+                      onClick={() => onTransportSelect('bicycle')}
                     >
                       <BikeIcon />
                     </TransportSelect>
                     <TransportSelect
                       selected={selected === 'walking'}
-                      onClick={() => {
-                        if (selected === 'walking') {
-                          return;
-                        }
-                        selectTransport(
-                          'walking',
-                          toService[serviceId].fromServiceOrgId,
-                          serviceId,
-                          position,
-                        );
-                        hideTooltip();
-                      }}
+                      onClick={() => onTransportSelect('walking')}
                     >
                       <WalkIcon />
                     </TransportSelect>
