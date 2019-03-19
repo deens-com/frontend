@@ -124,7 +124,9 @@ const RatingAndPrice = styled.div`
 `;
 
 const StarsWrapper = styled.div`
-  margin-bottom: 5px;
+  > div {
+    margin-bottom: 5px;
+  }
 `;
 
 const BookableTag = styled(PXSmall)`

@@ -449,9 +449,9 @@ export const Star = SvgWithProps(({ ariaHidden, focusable, role, style }) => (
     focusable={focusable.toString()}
     role={role}
     style={style}
-    viewBox="0 0 24 24"
+    viewBox="0 0 13 12"
   >
-    <path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" />
+    <path d="M6.71777 0L8.17844 4.58359L12.9053 4.58359L9.08119 7.41641L10.5419 12L6.71777 9.16718L2.89369 12L4.35436 7.41641L0.530273 4.58359L5.2571 4.58359L6.71777 0Z" />
   </svg>
 ));
 
