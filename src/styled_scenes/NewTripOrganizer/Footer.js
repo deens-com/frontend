@@ -5,6 +5,8 @@ import { primary, primaryContrast, secondary, secondaryContrast, lightText, dark
 import { PStrong, PSmall, P } from 'libs/commonStyles';
 import Button from 'shared_components/Button';
 import LoadingDots from 'shared_components/LoadingDots'
+import { UndoArrow } from 'shared_components/icons'
+import I18nText from 'shared_components/I18nText'
 
 const Wrapper = styled.div`
   position: fixed;
@@ -55,12 +57,39 @@ const CheckingAvailability = styled.div`
   border-radius: 5px;
   opacity: ${props => (props.checking ? 1 : 0)};
   transition: 1s ease-in-out;
-  z-index: 3;
+  z-index: ${props => (props.checking ? 3 : -1)};
   > p {
     text-shadow: 1px 1px 10px white;
     margin-right: 10px;
   }
 `;
+
+const UndoServiceDeletion = styled.div`
+  width: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: ${lightText};
+  padding: 10px;
+  left: 50%;
+  transform: translateX(-50%) scaleX(${props => (props.show ? 1 : 0)});
+  bottom: ${props => (props.show ? '94px' : '-10px')};
+  position: fixed;
+  background-color: #65AFBB;
+  border-bottom: 0;
+  border-radius: 5px;
+  transition: 0.7s ease-in-out;
+  cursor: pointer;
+  z-index: 3;
+  > p {
+    margin-left: 10px;
+  }
+  > svg {
+    width: 1.2em !important;
+    height: 1.2em !important;
+    color: ${lightText} !important;
+  }
+`
 
 class Footer extends React.Component {
   saveButtonText() {
@@ -71,6 +100,8 @@ class Footer extends React.Component {
   }
 
   render() {
+    const { recentlyDeletedService, undoRemoveService } = this.props
+
     return (
       <>
         <Wrapper>
@@ -96,6 +127,10 @@ class Footer extends React.Component {
           <P>Checking availability</P>
           <LoadingDots />
         </CheckingAvailability>
+        <UndoServiceDeletion onClick={() => recentlyDeletedService && undoRemoveService()} show={Boolean(recentlyDeletedService)}>
+          <UndoArrow />
+          <P>Undo removal of <I18nText data={recentlyDeletedService && recentlyDeletedService.service && recentlyDeletedService.service.service && recentlyDeletedService.service.service.title} /></P>
+        </UndoServiceDeletion>
       </>
     );
   }
@@ -107,6 +142,19 @@ Footer.propTypes = {
   book: PropTypes.func.isRequired,
   isSaving: PropTypes.bool.isRequired,
   isCheckingAvailability: PropTypes.bool.isRequired,
+  recentlyDeletedService: PropTypes.shape({
+    position: PropTypes.number.isRequired,
+    service: PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      service: PropTypes.shape({
+        title: PropTypes.string.isRequired,
+      }).isRequired,
+    }).isRequried,
+  }),
 };
+
+Footer.defaultProps = {
+  recentlyDeletedService: null,
+}
 
 export default Footer;
