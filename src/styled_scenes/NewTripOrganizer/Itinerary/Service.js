@@ -3,14 +3,17 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import I18nText from 'shared_components/I18nText';
 import { DragSource, DropTarget } from 'react-dnd';
+import { Popup } from 'semantic-ui-react'
 import { types } from '../constants';
 import { P, PSmallStrong, PXSmall } from 'libs/commonStyles';
-import { lightText, primary, primaryContrast, secondaryContrast, error } from 'libs/colors';
+import { lightText, primary, secondary, primaryContrast, secondaryContrast, error, activity, food, accommodation } from 'libs/colors';
 import { Drag } from 'shared_components/icons';
 import Stars from 'shared_components/Rating/Stars';
 import ServiceOptions from './ServiceOptions';
 import { TripContext } from '../';
 import { getImageUrlFromMedia } from 'libs/media'
+import { Activity, Food, Accommodation, Settings } from 'shared_components/icons';
+import { TrashCan } from 'shared_components/icons'
 
 const serviceSource = {
   beginDrag(props) {
@@ -140,28 +143,58 @@ const BookableTag = styled(PXSmall)`
   margin-right: 3px;
 `;
 
+const ServiceSettings = styled.div`
+  display: flex;
+  align-items: center;
+  height: 35px;
+  border-radius: 5px 5px 0 0;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 0;
+  box-shadow: 1px 1px rgba(0, 0, 0, 0.05);
+  background-color: white;
+  padding: 8px;
+  margin: auto;
+
+  > svg {
+    font-size: 24px;
+    margin-left: 15px;
+  }
+`
+
+const DeleteService = styled.div`
+  color: ${primary};
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  > svg {
+    fill: ${error} !important;
+    height: 10px;
+    width: 10px;
+    margin-right: 6px;
+  }
+`
+
 function getPriceText(type) {
   if (type === 'Food') {
     return 'per meal';
   }
-  if (type === 'Accomodation') {
+  if (type === 'Accommodation') {
     return 'per night';
   }
   return 'per person';
 }
 
-const serviceOptionsStyle = {
-  display: 'flex',
-  height: '35px',
-  borderRadius: '5px 5px 0 0',
-  border: '1px solid rgba(0, 0, 0, 0.05)',
-  borderBottom: 0,
-  boxShadow: '1px 1px rgba(0, 0, 0, 0.05)',
-  backgroundColor: 'white',
-  padding: '8px',
-  margin: 'auto',
-  cursor: 'grabbing',
-};
+const ServiceIcon = ({ type }) => {
+  if (type === 'Food') {
+    return <Food style={{ color: food }} />
+  }
+  if (type === 'Accommodation') {
+    return <Accommodation style={{ color: accommodation }} />
+  }
+
+  return <Activity style={{ color: activity }} />
+}
 
 const Service = ({
   data,
@@ -173,7 +206,7 @@ const Service = ({
   connectDropTarget,
   selectOption,
 }) => {
-  const { isCheckingAvailability } = useContext(TripContext);
+  const { isCheckingAvailability, removeService } = useContext(TripContext);
   const fastBookable =
     data.service.checkoutOptions && data.service.checkoutOptions.payAt === 'please';
   const isAvailable = !data.availability || data.availability.isAvailable;
@@ -189,11 +222,32 @@ const Service = ({
           <DraggingBox />
         ) : (
           <Wrapper>
-            {connectDragSource(
-              <div style={serviceOptionsStyle}>
-                <Drag style={{ width: '18px', height: '18px' }} />
-              </div>,
-            )}
+            <ServiceSettings>
+              {connectDragSource(
+                <div style={{cursor: 'grabbing'}}>
+                  <Drag style={{ width: '18px', height: '18px' }} />
+                </div>,
+              )}
+              <ServiceIcon type={data.service.categories[0].names['en-us']} />
+              <Popup
+                trigger={
+                  <span style={{cursor: 'pointer', marginLeft: '15px'}}>
+                    <Settings style={{ color: primary, width: '20px', height: '20px' }} />
+                  </span>
+                }
+                content={
+                  <div>
+                    <DeleteService onClick={() => removeService(data._id)}>
+                      <TrashCan />
+                      <P>Delete</P>
+                    </DeleteService>
+                  </div>
+                }
+                on="click"
+                position="bottom center"
+                hideOnScroll
+              />
+            </ServiceSettings>
             <ServiceBox
               isNotAvailable={!isCheckingAvailability && !isAvailable}
               img={getImageUrlFromMedia(data.service.media)}

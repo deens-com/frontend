@@ -25,15 +25,15 @@ const Dot = styled.span`
   border-radius:50%;
   margin-right:11px;
   background:#262626;
-  animation: loading 1.3s linear infinite;
+  animation: loading 0.7s linear infinite;
   animation-fill-mode: both;
 
   &:nth-child(2) {
-    animation-delay: -1.1s;
+    animation-delay: -0.6s;
   }
 
   &:nth-child(3) {
-    animation-delay: -0.9s;
+    animation-delay: -0.5s;
   }
 `
 

@@ -50,6 +50,8 @@ function createStateBasedOnTrip(props) {
     isSaving: 0,
     isCheckingAvailability: 0,
     isLoadingTransportation: 0,
+    // this is for allowing to undo
+    lastRemovedService: null,
   };
 }
 
@@ -444,6 +446,62 @@ export default class TripOrganizer extends React.Component {
     );
   };
 
+  removeService = serviceOrgId => {
+    let removedService;
+    this.setState(prevState => {
+      const services = mapServicesByDay(
+        mapDaysToServices(prevState.services)
+          .filter((service, i) => {
+            if (service._id === serviceOrgId) {
+              removedService = { service, position: i };
+              return false
+            }
+            return true;
+          })
+      );
+      return {
+        services,
+        lastRemovedService: removedService
+      }
+    }, () => {
+      this.waitAndRemoveService(removedService._id)
+    })
+  }
+
+  waitAndRemoveService = id => {
+    setTimeout(() => {
+      this.setState(prevState => {
+        if (!prevState.lastRemovedService) {
+          return
+        }
+        if (prevState.lastRemovedService.service._id !== id) {
+          return
+        }
+        return {
+          lastRemovedService: null
+        }
+      }, async () => {
+        await this.saveRemovedServices([id]);
+      })
+    }, 5000)
+  }
+
+  undoRemoveService = () => {
+    this.setState(prevState => {
+      const services = mapDaysToServices(prevState.services)
+      return {
+        lastRemovedService: null,
+        services: mapServicesByDay(
+          [
+            ...services.slice(0, prevState.lastRemovedService.position),
+            prevState.lastRemovedService.service,
+            ...services.slice(prevState.lastRemovedService.position),
+          ]
+        )
+      }
+    })
+  }
+
   addNewDay = afterDay => {
     this.setState(
       prevState => {
@@ -675,6 +733,7 @@ export default class TripOrganizer extends React.Component {
       isLoadingTransportation,
       showingTransports,
       isCheckingAvailability,
+      lastRemovedService,
     } = this.state;
 
     return (
@@ -686,6 +745,7 @@ export default class TripOrganizer extends React.Component {
           showingTransports,
           changeInitialLocation: this.changeInitialLocation,
           changeFinalLocation: this.changeFinalLocation,
+          removeService: this.removeService,
         }}
       >
         <Header
@@ -728,6 +788,8 @@ export default class TripOrganizer extends React.Component {
           share={this.share}
           isSaving={Boolean(this.state.isSaving)}
           isCheckingAvailability={Boolean(isCheckingAvailability)}
+          recentlyDeletedService={lastRemovedService}
+          undoRemoveService={this.undoRemoveService}
         />
       </TripContext.Provider>
     );
