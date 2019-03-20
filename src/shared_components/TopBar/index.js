@@ -176,7 +176,7 @@ class TopBar extends Component {
           </InnerWrap>
         </Wrapper>
         <MobileNav toggleMenu={this.toggleMenu} showProfileMenu={showMenu} />
-        {!transparent || forceNotFixed && <FixedPlaceholder noMargin={noMargin} />}
+        {!transparent && !forceNotFixed && <FixedPlaceholder noMargin={noMargin} />}
       </React.Fragment>
     );
   }
