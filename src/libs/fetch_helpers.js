@@ -77,9 +77,10 @@ const mapImage = (image, i) => {
   };
 };
 
-const createService = (values, importedFromLink) => {
+const createService = (values, custom) => {
   const i18nLocale = 'en-us';
   return {
+    isCustom: Boolean(custom),
     categories: [
       {
         names: {
@@ -88,7 +89,7 @@ const createService = (values, importedFromLink) => {
       },
     ],
     tags: values.tags,
-    subtitle: { [i18nLocale]: values.subtitle },
+    ...(values.subtitle && {subtitle: { [i18nLocale]: values.subtitle }}),
     title: { [i18nLocale]: values.title },
     basePrice: values.basePrice,
     location: {
@@ -106,40 +107,20 @@ const createService = (values, importedFromLink) => {
       id: values.location.place_id,
     },
     media: values.media.map(mapImage),
-    description: { [i18nLocale]: values.description },
-    baseCurrency: {
-      name: 'US Dollar',
-      code: 'USD',
-      symbol: '$',
-    },
-    duration: (values.category === 'Accommodation' ? 1 : values.duration) || 1,
-    periods: [
-      {
-        // This is hardcoded for services added from link
-        startDate: '2018-09-11T00:00:00.000Z',
-        endDate: '2020-09-11T00:00:00.000Z',
-        daysOfWeek: {
-          monday: true,
-          tuesday: true,
-          wednesday: true,
-          thursday: true,
-          friday: true,
-          saturday: true,
-          sunday: true,
-        },
-        priceCapacity: 1,
-        minCapacity: 1,
-        maxCapacity: 2,
-        cancellable: false,
-      },
-    ],
-    ...(!importedFromLink
+    ...(values.description && {description: { [i18nLocale]: values.description }}),
+    ...(!custom
       ? {
           instructions: {
             ...(values.start ? { start: { [i18nLocale]: values.start } } : {}),
             ...(values.end ? { end: { [i18nLocale]: values.end } } : {}),
           },
           rules: values.rules.filter(rule => Boolean(rule)).map(rule => ({ [i18nLocale]: rule })),
+          duration: (values.category === 'Accommodation' ? 1 : values.duration),
+          baseCurrency: {
+            name: 'US Dollar',
+            code: 'USD',
+            symbol: '$',
+          },
           periods: [
             {
               startDate: new Date(values.startDate.setHours(0, 0, 0, 0)),

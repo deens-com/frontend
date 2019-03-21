@@ -15,6 +15,7 @@ const Text = styled.div`
 
 const Input = styled.input`
   color: ${props => props.inputTextColor || 'inherit'};
+  max-width: 100%;
   font-size: inherit;
   font-family: inherit;
   font-weight: inherit;
@@ -29,7 +30,7 @@ const Input = styled.input`
   }
 `;
 
-const InlineInput = ({ children, placeholder, onChanged, inputTextColor, disallowEmptySubmit }) => {
+const InlineInput = ({ children, textPrefix, placeholder, onChanged, inputTextColor, disallowEmptySubmit }) => {
   const [isEditing, setIsEditing] = useState(false);
   const onStartEditing = () => setIsEditing(true);
   const inputEl = useRef(null);
@@ -76,11 +77,17 @@ const InlineInput = ({ children, placeholder, onChanged, inputTextColor, disallo
     [isEditing],
   );
 
-  return isEditing ? (
-    <Input inputTextColor={inputTextColor} ref={inputEl} autoFocus defaultValue={children || ''} />
-  ) : (
+  if (isEditing) {
+    const defaultValue = typeof children === 'number' ? children : (children || '') // this is to support 0 as children
+    return <Input inputTextColor={inputTextColor} ref={inputEl} autoFocus defaultValue={defaultValue} />
+  }
+
+  const child = typeof children === 'number' ? children : (children || placeholder) // this is to support 0 as children
+
+  return (
     <Text onClick={onStartEditing}>
-      {children || placeholder}
+      {textPrefix}
+      {child}
       <PencilIcon />
     </Text>
   );
@@ -91,6 +98,7 @@ InlineInput.propTypes = {
   children: PropTypes.string,
   placeholder: PropTypes.string,
   inputTextColor: PropTypes.string,
+  textPrefix: PropTypes.string,
   disallowEmptySubmit: PropTypes.bool,
 };
 
@@ -98,6 +106,7 @@ InlineInput.defaultProps = {
   children: '',
   placeholder: '',
   inputTextColor: '',
+  textPrefix: '',
   disallowEmptySubmit: false,
 };
 
