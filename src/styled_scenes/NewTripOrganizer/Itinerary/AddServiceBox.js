@@ -1,11 +1,14 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { Popup } from 'semantic-ui-react';
-import { Activity, Food, Accommodation, Pen } from 'shared_components/icons';
+import { Modal } from 'semantic-ui-react'
+import { Activity, Food, Accommodation, Pen, LinkIcon } from 'shared_components/icons';
 import PropTypes from 'prop-types';
 import styled from 'styled-components'
 import AddButton from '../AddButton';
+import AddCustomServiceModal from './AddCustomServiceModal'
+import AddLink from './AddLink'
 
-import { primary, secondary, disabled, activity, accommodation, food, tertiary } from 'libs/colors';
+import { primary, disabled, activity, accommodation, food, tertiary } from 'libs/colors';
 
 const Box = styled.div`
   border-radius: 10px 10px 10px 0;
@@ -47,7 +50,37 @@ const Divider = styled.div`
   margin: 10px 0;
 `
 
-const AddServiceBox = ({ goToAddService }) => {
+const AddServiceBox = ({ day, goToAddService }) => {
+  const [isOpenPopup, setOpenPopup] = useState(false)
+  const openPopup = () => setOpenPopup(true)
+  const closePopup = () => setOpenPopup(false)
+
+  const [isOpenModal, setOpenModal] = useState(false)
+  const [showingAddLink, setShowingAddLink] = useState(false)
+  const [defaultService, setDefaultService] = useState(null)
+
+  const openCustomModal = () => {
+    setOpenModal(true)
+    closePopup()
+  }
+  const closeCustomModal = () => {
+    setOpenModal(false)
+    setDefaultService(null)
+    setShowingAddLink(false)
+  }
+
+  const showAddLink = () => {
+    setShowingAddLink(true)
+    openCustomModal()
+  }
+  const hideAddLink = () => {
+    setShowingAddLink(false)
+  }
+
+  const addServiceData = (service) => {
+    setDefaultService(service)
+    hideAddLink()
+  }
 
   const addAccommodation = () => {
     goToAddService('accommodation')
@@ -62,27 +95,44 @@ const AddServiceBox = ({ goToAddService }) => {
   }
 
   return (
-    <Popup
-      trigger={<Box><AddButton /></Box>}
-      content={(
-        <Options>
-          <li onClick={addAccommodation}><Accommodation style={{color: accommodation}} />Accommodation</li>
-          <li onClick={addFood}><Food style={{color: food}} />Food</li>
-          <li onClick={addActivity}><Activity style={{color: activity}} />Activity</li>
-          {/*<Divider />
-          <li onClick={openCustomModal}><Pen style={{color: tertiary}} />Custom</li>
-          */}
-        </Options>
-      )}
-      position="bottom center"
-      verticalOffset={-100}
-      on="click"
-    />
+    <>
+      <Popup
+        trigger={<Box><AddButton /></Box>}
+        content={(
+          <Options>
+            <li onClick={addAccommodation}><Accommodation style={{color: accommodation}} />Accommodation</li>
+            <li onClick={addFood}><Food style={{color: food}} />Food</li>
+            <li onClick={addActivity}><Activity style={{color: activity}} />Activity</li>
+            <Divider />
+            <li onClick={openCustomModal}><Pen style={{color: tertiary}} />Custom</li>
+            <li onClick={showAddLink}><LinkIcon style={{transform: 'rotate(-45deg)', color: tertiary}} />Paste URL</li>
+          </Options>
+        )}
+        position="bottom center"
+        verticalOffset={-100}
+        on="click"
+        open={isOpenPopup}
+        onClose={closePopup}
+        onOpen={openPopup}
+      />
+      <Modal
+        className="serviceModal"
+        style={{ marginTop: '75px !important' }}
+        open={isOpenModal}
+        onClose={closeCustomModal}
+      >
+        { showingAddLink ?
+          <AddLink setServiceData={addServiceData} close={closeCustomModal} />
+          : <AddCustomServiceModal close={closeCustomModal} day={day} service={defaultService} />
+        }
+      </Modal>
+    </>
   )
 }
 
 AddServiceBox.propTypes = {
   goToAddService: PropTypes.func.isRequired,
+  day: PropTypes.number.isRequired,
 }
 
 export default AddServiceBox

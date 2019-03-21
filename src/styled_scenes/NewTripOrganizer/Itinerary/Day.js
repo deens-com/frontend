@@ -243,7 +243,7 @@ const Day = ({
                       />
                     </Location>
                   )}
-                  <AddServiceBox goToAddService={onAddService} />
+                  <AddServiceBox day={day} goToAddService={onAddService} />
                 </Services>
               </ServicesWrapper>
             </div>,

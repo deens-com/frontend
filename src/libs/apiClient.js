@@ -71,6 +71,8 @@ export default {
   },
   services: {
     get: get('/services'),
+    post: (body) => post('/services')(body),
+    patch: (id, body) => patch(`/services/${id}`)(body),
     search: {
       get: get('/search/services'),
     },

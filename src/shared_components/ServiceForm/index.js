@@ -316,7 +316,6 @@ class ServiceForm extends Component {
               </Icon>
             </LabelWithIcon>
             <SemanticLocationControl
-              onlyCities
               defaultAddress={values.formattedAddress}
               onKeyUp={this.onLocationKeyUp}
               onChange={this.onLocationSelect}
@@ -337,100 +336,104 @@ class ServiceForm extends Component {
             {touched.title && errors.title && <ErrorMsg>{errors.title}</ErrorMsg>}
           </Form.Field>
 
-          {/* Subtitle */}
-          <Form.Field required>
-            <LabelWithIcon>
-              <span>Sub-title</span>
-              <Icon>
-                <HelpTooltip
-                  style={{ width: 16, height: 16 }}
-                  content="Sub-title is a one sentence service explanation"
+          {!creatingFromLink && (
+            <React.Fragment>
+              {/* Subtitle */}
+              <Form.Field>
+                <LabelWithIcon>
+                  <span>Sub-title</span>
+                  <Icon>
+                    <HelpTooltip
+                      style={{ width: 16, height: 16 }}
+                      content="Sub-title is a one sentence service explanation"
+                    />
+                  </Icon>
+                </LabelWithIcon>
+                <Form.Input
+                  name="subtitle"
+                  placeholder="Sub-title"
+                  value={values.subtitle}
+                  error={!!(touched.subtitle && errors.subtitle)}
+                  {...defaultProps}
                 />
-              </Icon>
-            </LabelWithIcon>
-            <Form.Input
-              name="subtitle"
-              placeholder="Sub-title"
-              value={values.subtitle}
-              error={!!(touched.subtitle && errors.subtitle)}
-              {...defaultProps}
-            />
-            {touched.subtitle && errors.subtitle && <ErrorMsg>{errors.subtitle}</ErrorMsg>}
-          </Form.Field>
+                {touched.subtitle && errors.subtitle && <ErrorMsg>{errors.subtitle}</ErrorMsg>}
+              </Form.Field>
 
-          {/* Description */}
-          <Form.Field required>
-            <LabelWithIcon>
-              <span>Description</span>
-              <Icon>
-                <HelpTooltip
-                  style={{ width: 16, height: 16 }}
-                  content="Please describe your service in detail in this field"
+              {/* Description */}
+              <Form.Field>
+                <LabelWithIcon>
+                  <span>Description</span>
+                  <Icon>
+                    <HelpTooltip
+                      style={{ width: 16, height: 16 }}
+                      content="Please describe your service in detail in this field"
+                    />
+                  </Icon>
+                </LabelWithIcon>
+                <Form.TextArea
+                  name="description"
+                  placeholder="Tell us more..."
+                  value={values.description}
+                  error={!!(touched.description && errors.description)}
+                  {...defaultProps}
                 />
-              </Icon>
-            </LabelWithIcon>
-            <Form.TextArea
-              name="description"
-              placeholder="Tell us more..."
-              value={values.description}
-              error={!!(touched.description && errors.description)}
-              {...defaultProps}
-            />
-            {touched.description && errors.description && <ErrorMsg>{errors.description}</ErrorMsg>}
-          </Form.Field>
+                {touched.description && errors.description && <ErrorMsg>{errors.description}</ErrorMsg>}
+              </Form.Field>
 
-          {/* Tags */}
-          <Form.Field>
-            <LabelWithIcon>
-              <span>Tags</span>
-              <Icon>
-                <HelpTooltip
-                  style={{ width: 16, height: 16 }}
-                  content="Search labels which are applicable to your service to make it easy to find on search by users"
+              {/* Tags */}
+              <Form.Field>
+                <LabelWithIcon>
+                  <span>Tags</span>
+                  <Icon>
+                    <HelpTooltip
+                      style={{ width: 16, height: 16 }}
+                      content="Search labels which are applicable to your service to make it easy to find on search by users"
+                    />
+                  </Icon>
+                </LabelWithIcon>
+                <Dropdown
+                  name="tags"
+                  options={this.props.serviceFormTagsOptions.map(tag => {
+                    return { text: tag.names['en-us'], value: tag._id };
+                  })}
+                  placeholder="Add tags"
+                  search
+                  selection
+                  fluid
+                  multiple
+                  value={values.tags}
+                  onChange={this.onDropDownChange}
                 />
-              </Icon>
-            </LabelWithIcon>
-            <Dropdown
-              name="tags"
-              options={this.props.serviceFormTagsOptions.map(tag => {
-                return { text: tag.names['en-us'], value: tag._id };
-              })}
-              placeholder="Add tags"
-              search
-              selection
-              fluid
-              multiple
-              value={values.tags}
-              onChange={this.onDropDownChange}
-            />
-          </Form.Field>
+              </Form.Field>
 
-          {/* Multi image upload */}
-          <Form.Field>
-            <label>Pictures (the first one you upload will be your main service picture)</label>
-            <MultiImageUploader
-              value={values.media}
-              onUploadedFilesChanged={this.onUploadedFilesChanged}
-              initialUploadedFiles={values.media}
-              onStartedUpload={this.onStartedUpload}
-            />
-          </Form.Field>
+              {/* Multi image upload */}
+              <Form.Field>
+                <label>Pictures (the first one you upload will be your main service picture)</label>
+                <MultiImageUploader
+                  value={values.media}
+                  onUploadedFilesChanged={this.onUploadedFilesChanged}
+                  initialUploadedFiles={values.media}
+                  onStartedUpload={this.onStartedUpload}
+                />
+              </Form.Field>
 
-          {/* Duration */}
-          {values.category !== 'Accommodation' &&
-            !creatingFromLink && (
-              <DurationInput
-                onChange={this.changeDuration}
-                onTouch={this.handleDurationTouch}
-                defaultValue={Number(values.duration) || undefined}
-                touched={touched.duration}
-                error={errors.duration}
-                ErrorComponent={ErrorMsg}
-              />
-            )}
+              {/* Duration */}
+              {values.category !== 'Accommodation' &&
+                !creatingFromLink && (
+                  <DurationInput
+                    onChange={this.changeDuration}
+                    onTouch={this.handleDurationTouch}
+                    defaultValue={Number(values.duration) || undefined}
+                    touched={touched.duration}
+                    error={errors.duration}
+                    ErrorComponent={ErrorMsg}
+                  />
+                )}
+              </React.Fragment>
+          )}
 
           {/* Price */}
-          <Form.Field required>
+          <Form.Field>
             <label>
               {values.category === 'Food' ? 'Average Price per person' : 'Price'} ($ USD)
             </label>
@@ -712,10 +715,10 @@ class ServiceForm extends Component {
 function validate(values) {
   const shortVersion = values.isShortVersion;
 
-  const requiredFields = ['category', 'title', 'subtitle', 'description', 'basePrice', 'latlong'];
+  const requiredFields = ['category', 'title', 'latlong'];
 
   if (!shortVersion) {
-    requiredFields.push('duration', 'availableDays', 'startDate', 'endDate', 'slots');
+    requiredFields.push('duration', 'subtitle', 'description', 'availableDays', 'startDate', 'endDate', 'slots');
   }
 
   if (values.refundType !== 'none') {
@@ -730,10 +733,6 @@ function validate(values) {
     if (!errors[field] && isNaN(values[field])) {
       errors[field] = 'Invalid number';
     }
-  }
-
-  if (Number(values['basePrice']) < 0) {
-    errors['basePrice'] = 'Price must be at least 0';
   }
 
   if (!isNaN(parseFloat(values['slots'])) && parseFloat(values['slots']) < 1) {
@@ -847,6 +846,7 @@ export default withFormik({
     refundType: 'none',
     ...(service &&
     service.periods &&
+    service.periods[0] &&
     service.periods[0].cancellationPolicies &&
     service.periods[0].cancellationPolicies.length > 0
       ? {
@@ -859,6 +859,9 @@ export default withFormik({
   validate,
   validateOnChange: false,
   handleSubmit: (values, { props }) => {
+    if (!values.basePrice) {
+      values.basePrice = '0'
+    }
     props.onSubmit(values);
   },
   enableReinitialize: true,

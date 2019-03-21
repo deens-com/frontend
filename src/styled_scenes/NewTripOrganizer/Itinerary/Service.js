@@ -6,9 +6,10 @@ import { DragSource, DropTarget } from 'react-dnd';
 import { Popup } from 'semantic-ui-react'
 import { types } from '../constants';
 import { P, PSmallStrong, PXSmall } from 'libs/commonStyles';
-import { lightText, primary, secondary, primaryContrast, secondaryContrast, error, activity, food, accommodation } from 'libs/colors';
+import { lightText, primary, darkText, primaryContrast, secondaryContrast, error, activity, food, accommodation } from 'libs/colors';
 import { Drag } from 'shared_components/icons';
 import Stars from 'shared_components/Rating/Stars';
+import InlineInput from 'shared_components/InlineInput'
 import ServiceOptions from './ServiceOptions';
 import { TripContext } from '../';
 import { getImageUrlFromMedia } from 'libs/media'
@@ -206,7 +207,7 @@ const Service = ({
   connectDropTarget,
   selectOption,
 }) => {
-  const { isCheckingAvailability, removeService } = useContext(TripContext);
+  const { isCheckingAvailability, removeService, changeServiceTitle, changeServicePrice } = useContext(TripContext);
   const fastBookable =
     data.service.checkoutOptions && data.service.checkoutOptions.payAt === 'please';
   const isAvailable = !data.availability || data.availability.isAvailable;
@@ -214,6 +215,14 @@ const Service = ({
     data.availability &&
     data.availability.groupedOptions &&
     data.availability.groupedOptions.options;
+
+  const setServicePrice = (price) => {
+    changeServicePrice(data.service._id, data.day, price)
+  }
+
+  const setServiceTitle = (title) => {
+    changeServiceTitle(data.service._id, data.day, title)
+  }
 
   return connectDragPreview(
     connectDropTarget(
@@ -254,15 +263,21 @@ const Service = ({
             >
               <ServiceData>
                 <ServiceTitle>
-                  <I18nText data={data.service.title} />
+                  <InlineInput disallowEmptySubmit onChanged={setServiceTitle}>
+                    {I18nText.translate(data.service.title)}
+                  </InlineInput>
                 </ServiceTitle>
                 <RatingAndPrice>
                   <Price>
-                    <PSmallStrong>${data.service.basePrice}</PSmallStrong>
+                    <PSmallStrong><InlineInput textPrefix="$" inputTextColor={darkText} onChanged={setServicePrice}>
+                    {data.service.basePrice}
+                  </InlineInput></PSmallStrong>
                     <PXSmall>{getPriceText(data.service.categories[0].names['en-us'])}</PXSmall>
                   </Price>
                   <StarsWrapper>
-                    <Stars rating={3} />
+                    {
+                      data.service.privacy === 'public' && data.service.ratings && <Stars rating={data.service.ratings.average} />
+                    }
                     {fastBookable && <BookableTag>Fast Booking</BookableTag>}
                   </StarsWrapper>
                 </RatingAndPrice>

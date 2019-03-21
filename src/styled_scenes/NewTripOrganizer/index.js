@@ -12,7 +12,7 @@ import Footer from './Footer';
 import { mapServicesByDay, mapDaysToServices } from '../Trip/mapServicesToDays';
 import Options from './Options';
 import I18nText from 'shared_components/I18nText';
-import { StickyContainer, Sticky } from 'react-sticky';
+import {addServiceRequest} from 'libs/trips'
 
 function addLang(text) {
   return {
@@ -446,6 +446,28 @@ export default class TripOrganizer extends React.Component {
     );
   };
 
+  addService = async (serviceToAdd, day) => {
+    // THIS ONLY WORKS FOR RECENTLY CREATED SERVICES
+    // WE USE SERVICE ID INSTEAD OF SERVICE ORG ID TO IDENTIFY THE SERVICE
+    if (!this.props.tripId) {
+      return
+    }
+    const trip = (await addServiceRequest(this.props.tripId, day, serviceToAdd._id)).data
+    this.setState(prevState => ({
+      services: {
+        ...prevState.services,
+        [day]: [
+          ...prevState.services[day],
+          {
+            ...trip.services.find(service => service.service === serviceToAdd._id),
+            service: serviceToAdd,
+          }
+        ]
+      },
+    }))
+    this.getTransportation();
+  }
+
   removeService = serviceOrgId => {
     let removedService;
     this.setState(prevState => {
@@ -590,6 +612,44 @@ export default class TripOrganizer extends React.Component {
       },
     );
   };
+
+  changeServiceTitle = (serviceId, day, title) => {
+    this.modifyService(serviceId, day, { title: addLang(title) })
+  }
+
+  changeServicePrice = (serviceId, day, price) => {
+    if (!Number(price)) {
+      return
+    }
+
+    this.modifyService(serviceId, day, { basePrice: Number(price) })
+  }
+
+  modifyService = (serviceId, day, data) => {
+    this.setState(prevState => {
+      const services = prevState.services[day].map(service => {
+        if (service.service._id === serviceId) {
+          return {
+            ...service,
+            service: {
+              ...service.service,
+              ...data,
+            }
+          }
+        }
+        return service
+      })
+
+      return {
+        services: {
+          ...prevState.services,
+          [day]: services,
+        },
+      }
+    })
+
+    apiClient.services.patch(serviceId, data)
+  }
 
   changeGuests = async data => {
     const newData = {
@@ -746,6 +806,9 @@ export default class TripOrganizer extends React.Component {
           changeInitialLocation: this.changeInitialLocation,
           changeFinalLocation: this.changeFinalLocation,
           removeService: this.removeService,
+          addService: this.addService,
+          changeServiceTitle: this.changeServiceTitle,
+          changeServicePrice: this.changeServicePrice,
         }}
       >
         <Header
