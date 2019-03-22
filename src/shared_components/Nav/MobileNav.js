@@ -255,7 +255,7 @@ class MobileNav extends Component {
               {icoReady && (
                 <li aria-hidden="false">
                   <NavLinkTitle>Token Sale</NavLinkTitle>
-                  <NavAnchor href="https://protocol.please.com">Information</NavAnchor>
+                  <NavAnchor href="https://protocol.deens.com">Information</NavAnchor>
                   <NavLink to="/token-sale">Contribute</NavLink>
                 </li>
               )}

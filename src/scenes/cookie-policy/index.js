@@ -35,8 +35,8 @@ const CookiePolicy = ({ loggedIn, changeHeader }) => {
     <React.Fragment>
       <PageWrapper>
         <Content>
-          <h1>Cookie Policy for Please.com</h1>
-          <p>This is the Cookie Policy for Please.com, accessible from https://please.com</p>
+          <h1>Cookie Policy for Deens.com</h1>
+          <p>This is the Cookie Policy for Deens.com, accessible from https://deens.com</p>
           <h3>What Are Cookies</h3>
           <p>
             As is common practice with almost all professional websites this site uses cookies,

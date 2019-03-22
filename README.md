@@ -1,18 +1,18 @@
 <div align="center">
-  <a href="https://demo.please.com"><img src="https://please-com.imgix.net/static/please-logo.png?w=600" alt="please.com" width="500px"/></a>
+  <a href="https://demo.deens.com"><img src="https://please-com.imgix.net/static/please-logo.png?w=600" alt="deens.com" width="500px"/></a>
 
 ### Book curated trips in minutes.
 
 </div>
 
-[![CircleCI](https://circleci.com/gh/PleaseDotCom/frontend.svg?style=svg)](https://circleci.com/gh/PleaseDotCom/frontend)
+[![CircleCI](https://circleci.com/gh/deens-com/frontend.svg?style=svg)](https://circleci.com/gh/PleaseDotCom/frontend)
 
-This is the repository for the frontend of [please.com](https://please.com). This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app) and then later moved over to [React app rewired](https://github.com/timarney/react-app-rewired).
+This is the repository for the frontend of [deens.com](https://deens.com). This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app) and then later moved over to [React app rewired](https://github.com/timarney/react-app-rewired).
 
 ## 🏗 Development
 
 ```sh
-$ git clone git@github.com:PleaseDotCom/frontend.git
+$ git clone git@github.com:deens-com/frontend.git
 $ cd frontend
 
 # install dependencies
@@ -23,7 +23,7 @@ We have some [yarn](https://yarnpkg.com/) specific code in our `package.json` so
 
 ```sh
 # export the backend endpoint to use
-$ export REACT_APP_PARSE_SERVER_URL=https://staging-api.please.com
+$ export REACT_APP_PARSE_SERVER_URL=https://staging-api.deens.com
 
 # start the web app
 $ yarn start

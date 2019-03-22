@@ -57,8 +57,8 @@ jobs:
       - run:
           name: Set up commit status
           command: |
-            curl -i -H "Authorization: token ${GIT_TOKEN}" -H "Content-Type: application/json" --request POST --data "{\"state\": \"pending\", \"description\": \"Waiting for build to finish\", \"context\": \"ci/deploy-feature\"}" https://api.github.com/repos/PleaseDotCom/frontend/statuses/${CIRCLE_SHA1}
-            curl -i -H "Authorization: token ${GIT_TOKEN}" -H "Content-Type: application/json" --request POST --data "{\"state\": \"pending\", \"description\": \"Waiting for deployment to finish\", \"context\": \"ci/regression-tests\"}" https://api.github.com/repos/PleaseDotCom/frontend/statuses/${CIRCLE_SHA1}
+            curl -i -H "Authorization: token ${GIT_TOKEN}" -H "Content-Type: application/json" --request POST --data "{\"state\": \"pending\", \"description\": \"Waiting for build to finish\", \"context\": \"ci/deploy-feature\"}" https://api.github.com/repos/deens-com/frontend/statuses/${CIRCLE_SHA1}
+            curl -i -H "Authorization: token ${GIT_TOKEN}" -H "Content-Type: application/json" --request POST --data "{\"state\": \"pending\", \"description\": \"Waiting for deployment to finish\", \"context\": \"ci/regression-tests\"}" https://api.github.com/repos/deens-com/frontend/statuses/${CIRCLE_SHA1}
 
       #- run:
       #    name: Run Tests
@@ -73,44 +73,44 @@ jobs:
       - deploy:
           name: Build and Deploy
           command: |
-            curl -i -H "Authorization: token ${GIT_TOKEN}" -H "Content-Type: application/json" --request POST --data "{\"state\": \"pending\", \"description\": \"Deployment started\", \"context\": \"ci/deploy-feature\"}" https://api.github.com/repos/PleaseDotCom/frontend/statuses/${CIRCLE_SHA1}
+            curl -i -H "Authorization: token ${GIT_TOKEN}" -H "Content-Type: application/json" --request POST --data "{\"state\": \"pending\", \"description\": \"Deployment started\", \"context\": \"ci/deploy-feature\"}" https://api.github.com/repos/deens-com/frontend/statuses/${CIRCLE_SHA1}
 
             if [ "${CIRCLE_BRANCH}" == "staging" ]; then
               CI=false npm run build:staging && \
               cd build && \
               npx now --team please -t $NOW_SH_TOKEN && \
-              npx now --team please -t $NOW_SH_TOKEN alias please-staging
+              npx now --team please -t $NOW_SH_TOKEN alias deens-staging
             else
               CI=false npm run build:staging && \
               cd build && \
               echo "export URL=$(npx now --team please -t $NOW_SH_TOKEN)" > /tmp/env.tmp && source /tmp/env.tmp && \
-              npx now --team please -t $NOW_SH_TOKEN alias please-${CIRCLE_BRANCH}
+              npx now --team please -t $NOW_SH_TOKEN alias deens-${CIRCLE_BRANCH}
 
               if [ "${URL}" == "" ]; then
-                curl -i -H "Authorization: token ${GIT_TOKEN}" -H "Content-Type: application/json" --request POST --data "{\"state\": \"error\", \"description\": \"Deployment failed\", \"context\": \"ci/deploy-feature\"}" https://api.github.com/repos/PleaseDotCom/frontend/statuses/${CIRCLE_SHA1} && \
+                curl -i -H "Authorization: token ${GIT_TOKEN}" -H "Content-Type: application/json" --request POST --data "{\"state\": \"error\", \"description\": \"Deployment failed\", \"context\": \"ci/deploy-feature\"}" https://api.github.com/repos/deens-com/frontend/statuses/${CIRCLE_SHA1} && \
                 false
               fi
 
-              curl -i -H "Authorization: token ${GIT_TOKEN}" -H "Content-Type: application/json" --request POST --data "{\"state\": \"success\", \"target_url\": \"https://please-${CIRCLE_BRANCH}.now.sh\", \"description\": \"Feature deployed\", \"context\": \"ci/deploy-feature\"}" https://api.github.com/repos/PleaseDotCom/frontend/statuses/${CIRCLE_SHA1}
+              curl -i -H "Authorization: token ${GIT_TOKEN}" -H "Content-Type: application/json" --request POST --data "{\"state\": \"success\", \"target_url\": \"https://deens-${CIRCLE_BRANCH}.now.sh\", \"description\": \"Feature deployed\", \"context\": \"ci/deploy-feature\"}" https://api.github.com/repos/deens-com/frontend/statuses/${CIRCLE_SHA1}
             fi
       # Run visual regression tests
       - run:
           name: Run GhostInspector
           command: |
-            curl -i -H "Authorization: token ${GIT_TOKEN}" -H "Content-Type: application/json" --request POST --data "{\"state\": \"pending\", \"description\": \"Regression tests started\", \"context\": \"ci/regression-tests\"}" https://api.github.com/repos/PleaseDotCom/frontend/statuses/${CIRCLE_SHA1}
+            curl -i -H "Authorization: token ${GIT_TOKEN}" -H "Content-Type: application/json" --request POST --data "{\"state\": \"pending\", \"description\": \"Regression tests started\", \"context\": \"ci/regression-tests\"}" https://api.github.com/repos/deens-com/frontend/statuses/${CIRCLE_SHA1}
 
             if [ "${CIRCLE_BRANCH}" != "master" ] && [ "${CIRCLE_BRANCH}" != "staging" ]; then
               source /tmp/env.tmp && \
-              bash -c 'while [[ "$(curl -s -o /tmp/curl.json -w ''%{http_code}'' https://api.ghostinspector.com/v1/suites/5b4f7cc48cbdd775d4a69c27/execute/?apiKey=${GI_API_KEY} -d 'startUrl=https://please-${CIRCLE_BRANCH}.now.sh')" != "200" ]]; do sleep 5; done' && \
+              bash -c 'while [[ "$(curl -s -o /tmp/curl.json -w ''%{http_code}'' https://api.ghostinspector.com/v1/suites/5b4f7cc48cbdd775d4a69c27/execute/?apiKey=${GI_API_KEY} -d 'startUrl=https://deens-${CIRCLE_BRANCH}.now.sh')" != "200" ]]; do sleep 5; done' && \
               export GI_STATUS=$(node -p "(require('/tmp/curl.json').data[0].passing) ? 'Passed' : 'Failed'") && \
               export GI_RESULT_ID=$(node -p "require('/tmp/curl.json').data[0].suiteResult") && \
 
               if [ "${GI_STATUS}" == "Failed" ]; then
-                curl -i -H "Authorization: token ${GIT_TOKEN}" -H "Content-Type: application/json" --request POST --data "{\"state\": \"failure\", \"target_url\": \"https://app.ghostinspector.com/suite-results/${GI_RESULT_ID}\", \"description\": \"Regression tests failed\", \"context\": \"ci/regression-tests\"}" https://api.github.com/repos/PleaseDotCom/frontend/statuses/${CIRCLE_SHA1} && \
+                curl -i -H "Authorization: token ${GIT_TOKEN}" -H "Content-Type: application/json" --request POST --data "{\"state\": \"failure\", \"target_url\": \"https://app.ghostinspector.com/suite-results/${GI_RESULT_ID}\", \"description\": \"Regression tests failed\", \"context\": \"ci/regression-tests\"}" https://api.github.com/repos/deens-com/frontend/statuses/${CIRCLE_SHA1} && \
                 false
               fi
 
-              curl -i -H "Authorization: token ${GIT_TOKEN}" -H "Content-Type: application/json" --request POST --data "{\"state\": \"success\", \"target_url\": \"https://app.ghostinspector.com/suite-results/${GI_RESULT_ID}\", \"description\": \"Regression tests finished\", \"context\": \"ci/regression-tests\"}" https://api.github.com/repos/PleaseDotCom/frontend/statuses/${CIRCLE_SHA1}
+              curl -i -H "Authorization: token ${GIT_TOKEN}" -H "Content-Type: application/json" --request POST --data "{\"state\": \"success\", \"target_url\": \"https://app.ghostinspector.com/suite-results/${GI_RESULT_ID}\", \"description\": \"Regression tests finished\", \"context\": \"ci/regression-tests\"}" https://api.github.com/repos/deens-com/frontend/statuses/${CIRCLE_SHA1}
             fi
 workflows:
   version: 2

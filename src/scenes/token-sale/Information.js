@@ -139,8 +139,8 @@ export default ({ goToNextStep }) => {
           Proceed
         </Button>
         <Or>or</Or>
-        <a href="https://protocol.please.com" rel="noopener noreferrer" target="_blank">
-          Learn more about the Please.com protocol
+        <a href="https://protocol.deens.com" rel="noopener noreferrer" target="_blank">
+          Learn more about the Deens.com protocol
         </a>
       </ActionsWrapper>
       <PolicyWrapper>
@@ -150,7 +150,7 @@ export default ({ goToNextStep }) => {
         <a href="#">Token Sale Terms and conditions</a>*/}
         <Divider />
         <Support>Support</Support>
-        <a href="mailto:contribute@please.com">contribute@please.com</a>
+        <a href="mailto:contribute@deens.com">contribute@deens.com</a>
         <Divider />
       </PolicyWrapper>
     </Wrapper>

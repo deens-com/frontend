@@ -106,7 +106,7 @@ class TripContainer extends Component {
 
       helmet = (
         <Helmet>
-          <title>{title} | Please.com</title>
+          <title>{title} | Deens.com</title>
           {description && <meta name="description" content={description} />}
           {description && <meta property="og:description" content={description} />}
           {this.props.slug && !isIncorrectUrl ? <link rel="canonical" href={url} /> : null}

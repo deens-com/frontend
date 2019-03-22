@@ -150,7 +150,7 @@ const TopBarDesktopNav = function TopBarDesktopNav({
                     target="_blank"
                     rel="noopener noreferrer"
                     className="item"
-                    href="https://protocol.please.com"
+                    href="https://protocol.deens.com"
                   >
                     <span className="text">Information</span>
                   </a>

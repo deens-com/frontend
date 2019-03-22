@@ -84,7 +84,7 @@ const ContractWrapper = styled(BaseWrapper)`
   }
 `;
 
-const PleaseAddress = styled.div`
+const DeensAddress = styled.div`
   padding: 0 10px;
   border: 1px solid #a7cfd6;
   border-radius: 5px;
@@ -237,7 +237,7 @@ export default class BuyTokens extends React.Component {
               )}
               <ChangeAddress>
                 In order to change your address please contact us at{' '}
-                <a href="mailto:contribute@please.com">contribute@please.com</a>
+                <a href="mailto:contribute@deens.com">contribute@deens.com</a>
               </ChangeAddress>
             </WalletContent>
           </WalletWrapper>
@@ -246,14 +246,14 @@ export default class BuyTokens extends React.Component {
               <strong>
                 Make sure you keep your private keys for the address used to send ether to the
                 contract safe and secure, this will be the address that will hold your PLS tokens.
-                Please do not send ether to Please.com crowdfunding contract from wallets hosted by
+                Please do not send ether to Deens.com crowdfunding contract from wallets hosted by
                 exchanges, make sure you always use your private key.
               </strong>
             </p>
           </AdviceWrapper>
           <ContractWrapper>
             <h2>Contract address</h2>
-            <PleaseAddress>
+            <DeensAddress>
               <input ref={this.addressRef} value="pleasetokensale.eth" />
               <Popup
                 trigger={
@@ -268,7 +268,7 @@ export default class BuyTokens extends React.Component {
                 position="bottom center"
                 onOpen={this.onCopy}
               />
-            </PleaseAddress>
+            </DeensAddress>
             <p>
               <strong>This is the only address to contribute. It will never change.</strong> Do not
               send to any other address. Do not trust anybody else, even our social media accounts

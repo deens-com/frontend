@@ -10,12 +10,12 @@ Cypress.Commands.add('findTestElement', selector => {
 
 Cypress.Commands.add('login', () => {
   cy.fixture('users/login-success').then(user => {
-    localStorage.setItem(`please-${Cypress.env('NODE_ENV')}-session`, JSON.stringify(user));
+    localStorage.setItem(`deens-${Cypress.env('NODE_ENV')}-session`, JSON.stringify(user));
   });
 });
 
 Cypress.Commands.add('logout', () => {
-  window.localStorage.removeItem(`please-${Cypress.env('NODE_ENV')}-session`);
+  window.localStorage.removeItem(`deens-${Cypress.env('NODE_ENV')}-session`);
 });
 
 Cypress.Commands.add('checkTripOrganizerIsEmpty', () => {

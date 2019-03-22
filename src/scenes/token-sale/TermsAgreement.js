@@ -47,11 +47,11 @@ class TermsAgreement extends React.Component {
         <p>I make a contribution in my own name and on my own account.</p>
         <p>My wallet address is ERC20 compatible and NOT an exchange wallet.</p>
         <p>
-          I hereby agree to the terms and conditions of Please.com and have read the privacy policy.
+          I hereby agree to the terms and conditions of Deens.com and have read the privacy policy.
         </p>
         <p>I hereby agree to the Token Sale terms and conditions and the supplemental terms.</p>
         <p>
-          Yes, I want to receive Please.com news, important announcements and updates from Token
+          Yes, I want to receive Deens.com news, important announcements and updates from Token
           Sale.
         </p>
         <Checkbox onChange={this.onChange} label="I Agree" />

@@ -1,14 +1,14 @@
 {
   "name": "frontend",
   "version": "0.1.0",
-  "homepage": "https://pleasecom.github.io",
+  "homepage": "https://deens-com.github.io",
   "main": "src/index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/PleaseDotCom/frontend.git"
+    "url": "git+https://github.com/deens-com/frontend.git"
   },
   "bugs": {
-    "url": "https://github.com/PleaseDotCom/frontend/issues"
+    "url": "https://github.com/deens-com/frontend/issues"
   },
   "license": "MIT",
   "dependencies": {

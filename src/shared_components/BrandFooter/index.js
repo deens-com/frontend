@@ -59,7 +59,7 @@ export default ({ marginBottom = 0 }) => (
         <Column>
           <H6>Network</H6>
           <LinkElement>
-            <a target="_blank" rel="noopener noreferrer" href="https://blog.please.com/">
+            <a target="_blank" rel="noopener noreferrer" href="https://blog.deens.com/">
               Our Blog
             </a>
           </LinkElement>
@@ -98,7 +98,7 @@ export default ({ marginBottom = 0 }) => (
           </LinkElement>
         </Column>
       </ColumnWrapper>
-      <Copyright>© 2019 Please.com. All rights reserved.</Copyright>
+      <Copyright>© 2019 Deens.com. All rights reserved.</Copyright>
     </PageWrapper>
   </Wrapper>
 );

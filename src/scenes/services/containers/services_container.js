@@ -74,7 +74,7 @@ class ServicesContainer extends Component {
         helmet = (
           <Helmet>
             {this.props.slug && !isIncorrectUrl ? <link rel="canonical" href={url} /> : null}
-            <title>{title} | Please.com</title>
+            <title>{title} | Deens.com</title>
             <meta name="description" content={description} />
             <meta property="og:url" content={url} />
             <meta property="og:title" content={title} />

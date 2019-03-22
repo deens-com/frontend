@@ -61,7 +61,7 @@ const TripsBy = styled(PStrong)`
   color: ${primary};
 `;
 
-const Please = styled.span`
+const Deens = styled.span`
   color: ${primary};
   font-weight: bold;
 `;
@@ -175,7 +175,7 @@ export default class FeaturedTripCreator extends React.Component {
                 Béatrice was born and raised in Paris, France. She was a lawyer before she decided
                 to travel the world with her family. Béatrice has lived in many countries and
                 currently resides in Thailand. Her trips have been created from her own travels and
-                experiences and have inspired many other travelers on <Please>Please</Please>.
+                experiences and have inspired many other travelers on <Deens>Deens</Deens>.
               </P>
               <TripsBy>Trips by {featuredTripCreator}</TripsBy>
             </TripCreatorData>

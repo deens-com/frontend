@@ -27,7 +27,7 @@ describe('Should login to book the trip', function() {
   beforeEach(() => {
     cy.fixture('trips/guest').then(guestTrip => {
       localStorage.setItem(
-        `please-${Cypress.env('NODE_ENV')}-anonymous-trip`,
+        `deens-${Cypress.env('NODE_ENV')}-anonymous-trip`,
         JSON.stringify(guestTrip),
       );
     });
@@ -45,7 +45,7 @@ describe('Should login to book the trip', function() {
   });
 
   afterEach(() => {
-    localStorage.removeItem(`please-${Cypress.env('NODE_ENV')}-anonymous-trip`);
+    localStorage.removeItem(`deens-${Cypress.env('NODE_ENV')}-anonymous-trip`);
   });
 
   it('Should be redirected to register page', function() {
@@ -64,7 +64,7 @@ describe('Should login to book the trip', function() {
     cy.getTestElement('loginEmail').within(_ => {
       cy.root()
         .get('input')
-        .type('email@please.com');
+        .type('email@deens.com');
     });
 
     cy.getTestElement('loginPassword').within(_ => {

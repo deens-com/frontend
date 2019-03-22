@@ -174,7 +174,7 @@ class BlogPost extends React.Component {
       <React.Fragment>
         {article && (
           <Helmet>
-            <title>{article.title[0].text} | Please.com</title>
+            <title>{article.title[0].text} | Deens.com</title>
             <link rel="canonical" href={`${websiteUrl}/${this.props.match.params.slug}`} />
             <meta name="description" content={description} />
             <meta property="og:url" content={`${websiteUrl}/${this.props.match.params.slug}`} />

@@ -40,7 +40,7 @@ export const serviceFormTagsOptionsFetched = payload => {
 
 export const registerService = (values, history) => async (dispatch, getState) => {
   const state = getState();
-  // const localStorageUser = localStorage.getItem(`please-${env}-session`);
+  // const localStorageUser = localStorage.getItem(`deens-${env}-session`);
   // const jsonUser = JSON.parse(localStorageUser);
   // const jwtToken = jsonUser.accessToken;
   const { isSubmitting } = state.servicesUpsert;

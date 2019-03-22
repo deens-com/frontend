@@ -123,7 +123,7 @@ class TokenSale extends Component {
 
   getTitle() {
     if (this.props.kycState === 0) {
-      return 'Welcome to Please.com Token Sale!';
+      return 'Welcome to Deens.com Token Sale!';
     }
 
     if (this.props.kycState === 1 && !this.state.agreedTerms) {
@@ -195,7 +195,7 @@ class TokenSale extends Component {
     const title = this.getTitle();
     const subtitle =
       this.props.kycState === 0
-        ? 'Please.com is a protocol and a marketplace to promote decentralization and progressively bring it to the masses through the travel industry.'
+        ? 'Deens.com is a protocol and a marketplace to promote decentralization and progressively bring it to the masses through the travel industry.'
         : '';
 
     return (
