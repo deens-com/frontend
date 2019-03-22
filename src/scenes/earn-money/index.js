@@ -133,7 +133,7 @@ const EarnMoney = ({ loggedIn, userProfile, changeHeader }) => {
   return (
     <React.Fragment>
       <Helmet>
-        <title>Earn money by creating trips | Please.com</title>
+        <title>Earn money by creating trips | Deens.com</title>
         <link rel="canonical" href={`${websiteUrl}/earn-money`} />
         <meta name="description" content="Create end-to-end trips, share them and earn money." />
         <meta property="og:url" content={`${websiteUrl}/earn-money`} />
@@ -160,9 +160,9 @@ const EarnMoney = ({ loggedIn, userProfile, changeHeader }) => {
               <InfoTitle>Get up to $29 for every friend you invite.</InfoTitle>
               <InfoDesc>
                 We're serious about keeping you connected with friends and family. Invite your
-                friends to Please via email, or share your referral code on Facebook or Twitter.
+                friends to Deens via email, or share your referral code on Facebook or Twitter.
                 <br />
-                When you send a friend $33 in Please credit, you’ll get $17 when they travel. Your
+                When you send a friend $33 in Deens credit, you’ll get $17 when they travel. Your
                 available travel credit automatically appears on the checkout page in the form of a
                 coupon.
               </InfoDesc>
@@ -197,9 +197,9 @@ const EarnMoney = ({ loggedIn, userProfile, changeHeader }) => {
           <InfoBlock>
             <InfoImage img={hostImg} />
             <InfoContent>
-              <InfoTitle>Become a Please host, by adding services</InfoTitle>
+              <InfoTitle>Become a Deens host, by adding services</InfoTitle>
               <InfoDesc>
-                Share your home or add your tour on Please to build up your savings, fund your next
+                Share your home or add your tour on Deens to build up your savings, fund your next
                 trip, or simply meet interesting travelers.
               </InfoDesc>
               <CallToAction

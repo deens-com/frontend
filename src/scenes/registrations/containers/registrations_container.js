@@ -106,7 +106,7 @@ class RegistrationsContainer extends Component {
         errors: {},
       });
 
-      const cookieReferrerId = 'please_referrer_id';
+      const cookieReferrerId = 'deens_referrer_id';
       let referrer = Cookies.get(cookieReferrerId);
 
       await axios.post('/users/signup', {

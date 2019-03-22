@@ -33,8 +33,8 @@ export default class KYC extends React.Component {
       window.idensic.init('#idensic', {
         accessToken,
         excludedCountries: ['CHN'],
-        userAgreementUrl: 'https://vision.please.com/assets/terms.pdf',
-        privacyPolicyUrl: 'https://vision.please.com/assets/privacy.pdf',
+        userAgreementUrl: 'https://vision.deens.com/assets/terms.pdf',
+        privacyPolicyUrl: 'https://vision.deens.com/assets/privacy.pdf',
         requiredDocuments:
           'IDENTITY:PASSPORT,ID_CARD,DRIVERS;SELFIE:SELFIE;PROOF_OF_RESIDENCE:UTILITY_BILL',
       });

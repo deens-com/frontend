@@ -37,7 +37,7 @@ class HomeContainer extends Component {
     return (
       <div className="HomeContainer">
         <Helmet>
-          <title>Please, plan my trip!</title>
+          <title>Deens, plan my trip!</title>
           <link rel="canonical" href={websiteUrl} />
         </Helmet>
         <HomeComponent

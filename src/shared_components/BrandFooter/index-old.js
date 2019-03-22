@@ -76,25 +76,25 @@ export default function Footer({ posRelative, withTopBorder, withPadding }) {
           <ALink
             target="_blank"
             rel="noopener noreferrer"
-            href="https://vision.please.com/assets/terms.pdf"
+            href="https://vision.deens.com/assets/terms.pdf"
           >
             Terms
           </ALink>
           <ALink
             target="_blank"
             rel="noopener noreferrer"
-            href="https://vision.please.com/assets/privacy.pdf"
+            href="https://vision.deens.com/assets/privacy.pdf"
           >
             Privacy
           </ALink>
-          <ALink target="_blank" rel="noopener noreferrer" href="https://help.please.com/">
+          <ALink target="_blank" rel="noopener noreferrer" href="https://help.deens.com/">
             Help
           </ALink>
         </div>
       </Nav>
       <Company>
         <Logo style={{ width: '120px', marginRight: '10px' }} />
-        <span>© Please.com</span>
+        <span>© Deens.com</span>
       </Company>
       <div>
         <ALink
@@ -111,7 +111,7 @@ export default function Footer({ posRelative, withTopBorder, withPadding }) {
             }}
           />
         </ALink>
-        <ALink href="https://twitter.com/PleaseTrips/" rel="noopener noreferrer" target="_blank">
+        <ALink href="https://twitter.com/deens_com/" rel="noopener noreferrer" target="_blank">
           <Twitter
             style={{
               height: '16px',
@@ -122,7 +122,7 @@ export default function Footer({ posRelative, withTopBorder, withPadding }) {
           />
         </ALink>
         <ALink
-          href="https://www.instagram.com/PleaseTrips/"
+          href="https://www.instagram.com/deens_com/"
           rel="noopener noreferrer"
           target="_blank"
         >

@@ -99,7 +99,7 @@ class GDPRBanner extends React.Component {
     return (
       <Notification closed={closed} ref={this.gdprRef} onClick={this.dismiss}>
         <Text>
-          This site uses cookies to provide you with a great user experience. By using Please.com
+          This site uses cookies to provide you with a great user experience. By using Deens.com
           you accept our use of{' '}
           <a href="/cookie-policy" target="_blank" onClick={e => e.stopPropagation()}>
             cookies

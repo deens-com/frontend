@@ -1,7 +1,7 @@
 import { env } from 'libs/config';
 
-const tripKey = `please-${env}-anonymous-trip`;
-const favoriteTripsKey = `please-${env}-favorite-trips`;
+const tripKey = `deens-${env}-anonymous-trip`;
+const favoriteTripsKey = `deens-${env}-favorite-trips`;
 
 function removeUselessFields(trip) {
   // this could be removed in the future

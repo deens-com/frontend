@@ -24,7 +24,7 @@ describe('Should be redirected from /trips/organize', function() {
   it('User logged in and trip saved', function() {
     cy.fixture('trips/guest').then(guestTrip => {
       localStorage.setItem(
-        `please-${Cypress.env('NODE_ENV')}-anonymous-trip`,
+        `deens-${Cypress.env('NODE_ENV')}-anonymous-trip`,
         JSON.stringify(guestTrip),
       );
     });
@@ -44,7 +44,7 @@ describe('Should be redirected from /trips/organize', function() {
   it('User not logged in and has a trip saved', function() {
     cy.fixture('trips/guest').then(guestTrip => {
       localStorage.setItem(
-        `please-${Cypress.env('NODE_ENV')}-anonymous-trip`,
+        `deens-${Cypress.env('NODE_ENV')}-anonymous-trip`,
         JSON.stringify(guestTrip),
       );
     });

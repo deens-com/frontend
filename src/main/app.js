@@ -15,7 +15,7 @@ import Skeleton from './skeleton';
 
 class App extends React.Component {
   checkForReferrerAndSet = () => {
-    const cookieReferrerId = 'please_referrer_id';
+    const cookieReferrerId = 'deens_referrer_id';
     const params = queryString.parse(history.location.search);
 
     if (params.ref) {
