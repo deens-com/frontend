@@ -15,6 +15,14 @@ import Helmet from 'react-helmet-async';
 import Notfound from 'styled_scenes/NotFound';
 import { websiteUrl, prismicUrl } from 'libs/config';
 
+function serializer(type, element, content, children, index) {
+  switch(type) {
+    case 'preformatted':
+      return React.createElement('div', {key: index, dangerouslySetInnerHTML: {__html: element.text}});
+    default: return null;
+  }
+}
+
 const PageTop = styled.div`
   width: 100%;
   position: relative;
@@ -196,7 +204,7 @@ class BlogPost extends React.Component {
             )}
           </PageTop>
           <PageContent>
-            <PostContent>{article ? RichText.render(article.article) : null}</PostContent>
+            <PostContent>{article ? RichText.render(article.article, null, serializer) : null}</PostContent>
           </PageContent>
         </PageWrapper>
         <BrandFooter />
