@@ -622,4 +622,4 @@ export const DepartureFlag = SvgWithProps(({ onClick, ariaHidden, focusable, rol
   </svg>
 ));
 
-export const Logo = ({ style }) => <img src="/deens-logo.png" width="50%" style={style} alt="" />;
+export const Logo = ({ style }) => <img src="/deens-logo.png" style={style} alt="" />;

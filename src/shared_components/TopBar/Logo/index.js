@@ -46,7 +46,7 @@ export default function TopBarLogo({ menuIsOpened, toggleMenu, applyFixation }) 
   return (
     <Wrap>
       <LogoLink to="/" aria-label="Please homepage">
-        <Logo />
+        <Logo style={{height: '50px'}}/>
       </LogoLink>
     </Wrap>
   );
