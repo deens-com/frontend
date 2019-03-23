@@ -263,15 +263,21 @@ const Service = ({
             >
               <ServiceData>
                 <ServiceTitle>
-                  <InlineInput disallowEmptySubmit onChanged={setServiceTitle}>
-                    {I18nText.translate(data.service.title)}
-                  </InlineInput>
+                  {data.service.privacy === 'private' ? (
+                    <InlineInput disallowEmptySubmit onChanged={setServiceTitle}>
+                      {I18nText.translate(data.service.title)}
+                    </InlineInput>
+                  ) : I18nText.translate(data.service.title)}
                 </ServiceTitle>
                 <RatingAndPrice>
                   <Price>
-                    <PSmallStrong><InlineInput textPrefix="$" inputTextColor={darkText} onChanged={setServicePrice}>
-                    {data.service.basePrice}
-                  </InlineInput></PSmallStrong>
+                    <PSmallStrong>
+                      {data.service.privacy === 'private' ? (
+                        <InlineInput textPrefix="$" inputTextColor={darkText} onChanged={setServicePrice}>
+                          {data.service.basePrice}
+                        </InlineInput>
+                      ) : `$${data.service.basePrice}`}
+                    </PSmallStrong>
                     <PXSmall>{getPriceText(data.service.categories[0].names['en-us'])}</PXSmall>
                   </Price>
                   <StarsWrapper>
