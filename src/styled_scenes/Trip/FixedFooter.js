@@ -53,7 +53,7 @@ const FixedFooter = ({ booked, price, peopleNumber, onCustomizeClick, bottom }) 
         ${price}
       </Text>
       <div>
-        <Button theme="fillLightGreen" size="medium" onClick={onCustomizeClick}>
+        <Button id="customizeButton" theme="fillLightGreen" size="medium" onClick={onCustomizeClick}>
           {booked ? 'Copy this trip' : 'Customize this trip'}
         </Button>
       </div>
