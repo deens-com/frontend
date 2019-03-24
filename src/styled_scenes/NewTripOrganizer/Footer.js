@@ -109,6 +109,7 @@ class Footer extends React.Component {
             <PStrong>${this.props.price}</PStrong> <PSmall>Total price</PSmall>
           </Price>
           <Button
+            id="bookButton"
             size="small"
             type="button"
             theme="fillLightGreen"
@@ -118,7 +119,7 @@ class Footer extends React.Component {
           >
             Book
           </Button>
-          <Button size="small" type="button" theme="fillLightGreen" onClick={this.props.share} bold>
+          <Button id="shareButton" size="small" type="button" theme="fillLightGreen" onClick={this.props.share} bold>
             Share and earn rewards
           </Button>
           <SaveText>{this.saveButtonText()}</SaveText>
