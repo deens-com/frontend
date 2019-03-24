@@ -76,13 +76,13 @@ export default ({ marginBottom = 0 }) => (
         <Column>
           <H6>Legal</H6>
           <LinkElement>
-            <Link to="/cookie-policy">Use of Cookies</Link>
+            <a rel="nofollow" href="/cookie-policy">Use of Cookies</a>
           </LinkElement>
           <LinkElement>
-            <Link to="/terms-conditions">Terms & Conditions</Link>
+            <a rel="nofollow" href="/terms-conditions">Terms & Conditions</a>
           </LinkElement>
           <LinkElement>
-            <Link to="/privacy-policy">Privacy Policy</Link>
+            <a rel="nofollow" href="/privacy-policy">Privacy Policy</a>
           </LinkElement>
         </Column>
         <Column>
