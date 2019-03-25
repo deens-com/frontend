@@ -625,6 +625,13 @@ export default class TripOrganizer extends React.Component {
     this.modifyService(serviceId, day, { basePrice: Number(price) })
   }
 
+  changeServiceDates = (service, startDate, endDate) => {
+    this.setState(prevState => {
+      const instances = mapDaysToServices(prevState.services).filter(s => s.service._id === service.service._id)
+      console.log(instances)
+    })
+  }
+
   modifyService = (serviceId, day, data) => {
     this.setState(prevState => {
       const services = prevState.services[day].map(service => {
@@ -800,6 +807,7 @@ export default class TripOrganizer extends React.Component {
       <TripContext.Provider
         value={{
           tripData: tripData,
+          servicesByDay: services,
           isLoadingTransportation: Boolean(isLoadingTransportation),
           isCheckingAvailability: Boolean(isCheckingAvailability),
           showingTransports,
@@ -809,6 +817,7 @@ export default class TripOrganizer extends React.Component {
           addService: this.addService,
           changeServiceTitle: this.changeServiceTitle,
           changeServicePrice: this.changeServicePrice,
+          changeServiceDates: this.changeServiceDates,
         }}
       >
         <Header

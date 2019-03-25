@@ -8,7 +8,7 @@ import { getPriceFromServiceOption } from 'libs/Utils';
 import { lightText, primary, secondary, secondaryContrast, error } from 'libs/colors';
 import { minutesToHoursOrDays, calculateCancellationCharge } from 'libs/trips';
 import Button from 'shared_components/Button';
-import { TripContext } from '../';
+import { TripContext } from '../../';
 
 const OptionsBox = styled.div`
   box-shadow: ${props => props.hasSelectedOption ? '1px 1px 3px rgba(0, 0, 0, 0.3)' : 'none'};
