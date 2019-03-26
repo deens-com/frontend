@@ -625,10 +625,54 @@ export default class TripOrganizer extends React.Component {
     this.modifyService(serviceId, day, { basePrice: Number(price) })
   }
 
-  changeServiceDates = (service, startDate, endDate) => {
+  changeServiceDays = (service, startDay, endDay) => {
+    console.log(startDay, endDay)
     this.setState(prevState => {
       const instances = mapDaysToServices(prevState.services).filter(s => s.service._id === service.service._id)
-      console.log(instances)
+      let groups = []
+      let currentGroupIndex = -1
+      let currentDay = instances[0].day - 1
+      let currentServiceGroupIndex = -1
+      const groupsAffected = new Set([])
+
+      for (let instance of instances) {
+        if (currentDay !== instance.day) {
+          currentDay = instance.day
+          currentGroupIndex++
+        }
+
+        if (!groups[currentGroupIndex]) {
+          groups.push([])
+        }
+
+        if (instance._id === service._id) {
+          currentServiceGroupIndex = currentGroupIndex
+          groupsAffected.add(currentGroupIndex)
+        }
+
+        if (instance.day >= startDay && instance.day <= endDay) {
+          groupsAffected.add(currentGroupIndex)
+        }
+
+        groups[currentGroupIndex].push(instance)
+        currentDay++
+      }
+
+      let serviceDays = []
+
+      groups.forEach((group, index) => {
+        if (!groupsAffected.has(index)) {
+          group.forEach(service => {
+            serviceDays.push(service.day)
+          })
+        }
+      })
+
+      for (let i = startDay; i <= endDay; i++) {
+        serviceDays.push(i)
+      }
+
+      console.log(serviceDays)
     })
   }
 
@@ -817,7 +861,7 @@ export default class TripOrganizer extends React.Component {
           addService: this.addService,
           changeServiceTitle: this.changeServiceTitle,
           changeServicePrice: this.changeServicePrice,
-          changeServiceDates: this.changeServiceDates,
+          changeServiceDays: this.changeServiceDays,
         }}
       >
         <Header

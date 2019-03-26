@@ -15,7 +15,7 @@ const ServiceSettings = ({ removeService, service }) => {
   const [serviceStartDate, setServiceStartDate] = useState(null)
   const [serviceEndDate, setServiceEndDate] = useState(null)
   const [focusedInput, setFocusedInput] = useState(START_DATE)
-  const { tripData, servicesByDay, changeServiceDates } = useContext(TripContext);
+  const { tripData, servicesByDay, changeServiceDays } = useContext(TripContext);
   const numberOfDays = minutesToDays(tripData.duration)
   const tripStartDate = moment(tripData.startDate)
   const tripEndDate = tripStartDate.clone().add(numberOfDays, 'days')
@@ -46,7 +46,9 @@ const ServiceSettings = ({ removeService, service }) => {
     setFocusedInput(endDate ? START_DATE : END_DATE)
 
     if (startDate && endDate) {
-      changeServiceDates(service, startDate, endDate)
+      // we sum 1 to startDay so it's 1 instead of 0
+      // not to end because it's supposed to be selected the checkout day, and we don't add the service to that day
+      changeServiceDays(service, startDate.diff(tripStartDate, 'days') + 1, endDate.diff(tripStartDate, 'days'))
     }
   }
 
