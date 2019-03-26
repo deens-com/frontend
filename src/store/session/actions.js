@@ -132,12 +132,19 @@ export const getFavoriteTrips = () => async dispatch => {
   });
 };
 
-export const getCurrentUser = fetchReferralInfo => async dispatch => {
+export const getCurrentUser = fetchReferralInfo => async (dispatch, getState) => {
   const session = getSession();
   try {
     if (session) {
+      const sessionData = getState().session.session
+
+      if (sessionData && sessionData._id === session._id) {
+        return
+      }
+
       const currentUser = await axios.get('/users/me');
-      if (currentUser.data) {
+
+      if (currentUser) {
         const userObject = fetch_helpers.buildUserJson(currentUser.data);
         let referralInfo;
         if (fetchReferralInfo) {

@@ -155,11 +155,7 @@ export default class TripOrganizer extends React.Component {
   saveTrip = async dataToSave => {
     this.addIsSaving();
 
-    if (this.props.tripId) {
-      await apiClient.trips.patch(this.props.trip._id, dataToSave);
-    } else {
-      this.localSave();
-    }
+    await apiClient.trips.patch(this.props.trip._id, dataToSave);
 
     this.removeIsSaving();
   };
@@ -171,11 +167,7 @@ export default class TripOrganizer extends React.Component {
 
     const dataToSave = this.parseServicesForSaving();
 
-    if (this.props.tripId) {
-      await apiClient.trips.serviceOrganizations.rearrange.post(this.props.trip._id, dataToSave);
-    } else {
-      this.localSave();
-    }
+    await apiClient.trips.serviceOrganizations.rearrange.post(this.props.trip._id, dataToSave);
 
     this.removeIsSaving();
     this.checkAvailability();
@@ -189,11 +181,7 @@ export default class TripOrganizer extends React.Component {
     }
     this.addIsSaving();
 
-    if (this.props.tripId) {
-      await apiClient.trips.serviceOrganizations.delete(this.props.trip._id, serviceOrgIds);
-    } else {
-      this.localSave();
-    }
+    await apiClient.trips.serviceOrganizations.delete(this.props.trip._id, serviceOrgIds);
 
     this.removeIsSaving();
     this.getTransportation();
@@ -202,11 +190,9 @@ export default class TripOrganizer extends React.Component {
   saveAvailabilityCode = async (serviceOrgId, availabilityCode) => {
     this.addIsSaving();
 
-    const services = this.props.tripId
-      ? (await apiClient.trips.serviceOrganizations.availabilityCode.post(this.props.trip._id, [
-          { serviceOrgId, availabilityCode },
-        ])).data
-      : this.localSave();
+    const services = (await apiClient.trips.serviceOrganizations.availabilityCode.post(this.props.trip._id, [
+      { serviceOrgId, availabilityCode },
+    ])).data
 
     this.removeIsSaving();
 
@@ -216,10 +202,7 @@ export default class TripOrganizer extends React.Component {
   getTransportation = async () => {
     this.addIsLoadingTransports();
 
-    // implement anonymous!!
-    const transportation = this.props.tripId
-      ? (await apiClient.trips.calculateDistances.post(this.props.trip._id)).data
-      : [];
+    const transportation = (await apiClient.trips.calculateDistances.post(this.props.trip._id)).data
 
     this.removeIsLoadingTransports(transportation);
   };
@@ -227,10 +210,7 @@ export default class TripOrganizer extends React.Component {
   setTransportation = async body => {
     this.addIsLoadingTransports();
 
-    // implement anonymous!!
-    const transportation = this.props.tripId
-      ? (await apiClient.trips.transports.post(this.props.trip._id, body)).data
-      : [];
+    await apiClient.trips.transports.post(this.props.trip._id, body)
 
     await this.getTransportation();
 
@@ -255,17 +235,7 @@ export default class TripOrganizer extends React.Component {
     const peopleCount = adultCount + infantCount + childrenCount;
     const data = { bookingDate, adultCount, childrenCount, infantCount, peopleCount };
 
-    if (this.props.tripId) {
-      return apiClient.trips.availability.get(this.props.trip._id, data);
-    }
-
-    return apiClient.trips.availability.anonymous.post({
-      ...data,
-      tripData: {
-        ...this.state.tripData,
-        services: this.parseServicesForSaving(),
-      },
-    });
+    return apiClient.trips.availability.get(this.props.trip._id, data);
   };
 
   startCheckingAvailability = () => {
@@ -447,11 +417,8 @@ export default class TripOrganizer extends React.Component {
   };
 
   addService = async (serviceToAdd, day) => {
-    // THIS ONLY WORKS FOR RECENTLY CREATED SERVICES
+    // THIS ONLY WORKS FOR RECENTLY CREATED SERVICES (CUSTOM SERVICES!)
     // WE USE SERVICE ID INSTEAD OF SERVICE ORG ID TO IDENTIFY THE SERVICE
-    if (!this.props.tripId) {
-      return
-    }
     const trip = (await addServiceRequest(this.props.tripId, day, serviceToAdd._id)).data
     this.setState(prevState => ({
       services: {
