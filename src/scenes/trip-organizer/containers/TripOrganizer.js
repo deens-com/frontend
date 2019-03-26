@@ -10,10 +10,7 @@ import moment from 'moment';
 import TripOrganizer from 'styled_scenes/NewTripOrganizer';
 import history from 'main/history';
 import { Loader } from 'semantic-ui-react';
-import { loadTrip, removeTrip, isTripSaved } from 'libs/localStorage';
-import axios from 'libs/axios';
 import { generateTripSlug } from 'libs/Utils';
-import { getSession } from 'libs/user-session';
 import headerActions from 'store/header/actions';
 import BrandFooter from 'shared_components/BrandFooter';
 
@@ -37,46 +34,10 @@ class TripOrganizerContainer extends Component {
   componentDidMount() {
     this.props.changeHeader({ noMargin: true, forceNotFixed: true });
     if (this.props.match.params.id) {
-      if (!getSession()) {
-        history.replace('/trips/organize');
-        return;
-      }
       this.props.fetchTrip(this.props.match.params.id);
       return;
     }
-    if (getSession()) {
-      if (!isTripSaved()) {
-        history.replace('/trips/create');
-        return;
-      }
-
-      this.setState({
-        isLoading: true,
-      });
-
-      const tripToSave = {
-        ...this.props.trip,
-        services: this.props.trip.services.map(service => ({
-          ...service,
-          service: service.service._id,
-        })),
-      };
-
-      axios.post('/trips', tripToSave).then(response => {
-        if (this.props.location.state) {
-          if (this.props.location.state.action === 'book') {
-            history.push(`/trips/checkout/${response.data._id}`);
-            removeTrip();
-            return;
-          } else if (this.props.location.state.action === 'share') {
-            history.push(`/trips/share/${response.data._id}`);
-            removeTrip();
-            return;
-          }
-        }
-        history.push(`/trips/organize/${response.data._id}`, this.props.location.state);
-      });
-    }
+    history.replace('/trips/create');
   }
 
   componentDidUpdate(prevProps) {
@@ -140,7 +101,7 @@ class TripOrganizerContainer extends Component {
 }
 
 const mapStateToProps = (state, props) => {
-  const trip = props.match.params.id ? state.trips.trip : loadTrip();
+  const trip = state.trips.trip;
 
   let startDate = state.search.searchQuery.start_date;
   if (!startDate) {

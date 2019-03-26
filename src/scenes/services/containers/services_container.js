@@ -4,7 +4,6 @@ import serviceActions from 'store/services/actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter, Redirect } from 'react-router';
-import { getSession } from 'libs/user-session';
 import NotFoundScene from 'styled_scenes/NotFound';
 import Helmet from 'react-helmet-async';
 import { websiteUrl } from 'libs/config';
@@ -24,10 +23,7 @@ class ServicesContainer extends Component {
     this.props.changeHeader();
     const service_id = this.props.match.params.id;
     this.props.fetch_service(service_id);
-    const user = getSession();
-    if (user != null) {
-      this.props.fetchMyTrips();
-    }
+    this.props.fetchMyTrips();
     this.props.setAddedToTripMessage(undefined);
   }
 
@@ -40,12 +36,7 @@ class ServicesContainer extends Component {
   };
 
   onAddServiceToNewTrip = () => {
-    const user = getSession();
-    if (user != null) {
-      this.props.createNewTrip();
-    } else {
-      this.props.history.push('/login');
-    }
+    this.props.createNewTrip();
   };
 
   render() {

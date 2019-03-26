@@ -133,33 +133,44 @@ export const getFavoriteTrips = () => async dispatch => {
 };
 
 export const getCurrentUser = fetchReferralInfo => async (dispatch, getState) => {
-  const session = getSession();
+  let session = getSession();
+  let currentUser
+
+  if (!session) {
+    const anonymous = (await axios.post('/users/signup/anonymously')).data;
+    saveSession({ accessToken: anonymous.access_token });
+    const currentUser = (await axios.get('/users/me')).data;
+    currentUser.accessToken = anonymous.access_token;
+    saveSession(currentUser);
+    session = currentUser
+  }
+
   try {
-    if (session) {
-      const sessionData = getState().session.session
+    const sessionData = getState().session.session
 
-      if (sessionData && sessionData._id === session._id) {
-        return
+    if (sessionData && sessionData._id === session._id) {
+      return
+    }
+
+    currentUser = currentUser || (await axios.get('/users/me')).data;
+
+    if (currentUser) {
+      const userObject = fetch_helpers.buildUserJson(currentUser);
+      let referralInfo;
+      if (userObject.username && fetchReferralInfo) {
+        referralInfo = (await axios.get('/users/me/referral-info')).data;
       }
+      dispatch(
+        sessionsFetched({
+          session: {
+            ...userObject,
+            referralInfo,
+          },
+        }),
+      );
 
-      const currentUser = await axios.get('/users/me');
-
-      if (currentUser) {
-        const userObject = fetch_helpers.buildUserJson(currentUser.data);
-        let referralInfo;
-        if (fetchReferralInfo) {
-          referralInfo = (await axios.get('/users/me/referral-info')).data;
-        }
-        dispatch(
-          sessionsFetched({
-            session: {
-              ...userObject,
-              referralInfo,
-            },
-          }),
-        );
-
-        // Fresh chat data
+      // Fresh chat data
+      if (userObject.username) {
         if (window.fcWidget && window.fcWidget.user) {
           try {
             const chatUser = (await window.fcWidget.user.get()).data;
@@ -174,9 +185,8 @@ export const getCurrentUser = fetchReferralInfo => async (dispatch, getState) =>
           }
         }
       }
-      return;
     }
-    dispatch({ type: types.NOT_LOGGED_IN });
+    return;
   } catch (error) {
     console.log(error);
     dispatch(logOut());
@@ -279,9 +289,8 @@ export const loginRequest = (email, password, { from, action }) => {
 
       if (auth0Response) {
         const auth0Token = auth0Response.data.access_token;
-        const user = await axios.get(`${serverBaseURL}/users/me`, {
-          headers: { Authorization: `Bearer ${auth0Token}` },
-        });
+        saveSession({ accessToken: auth0Token});
+        const user = await axios.get(`/users/me`);
         if (user) {
           const userData = user.data;
           userData.accessToken = auth0Token;

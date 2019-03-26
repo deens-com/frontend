@@ -1,9 +1,7 @@
 import fetch_helpers from './../../libs/fetch_helpers';
-import history from './../../main/history';
 import { serverBaseURL, env } from 'libs/config';
 import validator from 'validator';
 import axios from 'libs/axios';
-import { getSession } from 'libs/user-session';
 
 export const types = {
   PROFILE_FETCHED: 'account/USER_PROFILE_FETCHED',
@@ -45,21 +43,6 @@ export const edit_user_error_raised = error => {
     type: 'EDIT_USER_ERROR_SET',
     payload: error,
   };
-};
-
-export const fetch_user_profile = () => async dispatch => {
-  try {
-    const session = getSession();
-    if (session) {
-      const user = await axios.get('/users/me');
-      dispatch(user_profile_fetched({ user_profile: user.data }));
-    } else {
-      history.push('/register');
-    }
-  } catch (error) {
-    console.log(error);
-    //dispatch(setLoginError({code: error.response.status, message: error.response.data.error_description}));
-  }
 };
 
 export const update_user_service_status = e => async dispatch => {
@@ -135,25 +118,17 @@ export const update_user_profile = (user_id, field_type, value) => {
 };
 
 export const fetch_user_services = () => async dispatch => {
-  const session = getSession();
-  if (session) {
-    dispatch(myServicesFetch());
-    const userServices = await axios.get(`/services`);
-    const services = fetch_helpers.buildServicesJson(userServices.data);
+  dispatch(myServicesFetch());
+  const userServices = await axios.get(`/services`);
+  const services = fetch_helpers.buildServicesJson(userServices.data);
 
-    dispatch(myServicesFetched(services));
-  } else {
-    history.push('/');
-  }
+  dispatch(myServicesFetched(services));
 };
 
 export const fetchUserTrips = () => async dispatch => {
   dispatch(myTripsFetchStarted());
-  const session = getSession();
-  if (session) {
-    const { data: trips } = await axios.get('/trips', { params: { include: 'services' } });
-    dispatch(myTripsFetched(trips));
-  }
+  const { data: trips } = await axios.get('/trips', { params: { include: 'services' } });
+  dispatch(myTripsFetched(trips));
 };
 
 export const clearMetamaskErrors = () => dispatch => {
