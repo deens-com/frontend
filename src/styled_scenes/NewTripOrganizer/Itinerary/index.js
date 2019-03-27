@@ -19,6 +19,7 @@ export function generateDaysArray(numberOfDays) {
 
 const Wrapper = styled.div`
   display: flex;
+  position: relative;
 `;
 
 const Days = styled.div`

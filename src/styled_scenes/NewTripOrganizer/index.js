@@ -565,6 +565,7 @@ export default class TripOrganizer extends React.Component {
       }),
       () => {
         this.saveTrip({ title: addLang(title) });
+        this.props.changeCurrentUserTrip({ _id: this.props.tripId, title: addLang(title) })
       },
     );
   };

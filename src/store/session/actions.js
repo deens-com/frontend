@@ -97,6 +97,10 @@ export const getCurrentUserTrip = () => async dispatch => {
   }
 };
 
+export const changeCurrentUserTrip = (trip) => async dispatch => {
+  dispatch({ type: types.LOADED_LATEST_TRIP, payload: trip});
+};
+
 export const getFavoriteTrips = () => async (dispatch, getState) => {
   const sessionData = getState().session.session
 

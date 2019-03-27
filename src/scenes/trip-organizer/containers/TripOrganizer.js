@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import actions from 'store/trips/actions';
 import styled from 'styled-components';
 import searchActions from 'store/search/actions';
+import { changeCurrentUserTrip } from 'store/session/actions';
 import { updatePath } from 'store/search/helpers';
 import moment from 'moment';
 import TripOrganizer from 'styled_scenes/NewTripOrganizer';
@@ -82,6 +83,7 @@ class TripOrganizerContainer extends Component {
         action={
           this.props.location && this.props.location.state && this.props.location.state.action
         }
+        changeCurrentUserTrip={this.props.changeCurrentUserTrip}
       />
     );
   }
@@ -90,7 +92,7 @@ class TripOrganizerContainer extends Component {
     return (
       <Wrapper>
         <ContentWrapper>{this.renderContent()}</ContentWrapper>
-        <BrandFooter marginBottom={70} />
+        <BrandFooter />
       </Wrapper>
     );
   }
@@ -134,6 +136,7 @@ const mapDispatchToProps = dispatch =>
       ...actions,
       changeDates: searchActions.updateSearchQuery,
       changeHeader: headerActions.changeHeader,
+      changeCurrentUserTrip: changeCurrentUserTrip,
     },
     dispatch,
   );
