@@ -13,10 +13,10 @@ export const isProd = env === 'production';
 
 export const serverBaseURL = (() => {
   if (env === 'production')
-    return process.env.REACT_APP_PARSE_SERVER_URL || 'https://api.please.com';
+    return process.env.REACT_APP_PARSE_SERVER_URL || 'https://api.deens.com';
   if (env === 'staging')
-    return process.env.REACT_APP_PARSE_SERVER_URL || 'https://staging-api.please.com';
-  return process.env.REACT_APP_PARSE_SERVER_URL || 'https://api.please.docker';
+    return process.env.REACT_APP_PARSE_SERVER_URL || 'https://staging-api.deens.com';
+  return process.env.REACT_APP_PARSE_SERVER_URL || 'https://api.deens.docker';
 })();
 
 export const kycIframeUrl = (() => {

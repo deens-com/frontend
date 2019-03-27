@@ -97,34 +97,37 @@ export const getCurrentUserTrip = () => async dispatch => {
   }
 };
 
-export const getFavoriteTrips = () => async dispatch => {
-  const session = getSession();
+export const getFavoriteTrips = () => async (dispatch, getState) => {
+  const sessionData = getState().session.session
+
   const savedFavoriteTrips = getFavoriteTripsLocally() || {};
-  if (session) {
-    try {
-      const response = await apiClient.users.username.hearts.get(
-        {},
-        { username: session.username },
-      );
-      const trips = response.data.reduce(
-        (obj, id) => ({
-          ...obj,
-          [id]: true,
-        }),
-        savedFavoriteTrips,
-      );
-      dispatch({
-        type: types.LOADED_FAVORITE_TRIPs,
-        payload: trips,
-      });
-      Object.keys(savedFavoriteTrips)
-        .filter(id => savedFavoriteTrips[id])
-        .forEach(apiClient.trips.heart.post);
+  try {
+
+    const response = sessionData.username ? (await apiClient.users.username.hearts.get(
+      {},
+      { username: sessionData.username },
+    )).data : [];
+    const trips = response.reduce(
+      (obj, id) => ({
+        ...obj,
+        [id]: true,
+      }),
+      savedFavoriteTrips,
+    );
+    dispatch({
+      type: types.LOADED_FAVORITE_TRIPs,
+      payload: trips,
+    });
+    Object.keys(savedFavoriteTrips)
+      .filter(id => savedFavoriteTrips[id])
+      .forEach(apiClient.trips.heart.post);
+    
+    if (sessionData.username) {
       clearLocalFavoriteTrips();
-      return;
-    } catch (e) {
-      console.log(e);
     }
+    return;
+  } catch (e) {
+    console.log(e);
   }
   dispatch({
     type: types.LOADED_FAVORITE_TRIPs,
@@ -132,27 +135,45 @@ export const getFavoriteTrips = () => async dispatch => {
   });
 };
 
-export const getCurrentUser = fetchReferralInfo => async dispatch => {
-  const session = getSession();
-  try {
-    if (session) {
-      const currentUser = await axios.get('/users/me');
-      if (currentUser.data) {
-        const userObject = fetch_helpers.buildUserJson(currentUser.data);
-        let referralInfo;
-        if (fetchReferralInfo) {
-          referralInfo = (await axios.get('/users/me/referral-info')).data;
-        }
-        dispatch(
-          sessionsFetched({
-            session: {
-              ...userObject,
-              referralInfo,
-            },
-          }),
-        );
+export const getCurrentUser = fetchReferralInfo => async (dispatch, getState) => {
+  let session = getSession();
+  let currentUser
 
-        // Fresh chat data
+  if (!session) {
+    const anonymous = (await axios.post('/users/signup/anonymously')).data;
+    saveSession({ accessToken: anonymous.access_token });
+    const currentUser = (await axios.get('/users/me')).data;
+    currentUser.accessToken = anonymous.access_token;
+    saveSession(currentUser);
+    session = currentUser
+  }
+
+  try {
+    const sessionData = getState().session.session
+
+    if (sessionData && sessionData._id === session._id) {
+      return
+    }
+
+    currentUser = currentUser || (await axios.get('/users/me')).data;
+
+    if (currentUser) {
+      const userObject = fetch_helpers.buildUserJson(currentUser);
+      let referralInfo;
+      if (userObject.username && fetchReferralInfo) {
+        referralInfo = (await axios.get('/users/me/referral-info')).data;
+      }
+      dispatch(
+        sessionsFetched({
+          session: {
+            ...userObject,
+            referralInfo,
+          },
+        }),
+      );
+
+      // Fresh chat data
+      if (userObject.username) {
         if (window.fcWidget && window.fcWidget.user) {
           try {
             const chatUser = (await window.fcWidget.user.get()).data;
@@ -167,9 +188,8 @@ export const getCurrentUser = fetchReferralInfo => async dispatch => {
           }
         }
       }
-      return;
     }
-    dispatch({ type: types.NOT_LOGGED_IN });
+    return;
   } catch (error) {
     console.log(error);
     dispatch(logOut());
@@ -272,9 +292,8 @@ export const loginRequest = (email, password, { from, action }) => {
 
       if (auth0Response) {
         const auth0Token = auth0Response.data.access_token;
-        const user = await axios.get(`${serverBaseURL}/users/me`, {
-          headers: { Authorization: `Bearer ${auth0Token}` },
-        });
+        saveSession({ accessToken: auth0Token});
+        const user = await axios.get(`/users/me`);
         if (user) {
           const userData = user.data;
           userData.accessToken = auth0Token;

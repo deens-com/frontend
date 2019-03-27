@@ -11,7 +11,7 @@ import Logo from './Logo';
 import MobileDropdownMenu from '../Nav/MobileDropdownMenu';
 import Search from './Search';
 import { bindActionCreators } from 'redux';
-import { getCurrentUser, getCurrentUserTrip, logOut } from 'store/session/actions';
+import { getCurrentUserTrip, logOut } from 'store/session/actions';
 import { PageWrapper } from 'shared_components/layout/Page';
 import { secondaryContrast } from 'libs/colors';
 
@@ -89,7 +89,6 @@ class TopBar extends Component {
   }
 
   componentDidMount() {
-    this.props.getCurrentUser();
     this.props.getCurrentUserTrip();
   }
 
@@ -205,7 +204,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ getCurrentUser, getCurrentUserTrip, logOut }, dispatch);
+  return bindActionCreators({ getCurrentUserTrip, logOut }, dispatch);
 };
 
 export default connect(

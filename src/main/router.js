@@ -67,7 +67,7 @@ export default (
         path={process.env.PUBLIC_URL + '/services/:slug?_:id'}
         component={commonHOCs(Services)}
       />
-      <PrivateRoute
+      <Route
         path={process.env.PUBLIC_URL + '/trips/organize/:id'}
         component={commonHOCs(TripOrganizer)}
         message="Please login or register to continue with your trip."

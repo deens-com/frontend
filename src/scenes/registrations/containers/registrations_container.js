@@ -6,7 +6,6 @@ import * as sessionsActions from 'store/session/actions';
 import RegistrationsComponent from './../components/Registrations';
 import validator from 'validator';
 import history from 'main/history';
-import { getSession } from 'libs/user-session';
 import axios from 'libs/axios';
 import headerActions from 'store/header/actions';
 
@@ -25,7 +24,7 @@ class RegistrationsContainer extends Component {
     this.props.changeHeader();
     this.handleInputChange = this.handleInputChange.bind(this);
     this.isInputInvalid = this.isInputInvalid.bind(this);
-    if (getSession()) {
+    if (props.session._id) {
       history.push('/');
     }
   }
@@ -183,6 +182,10 @@ class RegistrationsContainer extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  session: state.session.session,
+});
+
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
@@ -194,6 +197,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(RegistrationsContainer);

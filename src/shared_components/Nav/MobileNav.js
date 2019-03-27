@@ -10,7 +10,6 @@ import { sizes } from '../../libs/styled';
 import { mainNav } from '../../data/nav';
 import Button from '../Button';
 import { Briefcase, Folder, AccountCircle, Settings } from '../icons';
-import { getSession } from 'libs/user-session';
 import { trackHeaderClick } from 'libs/analytics';
 import { bindActionCreators } from 'redux';
 import { logOut } from 'store/session/actions';
@@ -167,7 +166,7 @@ const SessionButtons = styled.li`
 class MobileNav extends Component {
   componentDidMount() {
     try {
-      const session = getSession();
+      const session = this.props.session.username;
       if (session) {
         this.setState({ logged_in: true });
       } else {
@@ -242,7 +241,7 @@ class MobileNav extends Component {
   render() {
     if (!this.props.showProfileMenu) return null;
     const { analytics } = this.props;
-    console.log(icoReady);
+
     return (
       <Media
         query={`(max-width: ${sizes.large})`}
@@ -294,6 +293,10 @@ class MobileNav extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  session: state.session.session,
+});
+
 const mapDispatchToProps = dispatch => {
   return {
     analytics: analyticsPayload =>
@@ -301,7 +304,8 @@ const mapDispatchToProps = dispatch => {
     ...bindActionCreators({ logOut }, dispatch),
   };
 };
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(MobileNav);

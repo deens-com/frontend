@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import RecoverPasswordComponent from './component';
 import validator from 'validator';
 import history from 'main/history';
-import { getSession } from 'libs/user-session';
 import axios from 'libs/axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -20,7 +19,7 @@ class RegistrationsContainer extends Component {
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.isInputInvalid = this.isInputInvalid.bind(this);
-    if (getSession()) {
+    if (props.session._id) {
       history.push('/');
     }
   }
@@ -123,6 +122,10 @@ class RegistrationsContainer extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  session: state.session.session,
+});
+
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
@@ -132,6 +135,6 @@ const mapDispatchToProps = dispatch =>
   );
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(RegistrationsContainer);

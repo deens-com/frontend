@@ -22,7 +22,7 @@ jobs:
             - ~/.cache
       # start server before starting tests
       - run:
-          command: REACT_APP_PARSE_SERVER_URL=https://staging-api.please.com yarn start
+          command: REACT_APP_PARSE_SERVER_URL=https://staging-api.deens.com yarn start
           background: true
       - run:
           command: yarn test-ci

@@ -12,7 +12,6 @@ import { updateBottomChatPosition } from 'libs/Utils';
 import { Page, PageContent } from 'shared_components/layout/Page';
 import GuestsSelector from 'shared_components/SelectGuests/GuestsSelector';
 import { media } from 'libs/styled';
-import { isTripSaved, loadTrip } from 'libs/localStorage';
 
 import Header from './Header';
 import TripDescription from './TripDescription';
@@ -114,7 +113,6 @@ export default class Trip extends Component {
     this.state = {
       isDatePopupOpen: false,
       isGuestsPopupOpen: false,
-      confirmCopyTripPopupOpen: false,
     };
 
     this.sentenceRef = React.createRef();
@@ -208,10 +206,6 @@ export default class Trip extends Component {
     this.setState({ isDatePopupOpen: true });
   };
 
-  continueExistingTrip = () => {
-    history.push(`/trips/organize/`);
-  };
-
   copyNewTrip = () => {
     this.handleCustomizeClick(null, true);
   };
@@ -219,13 +213,6 @@ export default class Trip extends Component {
   handleCustomizeClick = (event, force = false) => {
     if (this.props.trip.owner === this.props.currentUserId && !this.props.booked) {
       history.push(`/trips/organize/${this.props.trip._id}`);
-      return;
-    }
-
-    if (isTripSaved() && !force) {
-      this.setState({
-        confirmCopyTripPopupOpen: true,
-      });
       return;
     }
 
@@ -393,28 +380,6 @@ export default class Trip extends Component {
     return (
       <CustomPage>
         <DaySelector bottom={65} days={days} trip={trip} goToDay={this.goToDay} />
-        <Modal
-          open={Boolean(this.state.confirmCopyTripPopupOpen)}
-          header={`Copy trip`}
-          content={`Would you like to continue your existing trip "${
-            loadTrip(trip).title['en-us']
-          }" or copy this one as a new trip?`}
-          size="small"
-          actions={[
-            {
-              key: 'continue',
-              content: 'Continue existing trip',
-              negative: true,
-              onClick: this.continueExistingTrip,
-            },
-            {
-              key: 'copy',
-              content: 'Copy this trip',
-              onClick: this.copyNewTrip,
-              positive: true,
-            },
-          ]}
-        />
         <PageContent>{this.renderPageContent()}</PageContent>
         <FixedFooter
           price={trip.basePrice}

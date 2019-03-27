@@ -8,8 +8,6 @@ import actions from 'store/search/actions';
 import axios from 'libs/axios';
 import BrandFooter from 'shared_components/BrandFooter';
 import history from 'main/history';
-import { loadTrip, removeTrip } from 'libs/localStorage';
-import { getSession } from 'libs/user-session';
 import headerActions from 'store/header/actions';
 
 const PageContent = styled.div`
@@ -18,14 +16,15 @@ const PageContent = styled.div`
 
 class TripCreatorContainer extends Component {
   componentDidMount() {
-    if (getSession()) {
-      axios.post(`/trips`, loadTrip(false)).then(response => {
-        removeTrip();
-        history.replace(`/trips/organize/${response.data._id}`);
-      });
-    } else {
-      history.replace('/trips/organize');
-    }
+    axios.post(`/trips`, {
+      basePrice: 0,
+      duration: 1,
+      media: [],
+      services: [],
+      title: {'en-us': 'Unnamed Trip'}
+    }).then(response => {
+      history.replace(`/trips/organize/${response.data._id}`);
+    });
     this.props.changeHeader();
   }
   render() {

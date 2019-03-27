@@ -1,7 +1,6 @@
 import history from 'main/history';
 import axios from 'libs/axios';
 import fetch_helpers from 'libs/fetch_helpers';
-import { getSession } from 'libs/user-session';
 import { loadTrip, saveTrip } from 'libs/localStorage';
 import * as tripUtils from 'libs/trips';
 
@@ -41,20 +40,6 @@ const set_service_unavailability_modal = bool => {
   };
 };
 
-const shouldServiceBeVisible = service => {
-  const user = getSession();
-  if (service.status === 'inactive') {
-    if (!user) {
-      return false;
-    } else if (service.owner._id === user._id) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-  return true;
-};
-
 const fetch_service = serviceId => async dispatch => {
   dispatch(serviceFetchStart());
   try {
@@ -63,13 +48,6 @@ const fetch_service = serviceId => async dispatch => {
     });
     if (service) {
       const serviceData = service.data;
-      if (!shouldServiceBeVisible(serviceData)) {
-        dispatch({
-          type: 'SERVICE_FETCH_ERROR',
-          payload: { code: 404, error: 'Service is inactive' },
-        });
-        return;
-      }
       const formattedServiceData = fetch_helpers.buildServicesJson([serviceData])[0];
       const trips = await axios.get(`/trips/containing-service/${serviceId}`).catch(error => {
         dispatch({ type: 'SERVICE_FETCH_ERROR', payload: error });
@@ -157,12 +135,7 @@ const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (dispatch, getSt
 };
 
 const onBookNowClick = () => async (dispatch, getState) => {
-  const user = getSession();
-  if (user) {
-    createNewTrip({ redirectToCreatedTrip: true })(dispatch, getState);
-  } else {
-    history.push('/register');
-  }
+  createNewTrip({ redirectToCreatedTrip: true })(dispatch, getState);
 };
 
 /**
