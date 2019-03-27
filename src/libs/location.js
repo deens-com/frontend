@@ -88,7 +88,12 @@ const calculateMapBounds = (markers) => {
   };
 }
 
-export const getCenterAndZoom = (markers, defaultCenter, defaultZoom = 14, size = { width: 400, height: 800 }) => {
+const defaultCenterMap = {
+  lat: 45.4509449,
+  lng: 4.9449656,
+}
+
+export const getCenterAndZoom = (markers, defaultCenter = defaultCenterMap, defaultZoom = 14, size = { width: 400, height: 800 }) => {
   if (!markers.length) {
     return { center: defaultCenter, zoom: defaultZoom };
   }

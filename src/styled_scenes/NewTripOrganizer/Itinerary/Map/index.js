@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useContext, useReducer } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { Popup } from 'semantic-ui-react';
 import GoogleMapReact from 'google-map-react';
-import uniqBy from 'lodash.uniqby';
 import { waitUntilMapsLoaded } from 'libs/Utils';
 import { mapDaysToServices } from 'styled_scenes/Trip/mapServicesToDays';
 import { getFromCoordinates } from 'libs/Utils';
@@ -17,6 +15,7 @@ import { getCenterAndZoom } from 'libs/location'
 const topMargin = 0;
 const topOffset = 308; // when do we fix the map?
 const bottomMargin = 70;
+const bottomOffset = 245;
 
 const getMapSize = () => {
   const width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0) / 2;
@@ -36,10 +35,18 @@ const Wrapper = styled.div`
   ${wrapperStyles} z-index: 1;
 
   ${props =>
-    props.fixed &&
+    props.position === 'fixed' &&
     `
     position: fixed;
     top: ${topMargin}px;
+    right: 0;
+  `};
+
+  ${props =>
+    props.position === 'absolute' &&
+    `
+    position: absolute;
+    bottom: 0;
     right: 0;
   `};
 `;
@@ -103,12 +110,15 @@ const Map = ({ showingMap, servicesByDay, numberOfDays }) => {
     tripData.userEndLocation.geo &&
     tripData.userEndLocation.geo.coordinates;
 
-  const [isFixed, setFixed] = useState(false);
+  const [position, setPosition] = useState('relative');
   const [services, setServices] = useState(mapDaysToServices(servicesByDay));
 
   const mapStartLocation = getFromCoordinates(
     startLocation || (services[0] && services[0].service.location.geo.coordinates),
-  );
+  ) || {
+    lat: 45.4509449,
+    lng: 4.9449656,
+  };
 
   const servicesToMarkers = services.map(service => ({
     ...getFromCoordinates(service.service.location.geo.coordinates),
@@ -124,8 +134,8 @@ const Map = ({ showingMap, servicesByDay, numberOfDays }) => {
 
   const [markers, setMarkers] = useState(getMarkers());
 
-  const [zoom, setZoom] = useState(getCenterAndZoom(markers, mapStartLocation, 11, getMapSize()).zoom);
-  const [center, setCenter] = useState(getCenterAndZoom(markers, mapStartLocation, 11, getMapSize()).center);
+  const [zoom, setZoom] = useState(getCenterAndZoom(markers, mapStartLocation, 4, getMapSize()).zoom);
+  const [center, setCenter] = useState(getCenterAndZoom(markers, mapStartLocation, 4, getMapSize()).center);
 
   const [filters, setFilters] = useState({
     accommodation: true,
@@ -201,24 +211,32 @@ const Map = ({ showingMap, servicesByDay, numberOfDays }) => {
       const handleScroll = () => {
         const fullHeight = document.body.scrollHeight;
         const scrolled = window.scrollY;
+        const viewportHeight = window.innerHeight;
 
-        if (!isFixed) {
+        const bottomDistance = bottomOffset + bottomMargin
+
+        if (scrolled + viewportHeight >= fullHeight - bottomDistance) {
+          setPosition('absolute');
+          return
+        }
+
+        if (position !== 'fixed') {
           if (scrolled >= topOffset) {
-            setFixed(true);
+            setPosition('fixed');
             return;
           }
           return;
         }
-        if (isFixed) {
+        if (position === 'fixed') {
           if (scrolled < topOffset) {
-            setFixed(false);
+            setPosition('relative');
             return;
           }
           return;
         }
 
         if (scrolled + window.innerHeight < fullHeight - 105) {
-          setFixed(true);
+          setPosition('fixed');
           return;
         }
       };
@@ -230,14 +248,14 @@ const Map = ({ showingMap, servicesByDay, numberOfDays }) => {
         window.removeEventListener('scroll', handleScrollThrottle);
       };
     },
-    [isFixed],
+    [position],
   );
 
   const display = showingMap ? 'block' : 'none';
 
   return (
     <>
-      <Wrapper display={display} fixed={isFixed}>
+      <Wrapper display={display} position={position}>
         <Filters defaultFilters={filters} setFilters={setFilters} />
         <GoogleMapReact
           center={center}
@@ -261,7 +279,7 @@ const Map = ({ showingMap, servicesByDay, numberOfDays }) => {
           ))}
         </GoogleMapReact>
       </Wrapper>
-      {isFixed && <WrapperPlaceholder display={display} />}
+      {position !== 'relative' && <WrapperPlaceholder display={display} />}
     </>
   );
 };
