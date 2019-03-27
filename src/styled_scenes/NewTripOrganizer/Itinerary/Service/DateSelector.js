@@ -2,16 +2,12 @@ import 'react-dates.css'
 import React, { useContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import { TrashCan } from 'shared_components/icons'
-import styled from 'styled-components';
-import { P } from 'libs/commonStyles';
-import { primary, error } from 'libs/colors';
 import { DayPickerRangeController } from 'react-dates'
 import { START_DATE, END_DATE } from 'react-dates/constants'
 import { minutesToDays } from 'libs/Utils'
 import { TripContext } from '../../'
 
-const ServiceSettings = ({ removeService, service }) => {
+const ServiceSettings = ({ service }) => {
   const [serviceStartDate, setServiceStartDate] = useState(null)
   const [serviceEndDate, setServiceEndDate] = useState(null)
   const [focusedInput, setFocusedInput] = useState(START_DATE)
@@ -30,7 +26,16 @@ const ServiceSettings = ({ removeService, service }) => {
         currentDay = currentDay - 1
       }
     }
-    setServiceStartDate(tripStartDate.clone().add(service.day - 1, 'days'))
+    let previousDay = service.day
+    foundAll = false
+    while(!foundAll && previousDay > 0) {
+      previousDay = previousDay - 1
+      if (!servicesByDay[previousDay] || !servicesByDay[previousDay].find(s => s.service._id === service.service._id)) {
+        foundAll = true
+        previousDay = previousDay - 1
+      }
+    }
+    setServiceStartDate(tripStartDate.clone().add(previousDay + 1, 'days'))
     setServiceEndDate(tripStartDate.clone().add(currentDay, 'days'))
   }, [])
 
@@ -68,6 +73,7 @@ const ServiceSettings = ({ removeService, service }) => {
       endDate={serviceEndDate}
       isOutsideRange={isOutsideRange}
       daySize={35}
+      noBorder
     />
   )
 }

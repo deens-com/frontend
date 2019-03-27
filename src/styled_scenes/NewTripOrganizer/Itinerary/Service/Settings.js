@@ -20,7 +20,10 @@ const DeleteService = styled.div`
   }
 `
 
-const DatePicker = styled.div``
+const DatePicker = styled.div`
+  margin-top: 15px;
+  border-top: 1px solid rgba(0,0,0,0.07);
+`
 
 const ServiceSettings = ({ removeService, service }) => {
   return (
@@ -29,9 +32,11 @@ const ServiceSettings = ({ removeService, service }) => {
         <TrashCan />
         <P>Delete</P>
       </DeleteService>
-      <DatePicker>
-        <DateSelector service={service} />
-      </DatePicker>
+      {service.service.categories.find(category => category.names['en-us'] === 'Accommodation') && (
+        <DatePicker>
+          <DateSelector service={service} />
+        </DatePicker>
+      )}
     </div>
   )
 }

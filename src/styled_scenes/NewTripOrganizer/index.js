@@ -486,7 +486,7 @@ export default class TripOrganizer extends React.Component {
         lastRemovedService: removedService
       }
     }, () => {
-      this.waitAndRemoveService(removedService._id)
+      this.waitAndRemoveService(removedService.service._id)
     })
   }
 
@@ -625,54 +625,68 @@ export default class TripOrganizer extends React.Component {
     this.modifyService(serviceId, day, { basePrice: Number(price) })
   }
 
-  changeServiceDays = (service, startDay, endDay) => {
-    console.log(startDay, endDay)
-    this.setState(prevState => {
-      const instances = mapDaysToServices(prevState.services).filter(s => s.service._id === service.service._id)
-      let groups = []
-      let currentGroupIndex = -1
-      let currentDay = instances[0].day - 1
-      let currentServiceGroupIndex = -1
-      const groupsAffected = new Set([])
+  changeServiceDays = async (service, startDay, endDay) => {
+    const instances = mapDaysToServices(this.state.services).filter(s => s.service._id === service.service._id)
+    let groups = []
+    let currentGroupIndex = -1
+    let currentDay = instances[0].day - 1
+    let currentServiceGroupIndex = -1
+    const groupsAffected = new Set([])
 
-      for (let instance of instances) {
-        if (currentDay !== instance.day) {
-          currentDay = instance.day
-          currentGroupIndex++
-        }
-
-        if (!groups[currentGroupIndex]) {
-          groups.push([])
-        }
-
-        if (instance._id === service._id) {
-          currentServiceGroupIndex = currentGroupIndex
-          groupsAffected.add(currentGroupIndex)
-        }
-
-        if (instance.day >= startDay && instance.day <= endDay) {
-          groupsAffected.add(currentGroupIndex)
-        }
-
-        groups[currentGroupIndex].push(instance)
-        currentDay++
+    for (let instance of instances) {
+      if (currentDay !== instance.day) {
+        currentDay = instance.day
+        currentGroupIndex++
       }
 
-      let serviceDays = []
-
-      groups.forEach((group, index) => {
-        if (!groupsAffected.has(index)) {
-          group.forEach(service => {
-            serviceDays.push(service.day)
-          })
-        }
-      })
-
-      for (let i = startDay; i <= endDay; i++) {
-        serviceDays.push(i)
+      if (!groups[currentGroupIndex]) {
+        groups.push([])
       }
 
-      console.log(serviceDays)
+      if (instance._id === service._id) {
+        currentServiceGroupIndex = currentGroupIndex
+        groupsAffected.add(currentGroupIndex)
+      }
+
+      if (instance.day >= startDay && instance.day <= endDay) {
+        groupsAffected.add(currentGroupIndex)
+      }
+
+      groups[currentGroupIndex].push(instance)
+      currentDay++
+    }
+
+    let serviceDays = new Set([])
+
+    groups.forEach((group, index) => {
+      if (!groupsAffected.has(index)) {
+        group.forEach(service => {
+          serviceDays.add(service.day)
+        })
+      }
+    })
+
+    for (let i = startDay; i <= endDay; i++) {
+      serviceDays.add(i)
+    }
+
+    const trip = (await apiClient.trips.serviceOrganizations.post(this.props.tripId, { days: [...serviceDays], serviceId: service.service._id })).data;
+    const newServices = {}
+    for (let day in this.state.services) {
+      newServices[day] = this.state.services[day]
+      if (!serviceDays.has(Number(day))) {
+        newServices[day] = this.state.services[day].filter(s => s.service._id !== service.service._id)
+      }
+      if (serviceDays.has(Number(day)) && !this.state.services[day].find(s => s.service._id === service.service._id)) {
+        newServices[day].push({
+          ...trip.services.find(s => s.day === Number(day) && s.service === service.service._id),
+          day: Number(day),
+          service: service.service,
+        })
+      }
+    }
+    this.setState({
+      services: newServices,
     })
   }
 
