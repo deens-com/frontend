@@ -97,34 +97,37 @@ export const getCurrentUserTrip = () => async dispatch => {
   }
 };
 
-export const getFavoriteTrips = () => async dispatch => {
-  const session = getSession();
+export const getFavoriteTrips = () => async (dispatch, getState) => {
+  const sessionData = getState().session.session
+
   const savedFavoriteTrips = getFavoriteTripsLocally() || {};
-  if (session) {
-    try {
-      const response = await apiClient.users.username.hearts.get(
-        {},
-        { username: session.username },
-      );
-      const trips = response.data.reduce(
-        (obj, id) => ({
-          ...obj,
-          [id]: true,
-        }),
-        savedFavoriteTrips,
-      );
-      dispatch({
-        type: types.LOADED_FAVORITE_TRIPs,
-        payload: trips,
-      });
-      Object.keys(savedFavoriteTrips)
-        .filter(id => savedFavoriteTrips[id])
-        .forEach(apiClient.trips.heart.post);
+  try {
+
+    const response = sessionData.username ? (await apiClient.users.username.hearts.get(
+      {},
+      { username: sessionData.username },
+    )).data : [];
+    const trips = response.reduce(
+      (obj, id) => ({
+        ...obj,
+        [id]: true,
+      }),
+      savedFavoriteTrips,
+    );
+    dispatch({
+      type: types.LOADED_FAVORITE_TRIPs,
+      payload: trips,
+    });
+    Object.keys(savedFavoriteTrips)
+      .filter(id => savedFavoriteTrips[id])
+      .forEach(apiClient.trips.heart.post);
+    
+    if (sessionData.username) {
       clearLocalFavoriteTrips();
-      return;
-    } catch (e) {
-      console.log(e);
     }
+    return;
+  } catch (e) {
+    console.log(e);
   }
   dispatch({
     type: types.LOADED_FAVORITE_TRIPs,

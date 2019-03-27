@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import history from 'main/history';
 import apiClient from 'libs/apiClient';
 import arrayMove from 'array-move';
 import { getHeroImageUrlFromMedia } from 'libs/media';
@@ -226,7 +227,9 @@ export default class TripOrganizer extends React.Component {
       services: mapDaysToServices(this.state.services),
     });
 
-  book = () => {};
+  book = () => {
+    history.push(`/trips/checkout/${this.props.tripId}`)
+  };
   share = () => {};
 
   requestAvailability = async () => {

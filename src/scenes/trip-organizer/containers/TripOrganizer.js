@@ -42,10 +42,6 @@ class TripOrganizerContainer extends Component {
 
   componentDidUpdate(prevProps) {
     if (!this.state.isLoading) {
-      if (!prevProps.match.params.id && this.props.match.params.id) {
-        this.props.fetchTrip(this.props.match.params.id);
-        return;
-      }
       if (this.props.trip && !prevProps.trip) {
         if (this.props.trip && this.props.trip.bookingStatus === 'booked') {
           history.replace(`/trips/${generateTripSlug(this.props.trip)}`);

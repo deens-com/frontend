@@ -16,7 +16,13 @@ const PageContent = styled.div`
 
 class TripCreatorContainer extends Component {
   componentDidMount() {
-    axios.post(`/trips`).then(response => {
+    axios.post(`/trips`, {
+      basePrice: 0,
+      duration: 1,
+      media: [],
+      services: [],
+      title: {'en-us': 'Unnamed Trip'}
+    }).then(response => {
       history.replace(`/trips/organize/${response.data._id}`);
     });
     this.props.changeHeader();

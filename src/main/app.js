@@ -25,7 +25,7 @@ class App extends React.Component {
 
   componentDidMount() {
     getCurrentUser()(store.dispatch, store.getState);
-    getFavoriteTrips()(store.dispatch);
+    getFavoriteTrips()(store.dispatch, store.getState);
     this.checkForReferrerAndSet();
   }
 

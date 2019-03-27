@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-const PrivateRoute = ({ component: Component, session, message, loggedIn, ...rest }) => (
+const PrivateRoute = ({ component: Component, session, message, ...rest }) => (
   <Route
     {...rest}
     render={props => {
@@ -10,28 +10,23 @@ const PrivateRoute = ({ component: Component, session, message, loggedIn, ...res
         return <Component {...props} />;
       }
 
-      if (loggedIn === false) {
-        return (
-          <Redirect
-            to={{
-              pathname: '/register',
-              state: {
-                from: props.location.pathname,
-                message: message || 'Please login or register to continue',
-              },
-            }}
-          />
-        );
-      }
-
-      return null;
+      return (
+        <Redirect
+          to={{
+            pathname: '/register',
+            state: {
+              from: props.location.pathname,
+              message: message || 'Please login or register to continue',
+            },
+          }}
+        />
+      );
     }}
   />
 );
 
 const mapStateToProps = state => ({
   session: state.session.session,
-  loggedIn: state.session.loggedIn,
 });
 
 export default connect(
