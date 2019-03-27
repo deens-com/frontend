@@ -54,7 +54,6 @@ function ServiceActionButtons(props) {
         myUnpurchasedTrips={props.myUnpurchasedTrips}
         onTripClick={props.onAddServiceToTrip}
         onNewTripClick={props.onAddServiceToNewTrip}
-        isLoggedIn={props.isLoggedIn}
       />
       <Button
         icon

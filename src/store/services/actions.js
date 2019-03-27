@@ -1,7 +1,6 @@
 import history from 'main/history';
 import axios from 'libs/axios';
 import fetch_helpers from 'libs/fetch_helpers';
-import { loadTrip, saveTrip } from 'libs/localStorage';
 import * as tripUtils from 'libs/trips';
 
 const trips_fetched = trips => {
@@ -67,22 +66,9 @@ const fetch_service = serviceId => async dispatch => {
   }
 };
 
-const addServiceToTrip = ({ trip, day }, loggedIn = true) => async (dispatch, getState) => {
+const addServiceToTrip = ({ trip, day }) => async (dispatch, getState) => {
   const state = getState();
   const { service } = state.services;
-  const serviceToAdd = loggedIn ? service._id : service;
-
-  if (!loggedIn) {
-    const currentTrip = loadTrip();
-    const tripServices = tripUtils.addServiceToTrip(currentTrip.services, serviceToAdd, day);
-    const newTrip = {
-      ...currentTrip,
-      services: tripServices,
-    };
-    saveTrip(newTrip);
-    setAddedToTripMessage(newTrip)(dispatch);
-    return;
-  }
 
   try {
     dispatch({

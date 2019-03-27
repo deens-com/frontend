@@ -41,7 +41,7 @@ export default class AddToTripButton extends React.Component {
 
   onTripClickOverride = data => {
     this.handleClose();
-    this.props.onTripClick(data, this.props.isLoggedIn);
+    this.props.onTripClick(data);
   };
 
   onNewTripClickOverride = () => {
@@ -65,7 +65,7 @@ export default class AddToTripButton extends React.Component {
       </CustomColorSemanticButton>
     );
 
-    const listComponent = props.isLoggedIn ? (
+    const listComponent = (
       <TripsListInDropDown
         innerRef={this.listRef}
         daysRef={this.daysRef}
@@ -73,13 +73,7 @@ export default class AddToTripButton extends React.Component {
         onTripClick={this.onTripClickOverride}
         onNewTripClick={this.onNewTripClickOverride}
       />
-    ) : (
-      <SingleTripDropdown
-        innerRef={this.listRef}
-        trip={props.myUnpurchasedTrips[0]}
-        onSelect={this.onTripClickOverride}
-      />
-    );
+    )
 
     return (
       <Popup

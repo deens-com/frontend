@@ -12,7 +12,6 @@ import uniqBy from 'lodash.uniqby';
 
 import axios from 'libs/axios';
 import { media } from 'libs/styled';
-import { saveTrip } from 'libs/localStorage';
 import * as tripUtils from 'libs/trips';
 import history from '../../main/history';
 import { updateBottomChatPosition } from 'libs/Utils';
@@ -311,11 +310,7 @@ export default class TripOrganizer extends Component {
   };
 
   save = async trip => {
-    if (this.props.tripId) {
-      await tripUtils.patchTrip(trip._id, trip);
-      return;
-    }
-    saveTrip(trip);
+    await tripUtils.patchTrip(trip._id, trip);
   };
 
   debouncedPatch = debounce(this.patchTrip, 2000);

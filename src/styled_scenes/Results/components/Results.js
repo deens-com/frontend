@@ -15,7 +15,6 @@ import { Loader, Grid } from 'semantic-ui-react';
 import moment from 'moment';
 import { minutesToDays } from 'styled_scenes/Trip/mapServicesToDays';
 import notFoundImg from '../not_found.png';
-import { loadTrip, saveTrip } from 'libs/localStorage';
 import { generateTripSlug, generateServiceSlug } from 'libs/Utils';
 import * as tripUtils from 'libs/trips';
 
@@ -85,8 +84,7 @@ class Results extends Component {
       limit: props.search_query.limit || 0,
     };
 
-    const trip =
-      props.routeState && props.routeState.isCreatingTripNotLoggedIn ? loadTrip() : props.trip;
+    const trip = props.trip;
 
     if (
       props.routeState &&
@@ -150,15 +148,7 @@ class Results extends Component {
   addToTrip = async (service, day) => {
     this.tripServices = tripUtils.addServiceToTrip(this.tripServices, service, day);
 
-    if (this.props.trip._id) {
-      await tripUtils.addServiceRequest(this.props.trip._id, day, service._id);
-      return;
-    }
-
-    saveTrip({
-      ...this.props.trip,
-      services: this.tripServices,
-    });
+    await tripUtils.addServiceRequest(this.props.trip._id, day, service._id);
   };
 
   removeFromTrip = async (serviceId, day) => {
@@ -168,15 +158,8 @@ class Results extends Component {
 
     this.tripServices.filter(service => service._id === serviceToDelete._id);
 
-    if (this.props.trip._id) {
-      await tripUtils.removeServiceRequest(this.props.trip._id, serviceToDelete._id);
-      return;
-    }
-
-    saveTrip({
-      ...this.props.trip,
-      services: this.tripServices,
-    });
+    await tripUtils.removeServiceRequest(this.props.trip._id, serviceToDelete._id);
+    return;
   };
 
   render() {

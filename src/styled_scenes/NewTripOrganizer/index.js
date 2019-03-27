@@ -5,7 +5,6 @@ import history from 'main/history';
 import apiClient from 'libs/apiClient';
 import arrayMove from 'array-move';
 import { getHeroImageUrlFromMedia } from 'libs/media';
-import { saveTrip } from 'libs/localStorage';
 import Itinerary from './Itinerary';
 import { getFromCoordinates } from 'libs/Utils';
 import Header from './Header';
@@ -217,15 +216,6 @@ export default class TripOrganizer extends React.Component {
 
     this.removeIsLoadingTransports();
   };
-
-  localSave = () =>
-    saveTrip({
-      ...this.state.tripData,
-      title: addLang(this.state.tripData.title),
-      description: addLang(this.state.tripData.description),
-      media: formatMedia(this.state.image),
-      services: mapDaysToServices(this.state.services),
-    });
 
   book = () => {
     history.push(`/trips/checkout/${this.props.tripId}`)
