@@ -2,7 +2,7 @@ import React, { useCallback, useContext } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { DragSource, DropTarget } from 'react-dnd';
-import Service from './Service';
+import Service from './Service/index';
 import { types } from '../constants';
 import { getDayDate } from 'styled_scenes/Trip/mapServicesToDays';
 import { primary, secondary, primaryContrast, error } from 'libs/colors';

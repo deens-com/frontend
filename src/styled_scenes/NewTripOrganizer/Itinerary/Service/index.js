@@ -4,17 +4,17 @@ import styled from 'styled-components';
 import I18nText from 'shared_components/I18nText';
 import { DragSource, DropTarget } from 'react-dnd';
 import { Popup } from 'semantic-ui-react'
-import { types } from '../constants';
+import { types } from '../../constants';
 import { P, PSmallStrong, PXSmall } from 'libs/commonStyles';
 import { lightText, primary, darkText, primaryContrast, secondaryContrast, error, activity, food, accommodation } from 'libs/colors';
 import { Drag } from 'shared_components/icons';
 import Stars from 'shared_components/Rating/Stars';
 import InlineInput from 'shared_components/InlineInput'
-import ServiceOptions from './ServiceOptions';
-import { TripContext } from '../';
+import ServiceOptions from './Options';
+import ServiceSettings from './Settings';
+import { TripContext } from '../../';
 import { getImageUrlFromMedia } from 'libs/media'
 import { Activity, Food, Accommodation, Settings } from 'shared_components/icons';
-import { TrashCan } from 'shared_components/icons'
 
 const serviceSource = {
   beginDrag(props) {
@@ -144,7 +144,7 @@ const BookableTag = styled(PXSmall)`
   margin-right: 3px;
 `;
 
-const ServiceSettings = styled.div`
+const ServiceSettingsButton = styled.div`
   display: flex;
   align-items: center;
   height: 35px;
@@ -159,20 +159,6 @@ const ServiceSettings = styled.div`
   > svg {
     font-size: 24px;
     margin-left: 15px;
-  }
-`
-
-const DeleteService = styled.div`
-  color: ${primary};
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-
-  > svg {
-    fill: ${error} !important;
-    height: 10px;
-    width: 10px;
-    margin-right: 6px;
   }
 `
 
@@ -231,7 +217,7 @@ const Service = ({
           <DraggingBox />
         ) : (
           <Wrapper>
-            <ServiceSettings>
+            <ServiceSettingsButton>
               {connectDragSource(
                 <div style={{cursor: 'grabbing'}}>
                   <Drag style={{ width: '18px', height: '18px' }} />
@@ -244,19 +230,12 @@ const Service = ({
                     <Settings style={{ color: primary, width: '20px', height: '20px' }} />
                   </span>
                 }
-                content={
-                  <div>
-                    <DeleteService onClick={() => removeService(data._id)}>
-                      <TrashCan />
-                      <P>Delete</P>
-                    </DeleteService>
-                  </div>
-                }
+                content={<ServiceSettings removeService={removeService} service={data} />}
                 on="click"
                 position="bottom center"
                 hideOnScroll
               />
-            </ServiceSettings>
+            </ServiceSettingsButton>
             <ServiceBox
               isNotAvailable={!isCheckingAvailability && !isAvailable}
               img={getImageUrlFromMedia(data.service.media)}
