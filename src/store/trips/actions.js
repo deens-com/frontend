@@ -3,7 +3,6 @@ import { serverBaseURL } from 'libs/config';
 import { parseTags } from 'libs/fetch_helpers';
 import history from './../../main/history';
 import moment from 'moment';
-import { saveTrip } from 'libs/localStorage';
 import apiClient from 'libs/apiClient';
 
 const types = {
@@ -223,12 +222,6 @@ const cloneTrip = (trip, userId) => async dispatch => {
     const newTrip = await apiClient.trips.copy.post(trip._id, !userId);
 
     const newId = newTrip.data._id;
-    if (!userId) {
-      saveTrip({
-        ...newTrip.data,
-        services: trip.services,
-      });
-    }
     dispatch(cloneTripSuccess());
     history.push(`/trips/organize/${userId ? newId : ''}`);
   } catch (e) {

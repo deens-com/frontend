@@ -10,7 +10,6 @@ import { websiteUrl } from 'libs/config';
 import I18nText from 'shared_components/I18nText';
 import { generateServiceSlug } from 'libs/Utils';
 import { getHeroImageUrlFromMedia } from 'libs/media';
-import { loadTrip } from 'libs/localStorage';
 import tripActions from 'store/trips/actions';
 import headerActions from 'store/header/actions';
 
@@ -31,8 +30,8 @@ class ServicesContainer extends Component {
     this.props.resetServiceData();
   }
 
-  onAddServiceToTrip = ({ trip, day }, isLoggedIn) => {
-    this.props.addServiceToTrip({ trip, day }, isLoggedIn);
+  onAddServiceToTrip = ({ trip, day }) => {
+    this.props.addServiceToTrip({ trip, day });
   };
 
   onAddServiceToNewTrip = () => {
@@ -102,7 +101,7 @@ const mapStateToProps = state => {
     isLoggedIn,
     trips: state.services.trips.filter(trip => trip !== undefined),
     reviews: state.services.reviews,
-    myUnpurchasedTrips: isLoggedIn ? state.trips.userTrips.unbookedTrips : [loadTrip()],
+    myUnpurchasedTrips: state.trips.userTrips.unbookedTrips,
     serviceRecentlyAddedToTrip: state.services.serviceRecentlyAddedToTrip,
     serviceAlreadyAddedToTrip: state.services.serviceAlreadyAddedToTrip,
     isServiceUnavailableModalOpen: state.services.isServiceUnavailableModalOpen,
