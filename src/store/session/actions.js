@@ -155,7 +155,7 @@ export const getCurrentUser = fetchReferralInfo => async (dispatch, getState) =>
   try {
     const sessionData = getState().session.session
 
-    if (sessionData && sessionData._id === session._id) {
+    if (sessionData && sessionData._id !== undefined && sessionData._id === session._id) {
       return
     }
 

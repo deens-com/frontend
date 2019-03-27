@@ -157,11 +157,11 @@ const Footer = ({ isSaving, recentlyDeletedService, undoRemoveService, book, pri
           Share and earn rewards
         </Button>
         <SaveText>{saveButtonText(isSaving)}</SaveText>
-        <CheckingAvailability checking={true || isCheckingAvailability}>
+        <CheckingAvailability checking={isCheckingAvailability}>
           <P>Checking availability</P>
           <LoadingDots />
         </CheckingAvailability>
-        <UndoServiceDeletion onClick={() => recentlyDeletedService && undoRemoveService()} show={true || Boolean(recentlyDeletedService)}>
+        <UndoServiceDeletion onClick={() => recentlyDeletedService && undoRemoveService()} show={Boolean(recentlyDeletedService)}>
           <UndoArrow />
           <P>Undo removal of <I18nText data={recentlyDeletedService && recentlyDeletedService.service && recentlyDeletedService.service.service && recentlyDeletedService.service.service.title} /></P>
         </UndoServiceDeletion>
