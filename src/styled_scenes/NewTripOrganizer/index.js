@@ -114,7 +114,7 @@ export default class TripOrganizer extends React.Component {
     this.state = createStateBasedOnTrip(props);
   }
 
-  propTypes = {
+  static propTypes = {
     trip: PropTypes.shape({
       _id: PropTypes.string.isRequired,
     }).isRequired,
@@ -230,7 +230,10 @@ export default class TripOrganizer extends React.Component {
   book = () => {
     history.push(`/trips/checkout/${this.props.tripId}`)
   };
-  share = () => {};
+
+  share = () => {
+    history.push(`/trips/share/${this.props.tripId}`)
+  };
 
   requestAvailability = async () => {
     const { startDate, adultCount, infantCount, childrenCount } = this.state.tripData;
@@ -831,6 +834,7 @@ export default class TripOrganizer extends React.Component {
       isCheckingAvailability,
       lastRemovedService,
     } = this.state;
+    const { session } = this.props;
 
     return (
       <TripContext.Provider

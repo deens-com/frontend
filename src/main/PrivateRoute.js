@@ -6,7 +6,7 @@ const PrivateRoute = ({ component: Component, session, message, ...rest }) => (
   <Route
     {...rest}
     render={props => {
-      if (session.username) {
+      if (session.level && session.level !== 'anonymous') {
         return <Component {...props} />;
       }
 

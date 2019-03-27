@@ -81,10 +81,9 @@ export default (
         component={commonHOCs(TripShare)}
         message="Please login or register to share your trip."
       />
-      <PrivateRoute
+      <Route
         path={process.env.PUBLIC_URL + '/trips/checkout/:id'}
         component={commonHOCs(Checkout)}
-        message="Please login or register to checkout your trip."
       />
       <Route path={process.env.PUBLIC_URL + '/trips/create'} component={commonHOCs(TripCreator)} />
       <Route path={process.env.PUBLIC_URL + '/trips/:slug?_:id'} component={commonHOCs(Trip)} />

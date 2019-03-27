@@ -84,6 +84,7 @@ class TripOrganizerContainer extends Component {
           this.props.location && this.props.location.state && this.props.location.state.action
         }
         changeCurrentUserTrip={this.props.changeCurrentUserTrip}
+        session={this.props.session}
       />
     );
   }
