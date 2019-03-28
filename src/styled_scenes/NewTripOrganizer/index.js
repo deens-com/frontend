@@ -6,7 +6,7 @@ import apiClient from 'libs/apiClient';
 import arrayMove from 'array-move';
 import { getHeroImageUrlFromMedia } from 'libs/media';
 import Itinerary from './Itinerary';
-import { getFromCoordinates } from 'libs/Utils';
+import { getFromCoordinates, minutesToDays, daysToMinutes } from 'libs/Utils';
 import Header from './Header';
 import Footer from './Footer';
 import { mapServicesByDay, mapDaysToServices } from '../Trip/mapServicesToDays';
@@ -370,11 +370,43 @@ export default class TripOrganizer extends React.Component {
     }, saveTrip);
   };
 
-  removeDay = day => {
+  changeTripDuration = daysDuration => {
+    const currentDuration = minutesToDays(this.state.tripData.duration)
+    this.setState(prevState => ({
+      tripData: {
+        ...prevState.tripData,
+        duration: daysToMinutes(daysDuration),
+      }
+    }), () => {
+      let diff = currentDuration - daysDuration
+      while(diff > 0) {
+        this.removeDay(daysDuration + diff, false)
+        diff--
+      }
+      this.saveTrip({
+        duration: this.state.tripData.duration,
+      });
+    })
+  }
+
+  changeStartDate = date => {
+    this.setState(prevState => ({
+      tripData: {
+        ...prevState.tripData,
+        startDate: date.toJSON(),
+      }
+    }), () => {
+      this.saveTrip({
+        startDate: this.state.tripData.startDate,
+      });
+    });
+  }
+
+  removeDay = (day, changeDuration = true) => {
     const removedServices = [];
     this.setState(
       prevState => {
-        const duration = prevState.tripData.duration - 60 * 24;
+        const duration = changeDuration ? prevState.tripData.duration - 60 * 24 : prevState.tripData.duration;
         const services = mapServicesByDay(
           mapDaysToServices(prevState.services)
             .filter(service => {
@@ -841,6 +873,8 @@ export default class TripOrganizer extends React.Component {
           changeServiceTitle: this.changeServiceTitle,
           changeServicePrice: this.changeServicePrice,
           changeServiceDays: this.changeServiceDays,
+          changeTripDuration: this.changeTripDuration,
+          changeStartDate: this.changeStartDate,
         }}
       >
         <Header
@@ -858,6 +892,7 @@ export default class TripOrganizer extends React.Component {
           children={tripData.childrenCount}
           infants={tripData.infantCount}
           startDate={tripData.startDate}
+          duration={tripData.duration}
           changeShowTransport={this.changeShowTransport}
           changeShowMap={this.changeShowMap}
         />

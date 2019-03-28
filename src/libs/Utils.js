@@ -224,6 +224,10 @@ export function minutesToDays(duration) {
   return Math.ceil(duration / (60 * 24)); // Duration is in minutes
 }
 
+export function daysToMinutes(days) {
+  return Math.ceil(days * 60 * 24);
+}
+
 export function calculatePricePerDay(price, duration) {
   return (price / minutesToDays(duration)).toFixed(2);
 }
