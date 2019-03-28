@@ -59,6 +59,9 @@ const DateSelector = ({ close }) => {
   const [startDate, setStartDate] = useState(moment(tripData.startDate))
 
   const removeDay = () => {
+    if (numberOfDays < 2) {
+      return
+    }
     changeTripDuration(numberOfDays - 1)
   }
 
@@ -79,7 +82,7 @@ const DateSelector = ({ close }) => {
     <Wrapper>
       <SelectDays>
         <NumberOfDays>Number of days: </NumberOfDays>
-        <IconButton left onClick={removeDay}><MinusIcon style={{ width: 24, height: 24 }} /></IconButton>
+        <IconButton disabled={numberOfDays < 2} left onClick={removeDay}><MinusIcon style={{ width: 24, height: 24 }} /></IconButton>
         <H2Subtitle>{numberOfDays}</H2Subtitle>
         <IconButton onClick={addDay}><PlusIcon /></IconButton>
       </SelectDays>
@@ -89,7 +92,7 @@ const DateSelector = ({ close }) => {
         onFocusChange={onFocusChange}
         focusedInput={focusedInput}
         startDate={startDate}
-        endDate={startDate.clone().add(numberOfDays, 'days')}
+        endDate={startDate.clone().add(numberOfDays - 1, 'days')}
         isDayBlocked={isDayBlocked}
         daySize={35}
         hideKeyboardShortcutsPanel
