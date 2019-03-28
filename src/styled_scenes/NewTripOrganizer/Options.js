@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import moment from 'moment';
-import { SingleDatePicker } from 'react-dates';
+import { Popup } from 'semantic-ui-react'
+import DateSelector from './DateSelector';
+import { minutesToDays } from 'libs/Utils'
 import SelectGuests from 'shared_components/SelectGuests';
 import { DropArrow } from 'shared_components/icons';
 import { PStrong, PSmall } from 'libs/commonStyles';
@@ -22,6 +24,14 @@ const LeftSide = styled.div`
   flex: 1;
   display: flex;
 `;
+
+const DateP = styled(PStrong)`
+  color: #38d39f;
+  margin-left: 5px;
+  &:first-child {
+    margin-right: 10px;
+  }
+`
 
 const RightSide = styled.div`
   justify-self: flex-end;
@@ -77,10 +87,10 @@ const DatePicker = styled(FakeDropdown)`
 const DepartureDate = styled(PStrong)`
   margin-left: 10px;
   color: ${darkText};
+  user-select: none;
+  cursor: pointer;
+  display: flex;
 `;
-
-const now = moment().add(1, 'days');
-const isDayBlocked = date => date.valueOf() <= now.valueOf();
 
 const Options = ({
   adults,
@@ -91,15 +101,15 @@ const Options = ({
   onChangeDate,
   changeShowTransport,
   changeShowMap,
+  duration,
 }) => {
-  const formattedDate = startDate
+  const formattedStartDate = startDate
     ? ` ${moment(startDate).format('MM/DD/YY')}`
     : 'Select departure date';
-  const [dateFocused, setDateFocused] = useState(false);
 
-  const onDateFocusChange = ({ focused }) => {
-    setDateFocused(focused);
-  };
+  const formattedEndDate = startDate
+    ? ` ${moment(startDate).clone().add(minutesToDays(duration), 'days').format('MM/DD/YY')}`
+    : '';
 
   return (
     <Wrapper>
@@ -117,25 +127,18 @@ const Options = ({
           )}
         />
         <DatePicker>
-          {startDate && (
-            <DepartureDate onClick={() => onDateFocusChange({ focused: true })}>
-              Departure date:
-            </DepartureDate>
-          )}
-          <SingleDatePicker
-            id="startDate"
-            date={moment(startDate)}
-            onDateChange={onChangeDate}
-            focused={dateFocused}
-            onFocusChange={onDateFocusChange}
-            placeholder={formattedDate}
-            isDayBlocked={isDayBlocked}
-            numberOfMonths={1}
+          <Popup
+            position="center bottom"
+            on="click"
+            trigger={(
+              <DepartureDate>
+                Start: <DateP>{formattedStartDate}</DateP> End: <DateP>{formattedEndDate}</DateP>
+              </DepartureDate>
+            )}
+            content={(
+              <DateSelector onDateChange={onChangeDate} />
+            )}
             small
-            noBorder
-            /*withPortal*/
-            anchorDirection="right"
-            displayFormat="MM/DD/YY"
           />
         </DatePicker>
       </LeftSide>

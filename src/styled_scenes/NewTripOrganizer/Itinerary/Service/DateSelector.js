@@ -1,11 +1,20 @@
 import 'react-dates.css'
 import React, { useContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types'
+import styled from 'styled-components'
 import moment from 'moment'
 import { DayPickerRangeController } from 'react-dates'
 import { START_DATE, END_DATE } from 'react-dates/constants'
 import { minutesToDays } from 'libs/Utils'
 import { TripContext } from '../../'
+import { PSmall } from 'libs/commonStyles'
+import { tertiary } from 'libs/colors'
+
+const Text = styled(PSmall)`
+  font-style: italic;
+  color: ${tertiary};
+  text-align: center;
+`
 
 const ServiceSettings = ({ service }) => {
   const [serviceStartDate, setServiceStartDate] = useState(null)
@@ -64,17 +73,20 @@ const ServiceSettings = ({ service }) => {
   }
 
   return (
-    <DayPickerRangeController
-      initialVisibleMonth={() => serviceStartDate || tripStartDate}
-      onDatesChange={onDatesChange}
-      onFocusChange={onFocusChange}
-      focusedInput={focusedInput}
-      startDate={serviceStartDate}
-      endDate={serviceEndDate}
-      isOutsideRange={isOutsideRange}
-      daySize={35}
-      noBorder
-    />
+    <>
+      <DayPickerRangeController
+        initialVisibleMonth={() => serviceStartDate || tripStartDate}
+        onDatesChange={onDatesChange}
+        onFocusChange={onFocusChange}
+        focusedInput={focusedInput}
+        startDate={serviceStartDate}
+        endDate={serviceEndDate}
+        isOutsideRange={isOutsideRange}
+        daySize={35}
+        noBorder
+      />
+      <Text>Select check-in and check-out</Text>
+    </>
   )
 }
 
