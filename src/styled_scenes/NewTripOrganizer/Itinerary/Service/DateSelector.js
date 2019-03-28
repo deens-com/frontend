@@ -83,6 +83,7 @@ const ServiceSettings = ({ service }) => {
         endDate={serviceEndDate}
         isOutsideRange={isOutsideRange}
         daySize={35}
+        hideKeyboardShortcutsPanel
         noBorder
       />
       <Text>Select check-in and check-out</Text>
