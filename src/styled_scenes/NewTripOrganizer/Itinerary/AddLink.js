@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { Modal, Dimmer, Loader } from 'semantic-ui-react';
 import styled from 'styled-components'
 import axios from 'libs/axios';
@@ -29,6 +29,10 @@ const CancelButton = styled.div`
 const AddCustomServiceModal = ({ close, setServiceData }) => {
   const ref = useRef(null)
   const [isFetching, setIsFetching] = useState(false)
+  let geocoder
+  useEffect(() => {
+    geocoder = new window.google.maps.Geocoder()
+  }, []);
 
   const fetchUrlData = async () => {
     const url = ref.current.value;
@@ -41,7 +45,7 @@ const AddCustomServiceModal = ({ close, setServiceData }) => {
         lng: parseFloat(metadata.location.longitude),
       };
 
-      this.geocoder.geocode({ location: latlng }, (results, status) => {
+      geocoder.geocode({ location: latlng }, (results, status) => {
         if (status === 'OK') {
           if (results[0]) {
             setServiceData(
