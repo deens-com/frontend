@@ -87,6 +87,7 @@ const DateSelector = () => {
         endDate={startDate.clone().add(numberOfDays, 'days')}
         isDayBlocked={isDayBlocked}
         daySize={35}
+        hideKeyboardShortcutsPanel
         noBorder
       />
     </Wrapper>
