@@ -14,6 +14,10 @@ const now = moment().add(1, 'days');
 const isDayBlocked = date => date.valueOf() <= now.valueOf();
 
 const Wrapper = styled.div`
+  .CalendarDay__selected_end {
+    background: #66e2da;
+    border: 1px double #33dacd;
+  }
 `
 
 const SelectDays = styled.div`
@@ -48,7 +52,7 @@ const IconButton = styled.button`
   }
 `;
 
-const DateSelector = () => {
+const DateSelector = ({ close }) => {
   const focusedInput = START_DATE
   const { tripData, changeTripDuration, changeStartDate } = useContext(TripContext);
   const numberOfDays = minutesToDays(tripData.duration)
@@ -64,6 +68,7 @@ const DateSelector = () => {
   
 
   const onDatesChange = ({ startDate }) => {
+    close()
     setStartDate(startDate)
     changeStartDate(startDate)
   }

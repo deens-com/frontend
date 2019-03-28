@@ -733,24 +733,6 @@ export default class TripOrganizer extends React.Component {
     );
   };
 
-  onChangeDate = async date => {
-    const newData = { startDate: date.toJSON() };
-
-    this.setState(
-      prevState => ({
-        tripData: {
-          ...prevState.tripData,
-          ...newData,
-        },
-      }),
-      async () => {
-        this.startCheckingAvailability();
-        await this.saveTrip(newData);
-        await this.checkAvailability();
-      },
-    );
-  };
-
   selectOption = (service, option) => {
     this.setState(
       prevState => {
@@ -886,7 +868,6 @@ export default class TripOrganizer extends React.Component {
           onImageUpload={this.uploadImage}
         />
         <Options
-          onChangeDate={this.onChangeDate}
           onChangeGuests={this.changeGuests}
           adults={tripData.adultCount}
           children={tripData.childrenCount}
