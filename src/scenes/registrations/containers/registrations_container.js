@@ -24,7 +24,7 @@ class RegistrationsContainer extends Component {
     this.props.changeHeader();
     this.handleInputChange = this.handleInputChange.bind(this);
     this.isInputInvalid = this.isInputInvalid.bind(this);
-    if (props.session && props.session.level !== 'username') {
+    if (props.session && props.session.level !== 'anonymous') {
       history.push('/');
     }
   }
