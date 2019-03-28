@@ -98,7 +98,6 @@ const Options = ({
   infants,
   onChangeGuests,
   startDate,
-  onChangeDate,
   changeShowTransport,
   changeShowMap,
   duration,
@@ -110,6 +109,11 @@ const Options = ({
   const formattedEndDate = startDate
     ? ` ${moment(startDate).clone().add(minutesToDays(duration), 'days').format('MM/DD/YY')}`
     : '';
+  
+  const [isOpenDate, setOpenDate] = useState(false)
+
+  const openDate = () => setOpenDate(true)
+  const closeDate = () => setOpenDate(false)
 
   return (
     <Wrapper>
@@ -130,13 +134,16 @@ const Options = ({
           <Popup
             position="center bottom"
             on="click"
+            open={isOpenDate}
+            onOpen={openDate}
+            onClose={closeDate}
             trigger={(
               <DepartureDate>
                 Start: <DateP>{formattedStartDate}</DateP> End: <DateP>{formattedEndDate}</DateP>
               </DepartureDate>
             )}
             content={(
-              <DateSelector onDateChange={onChangeDate} />
+              <DateSelector close={closeDate} />
             )}
             small
           />
@@ -157,7 +164,6 @@ const Options = ({
 Options.propTypes = {
   onChangeGuests: PropTypes.func.isRequired,
   adults: PropTypes.number.isRequired,
-  onChangeDate: PropTypes.func.isRequired,
   changeShowTransport: PropTypes.func.isRequired,
   changeShowMap: PropTypes.func.isRequired,
   startDate: PropTypes.string,
