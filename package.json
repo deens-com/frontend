@@ -87,7 +87,7 @@
     "web3-provider-engine": "14.0.4"
   },
   "scripts": {
-    "start": "set HTTPS=true&& react-app-rewired start",
+    "start": "react-app-rewired start",
     "now-start": "serve ./build --single",
     "build": "REACT_APP_NODE_ENV=production react-app-rewired build",
     "now-build": "REACT_APP_NODE_ENV=staging react-app-rewired build",
