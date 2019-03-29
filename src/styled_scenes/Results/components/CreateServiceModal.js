@@ -8,6 +8,7 @@ import ServiceForm from 'shared_components/ServiceForm';
 import fetchHelpers from 'libs/fetch_helpers';
 import * as tripUtils from 'libs/trips';
 import { parseLocationDataAndCoordinates } from 'libs/location';
+import apiClient from 'libs/apiClient'
 import './CreateServiceModal.css';
 
 const Wrapper = styled.div``;
@@ -152,12 +153,12 @@ export default class CreateServiceModal extends React.Component {
     this.setState({
       savingService: true,
     });
-    const res = await axios.post('/services/import', {
+    const res = await apiClient.services.post({
       importerOptions: {
         fromUrl: this.state.importUrl,
       },
       ...fetchHelpers.createService(values, true),
-    });
+    })
     this.setState({
       savingService: false,
     });

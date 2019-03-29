@@ -119,21 +119,6 @@ const RegistrationsComponent = props => {
                     disabled={disableFields}
                     required
                   />
-                  <Form.Input
-                    fluid
-                    icon="lock"
-                    iconPosition="left"
-                    placeholder="Password confirmation"
-                    type="password"
-                    name="password_confirmation"
-                    id="password_confirmation"
-                    onChange={props.handleInputChange}
-                    onBlur={props.validateInput}
-                    error={props.isInputInvalid('password')}
-                    disabled={disableFields}
-                    minLength={6}
-                    required
-                  />
 
                   <Button
                     className="green-btn pl-btn"

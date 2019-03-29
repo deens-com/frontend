@@ -787,13 +787,16 @@ export default class TripOrganizer extends React.Component {
 
   changeInitialLocation = location => {
     this.changeLocation(location, 'userStartLocation');
+    if (!this.state.tripData.userEndLocation) {
+      this.changeLocation(location, 'userEndLocation');
+    }
   };
 
   changeFinalLocation = location => {
-    this.changeLocation(location, 'userEndLocation');
+    this.changeLocation(location, 'userEndLocation', true);
   };
 
-  changeLocation = (location, key) => {
+  changeLocation = (location, key, dontSave = false) => {
     this.setState(
       prevState => ({
         tripData: {
@@ -802,6 +805,9 @@ export default class TripOrganizer extends React.Component {
         },
       }),
       async () => {
+        if (dontSave) {
+          return
+        }
         await this.saveTrip({
           [key]: location,
         });
