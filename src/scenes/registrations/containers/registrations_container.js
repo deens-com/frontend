@@ -16,7 +16,6 @@ class RegistrationsContainer extends Component {
       username: '',
       email: '',
       password: '',
-      password_confirmation: '',
       errors: {},
       isLoading: false,
       registered: false,
@@ -70,10 +69,6 @@ class RegistrationsContainer extends Component {
   }
 
   parseRegister = async () => {
-    if (this.state.password !== this.state.password_confirmation) {
-      this.setState({ errors: { message: 'Password does not match' } });
-      return;
-    }
     if (this.state.password.length < 8) {
       this.setState({
         errors: { message: 'Password must be at least 8 characters long' },
@@ -167,7 +162,6 @@ class RegistrationsContainer extends Component {
           isLoading={this.state.isLoading}
           registered={this.state.registered}
           password={this.state.password}
-          password_confirmation={this.state.password_confirmation}
           stateErrors={this.state.errors}
           handleInputChange={this.handleInputChange}
           onSubmitRegistration={this.parseRegister}
