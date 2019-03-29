@@ -273,16 +273,21 @@ export default class TripOrganizer extends React.Component {
 
   goToAddService = (day, type = 'accommodation') => {
     const { history, trip } = this.props;
-    const coord =
-      trip.location &&
-      trip.location.geo &&
-      trip.location.geo.coordinates &&
-      getFromCoordinates(trip.location.geo.coordinates);
+    const { services, tripData } = this.state;
+
+    let location
+    if (services[day]) {
+      location = services[day][services[day].length - 1].service.location
+    } else {
+      location = tripData.userStartLocation
+    }
+
+    const coord = location && location.geo && getFromCoordinates(location.geo.coordinates)
     const country =
-      trip.location && trip.location.country && I18nText.translate(trip.location.country.names);
+      location && location.country && I18nText.translate(location.country.names);
     const address =
-      trip.location &&
-      `${trip.location.city || trip.location.state}${country ? `, ${country}` : ''}`;
+      location &&
+      `${location.city || location.state}${country ? `, ${country}` : ''}`;
 
     this.props.updatePath(
       {
