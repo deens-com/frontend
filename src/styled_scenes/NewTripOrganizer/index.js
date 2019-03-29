@@ -121,6 +121,14 @@ export default class TripOrganizer extends React.Component {
   };
 
   componentDidMount() {
+    if (!this.props.trip.startDate || !this.props.adultCount) {
+      this.saveTrip({
+        adultCount: this.state.tripData.adultCount,
+        childrenCount: this.state.tripData.childrenCount,
+        infantCount: this.state.tripData.infantCount,
+        startDate: this.state.tripData.startDate,
+      })
+    }
     this.checkAvailability();
     this.getTransportation();
   }
