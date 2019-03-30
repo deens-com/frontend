@@ -30,8 +30,15 @@ export default ({ location, onChange, isFinal }) => {
   const onLocationChange = (_, placeId) => {
     geocodeByPlaceId(placeId).then(results => {
       const currentResult = results[0];
-      const { countryCode, city, postalCode: postcode, state } = parseLocationData(currentResult);
-      setSavingData(`${city}, ${countryCode}`);
+      const { countryCode, city, postalCode: postcode, state, country } = parseLocationData(currentResult);
+
+      let savingData = city || state
+      if (savingData) {
+        savingData = `${savingData}, ${countryCode}`
+      } else {
+        savingData = country
+      }
+      setSavingData(savingData);
 
       const { lat, lng } = currentResult.geometry.location;
       const geo = {
