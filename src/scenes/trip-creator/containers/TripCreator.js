@@ -16,16 +16,28 @@ const PageContent = styled.div`
 
 class TripCreatorContainer extends Component {
   componentDidMount() {
-    axios.post(`/trips`, {
-      basePrice: 0,
-      duration: 1,
-      media: [],
-      services: [],
-      title: {'en-us': 'Unnamed Trip'}
-    }).then(response => {
-      history.replace(`/trips/organize/${response.data._id}`);
-    });
+    this.createTrip = () => {
+      this.creatingTrip = true
+      axios.post(`/trips`, {
+        basePrice: 0,
+        duration: 1,
+        media: [],
+        services: [],
+        title: {'en-us': 'Unnamed Trip'}
+      }).then(response => {
+        history.replace(`/trips/organize/${response.data._id}`);
+      });
+    }
+    if (this.props.session._id) {
+      this.createTrip()
+    }
     this.props.changeHeader();
+  }
+
+  componentDidUpdate() {
+    if (this.props.session._id && !this.creatingTrip) {
+      this.createTrip()
+    }
   }
   render() {
     return (
