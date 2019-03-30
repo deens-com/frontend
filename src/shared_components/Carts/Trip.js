@@ -278,7 +278,7 @@ class TripCart extends Component {
   renderThumb() {
     const { isPlaceholder, hideAuthor } = this.props;
     const owner = isPlaceholder ? {} : this.props.item.owner;
-    const avatar = owner.profilePicture || ImgurAvatar;
+    const avatar = owner.profilePicture+"?auto=compress&dpr=1&crop=true&fit=crop&w=33&h=33" || ImgurAvatar;
     const isFavorite = isPlaceholder ? false : this.props.favoriteTrips[this.props.item._id];
 
     return (

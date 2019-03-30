@@ -7,10 +7,10 @@ import { media } from 'libs/styled';
 import { H1, H2 } from 'libs/commonStyles';
 import { secondary } from 'libs/colors';
 
-import sydneyImg from './images/sydney.jpg';
-import sanFranciscoImg from './images/san-francisco.jpg';
-import londonImg from './images/london.jpg';
-import newYorkImg from './images/new-york.jpg';
+import sydneyImg from './images/big/sydney.jpg';
+import sanFranciscoImg from './images/small/san-francisco.jpg';
+import londonImg from './images/small/london.jpg';
+import newYorkImg from './images/big/new-york.jpg';
 
 // ACTIONS/CONFIG
 
