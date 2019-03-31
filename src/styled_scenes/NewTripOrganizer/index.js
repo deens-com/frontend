@@ -12,7 +12,7 @@ import Footer from './Footer';
 import { mapServicesByDay, mapDaysToServices } from '../Trip/mapServicesToDays';
 import Options from './Options';
 import I18nText from 'shared_components/I18nText';
-import {addServiceRequest} from 'libs/trips'
+import { addServiceRequest } from 'libs/trips';
 
 function addLang(text) {
   return {
@@ -78,11 +78,15 @@ function formatMedia(url) {
 function makeTransportationState(transportation) {
   return {
     toService: transportation.reduce(
-      (prevObj, transport) => transport.toServiceOrgId ? ({ ...prevObj, [transport.toServiceOrgId]: transport }) : prevObj,
+      (prevObj, transport) =>
+        transport.toServiceOrgId ? { ...prevObj, [transport.toServiceOrgId]: transport } : prevObj,
       {},
     ),
     fromService: transportation.reduce(
-      (prevObj, transport) => transport.fromServiceOrgId ? ({ ...prevObj, [transport.fromServiceOrgId]: transport }) : prevObj,
+      (prevObj, transport) =>
+        transport.fromServiceOrgId
+          ? { ...prevObj, [transport.fromServiceOrgId]: transport }
+          : prevObj,
       {},
     ),
   };
@@ -127,7 +131,7 @@ export default class TripOrganizer extends React.Component {
         childrenCount: this.state.tripData.childrenCount,
         infantCount: this.state.tripData.infantCount,
         startDate: this.state.tripData.startDate,
-      })
+      });
     }
     this.checkAvailability();
     this.getTransportation();
@@ -198,9 +202,10 @@ export default class TripOrganizer extends React.Component {
   saveAvailabilityCode = async (serviceOrgId, availabilityCode) => {
     this.addIsSaving();
 
-    const services = (await apiClient.trips.serviceOrganizations.availabilityCode.post(this.props.trip._id, [
-      { serviceOrgId, availabilityCode },
-    ])).data
+    const services = (await apiClient.trips.serviceOrganizations.availabilityCode.post(
+      this.props.trip._id,
+      [{ serviceOrgId, availabilityCode }],
+    )).data;
 
     this.removeIsSaving();
 
@@ -210,7 +215,8 @@ export default class TripOrganizer extends React.Component {
   getTransportation = async () => {
     this.addIsLoadingTransports();
 
-    const transportation = (await apiClient.trips.calculateDistances.post(this.props.trip._id)).data
+    const transportation = (await apiClient.trips.calculateDistances.post(this.props.trip._id))
+      .data;
 
     this.removeIsLoadingTransports(transportation);
   };
@@ -218,7 +224,7 @@ export default class TripOrganizer extends React.Component {
   setTransportation = async body => {
     this.addIsLoadingTransports();
 
-    await apiClient.trips.transports.post(this.props.trip._id, body)
+    await apiClient.trips.transports.post(this.props.trip._id, body);
 
     await this.getTransportation();
 
@@ -226,11 +232,11 @@ export default class TripOrganizer extends React.Component {
   };
 
   book = () => {
-    history.push(`/trips/checkout/${this.props.tripId}`)
+    history.push(`/trips/checkout/${this.props.tripId}`);
   };
 
   share = () => {
-    history.push(`/trips/share/${this.props.tripId}`)
+    history.push(`/trips/share/${this.props.tripId}`);
   };
 
   requestAvailability = async () => {
@@ -275,26 +281,24 @@ export default class TripOrganizer extends React.Component {
     const { history, trip } = this.props;
     const { services, tripData } = this.state;
 
-    let location
+    let location;
     if (services[day]) {
-      location = services[day][services[day].length - 1].service.location
+      location = services[day][services[day].length - 1].service.location;
     } else {
-      location = tripData.userStartLocation
+      location = tripData.userStartLocation;
     }
 
-    const coord = location && location.geo && getFromCoordinates(location.geo.coordinates)
-    const country =
-      location && location.country && I18nText.translate(location.country.names);
+    const coord = location && location.geo && getFromCoordinates(location.geo.coordinates);
+    const country = location && location.country && I18nText.translate(location.country.names);
     const address =
-      location &&
-      `${location.city || location.state}${country ? `, ${country}` : ''}`;
+      location && `${location.city || location.state}${country ? `, ${country}` : ''}`;
 
     this.props.updatePath(
       {
         type: [type],
-        latitude: coord && coord.lat,
-        longitude: coord && coord.lng,
         address,
+        countryCode: location.countryCode,
+        city: location.city,
       },
       history,
       {
@@ -384,42 +388,50 @@ export default class TripOrganizer extends React.Component {
   };
 
   changeTripDuration = daysDuration => {
-    const currentDuration = minutesToDays(this.state.tripData.duration)
-    this.setState(prevState => ({
-      tripData: {
-        ...prevState.tripData,
-        duration: daysToMinutes(daysDuration),
-      }
-    }), () => {
-      let diff = currentDuration - daysDuration
-      while(diff > 0) {
-        this.removeDay(daysDuration + diff, false)
-        diff--
-      }
-      this.saveTrip({
-        duration: this.state.tripData.duration,
-      });
-    })
-  }
+    const currentDuration = minutesToDays(this.state.tripData.duration);
+    this.setState(
+      prevState => ({
+        tripData: {
+          ...prevState.tripData,
+          duration: daysToMinutes(daysDuration),
+        },
+      }),
+      () => {
+        let diff = currentDuration - daysDuration;
+        while (diff > 0) {
+          this.removeDay(daysDuration + diff, false);
+          diff--;
+        }
+        this.saveTrip({
+          duration: this.state.tripData.duration,
+        });
+      },
+    );
+  };
 
   changeStartDate = date => {
-    this.setState(prevState => ({
-      tripData: {
-        ...prevState.tripData,
-        startDate: date.toJSON(),
-      }
-    }), () => {
-      this.saveTrip({
-        startDate: this.state.tripData.startDate,
-      });
-    });
-  }
+    this.setState(
+      prevState => ({
+        tripData: {
+          ...prevState.tripData,
+          startDate: date.toJSON(),
+        },
+      }),
+      () => {
+        this.saveTrip({
+          startDate: this.state.tripData.startDate,
+        });
+      },
+    );
+  };
 
   removeDay = (day, changeDuration = true) => {
     const removedServices = [];
     this.setState(
       prevState => {
-        const duration = changeDuration ? prevState.tripData.duration - 60 * 24 : prevState.tripData.duration;
+        const duration = changeDuration
+          ? prevState.tripData.duration - 60 * 24
+          : prevState.tripData.duration;
         const services = mapServicesByDay(
           mapDaysToServices(prevState.services)
             .filter(service => {
@@ -460,7 +472,7 @@ export default class TripOrganizer extends React.Component {
   addService = async (serviceToAdd, day) => {
     // THIS ONLY WORKS FOR RECENTLY CREATED SERVICES (CUSTOM SERVICES!)
     // WE USE SERVICE ID INSTEAD OF SERVICE ORG ID TO IDENTIFY THE SERVICE
-    const trip = (await addServiceRequest(this.props.tripId, day, serviceToAdd._id)).data
+    const trip = (await addServiceRequest(this.props.tripId, day, serviceToAdd._id)).data;
     this.setState(prevState => ({
       services: {
         ...prevState.services,
@@ -469,68 +481,71 @@ export default class TripOrganizer extends React.Component {
           {
             ...trip.services.find(service => service.service === serviceToAdd._id),
             service: serviceToAdd,
-          }
-        ]
+          },
+        ],
       },
-    }))
+    }));
     this.getTransportation();
-  }
+  };
 
   removeService = serviceOrgId => {
     let removedService;
-    this.setState(prevState => {
-      const services = mapServicesByDay(
-        mapDaysToServices(prevState.services)
-          .filter((service, i) => {
+    this.setState(
+      prevState => {
+        const services = mapServicesByDay(
+          mapDaysToServices(prevState.services).filter((service, i) => {
             if (service._id === serviceOrgId) {
               removedService = { service, position: i };
-              return false
+              return false;
             }
             return true;
-          })
-      );
-      return {
-        services,
-        lastRemovedService: removedService
-      }
-    }, () => {
-      this.waitAndRemoveService(removedService.service._id)
-    })
-  }
+          }),
+        );
+        return {
+          services,
+          lastRemovedService: removedService,
+        };
+      },
+      () => {
+        this.waitAndRemoveService(removedService.service._id);
+      },
+    );
+  };
 
   waitAndRemoveService = id => {
     setTimeout(() => {
-      this.setState(prevState => {
-        if (!prevState.lastRemovedService) {
-          return
-        }
-        if (prevState.lastRemovedService.service._id !== id) {
-          return
-        }
-        return {
-          lastRemovedService: null
-        }
-      }, async () => {
-        await this.saveRemovedServices([id]);
-      })
-    }, 5000)
-  }
+      this.setState(
+        prevState => {
+          if (!prevState.lastRemovedService) {
+            return;
+          }
+          if (prevState.lastRemovedService.service._id !== id) {
+            return;
+          }
+          return {
+            lastRemovedService: null,
+          };
+        },
+        async () => {
+          await this.saveRemovedServices([id]);
+        },
+      );
+    }, 5000);
+  };
 
   undoRemoveService = () => {
     this.setState(prevState => {
-      const services = mapDaysToServices(prevState.services)
+      const services = mapDaysToServices(prevState.services);
       return {
         lastRemovedService: null,
-        services: mapServicesByDay(
-          [
-            ...services.slice(0, prevState.lastRemovedService.position),
-            prevState.lastRemovedService.service,
-            ...services.slice(prevState.lastRemovedService.position),
-          ]
-        )
-      }
-    })
-  }
+        services: mapServicesByDay([
+          ...services.slice(0, prevState.lastRemovedService.position),
+          prevState.lastRemovedService.service,
+          ...services.slice(prevState.lastRemovedService.position),
+        ]),
+      };
+    });
+  };
 
   addNewDay = afterDay => {
     this.setState(
@@ -603,7 +618,7 @@ export default class TripOrganizer extends React.Component {
       }),
       () => {
         this.saveTrip({ title: addLang(title) });
-        this.props.changeCurrentUserTrip({ _id: this.props.tripId, title: addLang(title) })
+        this.props.changeCurrentUserTrip({ _id: this.props.tripId, title: addLang(title) });
       },
     );
   };
@@ -623,81 +638,91 @@ export default class TripOrganizer extends React.Component {
   };
 
   changeServiceTitle = (serviceId, day, title) => {
-    this.modifyService(serviceId, day, { title: addLang(title) })
-  }
+    this.modifyService(serviceId, day, { title: addLang(title) });
+  };
 
   changeServicePrice = (serviceId, day, price) => {
     if (!Number(price)) {
-      return
+      return;
     }
 
-    this.modifyService(serviceId, day, { basePrice: Number(price) })
-  }
+    this.modifyService(serviceId, day, { basePrice: Number(price) });
+  };
 
   changeServiceDays = async (service, startDay, endDay) => {
-    const instances = mapDaysToServices(this.state.services).filter(s => s.service._id === service.service._id)
-    let groups = []
-    let currentGroupIndex = -1
-    let currentDay = instances[0].day - 1
-    let currentServiceGroupIndex = -1
-    const groupsAffected = new Set([])
+    const instances = mapDaysToServices(this.state.services).filter(
+      s => s.service._id === service.service._id,
+    );
+    let groups = [];
+    let currentGroupIndex = -1;
+    let currentDay = instances[0].day - 1;
+    let currentServiceGroupIndex = -1;
+    const groupsAffected = new Set([]);
 
     for (let instance of instances) {
       if (currentDay !== instance.day) {
-        currentDay = instance.day
-        currentGroupIndex++
+        currentDay = instance.day;
+        currentGroupIndex++;
       }
 
       if (!groups[currentGroupIndex]) {
-        groups.push([])
+        groups.push([]);
       }
 
       if (instance._id === service._id) {
-        currentServiceGroupIndex = currentGroupIndex
-        groupsAffected.add(currentGroupIndex)
+        currentServiceGroupIndex = currentGroupIndex;
+        groupsAffected.add(currentGroupIndex);
       }
 
       if (instance.day >= startDay && instance.day <= endDay) {
-        groupsAffected.add(currentGroupIndex)
+        groupsAffected.add(currentGroupIndex);
       }
 
-      groups[currentGroupIndex].push(instance)
-      currentDay++
+      groups[currentGroupIndex].push(instance);
+      currentDay++;
     }
 
-    let serviceDays = new Set([])
+    let serviceDays = new Set([]);
 
     groups.forEach((group, index) => {
       if (!groupsAffected.has(index)) {
         group.forEach(service => {
-          serviceDays.add(service.day)
-        })
+          serviceDays.add(service.day);
+        });
       }
-    })
+    });
 
     for (let i = startDay; i <= endDay; i++) {
-      serviceDays.add(i)
+      serviceDays.add(i);
     }
 
-    const trip = (await apiClient.trips.serviceOrganizations.post(this.props.tripId, { days: [...serviceDays], serviceId: service.service._id })).data;
-    const newServices = {}
+    const trip = (await apiClient.trips.serviceOrganizations.post(this.props.tripId, {
+      days: [...serviceDays],
+      serviceId: service.service._id,
+    })).data;
+    const newServices = {};
     for (let day in this.state.services) {
-      newServices[day] = this.state.services[day]
+      newServices[day] = this.state.services[day];
       if (!serviceDays.has(Number(day))) {
-        newServices[day] = this.state.services[day].filter(s => s.service._id !== service.service._id)
+        newServices[day] = this.state.services[day].filter(
+          s => s.service._id !== service.service._id,
+        );
       }
-      if (serviceDays.has(Number(day)) && !this.state.services[day].find(s => s.service._id === service.service._id)) {
+      if (
+        serviceDays.has(Number(day)) &&
+        !this.state.services[day].find(s => s.service._id === service.service._id)
+      ) {
         newServices[day].push({
           ...trip.services.find(s => s.day === Number(day) && s.service === service.service._id),
           day: Number(day),
           service: service.service,
-        })
+        });
       }
     }
     this.setState({
       services: newServices,
-    })
-  }
+    });
+  };
 
   modifyService = (serviceId, day, data) => {
     this.setState(prevState => {
@@ -708,22 +733,22 @@ export default class TripOrganizer extends React.Component {
             service: {
               ...service.service,
               ...data,
-            }
-          }
+            },
+          };
         }
-        return service
-      })
+        return service;
+      });
 
       return {
         services: {
           ...prevState.services,
           [day]: services,
         },
-      }
-    })
+      };
+    });
 
-    apiClient.services.patch(serviceId, data)
-  }
+    apiClient.services.patch(serviceId, data);
+  };
 
   changeGuests = async data => {
     const newData = {
@@ -811,7 +836,7 @@ export default class TripOrganizer extends React.Component {
       }),
       async () => {
         if (dontSave) {
-          return
+          return;
         }
         await this.saveTrip({
           [key]: location,
