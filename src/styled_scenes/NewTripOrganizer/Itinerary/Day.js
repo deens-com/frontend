@@ -41,7 +41,7 @@ const Location = styled.div`
   padding: 10px;
   text-align: center;
   > img {
-    margin: 50px auto;
+    margin: 50px auto 20px;
     padding-left: 15px;
   }
 `;
@@ -166,89 +166,89 @@ const Day = ({
 
   return (
     <>
+      <div>
         <div>
-          <div>
-            {isDraggingThisDay ? (
-              <DraggingBox>
+          {isDraggingThisDay ? (
+            <DraggingBox>
+              <H2>Day {day}</H2>
+            </DraggingBox>
+          ) : (
+            <DraggableDay>
+              <TitleWrapper>
                 <H2>Day {day}</H2>
-              </DraggingBox>
-            ) : (
-              <DraggableDay>
-                <TitleWrapper>
-                  <H2>Day {day}</H2>
-                  <Divider>•</Divider>
-                  <H2Subtitle>{getDayDate(day, tripStartDate)}</H2Subtitle>
-                  <DeleteDay onClick={() => removeDay(day)}>
-                    <TrashCan />
-                  </DeleteDay>
-                </TitleWrapper>
-              </DraggableDay>
-            )}
-          </div>
-          {connectDropServiceTarget(
-            <div>
-              <ServicesWrapper hidden={!isNotDraggingAnyDay}>
-                <Services>
-                  {day === 1 && (
-                    <Location>
-                      <img alt="Start location" src={locationIcon} />
-                      <LocationEdit
-                        onChange={changeInitialLocation}
-                        location={tripData.userStartLocation}
-                      />
-                    </Location>
-                  )}
-                  {services.map((data, index) => (
-                    <React.Fragment key={data._id}>
-                      <Transportation
-                        selectTransport={selectTransport}
-                        serviceId={data._id}
-                        toService={toService}
-                        fromService={fromService}
-                        isFirst={index === 0 && day === 1}
-                      >
-                        <Service
-                          startDraggingService={startDragging}
-                          changeDraggingService={changeDragging}
-                          endDraggingService={endDragging}
-                          draggingState={draggingState}
-                          changeServicePosition={changeServicePosition}
-                          data={data}
-                          index={index}
-                          selectOption={selectOption}
-                        />
-                      </Transportation>
-                      {isLastDay &&
-                        index + 1 === services.length && (
-                          <Transportation
-                            key={data._id}
-                            selectTransport={selectTransport}
-                            serviceId={data._id}
-                            toService={toService}
-                            fromService={fromService}
-                            overrideData={fromService[data._id]}
-                            isFirst={index === 0 && day === 1}
-                            isLast={index + 1 === services.length && isLastDay}
-                          />
-                        )}
-                    </React.Fragment>
-                  ))}
-                  {isLastDay && (
-                    <Location>
-                      <img alt="Start location" src={locationIcon} />
-                      <LocationEdit
-                        onChange={changeFinalLocation}
-                        location={tripData.userEndLocation}
-                        isFinal
-                      />
-                    </Location>
-                  )}
-                  <AddServiceBox day={day} goToAddService={onAddService} />
-                </Services>
-              </ServicesWrapper>
-            </div>,
+                <Divider>•</Divider>
+                <H2Subtitle>{getDayDate(day, tripStartDate)}</H2Subtitle>
+                <DeleteDay onClick={() => removeDay(day)}>
+                  <TrashCan />
+                </DeleteDay>
+              </TitleWrapper>
+            </DraggableDay>
           )}
         </div>
+        {connectDropServiceTarget(
+          <div>
+            <ServicesWrapper hidden={!isNotDraggingAnyDay}>
+              <Services>
+                {day === 1 && (
+                  <Location>
+                    <img alt="Start location" src={locationIcon} />
+                    <LocationEdit
+                      onChange={changeInitialLocation}
+                      location={tripData.userStartLocation}
+                    />
+                  </Location>
+                )}
+                {services.map((data, index) => (
+                  <React.Fragment key={data._id}>
+                    <Transportation
+                      selectTransport={selectTransport}
+                      serviceId={data._id}
+                      toService={toService}
+                      fromService={fromService}
+                      isFirst={index === 0 && day === 1}
+                    >
+                      <Service
+                        startDraggingService={startDragging}
+                        changeDraggingService={changeDragging}
+                        endDraggingService={endDragging}
+                        draggingState={draggingState}
+                        changeServicePosition={changeServicePosition}
+                        data={data}
+                        index={index}
+                        selectOption={selectOption}
+                      />
+                    </Transportation>
+                    {isLastDay &&
+                      index + 1 === services.length && (
+                        <Transportation
+                          key={data._id}
+                          selectTransport={selectTransport}
+                          serviceId={data._id}
+                          toService={toService}
+                          fromService={fromService}
+                          overrideData={fromService[data._id]}
+                          isFirst={index === 0 && day === 1}
+                          isLast={index + 1 === services.length && isLastDay}
+                        />
+                      )}
+                  </React.Fragment>
+                ))}
+                {isLastDay && (
+                  <Location>
+                    <img alt="Start location" src={locationIcon} />
+                    <LocationEdit
+                      onChange={changeFinalLocation}
+                      location={tripData.userEndLocation}
+                      isFinal
+                    />
+                  </Location>
+                )}
+                <AddServiceBox day={day} goToAddService={onAddService} />
+              </Services>
+            </ServicesWrapper>
+          </div>,
+        )}
+      </div>
       <AddDayBox onClick={addDay} hidden={!isNotDraggingAnyDay}>
         <AddButton />
       </AddDayBox>

@@ -30,12 +30,15 @@ const NotValid = styled.div`
 `;
 
 function getCityText({ city, countryCode }) {
+  if (!city) {
+    return '';
+  }
   return `${city}, ${countryCode}`;
 }
 
 export default ({ location, onChange, isFinal }) => {
   const [isEditing, setEditing] = useState(false);
-  const [isValid, setValid] = useState(true);
+  const [isValid, setValid] = useState(Boolean(!location || location.city));
   const [savingData, setSavingData] = useState(null);
 
   const onLocationChange = (_, placeId) => {
