@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
 import { geocodeByPlaceId } from 'react-places-autocomplete';
 import { parseLocationData } from 'libs/location';
-import { primary } from 'libs/colors';
+import { primary, error } from 'libs/colors';
 import { P } from 'libs/commonStyles';
 import { PencilIcon } from 'shared_components/icons';
 
@@ -23,22 +23,37 @@ const NotEditing = styled.div`
   }
 `;
 
+const NotValid = styled.div`
+  color: ${error};
+  font-size: 12px;
+  line-height: 12px;
+`;
+
+function getCityText({ city, countryCode }) {
+  return `${city}, ${countryCode}`;
+}
+
 export default ({ location, onChange, isFinal }) => {
   const [isEditing, setEditing] = useState(false);
+  const [isValid, setValid] = useState(true);
   const [savingData, setSavingData] = useState(null);
 
   const onLocationChange = (_, placeId) => {
+    setValid(true);
+
     geocodeByPlaceId(placeId).then(results => {
       const currentResult = results[0];
-      const { countryCode, city, postalCode: postcode, state, country } = parseLocationData(currentResult);
+      const { countryCode, city, postalCode: postcode, state, country } = parseLocationData(
+        currentResult,
+      );
 
-      let savingData = city || state
-      if (savingData) {
-        savingData = `${savingData}, ${countryCode}`
-      } else {
-        savingData = country
+      if (!city) {
+        setValid(false);
+        setEditing(false);
+        return;
       }
-      setSavingData(savingData);
+
+      setSavingData(getCityText({ city, state, country, countryCode }));
 
       const { lat, lng } = currentResult.geometry.location;
       const geo = {
@@ -52,7 +67,7 @@ export default ({ location, onChange, isFinal }) => {
     });
   };
 
-  const place = savingData || (location ? `${location.city}, ${location.countryCode}` : '');
+  const place = getCityText(location || {});
 
   return (
     <Wrapper>
@@ -61,11 +76,17 @@ export default ({ location, onChange, isFinal }) => {
           autoFocus
           onBlur={() => setEditing(false)}
           onChange={onLocationChange}
+          requireCity
         />
       ) : (
         <NotEditing onClick={() => setEditing(true)}>
           <P>{place || `Please select ${isFinal ? 'a final' : 'an initial'} location`}</P>
           <PencilIcon />
+          {!isValid && (
+            <NotValid>
+              Please select a more specific location, e.g. a city, a street or an airport.
+            </NotValid>
+          )}
         </NotEditing>
       )}
     </Wrapper>
