@@ -477,7 +477,7 @@ export default class TripOrganizer extends React.Component {
       services: {
         ...prevState.services,
         [day]: [
-          ...prevState.services[day],
+          ...(prevState.services[day] || []),
           {
             ...trip.services.find(service => service.service === serviceToAdd._id),
             service: serviceToAdd,
