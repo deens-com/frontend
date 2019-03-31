@@ -257,8 +257,10 @@ class Filters extends Component {
     this.props.updatePath(query_params, this.props.history, this.props.routeState);
   }
 
-  refetch_results_for_location(addr, countryCode, city, state) {
+  refetch_results_for_location(lat, lng, addr, countryCode, city, state) {
     const query_params = this.get_query_params();
+    query_params.latitude = lat;
+    query_params.longitude = lng;
     query_params.address = addr;
     query_params.city = city;
     query_params.state = state;
@@ -302,6 +304,8 @@ class Filters extends Component {
     let countryCode = '';
     let city = '';
     let state = '';
+    let latitude = '';
+    let longitude = '';
     geocodeByAddress(address)
       .then(results => {
         const locationData = parseLocationData(results[0]);
@@ -318,7 +322,9 @@ class Filters extends Component {
         return getLatLng(results[0]);
       })
       .then(results => {
-        this.refetch_results_for_location(addr, countryCode, city, state);
+        latitude = results.lat;
+        longitude = results.lng;
+        this.refetch_results_for_location(latitude, longitude, addr, countryCode, city, state);
       });
   }
 
