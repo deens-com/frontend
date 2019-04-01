@@ -11,9 +11,9 @@ import Button from 'shared_components/Button';
 import { TripContext } from '../../';
 
 const OptionsBox = styled.div`
-  box-shadow: ${props => props.hasSelectedOption ? '1px 1px 3px rgba(0, 0, 0, 0.3)' : 'none'};
+  box-shadow: ${props => (props.hasSelectedOption ? '1px 1px 3px rgba(0, 0, 0, 0.3)' : 'none')};
   margin-top: -8px;
-  padding: 8px 0 ${props => props.hasSelectedOption ? '8px' : '0'};
+  padding: 8px 0 ${props => (props.hasSelectedOption ? '8px' : '0')};
 `;
 
 const ModalBody = styled.div`
@@ -153,7 +153,12 @@ const ServiceOptions = ({ selectOption, serviceData, options }) => {
           </ChangeOptionsButton>
         }
         onOpen={() => setModalOpen(true)}
-        onClose={() => setModalOpen(false)}
+        onClose={() => {
+          if (fullSelectedOption) {
+            selectOption(serviceData, fullSelectedOption);
+          }
+          setModalOpen(false);
+        }}
       >
         <OptionDescription>
           <Modal.Content image>

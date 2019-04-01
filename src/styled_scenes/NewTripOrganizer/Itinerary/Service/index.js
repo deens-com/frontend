@@ -3,17 +3,27 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import I18nText from 'shared_components/I18nText';
 import { DragSource, DropTarget } from 'react-dnd';
-import { Popup } from 'semantic-ui-react'
+import { Popup } from 'semantic-ui-react';
 import { types } from '../../constants';
 import { P, PSmallStrong, PXSmall } from 'libs/commonStyles';
-import { lightText, primary, darkText, primaryContrast, secondaryContrast, error, activity, food, accommodation } from 'libs/colors';
+import {
+  lightText,
+  primary,
+  darkText,
+  primaryContrast,
+  secondaryContrast,
+  error,
+  activity,
+  food,
+  accommodation,
+} from 'libs/colors';
 import { Drag } from 'shared_components/icons';
 import Stars from 'shared_components/Rating/Stars';
-import InlineInput from 'shared_components/InlineInput'
+import InlineInput from 'shared_components/InlineInput';
 import ServiceOptions from './Options';
 import ServiceSettings from './Settings';
 import { TripContext } from '../../';
-import { getImageUrlFromMedia } from 'libs/media'
+import { getImageUrlFromMedia } from 'libs/media';
 import { Activity, Food, Accommodation, Settings } from 'shared_components/icons';
 
 const serviceSource = {
@@ -68,6 +78,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
+  width: 190px;
 `;
 
 const DraggingBox = styled.div`
@@ -160,7 +171,7 @@ const ServiceSettingsButton = styled.div`
     font-size: 24px;
     margin-left: 15px;
   }
-`
+`;
 
 function getPriceText(type) {
   if (type === 'Food') {
@@ -174,14 +185,14 @@ function getPriceText(type) {
 
 const ServiceIcon = ({ type }) => {
   if (type === 'Food') {
-    return <Food style={{ color: food }} />
+    return <Food style={{ color: food }} />;
   }
   if (type === 'Accommodation') {
-    return <Accommodation style={{ color: accommodation }} />
+    return <Accommodation style={{ color: accommodation }} />;
   }
 
-  return <Activity style={{ color: activity }} />
-}
+  return <Activity style={{ color: activity }} />;
+};
 
 const Service = ({
   data,
@@ -193,7 +204,12 @@ const Service = ({
   connectDropTarget,
   selectOption,
 }) => {
-  const { isCheckingAvailability, removeService, changeServiceTitle, changeServicePrice } = useContext(TripContext);
+  const {
+    isCheckingAvailability,
+    removeService,
+    changeServiceTitle,
+    changeServicePrice,
+  } = useContext(TripContext);
   const fastBookable =
     data.service.checkoutOptions && data.service.checkoutOptions.payAt === 'please';
   const isAvailable = !data.availability || data.availability.isAvailable;
@@ -202,13 +218,13 @@ const Service = ({
     data.availability.groupedOptions &&
     data.availability.groupedOptions.options;
 
-  const setServicePrice = (price) => {
-    changeServicePrice(data.service._id, data.day, price)
-  }
+  const setServicePrice = price => {
+    changeServicePrice(data.service._id, data.day, price);
+  };
 
-  const setServiceTitle = (title) => {
-    changeServiceTitle(data.service._id, data.day, title)
-  }
+  const setServiceTitle = title => {
+    changeServiceTitle(data.service._id, data.day, title);
+  };
 
   return connectDragPreview(
     connectDropTarget(
@@ -219,14 +235,14 @@ const Service = ({
           <Wrapper>
             <ServiceSettingsButton>
               {connectDragSource(
-                <div style={{cursor: 'grabbing'}}>
+                <div style={{ cursor: 'grabbing' }}>
                   <Drag style={{ width: '18px', height: '18px' }} />
                 </div>,
               )}
               <ServiceIcon type={data.service.categories[0].names['en-us']} />
               <Popup
                 trigger={
-                  <span style={{cursor: 'pointer', marginLeft: '15px'}}>
+                  <span style={{ cursor: 'pointer', marginLeft: '15px' }}>
                     <Settings style={{ color: primary, width: '20px', height: '20px' }} />
                   </span>
                 }
@@ -246,23 +262,30 @@ const Service = ({
                     <InlineInput disallowEmptySubmit onChanged={setServiceTitle}>
                       {I18nText.translate(data.service.title)}
                     </InlineInput>
-                  ) : I18nText.translate(data.service.title)}
+                  ) : (
+                    I18nText.translate(data.service.title)
+                  )}
                 </ServiceTitle>
                 <RatingAndPrice>
                   <Price>
                     <PSmallStrong>
                       {data.service.privacy === 'private' ? (
-                        <InlineInput textPrefix="$" inputTextColor={darkText} onChanged={setServicePrice}>
+                        <InlineInput
+                          textPrefix="$"
+                          inputTextColor={darkText}
+                          onChanged={setServicePrice}
+                        >
                           {data.service.basePrice}
                         </InlineInput>
-                      ) : `$${data.service.basePrice}`}
+                      ) : (
+                        `$${data.service.basePrice}`
+                      )}
                     </PSmallStrong>
                     <PXSmall>{getPriceText(data.service.categories[0].names['en-us'])}</PXSmall>
                   </Price>
                   <StarsWrapper>
-                    {
-                      data.service.privacy === 'public' && data.service.ratings && <Stars rating={data.service.ratings.average} />
-                    }
+                    {data.service.privacy === 'public' &&
+                      data.service.ratings && <Stars rating={data.service.ratings.average} />}
                     {fastBookable && <BookableTag>Fast Booking</BookableTag>}
                   </StarsWrapper>
                 </RatingAndPrice>

@@ -50,6 +50,7 @@ function createStateBasedOnTrip(props) {
     isSaving: 0,
     isCheckingAvailability: 0,
     isLoadingTransportation: 0,
+    isLoadingPrice: 0,
     // this is for allowing to undo
     lastRemovedService: null,
   };
@@ -164,11 +165,29 @@ export default class TripOrganizer extends React.Component {
     }));
   };
 
+  addIsLoadingPrice = () => {
+    this.setState(prevState => ({
+      isLoadingPrice: prevState.isLoadingPrice + 1,
+    }));
+  };
+
+  removeIsLoadingPrice = basePrice => {
+    this.setState(prevState => ({
+      tripData: {
+        ...prevState.tripData,
+        basePrice,
+      },
+      isLoadingPrice: prevState.isLoadingPrice - 1,
+    }));
+  };
+
   saveTrip = async dataToSave => {
     this.addIsSaving();
+    this.addIsLoadingPrice();
 
-    await apiClient.trips.patch(this.props.trip._id, dataToSave);
+    const trip = (await apiClient.trips.patch(this.props.trip._id, dataToSave)).data;
 
+    this.removeIsLoadingPrice(trip.basePrice);
     this.removeIsSaving();
   };
 
@@ -176,11 +195,16 @@ export default class TripOrganizer extends React.Component {
     this.addIsSaving();
     this.addIsLoadingTransports();
     this.startCheckingAvailability();
+    this.addIsLoadingPrice();
 
     const dataToSave = this.parseServicesForSaving();
 
-    await apiClient.trips.serviceOrganizations.rearrange.post(this.props.trip._id, dataToSave);
+    const trip = (await apiClient.trips.serviceOrganizations.rearrange.post(
+      this.props.trip._id,
+      dataToSave,
+    )).data;
 
+    this.removeIsLoadingPrice(trip.basePrice);
     this.removeIsSaving();
     this.checkAvailability();
     this.getTransportation();
@@ -192,24 +216,31 @@ export default class TripOrganizer extends React.Component {
       return;
     }
     this.addIsSaving();
+    this.addIsLoadingPrice();
 
-    await apiClient.trips.serviceOrganizations.delete(this.props.trip._id, serviceOrgIds);
+    const trip = (await apiClient.trips.serviceOrganizations.delete(
+      this.props.trip._id,
+      serviceOrgIds,
+    )).data;
 
+    this.removeIsLoadingPrice(trip.basePrice);
     this.removeIsSaving();
     this.getTransportation();
   };
 
   saveAvailabilityCode = async (serviceOrgId, availabilityCode) => {
     this.addIsSaving();
+    this.addIsLoadingPrice();
 
-    const services = (await apiClient.trips.serviceOrganizations.availabilityCode.post(
+    const trip = (await apiClient.trips.serviceOrganizations.availabilityCode.post(
       this.props.trip._id,
       [{ serviceOrgId, availabilityCode }],
     )).data;
 
+    this.removeIsLoadingPrice(trip.basePrice);
     this.removeIsSaving();
 
-    return services;
+    return trip;
   };
 
   getTransportation = async () => {
@@ -299,8 +330,8 @@ export default class TripOrganizer extends React.Component {
         address,
         latitude: coord && coord.lat,
         longitude: coord && coord.lng,
-        countryCode: location.countryCode,
-        city: location.city,
+        countryCode: location && location.countryCode,
+        city: location && location.city,
       },
       history,
       {
@@ -703,16 +734,18 @@ export default class TripOrganizer extends React.Component {
       serviceId: service.service._id,
     })).data;
     const newServices = {};
-    for (let day in this.state.services) {
-      newServices[day] = this.state.services[day];
+    const numberOfDays = minutesToDays(this.state.tripData.duration);
+
+    for (let day = 1; day <= numberOfDays; day++) {
+      console.log(day);
+      const servicesOfCurrentDay = this.state.services[day] || [];
+      newServices[day] = servicesOfCurrentDay;
       if (!serviceDays.has(Number(day))) {
-        newServices[day] = this.state.services[day].filter(
-          s => s.service._id !== service.service._id,
-        );
+        newServices[day] = servicesOfCurrentDay.filter(s => s.service._id !== service.service._id);
       }
       if (
         serviceDays.has(Number(day)) &&
-        !this.state.services[day].find(s => s.service._id === service.service._id)
+        !servicesOfCurrentDay.find(s => s.service._id === service.service._id)
       ) {
         newServices[day].push({
           ...trip.services.find(s => s.day === Number(day) && s.service === service.service._id),
@@ -721,6 +754,7 @@ export default class TripOrganizer extends React.Component {
         });
       }
     }
+    console.log(newServices);
     this.setState({
       services: newServices,
     });
@@ -941,6 +975,7 @@ export default class TripOrganizer extends React.Component {
         />
         <Footer
           price={tripData.basePrice.toFixed(2)}
+          isLoadingPrice={Boolean(this.state.isLoadingPrice)}
           book={this.book}
           share={this.share}
           isSaving={Boolean(this.state.isSaving)}

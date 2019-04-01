@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { Loader } from 'semantic-ui-react';
 import { secondary, secondaryContrast, lightText, darkText } from 'libs/colors';
 import { PStrong, PSmall, P } from 'libs/commonStyles';
 import Button from 'shared_components/Button';
-import LoadingDots from 'shared_components/LoadingDots'
-import { UndoArrow } from 'shared_components/icons'
-import I18nText from 'shared_components/I18nText'
+import LoadingDots from 'shared_components/LoadingDots';
+import { UndoArrow } from 'shared_components/icons';
+import I18nText from 'shared_components/I18nText';
 import throttle from 'lodash.throttle';
 
 const bottomOffset = 245;
 
 const Placeholder = styled.div`
   height: 70px;
-`
+`;
 
 const Wrapper = styled.div`
   position: ${props => props.position};
@@ -59,7 +60,7 @@ const CheckingAvailability = styled.div`
   position: absolute;
   margin-left: auto !important;
   margin-right: auto;
-  background-color: #65AFBB4C;
+  background-color: #65afbb4c;
   border-bottom: 0;
   border-radius: 5px;
   opacity: ${props => (props.checking ? 1 : 0)};
@@ -82,7 +83,7 @@ const UndoServiceDeletion = styled.div`
   transform: translateX(-50%) scaleX(${props => (props.show ? 1 : 0)});
   bottom: ${props => (props.show ? '94px' : '-10px')};
   position: absolute;
-  background-color: #65AFBB;
+  background-color: #65afbb;
   border-bottom: 0;
   border-radius: 5px;
   transition: 0.7s ease-in-out;
@@ -97,18 +98,31 @@ const UndoServiceDeletion = styled.div`
     height: 1.2em !important;
     color: ${lightText} !important;
   }
-`
+`;
 
-const saveButtonText = (isSaving) => {
+const LoaderWrapper = styled.span`
+  margin-right: 10px;
+`;
+
+const saveButtonText = isSaving => {
   if (isSaving) {
     return 'Saving Trip';
   }
   return 'Trip Saved';
-}
+};
 
-const Footer = ({ isSaving, recentlyDeletedService, undoRemoveService, book, price, share, isCheckingAvailability}) => {
-  const [position, setPosition] = useState('fixed')
-  
+const Footer = ({
+  isSaving,
+  recentlyDeletedService,
+  undoRemoveService,
+  book,
+  price,
+  share,
+  isCheckingAvailability,
+  isLoadingPrice,
+}) => {
+  const [position, setPosition] = useState('fixed');
+
   useEffect(
     () => {
       const handleScroll = () => {
@@ -118,11 +132,11 @@ const Footer = ({ isSaving, recentlyDeletedService, undoRemoveService, book, pri
 
         if (scrolled + viewportHeight >= fullHeight - bottomOffset) {
           setPosition('relative');
-          return
+          return;
         }
 
         if (position === 'relative') {
-          setPosition('fixed')
+          setPosition('fixed');
         }
       };
 
@@ -140,7 +154,14 @@ const Footer = ({ isSaving, recentlyDeletedService, undoRemoveService, book, pri
     <>
       <Wrapper position={position}>
         <Price>
-          <PStrong>${price}</PStrong> <PSmall>Total price</PSmall>
+          {isLoadingPrice ? (
+            <LoaderWrapper>
+              <Loader size="mini" inverted inline="centered" active />
+            </LoaderWrapper>
+          ) : (
+            <PStrong>${price}</PStrong>
+          )}{' '}
+          <PSmall>Total price</PSmall>
         </Price>
         <Button
           id="bookButton"
@@ -153,7 +174,14 @@ const Footer = ({ isSaving, recentlyDeletedService, undoRemoveService, book, pri
         >
           Book
         </Button>
-        <Button id="shareButton" size="small" type="button" theme="fillLightGreen" onClick={share} bold>
+        <Button
+          id="shareButton"
+          size="small"
+          type="button"
+          theme="fillLightGreen"
+          onClick={share}
+          bold
+        >
           Share and earn rewards
         </Button>
         <SaveText>{saveButtonText(isSaving)}</SaveText>
@@ -161,15 +189,28 @@ const Footer = ({ isSaving, recentlyDeletedService, undoRemoveService, book, pri
           <P>Checking availability</P>
           <LoadingDots />
         </CheckingAvailability>
-        <UndoServiceDeletion onClick={() => recentlyDeletedService && undoRemoveService()} show={Boolean(recentlyDeletedService)}>
+        <UndoServiceDeletion
+          onClick={() => recentlyDeletedService && undoRemoveService()}
+          show={Boolean(recentlyDeletedService)}
+        >
           <UndoArrow />
-          <P>Undo removal of <I18nText data={recentlyDeletedService && recentlyDeletedService.service && recentlyDeletedService.service.service && recentlyDeletedService.service.service.title} /></P>
+          <P>
+            Undo removal of{' '}
+            <I18nText
+              data={
+                recentlyDeletedService &&
+                recentlyDeletedService.service &&
+                recentlyDeletedService.service.service &&
+                recentlyDeletedService.service.service.title
+              }
+            />
+          </P>
         </UndoServiceDeletion>
       </Wrapper>
       {position === 'fixed' && <Placeholder />}
     </>
   );
-}
+};
 
 Footer.propTypes = {
   price: PropTypes.string.isRequired,
@@ -177,6 +218,7 @@ Footer.propTypes = {
   book: PropTypes.func.isRequired,
   isSaving: PropTypes.bool.isRequired,
   isCheckingAvailability: PropTypes.bool.isRequired,
+  isLoadingPrice: PropTypes.bool.isRequired,
   recentlyDeletedService: PropTypes.shape({
     position: PropTypes.number.isRequired,
     service: PropTypes.shape({
@@ -190,6 +232,6 @@ Footer.propTypes = {
 
 Footer.defaultProps = {
   recentlyDeletedService: null,
-}
+};
 
 export default Footer;
