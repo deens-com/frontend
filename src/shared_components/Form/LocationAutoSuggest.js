@@ -68,6 +68,7 @@ export default class SemanticLocationControl extends Component {
     defaultAddress: PropTypes.string,
     onChange: PropTypes.func.isRequired,
     onKeyUp: PropTypes.func,
+    onKeyDown: PropTypes.func,
     inputProps: PropTypes.object,
     inputStyles: PropTypes.object,
     onlyCities: PropTypes.bool,
@@ -84,6 +85,7 @@ export default class SemanticLocationControl extends Component {
     onFocus: () => {},
     onBlur: () => {},
     onKeyUp: () => {},
+    onKeyDown: () => {},
   };
 
   onAddressChange = address => {
@@ -131,11 +133,15 @@ export default class SemanticLocationControl extends Component {
     this.props.onChange(address, type);
   };
 
-  handleKeyUp = event => {
+  handleKeyDown = (event, first) => {
     if (event.key === 'Enter') {
-      this.onSelectSearch();
+      if (first) {
+        this.onSelectSuggestion(first.description, 'trip');
+      } else {
+        this.onSelectSearch();
+      }
     }
-    this.props.onKeyUp(event);
+    this.props.onKeyDown(event);
   };
 
   render() {
@@ -156,82 +162,86 @@ export default class SemanticLocationControl extends Component {
         }}
         onError={this.onError}
       >
-        {({ getInputProps, suggestions, getSuggestionItemProps }) => (
-          <Popup
-            context={this.props.context}
-            trigger={
-              <Wrapper>
-                {useStyledInput ? (
-                  <StyledInput
-                    {...getInputProps({
-                      ...inputProps,
-                      placeholder: inputProps.placeholder || 'Enter location ...',
-                    })}
-                    leftContent={<MapMarker style={{ fill: '#6E7885' }} />}
-                    onFocus={this.handleOpen}
-                    onBlur={this.handleClose}
-                    onKeyUp={this.handleKeyUp}
-                  />
-                ) : (
-                  <Ref innerRef={this.handleInputRef}>
-                    <Form.Input
-                      icon="map pin"
-                      iconPosition="left"
-                      type="text"
+        {({ getInputProps, suggestions, getSuggestionItemProps }) => {
+          return (
+            <Popup
+              context={this.props.context}
+              trigger={
+                <Wrapper>
+                  {useStyledInput ? (
+                    <StyledInput
                       {...getInputProps({
                         ...inputProps,
                         placeholder: inputProps.placeholder || 'Enter location ...',
                       })}
-                      style={inputStyles}
+                      leftContent={<MapMarker style={{ fill: '#6E7885' }} />}
                       onFocus={this.handleOpen}
                       onBlur={this.handleClose}
-                      onKeyUp={this.handleKeyUp}
-                      autoFocus={autoFocus}
+                      onKeyDown={event => this.handleKeyDown(event, suggestions[0])}
+                      onKeyUp={this.props.onKeyUp}
                     />
-                  </Ref>
+                  ) : (
+                    <Ref innerRef={this.handleInputRef}>
+                      <Form.Input
+                        icon="map pin"
+                        iconPosition="left"
+                        type="text"
+                        {...getInputProps({
+                          ...inputProps,
+                          placeholder: inputProps.placeholder || 'Enter location ...',
+                        })}
+                        style={inputStyles}
+                        onFocus={this.handleOpen}
+                        onBlur={this.handleClose}
+                        onKeyDown={event => this.handleKeyDown(event, suggestions[0])}
+                        onKeyUp={this.props.onKeyUp}
+                        autoFocus={autoFocus}
+                      />
+                    </Ref>
+                  )}
+                </Wrapper>
+              }
+              open={this.state.isOpen && Boolean(this.state.address)}
+              //open={true}
+              position="bottom center"
+              style={{ zIndex: 10000, ...customStyle }}
+            >
+              <ListWrapper>
+                <ListItem
+                  {...getSuggestionItemProps(this.state.address)}
+                  order={2}
+                  onClick={this.onSelectSearch}
+                >
+                  <ListSpan>
+                    <GreyIcon name="search" />
+                    &nbsp;
+                    <p>
+                      <b>Search for</b> "{this.state.address}"
+                    </p>
+                  </ListSpan>
+                </ListItem>
+                {!(Boolean(this.state.address) && suggestions.length === 0) && (
+                  <React.Fragment>
+                    {suggestions.map((suggestion, i) => (
+                      <ListItem
+                        {...getSuggestionItemProps(suggestion)}
+                        key={suggestion.placeId}
+                        onClick={() => this.onSelectSuggestion(suggestion.description, 'trip')}
+                        order={i === 0 ? 1 : 3}
+                      >
+                        <ListSpan>
+                          <GreyIcon name="map marker alternate" />
+                          &nbsp;
+                          <p>{suggestion.description}</p>
+                        </ListSpan>
+                      </ListItem>
+                    ))}
+                  </React.Fragment>
                 )}
-              </Wrapper>
-            }
-            open={this.state.isOpen && Boolean(this.state.address)}
-            //open={true}
-            position="bottom center"
-            style={{ zIndex: 10000, ...customStyle }}
-          >
-            <ListWrapper>
-              <ListItem
-                {...getSuggestionItemProps(this.state.address)}
-                order={2}
-                onClick={this.onSelectSearch}
-              >
-                <ListSpan>
-                  <GreyIcon name="search" />
-                  &nbsp;
-                  <p>
-                    <b>Search for</b> {this.state.address}
-                  </p>
-                </ListSpan>
-              </ListItem>
-              {!(Boolean(this.state.address) && suggestions.length === 0) && (
-                <React.Fragment>
-                  {suggestions.map((suggestion, i) => (
-                    <ListItem
-                      {...getSuggestionItemProps(suggestion)}
-                      key={suggestion.placeId}
-                      onClick={() => this.onSelectSuggestion(suggestion.description, 'trip')}
-                      order={i === 0 ? 1 : 3}
-                    >
-                      <ListSpan>
-                        <GreyIcon name="map marker alternate" />
-                        &nbsp;
-                        <p>{suggestion.description}</p>
-                      </ListSpan>
-                    </ListItem>
-                  ))}
-                </React.Fragment>
-              )}
-            </ListWrapper>
-          </Popup>
-        )}
+              </ListWrapper>
+            </Popup>
+          );
+        }}
       </PlacesAutocomplete>
     );
   }

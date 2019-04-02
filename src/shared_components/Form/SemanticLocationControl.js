@@ -17,6 +17,7 @@ export default class SemanticLocationControl extends Component {
     defaultAddress: PropTypes.string,
     onChange: PropTypes.func.isRequired,
     onKeyUp: PropTypes.func,
+    onKeyDown: PropTypes.func,
     inputProps: PropTypes.object,
     inputStyles: PropTypes.object,
     onlyCities: PropTypes.bool,
@@ -29,6 +30,8 @@ export default class SemanticLocationControl extends Component {
     inputStyles: {},
     onlyCities: false,
     useStyledInput: false,
+    onKeyUp: () => {},
+    onKeyDown: () => {},
   };
 
   state = {
@@ -54,6 +57,15 @@ export default class SemanticLocationControl extends Component {
     this.setState({
       isOpen: true,
     });
+  };
+
+  handleKeyDown = (event, first) => {
+    if (event.key === 'Enter') {
+      if (first) {
+        this.onSelect(first.description, first.placeId);
+      }
+    }
+    this.props.onKeyDown(event);
   };
 
   closeMenu = () => {
@@ -91,6 +103,8 @@ export default class SemanticLocationControl extends Component {
                   leftContent={<MapMarker style={{ fill: '#6E7885' }} />}
                   onFocus={this.openMenu}
                   onBlur={this.closeMenu}
+                  onKeyUp={this.props.onKeyUp}
+                  onKeyDown={event => this.handleKeyDown(event, suggestions[0])}
                 />
               ) : (
                 <Form.Input
@@ -105,6 +119,8 @@ export default class SemanticLocationControl extends Component {
                   onFocus={this.openMenu}
                   onBlur={this.closeMenu}
                   autoFocus={autoFocus}
+                  onKeyUp={this.props.onKeyUp}
+                  onKeyDown={event => this.handleKeyDown(event, suggestions[0])}
                 />
               )
             }
