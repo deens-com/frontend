@@ -49,12 +49,12 @@ class AccountContainer extends Component {
             />
           )}
         />
-        <Route
+        {/*<Route
           path={process.env.PUBLIC_URL + '/account/services'}
           render={props => (
             <AccountServicesComponent {...this.props} user_profile={this.props.session} />
           )}
-        />
+          />*/}
         <Route
           path={process.env.PUBLIC_URL + '/account/settings'}
           render={props => (

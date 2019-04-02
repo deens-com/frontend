@@ -101,11 +101,11 @@ export default class DesktopDropDownMenu extends Component {
               text="My Trips"
               onClick={() => this.navigate_to('/account/trips/all')}
             />
-            <Dropdown.Item
+            {/*<Dropdown.Item
               icon="list"
               text="My Services"
               onClick={() => this.navigate_to('/account/services')}
-            />
+            />*/}
             <Dropdown.Item
               icon="user"
               text="Profile"
