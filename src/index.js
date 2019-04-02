@@ -33,7 +33,7 @@ if (isProd) {
   const noop = () => {};
   const error = error => Sentry.captureException(error);
   console.log = noop;
-  console.warn = error;
+  console.warn = noop;
   console.error = error;
 }
 
