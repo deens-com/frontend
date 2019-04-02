@@ -68,11 +68,15 @@ const TripCreator = props => {
                 Login to continue
               </Button>
             </React.Fragment>
+          ) : params.message ? (
+            <>
+              <Title>{params.message}</Title>
+            </>
           ) : (
-            <React.Fragment>
+            <>
               <Title>Expired link</Title>
               <FirstLine>Your link has expired.</FirstLine>
-            </React.Fragment>
+            </>
           )}
         </Wrapper>
       </PageContent>
