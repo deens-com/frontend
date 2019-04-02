@@ -11,7 +11,7 @@ import I18nText from 'shared_components/I18nText';
 import Button from 'shared_components/Button';
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
 import { generateTripSlug } from 'libs/Utils';
-import { getHeroImageUrlFromMedia } from 'libs/media'
+import { getHeroImageUrlFromMedia } from 'libs/media';
 import { Message } from 'semantic-ui-react';
 
 import apiClient from 'libs/apiClient';
@@ -169,7 +169,7 @@ export default class Share extends React.Component {
           title: !title && 'You need to add a title',
           description: !description && 'You need to add a description',
           media: !this.state.media && 'You need to add an image to share your trip',
-          location: !this.state.location && 'You need to add an image to share your trip',
+          location: !this.state.location && 'You need to add a location to share your trip',
         },
       });
       return;
