@@ -127,6 +127,17 @@ const selectIconAndColorFromType = type => {
   };
 };
 
+const getText = (type, service) => {
+  if (type === 'initial') {
+    return 'Your initial location';
+  }
+
+  if (type === 'finish') {
+    return 'Your finish location';
+  }
+  return I18nText.translate(service.service.title);
+};
+
 const MapMarker = ({ service, type, coordinates, ...props }) => {
   const [isOpen, setOpen] = useState(false);
   const boxRef = useRef(null);
@@ -159,9 +170,7 @@ const MapMarker = ({ service, type, coordinates, ...props }) => {
       {isOpen ? (
         <Content iconColor={color} ref={boxRef}>
           <Icon />
-          <P>
-            <I18nText data={service.service.title} />
-          </P>
+          <P>{getText(type, service)}</P>
         </Content>
       ) : (
         <Element onClick={() => setOpen(true)} color={color}>
