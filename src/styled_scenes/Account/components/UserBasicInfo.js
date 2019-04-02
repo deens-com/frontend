@@ -150,9 +150,9 @@ class UserBasicInfo extends Component {
             {name && <NameDiv>{name}</NameDiv>}
           </Link>
 
-          <Grid columns={2} divided>
+          <Grid columns={1} divided>
             <Grid.Row>
-              <Grid.Column textAlign="center">
+              {/*<Grid.Column textAlign="center">
                 <div>
                   <AttributeTitle>PLS Balance</AttributeTitle>
                   <PlsBalanceWrapper
@@ -184,7 +184,7 @@ class UserBasicInfo extends Component {
                     )}
                   </PlsBalanceWrapper>
                 </div>
-              </Grid.Column>
+                </Grid.Column>*/}
               <Grid.Column textAlign="center">
                 <div>
                   <AttributeTitle>RATING</AttributeTitle>
@@ -216,7 +216,7 @@ class UserBasicInfo extends Component {
               </Menu.Item>
             </Link>
 
-            <Link to="/account/services" onClick={this.scrollDownMobileOnly}>
+            {/*<Link to="/account/services" onClick={this.scrollDownMobileOnly}>
               <Menu.Item name="services" active={activePath === 'services'}>
                 <MenuIcon disabled name="angle right" circular />
                 <span>
@@ -224,7 +224,7 @@ class UserBasicInfo extends Component {
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; My Services
                 </span>
               </Menu.Item>
-            </Link>
+            </Link>*/}
 
             <Link to="/account/profile" onClick={this.scrollDownMobileOnly}>
               <Menu.Item name="profile" active={activePath === 'profile'}>

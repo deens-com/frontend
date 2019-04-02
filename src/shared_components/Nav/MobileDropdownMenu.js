@@ -23,6 +23,7 @@ const AvatarWithUsername = styled.div`
   display: flex;
   justify-content: flex-end;
   flex: 1;
+  margin: auto;
   &.dark {
     color: #3c434b;
     svg {

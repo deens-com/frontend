@@ -164,26 +164,13 @@ const SessionButtons = styled.li`
 
 // MODULE
 class MobileNav extends Component {
-  componentDidMount() {
-    try {
-      const session = this.props.session.username;
-      if (session) {
-        this.setState({ logged_in: true });
-      } else {
-        this.setState({ logged_in: false });
-      }
-    } catch (error) {
-      this.setState({ logged_in: false });
-    }
-  }
-
   logout = () => {
     this.props.logOut();
     this.props.toggleMenu();
   };
 
   renderSessionButtons() {
-    if (this.state.logged_in) {
+    if (this.props.session.username) {
       return (
         <Button theme="textLightGreen" size="medium" onClick={this.logout}>
           Log out
@@ -203,24 +190,25 @@ class MobileNav extends Component {
   }
 
   renderLoggedInMenu = () => {
-    if (!this.state.logged_in) {
+    if (!this.props.session.username) {
       return null;
     }
     return (
       <React.Fragment>
-        <Divider />
         <LoggedInItem>
           <NavLink to="/account/trips/all">
             <Briefcase />
             My Trips
           </NavLink>
         </LoggedInItem>
+        {/*
         <LoggedInItem>
           <NavLink to="/account/services">
             <Folder />
             My Services
           </NavLink>
         </LoggedInItem>
+        */}
         <LoggedInItem>
           <NavLink to="/account/profile">
             <AccountCircle />

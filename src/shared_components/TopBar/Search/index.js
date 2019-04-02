@@ -20,6 +20,7 @@ const TriggerWrap = styled.button`
   width: 50px;
   color: #a2b2c0;
   font-size: 24px;
+  margin: auto;
 `;
 
 // MODULE
