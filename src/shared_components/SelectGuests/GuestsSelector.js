@@ -104,6 +104,16 @@ export default class GuestsSelector extends React.Component {
 
   handleClickOutside = event => {
     if (this.wrapperRef.current && !this.wrapperRef.current.contains(event.target)) {
+      if (
+        this.props.children !== this.state.children ||
+        this.props.adults !== this.state.adults ||
+        this.props.infants !== this.state.infants
+      ) {
+        const { onApply } = this.props;
+        onApply({
+          ...this.state,
+        });
+      }
       this.props.close();
     }
   };
@@ -152,7 +162,7 @@ export default class GuestsSelector extends React.Component {
   };
 
   render() {
-    const { relative } = this.props;
+    const { relative, showApplyButton } = this.props;
     const { adults, infants, children } = this.state;
 
     return (
@@ -205,7 +215,7 @@ export default class GuestsSelector extends React.Component {
             </IconButton>
           </RightColumn>
         </Row>
-        <ApplyButton onClick={this.applyChanges}>Apply</ApplyButton>
+        {showApplyButton && <ApplyButton onClick={this.applyChanges}>Apply</ApplyButton>}
       </SelectorWrapper>
     );
   }
