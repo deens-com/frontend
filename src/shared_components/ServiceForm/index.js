@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
 import HelpTooltip from 'shared_components/HelpTooltip';
 import { parseLocationData } from 'libs/location';
+import { secondary } from 'libs/colors';
 import history from './../../main/history';
 import { checkRequiredFields } from 'libs/Utils';
 import i18n from './../../libs/i18n';
@@ -79,6 +80,14 @@ const Icon = styled.span`
   top: 0;
   right: -30px;
   color: grey;
+`;
+
+const CancelButton = styled.span`
+  margin-left: 15px;
+  color: ${secondary};
+  cursor: pointer;
+  text-decoration: underline;
+  margin: auto 0;
 `;
 
 const facebookUrl = /^(?:(?:https?):\/\/)?(?:www.)?((facebook\.com)|(fb\.me))\/(#?\/?[a-zA-Z0-9#]+)+\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/;
@@ -377,7 +386,8 @@ class ServiceForm extends Component {
                   error={!!(touched.description && errors.description)}
                   {...defaultProps}
                 />
-                {touched.description && errors.description && <ErrorMsg>{errors.description}</ErrorMsg>}
+                {touched.description &&
+                  errors.description && <ErrorMsg>{errors.description}</ErrorMsg>}
               </Form.Field>
 
               {/* Tags */}
@@ -429,7 +439,7 @@ class ServiceForm extends Component {
                     ErrorComponent={ErrorMsg}
                   />
                 )}
-              </React.Fragment>
+            </React.Fragment>
           )}
 
           {/* Price */}
@@ -703,9 +713,14 @@ class ServiceForm extends Component {
               </Form.Group>
             </React.Fragment>
           )}
-          <Form.Button color="green" disabled={submitInFlight || this.state.uploadingImages}>
-            {this.renderSubmitText()}
-          </Form.Button>
+          <Form.Group>
+            <Form.Button color="green" disabled={submitInFlight || this.state.uploadingImages}>
+              {this.renderSubmitText()}
+            </Form.Button>
+            {this.props.onCancel && (
+              <CancelButton onClick={this.props.onCancel}>Cancel</CancelButton>
+            )}
+          </Form.Group>
         </Form>
       </FormWrapper>
     );
@@ -718,7 +733,15 @@ function validate(values) {
   const requiredFields = ['category', 'title', 'latlong'];
 
   if (!shortVersion) {
-    requiredFields.push('duration', 'subtitle', 'description', 'availableDays', 'startDate', 'endDate', 'slots');
+    requiredFields.push(
+      'duration',
+      'subtitle',
+      'description',
+      'availableDays',
+      'startDate',
+      'endDate',
+      'slots',
+    );
   }
 
   if (values.refundType !== 'none') {
@@ -860,7 +883,7 @@ export default withFormik({
   validateOnChange: false,
   handleSubmit: (values, { props }) => {
     if (!values.basePrice) {
-      values.basePrice = '0'
+      values.basePrice = '0';
     }
     props.onSubmit(values);
   },

@@ -1,22 +1,22 @@
-import React, { useContext, useState } from 'react'
-import { Modal } from 'semantic-ui-react'
+import React, { useContext, useState } from 'react';
+import { Modal } from 'semantic-ui-react';
 import ServiceForm from 'shared_components/ServiceForm';
 import apiClient from 'libs/apiClient';
 import fetchHelpers from 'libs/fetch_helpers';
-import { TripContext } from '../'
+import { TripContext } from '../';
 
 const AddCustomServiceModal = ({ day, close, service }) => {
   const { addService } = useContext(TripContext);
-  const [creatingService, setCreatingService] = useState(false)
+  const [creatingService, setCreatingService] = useState(false);
 
-  const createService = async (values) => {
-    setCreatingService(true)
+  const createService = async values => {
+    setCreatingService(true);
     const service = fetchHelpers.createService(values, true);
-    const createdService = (await apiClient.services.post(service)).data
-    await addService(createdService, day)
-    close()
-    setCreatingService(false)
-  }
+    const createdService = (await apiClient.services.post(service)).data;
+    await addService(createdService, day);
+    close();
+    setCreatingService(false);
+  };
 
   return (
     <>
@@ -28,11 +28,12 @@ const AddCustomServiceModal = ({ day, close, service }) => {
           service={service}
           serviceFormTagsOptions={[]}
           submitButtonText="Create"
+          onCancel={close}
           creatingFromLink
         />
       </Modal.Content>
     </>
-  )
-}
+  );
+};
 
-export default AddCustomServiceModal
+export default AddCustomServiceModal;
