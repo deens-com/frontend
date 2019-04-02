@@ -454,6 +454,7 @@ export default class TripOrganizer extends React.Component {
         this.saveTrip({
           startDate: this.state.tripData.startDate,
         });
+        this.checkAvailability();
       },
     );
   };
