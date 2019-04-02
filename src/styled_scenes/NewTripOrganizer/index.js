@@ -854,12 +854,12 @@ export default class TripOrganizer extends React.Component {
   changeInitialLocation = location => {
     this.changeLocation(location, 'userStartLocation');
     if (!this.state.tripData.userEndLocation) {
-      this.changeLocation(location, 'userEndLocation');
+      this.changeLocation(location, 'userEndLocation', true);
     }
   };
 
   changeFinalLocation = location => {
-    this.changeLocation(location, 'userEndLocation', true);
+    this.changeLocation(location, 'userEndLocation');
   };
 
   changeLocation = (location, key, dontSave = false) => {
