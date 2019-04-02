@@ -5,7 +5,8 @@ import moment from 'moment';
 import styled from 'styled-components';
 import history from 'main/history';
 import { Loader, Popup, Icon, Dimmer, Modal } from 'semantic-ui-react';
-import { SingleDatePicker } from 'react-dates';
+import { DayPickerRangeController } from 'react-dates';
+import { START_DATE } from 'react-dates/constants';
 import { updateBottomChatPosition } from 'libs/Utils';
 
 // STYLES
@@ -86,16 +87,6 @@ const PopupContent = styled.div`
   width: 100%;
   position: relative;
 
-  .SingleDatePickerInput {
-    visibility: hidden;
-  }
-
-  .SingleDatePicker {
-    position: absolute;
-    top: -53px;
-    right: -100px;
-  }
-
   .close {
     display: none;
   }
@@ -166,7 +157,8 @@ export default class Trip extends Component {
     }
   };
 
-  handleDatesChange = day => {
+  handleDatesChange = dates => {
+    const day = dates.startDate;
     this.handleDatePopupClose();
     this.props.changeDates({
       start_date: day && day.valueOf(),
@@ -263,27 +255,24 @@ export default class Trip extends Component {
             content={
               <PopupContent>
                 <p>Select Starting Day</p>
-                <SingleDatePicker
-                  id="startDate"
-                  date={startDate}
-                  onDateChange={this.handleDatesChange}
-                  focused={this.state.isDatePopupOpen}
+                <DayPickerRangeController
+                  initialVisibleMonth={() => startDate || moment()}
+                  onDatesChange={this.handleDatesChange}
+                  focusedInput={START_DATE}
                   onFocusChange={({ focused }) =>
                     focused ? this.handleDatePopupOpen() : this.handleDatePopupClose()
                   }
-                  placeholder={formattedStartDate}
+                  startDate={startDate}
+                  endDate={endDate}
                   isDayBlocked={date =>
                     date.valueOf() <=
                     moment()
                       .add(1, 'days')
                       .valueOf()
                   }
-                  numberOfMonths={1}
-                  small
+                  daySize={35}
+                  hideKeyboardShortcutsPanel
                   noBorder
-                  anchorDirection="right"
-                  displayFormat="MM/DD/YY"
-                  block
                 />
                 <Icon
                   style={{ position: 'relative', left: '265px', bottom: '44px' }}
@@ -293,7 +282,7 @@ export default class Trip extends Component {
               </PopupContent>
             }
             on="click"
-            position="bottom left"
+            position="bottom center"
             keepInViewPort
             open={this.state.isDatePopupOpen}
             onClose={this.handleDatePopupClose}
