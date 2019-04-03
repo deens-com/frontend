@@ -304,28 +304,29 @@ class Filters extends Component {
     let countryCode = '';
     let city = '';
     let state = '';
-    let latitude = '';
-    let longitude = '';
-    geocodeByAddress(address)
-      .then(results => {
-        const locationData = parseLocationData(results[0]);
-        addr = locationData.formattedAddress;
-        countryCode = locationData.countryCode;
-        city = locationData.city;
-        state = locationData.state;
+    //let latitude = '';
+    //let longitude = '';
+    geocodeByAddress(address).then(results => {
+      const locationData = parseLocationData(results[0]);
+      addr = locationData.formattedAddress;
+      countryCode = locationData.countryCode;
+      city = locationData.city;
+      state = locationData.state;
 
-        this.setState({
-          address: addr,
-          countryCode,
-          city,
-        });
-        return getLatLng(results[0]);
-      })
-      .then(results => {
+      this.setState({
+        address: addr,
+        countryCode,
+        city,
+      });
+      this.refetch_results_for_location(null, null, addr, countryCode, city, state);
+      return;
+      //return getLatLng(results[0]);
+    });
+    /*.then(results => {
         latitude = results.lat;
         longitude = results.lng;
         this.refetch_results_for_location(latitude, longitude, addr, countryCode, city, state);
-      });
+      });*/
   }
 
   handleServiceTypeChange(event, data) {
