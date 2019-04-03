@@ -272,12 +272,13 @@ export default class Share extends React.Component {
           </FormInput>
           <FormInput>
             <Label>
-              Location <Required />
+              Please type the main city of your trip <Required />
             </Label>
             <SemanticLocationControl
               defaultAddress={address}
               onChange={this.handleLocationChange}
               useStyledInput
+              onlyCities
             />
           </FormInput>
           <FormInput>

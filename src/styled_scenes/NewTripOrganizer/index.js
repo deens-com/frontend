@@ -330,8 +330,6 @@ export default class TripOrganizer extends React.Component {
         address,
         latitude: coord && coord.lat,
         longitude: coord && coord.lng,
-        countryCode: location && location.countryCode,
-        city: location && location.city,
       },
       history,
       {
