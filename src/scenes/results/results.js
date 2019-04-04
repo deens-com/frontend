@@ -11,11 +11,11 @@ class Results extends React.Component {
     this.routeState = props.location.state;
   }
   componentDidMount() {
-    this.unlisten = this.props.history.listen(() => this.forceUpdate());
+    //this.unlisten = this.props.history.listen(() => this.forceUpdate());
   }
 
   componentWillUnmount() {
-    this.unlisten();
+    //this.unlisten();
   }
 
   render() {
