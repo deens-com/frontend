@@ -90,7 +90,7 @@ const Thanks = styled(H2)`
 
 const url = 'https://hooks.zapier.com/hooks/catch/145807/72cord/';
 
-const HelpMe = ({ close, tripParent, isLoadingUser, user }) => {
+const HelpMe = ({ tripParent, isLoadingUser, user }) => {
   const { session, tripId } = useContext(TripContext);
   const [asked, setAsked] = useState(false);
   const budget = useRef(null);
@@ -120,9 +120,6 @@ const HelpMe = ({ close, tripParent, isLoadingUser, user }) => {
         <Thanks>
           Thank you for asking for help. An expert will contact you soon to help you plan your trip!
         </Thanks>
-        <Button onClick={close} theme="fillLightGreen">
-          Accept
-        </Button>
       </Wrapper>
     );
   }
