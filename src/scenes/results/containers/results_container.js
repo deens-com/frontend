@@ -14,7 +14,7 @@ class ResultsContainer extends Component {
     let searchQuery = this.createQuery(this.props);
 
     this.props.updateSearchQuery(searchQuery);
-    this.props.fetchResults(searchQuery);
+    //this.props.fetchResults(searchQuery);
     if (this.hasToLoadTripYet()) {
       this.props.fetchTrip(this.props.routeState.tripId);
     }
