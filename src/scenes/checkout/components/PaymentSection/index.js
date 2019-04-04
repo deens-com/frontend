@@ -223,7 +223,7 @@ export default class PaymentSection extends Component {
                 <img src={BCHLogo} alt="Bitcoin Cash" />
               </CryptoLogos>
             </Method>
-            <Method
+            {/*<Method
               onClick={() => this.selectMethod(PLS_METHOD)}
               selected={this.state.paymentMethod === PLS_METHOD}
             >
@@ -231,7 +231,7 @@ export default class PaymentSection extends Component {
               <PLSLogoWrapper>
                 <img src={PLSLogo} alt="PLS Token" />
               </PLSLogoWrapper>
-            </Method>
+            </Method>*/}
           </MethodSelector>
           <StripWrap>
             <PriceTag price={totalPrice}>

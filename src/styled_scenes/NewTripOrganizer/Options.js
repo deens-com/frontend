@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import moment from 'moment';
-import { Popup } from 'semantic-ui-react'
+import { Popup, Modal } from 'semantic-ui-react';
 import DateSelector from './DateSelector';
-import { minutesToDays } from 'libs/Utils'
+import HelpMe from './HelpMe';
+import { minutesToDays } from 'libs/Utils';
 import SelectGuests from 'shared_components/SelectGuests';
 import { DropArrow } from 'shared_components/icons';
 import { PStrong, PSmall } from 'libs/commonStyles';
 import { darkText } from 'libs/colors';
 import Toggle from 'shared_components/ToggleSwitch';
+import Button from 'shared_components/Button';
+import apiClient from 'libs/apiClient';
 
 const Wrapper = styled.div`
   display: flex;
@@ -31,7 +34,7 @@ const DateP = styled(PStrong)`
   &:first-child {
     margin-right: 10px;
   }
-`
+`;
 
 const RightSide = styled.div`
   justify-self: flex-end;
@@ -39,8 +42,11 @@ const RightSide = styled.div`
   justify-content: flex-end;
   display: flex;
   align-items: center;
-  > *:first-child {
+  > * {
     margin-right: 10px;
+  }
+  > *:last-child {
+    margin-right: 0;
   }
 `;
 
@@ -101,19 +107,42 @@ const Options = ({
   changeShowTransport,
   changeShowMap,
   duration,
+  tripParents,
 }) => {
+  const [isLoadingUser, setLoadingUser] = useState(true);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    async function getParentOwner() {
+      if (tripParents.length === 0) {
+        setLoadingUser(false);
+        return;
+      }
+      const trip = (await apiClient.trips.getById(
+        { include: 'owner' },
+        tripParents[0].serviceGroup,
+      )).data;
+      setUser(trip.owner);
+      setLoadingUser(false);
+    }
+    getParentOwner();
+  }, []);
+
   const formattedStartDate = startDate
     ? ` ${moment(startDate).format('MM/DD/YY')}`
     : 'Select departure date';
 
   const formattedEndDate = startDate
-    ? ` ${moment(startDate).clone().add(minutesToDays(duration), 'days').format('MM/DD/YY')}`
+    ? ` ${moment(startDate)
+        .clone()
+        .add(minutesToDays(duration), 'days')
+        .format('MM/DD/YY')}`
     : '';
-  
-  const [isOpenDate, setOpenDate] = useState(false)
 
-  const openDate = () => setOpenDate(true)
-  const closeDate = () => setOpenDate(false)
+  const [isOpenDate, setOpenDate] = useState(false);
+
+  const openDate = () => setOpenDate(true);
+  const closeDate = () => setOpenDate(false);
 
   return (
     <Wrapper>
@@ -137,19 +166,28 @@ const Options = ({
             open={isOpenDate}
             onOpen={openDate}
             onClose={closeDate}
-            trigger={(
+            trigger={
               <DepartureDate>
                 Start: <DateP>{formattedStartDate}</DateP> End: <DateP>{formattedEndDate}</DateP>
               </DepartureDate>
-            )}
-            content={(
-              <DateSelector close={closeDate} />
-            )}
+            }
+            content={<DateSelector close={closeDate} />}
             small
           />
         </DatePicker>
       </LeftSide>
       <RightSide>
+        <Modal
+          style={{ maxWidth: '750px' }}
+          trigger={<Button theme="fillLightGreen">Help me!</Button>}
+          content={
+            <HelpMe
+              tripParent={tripParents[0] && tripParents[0].serviceGroup}
+              isLoadingUser={isLoadingUser}
+              user={user}
+            />
+          }
+        />
         <Toggle checkedByDefault onSwitch={changeShowTransport}>
           <PSmall>Add Transports</PSmall>
         </Toggle>

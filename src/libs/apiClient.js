@@ -1,6 +1,6 @@
 import axios from 'libs/axios';
 
-const paramsSerializer = params => {
+export const paramsSerializer = params => {
   const searchParams = new URLSearchParams();
   for (const key of Object.keys(params)) {
     const param = params[key];
@@ -25,6 +25,7 @@ const patch = url => body => axios.patch(url, body);
 export default {
   trips: {
     get: get('/trips'),
+    getById: (params, id) => get(`/trips/${id}`)(params),
     copy: {
       post: (id, anonymous) =>
         post(`/trips/${id}/copy?${anonymous ? paramsSerializer({ noSave: 1 }) : ''}`)(),
@@ -71,7 +72,7 @@ export default {
   },
   services: {
     get: get('/services'),
-    post: (body) => post('/services')(body),
+    post: body => post('/services')(body),
     patch: (id, body) => patch(`/services/${id}`)(body),
     search: {
       get: get('/search/services'),

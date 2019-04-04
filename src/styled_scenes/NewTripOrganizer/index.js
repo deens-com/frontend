@@ -917,11 +917,11 @@ export default class TripOrganizer extends React.Component {
       isCheckingAvailability,
       lastRemovedService,
     } = this.state;
-    const { session } = this.props;
 
     return (
       <TripContext.Provider
         value={{
+          tripId: this.props.tripId,
           tripData: tripData,
           servicesByDay: services,
           isLoadingTransportation: Boolean(isLoadingTransportation),
@@ -936,6 +936,7 @@ export default class TripOrganizer extends React.Component {
           changeServiceDays: this.changeServiceDays,
           changeTripDuration: this.changeTripDuration,
           changeStartDate: this.changeStartDate,
+          session: this.props.session,
         }}
       >
         <Header
@@ -955,6 +956,7 @@ export default class TripOrganizer extends React.Component {
           duration={tripData.duration}
           changeShowTransport={this.changeShowTransport}
           changeShowMap={this.changeShowMap}
+          tripParents={this.props.trip.parents}
         />
         <Itinerary
           addNewDay={this.addNewDay}

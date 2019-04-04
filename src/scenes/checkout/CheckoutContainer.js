@@ -10,8 +10,6 @@ import { media } from 'libs/styled';
 import { generateTripSlug } from 'libs/Utils';
 import { updateBottomChatPosition } from 'libs/Utils';
 
-import { Page } from 'shared_components/layout/Page';
-import TopBar from 'shared_components/TopBar';
 import I18nText from 'shared_components/I18nText';
 import { formatLocation } from 'shared_components/Carts/Trip';
 import { MapMarker, LeftArrow } from 'shared_components/icons';
