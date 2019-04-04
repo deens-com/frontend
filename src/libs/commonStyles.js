@@ -25,6 +25,11 @@ export const H3 = styled.h3`
   font-weight: 700;
 `;
 
+export const H5 = styled.h3`
+  font-size: 20px;
+  font-weight: 500;
+`;
+
 export const H6 = styled.h6`
   font-size: 18px;
   font-weight: 500;

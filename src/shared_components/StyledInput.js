@@ -11,8 +11,7 @@ const Wrapper = styled.div`
   color: #3c434b;
   display: flex;
   align-items: center;
-
-  &:focus-within {
+  ${props => props.maxWidth && `max-width: ${props.maxWidth};`} &:focus-within {
     border-color: #38d39f;
   }
 
@@ -22,6 +21,7 @@ const Wrapper = styled.div`
     font-weight: 550;
     border: 0;
     flex: 1;
+    max-width: 100%;
   }
 
   > * {
@@ -35,8 +35,8 @@ const Input = styled.input`
   font-size: 14px;
 `;
 
-export default ({ error, leftContent, rightContent, children, innerRef, ...props }) => (
-  <Wrapper error={error}>
+export default ({ error, leftContent, rightContent, children, innerRef, maxWidth, ...props }) => (
+  <Wrapper maxWidth={maxWidth} error={error}>
     {leftContent}
     {children || <Input ref={innerRef} {...props} />}
     {rightContent}
