@@ -5,6 +5,22 @@ import queryString from 'qs';
 import Helmet from 'react-helmet-async';
 import { websiteUrl } from 'libs/config';
 
+function getAddress(params) {
+  if (params.address) {
+    return params.address;
+  }
+  if (params.city) {
+    if (params.countryCode) {
+      return `${params.city}, ${params.countryCode}`;
+    }
+    return params.city;
+  }
+  if (params.countryCode) {
+    return params.countryCode;
+  }
+  return '';
+}
+
 class Results extends React.Component {
   constructor(props) {
     super(props);
@@ -41,7 +57,7 @@ class Results extends React.Component {
     let end_date = search_params.end_date || '';
     let keywords = search_params.keywords || '';
     let speech_query = search_params.speech_query || '';
-    let address = search_params.address || '';
+    let address = getAddress(search_params);
     let onlySmartContracts = search_params.onlySmartContracts || false;
     let page = search_params.page || 1;
     let resultsCount = search_params.resultsCount || 0;
