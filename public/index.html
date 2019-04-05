@@ -4,14 +4,106 @@
     <!-- Unless -->
     <script>(function(p,e,r,s,o,n,i,f,y){n=p.getElementsByTagName(e)[0];function m(a,t,h){(i=p.createElement('link')).rel=t?'preload':'preconnect',i.href=a,i.crossOrigin=t?null:'anonymous',h?i.as=h:null,n.parentNode.insertBefore(i,n)};m(r+s);m(r+s+o,!0,e);m(r+'global.'+s);f=p.documentElement,f.style.opacity=0,setTimeout(function(){f.style.opacity=''},3e3);(y=p.createElement(e)).src=r+s+o,y.async=!0,n.parentNode.insertBefore(y,n)})(document,'script','https://','unless.com','/js/v5/latest/txt.min.js?id=888cba68-66ea-4285-ba25-f27ddce709ba');</script>
     <!-- End Unless -->
+    
+    <!-- Segment Analytics -->
+    <script type="text/javascript">
+      (function(){
 
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-W97NC9S');</script>
-    <!-- End Google Tag Manager -->
+        // Create a queue, but don't obliterate an existing one!
+        var analytics = window.analytics = window.analytics || [];
+
+        // If the real analytics.js is already on the page return.
+        if (analytics.initialize) return;
+
+        // If the snippet was invoked already show an error.
+        if (analytics.invoked) {
+          if (window.console && console.error) {
+            console.error('Segment snippet included twice.');
+          }
+          return;
+        }
+
+        // Invoked flag, to make sure the snippet
+        // is never invoked twice.
+        analytics.invoked = true;
+
+        // A list of the methods in Analytics.js to stub.
+        analytics.methods = [
+          'trackSubmit',
+          'trackClick',
+          'trackLink',
+          'trackForm',
+          'pageview',
+          'identify',
+          'reset',
+          'group',
+          'track',
+          'ready',
+          'alias',
+          'debug',
+          'page',
+          'once',
+          'off',
+          'on'
+        ];
+
+        // Define a factory to create stubs. These are placeholders
+        // for methods in Analytics.js so that you never have to wait
+        // for it to load to actually record data. The `method` is
+        // stored as the first argument, so we can replay the data.
+        analytics.factory = function(method){
+          return function(){
+            var args = Array.prototype.slice.call(arguments);
+            args.unshift(method);
+            analytics.push(args);
+            return analytics;
+          };
+        };
+
+        // For each of our methods, generate a queueing stub.
+        for (var i = 0; i < analytics.methods.length; i++) {
+          var key = analytics.methods[i];
+          analytics[key] = analytics.factory(key);
+        }
+
+        // Define a method to load Analytics.js from our CDN,
+        // and that will be sure to only ever load it once.
+        analytics.load = function(key, options){
+          // Create an async script element based on your key.
+          var script = document.createElement('script');
+          script.type = 'text/javascript';
+          script.async = true;
+          script.src = ('https:' === document.location.protocol
+            ? 'https://' : 'http://')
+            + 'cdn.segment.com/analytics.js/v1/'
+            + key + '/analytics.min.js';
+
+          // Insert our script next to the first script element.
+          var first = document.getElementsByTagName('script')[0];
+          first.parentNode.insertBefore(script, first);
+          analytics._loadOptions = options;
+        };
+
+        // Add a version to keep track of what's in the wild.
+        analytics.SNIPPET_VERSION = '4.1.0';
+
+        // Load Analytics.js with your key, which will automatically
+        // load the tools you've enabled for your account. Boosh!
+        if("%NODE_ENV%" === "production"){
+          analytics.load("EeTG9XHL50pFZXCYUOyBaZjtqkXDS4o3");
+        }else{
+          analytics.load("EeTG9XHL50pFZXCYUOyBaZjtqkXDS4o3");
+        }
+
+
+        // Make the first page call to load the integrations. If
+        // you'd like to manually name or tag the page, edit or
+        // move this call however you'd like.
+        // analytics.page();
+      })();
+
+    </script>
+    <!-- End Segment Analytics -->
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -140,114 +232,12 @@
     </script>
     <script src="https://wchat.freshchat.com/js/widget.js"></script>
 
-
-    <script type="text/javascript">
-      (function(){
-
-        // Create a queue, but don't obliterate an existing one!
-        var analytics = window.analytics = window.analytics || [];
-
-        // If the real analytics.js is already on the page return.
-        if (analytics.initialize) return;
-
-        // If the snippet was invoked already show an error.
-        if (analytics.invoked) {
-          if (window.console && console.error) {
-            console.error('Segment snippet included twice.');
-          }
-          return;
-        }
-
-        // Invoked flag, to make sure the snippet
-        // is never invoked twice.
-        analytics.invoked = true;
-
-        // A list of the methods in Analytics.js to stub.
-        analytics.methods = [
-          'trackSubmit',
-          'trackClick',
-          'trackLink',
-          'trackForm',
-          'pageview',
-          'identify',
-          'reset',
-          'group',
-          'track',
-          'ready',
-          'alias',
-          'debug',
-          'page',
-          'once',
-          'off',
-          'on'
-        ];
-
-        // Define a factory to create stubs. These are placeholders
-        // for methods in Analytics.js so that you never have to wait
-        // for it to load to actually record data. The `method` is
-        // stored as the first argument, so we can replay the data.
-        analytics.factory = function(method){
-          return function(){
-            var args = Array.prototype.slice.call(arguments);
-            args.unshift(method);
-            analytics.push(args);
-            return analytics;
-          };
-        };
-
-        // For each of our methods, generate a queueing stub.
-        for (var i = 0; i < analytics.methods.length; i++) {
-          var key = analytics.methods[i];
-          analytics[key] = analytics.factory(key);
-        }
-
-        // Define a method to load Analytics.js from our CDN,
-        // and that will be sure to only ever load it once.
-        analytics.load = function(key, options){
-          // Create an async script element based on your key.
-          var script = document.createElement('script');
-          script.type = 'text/javascript';
-          script.async = true;
-          script.src = ('https:' === document.location.protocol
-            ? 'https://' : 'http://')
-            + 'cdn.segment.com/analytics.js/v1/'
-            + key + '/analytics.min.js';
-
-          // Insert our script next to the first script element.
-          var first = document.getElementsByTagName('script')[0];
-          first.parentNode.insertBefore(script, first);
-          analytics._loadOptions = options;
-        };
-
-        // Add a version to keep track of what's in the wild.
-        analytics.SNIPPET_VERSION = '4.1.0';
-
-        // Load Analytics.js with your key, which will automatically
-        // load the tools you've enabled for your account. Boosh!
-        if("%NODE_ENV%" === "production"){
-          analytics.load("lT6iYPcSkjZU5QWIZuvdwNCYPTiDohGp");
-        }else{
-          analytics.load("jrS7ZHByo7UkLu0HSZlxoe6YdnMEC3AO");
-        }
-
-
-        // Make the first page call to load the integrations. If
-        // you'd like to manually name or tag the page, edit or
-        // move this call however you'd like.
-        // analytics.page();
-      })();
-
-    </script>
     <script>
       // disable Speedy from styled-components to allow unless.com to work
       SC_DISABLE_SPEEDY=true
     </script>
   </head>
   <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W97NC9S"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
