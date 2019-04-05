@@ -330,9 +330,8 @@ export default class TripOrganizer extends React.Component {
         address,
         latitude: coord && coord.lat,
         longitude: coord && coord.lng,
-        start_date: moment(tripData.startDate).valueOf(),
-        end_date: moment(tripData.startDate)
-          .add(minutesToDays(tripData.duration), 'days')
+        start_date: moment(tripData.startDate)
+          .add(day - 1, 'days')
           .valueOf(),
       },
       history,
