@@ -12,6 +12,7 @@ axiosInstance.interceptors.request.use(config => {
   const user = getSession();
   if (user && user.accessToken) {
     config.headers.Authorization = `Bearer ${user.accessToken}`;
+    config.headers.Timezone = new Date().getTimezoneOffset();
   }
 
   return config;
