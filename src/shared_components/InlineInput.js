@@ -6,8 +6,11 @@ import { primary } from 'libs/colors';
 import { PencilIcon } from 'shared_components/icons';
 
 const Text = styled.div`
-  display: flex;
+  display: inline-flex;
+  cursor: text;
   align-items: center;
+  white-space: ${props => (props.wrapLines ? 'pre-wrap' : 'normal')};
+  margin: ${props => props.margin};
   > svg {
     margin-left: 15px;
   }
@@ -15,7 +18,7 @@ const Text = styled.div`
 
 const Input = styled.input`
   color: ${props => props.inputTextColor || 'inherit'};
-  max-width: 100%;
+  width: 100%;
   font-size: inherit;
   font-family: inherit;
   font-weight: inherit;
@@ -23,14 +26,42 @@ const Input = styled.input`
   border-radius: 5px 5px 5px 0;
   border: 0;
   outline: none;
-  padding: 0 5px;
+  padding: ${props => props.padding};
   &:focus {
     border-color: ${primary};
     box-shadow: 0 0 10px ${primary};
   }
 `;
 
-const InlineInput = ({ children, textPrefix, placeholder, onChanged, inputTextColor, disallowEmptySubmit }) => {
+const Textarea = styled.textarea`
+  color: ${props => props.inputTextColor || 'inherit'};
+  max-width: 80vw;
+  min-height: 100px;
+  width: 100%;
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  text-align: inherit;
+  border-radius: 5px 5px 5px 0;
+  border: 0;
+  outline: none;
+  padding: ${props => props.padding};
+  &:focus {
+    border-color: ${primary};
+    box-shadow: 0 0 10px ${primary};
+  }
+`;
+
+const InlineInput = ({
+  children,
+  textPrefix,
+  placeholder,
+  onChanged,
+  inputTextColor,
+  disallowEmptySubmit,
+  useTextarea,
+  inputPadding,
+}) => {
   const [isEditing, setIsEditing] = useState(false);
   const onStartEditing = () => setIsEditing(true);
   const inputEl = useRef(null);
@@ -40,7 +71,7 @@ const InlineInput = ({ children, textPrefix, placeholder, onChanged, inputTextCo
       setIsEditing(false);
     }
 
-    if (event.keyCode === 13) {
+    if (event.keyCode === 13 && !(useTextarea && event.shiftKey)) {
       setIsEditing(false);
       if (event.target.value !== '' || !disallowEmptySubmit) {
         onChanged(event.target.value);
@@ -78,14 +109,33 @@ const InlineInput = ({ children, textPrefix, placeholder, onChanged, inputTextCo
   );
 
   if (isEditing) {
-    const defaultValue = typeof children === 'number' ? children : (children || '') // this is to support 0 as children
-    return <Input inputTextColor={inputTextColor} ref={inputEl} autoFocus defaultValue={defaultValue} />
+    const defaultValue = typeof children === 'number' ? children : children || ''; // this is to support 0 as children
+    if (useTextarea) {
+      return (
+        <Textarea
+          padding={inputPadding}
+          inputTextColor={inputTextColor}
+          ref={inputEl}
+          autoFocus
+          defaultValue={defaultValue}
+        />
+      );
+    }
+    return (
+      <Input
+        padding={inputPadding}
+        inputTextColor={inputTextColor}
+        ref={inputEl}
+        autoFocus
+        defaultValue={defaultValue}
+      />
+    );
   }
 
-  const child = typeof children === 'number' ? children : (children || placeholder) // this is to support 0 as children
+  const child = typeof children === 'number' ? children : children || placeholder; // this is to support 0 as children
 
   return (
-    <Text onClick={onStartEditing}>
+    <Text margin={inputPadding} wrapLines={useTextarea} onClick={onStartEditing}>
       {textPrefix}
       {child}
       <PencilIcon />
@@ -100,6 +150,8 @@ InlineInput.propTypes = {
   inputTextColor: PropTypes.string,
   textPrefix: PropTypes.string,
   disallowEmptySubmit: PropTypes.bool,
+  useTextarea: PropTypes.bool,
+  inputPadding: PropTypes.string,
 };
 
 InlineInput.defaultProps = {
@@ -108,6 +160,8 @@ InlineInput.defaultProps = {
   inputTextColor: '',
   textPrefix: '',
   disallowEmptySubmit: false,
+  useTextarea: false,
+  inputPadding: '0 5px',
 };
 
 export default InlineInput;
