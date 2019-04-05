@@ -490,7 +490,7 @@ export default class TripOrganizer extends React.Component {
           services,
           tripData: {
             ...prevState.tripData,
-            duration,
+            duration: duration >= 1 ? duration : 60 * 24,
           },
         };
       },
