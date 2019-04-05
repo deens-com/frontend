@@ -24,6 +24,7 @@ import GuestsData from './components/GuestsData';
 import Countdown from './components/Countdown';
 import ReprovisionModal from './components/ReprovisionModal';
 import history from 'main/history';
+import analytics from 'libs/analytics';
 
 function formatDate(date, days) {
   const startDate = moment(date);
@@ -305,6 +306,7 @@ class CheckoutContainer extends React.Component {
   };
 
   finishPayment = () => {
+    analytics.trip.checkout.complete();
     this.setState({
       isPaying: false,
     });
@@ -365,6 +367,9 @@ class CheckoutContainer extends React.Component {
         nextDisabled: prevState.step + 1 === 2,
       }),
       () => {
+        if (this.state.step === 2) {
+          analytics.trip.checkout.start();
+        }
         if (this.state.step === 3 && this.state.provision.length === 0) {
           this.getProvisionCodes();
         }

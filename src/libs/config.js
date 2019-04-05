@@ -38,3 +38,5 @@ export const websiteUrl =
   env === 'production' ? 'https://deens.com' : `https://${window.location.hostname}`;
 
 export const prismicUrl = 'https://please.prismic.io/api/v2';
+
+export const shouldTrack = isProd || process.env.REACT_APP_FORCE_TRACKING || true;

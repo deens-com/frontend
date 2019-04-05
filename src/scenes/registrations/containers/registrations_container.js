@@ -8,6 +8,7 @@ import validator from 'validator';
 import history from 'main/history';
 import axios from 'libs/axios';
 import headerActions from 'store/header/actions';
+import analytics from 'libs/analytics';
 
 class RegistrationsContainer extends Component {
   constructor(props) {
@@ -103,7 +104,7 @@ class RegistrationsContainer extends Component {
       const cookieReferrerId = 'deens_referrer_id';
       let referrer = Cookies.get(cookieReferrerId);
 
-      await axios.post(
+      const newUser = await axios.post(
         '/users/signup',
         {
           username: this.state.username,
@@ -117,6 +118,8 @@ class RegistrationsContainer extends Component {
           },
         },
       );
+
+      analytics.user.new(newUser);
 
       this.setState({
         isLoading: false,

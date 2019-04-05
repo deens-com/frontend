@@ -10,7 +10,6 @@ import { sizes } from '../../libs/styled';
 import { mainNav } from '../../data/nav';
 import Button from '../Button';
 import { Briefcase, Folder, AccountCircle, Settings } from '../icons';
-import { trackHeaderClick } from 'libs/analytics';
 import { bindActionCreators } from 'redux';
 import { logOut } from 'store/session/actions';
 import { icoReady } from 'libs/config';
@@ -251,20 +250,14 @@ class MobileNav extends Component {
                 <NavLink to="/">Home</NavLink>
               </li>
               <li aria-hidden="false">
-                <NavLink onClick={() => analytics(trackHeaderClick('Earn Money'))} to="/">
-                  Earn Money
-                </NavLink>
+                <NavLink to="/">Earn Money</NavLink>
               </li>
               <li aria-hidden="true">
                 <Divider />
               </li>
               {mainNav.map(item => (
                 <li aria-hidden="false" key={item.label} onClick={this.props.toggleMenu}>
-                  <NavLink
-                    activeclassname="is-active"
-                    to={item.href}
-                    onClick={() => analytics(trackHeaderClick(item.label))}
-                  >
+                  <NavLink activeclassname="is-active" to={item.href}>
                     {item.label}
                   </NavLink>
                 </li>

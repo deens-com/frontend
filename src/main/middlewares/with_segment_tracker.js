@@ -1,25 +1,22 @@
 import React, { Component } from 'react';
-//import {analytics} from 'segment';
+import analytics from 'libs/analytics';
 
 const withSegmentTracker = (WrappedComponent, options = {}) => {
-  const trackPage = page => {
-    window.analytics.page(page);
-    console.log(page);
-  };
-
   const HOC = class extends Component {
     componentDidMount() {
+      console.log('jeje', this.props.location.pathname);
       const page = this.props.location.pathname;
-      trackPage(page);
+      analytics.page(page);
     }
 
     componentWillReceiveProps(nextProps) {
-      const currentPage = this.props.location.pathname;
+      /*const currentPage = this.props.location.pathname;
       const nextPage = nextProps.location.pathname;
 
       if (currentPage !== nextPage) {
-        trackPage(nextPage);
-      }
+        console.log('jejeaaaa', currentPage, nextPage)
+        analytics.page(nextPage);
+      }*/
     }
 
     render() {

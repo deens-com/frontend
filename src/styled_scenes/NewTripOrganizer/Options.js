@@ -13,6 +13,7 @@ import { darkText } from 'libs/colors';
 import Toggle from 'shared_components/ToggleSwitch';
 import Button from 'shared_components/Button';
 import apiClient from 'libs/apiClient';
+import analytics from 'libs/analytics';
 
 const Wrapper = styled.div`
   display: flex;
@@ -179,7 +180,11 @@ const Options = ({
       <RightSide>
         <Modal
           style={{ maxWidth: '750px' }}
-          trigger={<Button theme="fillLightGreen">Help me!</Button>}
+          trigger={
+            <Button onClick={analytics.planning.brief.start} theme="fillLightGreen">
+              Help me!
+            </Button>
+          }
           content={
             <HelpMe
               tripParent={tripParents[0] && tripParents[0].serviceGroup}

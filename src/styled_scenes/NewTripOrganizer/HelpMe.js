@@ -11,7 +11,7 @@ import Rating from 'shared_components/Rating';
 import Input from 'shared_components/StyledInput';
 import { TripContext } from './';
 import Button from 'shared_components/Button';
-import { setNestedObjectValues } from 'formik';
+import analytics from 'libs/analytics';
 
 const textPlaceholder =
   'Describe what you are looking for in your ideal trip, where and when you would like to go, how many people would be traveling with you, etc.';
@@ -111,6 +111,7 @@ const HelpMe = ({ tripParent, isLoadingUser, user }) => {
       tripId,
     };
     axios.get(url, { params: data, paramsSerializer });
+    analytics.planning.brief.complete();
     setAsked(true);
   };
 

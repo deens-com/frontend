@@ -9,6 +9,7 @@ import axios from 'libs/axios';
 import BrandFooter from 'shared_components/BrandFooter';
 import history from 'main/history';
 import headerActions from 'store/header/actions';
+import analytics from 'libs/analytics';
 
 const PageContent = styled.div`
   margin: 0 20px auto;
@@ -17,26 +18,29 @@ const PageContent = styled.div`
 class TripCreatorContainer extends Component {
   componentDidMount() {
     this.createTrip = () => {
-      this.creatingTrip = true
-      axios.post(`/trips`, {
-        basePrice: 0,
-        duration: 1,
-        media: [],
-        services: [],
-        title: {'en-us': 'Unnamed Trip'}
-      }).then(response => {
-        history.replace(`/trips/organize/${response.data._id}`);
-      });
-    }
+      analytics.trip.create();
+      this.creatingTrip = true;
+      axios
+        .post(`/trips`, {
+          basePrice: 0,
+          duration: 1,
+          media: [],
+          services: [],
+          title: { 'en-us': 'Unnamed Trip' },
+        })
+        .then(response => {
+          history.replace(`/trips/organize/${response.data._id}`);
+        });
+    };
     if (this.props.session._id) {
-      this.createTrip()
+      this.createTrip();
     }
     this.props.changeHeader();
   }
 
   componentDidUpdate() {
     if (this.props.session._id && !this.creatingTrip) {
-      this.createTrip()
+      this.createTrip();
     }
   }
   render() {

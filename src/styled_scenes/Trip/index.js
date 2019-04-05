@@ -20,6 +20,7 @@ import FixedFooter from './FixedFooter';
 import Itinerary from './Itinerary';
 import DaySelector from './DaySelector';
 import mapServicesToDays from './mapServicesToDays';
+import analytics from 'libs/analytics';
 
 const getCityCount = services => {
   const cities = new Set();
@@ -207,7 +208,7 @@ export default class Trip extends Component {
       history.push(`/trips/organize/${this.props.trip._id}`);
       return;
     }
-
+    analytics.trip.customize();
     this.props.cloneTrip(this.props.trip, this.props.currentUserId);
   };
 

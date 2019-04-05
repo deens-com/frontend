@@ -24,11 +24,9 @@ import ServiceUpsert from '../scenes/service-upsert';
 import Checkout from '../scenes/checkout';
 import BlogPost from '../scenes/blog';
 import PrivateRoute from './PrivateRoute';
-import { isProd } from 'libs/config';
 import withSegmentTracker from './middlewares/with_segment_tracker';
 
-const commonHOCs = comp =>
-  isProd ? withErrorBoundary(withSegmentTracker(comp)) : withErrorBoundary(comp);
+const commonHOCs = comp => withErrorBoundary(withSegmentTracker(comp));
 
 export default (
   <ScrollToTop>

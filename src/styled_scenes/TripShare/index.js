@@ -15,6 +15,7 @@ import { getHeroImageUrlFromMedia } from 'libs/media';
 import { Message } from 'semantic-ui-react';
 
 import apiClient from 'libs/apiClient';
+import analytics from 'libs/analytics';
 
 const PageContent = styled.div`
   max-width: 825px;
@@ -174,6 +175,8 @@ export default class Share extends React.Component {
       });
       return;
     }
+
+    analytics.trip.publish();
 
     this.setState({ isSaving: true }, async () => {
       const trip = {

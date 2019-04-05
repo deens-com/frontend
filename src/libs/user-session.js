@@ -1,4 +1,5 @@
 import { env } from 'libs/config';
+import analytics from 'libs/analytics';
 
 export function saveSession(userData) {
   localStorage.setItem(`deens-${env}-session`, JSON.stringify(userData));
@@ -12,6 +13,7 @@ export function readSession() {
 }
 
 export function removeSession() {
+  analytics.user.logout();
   localStorage.removeItem(`deens-${env}-session`);
 }
 

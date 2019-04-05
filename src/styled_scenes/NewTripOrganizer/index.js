@@ -13,6 +13,7 @@ import { mapServicesByDay, mapDaysToServices } from '../Trip/mapServicesToDays';
 import Options from './Options';
 import I18nText from 'shared_components/I18nText';
 import { addServiceRequest } from 'libs/trips';
+import analytics from 'libs/analytics';
 
 function addLang(text) {
   return {
@@ -263,6 +264,7 @@ export default class TripOrganizer extends React.Component {
   };
 
   book = () => {
+    analytics.trip.book();
     history.push(`/trips/checkout/${this.props.tripId}`);
   };
 

@@ -2,7 +2,7 @@ import axios from 'libs/axios';
 import validator from 'validator';
 import history from 'main/history';
 import fetch_helpers from 'libs/fetch_helpers';
-import { identifyUsingSession } from 'libs/analytics';
+import analytics, { user } from 'libs/analytics';
 import { serverBaseURL } from 'libs/config';
 import apiClient from 'libs/apiClient';
 import {
@@ -51,7 +51,6 @@ export const sessionsFetched = session => {
   return {
     type: types.LOGIN_SUCCESS,
     payload: session,
-    meta: { analytics: identifyUsingSession(session.session) },
   };
 };
 
@@ -306,6 +305,7 @@ export const loginRequest = (email, password, { from, action }) => {
         const user = await axios.get(`/users/me`);
         if (user) {
           const userData = user.data;
+          analytics.user.login(userData);
           userData.accessToken = auth0Token;
           const userObject = fetch_helpers.buildUserJson(userData);
           dispatch(sessionsFetched({ session: userObject }));
