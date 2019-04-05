@@ -8,11 +8,11 @@ const axiosInstance = axios.create({
 
 // Add a request interceptor to inject Parse sessionToken if it exists
 axiosInstance.interceptors.request.use(config => {
+  config.headers.Timezone = new Date().getTimezoneOffset();
   // auth0
   const user = getSession();
   if (user && user.accessToken) {
     config.headers.Authorization = `Bearer ${user.accessToken}`;
-    config.headers.Timezone = new Date().getTimezoneOffset();
   }
 
   return config;
