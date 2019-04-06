@@ -3,9 +3,9 @@ import tagsData from './../data/tags';
 import I18nText from 'shared_components/I18nText';
 
 export const serverBaseURL = () => {
-  if (process.env.REACT_APP_NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === 'production') {
     return process.env.SERVER_BASE_URL || 'https://api.deens.com';
-  } else if (process.env.REACT_APP_NODE_ENV === 'staging') {
+  } else if (process.env.NODE_ENV === 'staging') {
     return process.env.SERVER_BASE_URL || 'https://staging-api.deens.com';
   } else {
     return process.env.SERVER_BASE_URL || 'https://api.deens.docker';
@@ -154,7 +154,6 @@ export function reloadPage() {
     window.location.reload();
   }
 }
-
 
 /**
  * Gets latitude and longitude from trip or service coordinates
