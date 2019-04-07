@@ -17,11 +17,11 @@ import Thumb from './components/Thumb';
 import { Cart, ContentWrap } from './styles';
 import { cardConfig } from 'libs/config';
 import { calculatePricePerDay, generateTripSlug } from 'libs/Utils';
-import { getImageUrlFromMedia } from 'libs/media'
+import { getImageUrlFromMedia } from 'libs/media';
 import { Heart } from 'shared_components/icons';
 import I18nText from 'shared_components/I18nText';
 import { H6, P, PStrong, PSmall, PXSmall } from 'libs/commonStyles';
-import { lightText, primary, secondary, darkText } from 'libs/colors';
+import * as colors from 'libs/colors';
 import { duration } from 'libs/trips';
 import Stars from 'shared_components/Rating/Stars';
 import { Link } from 'react-router-dom';
@@ -71,13 +71,12 @@ const Wrap = styled.div`
 `;
 
 const Title = styled(H6)`
-  color: ${lightText};
   padding: 0 5px 12px;
   max-height: ${cardConfig.titleHeight};
   position: absolute;
   bottom: 0;
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.33);
+  background-color: rgba(255, 255, 255, 0.7);
   min-height: 50px;
   border-radius: 0 0 15px 0;
   a {
@@ -86,12 +85,21 @@ const Title = styled(H6)`
 `;
 
 const Location = styled.span`
-  color: #787878;
   display: flex;
   align-items: flex-start;
   margin-left: 5px;
   font-size: 12px;
   line-height: 16px;
+
+  p {
+    width: 100%;
+    font-size: 14px;
+    font-weight: 300;
+  }
+`;
+
+const Dot = styled.span`
+  color: ${colors.secondary};
 
   p {
     width: 100%;
@@ -116,7 +124,7 @@ const Author = styled(Link)`
 `;
 
 const AuthorPro = styled.p`
-  color: ${primary};
+  color: ${colors.primary};
   font-weight: bold;
   font-size: 10px;
   text-align: center;
@@ -133,7 +141,7 @@ const FirstLine = styled.div`
 
 const Hearts = styled.div`
   > svg {
-    color: ${primary};
+    color: ${colors.secondary};
     margin-top: 1px;
   }
   display: flex;
@@ -142,7 +150,7 @@ const Hearts = styled.div`
 
 const HeartsNumber = styled(PXSmall)`
   margin-left: 6px;
-  color: ${darkText};
+  color: ${colors.textDark};
 `;
 
 const SecondLine = styled.div`
@@ -158,8 +166,8 @@ const Duration = styled(P)`
 
 const Tag = styled(PXSmall)`
   display: inline-block;
-  color: ${secondary};
-  border: 1px solid ${secondary};
+  color: ${colors.primary};
+  border: 1px solid ${colors.primary};
   border-radius: 2px 2px 2px 0;
   padding: 1px 3px;
 `;
@@ -174,9 +182,9 @@ const TagLink = styled(Link)`
 `;
 
 const BookableTag = styled(Tag)`
-  background-color: ${primary};
-  border: 1px solid ${primary};
-  color: ${lightText};
+  background-color: ${colors.secondary};
+  border: 1px solid ${colors.secondary};
+  color: ${colors.textLight};
   margin-bottom: 5px;
   margin-right: 3px;
 `;
@@ -191,7 +199,7 @@ const HeartWrapper = styled.div`
   left: 10px;
   position: absolute;
   > svg {
-    color: ${props => (props.filled ? primary : 'rgba(60, 217, 170, 0.2)')};
+    color: ${props => (props.filled ? colors.secondary : 'rgba(217,117,110,0.3)')};
     stroke: white;
     stroke-width: 2px;
     cursor: pointer;
@@ -278,7 +286,8 @@ class TripCart extends Component {
   renderThumb() {
     const { isPlaceholder, hideAuthor } = this.props;
     const owner = isPlaceholder ? {} : this.props.item.owner;
-    const avatar = owner.profilePicture+"?auto=compress&dpr=1&crop=true&fit=crop&w=33&h=33" || ImgurAvatar;
+    const avatar =
+      owner.profilePicture + '?auto=compress&dpr=1&crop=true&fit=crop&w=33&h=33' || ImgurAvatar;
     const isFavorite = isPlaceholder ? false : this.props.favoriteTrips[this.props.item._id];
 
     return (
@@ -350,6 +359,7 @@ class TripCart extends Component {
         </FirstLine>
         <SecondLine>
           <Duration>{duration(this.props.item.duration)}</Duration>
+          <Dot>•</Dot>
           <Location>
             <PSmall>{formatLocation(this.props.item.location)}</PSmall>
           </Location>

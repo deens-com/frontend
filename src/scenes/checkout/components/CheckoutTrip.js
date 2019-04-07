@@ -90,13 +90,13 @@ const CancellationPolicy = styled.div`
 `;
 
 const CancellationPolicyTrigger = styled.div`
-  color: #00e4ff;
+  color: #097da8;
   font-size: 12px;
   cursor: pointer;
 `;
 
 const CancellationHighlight = styled.span`
-  color: #00e4ff;
+  color: #097da8;
   font-weight: bolder;
 `;
 

@@ -12,7 +12,7 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   ${props => props.maxWidth && `max-width: ${props.maxWidth};`} &:focus-within {
-    border-color: #00e4ff;
+    border-color: #097da8;
   }
 
   input {

@@ -87,7 +87,7 @@ const PostContent = styled.div`
     color: #65afbb;
   }
   h3 {
-    color: #00e4ff;
+    color: #097da8;
     font-weight: bold;
   }
 
@@ -96,7 +96,7 @@ const PostContent = styled.div`
     font-weight: bolder;
     text-decoration: underline;
     &:hover {
-      color: #00e4ff;
+      color: #097da8;
     }
   }
 
@@ -116,7 +116,7 @@ const PostContent = styled.div`
 
     > li::before {
       content: counter(li) '.';
-      color: #00e4ff;
+      color: #097da8;
       font-weight: bold;
       display: inline-block;
       width: 1em;
@@ -135,7 +135,7 @@ const PostContent = styled.div`
 
     > li::before {
       content: '•';
-      color: #00e4ff;
+      color: #097da8;
       display: inline-block;
       width: 1em;
       margin-left: -1em;

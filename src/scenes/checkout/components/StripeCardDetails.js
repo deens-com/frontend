@@ -22,7 +22,7 @@ const Wrapper = styled.div`
 
   .inputBase {
     border: 1px solid #ebebeb;
-    border-bottom: 1px solid #00e4ff;
+    border-bottom: 1px solid #097da8;
     padding: 0 7px;
     border-radius: 5px 5px 0 0;
     color: #3c434b;
@@ -37,7 +37,7 @@ const Wrapper = styled.div`
   }
 
   .inputFocus {
-    border-color: #00e4ff;
+    border-color: #097da8;
   }
 
   .inputError {
@@ -81,7 +81,7 @@ const ErrorMessage = styled.p`
 
 const PayButton = styled.div`
   color: white;
-  background-color: ${props => (props.disabled ? '#d6d6d6' : '#00e4ff')};
+  background-color: ${props => (props.disabled ? '#d6d6d6' : '#097DA8')};
   width: 180px;
   font-weight: bold;
   margin: auto;

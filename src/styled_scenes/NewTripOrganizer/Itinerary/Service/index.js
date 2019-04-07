@@ -7,10 +7,10 @@ import { Popup } from 'semantic-ui-react';
 import { types } from '../../constants';
 import { P, PSmallStrong, PXSmall } from 'libs/commonStyles';
 import {
-  lightText,
+  textLight,
   primary,
-  darkText,
-  primaryContrast,
+  textDark,
+  primaryHover,
   secondaryContrast,
   error,
   activity,
@@ -84,7 +84,7 @@ const Wrapper = styled.div`
 const DraggingBox = styled.div`
   margin-top: 35px;
   background-color: ${primary};
-  border: 1px solid ${primaryContrast};
+  border: 1px solid ${primaryHover};
   width: 190px;
   height: 225px;
   border-radius: 10px 10px 10px 0;
@@ -129,7 +129,7 @@ const ServiceTitle = styled(P)`
 `;
 
 const Price = styled.div`
-  color: ${lightText};
+  color: ${textLight};
   flex-grow: 1;
 `;
 
@@ -148,7 +148,7 @@ const BookableTag = styled(PXSmall)`
   display: inline-block;
   background-color: ${primary};
   border: 1px solid ${primary};
-  color: ${lightText};
+  color: ${textLight};
   border-radius: 2px 2px 2px 0;
   padding: 1px 1px;
   margin-bottom: 5px;
@@ -272,7 +272,7 @@ const Service = ({
                       {data.service.privacy === 'private' ? (
                         <InlineInput
                           textPrefix="$"
-                          inputTextColor={darkText}
+                          inputTextColor={textDark}
                           onChanged={setServicePrice}
                         >
                           {data.service.basePrice}

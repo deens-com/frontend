@@ -24,6 +24,7 @@ import { getImageUrlFromMedia } from 'libs/media';
 import { PinIcon } from 'shared_components/icons';
 import I18nText from 'shared_components/I18nText';
 import AddToTrip from './AddToTrip';
+import * as colors from 'libs/colors';
 
 import ImgurAvatar from './../../assets/no-avatar.png';
 
@@ -221,7 +222,7 @@ class TripCard extends Component {
             <AddToTrip service={item} data={this.props.addToTrip} />
           )}
           <Thumb
-            url={(item.media.length && getImageUrlFromMedia(item.media,)) || ''}
+            url={(item.media.length && getImageUrlFromMedia(item.media)) || ''}
             tripCount={item.partOf}
             withTooltip={this.props.withTooltip}
           />

@@ -31,7 +31,7 @@ const BackButton = styled(Link)`
   left: -250px;
   top: 20px;
   font-size: 14px;
-  color: #00e4ff;
+  color: #097da8;
 `;
 
 const Label = styled.label`

@@ -9,7 +9,7 @@ import { minutesToDays } from 'libs/Utils';
 import SelectGuests from 'shared_components/SelectGuests';
 import { DropArrow } from 'shared_components/icons';
 import { PStrong, PSmall } from 'libs/commonStyles';
-import { darkText } from 'libs/colors';
+import { textDark } from 'libs/colors';
 import Toggle from 'shared_components/ToggleSwitch';
 import Button from 'shared_components/Button';
 import apiClient from 'libs/apiClient';
@@ -30,7 +30,7 @@ const LeftSide = styled.div`
 `;
 
 const DateP = styled(PStrong)`
-  color: #00e4ff;
+  color: #097da8;
   margin-left: 5px;
   &:first-child {
     margin-right: 10px;
@@ -53,7 +53,7 @@ const RightSide = styled.div`
 
 const FakeDropdown = styled.div`
   background-color: #f8f8f8;
-  color: #00e4ff;
+  color: #097da8;
   width: 100%;
   padding: 6px 10px;
   cursor: pointer;
@@ -79,7 +79,7 @@ const DatePicker = styled(FakeDropdown)`
     font: inherit;
     font-weight: 700;
     background-color: #f8f8f8;
-    color: #00e4ff;
+    color: #097da8;
     border-radius: 5px 5px 5px 0;
     cursor: pointer;
   }
@@ -93,7 +93,7 @@ const DatePicker = styled(FakeDropdown)`
 
 const DepartureDate = styled(PStrong)`
   margin-left: 10px;
-  color: ${darkText};
+  color: ${textDark};
   user-select: none;
   cursor: pointer;
   display: flex;

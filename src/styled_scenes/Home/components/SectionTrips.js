@@ -15,10 +15,6 @@ import TripCarousel from './TripCarousel';
 // STYLES
 import { PageWrapper, SectionWrap, SectionContent } from '../../../shared_components/layout/Page';
 
-const H2Secondary = styled(H2)`
-  color: ${secondary};
-`;
-
 const Subtitle = styled(H3)`
   font-weight: lighter;
   margin-top: 0;
@@ -37,7 +33,7 @@ export default class HomeSectionTrips extends React.PureComponent {
         <PageWrapper>
           <SectionWrap>
             <SectionHeader>
-              <H2Secondary>Featured Trips</H2Secondary>
+              <H2>Featured Trips</H2>
               <Subtitle>
                 Explore the best trips created by locals. They are{' '}
                 <strong>100% customizable</strong> and <strong>we don’t charge you extra!</strong>

@@ -5,7 +5,7 @@ import { paramsSerializer } from 'libs/apiClient';
 import axios from 'libs/axios';
 import { Loader } from 'semantic-ui-react';
 import { H2, H5, PSmall } from 'libs/commonStyles';
-import { primary, darkText, disabled } from 'libs/colors';
+import { primary, textDark, disabled } from 'libs/colors';
 import ImgurAvatar from 'assets/no-avatar.png';
 import Rating from 'shared_components/Rating';
 import Input from 'shared_components/StyledInput';
@@ -39,7 +39,7 @@ const UserContent = styled.div`
 
 const UserBio = styled(PSmall)`
   margin-top: 11px;
-  color: ${darkText};
+  color: ${textDark};
 `;
 
 const Form = styled.form``;
@@ -72,7 +72,7 @@ const TextArea = styled.textarea`
   border: 1px solid #ebebeb;
   &:focus {
     outline: none;
-    border-color: #00e4ff;
+    border-color: #097da8;
   }
   &::placeholder {
     color: ${disabled};

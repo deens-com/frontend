@@ -39,7 +39,7 @@ const UserAndReview = styled.div`
   a {
     color: #65afbb;
     &:hover {
-      color: #00e4ff;
+      color: #097da8;
     }
   }
 `;
@@ -48,7 +48,7 @@ const Service = styled.span`
   a {
     color: #65afbb;
     &:hover {
-      color: #00e4ff;
+      color: #097da8;
     }
   }
 `;

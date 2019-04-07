@@ -68,7 +68,7 @@ const SizeWrapper = styled.div`
 const SelectHeroButton = styled.div``;
 
 const HeroFill = styled.div`
-  color: ${props => (props.hero ? '#00e4ff' : '#C4C4C4')};
+  color: ${props => (props.hero ? '#097DA8' : '#C4C4C4')};
   position: absolute;
   top: 8px;
   left: 8px;
@@ -78,7 +78,7 @@ const HeroFill = styled.div`
 
 const HeroBorder = styled.div`
   cursor: pointer;
-  color: #00e4ff;
+  color: #097da8;
   top: 6px;
   left: 6px;
   position: absolute;

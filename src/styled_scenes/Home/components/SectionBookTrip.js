@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { H3, P } from 'libs/commonStyles';
-import { secondaryContrast, secondary, lightText } from 'libs/colors';
+import { secondaryContrast, secondary, textLight } from 'libs/colors';
 import Search from './HomeSearch';
 import map from '../images/findATripMap.svg';
 import customizeIcon from '../images/customizeTrip.svg';
@@ -14,7 +14,6 @@ import { media } from 'libs/styled';
 import { PageWrapper } from '../../../shared_components/layout/Page';
 
 const Section = styled.section`
-  background-color: ${secondaryContrast};
   padding-bottom: 25px;
   ${media.minSmall} {
     margin-top: 0;
@@ -57,7 +56,6 @@ const Column = styled.div`
 `;
 
 const Title = styled(H3)`
-  color: ${secondary};
   margin-top: 15px;
   ${media.minSmall} {
     margin-top: 25px;
@@ -65,7 +63,6 @@ const Title = styled(H3)`
 `;
 
 const Paragraph = styled(P)`
-  color: ${lightText};
   margin-bottom: 25px;
   ${media.minSmall} {
     margin-bottom: 0;

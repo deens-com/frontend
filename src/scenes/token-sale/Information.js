@@ -10,7 +10,7 @@ const Wrapper = styled.div`
     margin-top: 80px;
   }
   a {
-    color: #00e4ff;
+    color: #097da8;
     font-size: 14px;
   }
 `;

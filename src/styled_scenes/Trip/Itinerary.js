@@ -149,7 +149,7 @@ const CheckingAvailability = styled(AvailabilityBox)`
 
 const Availability = styled(AvailabilityBox)`
   background-color: ${props => (props.available ? '#BAFFE8' : '#FFC3C3')};
-  color: ${props => (props.available ? '#00e4ff' : '#F65353')};
+  color: ${props => (props.available ? '#097DA8' : '#F65353')};
 `;
 
 const Note = styled.div`

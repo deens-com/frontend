@@ -17,6 +17,7 @@ import { secondaryContrast } from 'libs/colors';
 
 // ACTIONS/CONFIG
 import { media } from 'libs/styled';
+import * as colors from 'libs/colors';
 
 const Content = styled.div`
   display: flex;
@@ -28,7 +29,7 @@ const Content = styled.div`
 // STYLES
 const Wrapper = styled.header`
   align-items: center;
-  background: transparent;
+  background: ${colors.backgroundLight};
   position: ${props => props.transparent && !props.showMenu && 'absolute'};
   display: flex;
   justify-content: ${props => (props.transparent ? 'space-between' : 'flex-start')};
@@ -43,14 +44,14 @@ const Wrapper = styled.header`
       position: fixed;
       top: 0;
     `} ${media.minMedium} {
-    height: ${props => (props.transparent ? 95 : 70)}px;
+    height: 60px;
     padding: ${props => (props.fixed || !props.transparent ? '0 25px' : '0')};
   }
 
   ${props =>
     props.showShadow &&
     css`
-      border-bottom: 1px solid #efeff0;
+      border-bottom: 1px solid ${colors.boxStroke};
 
       ${media.minMedium} {
         border-bottom: none;

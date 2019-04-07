@@ -96,7 +96,7 @@ const InputRange = styled.input`
     appearance: none;
     width: 15px;
     height: 15px;
-    background: #00e4ff;
+    background: #097da8;
     cursor: pointer;
     border-radius: 15px;
   }
@@ -104,7 +104,7 @@ const InputRange = styled.input`
   &::-moz-range-thumb {
     width: 15px;
     height: 15px;
-    background: #00e4ff;
+    background: #097da8;
     cursor: pointer;
     border-radius: 15px;
   }
@@ -112,7 +112,7 @@ const InputRange = styled.input`
   &::-ms-thumb {
     width: 15px;
     height: 15px;
-    background: #00e4ff;
+    background: #097da8;
     cursor: pointer;
     border-radius: 15px;
   }
