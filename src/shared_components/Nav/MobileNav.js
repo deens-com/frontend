@@ -110,7 +110,7 @@ const NavLink = styled(Link)`
   align-items: center;
 
   &.is-active {
-    color: #4fb798;
+    color: #65afbb;
   }
 
   @media screen and (max-width: 768px) {
@@ -129,7 +129,7 @@ const NavAnchor = styled.a`
   align-items: center;
 
   &.is-active {
-    color: #4fb798;
+    color: #65afbb;
   }
 
   @media screen and (max-width: 768px) {

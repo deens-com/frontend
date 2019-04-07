@@ -14,7 +14,7 @@ import { H6, P, PSmall } from 'libs/commonStyles';
 import { PageWrapper } from 'shared_components/layout/Page';
 
 const Wrapper = styled.div`
-  background-color: ${secondaryContrast};
+  background-image: linear-gradient(#f8eeed, rgba(255, 0, 0, 0) 20%);
   padding-top: 35px;
   padding-bottom: 10px;
   margin-bottom: ${props => props.marginBottom}px;
@@ -76,13 +76,19 @@ export default ({ marginBottom = 0 }) => (
         <Column>
           <H6>Legal</H6>
           <LinkElement>
-            <a rel="nofollow" href="/cookie-policy">Use of Cookies</a>
+            <a rel="nofollow" href="/cookie-policy">
+              Use of Cookies
+            </a>
           </LinkElement>
           <LinkElement>
-            <a rel="nofollow" href="/terms-conditions">Terms & Conditions</a>
+            <a rel="nofollow" href="/terms-conditions">
+              Terms & Conditions
+            </a>
           </LinkElement>
           <LinkElement>
-            <a rel="nofollow" href="/privacy-policy">Privacy Policy</a>
+            <a rel="nofollow" href="/privacy-policy">
+              Privacy Policy
+            </a>
           </LinkElement>
         </Column>
         <Column>

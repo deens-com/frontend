@@ -59,7 +59,7 @@ const navItemStyle = `
   }
 
   &:after {
-    background: #4fb798;
+    background: #65AFBB;
     bottom: 0;
     content: '';
     display: block;
@@ -74,7 +74,7 @@ const navItemStyle = `
 
   &.is-active,
   &:hover {
-    color: #4fb798;
+    color: #65AFBB;
 
     &:after {
       opacity: 1;

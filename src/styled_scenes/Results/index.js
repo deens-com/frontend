@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import GoogleMapReact from 'google-map-react';
 import { Checkbox } from 'semantic-ui-react';
 import Media from 'react-media';
-import { getCenterAndZoom } from 'libs/location'
+import { getCenterAndZoom } from 'libs/location';
 
 import history from 'main/history';
 // COMPONENTS
@@ -142,9 +142,12 @@ export default class ResultsScene extends Component {
 
   getCenterAndZoom = (markers, props) => {
     const zoomByRadius = this.getZoomByRadius();
-    const center = (props.latitude && props.longitude) ? { lat: parseFloat(props.latitude), lng: parseFloat(props.longitude) } : defaultCenter;
+    const center =
+      props.latitude && props.longitude
+        ? { lat: parseFloat(props.latitude), lng: parseFloat(props.longitude) }
+        : defaultCenter;
 
-    return getCenterAndZoom(markers, center, zoomByRadius)
+    return getCenterAndZoom(markers, center, zoomByRadius);
   };
 
   componentWillReceiveProps(nextProps) {
@@ -360,7 +363,7 @@ export default class ResultsScene extends Component {
               }
             >
               {markers.map(marker => (
-                <MapMaker {...marker} scale={1} color="#4fb798" />
+                <MapMaker {...marker} scale={1} color="#65AFBB" />
               ))}
             </GoogleMapReact>
           </MapWrapper>

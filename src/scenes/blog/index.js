@@ -16,10 +16,14 @@ import Notfound from 'styled_scenes/NotFound';
 import { websiteUrl, prismicUrl } from 'libs/config';
 
 function serializer(type, element, content, children, index) {
-  switch(type) {
+  switch (type) {
     case 'preformatted':
-      return React.createElement('div', {key: index, dangerouslySetInnerHTML: {__html: element.text}});
-    default: return null;
+      return React.createElement('div', {
+        key: index,
+        dangerouslySetInnerHTML: { __html: element.text },
+      });
+    default:
+      return null;
   }
 }
 
@@ -80,19 +84,19 @@ const PostContent = styled.div`
   padding-top: 25px;
 
   h2 {
-    color: #4fb798;
+    color: #65afbb;
   }
   h3 {
-    color: #38d39f;
+    color: #00e4ff;
     font-weight: bold;
   }
 
   a {
-    color: #4fb798;
+    color: #65afbb;
     font-weight: bolder;
     text-decoration: underline;
     &:hover {
-      color: #38d39f;
+      color: #00e4ff;
     }
   }
 
@@ -112,7 +116,7 @@ const PostContent = styled.div`
 
     > li::before {
       content: counter(li) '.';
-      color: #38d39f;
+      color: #00e4ff;
       font-weight: bold;
       display: inline-block;
       width: 1em;
@@ -131,7 +135,7 @@ const PostContent = styled.div`
 
     > li::before {
       content: '•';
-      color: #38d39f;
+      color: #00e4ff;
       display: inline-block;
       width: 1em;
       margin-left: -1em;
@@ -204,7 +208,9 @@ class BlogPost extends React.Component {
             )}
           </PageTop>
           <PageContent>
-            <PostContent>{article ? RichText.render(article.article, null, serializer) : null}</PostContent>
+            <PostContent>
+              {article ? RichText.render(article.article, null, serializer) : null}
+            </PostContent>
           </PageContent>
         </PageWrapper>
         <BrandFooter />

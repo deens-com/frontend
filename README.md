@@ -1,5 +1,5 @@
 <div align="center">
-  <a href="https://demo.deens.com"><img src="https://please-com.imgix.net/static/please-logo.png?w=600" alt="deens.com" width="500px"/></a>
+  <a href="https://deens.com"><img src="https://deens.com/logo.svg" alt="deens.com" width="300px"/></a>
 
 ### Book curated trips in minutes.
 

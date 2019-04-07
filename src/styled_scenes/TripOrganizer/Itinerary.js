@@ -8,7 +8,7 @@ import { getCategory } from 'libs/categories';
 import { media } from 'libs/styled';
 import { minutesToHoursOrDays, calculateCancellationCharge } from 'libs/trips';
 import { generateServiceSlug, getPriceFromServiceOption } from 'libs/Utils';
-import { getHeroImageUrlFromMedia } from 'libs/media' 
+import { getHeroImageUrlFromMedia } from 'libs/media';
 import I18nText from 'shared_components/I18nText';
 import Category from 'shared_components/Category';
 import Button from 'shared_components/Button';
@@ -164,7 +164,7 @@ const CheckingAvailability = styled(AvailabilityBox)`
 
 const Availability = styled(AvailabilityBox)`
   background-color: ${props => (props.available ? '#BAFFE8' : '#FFC3C3')};
-  color: ${props => (props.available ? '#38D39F' : '#F65353')};
+  color: ${props => (props.available ? '#00e4ff' : '#F65353')};
   align-self: flex-end;
   margin-right: 0;
 `;
@@ -194,12 +194,12 @@ const CancellationPolicy = styled.div`
 `;
 
 const CancellationHighlight = styled.span`
-  color: #38d39f;
+  color: #00e4ff;
   font-weight: bolder;
 `;
 
 const CancellationPolicyTrigger = styled.div`
-  color: #38d39f;
+  color: #00e4ff;
   font-size: 12px;
   cursor: pointer;
 `;

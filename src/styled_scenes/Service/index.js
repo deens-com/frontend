@@ -55,7 +55,7 @@ const HeaderWrap = styled.div`
   & > a {
     margin-top: 15px;
     display: inline-block;
-    color: #4fb798;
+    color: #65afbb;
   }
 `;
 
@@ -65,7 +65,7 @@ const Badge = styled.span`
   height: 40px;
   border-radius: 40px;
   padding: 4px 3px;
-  background: linear-gradient(50deg, #89c8a3, #4fb798);
+  background: linear-gradient(50deg, #89c8a3, #65afbb);
 
   svg {
     fill: #fff;
@@ -73,7 +73,7 @@ const Badge = styled.span`
 `;
 
 const ReviewsTitle = styled.h2`
-  color: #4fb798;
+  color: #65afbb;
 `;
 
 const ContactWrap = styled.div`
@@ -108,7 +108,7 @@ const Contacts = styled.div`
   }
 
   a {
-    color: #4fb798;
+    color: #65afbb;
   }
 `;
 
@@ -278,7 +278,7 @@ class Service extends Component {
                     bootstrapURLKeys={{ key: 'AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc' }}
                     googleMapLoader={waitUntilMapsLoaded}
                   >
-                    <MapMaker lat={latitude} lng={longitude} scale={1} color="#4fb798" />
+                    <MapMaker lat={latitude} lng={longitude} scale={1} color="#65AFBB" />
                   </GoogleMapReact>
                 </MapWrap>
                 <Contacts>

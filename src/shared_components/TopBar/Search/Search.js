@@ -24,7 +24,7 @@ const Wrapper = styled.div`
 const Inner = styled.div`
   background-color: #ffffff;
   border-radius: 4px;
-  border: solid 1px ${props => (props.inFocus ? '#4fb798' : '#eef1f4')};
+  border: solid 1px ${props => (props.inFocus ? '#65AFBB' : '#eef1f4')};
   display: flex;
   flex: 1;
   height: 48px;
@@ -79,7 +79,7 @@ const SubmitButton = styled.button`
     fontWeight: '500',
   })};
   align-items: center;
-  color: #4fb798;
+  color: #65afbb;
   display: flex;
   width: auto;
   :active,

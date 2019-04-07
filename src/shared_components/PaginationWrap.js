@@ -27,8 +27,8 @@ export default styled.div`
 
       &.selected {
         a {
-          border: 1px solid #4fb798;
-          color: #4fb798;
+          border: 1px solid #65afbb;
+          color: #65afbb;
         }
       }
 

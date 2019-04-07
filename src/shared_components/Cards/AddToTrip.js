@@ -42,7 +42,7 @@ const Label = styled.p`
 const Option = styled.div`
   display: flex;
   align-items: center;
-  background: #4fb798;
+  background: #65afbb;
   margin: 0 auto 15px;
   width: auto;
   padding: 5px;
