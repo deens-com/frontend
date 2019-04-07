@@ -127,6 +127,7 @@ export default class TripOrganizer extends React.Component {
   };
 
   componentDidMount() {
+    this._isMounted = true;
     if (!this.props.trip.startDate || !this.props.adultCount) {
       this.saveTrip({
         adultCount: this.state.tripData.adultCount,
@@ -137,6 +138,10 @@ export default class TripOrganizer extends React.Component {
     }
     this.checkAvailability();
     this.getTransportation();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   // GENERAL ACTIONS
@@ -550,7 +555,12 @@ export default class TripOrganizer extends React.Component {
   };
 
   waitAndRemoveService = id => {
-    setTimeout(() => {
+    setTimeout(async () => {
+      if (!this._isMounted) {
+        // this is not the best solution but it's quick and works properly
+        await this.saveRemovedServices([id]);
+        return;
+      }
       this.setState(
         prevState => {
           if (!prevState.lastRemovedService) {
