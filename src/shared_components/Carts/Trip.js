@@ -76,7 +76,7 @@ const Title = styled(H6)`
   position: absolute;
   bottom: 0;
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.8);
   min-height: 50px;
   border-radius: 0 0 15px 0;
   a {
