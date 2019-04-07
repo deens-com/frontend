@@ -72,7 +72,7 @@ const TextArea = styled.textarea`
   border: 1px solid #ebebeb;
   &:focus {
     outline: none;
-    border-color: #38d39f;
+    border-color: #00e4ff;
   }
   &::placeholder {
     color: ${disabled};

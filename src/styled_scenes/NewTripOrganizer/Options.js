@@ -30,7 +30,7 @@ const LeftSide = styled.div`
 `;
 
 const DateP = styled(PStrong)`
-  color: #38d39f;
+  color: #00e4ff;
   margin-left: 5px;
   &:first-child {
     margin-right: 10px;
@@ -53,7 +53,7 @@ const RightSide = styled.div`
 
 const FakeDropdown = styled.div`
   background-color: #f8f8f8;
-  color: #38d39f;
+  color: #00e4ff;
   width: 100%;
   padding: 6px 10px;
   cursor: pointer;
@@ -79,7 +79,7 @@ const DatePicker = styled(FakeDropdown)`
     font: inherit;
     font-weight: 700;
     background-color: #f8f8f8;
-    color: #38d39f;
+    color: #00e4ff;
     border-radius: 5px 5px 5px 0;
     cursor: pointer;
   }

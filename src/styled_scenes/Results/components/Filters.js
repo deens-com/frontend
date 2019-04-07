@@ -54,7 +54,7 @@ const CenteredSection = styled.section`
 
 const EditableElement = styled.div`
   margin-top: ${props => (props.addMargin ? '15px' : '0')};
-  color: #4fb798;
+  color: #65afbb;
   font-weight: bold;
   text-decoration: dashed underline;
   text-underline-position: under;
@@ -96,7 +96,7 @@ const InputRange = styled.input`
     appearance: none;
     width: 15px;
     height: 15px;
-    background: #38d39f;
+    background: #00e4ff;
     cursor: pointer;
     border-radius: 15px;
   }
@@ -104,7 +104,7 @@ const InputRange = styled.input`
   &::-moz-range-thumb {
     width: 15px;
     height: 15px;
-    background: #38d39f;
+    background: #00e4ff;
     cursor: pointer;
     border-radius: 15px;
   }
@@ -112,7 +112,7 @@ const InputRange = styled.input`
   &::-ms-thumb {
     width: 15px;
     height: 15px;
-    background: #38d39f;
+    background: #00e4ff;
     cursor: pointer;
     border-radius: 15px;
   }

@@ -37,18 +37,18 @@ const UserAndReview = styled.div`
   font-size: 14px;
   margin-top: 5px;
   a {
-    color: #4fb798;
+    color: #65afbb;
     &:hover {
-      color: #38d39f;
+      color: #00e4ff;
     }
   }
 `;
 
 const Service = styled.span`
   a {
-    color: #4fb798;
+    color: #65afbb;
     &:hover {
-      color: #38d39f;
+      color: #00e4ff;
     }
   }
 `;

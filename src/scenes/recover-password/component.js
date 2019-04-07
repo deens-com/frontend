@@ -51,9 +51,9 @@ const LoginContainer = styled.div`
 `;
 
 const RecoveredBox = styled.div`
-  color: #4fb798;
+  color: #65afbb;
   background-color: #b9ffe7;
-  border: 1px solid #4fb798;
+  border: 1px solid #65afbb;
   padding: 20px 30px;
   font-weight: bold;
   border-radius: 5px;

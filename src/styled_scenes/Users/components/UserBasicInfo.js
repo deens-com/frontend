@@ -56,7 +56,7 @@ const UserBasicInfo = ({ user = {} }) => {
             <div>
               <AttributeTitle>USER LEVEL</AttributeTitle>
               <BodyText>
-                <Icon fitted name="star" style={{ color: '#4fb798' }} /> {userLevel}
+                <Icon fitted name="star" style={{ color: '#65AFBB' }} /> {userLevel}
               </BodyText>
             </div>
           </Grid.Column>

@@ -6,12 +6,8 @@ import { Link } from 'react-router-dom';
 import { media } from 'libs/styled';
 import { getCategory } from 'libs/categories';
 import { parseLocation } from 'libs/fetch_helpers';
-import {
-  getPriceFromServiceOption,
-  getPeopleCount,
-  generateServiceSlug,
-} from 'libs/Utils';
-import { getHeroImageUrlFromMedia } from 'libs/media'
+import { getPriceFromServiceOption, getPeopleCount, generateServiceSlug } from 'libs/Utils';
+import { getHeroImageUrlFromMedia } from 'libs/media';
 
 import I18nText from 'shared_components/I18nText';
 import { MapMarker } from 'shared_components/icons';
@@ -153,7 +149,7 @@ const CheckingAvailability = styled(AvailabilityBox)`
 
 const Availability = styled(AvailabilityBox)`
   background-color: ${props => (props.available ? '#BAFFE8' : '#FFC3C3')};
-  color: ${props => (props.available ? '#38D39F' : '#F65353')};
+  color: ${props => (props.available ? '#00e4ff' : '#F65353')};
 `;
 
 const Note = styled.div`

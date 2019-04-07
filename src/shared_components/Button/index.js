@@ -32,8 +32,8 @@ const size = {
 };
 
 const colors = {
-  green: '#4FB798',
-  lightGreen: '#38D39F',
+  green: '#65AFBB',
+  lightGreen: '#00e4ff',
   lighterGreen: '#B9FFE7',
   greenActive: '#4ac4a1',
   white: '#fff',

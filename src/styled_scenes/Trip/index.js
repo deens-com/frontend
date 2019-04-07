@@ -41,7 +41,7 @@ const CustomPage = styled(Page)`
 `;
 const Wrapper = styled.div``;
 const TripData = styled.div`
-  background-color: #38d39f;
+  background-color: #00e4ff;
   color: white;
   height: 65px;
   font-size: 16px;

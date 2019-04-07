@@ -55,7 +55,7 @@ const BackButton = styled(Link)`
   position: relative;
   top: -5px;
   font-size: 14px;
-  color: #38d39f;
+  color: #00e4ff;
   vertical-align: middle;
   > span {
     display: flex;
@@ -69,7 +69,7 @@ const BackButton = styled(Link)`
 `;
 
 const BackIcon = styled.span`
-  background-color: #38d39f;
+  background-color: #00e4ff;
   color: white;
   width: 35px;
   height: 35px;
@@ -95,7 +95,7 @@ const Steps = styled.div`
 const Step = styled.div`
   font-size: 14px;
   color: ${props => (props.active ? 'white' : '#6E7885')};
-  background-color: ${props => (props.active ? '#38D39F' : 'white')};
+  background-color: ${props => (props.active ? '#00e4ff' : 'white')};
   padding: 8px 10px;
   border-radius: 3px;
 
@@ -154,7 +154,7 @@ const TotalPriceWrapper = styled.div``;
 
 const TotalPrice = styled.div`
   border-radius: 5px;
-  border: 1px solid #38d39f;
+  border: 1px solid #00e4ff;
   background-color: #b9ffe7;
   padding: 20px;
   flex-shrink: 1;
