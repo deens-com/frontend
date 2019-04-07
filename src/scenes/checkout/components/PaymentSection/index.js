@@ -77,7 +77,7 @@ const MethodSelector = styled.div`
 const Method = styled.div`
   cursor: pointer;
   color: ${props => (props.selected ? 'white' : '#3C434B')};
-  background-color: ${props => (props.selected ? '#00e4ff' : '#FFFFFF')};
+  background-color: ${props => (props.selected ? '#097DA8' : '#FFFFFF')};
   flex-direction: row;
   border-radius: 5px;
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1), -1px 0px 2px rgba(0, 0, 0, 0.1);

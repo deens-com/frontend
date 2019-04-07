@@ -61,7 +61,7 @@ const ChangeAddress = styled.p`
   color: 12545f;
   margin-top: 15px;
   a {
-    color: #00e4ff;
+    color: #097da8;
   }
 `;
 
@@ -71,7 +71,7 @@ const AdviceWrapper = styled(BaseWrapper)`
 `;
 
 const ContractWrapper = styled(BaseWrapper)`
-  background-color: #00e4ff;
+  background-color: #097da8;
   h2 {
     font-size: 18px;
     font-weight: bold;
@@ -96,7 +96,7 @@ const DeensAddress = styled.div`
   display: flex;
   align-items: center;
   > input {
-    color: #00e4ff;
+    color: #097da8;
     background: white;
     border: 0;
     font-size: 14px;

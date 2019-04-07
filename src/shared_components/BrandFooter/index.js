@@ -9,12 +9,12 @@ import { Instagram, Twitter, Facebook } from './icons';
 
 // ACTIONS/CONFIG
 import { media } from '../../libs/styled';
-import { primary, secondary, secondaryContrast, lightText } from 'libs/colors';
+import * as colors from 'libs/colors';
 import { H6, P, PSmall } from 'libs/commonStyles';
 import { PageWrapper } from 'shared_components/layout/Page';
 
 const Wrapper = styled.div`
-  background-image: linear-gradient(#f8eeed, rgba(255, 0, 0, 0) 20%);
+  background-color: ${colors.backgroundDark};
   padding-top: 35px;
   padding-bottom: 10px;
   margin-bottom: ${props => props.marginBottom}px;
@@ -27,7 +27,7 @@ const ColumnWrapper = styled.footer`
 const Column = styled.div`
   flex: 1;
   > h6 {
-    color: ${secondary};
+    color: ${colors.secondary};
     margin-bottom: 14px;
   }
 
@@ -42,12 +42,11 @@ const Column = styled.div`
 
 const LinkElement = styled(P)`
   > a {
-    color: ${primary};
+    color: ${colors.primary};
   }
 `;
 
 const Copyright = styled(PSmall)`
-  color: ${lightText};
   text-align: center;
   margin-top: 25px;
 `;

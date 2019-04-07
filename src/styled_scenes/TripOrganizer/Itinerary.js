@@ -164,7 +164,7 @@ const CheckingAvailability = styled(AvailabilityBox)`
 
 const Availability = styled(AvailabilityBox)`
   background-color: ${props => (props.available ? '#BAFFE8' : '#FFC3C3')};
-  color: ${props => (props.available ? '#00e4ff' : '#F65353')};
+  color: ${props => (props.available ? '#097DA8' : '#F65353')};
   align-self: flex-end;
   margin-right: 0;
 `;
@@ -194,12 +194,12 @@ const CancellationPolicy = styled.div`
 `;
 
 const CancellationHighlight = styled.span`
-  color: #00e4ff;
+  color: #097da8;
   font-weight: bolder;
 `;
 
 const CancellationPolicyTrigger = styled.div`
-  color: #00e4ff;
+  color: #097da8;
   font-size: 12px;
   cursor: pointer;
 `;

@@ -5,7 +5,7 @@ import { activity, accommodation, food } from 'libs/colors';
 import { Activity, Food, Accommodation, ArrivalFlag, DepartureFlag } from 'shared_components/icons';
 import I18nText from 'shared_components/I18nText';
 import { P } from 'libs/commonStyles';
-import { darkText } from 'libs/colors';
+import { textDark } from 'libs/colors';
 
 const Wrapper = styled.div`
   position: relative;
@@ -55,7 +55,7 @@ const Content = styled.div`
   left: -140px;
   bottom: 50px;
   height: 75px;
-  color: ${darkText};
+  color: ${textDark};
   z-index: 1;
 
   > p {

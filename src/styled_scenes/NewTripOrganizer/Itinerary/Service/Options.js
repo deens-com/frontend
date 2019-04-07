@@ -5,7 +5,7 @@ import I18nText from 'shared_components/I18nText';
 import { Modal, Popup } from 'semantic-ui-react';
 import { P, PStrong, PSmallStrong, PXSmall, H2SubtitleStrong } from 'libs/commonStyles';
 import { getPriceFromServiceOption } from 'libs/Utils';
-import { lightText, primary, secondary, secondaryContrast, error } from 'libs/colors';
+import { textLight, primary, secondary, secondaryContrast, error } from 'libs/colors';
 import { minutesToHoursOrDays, calculateCancellationCharge } from 'libs/trips';
 import Button from 'shared_components/Button';
 import { TripContext } from '../../';
@@ -26,7 +26,7 @@ const ChangeOptionsButton = styled.button`
   border-radius: 0 0 5px 0;
   padding: 10px 6px;
   background-color: ${primary};
-  color: ${lightText};
+  color: ${textLight};
   &:focus {
     outline: 0;
   }

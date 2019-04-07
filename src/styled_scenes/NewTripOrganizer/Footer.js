@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Loader } from 'semantic-ui-react';
-import { secondary, secondaryContrast, lightText, darkText } from 'libs/colors';
+import { secondary, secondaryContrast, textLight, textDark } from 'libs/colors';
 import { PStrong, PSmall, P } from 'libs/commonStyles';
 import Button from 'shared_components/Button';
 import LoadingDots from 'shared_components/LoadingDots';
@@ -37,7 +37,7 @@ const Wrapper = styled.div`
 const Price = styled.div`
   font-weight: bold;
   font-size: 16px;
-  color: ${lightText};
+  color: ${textLight};
   display: flex;
   align-items: center;
   > p:first-child {
@@ -53,7 +53,7 @@ const CheckingAvailability = styled.div`
   width: auto;
   text-align: center;
   display: flex;
-  color: ${darkText};
+  color: ${textDark};
   padding: 10px;
   right: 20px;
   bottom: 94px;
@@ -77,7 +77,7 @@ const UndoServiceDeletion = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: ${lightText};
+  color: ${textLight};
   padding: 10px;
   left: 50%;
   transform: translateX(-50%) scaleX(${props => (props.show ? 1 : 0)});
@@ -96,7 +96,7 @@ const UndoServiceDeletion = styled.div`
   > svg {
     width: 1.2em !important;
     height: 1.2em !important;
-    color: ${lightText} !important;
+    color: ${textLight} !important;
   }
 `;
 

@@ -143,10 +143,6 @@ const InnerText = styled(H1)`
   color: white;
 `;
 
-const Title = styled(H2)`
-  color: ${secondary};
-`;
-
 const sydneyParams =
   'serviceTypes=trip&latitude=-33.8688197&longitude=151.20929550000005&address=Sydney%20NSW,%20Australia';
 const newYorkParams =
@@ -161,7 +157,7 @@ export default function HomeSectionTopDestinations() {
     <PageWrapper>
       <SectionWrap>
         <SectionHeader>
-          <Title>Top Destinations</Title>
+          <H2>Top Destinations</H2>
         </SectionHeader>
         <SectionContent>
           <FlexLink to={`/results?${sydneyParams}`}>

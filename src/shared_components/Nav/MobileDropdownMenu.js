@@ -28,7 +28,7 @@ const AvatarWithUsername = styled.div`
     color: #3c434b;
     svg {
       path {
-        fill: #00e4ff;
+        fill: #097da8;
       }
     }
   }
@@ -48,7 +48,7 @@ const AvatarWithUsername = styled.div`
   ${props =>
     props.isMenuOpen &&
     `svg {
-      fill: #00e4ff;
+      fill: #097DA8;
       margin-right: 25px;
     }`};
 `;
@@ -66,7 +66,7 @@ class MobileDropDownMenu extends Component {
           className={`${this.props.dark && 'dark'} ${this.props.avatarOnly && 'avatar-only'}`}
         >
           {this.props.isMenuOpen ? (
-            <CrossIcon style={{ height: '20px', width: '20px', color: '00e4ff' }} />
+            <CrossIcon style={{ height: '20px', width: '20px', color: '097DA8' }} />
           ) : (
             <Menu style={{ height: '30px', width: '30px' }} />
           )}
