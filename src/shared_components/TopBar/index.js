@@ -28,8 +28,7 @@ const Content = styled.div`
 // STYLES
 const Wrapper = styled.header`
   align-items: center;
-  background: ${props =>
-    props.transparent && !props.showMenu ? 'transparent' : secondaryContrast};
+  background: transparent;
   position: ${props => props.transparent && !props.showMenu && 'absolute'};
   display: flex;
   justify-content: ${props => (props.transparent ? 'space-between' : 'flex-start')};
@@ -124,7 +123,14 @@ class TopBar extends Component {
   }
 
   render() {
-    const { transparent, noSearch, isGDPRDismissed, gdprHeight, noMargin, forceNotFixed } = this.props;
+    const {
+      transparent,
+      noSearch,
+      isGDPRDismissed,
+      gdprHeight,
+      noMargin,
+      forceNotFixed,
+    } = this.props;
     const { showMenu, showSearchMobile } = this.state;
 
     const InnerWrap = transparent || noSearch ? PageWrapper : React.Fragment;
