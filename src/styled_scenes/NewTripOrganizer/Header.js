@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { H2, P } from 'libs/commonStyles';
+import { H1, P } from 'libs/commonStyles';
 import { primary, secondary, textLight, textDark } from 'libs/colors';
 import InlineInput from 'shared_components/InlineInput';
 import { Loader } from 'semantic-ui-react';
@@ -26,14 +26,22 @@ const Overlay = styled.div`
   }
 `;
 
-const Title = styled(H2)`
+const Content = styled.div`
+  max-width: 550px;
+  width: 100%;
+`;
+
+const Title = styled(H1)`
   color: ${secondary};
   margin: auto;
+  margin-bottom: 10px;
+  width: 100%;
 `;
 
 const Description = styled.div`
   color: ${textLight};
   margin: auto;
+  width: 100%;
 `;
 
 const More = styled.div`
@@ -65,9 +73,9 @@ const Header = ({ title, image, description, onEditTitle, onEditDescription, onI
   return (
     <Wrapper image={image}>
       <Overlay>
-        <div>
+        <Content>
           <Title>
-            <InlineInput disallowEmptySubmit onChanged={onEditTitle}>
+            <InlineInput inputPadding="15px 10px" disallowEmptySubmit onChanged={onEditTitle}>
               {title}
             </InlineInput>
           </Title>
@@ -76,6 +84,7 @@ const Header = ({ title, image, description, onEditTitle, onEditDescription, onI
               placeholder="Add a description or some notes"
               inputTextColor={textDark}
               onChanged={onEditDescription}
+              useTextarea
             >
               {description}
             </InlineInput>
@@ -95,7 +104,7 @@ const Header = ({ title, image, description, onEditTitle, onEditDescription, onI
               </>
             )}
           </More>
-        </div>
+        </Content>
       </Overlay>
     </Wrapper>
   );
