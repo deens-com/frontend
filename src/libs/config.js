@@ -6,7 +6,7 @@ export const cardConfig = {
   truncateThreshold: 55,
 };
 
-export const env = process.env.NODE_ENV || 'development';
+export const env = process.env.REACT_APP_NODE_ENV || 'development';
 export const isDev = env === 'development';
 export const isStaging = env === 'staging';
 export const isProd = env === 'production';

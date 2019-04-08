@@ -88,19 +88,19 @@
   "scripts": {
     "start": "cross-env HTTPS=true react-app-rewired start",
     "now-start": "serve ./build --single",
-    "build": "NODE_ENV=production react-app-rewired build",
-    "now-build": "NODE_ENV=staging react-app-rewired build",
-    "build:staging": "NODE_ENV=staging react-app-rewired build",
+    "build": "REACT_APP_NODE_ENV=production react-app-rewired build",
+    "now-build": "REACT_APP_NODE_ENV=staging react-app-rewired build",
+    "build:staging": "REACT_APP_NODE_ENV=staging react-app-rewired build",
     "postbuild": "mkdir -p build/.circleci && cp -r .circleci/* build/.circleci/",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject",
     "precommit": "pretty-quick --staged",
-    "predeploy": "true || NODE_ENV=production npm run build",
+    "predeploy": "true || REACT_APP_NODE_ENV=production npm run build",
     "deploy": "true || gh-pages -d build --dotfiles true",
     "prettier-all": "prettier --write '**/*.{js,json,jsx,yml,yaml,md}'",
     "lint-staged": "lint-staged",
-    "test-dev": "cypress open --env NODE_ENV=development",
-    "test-ci": "cypress run --config video=false --env NODE_ENV=development"
+    "test-dev": "cypress open --env REACT_APP_NODE_ENV=development",
+    "test-ci": "cypress run --config video=false --env REACT_APP_NODE_ENV=development"
   },
   "devDependencies": {
     "@babel/polyfill": "^7.2.5",
