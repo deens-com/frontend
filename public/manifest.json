@@ -16,5 +16,7 @@
   "theme_color": "#ffffff",
   "background_color": "#ffffff",
   "start_url": "https://deens.com",
-  "display": "standalone"
+  "display": "standalone",
+  "gcm_sender_id": "482941778795",
+  "gcm_sender_id_comment": "Do not change the GCM Sender ID"
 }
