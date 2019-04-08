@@ -8,7 +8,6 @@ import { Loader, Dimmer } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { media } from 'libs/styled';
 import { generateTripSlug } from 'libs/Utils';
-import { updateBottomChatPosition } from 'libs/Utils';
 
 import I18nText from 'shared_components/I18nText';
 import { formatLocation } from 'shared_components/Carts/Trip';
@@ -249,11 +248,6 @@ class CheckoutContainer extends React.Component {
   componentDidMount() {
     this.props.cleanPaymentStatus();
     this.props.changeHeader({ noSearch: true });
-    updateBottomChatPosition(50);
-  }
-
-  componentWillUnmount() {
-    updateBottomChatPosition();
   }
 
   componentDidUpdate() {

@@ -7,7 +7,6 @@ import history from 'main/history';
 import { Loader, Popup, Icon, Dimmer, Modal } from 'semantic-ui-react';
 import { DayPickerRangeController } from 'react-dates';
 import { START_DATE } from 'react-dates/constants';
-import { updateBottomChatPosition } from 'libs/Utils';
 
 // STYLES
 import { Page, PageContent } from 'shared_components/layout/Page';
@@ -118,13 +117,10 @@ export default class Trip extends Component {
     if (this.props.action === 'handleCustomizeClick') {
       this.handleCustomizeClick();
     }
-
-    updateBottomChatPosition(135);
   }
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
-    updateBottomChatPosition(0);
   }
 
   handleScroll = () => {
