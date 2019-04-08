@@ -78,12 +78,6 @@ export const setLoginError = payload => {
   };
 };
 
-async function setUserData(userObject) {
-  await window.fcWidget.setExternalId(userObject._id);
-  await window.fcWidget.user.setFirstName(userObject.username);
-  await window.fcWidget.user.setEmail(userObject.email);
-}
-
 export const getCurrentUserTrip = () => async dispatch => {
   try {
     const response = await apiClient.trips.get({ limit: 1 });
@@ -172,23 +166,6 @@ export const getCurrentUser = fetchReferralInfo => async (dispatch, getState) =>
           },
         }),
       );
-
-      // Fresh chat data
-      if (userObject.username) {
-        if (window.fcWidget && window.fcWidget.user) {
-          try {
-            const chatUser = (await window.fcWidget.user.get()).data;
-            if (chatUser.firstName !== userObject.username) {
-              await window.fcWidget.user.clear();
-              await setUserData(userObject);
-            }
-          } catch (e) {
-            if (e.status === 401) {
-              await setUserData(userObject);
-            }
-          }
-        }
-      }
     }
     return;
   } catch (error) {

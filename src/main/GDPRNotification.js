@@ -4,7 +4,6 @@ import { media } from 'libs/styled';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from 'store/settings/actions';
-import { updateBottomChatPosition } from 'libs/Utils';
 import { CrossIcon } from 'shared_components/icons';
 
 const Notification = styled.div`
@@ -89,7 +88,6 @@ class GDPRBanner extends React.Component {
   };
 
   dismiss = () => {
-    updateBottomChatPosition();
     this.props.dismissGdpr();
   };
 
@@ -99,9 +97,14 @@ class GDPRBanner extends React.Component {
     return (
       <Notification closed={closed} ref={this.gdprRef} onClick={this.dismiss}>
         <Text>
-          This site uses cookies to provide you with a great user experience. By using Deens.com
-          you accept our use of{' '}
-          <a href="/cookie-policy" rel="nofollow" target="_blank" onClick={e => e.stopPropagation()}>
+          This site uses cookies to provide you with a great user experience. By using Deens.com you
+          accept our use of{' '}
+          <a
+            href="/cookie-policy"
+            rel="nofollow"
+            target="_blank"
+            onClick={e => e.stopPropagation()}
+          >
             cookies
           </a>
           .
