@@ -372,7 +372,7 @@ export default class Trip extends Component {
         <DaySelector bottom={65} days={days} trip={trip} goToDay={this.goToDay} />
         <PageContent>{this.renderPageContent()}</PageContent>
         <FixedFooter
-          price={trip.basePrice}
+          price={trip.totalPrice}
           peopleNumber={adults + children + infants}
           startDate={this.props.startDate}
           endDate={this.props.endDate}
