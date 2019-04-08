@@ -1,7 +1,7 @@
 {
   "name": "deens-frontend",
   "env": {
-    "NODE_ENV": "staging"
+    "REACT_APP_NODE_ENV": "staging"
   },
   "version": 2,
   "routes": [
