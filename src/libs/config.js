@@ -6,7 +6,7 @@ export const cardConfig = {
   truncateThreshold: 55,
 };
 
-export const env = process.env.REACT_APP_NODE_ENV || 'development';
+export const env = process.env.NODE_ENV || 'development';
 export const isDev = env === 'development';
 export const isStaging = env === 'staging';
 export const isProd = env === 'production';
@@ -38,3 +38,5 @@ export const websiteUrl =
   env === 'production' ? 'https://deens.com' : `https://${window.location.hostname}`;
 
 export const prismicUrl = 'https://please.prismic.io/api/v2';
+
+export const shouldTrack = isProd || process.env.REACT_APP_FORCE_TRACKING || true;

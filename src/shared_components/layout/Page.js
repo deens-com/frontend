@@ -57,7 +57,7 @@ export const SectionHeader = styled.header`
   }
 
   a {
-    color: #4fb798;
+    color: #65afbb;
     font-weight: 500;
   }
 `;

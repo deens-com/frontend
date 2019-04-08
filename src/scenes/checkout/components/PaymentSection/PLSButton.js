@@ -53,7 +53,7 @@ const BalanceTitle = styled.p`
 const BuyPLS = styled.div`
   font-size: 14px;
   a {
-    color: #38d39f;
+    color: #097da8;
   }
 `;
 

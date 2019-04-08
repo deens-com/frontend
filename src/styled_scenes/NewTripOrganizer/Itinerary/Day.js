@@ -5,7 +5,7 @@ import { DragSource, DropTarget } from 'react-dnd';
 import Service from './Service/index';
 import { types } from '../constants';
 import { getDayDate } from 'styled_scenes/Trip/mapServicesToDays';
-import { primary, secondary, primaryContrast, error } from 'libs/colors';
+import { primary, secondary, primaryHover, error } from 'libs/colors';
 import { H2, H2Subtitle, P } from 'libs/commonStyles';
 import { Drag, TrashCan } from 'shared_components/icons';
 import locationIcon from 'assets/location.svg';
@@ -48,7 +48,7 @@ const Location = styled.div`
 
 const DraggingBox = styled.div`
   background-color: ${primary};
-  border: 1px solid ${primaryContrast};
+  border: 1px solid ${primaryHover};
   border-radius: 10px 10px 10px 0;
   width: 100%;
   max-width: 400px;

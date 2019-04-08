@@ -7,7 +7,6 @@ import history from 'main/history';
 import { Loader, Popup, Icon, Dimmer, Modal } from 'semantic-ui-react';
 import { DayPickerRangeController } from 'react-dates';
 import { START_DATE } from 'react-dates/constants';
-import { updateBottomChatPosition } from 'libs/Utils';
 
 // STYLES
 import { Page, PageContent } from 'shared_components/layout/Page';
@@ -20,6 +19,7 @@ import FixedFooter from './FixedFooter';
 import Itinerary from './Itinerary';
 import DaySelector from './DaySelector';
 import mapServicesToDays from './mapServicesToDays';
+import analytics from 'libs/analytics';
 
 const getCityCount = services => {
   const cities = new Set();
@@ -40,7 +40,7 @@ const CustomPage = styled(Page)`
 `;
 const Wrapper = styled.div``;
 const TripData = styled.div`
-  background-color: #38d39f;
+  background-color: #097da8;
   color: white;
   height: 65px;
   font-size: 16px;
@@ -117,13 +117,10 @@ export default class Trip extends Component {
     if (this.props.action === 'handleCustomizeClick') {
       this.handleCustomizeClick();
     }
-
-    updateBottomChatPosition(135);
   }
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
-    updateBottomChatPosition(0);
   }
 
   handleScroll = () => {
@@ -207,7 +204,7 @@ export default class Trip extends Component {
       history.push(`/trips/organize/${this.props.trip._id}`);
       return;
     }
-
+    analytics.trip.customize();
     this.props.cloneTrip(this.props.trip, this.props.currentUserId);
   };
 

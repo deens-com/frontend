@@ -24,7 +24,7 @@ const CenteredDiv = styled.div`
 
 const CopyButton = styled(Input)`
   button.button {
-    background: #38d39f;
+    background: #097da8;
     color: white;
   }
 `;

@@ -53,7 +53,7 @@ const TitleSelection = styled(Group)`
 `;
 
 const Type = styled.div`
-  color: #38d39f;
+  color: #097da8;
   font-weight: bold;
 `;
 

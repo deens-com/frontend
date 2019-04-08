@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { H1, P } from 'libs/commonStyles';
-import { primary, secondary, lightText, darkText } from 'libs/colors';
+import { primary, secondary, textLight, textDark } from 'libs/colors';
 import InlineInput from 'shared_components/InlineInput';
 import { Loader } from 'semantic-ui-react';
 //https://maps.googleapis.com/maps/api/staticmap?center=${location.city}&zoom=13&size=140x140&maptype=roadmap&key=AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc
@@ -39,7 +39,7 @@ const Title = styled(H1)`
 `;
 
 const Description = styled.div`
-  color: ${lightText};
+  color: ${textLight};
   margin: auto;
   width: 100%;
 `;
@@ -82,7 +82,7 @@ const Header = ({ title, image, description, onEditTitle, onEditDescription, onI
           <Description>
             <InlineInput
               placeholder="Add a description or some notes"
-              inputTextColor={darkText}
+              inputTextColor={textDark}
               onChanged={onEditDescription}
               useTextarea
             >

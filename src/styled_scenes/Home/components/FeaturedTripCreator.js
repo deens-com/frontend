@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { H2, H2Subtitle, H3, P, PStrong } from 'libs/commonStyles';
-import { secondary, darkText, primary, secondaryContrast } from 'libs/colors';
+import { secondary, textDark, primary, secondaryContrast } from 'libs/colors';
 import featuredTripCreatorImage from 'assets/featured-trip-creator.png';
 
 import ListsHandler from 'shared_components/ListsHandler';
@@ -18,10 +18,6 @@ import { parseTagsText } from 'libs/Utils';
 import { PageWrapper, SectionWrap, SectionContent } from '../../../shared_components/layout/Page';
 
 const featuredTripCreator = 'beabatravel';
-
-const H2Secondary = styled(H2)`
-  color: ${secondary};
-`;
 
 const SectionHeader = styled.header`
   margin-bottom: 24px;
@@ -100,7 +96,6 @@ const Column = styled.div`
 `;
 
 const Title = styled(H3)`
-  color: ${secondaryContrast};
   margin-top: 15px;
   ${media.minSmall} {
     margin-top: 25px;
@@ -108,7 +103,7 @@ const Title = styled(H3)`
 `;
 
 const Paragraph = styled(P)`
-  color: ${darkText};
+  color: ${textDark};
   margin-bottom: 25px;
   ${media.minSmall} {
     margin-bottom: 0;
@@ -116,7 +111,6 @@ const Paragraph = styled(P)`
 `;
 
 const Become = styled(H2Subtitle)`
-  color: ${secondaryContrast};
   text-align: center;
   margin-bottom: 40px;
 `;
@@ -158,7 +152,7 @@ export default class FeaturedTripCreator extends React.Component {
       <React.Fragment>
         <PageWrapper>
           <SectionHeader>
-            <H2Secondary>Featured Trip Creator From Our Community</H2Secondary>
+            <H2>Featured Trip Creator From Our Community</H2>
           </SectionHeader>
         </PageWrapper>
         <PageWrapper>

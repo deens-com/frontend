@@ -14,7 +14,7 @@ const Content = styled.div`
 
   h1,
   h3 {
-    color: #4fb798;
+    color: #65afbb;
   }
 
   h4 {

@@ -32,7 +32,7 @@ const SegmentTitle = styled.div`
 `;
 
 const PLSNumber = styled.div`
-  background-color: #38d39f;
+  background-color: #097da8;
   color: white;
   display: inline-block;
   border-radius: 5px;
@@ -69,7 +69,7 @@ const SecondCol = styled.div`
 `;
 
 const SmartContractLink = styled(Link)`
-  color: #38d39f;
+  color: #097da8;
   text-decoration: underline;
 `;
 

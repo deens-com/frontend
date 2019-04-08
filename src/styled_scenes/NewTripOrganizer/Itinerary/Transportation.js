@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Loader, Popup } from 'semantic-ui-react';
 import { P, PSmall } from 'libs/commonStyles';
-import { primary, secondary, primaryContrast, disabled, tertiaryContrast } from 'libs/colors';
+import { primary, secondary, primaryHover, disabled, tertiaryContrast } from 'libs/colors';
 import { Settings } from 'shared_components/icons';
 import Walk from 'assets/walk.svg';
 import Bike from 'assets/bike.svg';
@@ -61,7 +61,7 @@ const TransportSelect = styled.button`
     margin: auto;
   }
   &:hover {
-    background-color: ${props => (props.selected ? primary : primaryContrast)};
+    background-color: ${props => (props.selected ? primary : primaryHover)};
     > svg {
       color: white;
     }
@@ -178,7 +178,7 @@ const Transportation = ({
     if (selected === selectedTransport) {
       return;
     }
-    const serviceDictionary = isLast ? fromService : toService
+    const serviceDictionary = isLast ? fromService : toService;
 
     selectTransport(
       selectedTransport,
@@ -187,7 +187,7 @@ const Transportation = ({
       position,
     );
     hideTooltip();
-  }
+  };
 
   return (
     <>

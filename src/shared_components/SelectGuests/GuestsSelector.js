@@ -75,7 +75,7 @@ const ApplyButton = styled.button`
   margin: 20px auto 10px;
   font-weight: bold;
   :hover {
-    color: #38d39f;
+    color: #097da8;
   }
 `;
 

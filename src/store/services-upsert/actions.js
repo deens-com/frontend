@@ -1,6 +1,4 @@
 import fetch_helpers from 'libs/fetch_helpers';
-import history from 'main/history';
-import { trackServiceCreated } from 'libs/analytics';
 import { serverBaseURL } from 'libs/config';
 import axios from 'libs/axios';
 import { generateServiceSlug } from 'libs/Utils';
@@ -71,7 +69,6 @@ export const registerService = (values, history) => async (dispatch, getState) =
       dispatch({
         type: types.SERVICE_CREATE_SUCCESS,
         payload: result,
-        meta: { analytics: trackServiceCreated(result) },
       });
       history.push(`/services/${generateServiceSlug(result.data)}`);
     }

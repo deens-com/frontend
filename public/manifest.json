@@ -1,18 +1,22 @@
-// 20181207154306
-// https://s3.amazonaws.com/prod.tracker2/resource/93713849/manifest.json?response-content-disposition=inline&response-content-type=application%2Fjson&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJJBSFJ4TCVKKGAIA%2F20181207%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20181207T184304Z&X-Amz-Expires=1800&X-Amz-SignedHeaders=host&X-Amz-Signature=1ecdfdeb21dade2d2cebc3ff61e1378904dc2e37f15a42e707a4851a0a8921ec
-
 {
+  "name": "Deens",
   "short_name": "Deens",
-  "name": "Deens Trip Planning",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png"
     }
   ],
-  "start_url": "./index.html",
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "start_url": "https://deens.com",
   "display": "standalone",
-  "theme_color": "#38D39F",
-  "background_color": "#ffffff"
+  "gcm_sender_id": "482941778795",
+  "gcm_sender_id_comment": "Do not change the GCM Sender ID"
 }

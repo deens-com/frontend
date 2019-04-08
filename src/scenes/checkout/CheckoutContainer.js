@@ -8,7 +8,6 @@ import { Loader, Dimmer } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { media } from 'libs/styled';
 import { generateTripSlug } from 'libs/Utils';
-import { updateBottomChatPosition } from 'libs/Utils';
 
 import I18nText from 'shared_components/I18nText';
 import { formatLocation } from 'shared_components/Carts/Trip';
@@ -24,6 +23,7 @@ import GuestsData from './components/GuestsData';
 import Countdown from './components/Countdown';
 import ReprovisionModal from './components/ReprovisionModal';
 import history from 'main/history';
+import analytics from 'libs/analytics';
 
 function formatDate(date, days) {
   const startDate = moment(date);
@@ -54,7 +54,7 @@ const BackButton = styled(Link)`
   position: relative;
   top: -5px;
   font-size: 14px;
-  color: #38d39f;
+  color: #097da8;
   vertical-align: middle;
   > span {
     display: flex;
@@ -68,7 +68,7 @@ const BackButton = styled(Link)`
 `;
 
 const BackIcon = styled.span`
-  background-color: #38d39f;
+  background-color: #097da8;
   color: white;
   width: 35px;
   height: 35px;
@@ -94,7 +94,7 @@ const Steps = styled.div`
 const Step = styled.div`
   font-size: 14px;
   color: ${props => (props.active ? 'white' : '#6E7885')};
-  background-color: ${props => (props.active ? '#38D39F' : 'white')};
+  background-color: ${props => (props.active ? '#097DA8' : 'white')};
   padding: 8px 10px;
   border-radius: 3px;
 
@@ -153,7 +153,7 @@ const TotalPriceWrapper = styled.div``;
 
 const TotalPrice = styled.div`
   border-radius: 5px;
-  border: 1px solid #38d39f;
+  border: 1px solid #097da8;
   background-color: #b9ffe7;
   padding: 20px;
   flex-shrink: 1;
@@ -248,11 +248,6 @@ class CheckoutContainer extends React.Component {
   componentDidMount() {
     this.props.cleanPaymentStatus();
     this.props.changeHeader({ noSearch: true });
-    updateBottomChatPosition(50);
-  }
-
-  componentWillUnmount() {
-    updateBottomChatPosition();
   }
 
   componentDidUpdate() {
@@ -305,6 +300,7 @@ class CheckoutContainer extends React.Component {
   };
 
   finishPayment = () => {
+    analytics.trip.checkout.complete();
     this.setState({
       isPaying: false,
     });
@@ -365,6 +361,9 @@ class CheckoutContainer extends React.Component {
         nextDisabled: prevState.step + 1 === 2,
       }),
       () => {
+        if (this.state.step === 2) {
+          analytics.trip.checkout.start();
+        }
         if (this.state.step === 3 && this.state.provision.length === 0) {
           this.getProvisionCodes();
         }

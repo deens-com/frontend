@@ -1,103 +1,68 @@
-import { EventTypes } from 'redux-segment';
+import { shouldTrack } from 'libs/config';
 
-const commonSuffix = ' on Demo';
-
-/**
- * Given a object of user, it identifies the user on segment
- * @param {ParseObject} session
- */
-export const identifyUsingSession = session => {
-  const email = session.email;
-  if (email) {
-    return {
-      eventType: EventTypes.identify,
-      eventPayload: {
-        userId: email,
-        traits: { email },
-      },
-    };
+const track = (...args) => {
+  if (!shouldTrack) {
+    return;
   }
-  return undefined;
+  return window.analytics.track(...args);
 };
 
-export const trackUserRegistered = session => {
-  const email = session.email;
-  return {
-    eventType: EventTypes.track,
-    eventPayload: {
-      event: `User Registered${commonSuffix}`,
-      properties: { email },
-    },
-  };
+const identify = (...args) => {
+  if (!shouldTrack) {
+    return;
+  }
+  return window.analytics.identify(...args);
 };
 
-export const trackServiceCreated = service => {
-  return {
-    eventType: EventTypes.track,
-    eventPayload: {
-      event: `Service Created${commonSuffix}`,
-      properties: { serviceId: service.id },
-    },
-  };
+const reset = (...args) => {
+  if (!shouldTrack) {
+    return;
+  }
+  return window.analytics.reset(...args);
 };
 
-export const trackTripCreated = trip => {
-  return {
-    eventType: EventTypes.track,
-    eventPayload: {
-      event: `Trip Created${commonSuffix}`,
-      properties: { tripId: trip.id || trip.objectId },
-    },
-  };
+const page = url => {
+  if (!shouldTrack) {
+    return;
+  }
+  return window.analytics.page(url);
 };
 
-export const trackTripCloned = ({ originalTripId, newTripId }) => {
-  if (originalTripId === newTripId) return undefined;
-  return {
-    eventType: EventTypes.track,
-    eventPayload: {
-      event: `Trip Cloned'${commonSuffix}`,
-      properties: { originalTripId, newTripId },
+export default {
+  page,
+  planning: {
+    brief: {
+      start: () => track('planning_brief_start'),
+      complete: () => track('planning_brief_complete'),
     },
-  };
-};
-
-export const trackTripBooked = tripId => {
-  return {
-    eventType: EventTypes.track,
-    eventPayload: {
-      event: `Trip Booked${commonSuffix}`,
-      properties: { tripId },
+    /*checkout: {
+      start: planningCheckoutStart,
+      complete: planningCheckoutComplete,
+    },*/
+  },
+  trip: {
+    create: () => track('trip_create'),
+    customize: () => track('trip_customize'),
+    publish: () => track('trip_publish'),
+    book: () => track('trip_book'),
+    checkout: {
+      start: () => track('trip_checkout_start'),
+      complete: () => track('trip_checkout_complete'),
     },
-  };
-};
-
-export const trackMetamaskConnected = () => {
-  return {
-    eventType: EventTypes.track,
-    eventPayload: {
-      event: `Metamask Connected${commonSuffix}`,
+  },
+  user: {
+    login: session => {
+      identify(session._id, {
+        email: session.email,
+      });
+      track('user_login');
     },
-  };
-};
-
-export const trackLedgerConnected = () => {
-  return {
-    eventType: EventTypes.track,
-    eventPayload: {
-      event: `Ledger Connected${commonSuffix}`,
+    new: session => {
+      identify(session._id, {
+        email: session.email,
+      });
+      track('user_new');
     },
-  };
-};
-
-export const trackHeaderClick = category => {
-  return {
-    eventType: EventTypes.track,
-    eventPayload: {
-      event: `Header Button Clicked${commonSuffix}`,
-      properties: {
-        category,
-      },
-    },
-  };
+    logout: reset,
+  },
 };

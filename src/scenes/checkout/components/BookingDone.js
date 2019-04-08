@@ -14,7 +14,7 @@ const Wrapper = styled.div`
 
 const Title = styled.div`
   font-size: 24px;
-  color: #38d39f;
+  color: #097da8;
   font-weight: bold;
   margin-top: 25px;
 `;
@@ -41,7 +41,7 @@ const IconWrapper = styled.div`
   margin: auto;
   width: 85px;
   height: 85px;
-  background-color: #38d39f;
+  background-color: #097da8;
   color: white;
   border-radius: 50px;
   padding-top: 1px;

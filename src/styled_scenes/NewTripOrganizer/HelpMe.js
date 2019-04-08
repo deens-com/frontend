@@ -5,13 +5,13 @@ import { paramsSerializer } from 'libs/apiClient';
 import axios from 'libs/axios';
 import { Loader } from 'semantic-ui-react';
 import { H2, H5, PSmall } from 'libs/commonStyles';
-import { primary, darkText, disabled } from 'libs/colors';
+import { primary, textDark, disabled } from 'libs/colors';
 import ImgurAvatar from 'assets/no-avatar.png';
 import Rating from 'shared_components/Rating';
 import Input from 'shared_components/StyledInput';
 import { TripContext } from './';
 import Button from 'shared_components/Button';
-import { setNestedObjectValues } from 'formik';
+import analytics from 'libs/analytics';
 
 const textPlaceholder =
   'Describe what you are looking for in your ideal trip, where and when you would like to go, how many people would be traveling with you, etc.';
@@ -39,7 +39,7 @@ const UserContent = styled.div`
 
 const UserBio = styled(PSmall)`
   margin-top: 11px;
-  color: ${darkText};
+  color: ${textDark};
 `;
 
 const Form = styled.form``;
@@ -72,7 +72,7 @@ const TextArea = styled.textarea`
   border: 1px solid #ebebeb;
   &:focus {
     outline: none;
-    border-color: #38d39f;
+    border-color: #097da8;
   }
   &::placeholder {
     color: ${disabled};
@@ -111,6 +111,7 @@ const HelpMe = ({ tripParent, isLoadingUser, user }) => {
       tripId,
     };
     axios.get(url, { params: data, paramsSerializer });
+    analytics.planning.brief.complete();
     setAsked(true);
   };
 

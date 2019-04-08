@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
-import { lightText, primary, primaryContrast } from 'libs/colors';
+import { textLight, primary, primaryHover } from 'libs/colors';
 
 // COMPONENTS
 import { ArrowIcon } from '../icons';
@@ -32,8 +32,8 @@ const size = {
 };
 
 const colors = {
-  green: '#4FB798',
-  lightGreen: '#38D39F',
+  green: '#65AFBB',
+  lightGreen: '#097DA8',
   lighterGreen: '#B9FFE7',
   greenActive: '#4ac4a1',
   white: '#fff',
@@ -43,21 +43,21 @@ const colors = {
 };
 
 export const theme = {
-  primaryContrastFilled: {
-    background: primaryContrast,
+  primaryHoverFilled: {
+    background: primaryHover,
     backgroundHover: primary,
-    border: primaryContrast,
+    border: primaryHover,
     borderHover: primary,
-    color: lightText,
-    colorHover: lightText,
+    color: textLight,
+    colorHover: textLight,
   },
   primaryFilled: {
     background: primary,
-    backgroundHover: primaryContrast,
+    backgroundHover: primaryHover,
     border: primary,
-    borderHover: primaryContrast,
-    color: lightText,
-    colorHover: lightText,
+    borderHover: primaryHover,
+    color: textLight,
+    colorHover: textLight,
   },
   white: {
     background: 'transparent',
@@ -352,7 +352,7 @@ Button.propTypes = {
 };
 
 Button.defaultProps = {
-  theme: 'primaryContrastFilled',
+  theme: 'primaryHoverFilled',
   type: 'button',
   round: false,
   size: 'small',

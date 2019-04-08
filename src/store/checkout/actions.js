@@ -1,6 +1,5 @@
 import axios from 'libs/axios';
 import fetch_helpers from 'libs/fetch_helpers';
-import { trackTripBooked } from 'libs/analytics';
 
 export const types = {
   MARK_TRIP_BOOKED_STATUS: 'MARK_TRIP_BOOKED_STATUS',
@@ -43,7 +42,6 @@ export const chargeStripeToken = (token, guests, complete = () => {}) => async (
     dispatch({
       type: types.MARK_TRIP_BOOKED_STATUS,
       payload: statuses.SUCCESS,
-      meta: { analytics: trackTripBooked(tripId) },
     });
   } catch (error) {
     console.error('charge failed', error.response ? error.response.data : error);
@@ -72,7 +70,6 @@ export const payWithPls = (guests, tripId) => {
       dispatch({
         type: types.MARK_TRIP_BOOKED_STATUS,
         payload: statuses.SUCCESS,
-        meta: { analytics: trackTripBooked(tripId) },
       });
       return 'success';
     } catch (error) {

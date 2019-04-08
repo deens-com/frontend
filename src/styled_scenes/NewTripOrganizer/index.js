@@ -13,6 +13,7 @@ import { mapServicesByDay, mapDaysToServices } from '../Trip/mapServicesToDays';
 import Options from './Options';
 import I18nText from 'shared_components/I18nText';
 import { addServiceRequest } from 'libs/trips';
+import analytics from 'libs/analytics';
 
 function addLang(text) {
   return {
@@ -126,6 +127,7 @@ export default class TripOrganizer extends React.Component {
   };
 
   componentDidMount() {
+    this._isMounted = true;
     if (!this.props.trip.startDate || !this.props.adultCount) {
       this.saveTrip({
         adultCount: this.state.tripData.adultCount,
@@ -136,6 +138,10 @@ export default class TripOrganizer extends React.Component {
     }
     this.checkAvailability();
     this.getTransportation();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   // GENERAL ACTIONS
@@ -263,6 +269,7 @@ export default class TripOrganizer extends React.Component {
   };
 
   book = () => {
+    analytics.trip.book();
     history.push(`/trips/checkout/${this.props.tripId}`);
   };
 
@@ -330,9 +337,8 @@ export default class TripOrganizer extends React.Component {
         address,
         latitude: coord && coord.lat,
         longitude: coord && coord.lng,
-        start_date: moment(tripData.startDate).valueOf(),
-        end_date: moment(tripData.startDate)
-          .add(minutesToDays(tripData.duration), 'days')
+        start_date: moment(tripData.startDate)
+          .add(day - 1, 'days')
           .valueOf(),
       },
       history,
@@ -491,7 +497,7 @@ export default class TripOrganizer extends React.Component {
           services,
           tripData: {
             ...prevState.tripData,
-            duration,
+            duration: duration >= 1 ? duration : 60 * 24,
           },
         };
       },
@@ -549,7 +555,12 @@ export default class TripOrganizer extends React.Component {
   };
 
   waitAndRemoveService = id => {
-    setTimeout(() => {
+    setTimeout(async () => {
+      if (!this._isMounted) {
+        // this is not the best solution but it's quick and works properly
+        await this.saveRemovedServices([id]);
+        return;
+      }
       this.setState(
         prevState => {
           if (!prevState.lastRemovedService) {

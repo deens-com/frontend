@@ -23,7 +23,7 @@ const Buttons = styled.div`
 `;
 
 const CancelButton = styled.div`
-  color: #38d39f;
+  color: #097da8;
   font-size: 14px;
   margin-left: 15px;
   cursor: pointer;

@@ -74,7 +74,7 @@ const Field = styled.div`
 
 const DropdownField = styled(Field)`
   > div {
-    color: #38d39f !important;
+    color: #097da8 !important;
   }
 `;
 
@@ -87,7 +87,7 @@ const FakeDropdown = styled.div`
 const Date = styled.div`
   input {
     font-weight: bold;
-    color: #38d39f;
+    color: #097da8;
     border: 1px solid #eaeaea;
     background-color: #f8f8f8;
     padding: 0;

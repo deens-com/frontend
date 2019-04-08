@@ -11,7 +11,7 @@ import DeleteButton from 'react-fine-uploader/delete-button';
 import Thumbnail from 'react-fine-uploader/thumbnail';
 import FileInput from 'react-fine-uploader/file-input';
 import { serverBaseURL } from 'libs/config';
-import { getImageUrlFromMedia } from 'libs/media'
+import { getImageUrlFromMedia } from 'libs/media';
 import Button from 'shared_components/Button';
 
 const allowedExtensions = ['jpeg', 'jpg', 'gif', 'png'];
@@ -68,7 +68,7 @@ const SizeWrapper = styled.div`
 const SelectHeroButton = styled.div``;
 
 const HeroFill = styled.div`
-  color: ${props => (props.hero ? '#38D39F' : '#C4C4C4')};
+  color: ${props => (props.hero ? '#097DA8' : '#C4C4C4')};
   position: absolute;
   top: 8px;
   left: 8px;
@@ -78,7 +78,7 @@ const HeroFill = styled.div`
 
 const HeroBorder = styled.div`
   cursor: pointer;
-  color: #38d39f;
+  color: #097da8;
   top: 6px;
   left: 6px;
   position: absolute;

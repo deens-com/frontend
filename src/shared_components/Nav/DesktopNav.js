@@ -14,7 +14,7 @@ import I18nText from 'shared_components/I18nText';
 
 // ACTIONS/CONFIG
 import { sizes } from '../../libs/styled';
-import { lightText, primary, secondary } from 'libs/colors';
+import * as colors from 'libs/colors';
 import { PStrong } from 'libs/commonStyles';
 import { icoReady } from 'libs/config';
 
@@ -59,7 +59,7 @@ const navItemStyle = `
   }
 
   &:after {
-    background: #4fb798;
+    background: #65AFBB;
     bottom: 0;
     content: '';
     display: block;
@@ -74,7 +74,7 @@ const navItemStyle = `
 
   &.is-active,
   &:hover {
-    color: #4fb798;
+    color: ${colors.primaryHover};
 
     &:after {
       opacity: 1;
@@ -85,13 +85,13 @@ const navItemStyle = `
 
 const Divider = styled.span`
   font-size: 18px;
-  color: ${props => (props.isBackgroundWhite ? secondary : lightText)};
+  color: ${colors.secondary};
 `;
 
 const NavLink = styled(Link)`
   ${navItemStyle} margin: 0 8px;
   ${navItemStyle} p {
-    color: ${primary};
+    color: ${colors.primary};
   }
 `;
 

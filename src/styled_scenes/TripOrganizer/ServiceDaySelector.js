@@ -10,7 +10,7 @@ const DayListItem = styled.li`
   cursor: pointer;
 
   &:hover {
-    color: #38d39f;
+    color: #097da8;
   }
 
   > div {
