@@ -22,7 +22,7 @@ class TripCreatorContainer extends Component {
       this.creatingTrip = true;
       axios
         .post(`/trips`, {
-          basePrice: 0,
+          totalPrice: 0,
           duration: 1,
           media: [],
           services: [],

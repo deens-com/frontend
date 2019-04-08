@@ -56,7 +56,7 @@ const ServiceInformation = ({ service }) => {
         <Row>
           <td>Price Per Session</td>
           <td>
-            <PriceTag price={service.pricePerSession} />
+            <PriceTag price={service.basePrice} />
           </td>
         </Row>
         <Row>

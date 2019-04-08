@@ -19,7 +19,7 @@ import CityCountry from 'shared_components/CityCountry';
 import { Cart } from './styles';
 import { cardConfig } from 'libs/config';
 import { generateServiceSlug } from 'libs/Utils';
-import { getImageUrlFromMedia } from 'libs/media'
+import { getImageUrlFromMedia } from 'libs/media';
 import NewPriceTag from 'shared_components/Currency/NewPriceTag';
 
 const ContentWrap = styled.div`
@@ -138,7 +138,7 @@ class ServiceLocationCard extends React.PureComponent {
                   count={item.ratings.count}
                 />
                 <Label>Starting from</Label>
-                <NewPriceTag basePrice={item.basePrice} baseCurrency={item.baseCurrency} />
+                <NewPriceTag basePrice={item.totalPrice} baseCurrency={item.baseCurrency} />
               </div>,
             )}
           </ContentWrap>

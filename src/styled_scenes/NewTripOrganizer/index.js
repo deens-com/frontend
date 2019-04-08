@@ -34,7 +34,7 @@ function createStateBasedOnTrip(props) {
       adultCount: props.trip.adultCount || props.adults || 1,
       childrenCount: props.trip.childrenCount || props.children || 0,
       infantCount: props.trip.infantCount || props.infants || 0,
-      basePrice: props.trip.basePrice || 0,
+      totalPrice: props.trip.totalPrice || 0,
       userStartLocation: props.trip.userStartLocation || null,
       userEndLocation: props.trip.userEndLocation || null,
     },
@@ -177,11 +177,11 @@ export default class TripOrganizer extends React.Component {
     }));
   };
 
-  removeIsLoadingPrice = basePrice => {
+  removeIsLoadingPrice = totalPrice => {
     this.setState(prevState => ({
       tripData: {
         ...prevState.tripData,
-        basePrice,
+        totalPrice,
       },
       isLoadingPrice: prevState.isLoadingPrice - 1,
     }));
@@ -193,7 +193,7 @@ export default class TripOrganizer extends React.Component {
 
     const trip = (await apiClient.trips.patch(this.props.trip._id, dataToSave)).data;
 
-    this.removeIsLoadingPrice(trip.basePrice);
+    this.removeIsLoadingPrice(trip.totalPrice);
     this.removeIsSaving();
   };
 
@@ -210,7 +210,7 @@ export default class TripOrganizer extends React.Component {
       dataToSave,
     )).data;
 
-    this.removeIsLoadingPrice(trip.basePrice);
+    this.removeIsLoadingPrice(trip.totalPrice);
     this.removeIsSaving();
     this.checkAvailability();
     this.getTransportation();
@@ -229,7 +229,7 @@ export default class TripOrganizer extends React.Component {
       serviceOrgIds,
     )).data;
 
-    this.removeIsLoadingPrice(trip.basePrice);
+    this.removeIsLoadingPrice(trip.totalPrice);
     this.removeIsSaving();
     this.getTransportation();
   };
@@ -243,7 +243,7 @@ export default class TripOrganizer extends React.Component {
       [{ serviceOrgId, availabilityCode }],
     )).data;
 
-    this.removeIsLoadingPrice(trip.basePrice);
+    this.removeIsLoadingPrice(trip.totalPrice);
     this.removeIsSaving();
 
     return trip;
@@ -990,7 +990,7 @@ export default class TripOrganizer extends React.Component {
           showingMap={this.state.showingMap}
         />
         <Footer
-          price={tripData.basePrice.toFixed(2)}
+          price={tripData.totalPrice.toFixed(2)}
           isLoadingPrice={Boolean(this.state.isLoadingPrice)}
           book={this.book}
           share={this.share}

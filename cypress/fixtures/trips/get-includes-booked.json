@@ -298,7 +298,7 @@
         "source": "5bb5f757b09a8472cf928c6d",
         "owner": "5bb5f757411b29f575bf51e5",
         "externalId": "1e49d1",
-        "basePrice": 98.6,
+        "totalPrice": 98.6,
         "baseCurrency": { "name": "US Dollar", "code": "USD", "symbol": "$" },
         "location": {
           "postcode": null,
@@ -1244,7 +1244,7 @@
         "source": "5bb5f757b09a8472cf928c6d",
         "owner": "5bb5f757411b29f575bf51e5",
         "externalId": "1364fc",
-        "basePrice": 64.23,
+        "totalPrice": 64.23,
         "baseCurrency": { "name": "US Dollar", "code": "USD", "symbol": "$" },
         "location": {
           "postcode": "97302",
@@ -1398,7 +1398,7 @@
     },
     "id": null
   },
-  "basePrice": 164.73,
+  "totalPrice": 164.73,
   "owner": "555",
   "parents": [],
   "createdAt": "2019-02-04T20:50:57.098Z",
