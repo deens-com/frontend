@@ -86,7 +86,7 @@
     "web3-provider-engine": "14.0.4"
   },
   "scripts": {
-    "start": "react-app-rewired start",
+    "start": "cross-env HTTPS=true react-app-rewired start",
     "now-start": "serve ./build --single",
     "build": "NODE_ENV=production react-app-rewired build",
     "now-build": "NODE_ENV=staging react-app-rewired build",
@@ -104,6 +104,7 @@
   },
   "devDependencies": {
     "@babel/polyfill": "^7.2.5",
+    "cross-env": "^5.2.0",
     "cypress": "^3.1.5",
     "duplicate-package-checker-webpack-plugin": "3.0.0",
     "enzyme": "^3.3.0",
