@@ -149,7 +149,7 @@ const EarnMoney = ({ loggedIn, userProfile, changeHeader }) => {
           <HeaderText>
             <Title>Earn Money</Title>
             <Subtitle>
-              Make money through your network, by refer a friend or propose your trip planning services
+              Make money through your network, by referring a friend or proposing your trip planning services
             </Subtitle>
           </HeaderText>
         </PageTop>
