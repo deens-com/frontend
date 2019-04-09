@@ -149,7 +149,7 @@ const EarnMoney = ({ loggedIn, userProfile, changeHeader }) => {
           <HeaderText>
             <Title>Earn Money</Title>
             <Subtitle>
-              Make money through your network, refer a friend, share a trip or add a service
+              Make money through your network, by refer a friend or propose your trip planning services
             </Subtitle>
           </HeaderText>
         </PageTop>
@@ -157,14 +157,9 @@ const EarnMoney = ({ loggedIn, userProfile, changeHeader }) => {
           <InfoBlock>
             <InfoImage img={friendsImg} />
             <InfoContent>
-              <InfoTitle>Get up to $29 for every friend you invite.</InfoTitle>
+              <InfoTitle>Get up to $30 for every trip planner you invite.</InfoTitle>
               <InfoDesc>
-                We're serious about keeping you connected with friends and family. Invite your
-                friends to Deens via email, or share your referral code on Facebook or Twitter.
-                <br />
-                When you send a friend $33 in Deens credit, you’ll get $17 when they travel. Your
-                available travel credit automatically appears on the checkout page in the form of a
-                coupon.
+                Your account will be credited once your friend has processed at least 200 USD of trip planning orders.
               </InfoDesc>
               <CallToAction
                 loggedIn={loggedIn}
@@ -177,19 +172,16 @@ const EarnMoney = ({ loggedIn, userProfile, changeHeader }) => {
           </InfoBlock>
           <InfoBlock>
             <InfoContent>
-              <InfoTitle>Earn Money by Sharing any Trip</InfoTitle>
+              <InfoTitle>Earn $20 by refering a traveler</InfoTitle>
               <InfoDesc>
-                Earn $0.01 every time your sharing link is clicked. Up to $1 per day.
-                <br />
-                Earn $1 every time any one register via your sharing link, up to $9 per day.
-                <br />
-                Share Now.
+                Your account will be credited once your friend buys a custom trip planning service worth at least 100 USD
               </InfoDesc>
               <CallToAction
                 loggedIn={loggedIn}
-                text="Share a trip"
-                url="/results?serviceTypes=trip"
-                loggedOutText="Log In to Share Trip"
+                text="Refer a friend"
+                url="/"
+                loggedOutText="Log In to Invite Friends"
+                loggedInElement={<ReferAFriend userProfile={userProfile} />}
               />
             </InfoContent>
             <InfoImage img={shareImg} />
@@ -197,16 +189,16 @@ const EarnMoney = ({ loggedIn, userProfile, changeHeader }) => {
           <InfoBlock>
             <InfoImage img={hostImg} />
             <InfoContent>
-              <InfoTitle>Become a Deens host, by adding services</InfoTitle>
+              <InfoTitle>Earn $5 when you refer a friend who creates a trip</InfoTitle>
               <InfoDesc>
-                Share your home or add your tour on Deens to build up your savings, fund your next
-                trip, or simply meet interesting travelers.
+                Your account will be credited once your friend creates a trip that passes moderation and receives at least 5 hearts. 
               </InfoDesc>
               <CallToAction
                 loggedIn={loggedIn}
-                text="Add a service"
-                url="/services/new"
-                loggedOutText="Log In to Add Services"
+                text="Refer a friend"
+                url="/"
+                loggedOutText="Log In to Invite Friends"
+                loggedInElement={<ReferAFriend userProfile={userProfile} />}
               />
             </InfoContent>
           </InfoBlock>
