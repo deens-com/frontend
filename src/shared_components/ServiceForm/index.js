@@ -162,7 +162,7 @@ class ServiceForm extends Component {
   };
 
   onLocationSelect = (address, placeId) => {
-    const { setFieldValue, setFieldTouched } = this.props;
+    const { setFieldValue, setFieldTouched, setFieldError } = this.props;
     setFieldTouched('latlong', true, false);
     geocodeByPlaceId(placeId)
       .then(results => {
@@ -172,7 +172,10 @@ class ServiceForm extends Component {
         setFieldValue('formattedAddress', currentResult.formatted_address);
 
         const { country, countryCode, city, postalCode, state } = parseLocationData(currentResult);
-
+        if (!city) {
+          setFieldError('latlong', 'The location needs to be more specific');
+          return;
+        }
         setFieldValue('country', country);
         setFieldValue('countryCode', countryCode);
         setFieldValue('city', city);

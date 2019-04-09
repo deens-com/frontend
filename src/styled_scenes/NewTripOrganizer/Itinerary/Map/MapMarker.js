@@ -129,11 +129,11 @@ const selectIconAndColorFromType = type => {
 
 const getText = (type, service) => {
   if (type === 'initial') {
-    return 'Your initial location';
+    return 'Start of the trip';
   }
 
   if (type === 'finish') {
-    return 'Your finish location';
+    return 'End of the trip';
   }
   return I18nText.translate(service.service.title);
 };
