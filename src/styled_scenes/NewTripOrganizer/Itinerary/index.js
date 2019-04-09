@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { minutesToDays } from 'libs/Utils';
@@ -9,11 +9,11 @@ import arrayMove from 'array-move';
 import Map from './Map';
 import EmptyDay from './Day/EmptyDay';
 
-export function generateDaysArray(numberOfDays) {
+export function generateDaysArray(numberOfDays, prevDays = []) {
   const days = [];
 
   for (let i = 0; i < numberOfDays; i++) {
-    days.push(ObjectID().str);
+    days.push(prevDays[i] || ObjectID().str);
   }
   return days;
 }
@@ -50,9 +50,14 @@ const Itinerary = ({
   const [days, setDays] = useState(generateDaysArray(numberOfDays));
   const [dragging, setDragging] = useState(null);
 
-  if (numberOfDays !== days.length) {
-    setDays(generateDaysArray(numberOfDays));
-  }
+  useEffect(
+    () => {
+      if (numberOfDays !== days.length) {
+        setDays(generateDaysArray(numberOfDays, days));
+      }
+    },
+    [duration],
+  );
 
   const startDragging = useCallback((day, id, position) => {
     setDragging({ id, position, day });
