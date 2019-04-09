@@ -31,6 +31,7 @@ module.exports = function override(config, env) {
     config = rewireWebpackBundleAnalyzer(config, env, {
       analyzerMode: 'static',
       reportFilename: 'report.html',
+      openAnalyzer: false,
     });
 
     config.plugins.push(

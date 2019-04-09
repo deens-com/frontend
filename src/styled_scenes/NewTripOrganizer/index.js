@@ -598,7 +598,7 @@ export default class TripOrganizer extends React.Component {
     this.setState(
       prevState => {
         const duration = prevState.tripData.duration + 60 * 24;
-        let services;
+        let services = prevState.services;
 
         if (afterDay) {
           services = mapServicesByDay(
@@ -623,7 +623,9 @@ export default class TripOrganizer extends React.Component {
         };
       },
       () => {
-        this.saveRearrangeServices();
+        if (afterDay) {
+          this.saveRearrangeServices();
+        }
         this.saveTrip({
           duration: this.state.tripData.duration,
         });

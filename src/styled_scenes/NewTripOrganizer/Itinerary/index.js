@@ -7,6 +7,7 @@ import ObjectID from 'bson-objectid';
 import { itineraryDroppablePrefix, types } from '../constants';
 import arrayMove from 'array-move';
 import Map from './Map';
+import EmptyDay from './Day/EmptyDay';
 
 export function generateDaysArray(numberOfDays) {
   const days = [];
@@ -99,6 +100,7 @@ const Itinerary = ({
             isLastDay={index + 1 === days.length}
           />
         ))}
+        <EmptyDay addNewDay={addNewDay} day={days.length + 1} tripStartDate={tripStartDate} />
       </Days>
     </Wrapper>
   );
