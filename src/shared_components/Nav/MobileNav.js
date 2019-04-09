@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { sizes } from '../../libs/styled';
 import { mainNav } from '../../data/nav';
 import Button from '../Button';
-import { Briefcase, Folder, AccountCircle, Settings } from '../icons';
+import { Briefcase, AccountCircle, Settings } from '../icons';
 import { bindActionCreators } from 'redux';
 import { logOut } from 'store/session/actions';
 import { icoReady } from 'libs/config';
@@ -168,6 +168,10 @@ class MobileNav extends Component {
     this.props.toggleMenu();
   };
 
+  onOptionClick = () => {
+    this.props.toggleMenu();
+  };
+
   renderSessionButtons() {
     if (this.props.session.username) {
       return (
@@ -178,10 +182,16 @@ class MobileNav extends Component {
     }
     return (
       <React.Fragment>
-        <Button type="link" href="/register" size="medium">
+        <Button type="link" onClick={this.onOptionClick} href="/register" size="medium">
           Sign up
         </Button>
-        <Button type="link" href="/login" theme="textLightGreen" size="medium">
+        <Button
+          type="link"
+          onClick={this.onOptionClick}
+          href="/login"
+          theme="textLightGreen"
+          size="medium"
+        >
           Login
         </Button>
       </React.Fragment>
@@ -195,7 +205,7 @@ class MobileNav extends Component {
     return (
       <React.Fragment>
         <LoggedInItem>
-          <NavLink to="/account/trips/all">
+          <NavLink onClick={this.onOptionClick} to="/account/trips/all">
             <Briefcase />
             My Trips
           </NavLink>
@@ -209,17 +219,17 @@ class MobileNav extends Component {
         </LoggedInItem>
         */}
         <LoggedInItem>
-          <NavLink to="/account/profile">
+          <NavLink onClick={this.onOptionClick} to="/account/profile">
             <AccountCircle />
             Profile
           </NavLink>
         </LoggedInItem>
-        <LoggedInItem>
-          <NavLink to="/account/settings">
+        {/*<LoggedInItem>
+          <NavLink onClick={this.onOptionClick} to="/account/settings">
             <Settings />
             Settings
           </NavLink>
-        </LoggedInItem>
+        </LoggedInItem>*/}
         <Divider />
       </React.Fragment>
     );
@@ -242,22 +252,23 @@ class MobileNav extends Component {
                 <li aria-hidden="false">
                   <NavLinkTitle>Token Sale</NavLinkTitle>
                   <NavAnchor href="https://protocol.deens.com">Information</NavAnchor>
-                  <NavLink to="/token-sale">Contribute</NavLink>
+                  <NavLink onClick={this.onOptionClick} to="/token-sale">
+                    Contribute
+                  </NavLink>
                 </li>
               )}
               {this.renderLoggedInMenu()}
               <li aria-hidden="false">
-                <NavLink to="/">Home</NavLink>
-              </li>
-              <li aria-hidden="false">
-                <NavLink to="/">Earn Money</NavLink>
+                <NavLink onClick={this.onOptionClick} to="/">
+                  Earn Money
+                </NavLink>
               </li>
               <li aria-hidden="true">
                 <Divider />
               </li>
               {mainNav.map(item => (
                 <li aria-hidden="false" key={item.label} onClick={this.props.toggleMenu}>
-                  <NavLink activeclassname="is-active" to={item.href}>
+                  <NavLink onClick={this.onOptionClick} activeclassname="is-active" to={item.href}>
                     {item.label}
                   </NavLink>
                 </li>

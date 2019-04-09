@@ -68,7 +68,7 @@ class MobileDropDownMenu extends Component {
           {this.props.isMenuOpen ? (
             <CrossIcon style={{ height: '20px', width: '20px', color: '097DA8' }} />
           ) : (
-            <Menu style={{ height: '30px', width: '30px' }} />
+            <Menu style={{ color: '097DA8', height: '30px', width: '30px' }} />
           )}
           {this.props.session.username && !this.props.isMenuOpen && <Image src={dpUrl} circular />}
         </AvatarWithUsername>

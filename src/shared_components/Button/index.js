@@ -289,6 +289,7 @@ export default class Button extends Component {
         target: this.props.target,
         children: this.props.children,
         rel: this.props.noReferrer && 'noopener noreferrer',
+        onClick: this.props.onClick,
       };
       El = _ => (this.props.external ? <a {...props} /> : <Link {...props} />);
     } else {

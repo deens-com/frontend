@@ -118,7 +118,7 @@ class TripSectionComponent extends React.PureComponent {
             this.props.totalTrips === null || this.props.totalTrips > this.props.trips.length
           }
           loader={
-            <LoaderWrapper>
+            <LoaderWrapper key="loader">
               <Loader active inline="centered" size="big">
                 Loading
               </Loader>
