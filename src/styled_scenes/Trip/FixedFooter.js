@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { media } from 'libs/styled';
 import Button from 'shared_components/Button';
+import HelpMe from 'shared_components/HelpMe';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -43,7 +44,17 @@ const Sentence = styled.span`
   }
 `;
 
-const FixedFooter = ({ booked, price, peopleNumber, onCustomizeClick, bottom }) => {
+const FixedFooter = ({
+  trip,
+  owner,
+  session,
+  booked,
+  price,
+  peopleNumber,
+  onCustomizeClick,
+  bottom,
+}) => {
+  console.log(trip);
   return (
     <Wrapper bottom={bottom}>
       <Text>
@@ -52,7 +63,13 @@ const FixedFooter = ({ booked, price, peopleNumber, onCustomizeClick, bottom }) 
         </Sentence>{' '}
         ${price}
       </Text>
-      <div id="customizeButton">
+      <HelpMe
+        tripParent={trip.parents[0] && trip.parents[0].serviceGroup}
+        user={owner}
+        isLoadingUser={false}
+        session={session}
+      />
+      <div style={{ marginLeft: '15px' }} id="customizeButton">
         <Button theme="fillLightGreen" size="medium" onClick={onCustomizeClick}>
           {booked ? 'Copy this trip' : 'Customize this trip'}
         </Button>

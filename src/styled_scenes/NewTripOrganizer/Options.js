@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import moment from 'moment';
-import { Popup, Modal } from 'semantic-ui-react';
+import { Popup } from 'semantic-ui-react';
 import DateSelector from './DateSelector';
-import HelpMe from './HelpMe';
+import HelpMe from 'shared_components/HelpMe';
 import { minutesToDays } from 'libs/Utils';
 import SelectGuests from 'shared_components/SelectGuests';
 import { DropArrow } from 'shared_components/icons';
 import { PStrong, PSmall } from 'libs/commonStyles';
 import { textDark } from 'libs/colors';
 import Toggle from 'shared_components/ToggleSwitch';
-import Button from 'shared_components/Button';
 import apiClient from 'libs/apiClient';
 import analytics from 'libs/analytics';
 import { media } from 'libs/styled';
+import { TripContext } from './index';
 
 const Wrapper = styled.div`
   display: flex;
@@ -122,6 +122,7 @@ const Options = ({
 }) => {
   const [isLoadingUser, setLoadingUser] = useState(true);
   const [user, setUser] = useState(null);
+  const { session, tripId } = useContext(TripContext);
 
   useEffect(() => {
     async function getParentOwner() {
@@ -188,20 +189,12 @@ const Options = ({
         </DatePicker>
       </LeftSide>
       <RightSide>
-        <Modal
-          style={{ maxWidth: '750px' }}
-          trigger={
-            <Button onClick={analytics.planning.brief.start} theme="fillLightGreen">
-              Help me!
-            </Button>
-          }
-          content={
-            <HelpMe
-              tripParent={tripParents[0] && tripParents[0].serviceGroup}
-              isLoadingUser={isLoadingUser}
-              user={user}
-            />
-          }
+        <HelpMe
+          tripParent={tripParents[0] && tripParents[0].serviceGroup}
+          isLoadingUser={isLoadingUser}
+          user={user}
+          tripId={tripId}
+          session={session}
         />
         <Toggle onSwitch={changeShowTransport}>
           <PSmall>Add Transports</PSmall>
