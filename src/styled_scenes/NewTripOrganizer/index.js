@@ -42,7 +42,7 @@ function createStateBasedOnTrip(props) {
     // UI
     draggingDay: false,
     showingMap: false,
-    showingTransports: true,
+    showingTransports: false,
     // transportation methods
     fromService: {},
     toService: {},

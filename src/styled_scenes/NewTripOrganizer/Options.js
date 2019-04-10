@@ -203,7 +203,7 @@ const Options = ({
             />
           }
         />
-        <Toggle checkedByDefault onSwitch={changeShowTransport}>
+        <Toggle onSwitch={changeShowTransport}>
           <PSmall>Add Transports</PSmall>
         </Toggle>
         <Toggle onSwitch={changeShowMap}>
