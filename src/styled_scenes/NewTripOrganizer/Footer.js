@@ -9,6 +9,7 @@ import LoadingDots from 'shared_components/LoadingDots';
 import { UndoArrow } from 'shared_components/icons';
 import I18nText from 'shared_components/I18nText';
 import throttle from 'lodash.throttle';
+import { media } from 'libs/styled';
 
 const bottomOffset = 245;
 
@@ -26,11 +27,21 @@ const Wrapper = styled.div`
   width: 100%;
   background-color: ${secondaryContrast};
   border-top: 1px solid ${secondary};
-  padding: 25px 40px;
+  padding: 25px 10px;
   display: flex;
   align-items: center;
   > *:not(:first-child) {
     margin-left: 20px;
+  }
+  ${media.minSmall} {
+    padding: 25px 40px;
+  }
+`;
+
+const TotalPriceText = styled(PSmall)`
+  display: none;
+  ${media.minSmall} {
+    display: inline-block;
   }
 `;
 
@@ -47,6 +58,10 @@ const Price = styled.div`
 
 const SaveText = styled(PStrong)`
   color: #c4c4c4;
+  display: none;
+  ${media.minSmall} {
+    display: inline-block;
+  }
 `;
 
 const CheckingAvailability = styled.div`
@@ -161,7 +176,7 @@ const Footer = ({
           ) : (
             <PStrong>${price}</PStrong>
           )}{' '}
-          <PSmall>Total price</PSmall>
+          <TotalPriceText>Total price</TotalPriceText>
         </Price>
         <Button
           id="bookButton"

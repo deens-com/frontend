@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import AddButton from '../../AddButton';
 import AddCustomServiceModal from './AddCustomServiceModal';
 import AddLink from './AddLink';
+import { media } from 'libs/styled';
 
 import { primary, disabled, activity, accommodation, food, tertiary } from 'libs/colors';
 
@@ -27,6 +28,10 @@ const Box = styled.div`
     opacity: 1;
   }
   transition: opacity 0.2s ease;
+  margin-right: 30px;
+  ${media.minSmall} {
+    margin-right: 0;
+  }
 `;
 
 const Options = styled.ul`

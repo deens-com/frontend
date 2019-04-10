@@ -10,7 +10,8 @@ import throttle from 'lodash.throttle';
 import MapMarker from './MapMarker';
 import Filters from './Filters';
 import { generateDaysArray } from '../';
-import { getCenterAndZoom } from 'libs/location'
+import { getCenterAndZoom } from 'libs/location';
+import { media } from 'libs/styled';
 
 const topMargin = 0;
 const topOffset = 308; // when do we fix the map?
@@ -19,40 +20,50 @@ const bottomOffset = 245;
 
 const getMapSize = () => {
   const width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0) / 2;
-  const height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - (bottomMargin + topMargin);
-  return { width, height }
-}
+  const height =
+    Math.max(document.documentElement.clientHeight, window.innerHeight || 0) -
+    (bottomMargin + topMargin);
+  return { width, height };
+};
 
 const wrapperStyles = props => `
   display: ${props.display};
-  order: 1;
-  width: 50vw;
   height: calc(100vh - ${topMargin + bottomMargin}px);
   position: relative;
+  order: 1;
+  width: 50vw;
 `;
 
 const Wrapper = styled.div`
   ${wrapperStyles} z-index: 1;
+  order: 0;
+  width: 100vw;
+  ${media.minSmall} {
+    order: 1;
+    width: 50vw;
+    ${props =>
+      props.position === 'fixed' &&
+      `
+      position: fixed;
+      top: ${topMargin}px;
+      right: 0;
+    `};
 
-  ${props =>
-    props.position === 'fixed' &&
-    `
-    position: fixed;
-    top: ${topMargin}px;
-    right: 0;
-  `};
-
-  ${props =>
-    props.position === 'absolute' &&
-    `
-    position: absolute;
-    bottom: 0;
-    right: 0;
-  `};
+    ${props =>
+      props.position === 'absolute' &&
+      `
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    `};
+  }
 `;
 
 const WrapperPlaceholder = styled.div`
-  ${wrapperStyles};
+  display: none;
+  ${media.minSmall} {
+    ${wrapperStyles};
+  }
 `;
 
 function getMarkerProps(marker, i) {
@@ -134,8 +145,12 @@ const Map = ({ showingMap, servicesByDay, numberOfDays }) => {
 
   const [markers, setMarkers] = useState(getMarkers());
 
-  const [zoom, setZoom] = useState(getCenterAndZoom(markers, mapStartLocation, 4, getMapSize()).zoom);
-  const [center, setCenter] = useState(getCenterAndZoom(markers, mapStartLocation, 4, getMapSize()).center);
+  const [zoom, setZoom] = useState(
+    getCenterAndZoom(markers, mapStartLocation, 4, getMapSize()).zoom,
+  );
+  const [center, setCenter] = useState(
+    getCenterAndZoom(markers, mapStartLocation, 4, getMapSize()).center,
+  );
 
   const [filters, setFilters] = useState({
     accommodation: true,
@@ -149,10 +164,10 @@ const Map = ({ showingMap, servicesByDay, numberOfDays }) => {
       setFilters({
         ...filters,
         days: generateDaysArray(numberOfDays).map(_ => true),
-      })
+      });
     },
-    [numberOfDays]
-  )
+    [numberOfDays],
+  );
 
   useEffect(
     () => {
@@ -213,11 +228,11 @@ const Map = ({ showingMap, servicesByDay, numberOfDays }) => {
         const scrolled = window.scrollY;
         const viewportHeight = window.innerHeight;
 
-        const bottomDistance = bottomOffset + bottomMargin
+        const bottomDistance = bottomOffset + bottomMargin;
 
         if (scrolled + viewportHeight >= fullHeight - bottomDistance) {
           setPosition('absolute');
-          return
+          return;
         }
 
         if (position !== 'fixed') {

@@ -12,12 +12,16 @@ import Input from 'shared_components/StyledInput';
 import { TripContext } from './';
 import Button from 'shared_components/Button';
 import analytics from 'libs/analytics';
+import { media } from 'libs/styled';
 
 const textPlaceholder =
   'Describe what you are looking for in your ideal trip, where and when you would like to go, how many people would be traveling with you, etc.';
 
 const Wrapper = styled.div`
-  margin: 40px 130px;
+  margin: 40px 40px;
+  ${media.minMedium} {
+    margin: 40px 130px;
+  }
 `;
 
 const User = styled.div`
@@ -46,14 +50,19 @@ const Form = styled.form``;
 
 const FormLine = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   margin-bottom: 11px;
+  ${media.minSmall} {
+    flex-direction: row;
+  }
 `;
 
 const FormField = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
+  margin-bottom: 10px;
 `;
 
 const Label = styled.label`

@@ -8,6 +8,7 @@ import { itineraryDroppablePrefix, types } from '../constants';
 import arrayMove from 'array-move';
 import Map from './Map';
 import EmptyDay from './Day/EmptyDay';
+import { media } from 'libs/styled';
 
 export function generateDaysArray(numberOfDays, prevDays = []) {
   const days = [];
@@ -21,6 +22,10 @@ export function generateDaysArray(numberOfDays, prevDays = []) {
 const Wrapper = styled.div`
   display: flex;
   position: relative;
+  flex-direction: column;
+  ${media.minSmall} {
+    flex-direction: row;
+  }
 `;
 
 const Days = styled.div`

@@ -163,6 +163,11 @@ const SessionButtons = styled.li`
 
 // MODULE
 class MobileNav extends Component {
+  constructor(props) {
+    super(props);
+
+    this.wrapperRef = React.createRef();
+  }
   logout = () => {
     this.props.logOut();
     this.props.toggleMenu();
@@ -170,6 +175,20 @@ class MobileNav extends Component {
 
   onOptionClick = () => {
     this.props.toggleMenu();
+  };
+
+  componentDidMount() {
+    document.addEventListener('mousedown', this.handleClickOutside);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.handleClickOutside);
+  }
+
+  handleClickOutside = event => {
+    if (this.wrapperRef.current && !this.wrapperRef.current.contains(event.target)) {
+      this.props.toggleMenu();
+    }
   };
 
   renderSessionButtons() {
@@ -243,7 +262,7 @@ class MobileNav extends Component {
       <Media
         query={`(max-width: ${sizes.large})`}
         render={() => (
-          <Wrap>
+          <Wrap ref={this.wrapperRef}>
             <InnerList>
               <li aria-hidden="true">
                 <Divider />

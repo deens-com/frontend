@@ -13,6 +13,7 @@ import LocationEdit from './LocationEdit';
 import AddServiceBox from './AddServiceBox';
 import DayTitle from './DayTitle';
 import { TripContext } from '../..';
+import { media } from 'libs/styled';
 
 const DraggableDay = styled.div`
   background-color: white;
@@ -68,6 +69,7 @@ const Services = styled.div`
   width: 100%;
   flex-wrap: wrap;
   margin-top: -40px;
+  justify-content: center;
   > div > div {
     margin-right: 30px;
     margin-top: 40px;
@@ -83,6 +85,9 @@ const Services = styled.div`
         margin-right: 0;
       }
     }
+  }
+  ${media.minSmall} {
+    justify-content: flex-start;
   }
 `;
 

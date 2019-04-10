@@ -14,6 +14,7 @@ import Toggle from 'shared_components/ToggleSwitch';
 import Button from 'shared_components/Button';
 import apiClient from 'libs/apiClient';
 import analytics from 'libs/analytics';
+import { media } from 'libs/styled';
 
 const Wrapper = styled.div`
   display: flex;
@@ -21,6 +22,11 @@ const Wrapper = styled.div`
   background-color: white;
   z-index: 3;
   position: relative;
+  flex-direction: column;
+  align-items: center;
+  ${media.minMedium} {
+    flex-direction: row;
+  }
 `;
 
 const LeftSide = styled.div`
@@ -43,6 +49,10 @@ const RightSide = styled.div`
   justify-content: flex-end;
   display: flex;
   align-items: center;
+  margin-top: 15px;
+  ${media.minMedium} {
+    margin-top: 0;
+  }
   > * {
     margin-right: 10px;
   }
