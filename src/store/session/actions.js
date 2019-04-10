@@ -271,7 +271,7 @@ export const loginRequest = (email, password, { from, action }) => {
         },
         {
           headers: {
-            'X-Timezone-Offset': new Date().getTimezoneOffset(),
+            'X-Timezone': Intl.DateTimeFormat().resolvedOptions().timeZone,
           },
         },
       );
