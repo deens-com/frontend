@@ -114,7 +114,11 @@ class RegistrationsContainer extends Component {
         },
         {
           headers: {
-            'X-Timezone-Offset': new Date().getTimezoneOffset(),
+            'X-Timezone':
+              Intl &&
+              Intl.DateTimeFormat() &&
+              Intl.DateTimeFormat().resolvedOptions() &&
+              Intl.DateTimeFormat().resolvedOptions().timeZone,
           },
         },
       );
