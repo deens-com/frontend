@@ -20,12 +20,17 @@ if (isProd || isStaging) {
   if (environment !== 'localhost') {
     if (isProd) {
       environment = 'production';
+      Sentry.init({
+        dsn: 'https://f9fde204a5e449f19e907d9042dd04c8@sentry.io/1435541',
+        environment,
+      });
+    } else {
+      // staging
+      Sentry.init({
+        dsn: 'https://fd51482cf40f43fca379bc14417b6f2b@sentry.io/1220761',
+        environment,
+      });
     }
-
-    Sentry.init({
-      dsn: 'https://fd51482cf40f43fca379bc14417b6f2b@sentry.io/1220761',
-      environment,
-    });
   }
 }
 
