@@ -99,9 +99,10 @@ export const getFavoriteTrips = () => async (dispatch, getState) => {
 
   const savedFavoriteTrips = getFavoriteTripsLocally() || {};
   try {
-    const response = sessionData.username
-      ? (await apiClient.users.username.hearts.get({}, { username: sessionData.username })).data
-      : [];
+    const response = (await apiClient.users.username.hearts.get(
+      {},
+      { username: sessionData.username },
+    )).data;
     const trips = response.reduce(
       (obj, id) => ({
         ...obj,
@@ -120,14 +121,12 @@ export const getFavoriteTrips = () => async (dispatch, getState) => {
     if (sessionData.username) {
       clearLocalFavoriteTrips();
     }
-    return;
   } catch (e) {
-    console.log(e);
+    dispatch({
+      type: types.LOADED_FAVORITE_TRIPs,
+      payload: savedFavoriteTrips,
+    });
   }
-  dispatch({
-    type: types.LOADED_FAVORITE_TRIPs,
-    payload: savedFavoriteTrips,
-  });
 };
 
 export const getCurrentUser = fetchReferralInfo => async (dispatch, getState) => {
