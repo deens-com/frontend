@@ -152,8 +152,8 @@ export default class ResultsScene extends Component {
 
   componentWillReceiveProps(nextProps) {
     const hasLocationsChanged =
-      nextProps.service_data.map(item => item.name).join(',') ===
-      this.props.service_data.map(item => item.name).join(',');
+      nextProps.service_data.map(item => item._id).join(',') !==
+      this.props.service_data.map(item => item._id).join(',');
 
     if (hasLocationsChanged) {
       const newMarkers = this.getMarkerLatLngs(nextProps);
