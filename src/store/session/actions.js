@@ -271,7 +271,11 @@ export const loginRequest = (email, password, { from, action }) => {
         },
         {
           headers: {
-            'X-Timezone': Intl.DateTimeFormat().resolvedOptions().timeZone,
+            'X-Timezone':
+              Intl &&
+              Intl.DateTimeFormat() &&
+              Intl.DateTimeFormat().resolvedOptions() &&
+              Intl.DateTimeFormat().resolvedOptions().timeZone,
           },
         },
       );
