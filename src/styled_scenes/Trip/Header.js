@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Image } from 'semantic-ui-react';
 import { media } from 'libs/styled';
+import { Link } from 'react-router-dom';
 import I18nText from 'shared_components/I18nText';
 import ImgurAvatar from 'assets/no-avatar.png';
 import { getHeroImageUrlFromMedia } from 'libs/media';
@@ -65,10 +66,14 @@ const Header = ({ trip, owner, innerRef }) => {
       {owner && (
         <React.Fragment>
           <AvatarWrapper>
-            <Image src={owner.profilePicture || ImgurAvatar} circular width={45} height={45} />
+            <Link to={`/users/${owner.username}`}>
+              <Image src={owner.profilePicture || ImgurAvatar} circular width={45} height={45} />
+            </Link>
           </AvatarWrapper>
           <CreatedBy>Created by</CreatedBy>
-          <Username>{owner.username}</Username>
+          <Username>
+            <Link to={`/users/${owner.username}`}>{owner.username}</Link>
+          </Username>
         </React.Fragment>
       )}
     </Wrapper>
