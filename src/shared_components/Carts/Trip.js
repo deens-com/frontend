@@ -350,7 +350,7 @@ class TripCart extends Component {
       <>
         <FirstLine>
           <Price>
-            ${calculatePricePerDay(this.props.item.basePrice, this.props.item.duration)} per day
+            ${calculatePricePerDay(this.props.item.totalPrice, this.props.item.duration)} per day
           </Price>
           <Hearts>
             <Heart />

@@ -276,7 +276,6 @@
           },
           "id": null
         },
-        "pricePerSession": 98.6,
         "openingTime": "00",
         "closingTime": "23",
         "image": "/static/media/placeholder350x350.6c50ad62.svg",
@@ -1226,7 +1225,6 @@
           },
           "id": null
         },
-        "pricePerSession": 64.23,
         "openingTime": "00",
         "closingTime": "23",
         "image": "/static/media/placeholder350x350.6c50ad62.svg",
@@ -1324,7 +1322,6 @@
           },
           "id": null
         },
-        "pricePerSession": 111,
         "openingTime": "00",
         "closingTime": "23",
         "image": "/static/media/placeholder350x350.6c50ad62.svg",

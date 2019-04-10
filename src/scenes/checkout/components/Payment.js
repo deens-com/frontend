@@ -73,20 +73,20 @@ class Payment extends React.Component {
   render() {
     const { trip, error, getProvisionCodes } = this.props;
     if (!trip || !trip._id) return null;
-    const totalPrice = trip.basePrice * (trip.numberOfPerson || 1);
+    const pricePerPerson = trip.bookablePrice / (trip.numberOfPerson || 1);
     return (
       <PaymentContext.Provider
         value={{
           onSubmitWithCardDetails: this.onSubmitWithCardDetails,
-          totalPrice,
+          totalPrice: trip.bookablePrice,
           ...this.state,
         }}
       >
         <PaymentSection
           trip={trip}
           numberOfPerson={trip.adultCount + trip.childrenCount + trip.infantCount}
-          pricePerPerson={trip.basePrice}
-          totalPrice={totalPrice}
+          pricePerPerson={pricePerPerson}
+          totalPrice={trip.bookablePrice}
           onPaymentClick={() => {}}
           onStripeTokenReceived={this.onStripeTokenReceived}
           paymentError={this.props.paymentError || this.state.paymentError}
