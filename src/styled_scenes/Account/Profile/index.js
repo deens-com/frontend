@@ -90,7 +90,7 @@ class AccountProfileScene extends Component {
               </Message.Content>
             </Message>
           )}
-          <h2>Profile Scene</h2>
+          <h2>Profile</h2>
           {this.props.editUserError ? (
             <h6 style={{ color: 'red' }}>{this.props.editUserError.error}</h6>
           ) : null}
@@ -116,29 +116,6 @@ class AccountProfileScene extends Component {
               <Button onClick={() => this.toggleEdition('biography')}>Save</Button>
             ) : (
               <Icon onClick={() => this.toggleEdition('biography')} name="pencil" />
-            )}
-          </HorizontalSpan>
-          <HorizontalSpan>
-            <BoldH4>Username :</BoldH4>
-            {this.state.isUsernameEditable ? (
-              <Input
-                style={{ minWidth: '35em' }}
-                placeholder="Username"
-                name="username"
-                value={this.state.username}
-                onChange={this.handleInputChange}
-              />
-            ) : (
-              <p>
-                &nbsp;
-                {this.state.username}
-                &nbsp;
-              </p>
-            )}
-            {this.state.isUsernameEditable ? (
-              <Button onClick={() => this.toggleEdition('username')}>Save</Button>
-            ) : (
-              <Icon onClick={() => this.toggleEdition('username')} name="pencil" />
             )}
           </HorizontalSpan>
           <HorizontalSpan>
