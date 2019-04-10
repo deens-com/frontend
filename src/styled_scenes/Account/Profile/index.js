@@ -120,26 +120,11 @@ class AccountProfileScene extends Component {
           </HorizontalSpan>
           <HorizontalSpan>
             <BoldH4>Email :</BoldH4>
-            {this.state.isEmailEditable ? (
-              <Input
-                style={{ minWidth: '35em' }}
-                placeholder="Email"
-                name="email"
-                value={this.state.email}
-                onChange={this.handleInputChange}
-              />
-            ) : (
-              <p>
-                &nbsp;
-                {this.state.email}
-                &nbsp;
-              </p>
-            )}
-            {this.state.isEmailEditable ? (
-              <Button onClick={() => this.toggleEdition('email')}>Save</Button>
-            ) : (
-              <Icon onClick={() => this.toggleEdition('email')} name="pencil" />
-            )}
+            <p>
+              &nbsp;
+              {this.state.email}
+              &nbsp;
+            </p>
           </HorizontalSpan>
         </Grid.Column>
       </Grid>
