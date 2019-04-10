@@ -11,6 +11,7 @@ import Header from './Header';
 import Footer from './Footer';
 import { mapServicesByDay, mapDaysToServices } from '../Trip/mapServicesToDays';
 import Options from './Options';
+import WarningLogin from './WarningLogin';
 import I18nText from 'shared_components/I18nText';
 import { addServiceRequest } from 'libs/trips';
 import analytics from 'libs/analytics';
@@ -964,6 +965,7 @@ export default class TripOrganizer extends React.Component {
           image={image}
           onImageUpload={this.uploadImage}
         />
+        {!this.props.session.username && <WarningLogin />}
         <Options
           onChangeGuests={this.changeGuests}
           adults={tripData.adultCount}
