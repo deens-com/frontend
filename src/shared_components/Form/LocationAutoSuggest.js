@@ -3,8 +3,25 @@ import PropTypes from 'prop-types';
 import PlacesAutocomplete from 'shared_components/PlacesAutocomplete';
 import { Form, Popup, Icon, Ref } from 'semantic-ui-react';
 import StyledInput from 'shared_components/StyledInput';
-import { MapMarker } from 'shared_components/icons';
 import styled from 'styled-components';
+import {
+  textDark,
+  disabled,
+  activity,
+  accommodation,
+  food,
+  backgroundDark,
+  primary,
+} from 'libs/colors';
+import {
+  MapMarker,
+  Activity,
+  Briefcase,
+  Food,
+  Accommodation,
+  Pen,
+  LinkIcon,
+} from 'shared_components/icons';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -12,11 +29,14 @@ const Wrapper = styled.div`
 
 const ListSpan = styled.span`
   display: inline-flex;
+  color: ${disabled};
+  strong {
+    color: ${textDark};
+  }
 `;
 
 const ListWrapper = styled.ul`
   list-style-type: none;
-  min-width: 100%;
   display: flex;
   flex-direction: column;
   > article {
@@ -36,6 +56,26 @@ const ListItem = styled.li`
 
 const GreyIcon = styled(Icon)`
   color: #c4c4c4;
+`;
+
+const ServiceTypes = styled.ul`
+  order: 10;
+  display: flex;
+  list-style: none;
+  margin-top: 15px;
+  > li {
+    width: 26px;
+    height: 26px;
+    border-radius: 2px 2px 2px 0;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    > svg {
+      width: 16px !important;
+      height: 16px !important;
+    }
+  }
 `;
 
 /**
@@ -74,6 +114,9 @@ export default class SemanticLocationControl extends Component {
     onlyCities: PropTypes.bool,
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
+    showServiceTypes: PropTypes.bool,
+    serviceType: PropTypes.oneOf(['trip', 'accommodation', 'food', 'activity']),
+    handleServiceTypeChange: PropTypes.func,
   };
 
   static defaultProps = {
@@ -86,6 +129,9 @@ export default class SemanticLocationControl extends Component {
     onBlur: () => {},
     onKeyUp: () => {},
     onKeyDown: () => {},
+    showServiceTypes: false,
+    serviceType: 'trip',
+    handleServiceTypeChange: () => {},
   };
 
   onAddressChange = address => {
@@ -152,6 +198,9 @@ export default class SemanticLocationControl extends Component {
       useStyledInput,
       customStyle = {},
       autoFocus,
+      showServiceTypes,
+      handleServiceTypeChange,
+      serviceType,
     } = this.props;
     return (
       <PlacesAutocomplete
@@ -165,6 +214,8 @@ export default class SemanticLocationControl extends Component {
         {({ getInputProps, suggestions, getSuggestionItemProps }) => {
           return (
             <Popup
+              horizontalOffset={50}
+              basic
               context={this.props.context}
               trigger={
                 <Wrapper>
@@ -203,7 +254,7 @@ export default class SemanticLocationControl extends Component {
               }
               open={this.state.isOpen && Boolean(this.state.address)}
               //open={true}
-              position="bottom center"
+              position="bottom left"
               style={{ zIndex: 10000, ...customStyle }}
             >
               <ListWrapper>
@@ -216,7 +267,7 @@ export default class SemanticLocationControl extends Component {
                     <GreyIcon name="search" />
                     &nbsp;
                     <p>
-                      <b>Search for</b> "{this.state.address}"
+                      Search for <strong>"{this.state.address}"</strong> in trips
                     </p>
                   </ListSpan>
                 </ListItem>
@@ -232,11 +283,55 @@ export default class SemanticLocationControl extends Component {
                         <ListSpan>
                           <GreyIcon name="map marker alternate" />
                           &nbsp;
-                          <p>{suggestion.description}</p>
+                          <p>
+                            Trips in <strong>{suggestion.description}</strong>
+                          </p>
                         </ListSpan>
                       </ListItem>
                     ))}
                   </React.Fragment>
+                )}
+                {showServiceTypes && (
+                  <ServiceTypes
+                    onMouseDown={e => {
+                      e.preventDefault();
+                    }}
+                  >
+                    <li
+                      onClick={() => handleServiceTypeChange('trip')}
+                      style={{ backgroundColor: serviceType === 'trip' ? backgroundDark : 'white' }}
+                    >
+                      <Briefcase style={{ color: serviceType === 'trip' ? primary : disabled }} />
+                    </li>
+                    <li
+                      onClick={() => handleServiceTypeChange('accommodation')}
+                      style={{
+                        backgroundColor: serviceType === 'accommodation' ? backgroundDark : 'white',
+                      }}
+                    >
+                      <Accommodation
+                        style={{
+                          color: serviceType === 'accommodation' ? accommodation : disabled,
+                        }}
+                      />
+                    </li>
+                    <li
+                      onClick={() => handleServiceTypeChange('food')}
+                      style={{ backgroundColor: serviceType === 'food' ? backgroundDark : 'white' }}
+                    >
+                      <Food style={{ color: serviceType === 'food' ? food : disabled }} />
+                    </li>
+                    <li
+                      onClick={() => handleServiceTypeChange('activity')}
+                      style={{
+                        backgroundColor: serviceType === 'activity' ? backgroundDark : 'white',
+                      }}
+                    >
+                      <Activity
+                        style={{ color: serviceType === 'activity' ? activity : disabled }}
+                      />
+                    </li>
+                  </ServiceTypes>
                 )}
               </ListWrapper>
             </Popup>

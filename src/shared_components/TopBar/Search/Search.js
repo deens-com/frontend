@@ -8,6 +8,7 @@ import history from './../../../main/history';
 import { CrossIcon, SearchIcon } from '../../icons';
 import SemanticLocationControl from 'shared_components/Form/LocationAutoSuggest';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
+import { disabled } from 'libs/colors';
 
 // ACTIONS/CONFIG
 import { resetButton } from '../../../libs/styled';
@@ -17,13 +18,13 @@ const Wrapper = styled.div`
   align-items: center;
   display: flex;
   flex: 1;
-  max-width: 650px;
+  max-width: 540px;
   padding-right: ${props => (props.isMobile ? '0' : '25px')};
 `;
 
 const Inner = styled.div`
   background-color: #ffffff;
-  border-radius: 4px;
+  border-radius: 10px 10px 10px 0;
   border: solid 1px ${props => (props.inFocus ? '#65AFBB' : '#eef1f4')};
   display: flex;
   flex: 1;
@@ -33,9 +34,10 @@ const Inner = styled.div`
   width: 100%;
 `;
 
-const IconButton = styled.button`
-  ${resetButton()};
-  color: ${props => (props.active ? '#50a18a' : '#d3d7dc')};
+const IconButton = styled.span`
+  display: inline-block;
+  margin-top: 3px;
+  color: ${disabled};
   font-size: 24px;
   height: 26px;
   margin-right: 8px;
@@ -103,7 +105,7 @@ const locationProps = {
 
 const suggestionStyle = {
   width: '80vw',
-  maxWidth: '613px',
+  maxWidth: '500px',
 };
 
 // MODULE
@@ -114,6 +116,7 @@ export default class DesktopSearch extends Component {
       search: '',
       mode: 'text',
       inFocus: false,
+      serviceType: 'trip',
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -155,7 +158,7 @@ export default class DesktopSearch extends Component {
       this.setState({ address, serviceType, ...searchParams, text: null }, this.handleSearchSubmit);
     });
   }
-  handleSearchSubmit() {
+  handleSearchSubmit(serviceType) {
     const query_params = {
       address: this.state.address,
       latitude: this.state.latitude,
@@ -165,6 +168,7 @@ export default class DesktopSearch extends Component {
       countryCode: this.state.countryCode,
       serviceTypes: this.state.serviceType,
       text: this.state.text,
+      serviceType,
     };
     let query_arr = [];
     Object.entries(query_params).forEach(([key, value]) => {
@@ -179,16 +183,18 @@ export default class DesktopSearch extends Component {
     }
     history.push(`/results?${query_string}`);
   }
+
+  handleServiceTypeChange = serviceType => {
+    this.handleSearchSubmit(serviceType);
+  };
+
   render() {
     const { isMobile, toggleSearch } = this.props;
     return (
       <Wrapper isMobile={isMobile} inFocus={this.state.inFocus}>
         <Inner>
           <div>
-            {/*<IconButton active={this.state.mode === 'voice'}>
-              <MicrophoneIcon />
-            </IconButton>*/}
-            <IconButton active={this.state.mode === 'text'}>
+            <IconButton>
               <SearchIcon />
             </IconButton>
           </div>
@@ -211,18 +217,14 @@ export default class DesktopSearch extends Component {
               {...locationProps}
               defaultAddress={this.props.text || this.props.address}
               ref={this.inputRef}
+              showServiceTypes
+              handleServiceTypeChange={this.handleServiceTypeChange}
+              serviceType={this.state.serviceType}
             />
 
-            {isMobile ? (
+            {isMobile && (
               <SubmitButton style={{ color: 'grey' }}>
                 <ArrowWrap onClick={toggleSearch}>
-                  <CrossIcon style={{ color: 'grey' }} />
-                </ArrowWrap>
-              </SubmitButton>
-            ) : (
-              <SubmitButton type="submit" style={{ color: 'grey' }}>
-                <span>Reset</span>
-                <ArrowWrap>
                   <CrossIcon style={{ color: 'grey' }} />
                 </ArrowWrap>
               </SubmitButton>
