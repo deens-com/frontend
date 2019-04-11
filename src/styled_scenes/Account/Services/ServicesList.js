@@ -99,7 +99,7 @@ const ServiceItem = item => {
           <br />
           <br />
           <PriceTitle>Starting from</PriceTitle>
-          <PriceTag price={item.pricePerSession} />
+          <PriceTag price={item.price} />
           <br />
         </Link>
         <Button

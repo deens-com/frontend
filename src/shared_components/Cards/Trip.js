@@ -258,7 +258,7 @@ class TripCard extends Component {
             <ContentFooter isTrip={isTrip}>
               <Price>
                 {this.isViewTypeOf('food') ? 'Average ' : 'From '}
-                <PriceTag unit="hidden" price={item.basePrice}>
+                <PriceTag unit="hidden" price={item.totalPrice || item.basePrice}>
                   {({ symbol, convertedPrice }) => `${symbol}${convertedPrice}`}
                 </PriceTag>{' '}
                 per person

@@ -67,7 +67,7 @@ export function loadTrip(withFullServices = true) {
     },
     services: [],
     media: [],
-    basePrice: 0,
+    totalPrice: 0,
     duration: 1,
   };
 }

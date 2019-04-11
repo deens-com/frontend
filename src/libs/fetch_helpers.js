@@ -1,4 +1,4 @@
-import I18nText from 'shared_components/I18nText'
+import I18nText from 'shared_components/I18nText';
 import { tagsColorMatcher } from './Utils';
 import placeholder from './../assets/placeholder350x350.svg';
 
@@ -89,7 +89,7 @@ const createService = (values, custom) => {
       },
     ],
     tags: values.tags,
-    ...(values.subtitle && {subtitle: { [i18nLocale]: values.subtitle }}),
+    ...(values.subtitle && { subtitle: { [i18nLocale]: values.subtitle } }),
     title: { [i18nLocale]: values.title },
     basePrice: values.basePrice,
     location: {
@@ -107,7 +107,7 @@ const createService = (values, custom) => {
       id: values.location.place_id,
     },
     media: values.media.map(mapImage),
-    ...(values.description && {description: { [i18nLocale]: values.description }}),
+    ...(values.description && { description: { [i18nLocale]: values.description } }),
     ...(!custom
       ? {
           instructions: {
@@ -115,7 +115,7 @@ const createService = (values, custom) => {
             ...(values.end ? { end: { [i18nLocale]: values.end } } : {}),
           },
           rules: values.rules.filter(rule => Boolean(rule)).map(rule => ({ [i18nLocale]: rule })),
-          duration: (values.category === 'Accommodation' ? 1 : values.duration),
+          duration: values.category === 'Accommodation' ? 1 : values.duration,
           baseCurrency: {
             name: 'US Dollar',
             code: 'USD',
@@ -254,8 +254,7 @@ const buildServicesJson = services => {
       service.location = parseLocation(service.location);
       service.ratings = service.ratings;
       service.slots = service.slots;
-      service.price = service.price == null ? service.pricePerSession : service.price;
-      service.pricePerSession = service.pricePerSession || service.basePrice;
+      service.basePrice = service.basePrice;
       service.openingTime = (service.periods && service.periods[0].startTime) || '00';
       service.closingTime = (service.periods && service.periods[0].endTime) || '23';
       if (service.tags && service.tags.length && service.tags[0].type) {
@@ -298,7 +297,6 @@ const mapServiceObjects = services => {
       service.location = `${service.city ? service.city + ',' : ''} ${service.country}`;
       service.ratings = service.ratings;
       service.slots = service.slots;
-      service.price = service.price == null ? service.pricePerSession : service.price;
       if (service.tags && service.tags.length) {
         const tags = service.tags.map(tag => {
           const tagBg = tagsColorMatcher(tag);
