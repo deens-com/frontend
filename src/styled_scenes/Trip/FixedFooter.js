@@ -54,7 +54,6 @@ const FixedFooter = ({
   onCustomizeClick,
   bottom,
 }) => {
-  console.log(trip);
   return (
     <Wrapper bottom={bottom}>
       <Text>
@@ -68,6 +67,7 @@ const FixedFooter = ({
         user={owner}
         isLoadingUser={false}
         session={session}
+        buttonSize="medium"
       />
       <div style={{ marginLeft: '15px' }} id="customizeButton">
         <Button theme="fillLightGreen" size="medium" onClick={onCustomizeClick}>

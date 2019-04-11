@@ -4,12 +4,12 @@ import Button from 'shared_components/Button';
 import analytics from 'libs/analytics';
 import Content from './Content';
 
-export default ({ tripId, session, tripParent, isLoadingUser, user }) => {
+export default ({ tripId, session, tripParent, isLoadingUser, user, buttonSize }) => {
   return (
     <Modal
       style={{ maxWidth: '750px' }}
       trigger={
-        <Button onClick={analytics.planning.brief.start} theme="fillLightGreen">
+        <Button onClick={analytics.planning.brief.start} theme="fillLightGreen" size={buttonSize}>
           Help me!
         </Button>
       }
