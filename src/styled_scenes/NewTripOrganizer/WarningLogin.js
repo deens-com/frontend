@@ -16,13 +16,13 @@ export default () => {
       <P>
         We recommend that you{' '}
         <strong>
-          <Link to="/register">singup</Link>
+          <Link to="/register">signup</Link>
         </strong>{' '}
         or{' '}
         <strong>
           <Link to="/login">login</Link>
         </strong>{' '}
-        to make sure you don't <strong>loose your trip</strong>
+        to make sure you don't <strong>lose your trip</strong>
       </P>
     </Wrapper>
   );
