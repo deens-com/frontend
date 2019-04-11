@@ -25,7 +25,7 @@ class AccountContainer extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.session.email) {
+    if (!nextProps.session.email && !nextProps.isLoading) {
       history.push('/register');
     }
   }
@@ -46,6 +46,7 @@ class AccountContainer extends Component {
               update_user_profile={this.props.update_user_profile}
               editUserError={this.props.updateError}
               update_user_avatar={this.props.update_user_avatar}
+              isLoading={this.props.isLoading}
             />
           )}
         />
@@ -74,6 +75,7 @@ const mapStateToProps = state => {
     session: state.session.session,
     isUploadingAvatar: state.session.isUploadingAvatar,
     updateError: state.session.updateError,
+    isLoading: state.session.isLoading,
   };
 };
 

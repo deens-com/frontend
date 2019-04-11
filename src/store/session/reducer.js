@@ -111,6 +111,19 @@ export default function session(state = initialState, action = {}) {
           ...action.payload,
         },
       };
+    case sessions_actions.types.MODIFY_USER:
+      return {
+        ...state,
+        session: {
+          ...state.session,
+          ...action.payload,
+        },
+      };
+    case sessions_actions.types.IS_LOADING:
+      return {
+        ...state,
+        isLoading: true,
+      };
     default:
       return state;
   }
