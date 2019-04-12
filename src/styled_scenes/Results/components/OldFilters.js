@@ -402,15 +402,15 @@ class Filters extends Component {
       return sentence.slice(0, sentence.indexOf(' '));
     }
 
-    const serviceTypes = this.props.search_query.type || [];
+    const type = this.props.search_query.type || [];
 
-    if (serviceTypes.length === 0) {
+    if (type.length === 0) {
       return ' ';
     }
 
-    return serviceTypes.includes('activity') || serviceTypes.includes('accommodation')
+    return type.includes('activity') || type.includes('accommodation')
       ? ' an'
-      : serviceTypes.includes('food')
+      : type.includes('food')
         ? ' '
         : ' a';
   };
@@ -649,44 +649,6 @@ class Filters extends Component {
         onOpen: this.handleMoodPopupOpen,
         position: 'bottom center',
       },
-      radius: {
-        content: (
-          <div style={{ textAlign: 'center' }}>
-            {this.state.isRadiusPopupOpen && (
-              <InputRange
-                type="range"
-                min="0"
-                max="5"
-                step="1"
-                value={this.state.radiusInKm}
-                onChange={this.changeRadius}
-                list="options"
-              />
-            )}
-            <InputRangeValues>
-              <span>1</span>
-              <span>5</span>
-              <span>10</span>
-              <span>20</span>
-              <span>50</span>
-              <span>100</span>
-            </InputRangeValues>
-            <datalist id="options">
-              <option value="0" />
-              <option value="1" />
-              <option value="2" />
-              <option value="3" />
-              <option value="4" />
-              <option value="5" />
-            </datalist>
-          </div>
-        ),
-        on: 'click',
-        open: this.state.isRadiusPopupOpen,
-        onClose: this.handleRadiusPopupClose,
-        onOpen: this.handleRadiusPopupOpen,
-        position: 'bottom center',
-      },
       guests: {
         content: (
           <GuestsSelector
@@ -793,27 +755,6 @@ class Filters extends Component {
         </div>
 
         {this.renderEditable('location', this.props.search_query.address)}
-      </React.Fragment>
-    );
-  };
-
-  renderRadius = () => {
-    if (!this.props.search_query.address) {
-      return null;
-    }
-
-    const trigger = `${
-      this.state.isRadiusPopupOpen
-        ? radiusOptions[this.state.radiusInKm]
-        : this.props.search_query.radiusInKm
-    } km`;
-    return (
-      <React.Fragment>
-        <div>
-          <p> &nbsp; {'within '} </p>
-        </div>
-
-        {this.renderEditable('radius', trigger)}
       </React.Fragment>
     );
   };

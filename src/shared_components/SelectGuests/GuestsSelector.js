@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { PlusIcon, MinusIcon } from 'shared_components/icons';
 import { primary } from 'libs/colors';
@@ -89,6 +90,20 @@ export default class GuestsSelector extends React.Component {
     };
     this.wrapperRef = React.createRef();
   }
+
+  static propTypes = {
+    adults: PropTypes.number,
+    children: PropTypes.number,
+    infants: PropTypes.number,
+    close: PropTypes.func,
+  };
+
+  static defaultProps = {
+    adults: 1,
+    children: 0,
+    infants: 0,
+    close: () => {},
+  };
 
   componentDidMount() {
     document.addEventListener('mousedown', this.handleClickOutside);

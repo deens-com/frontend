@@ -144,13 +144,13 @@ const InnerText = styled(H1)`
 `;
 
 const sydneyParams =
-  'serviceTypes=trip&latitude=-33.8688197&longitude=151.20929550000005&address=Sydney%20NSW,%20Australia';
+  'type=trip&latitude=-33.8688197&longitude=151.20929550000005&address=Sydney%20NSW,%20Australia';
 const newYorkParams =
-  'serviceTypes=trip&latitude=40.7127753&longitude=-74.0059728&address=New%20York,%20NY,%20USA';
+  'type=trip&latitude=40.7127753&longitude=-74.0059728&address=New%20York,%20NY,%20USA';
 const londonParams =
-  'serviceTypes=trip&latitude=51.5073509&longitude=-0.12775829999998223&address=London,%20UK';
+  'type=trip&latitude=51.5073509&longitude=-0.12775829999998223&address=London,%20UK';
 const sanFranciscoParams =
-  'serviceTypes=trip&latitude=37.7749295&longitude=-122.41941550000001&address=San%20Francisco,%20CA,%20USA';
+  'type=trip&latitude=37.7749295&longitude=-122.41941550000001&address=San%20Francisco,%20CA,%20USA';
 
 export default function HomeSectionTopDestinations() {
   return (

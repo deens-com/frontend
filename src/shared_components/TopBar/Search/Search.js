@@ -9,6 +9,7 @@ import { CrossIcon, SearchIcon } from '../../icons';
 import SemanticLocationControl from 'shared_components/Form/LocationAutoSuggest';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { disabled } from 'libs/colors';
+import { pushSearch, getAddress } from 'libs/search';
 
 // ACTIONS/CONFIG
 import { resetButton } from '../../../libs/styled';
@@ -117,6 +118,7 @@ export default class DesktopSearch extends Component {
       mode: 'text',
       inFocus: false,
       serviceType: 'trip',
+      params: {},
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -139,7 +141,6 @@ export default class DesktopSearch extends Component {
   }
   handleSubmit(ev) {
     ev.preventDefault();
-    //const query_string = 'keywords=' + this.state.search;
     this.setState({
       search: '',
       mode: 'text',
@@ -155,37 +156,32 @@ export default class DesktopSearch extends Component {
     geocodeByAddress(address).then(results => {
       const result = results[0];
       const searchParams = getSearchParams(result);
-      this.setState({ address, serviceType, ...searchParams, text: null }, this.handleSearchSubmit);
+      this.setState({ address, params: searchParams, text: null }, this.handleSearchSubmit);
     });
   }
-  handleSearchSubmit(serviceType) {
-    const query_params = {
-      address: this.state.address,
-      latitude: this.state.latitude,
-      longitude: this.state.longitude,
-      city: this.state.city,
-      state: this.state.state,
-      countryCode: this.state.countryCode,
-      serviceTypes: this.state.serviceType,
-      text: this.state.text,
-      serviceType,
-    };
-    let query_arr = [];
-    Object.entries(query_params).forEach(([key, value]) => {
-      if (value) {
-        let to_concat = key + '=' + value;
-        query_arr = query_arr.concat(to_concat);
-      }
-    });
-    let query_string = query_arr.join('&');
+  handleSearchSubmit() {
     if (this.props.toggleSearch && this.props.isMobile) {
       this.props.toggleSearch();
     }
-    history.push(`/results?${query_string}`);
+
+    const params = {
+      ...this.props.searchParams,
+      ...this.state.params,
+      type: [this.state.serviceType],
+    };
+
+    this.props.updateQuery(params);
+
+    pushSearch(params);
   }
 
   handleServiceTypeChange = serviceType => {
-    this.handleSearchSubmit(serviceType);
+    this.setState(
+      {
+        serviceType,
+      },
+      this.handleSearchSubmit,
+    );
   };
 
   render() {
@@ -215,7 +211,7 @@ export default class DesktopSearch extends Component {
               onChange={this.handleLocationChange}
               customStyle={suggestionStyle}
               {...locationProps}
-              defaultAddress={this.props.text || this.props.address}
+              defaultAddress={getAddress(this.props.searchParams)}
               ref={this.inputRef}
               showServiceTypes
               handleServiceTypeChange={this.handleServiceTypeChange}

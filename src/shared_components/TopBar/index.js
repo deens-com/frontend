@@ -14,6 +14,7 @@ import { bindActionCreators } from 'redux';
 import { getCurrentUserTrip, logOut } from 'store/session/actions';
 import { PageWrapper } from 'shared_components/layout/Page';
 import { secondaryContrast } from 'libs/colors';
+import searchActions from 'store/search/actions';
 
 // ACTIONS/CONFIG
 import { media } from 'libs/styled';
@@ -135,7 +136,6 @@ class TopBar extends Component {
     const { showMenu, showSearchMobile } = this.state;
 
     const InnerWrap = transparent || noSearch ? PageWrapper : React.Fragment;
-
     return (
       <React.Fragment>
         <Wrapper
@@ -162,6 +162,8 @@ class TopBar extends Component {
                   toggleSearch={this.toggleSearch}
                   address={this.props.address}
                   isMobileSearchOpen={showSearchMobile}
+                  searchParams={this.props.searchParams}
+                  updateQuery={this.props.updateQuery}
                 />
               )}
               <DesktopNav
@@ -208,10 +210,14 @@ const mapStateToProps = state => ({
   gdprHeight: state.settings.gdprHeight,
   session: state.session.session,
   latestTrip: state.session.latestTrip,
+  searchParams: state.search.searchQuery,
 });
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ getCurrentUserTrip, logOut }, dispatch);
+  return bindActionCreators(
+    { getCurrentUserTrip, logOut, updateQuery: searchActions.updateSearchQuery },
+    dispatch,
+  );
 };
 
 export default connect(

@@ -754,7 +754,6 @@ export default class TripOrganizer extends React.Component {
     const numberOfDays = minutesToDays(this.state.tripData.duration);
 
     for (let day = 1; day <= numberOfDays; day++) {
-      console.log(day);
       const servicesOfCurrentDay = this.state.services[day] || [];
       newServices[day] = servicesOfCurrentDay;
       if (!serviceDays.has(Number(day))) {
@@ -771,7 +770,6 @@ export default class TripOrganizer extends React.Component {
         });
       }
     }
-    console.log(newServices);
     this.setState({
       services: newServices,
     });

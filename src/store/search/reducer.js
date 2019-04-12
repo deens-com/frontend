@@ -11,7 +11,7 @@ const initialState = {
   count: null,
   tagsOptions: [],
   searchQuery: {
-    serviceTypes: [],
+    type: [],
     tags: [],
     page: 0,
     sortBy: '',
@@ -59,6 +59,11 @@ export default function search(state = initialState, action = {}) {
         tagsOptions: initialState.tagsOptions,
       };
     case types.updateQueryParams:
+      return {
+        ...state,
+        searchQuery: action.payload,
+      };
+    case types.patchQueryParams:
       return {
         ...state,
         searchQuery: {

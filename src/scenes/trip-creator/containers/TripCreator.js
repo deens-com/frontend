@@ -64,7 +64,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      changeDates: actions.updateSearchQuery,
+      changeDates: actions.patchSearchQuery,
       changeHeader: headerActions.changeHeader,
     },
     dispatch,

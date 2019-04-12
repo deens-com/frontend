@@ -1,6 +1,6 @@
 const composeQuery = search_params => {
   const query_params = {
-    serviceTypes: !search_params.type.length ? undefined : search_params.type.join('+'),
+    type: !search_params.type.length ? undefined : search_params.type.join('+'),
     start_date: search_params.start_date || undefined,
     end_date: search_params.end_date || undefined,
     adults: Number(search_params.adults) || undefined,
@@ -17,7 +17,6 @@ const composeQuery = search_params => {
     limit: search_params.limit || 10,
     sortBy: search_params.sortBy || undefined,
     text: typeof search_params.text === 'string' ? search_params.text : undefined,
-    radiusInKm: search_params.radiusInKm || 10,
     city: search_params.city || undefined,
     state: search_params.state || undefined,
     countryCode: search_params.countryCode || undefined,

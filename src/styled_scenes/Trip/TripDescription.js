@@ -97,7 +97,7 @@ export default class ResultsScene extends Component {
         </Description>
         <Tags>
           {trip.tags.map(tag => (
-            <Tag key={tag.label} item={tag} href={`/results?serviceTypes=trip&tags=${tag.label}`} />
+            <Tag key={tag.label} item={tag} href={`/results?type=trip&tags=${tag.label}`} />
           ))}
         </Tags>
       </Wrapper>

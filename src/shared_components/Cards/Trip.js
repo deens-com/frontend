@@ -188,7 +188,7 @@ class TripCard extends Component {
   isViewTypeOf = type => {
     const param = queryString.parse(this.props.location.search, { ignoreQueryPrefix: true });
 
-    if (param.serviceTypes === type || this.props.type === type) {
+    if (param.type === type || this.props.type === type) {
       return true;
     }
 

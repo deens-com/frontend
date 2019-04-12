@@ -179,7 +179,6 @@ export default class CreateServiceModal extends React.Component {
   }
 
   render() {
-    console.log(this.props.trip);
     return (
       <Wrapper>
         <Modal

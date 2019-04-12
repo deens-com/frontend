@@ -79,9 +79,12 @@ const CreateService = styled.div`
 const MapToggle = styled.div`
   display: flex;
   flex-flow: row-reverse;
-  padding-right: 1em;
-  //padding-bottom: 1em;
-  margin-top: -1.3em;
+`;
+
+const TopFilters = styled.div`
+  display: flex;
+  margin: 0 15px;
+  align-items: center;
 `;
 
 const defaultCenter = {
@@ -118,36 +121,13 @@ export default class ResultsScene extends Component {
       }));
   };
 
-  getZoomByRadius = () => {
-    const radius = Number(this.props.radiusInKm);
-
-    if (radius >= 100) {
-      return 9;
-    }
-
-    if (radius >= 50) {
-      return 10;
-    }
-
-    if (radius >= 20) {
-      return 11;
-    }
-
-    if (radius >= 10) {
-      return 12;
-    }
-
-    return 13;
-  };
-
   getCenterAndZoom = (markers, props) => {
-    const zoomByRadius = this.getZoomByRadius();
     const center =
       props.latitude && props.longitude
         ? { lat: parseFloat(props.latitude), lng: parseFloat(props.longitude) }
         : defaultCenter;
 
-    return getCenterAndZoom(markers, center, zoomByRadius);
+    return getCenterAndZoom(markers, center);
   };
 
   componentWillReceiveProps(nextProps) {
@@ -296,8 +276,9 @@ export default class ResultsScene extends Component {
 
     return (
       <React.Fragment>
-        <span>
-          <Filters {...props} />
+        <TopFilters>
+          {/*<Filters {...props.searchParams} />*/}
+          <Filters searchParams={props.searchParams} />
           <Media query={`(min-width: 600px)`}>
             {matches =>
               matches ? (
@@ -312,7 +293,7 @@ export default class ResultsScene extends Component {
               )
             }
           </Media>
-        </span>
+        </TopFilters>
         {props.routeState &&
           Boolean(props.routeState.tripId) && (
             <AddingServiceTopBar>

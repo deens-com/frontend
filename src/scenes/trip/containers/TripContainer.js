@@ -175,7 +175,7 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       ...actions,
-      changeDates: searchActions.updateSearchQuery,
+      changeDates: searchActions.patchSearchQuery,
       changeHeader: headerActions.changeHeader,
     },
     dispatch,

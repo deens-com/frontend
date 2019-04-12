@@ -273,11 +273,7 @@ export default class Itinerary extends Component {
             {dayData.service.tags.length > 0 && (
               <ServiceTags>
                 {dayData.service.tags.slice(0, 5).map(tag => (
-                  <Tag
-                    key={tag.label}
-                    item={tag}
-                    href={`/results?serviceTypes=trip&tags=${tag.label}`}
-                  />
+                  <Tag key={tag.label} item={tag} href={`/results?type=trip&tags=${tag.label}`} />
                 ))}
               </ServiceTags>
             )}

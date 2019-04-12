@@ -62,28 +62,6 @@ class Results extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      filteredData: [],
-      totalItems: 0,
-      address: props.search_query.address || undefined,
-      start_date: props.search_query.start_date ? props.search_query.start_date : moment().format(),
-      end_date: props.search_query.end_date
-        ? props.search_query.end_date
-        : moment()
-            .add(1, 'days')
-            .format(),
-      adults: props.search_query.adults || undefined,
-      children: props.search_query.childen || undefined,
-      infants: props.search_query.infants || undefined,
-      service_type: props.search_query.type || [],
-      tags: [],
-      startDate: null,
-      endDate: null,
-      page: props.search_query.page || 0,
-      resultsCount: props.count || 0,
-      limit: props.search_query.limit || 0,
-    };
-
     const trip = props.trip;
 
     if (
@@ -107,29 +85,6 @@ class Results extends Component {
   componentWillReceiveProps() {
     this.loadData();
     //this.setState({ totalItems: this.props.data.length });
-  }
-
-  get_query_params() {
-    return {
-      type: this.props.search_query.type,
-      start_date: this.props.search_query.start_date,
-      end_date: this.props.search_query.end_date,
-      adults: this.props.search_query.adults,
-      children: this.props.search_query.children,
-      infants: this.props.search_query.infants,
-      address: this.props.search_query.address,
-      tags: this.props.search_query.tags,
-      onlySmartContracts: this.props.search_query.onlySmartContracts,
-      page: this.props.search_query.page || 0,
-      resultsCount: this.props.count || 0,
-      limit: this.props.search_query.limit || 0,
-      sortBy: this.props.search_query.sortBy,
-      radiusInKm: this.props.search_query.radiusInKm,
-      city: this.props.search_query.city,
-      state: this.props.search_query.state,
-      countryCode: this.props.search_query.countryCode,
-      text: this.props.search_query.text,
-    };
   }
 
   refetch_results(param_object) {
@@ -170,12 +125,12 @@ class Results extends Component {
           {!this.props.isLoadingResults &&
             this.props.data.length === 0 && (
               <section>
-                {this.props.search_query.type && this.props.search_query.type[0] === 'trip' ? (
+                {this.props.searchParams.type && this.props.searchParams.type[0] === 'trip' ? (
                   <NotFound>
                     <img src={notFoundImg} alt="Not found" />
                     <h3>There are no trips available in the location selected.</h3>
                     <p>
-                      Be the first to create a trip for {this.props.search_query.address}, and share
+                      Be the first to create a trip for {this.props.searchParams.address}, and share
                       to earn rewards!
                     </p>
                     <Button type="link" href="/trips/create">
@@ -237,17 +192,19 @@ class Results extends Component {
         </Row>
         <Row style={{ visibility: this.props.isLoadingResults ? 'hidden' : 'visible' }}>
           <PaginationWrap>
-            {this.props.data.length ? (
-              <ReactPaginate
-                pageCount={Math.ceil(this.props.count / this.props.search_query.limit)}
-                marginPagesDisplayed={1}
-                pageRangeDisplayed={2}
-                onPageChange={this.loadData}
-                previousClassName="previousButton"
-                nextClassName="nextButton"
-                forcePage={parseInt(this.props.page, 10) - 1}
-              />
-            ) : null}
+            {this.props.data.length
+              ? console.log('a', this.props.searchParams) || (
+                  <ReactPaginate
+                    pageCount={Math.ceil(this.props.count / this.props.searchParams.limit)}
+                    marginPagesDisplayed={1}
+                    pageRangeDisplayed={2}
+                    onPageChange={this.loadData}
+                    previousClassName="previousButton"
+                    nextClassName="nextButton"
+                    forcePage={parseInt(this.props.searchParams.page, 10) - 1}
+                  />
+                )
+              : null}
           </PaginationWrap>
         </Row>
       </Wrap>

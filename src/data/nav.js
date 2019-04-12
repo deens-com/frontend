@@ -1,18 +1,18 @@
 import i18n from 'libs/i18n';
 
 export const mainNav = [
-  { label: i18n.t('trips.label'), href: '/results?serviceTypes=trip', service_type: 'trip' },
+  { label: i18n.t('trips.label'), href: '/results?type=trip', service_type: 'trip' },
   {
     label: i18n.t('places.singular'),
-    href: '/results?serviceTypes=accommodation',
+    href: '/results?type=accommodation',
     service_type: 'place',
   },
   {
     label: i18n.t('activities.label'),
-    href: '/results?serviceTypes=activity',
+    href: '/results?type=activity',
     service_type: 'activity',
   },
-  { label: i18n.t('foods.label'), href: '/results?serviceTypes=food', service_type: 'food' },
+  { label: i18n.t('foods.label'), href: '/results?type=food', service_type: 'food' },
 ];
 
 export const languages = [

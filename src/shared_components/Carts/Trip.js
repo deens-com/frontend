@@ -326,7 +326,7 @@ class TripCart extends Component {
     }
     return this.props.item.tags.map(tag => (
       <TagLink
-        to={`/results?tags=${I18nText.translate(tag.names)}&serviceTypes=trip`}
+        to={`/results?tags=${I18nText.translate(tag.names)}&type=trip`}
         key={I18nText.translate(tag.names)}
       >
         <Tag>

@@ -154,7 +154,7 @@ export default class HomeSearch extends Component {
       city: this.state.city,
       state: this.state.state,
       countryCode: this.state.countryCode,
-      serviceTypes: this.state.serviceType,
+      type: this.state.serviceType,
       text: this.state.text,
     };
     let query_arr = [];
