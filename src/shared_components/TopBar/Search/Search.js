@@ -150,7 +150,14 @@ export default class DesktopSearch extends Component {
   }
   handleLocationChange(address, serviceType, text) {
     if (text) {
-      this.setState({ text, address: null }, this.handleSearchSubmit);
+      const params = {
+        city: undefined,
+        state: undefined,
+        countryCode: undefined,
+        lat: undefined,
+        lng: undefined,
+      };
+      this.setState({ text, params, address: null, serviceType }, this.handleSearchSubmit);
       return;
     }
     geocodeByAddress(address).then(results => {
@@ -163,10 +170,12 @@ export default class DesktopSearch extends Component {
     if (this.props.toggleSearch && this.props.isMobile) {
       this.props.toggleSearch();
     }
+    const { text } = this.state;
 
     const params = {
       ...this.props.searchParams,
       ...this.state.params,
+      text,
       type: [this.state.serviceType],
     };
 
@@ -216,6 +225,7 @@ export default class DesktopSearch extends Component {
               showServiceTypes
               handleServiceTypeChange={this.handleServiceTypeChange}
               serviceType={this.state.serviceType}
+              hasSearchedText={Boolean(this.state.text)}
             />
 
             {isMobile && (

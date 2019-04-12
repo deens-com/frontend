@@ -176,7 +176,7 @@ export default class SemanticLocationControl extends Component {
 
   onSelectSearch = () => {
     this.onSelect(this.state.address);
-    this.props.onChange(null, null, this.state.address);
+    this.props.onChange(null, 'trip', this.state.address);
   };
 
   handleOpen = event => {
@@ -239,20 +239,22 @@ export default class SemanticLocationControl extends Component {
       handleServiceTypeChange,
       serviceType,
       defaultAddress,
+      hasSearchedText,
     } = this.props;
     this.changeDefaultAddress(defaultAddress);
     return (
       <>
         <ExternalWrapper>
           {!this.state.isOpen &&
-            this.state.address && (
+            this.state.address &&
+            showServiceTypes && (
               <ExternalText
                 onClick={() => {
                   this.inputRef.focus();
                 }}
                 htmlFor="search"
               >
-                Showing {this.getSentenceWord()} in
+                {hasSearchedText ? 'Showing Trips with' : `Showing ${this.getSentenceWord()} in`}
               </ExternalText>
             )}
           <PlacesAutocomplete
