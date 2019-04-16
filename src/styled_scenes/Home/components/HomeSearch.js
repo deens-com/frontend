@@ -111,7 +111,7 @@ export default class HomeSearch extends Component {
       longitude: undefined,
       countryCode: undefined,
       city: undefined,
-      serviceType: undefined,
+      serviceType: 'trip',
       keywords: '',
       show_banner: false,
       focus: false,
@@ -135,13 +135,13 @@ export default class HomeSearch extends Component {
 
   handleLocationChange(address, serviceType, text) {
     if (text) {
-      this.setState({ text }, this.handleSearchSubmit);
+      this.setState({ serviceType, text }, this.handleSearchSubmit);
       return;
     }
 
     geocodeByAddress(address).then(results => {
       const result = results[0];
-      const searchParams = getSearchParams(result);
+      const searchParams = getSearchParams(address, result);
       this.setState({ serviceType, ...searchParams }, this.handleSearchSubmit);
     });
   }
@@ -171,6 +171,12 @@ export default class HomeSearch extends Component {
     history.push(`/results?${query_string}`);
   }
 
+  handleServiceTypeChange = serviceType => {
+    this.setState({
+      serviceType,
+    });
+  };
+
   onFocus = () => {
     this.setState({
       focus: true,
@@ -191,6 +197,9 @@ export default class HomeSearch extends Component {
         customStyle={suggestionStyle}
         onFocus={this.onFocus}
         onBlur={this.onBlur}
+        showServiceTypes
+        handleServiceTypeChange={this.handleServiceTypeChange}
+        serviceType={this.state.serviceType}
       />
     );
   };

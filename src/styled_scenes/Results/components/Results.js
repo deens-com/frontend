@@ -85,7 +85,7 @@ class Results extends Component {
   }
 
   refetch_results(param_object) {
-    const query_params = this.get_query_params();
+    const query_params = this.props.searchParams;
     query_params[Object.keys(param_object)[0]] = param_object[Object.keys(param_object)[0]];
     this.props.pushSearch(query_params, this.props.routeState);
   }

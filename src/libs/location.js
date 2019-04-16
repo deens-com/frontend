@@ -32,9 +32,11 @@ export const parseLocationData = data => {
   return res;
 };
 
-export const getSearchParams = googleMapsResult => {
+export const getSearchParams = (address, googleMapsResult) => {
   const { address_components: addressComponents, geometry } = googleMapsResult;
   const region = getAddressComponent(addressComponents, 'sublocality', 'long_name');
+  const establishment = getAddressComponent(addressComponents, 'establishment', 'long_name');
+  const poi = getAddressComponent(addressComponents, 'point_of_interest', 'long_name');
   const city = getAddressComponent(addressComponents, 'locality', 'long_name');
   const state = getAddressComponent(addressComponents, 'administrative_area_level_1', 'long_name');
   const countryCode = getAddressComponent(addressComponents, 'country', 'short_name');
@@ -47,11 +49,12 @@ export const getSearchParams = googleMapsResult => {
     countryCode: undefined,
     lat: undefined,
     lng: undefined,
+    address: undefined,
   };
-  if (region) {
-    return { ...allUndefined, lat, lng };
+  if (region || establishment || poi) {
+    return { ...allUndefined, lat, lng, address };
   } else if (city || state || countryCode) {
-    return { ...allUndefined, city, state, countryCode };
+    return { ...allUndefined, city, state, countryCode, address };
   } else {
     throw new Error('we should have never reached here');
   }

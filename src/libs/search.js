@@ -5,6 +5,9 @@ export function getAddress(params) {
   if (params.text) {
     return params.text;
   }
+  if (params.address) {
+    return params.address;
+  }
   if (params.city) {
     if (params.countryCode) {
       return `${params.city}, ${params.countryCode}`;
@@ -17,17 +20,14 @@ export function getAddress(params) {
 }
 
 export const mapUrlToProps = location => {
-  let searchParams = queryString.parse(location.search, { ignoreQueryPrefix: true, comma: true });
+  let searchParams = queryString.parse(location.search, { ignoreQueryPrefix: true });
+
   return {
     // does not properly parse '+'.
-    type: (searchParams.type && searchParams.type.split(' ')) || [],
-    tags: searchParams.tags
-      ? Array.isArray(searchParams.tags)
-        ? searchParams.tags
-        : [searchParams.tags]
-      : [],
-    lat: searchParams.lat,
-    lng: searchParams.lng,
+    type: (searchParams.type && searchParams.type.split(',')) || [],
+    tags: searchParams.tags ? searchParams.tags.split(',') : [],
+    lat: Number(searchParams.lat) || undefined,
+    lng: Number(searchParams.lng) || undefined,
     adults: Number(searchParams.adults) || undefined,
     children: Number(searchParams.children) || undefined,
     infants: Number(searchParams.infants) || undefined,
@@ -39,6 +39,7 @@ export const mapUrlToProps = location => {
       (searchParams.priceLevel && searchParams.priceLevel.map(Number).sort()) || undefined,
     keywords: searchParams.keywords,
     sortBy: searchParams.sortBy,
+    address: searchParams.address || undefined,
     city: searchParams.city,
     state: searchParams.state,
     countryCode: searchParams.countryCode,
@@ -51,6 +52,7 @@ export const mapUrlToProps = location => {
 // If there is some processing required, just add the field here
 // otherwise, the same object will be passed to the request
 export const mapDataToQuery = ({ type, ...searchParams }) => ({
+  address: undefined,
   category: !type.length
     ? undefined
     : type.map(a => a.charAt(0).toUpperCase() + a.substr(1)).join('+'),

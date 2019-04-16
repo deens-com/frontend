@@ -33,6 +33,19 @@ const fetchResults = searchQuery =>
       ...mapDataToQuery(searchQuery),
       ...(searchForTrips ? { include: 'owner' } : {}),
     };
+
+    if (!searchForTrips) {
+      if (
+        params.text || // next we check that we have any kind of location
+        (!(params.lat && params.lng) && !(params.city && params.countryCode))
+      ) {
+        return {
+          results: [],
+          count: 0,
+          tags: [],
+        };
+      }
+    }
     const results = await (searchForTrips
       ? api.trips.search.get(params)
       : api.services.search.get(params));

@@ -162,7 +162,7 @@ export default class DesktopSearch extends Component {
     }
     geocodeByAddress(address).then(results => {
       const result = results[0];
-      const searchParams = getSearchParams(result);
+      const searchParams = getSearchParams(address, result);
       this.setState({ address, params: searchParams, text: null }, this.handleSearchSubmit);
     });
   }
@@ -176,6 +176,7 @@ export default class DesktopSearch extends Component {
       ...this.props.searchParams,
       ...this.state.params,
       text,
+      type: [text ? 'trip' : this.props.searchParams.type],
     };
 
     this.props.updateQuery(params);
@@ -193,9 +194,9 @@ export default class DesktopSearch extends Component {
         serviceType === 'food' || serviceType === 'activity'
           ? undefined
           : this.props.searchParams.end_date,
-      priceLevel: serviceType !== 'food' ? undefined : this.props.searchParams.end_date,
-      priceStart: serviceType === 'food' ? undefined : this.props.searchParams.end_date,
-      priceEnd: serviceType === 'food' ? undefined : this.props.searchParams.end_date,
+      priceLevel: serviceType !== 'food' ? undefined : this.props.searchParams.priceLevel,
+      priceStart: serviceType === 'food' ? undefined : this.props.searchParams.priceStart,
+      priceEnd: serviceType === 'food' ? undefined : this.props.searchParams.priceEnd,
       tags: undefined,
     };
     pushSearch(params);

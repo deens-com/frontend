@@ -203,7 +203,7 @@ export default class SemanticLocationControl extends Component {
   handleKeyDown = (event, first) => {
     if (event.key === 'Enter') {
       if (first) {
-        this.onSelectSuggestion(first.description, 'trip');
+        this.onSelectSuggestion(first.description, this.props.serviceType);
       } else {
         this.onSelectSearch();
       }
@@ -334,7 +334,9 @@ export default class SemanticLocationControl extends Component {
                           <ListItem
                             {...getSuggestionItemProps(suggestion)}
                             key={suggestion.placeId}
-                            onClick={() => this.onSelectSuggestion(suggestion.description, 'trip')}
+                            onClick={() =>
+                              this.onSelectSuggestion(suggestion.description, serviceType)
+                            }
                             order={i === 0 ? 1 : 3}
                           >
                             <ListSpan>

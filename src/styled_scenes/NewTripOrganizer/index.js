@@ -328,15 +328,16 @@ export default class TripOrganizer extends React.Component {
     }
 
     const coord = location && location.geo && getFromCoordinates(location.geo.coordinates);
+    const country = location && location.country && I18nText.translate(location.country.names);
+    const address =
+      location && `${location.city || location.state}${country ? `, ${country}` : ''}`;
 
     this.props.pushSearch(
       {
         type: [type],
-        //lat: coord && coord.lat,
-        //lng: coord && coord.lng,
-        city: location.city,
-        state: location.state,
-        countryCode: location.countryCode,
+        lat: coord && coord.lat,
+        lng: coord && coord.lng,
+        address,
         start_date: moment(tripData.startDate)
           .add(day - 1, 'days')
           .valueOf(),
