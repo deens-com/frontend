@@ -107,7 +107,7 @@ class RegistrationsContainer extends Component {
       const newUser = await axios.post(
         '/users/signup',
         {
-          username: this.state.username,
+          username: this.state.username.trim(),
           email,
           password: this.state.password,
           referrerCode: referrer,
