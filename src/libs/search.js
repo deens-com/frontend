@@ -21,7 +21,11 @@ export const mapUrlToProps = location => {
   return {
     // does not properly parse '+'.
     type: (searchParams.type && searchParams.type.split(' ')) || [],
-    tags: searchParams.tags || [],
+    tags: searchParams.tags
+      ? Array.isArray(searchParams.tags)
+        ? searchParams.tags
+        : [searchParams.tags]
+      : [],
     lat: searchParams.lat,
     lng: searchParams.lng,
     adults: Number(searchParams.adults) || undefined,

@@ -62,7 +62,7 @@ const Filters = ({ searchParams }) => {
       )}
       {filters.includes(availableFilters.tags) && (
         <TagsFilter
-          selectedTags={searchParams.tags.map(tag => ({ value: tag }))}
+          selectedTags={searchParams.tags && searchParams.tags.map(tag => ({ value: tag }))}
           onApply={search}
         />
       )}

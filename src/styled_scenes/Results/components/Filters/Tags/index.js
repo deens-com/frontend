@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
@@ -7,6 +7,7 @@ import TextArea from './TextArea';
 import { P, PSmall, PXSmall } from 'libs/commonStyles';
 import { primary } from 'libs/colors';
 import uniqBy from 'lodash.uniqby';
+import AccountSettingsComponent from 'scenes/account/components/AccountSettings';
 
 const Content = styled.div`
   padding: 15px;
@@ -28,6 +29,16 @@ const SuggestedTag = styled(PXSmall)`
 
 const Tags = ({ selectedTags, suggestedTags, onApply }) => {
   const [tags, setTags] = useState(selectedTags);
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(
+    () => {
+      if (!isOpen) {
+        setTags(selectedTags);
+      }
+    },
+    [selectedTags],
+  );
 
   const addTag = tag => {
     setTags(uniqBy([...tags, tag], tag => tag.value));
@@ -42,9 +53,14 @@ const Tags = ({ selectedTags, suggestedTags, onApply }) => {
   );
 
   const onClose = () => {
+    setIsOpen(false);
     onApply({
       tags: tags.map(tag => tag.value),
     });
+  };
+
+  const onOpen = () => {
+    setIsOpen(true);
   };
 
   const renderTag = () => {
@@ -62,7 +78,7 @@ const Tags = ({ selectedTags, suggestedTags, onApply }) => {
   };
 
   return (
-    <Dropdown onClose={onClose} trigger={renderTag()}>
+    <Dropdown onClose={onClose} onOpen={onOpen} trigger={renderTag()}>
       <Content>
         <P>Add tags</P>
         <TextArea

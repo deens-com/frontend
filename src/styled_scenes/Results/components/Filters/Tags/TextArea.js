@@ -39,6 +39,7 @@ const SelectedTag = styled.span`
   padding: 0 5px;
   font-size: 14px;
   display: inline-block;
+  cursor: pointer;
 `;
 
 const Results = styled.div`
@@ -87,14 +88,14 @@ export default ({ selectedTags, suggestedTags, addTag, removeTag }) => {
 
   const onKeyDown = e => {
     if (e.keyCode === 40) {
-      if (selectedResult < searchResults.length - 1) {
+      if (selectedResult < 3) {
         setSelectedResult(selectedResult + 1);
       }
       return;
     }
 
     if (e.keyCode === 38) {
-      if (selectedResult < 0) {
+      if (selectedResult > 0) {
         setSelectedResult(selectedResult - 1);
       }
       return;
@@ -125,14 +126,22 @@ export default ({ selectedTags, suggestedTags, addTag, removeTag }) => {
     <Wrapper onMouseDown={focus}>
       <Selected>
         {selectedTags.map(tag => {
-          return <SelectedTag key={tag.value}>{tag.value}</SelectedTag>;
+          return (
+            <SelectedTag onClick={() => removeTag(tag)} key={tag.value}>
+              {tag.value}
+            </SelectedTag>
+          );
         })}
       </Selected>
       <Element onKeyDown={onKeyDown} onChange={onChange} ref={textareaRef} />
       {searchResults.length > 0 && (
         <Results>
           {searchResults.slice(0, 4).map((result, i) => (
-            <Result key={result.value} selected={selectedResult === i}>
+            <Result
+              onClick={() => addTag(result)}
+              key={result.value}
+              selected={selectedResult === i}
+            >
               {result.value}
             </Result>
           ))}

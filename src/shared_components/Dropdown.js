@@ -36,12 +36,14 @@ const Content = styled.div`
   display: ${props => (props.hide ? 'none' : 'block')};
 `;
 
-const Dropdown = ({ children, trigger, onClose }) => {
+const Dropdown = ({ children, trigger, onClose, onOpen }) => {
   const [isOpen, setOpen] = useState(false);
   const toggleOpen = useCallback(
     () => {
       if (isOpen) {
         onClose();
+      } else {
+        onOpen();
       }
       setOpen(!isOpen);
     },
@@ -92,10 +94,12 @@ Dropdown.propTypes = {
   children: PropTypes.node.isRequired,
   trigger: PropTypes.node.isRequired,
   onClose: PropTypes.func,
+  onOpen: PropTypes.func,
 };
 
 Dropdown.defaultProps = {
   onClose: () => {},
+  onOpen: () => {},
 };
 
 export default Dropdown;

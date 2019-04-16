@@ -219,7 +219,7 @@ export default class SemanticLocationControl extends Component {
       return 'Accommodation';
     }
     if (serviceType === 'food') {
-      return 'Food places';
+      return 'Food';
     }
     if (serviceType === 'activity') {
       return 'Activities';
