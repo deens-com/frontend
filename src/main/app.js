@@ -12,6 +12,8 @@ import { getCurrentUser, getFavoriteTrips } from 'store/session/actions';
 import GDPRNotification from './GDPRNotification';
 import Routes from './router';
 import Skeleton from './skeleton';
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
 
 class App extends React.Component {
   checkForReferrerAndSet = () => {

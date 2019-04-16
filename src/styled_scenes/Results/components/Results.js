@@ -64,10 +64,7 @@ class Results extends Component {
 
     const trip = props.trip;
 
-    if (
-      props.routeState &&
-      (trip._id === props.routeState.tripId || props.routeState.isCreatingTripNotLoggedIn)
-    ) {
+    if (props.routeState && trip._id === props.routeState.tripId) {
       this.days =
         props.routeState &&
         Array.from({ length: minutesToDays(props.routeState.duration) }).map((_, i) =>
@@ -90,7 +87,7 @@ class Results extends Component {
   refetch_results(param_object) {
     const query_params = this.get_query_params();
     query_params[Object.keys(param_object)[0]] = param_object[Object.keys(param_object)[0]];
-    this.props.updatePath(query_params, this.props.history, this.props.routeState);
+    this.props.pushSearch(query_params, this.props.routeState);
   }
 
   loadData = item => {
@@ -192,19 +189,17 @@ class Results extends Component {
         </Row>
         <Row style={{ visibility: this.props.isLoadingResults ? 'hidden' : 'visible' }}>
           <PaginationWrap>
-            {this.props.data.length
-              ? console.log('a', this.props.searchParams) || (
-                  <ReactPaginate
-                    pageCount={Math.ceil(this.props.count / this.props.searchParams.limit)}
-                    marginPagesDisplayed={1}
-                    pageRangeDisplayed={2}
-                    onPageChange={this.loadData}
-                    previousClassName="previousButton"
-                    nextClassName="nextButton"
-                    forcePage={parseInt(this.props.searchParams.page, 10) - 1}
-                  />
-                )
-              : null}
+            {this.props.data.length ? (
+              <ReactPaginate
+                pageCount={Math.ceil(this.props.count / this.props.searchParams.limit)}
+                marginPagesDisplayed={1}
+                pageRangeDisplayed={2}
+                onPageChange={this.loadData}
+                previousClassName="previousButton"
+                nextClassName="nextButton"
+                forcePage={parseInt(this.props.searchParams.page, 10) - 1}
+              />
+            ) : null}
           </PaginationWrap>
         </Row>
       </Wrap>

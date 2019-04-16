@@ -8,9 +8,11 @@
 }
 
 .CalendarDay__selected, .CalendarDay__selected:active, .CalendarDay__selected:hover {
-  background: #00a699;
+  background: #097DA8 !important;
+  border: 1px solid #e4e7e7 !important;
 }
 
 .CalendarDay__selected_span {
-  background: #66e2da;
+  border: 1px solid #e4e7e7 !important;
+  background: #76C4E3 !important;
 }

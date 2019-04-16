@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import tripActions from 'store/trips/actions';
 import { Loader } from 'semantic-ui-react';
-import { updatePath } from 'store/search/helpers';
+import { pushSearch } from 'libs/search';
 import headerActions from 'store/header/actions';
 
 class ResultsContainer extends Component {
@@ -42,7 +42,7 @@ class ResultsContainer extends Component {
       <ResultsComponent
         searchParams={this.props.searchParams}
         service_data={this.props.results}
-        updatePath={updatePath}
+        pushSearch={pushSearch}
         isLoadingResults={this.props.isLoadingResults || this.hasToLoadTripYet()}
         trip={this.props.trip}
         retryFetch={this.retryFetch}

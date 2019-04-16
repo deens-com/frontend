@@ -103,7 +103,7 @@ export default function session(state = initialState, action = {}) {
           [action.payload]: false,
         },
       };
-    case sessions_actions.types.LOADED_FAVORITE_TRIPs:
+    case sessions_actions.types.LOADED_FAVORITE_TRIPS:
       return {
         ...state,
         favoriteTrips: {

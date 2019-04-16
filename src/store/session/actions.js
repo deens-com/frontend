@@ -29,7 +29,7 @@ export const types = {
   LOADED_LATEST_TRIP: 'LOADED_LATEST_TRIP',
   ADD_FAVORITE_TRIP: 'ADD_FAVORITE_TRIP',
   REMOVE_FAVORITE_TRIP: 'REMOVE_FAVORITE_TRIP',
-  LOADED_FAVORITE_TRIPs: 'LOADED_FAVORITE_TRIPs',
+  LOADED_FAVORITE_TRIPS: 'LOADED_FAVORITE_TRIPS',
 };
 
 function redirect(to, action) {
@@ -111,7 +111,7 @@ export const getFavoriteTrips = () => async (dispatch, getState) => {
       savedFavoriteTrips,
     );
     dispatch({
-      type: types.LOADED_FAVORITE_TRIPs,
+      type: types.LOADED_FAVORITE_TRIPS,
       payload: trips,
     });
     Object.keys(savedFavoriteTrips)
@@ -123,7 +123,7 @@ export const getFavoriteTrips = () => async (dispatch, getState) => {
     }
   } catch (e) {
     dispatch({
-      type: types.LOADED_FAVORITE_TRIPs,
+      type: types.LOADED_FAVORITE_TRIPS,
       payload: savedFavoriteTrips,
     });
   }

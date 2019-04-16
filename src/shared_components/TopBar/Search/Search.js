@@ -117,7 +117,7 @@ export default class DesktopSearch extends Component {
       search: '',
       mode: 'text',
       inFocus: false,
-      serviceType: 'trip',
+      serviceType: props.searchParams.type[0] || 'trip',
       params: {},
     };
 
@@ -157,7 +157,7 @@ export default class DesktopSearch extends Component {
         lat: undefined,
         lng: undefined,
       };
-      this.setState({ text, params, address: null, serviceType }, this.handleSearchSubmit);
+      this.setState({ text, params, address: null }, this.handleSearchSubmit);
       return;
     }
     geocodeByAddress(address).then(results => {
@@ -176,7 +176,6 @@ export default class DesktopSearch extends Component {
       ...this.props.searchParams,
       ...this.state.params,
       text,
-      type: [this.state.serviceType],
     };
 
     this.props.updateQuery(params);
@@ -185,12 +184,20 @@ export default class DesktopSearch extends Component {
   }
 
   handleServiceTypeChange = serviceType => {
-    this.setState(
-      {
-        serviceType,
-      },
-      this.handleSearchSubmit,
-    );
+    const params = {
+      ...this.props.searchParams,
+      ...this.state.params,
+      text: this.state.text,
+      type: [serviceType],
+      end_date:
+        serviceType === 'food' || serviceType === 'activity'
+          ? undefined
+          : this.props.searchParams.end_date,
+      priceLevel: serviceType !== 'food' ? undefined : this.props.searchParams.end_date,
+      priceStart: serviceType === 'food' ? undefined : this.props.searchParams.end_date,
+      priceEnd: serviceType === 'food' ? undefined : this.props.searchParams.end_date,
+    };
+    pushSearch(params);
   };
 
   render() {
@@ -224,7 +231,7 @@ export default class DesktopSearch extends Component {
               ref={this.inputRef}
               showServiceTypes
               handleServiceTypeChange={this.handleServiceTypeChange}
-              serviceType={this.state.serviceType}
+              serviceType={this.props.searchParams.type[0]}
               hasSearchedText={Boolean(this.state.text)}
             />
 

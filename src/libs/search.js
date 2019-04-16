@@ -17,26 +17,27 @@ export function getAddress(params) {
 }
 
 export const mapUrlToProps = location => {
-  let searchParams = queryString.parse(location.search, { ignoreQueryPrefix: true });
-
+  let searchParams = queryString.parse(location.search, { ignoreQueryPrefix: true, comma: true });
   return {
     // does not properly parse '+'.
     type: (searchParams.type && searchParams.type.split(' ')) || [],
-    tags:
-      (location.search.match(/(tags.+)/) &&
-        location.search
-          .match(/(tags.+)/)[0]
-          .split('&')[0]
-          .replace('tags=', '')
-          .split('+')) ||
-      [],
+    tags: searchParams.tags || [],
     lat: searchParams.lat,
     lng: searchParams.lng,
     adults: Number(searchParams.adults) || undefined,
     children: Number(searchParams.children) || undefined,
     infants: Number(searchParams.infants) || undefined,
-    start_date: searchParams.start_date,
-    end_date: searchParams.end_date,
+    start_date: Number(searchParams.start_date) || undefined,
+    end_date: Number(searchParams.end_date) || undefined,
+    priceStart: Number(searchParams.priceStart) || undefined,
+    priceEnd: Number(searchParams.priceEnd) || undefined,
+    priceLevel:
+      (searchParams.priceLevel &&
+        searchParams.priceLevel
+          .split(',')
+          .map(Number)
+          .sort()) ||
+      undefined,
     keywords: searchParams.keywords,
     sortBy: searchParams.sortBy,
     city: searchParams.city,
@@ -57,13 +58,29 @@ export const mapDataToQuery = ({ type, ...searchParams }) => ({
   ...searchParams,
 });
 
-export const pushSearch = searchParams => {
-  history.push(`/results?${queryString.stringify(searchParams, { arrayFormat: 'comma' })}`);
+export const pushSearch = (searchParams, state) => {
+  history.push(`/results?${queryString.stringify(searchParams, { arrayFormat: 'comma' })}`, state);
+};
+
+const GUESTS = 'guests';
+const DATES = 'dates';
+const PRICE_RANGE = 'priceRange';
+const TAGS = 'tags';
+const SINGLE_DATE = 'singleDate';
+const PRICE_TAGS = 'priceTags';
+
+export const availableFilters = {
+  guests: GUESTS,
+  dates: DATES,
+  priceRange: PRICE_RANGE,
+  tags: TAGS,
+  singleDate: SINGLE_DATE,
+  priceTags: PRICE_TAGS,
 };
 
 export const filtersByType = {
-  trip: ['guests', 'dates', 'priceRange', 'tags'],
-  accommodation: ['guests', 'dates', 'priceRange', 'tags'],
-  activity: ['guests', 'singleDate', 'priceRange', 'tags'],
-  food: ['guests', 'singleDate', 'priceTags', 'tags'],
+  trip: [GUESTS, DATES, PRICE_RANGE, TAGS],
+  accommodation: [GUESTS, DATES, PRICE_RANGE, TAGS],
+  activity: [GUESTS, SINGLE_DATE, PRICE_RANGE, TAGS],
+  food: [GUESTS, SINGLE_DATE, PRICE_TAGS, TAGS],
 };

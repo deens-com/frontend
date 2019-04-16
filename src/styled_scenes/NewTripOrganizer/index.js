@@ -328,27 +328,30 @@ export default class TripOrganizer extends React.Component {
     }
 
     const coord = location && location.geo && getFromCoordinates(location.geo.coordinates);
-    const country = location && location.country && I18nText.translate(location.country.names);
-    const address =
-      location && `${location.city || location.state}${country ? `, ${country}` : ''}`;
 
-    this.props.updatePath(
+    this.props.pushSearch(
       {
         type: [type],
-        address,
-        latitude: coord && coord.lat,
-        longitude: coord && coord.lng,
+        //lat: coord && coord.lat,
+        //lng: coord && coord.lng,
+        city: location.city,
+        state: location.state,
+        countryCode: location.countryCode,
         start_date: moment(tripData.startDate)
           .add(day - 1, 'days')
           .valueOf(),
+        end_date:
+          type === 'accommodation'
+            ? moment(tripData.startDate)
+                .add(day, 'days')
+                .valueOf()
+            : undefined,
       },
-      history,
       {
         tripId: trip._id,
         day,
         duration: this.state.tripData.duration,
         startDate: this.state.tripData.startDate.valueOf(),
-        isCreatingTripNotLoggedIn: !Boolean(trip._id),
       },
     );
   };
