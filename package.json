@@ -61,7 +61,7 @@
     "react-media": "^1.8.0",
     "react-number-format": "^4.0.4",
     "react-paginate": "^5.2.3",
-    "react-places-autocomplete": "^7.2.0",
+    "react-places-autocomplete": "https://github.com/fcmatteo/react-places-autocomplete.git",
     "react-redux": "^5.0.7",
     "react-resize-detector": "^3.4.0",
     "react-router": "^4.2.0",

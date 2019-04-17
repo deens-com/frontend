@@ -56,6 +56,7 @@ const ListItem = styled.li`
   padding: 0.5em 0;
   cursor: pointer;
   order: ${props => props.order || 1};
+  display: ${props => (props.hide ? 'none' : 'list-item')};
   &:hover {
     background-color: #f5f5f5;
   }
@@ -254,7 +255,9 @@ export default class SemanticLocationControl extends Component {
                 }}
                 htmlFor="search"
               >
-                {hasSearchedText ? 'Showing Trips with' : `Showing ${this.getSentenceWord()} in`}
+                {hasSearchedText
+                  ? 'Showing Trips containing'
+                  : `Showing ${this.getSentenceWord()} in`}
               </ExternalText>
             )}
           <PlacesAutocomplete
@@ -264,6 +267,7 @@ export default class SemanticLocationControl extends Component {
               ...(onlyCities ? { types: ['(cities)'] } : null),
             }}
             onError={this.onError}
+            fetchOnInit
           >
             {({ getInputProps, suggestions, getSuggestionItemProps }) => {
               return (
@@ -319,6 +323,7 @@ export default class SemanticLocationControl extends Component {
                       {...getSuggestionItemProps(this.state.address)}
                       order={2}
                       onClick={this.onSelectSearch}
+                      hide={serviceType !== 'trip'}
                     >
                       <ListSpan>
                         <GreyIcon name="search" />
@@ -410,3 +415,14 @@ export default class SemanticLocationControl extends Component {
     );
   }
 }
+
+/*export default class LocationAutoSugget extends React.Component {
+  // we need to get suggestions on initial render
+  componentDidMount() {
+    super(props)
+  }
+
+  render() {
+    return <SemanticLocationControl {...this.props} value={this.s} />
+  }
+}*/

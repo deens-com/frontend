@@ -57,6 +57,8 @@ const Result = styled.div`
   cursor: pointer;
 `;
 
+const MAX_SUGGESTIONS = 3;
+
 export default ({ selectedTags, suggestedTags, addTag, removeTag }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [selectedResult, setSelectedResult] = useState(0);
@@ -88,9 +90,10 @@ export default ({ selectedTags, suggestedTags, addTag, removeTag }) => {
 
   const onKeyDown = e => {
     if (e.keyCode === 40) {
-      if (selectedResult < 3) {
+      if (selectedResult < MAX_SUGGESTIONS - 1) {
         setSelectedResult(selectedResult + 1);
       }
+      e.preventDefault();
       return;
     }
 
@@ -98,6 +101,7 @@ export default ({ selectedTags, suggestedTags, addTag, removeTag }) => {
       if (selectedResult > 0) {
         setSelectedResult(selectedResult - 1);
       }
+      e.preventDefault();
       return;
     }
 
@@ -136,7 +140,7 @@ export default ({ selectedTags, suggestedTags, addTag, removeTag }) => {
       <Element onKeyDown={onKeyDown} onChange={onChange} ref={textareaRef} />
       {searchResults.length > 0 && (
         <Results>
-          {searchResults.slice(0, 4).map((result, i) => (
+          {searchResults.slice(0, MAX_SUGGESTIONS).map((result, i) => (
             <Result
               onClick={() => addTag(result)}
               key={result.value}

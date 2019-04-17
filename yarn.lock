@@ -9998,9 +9998,9 @@ react-paginate@^5.2.3:
   dependencies:
     prop-types "^15.6.1"
 
-react-places-autocomplete@^7.2.0:
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/react-places-autocomplete/-/react-places-autocomplete-7.2.0.tgz#85319ff42a1e3e0d2b02cc40471c1e2911e6dfbe"
+"react-places-autocomplete@https://github.com/fcmatteo/react-places-autocomplete.git":
+  version "7.2.1"
+  resolved "https://github.com/fcmatteo/react-places-autocomplete.git#72665c1afecb54c8d69c86e55385d6b0948373bd"
   dependencies:
     lodash.debounce "^4.0.8"
     prop-types "^15.5.8"

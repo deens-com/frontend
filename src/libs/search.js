@@ -36,7 +36,12 @@ export const mapUrlToProps = location => {
     priceStart: Number(searchParams.priceStart) || undefined,
     priceEnd: Number(searchParams.priceEnd) || undefined,
     priceLevel:
-      (searchParams.priceLevel && searchParams.priceLevel.map(Number).sort()) || undefined,
+      (searchParams.priceLevel &&
+        searchParams.priceLevel
+          .split(',')
+          .map(Number)
+          .sort()) ||
+      undefined,
     keywords: searchParams.keywords,
     sortBy: searchParams.sortBy,
     address: searchParams.address || undefined,
