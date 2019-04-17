@@ -61,7 +61,10 @@ class MobileDropDownMenu extends Component {
     return (
       <Media query={`(max-width: ${sizes.large})`}>
         <AvatarWithUsername
-          onClick={this.props.toggleMenu}
+          onTouchEnd={e => {
+            e.preventDefault();
+            this.props.toggleMenu();
+          }}
           isMenuOpen={this.props.isMenuOpen}
           className={`${this.props.dark && 'dark'} ${this.props.avatarOnly && 'avatar-only'}`}
         >
