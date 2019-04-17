@@ -63,7 +63,7 @@ const FixedFooter = ({
         ${price}
       </Text>
       <HelpMe
-        tripParent={trip.parents[0] && trip.parents[0].serviceGroup}
+        tripId={trip._id}
         user={owner}
         isLoadingUser={false}
         session={session}

@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
+import { error } from 'libs/colors';
 
 const Wrapper = styled.div`
-  border: 1px solid #ebebeb;
-  border-bottom: 1px solid ${props => (props.error ? '#D98181' : '#ebebeb')};
+  border: 1px solid ${props => (props.error ? error : '#ebebeb')};
   padding: 0 7px;
   border-radius: 5px 5px 5px 0;
   background-color: white;

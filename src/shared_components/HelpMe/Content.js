@@ -10,6 +10,7 @@ import Rating from 'shared_components/Rating';
 import Input from 'shared_components/StyledInput';
 import Button from 'shared_components/Button';
 import analytics from 'libs/analytics';
+import { error } from 'libs/colors';
 
 const textPlaceholder =
   'Describe what you are looking for in your ideal trip, where and when you would like to go, how many people would be traveling with you, etc.';
@@ -67,7 +68,7 @@ const TextArea = styled.textarea`
   padding: 12px 8px;
   min-height: 190px;
   border-radius: 5px 5px 5px 0;
-  border: 1px solid #ebebeb;
+  border: 1px solid ${props => (props.error ? error : '#ebebeb')};
   &:focus {
     outline: none;
     border-color: #097da8;
@@ -90,13 +91,42 @@ const url = 'https://hooks.zapier.com/hooks/catch/145807/72cord/';
 
 const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user }) => {
   const [asked, setAsked] = useState(false);
+  const [errors, setErrors] = useState({});
   const budget = useRef(null);
   const duration = useRef(null);
   const description = useRef(null);
   const name = useRef(null);
   const email = useRef(null);
 
+  const isValid = data => {
+    let err = {};
+    let isValid = true;
+    if (!data.budget) {
+      err.budget = true;
+      isValid = false;
+    }
+    if (!data.duration) {
+      err.duration = true;
+      isValid = false;
+    }
+    if (!data.description) {
+      err.description = true;
+      isValid = false;
+    }
+    if (!data.email) {
+      err.email = true;
+      isValid = false;
+    }
+    if (!data.name) {
+      err.name = true;
+      isValid = false;
+    }
+    setErrors(err);
+    return isValid;
+  };
+
   const askForQuote = () => {
+    setErrors({});
     const data = {
       budget: budget.current.value,
       description: description.current.value,
@@ -107,6 +137,9 @@ const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user }) => {
       recommendedUser: user && user._id,
       tripId,
     };
+    if (!isValid(data)) {
+      return;
+    }
     axios.get(url, { params: data, paramsSerializer });
     analytics.planning.brief.complete();
     setAsked(true);
@@ -142,28 +175,28 @@ const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user }) => {
         <FormLine>
           <FormField>
             <Label>Budget (USD)</Label>
-            <Input innerRef={budget} maxWidth="90px" />
+            <Input error={errors.budget} innerRef={budget} maxWidth="90px" />
           </FormField>
           <FormField>
             <Label>Trip duration (Days)</Label>
-            <Input innerRef={duration} maxWidth="90px" />
+            <Input error={errors.duration} innerRef={duration} maxWidth="90px" />
           </FormField>
         </FormLine>
         <FormLine>
-          <TextArea ref={description} placeholder={textPlaceholder} />
+          <TextArea error={errors.description} ref={description} placeholder={textPlaceholder} />
         </FormLine>
         {!session.username && (
           <>
             <FormLine>
               <FormField>
                 <Label>Name</Label>
-                <Input innerRef={name} />
+                <Input error={errors.name} innerRef={name} />
               </FormField>
             </FormLine>
             <FormLine>
               <FormField>
                 <Label>Email</Label>
-                <Input innerRef={email} />
+                <Input error={errors.email} innerRef={email} />
               </FormField>
             </FormLine>
           </>
@@ -173,6 +206,10 @@ const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user }) => {
             Ask for a quote
           </Button>
         </ButtonWrapper>
+        {errors &&
+          Object.keys(errors).length > 0 && (
+            <span style={{ color: error }}>Please fill all the fields</span>
+          )}
       </Form>
     </Wrapper>
   );
