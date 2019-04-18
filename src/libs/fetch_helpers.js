@@ -178,11 +178,11 @@ const buildServiceForView = service => {
       service.dayList = Object.keys(service.periods[0].daysOfWeek).filter(
         k => service.periods[0].daysOfWeek[k],
       );
-      service.startDate = new Date(service.periods[0].startDate);
-      service.endDate = new Date(service.periods[0].endDate);
-      service.openingTime = service.periods[0].startTime;
-      service.closingTime = service.periods[0].endTime;
-      service.slots = service.periods[0].maxCapacity;
+      service.startDate = service.periods[0] && new Date(service.periods[0].startDate);
+      service.endDate = service.periods[0] && new Date(service.periods[0].endDate);
+      service.openingTime = service.periods[0] && service.periods[0].startTime;
+      service.closingTime = service.periods[0] && service.periods[0].endTime;
+      service.slots = service.periods[0] && service.periods[0].maxCapacity;
 
       if (
         service.periods[0].cancellationPolicies &&
@@ -255,8 +255,10 @@ const buildServicesJson = services => {
       service.ratings = service.ratings;
       service.slots = service.slots;
       service.basePrice = service.basePrice;
-      service.openingTime = (service.periods && service.periods[0].startTime) || '00';
-      service.closingTime = (service.periods && service.periods[0].endTime) || '23';
+      service.openingTime =
+        (service.periods && service.periods[0] && service.periods[0].startTime) || '00';
+      service.closingTime =
+        (service.periods && service.periods[0] && service.periods[0].endTime) || '23';
       if (service.tags && service.tags.length && service.tags[0].type) {
         service.tags = parseTags(service.tags);
       }
