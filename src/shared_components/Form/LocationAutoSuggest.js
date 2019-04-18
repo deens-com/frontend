@@ -335,14 +335,14 @@ export default class SemanticLocationControl extends Component {
                     </ListItem>
                     {!(Boolean(this.state.address) && suggestions.length === 0) && (
                       <React.Fragment>
-                        {suggestions.map((suggestion, i) => (
+                        {suggestions.slice(0, 3).map((suggestion, i) => (
                           <ListItem
                             {...getSuggestionItemProps(suggestion)}
                             key={suggestion.placeId}
                             onClick={() =>
                               this.onSelectSuggestion(suggestion.description, serviceType)
                             }
-                            order={i === 0 ? 1 : 3}
+                            order={1}
                           >
                             <ListSpan>
                               <GreyIcon name="map marker alternate" />
