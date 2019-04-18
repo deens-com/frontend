@@ -149,6 +149,7 @@ export default class DesktopSearch extends Component {
     history.push(`/results`);
   }
   handleLocationChange(address, serviceType, text) {
+    console.log('cuco', address, serviceType, text);
     if (text) {
       const params = {
         city: undefined,
@@ -157,13 +158,16 @@ export default class DesktopSearch extends Component {
         lat: undefined,
         lng: undefined,
       };
-      this.setState({ text, params, address: null }, this.handleSearchSubmit);
+      this.setState({ text, params, address: null, serviceType }, this.handleSearchSubmit);
       return;
     }
     geocodeByAddress(address).then(results => {
       const result = results[0];
       const searchParams = getSearchParams(address, result);
-      this.setState({ address, params: searchParams, text: null }, this.handleSearchSubmit);
+      this.setState(
+        { address, params: searchParams, text: null, serviceType },
+        this.handleSearchSubmit,
+      );
     });
   }
   handleSearchSubmit() {
@@ -176,7 +180,7 @@ export default class DesktopSearch extends Component {
       ...this.props.searchParams,
       ...this.state.params,
       text,
-      type: [text ? 'trip' : this.props.searchParams.type],
+      type: [text ? 'trip' : this.state.serviceType || this.props.searchParams.type],
     };
 
     this.props.updateQuery(params);
