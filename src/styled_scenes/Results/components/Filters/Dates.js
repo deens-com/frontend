@@ -8,7 +8,7 @@ import { primary, textDark, backgroundDark } from 'libs/colors';
 import { P } from 'libs/commonStyles';
 import Dropdown from 'shared_components/Dropdown';
 
-const now = moment();
+const now = moment().startOf('day');
 const isDayBlocked = date => date.valueOf() <= now.valueOf();
 
 const ContentWrapper = styled.div`
