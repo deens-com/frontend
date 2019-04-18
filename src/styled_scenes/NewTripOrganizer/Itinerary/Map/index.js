@@ -112,14 +112,16 @@ const isFood = service => service.categories.find(category => category.names['en
 
 const Map = ({ showingMap, servicesByDay, numberOfDays }) => {
   const { tripData } = useContext(TripContext);
-  const startLocation =
+  const [startLocation, setStartLocation] = useState(
     tripData.userStartLocation &&
-    tripData.userStartLocation.geo &&
-    tripData.userStartLocation.geo.coordinates;
-  const endLocation =
+      tripData.userStartLocation.geo &&
+      tripData.userStartLocation.geo.coordinates,
+  );
+  const [endLocation, setEndLocation] = useState(
     tripData.userEndLocation &&
-    tripData.userEndLocation.geo &&
-    tripData.userEndLocation.geo.coordinates;
+      tripData.userEndLocation.geo &&
+      tripData.userEndLocation.geo.coordinates,
+  );
 
   const [position, setPosition] = useState('relative');
   const [services, setServices] = useState(mapDaysToServices(servicesByDay));
@@ -205,8 +207,18 @@ const Map = ({ showingMap, servicesByDay, numberOfDays }) => {
 
   useEffect(
     () => {
+      const location =
+        tripData.userStartLocation &&
+        tripData.userStartLocation.geo &&
+        tripData.userStartLocation.geo.coordinates;
+      if (!location) {
+        return;
+      }
       if (startLocation) {
-        setMarkers([getFromCoordinates(startLocation), ...markers.slice(1)]);
+        setMarkers([getFromCoordinates(location), ...markers.slice(1)]);
+      } else {
+        setMarkers([getFromCoordinates(location), ...markers]);
+        setStartLocation(location);
       }
     },
     [tripData.userStartLocation],
@@ -214,8 +226,18 @@ const Map = ({ showingMap, servicesByDay, numberOfDays }) => {
 
   useEffect(
     () => {
+      const location =
+        tripData.userEndLocation &&
+        tripData.userEndLocation.geo &&
+        tripData.userEndLocation.geo.coordinates;
+      if (!location) {
+        return;
+      }
       if (endLocation) {
-        setMarkers([...markers.slice(0, markers.length - 1), getFromCoordinates(endLocation)]);
+        setMarkers([...markers.slice(0, markers.length - 1), getFromCoordinates(location)]);
+      } else {
+        setMarkers([...markers, getFromCoordinates(location)]);
+        setEndLocation(location);
       }
     },
     [tripData.userEndLocation],
