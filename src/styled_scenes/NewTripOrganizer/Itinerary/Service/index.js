@@ -79,6 +79,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   position: relative;
   width: 190px;
+  margin-top: 40px;
 `;
 
 const DraggingBox = styled.div`

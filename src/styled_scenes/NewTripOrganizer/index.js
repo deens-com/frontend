@@ -22,6 +22,70 @@ function addLang(text) {
   };
 }
 
+function generateDaysData(trip) {
+  const days = minutesToDays(trip.duration);
+  let daysData = {};
+  for (let i = 1; i <= days; i++) {
+    daysData[i] = {
+      notes: trip.notes ? trip.notes[i] : undefined,
+    };
+  }
+  return daysData;
+}
+
+function removeDayAndGenerateData(data, dayToRemove) {
+  let newData = {};
+  Object.keys(data).forEach(key => {
+    if (key < dayToRemove) {
+      newData[key] = data[key];
+      return;
+    }
+    if (key === dayToRemove) {
+      return;
+    }
+    if (key > dayToRemove) {
+      newData[key - 1] = data[key];
+      return;
+    }
+  });
+  return newData;
+}
+
+function addDayAndGenerateData(data, addAfter) {
+  if (!addAfter) {
+    return data;
+  }
+  let newData = {};
+  Object.keys(data).forEach(key => {
+    if (key < addAfter) {
+      newData[key] = data[key];
+      return;
+    }
+    if (key === addAfter) {
+      newData[key] = data[key];
+      newData[key + 1] = {};
+      return;
+    }
+    if (key > addAfter) {
+      newData[key + 1] = data[key];
+      return;
+    }
+  });
+  return newData;
+}
+
+function parseDaysDataToSave(data) {
+  let notes = {};
+  Object.keys(data).forEach(key => {
+    if (data[key].notes) {
+      notes[key] = data[key].notes;
+    }
+  });
+  return {
+    notes,
+  };
+}
+
 function createStateBasedOnTrip(props) {
   const heroImage = getHeroImageUrlFromMedia(props.trip && props.trip.media);
   return {
@@ -39,6 +103,7 @@ function createStateBasedOnTrip(props) {
       userStartLocation: props.trip.userStartLocation || null,
       userEndLocation: props.trip.userEndLocation || null,
     },
+    daysData: generateDaysData(props.trip),
     image: heroImage || null,
     // UI
     draggingDay: false,
@@ -218,6 +283,15 @@ export default class TripOrganizer extends React.Component {
     this.removeIsLoadingTransports();
   };
 
+  saveDaysData = async () => {
+    this.addIsSaving();
+    const dataToSave = parseDaysDataToSave(this.state.daysData);
+
+    await apiClient.trips.patch(this.props.trip._id, dataToSave);
+
+    this.removeIsSaving();
+  };
+
   saveRemovedServices = async (serviceOrgIds = []) => {
     if (serviceOrgIds.length === 0) {
       return;
@@ -354,6 +428,7 @@ export default class TripOrganizer extends React.Component {
   };
 
   changeDayPosition = (currentDay, nextDay) => {
+    // IF WE USE THIS FUNCTION AGAIN REMEMBER TO HANDLE `daysData`
     this.setState(
       prevState => {
         const diff = nextDay - currentDay;
@@ -500,6 +575,7 @@ export default class TripOrganizer extends React.Component {
             ...prevState.tripData,
             duration: duration >= 1 ? duration : 60 * 24,
           },
+          daysData: removeDayAndGenerateData(prevState.daysData, day),
         };
       },
       async () => {
@@ -507,6 +583,7 @@ export default class TripOrganizer extends React.Component {
         this.saveTrip({
           duration: this.state.tripData.duration,
         });
+        this.saveDaysData();
         this.saveRearrangeServices();
       },
     );
@@ -621,11 +698,13 @@ export default class TripOrganizer extends React.Component {
             ...prevState.tripData,
             duration,
           },
+          daysData: addDayAndGenerateData(prevState.daysData, afterDay),
         };
       },
       () => {
         if (afterDay) {
           this.saveRearrangeServices();
+          this.saveDaysData();
         }
         this.saveTrip({
           duration: this.state.tripData.duration,
@@ -911,6 +990,24 @@ export default class TripOrganizer extends React.Component {
     });
   };
 
+  changeDayNote = (text, day) => {
+    const note = addLang(text);
+    this.setState(
+      prevState => ({
+        daysData: {
+          ...prevState.daysData,
+          [day]: {
+            ...prevState.daysData[day],
+            notes: note,
+          },
+        },
+      }),
+      () => {
+        this.saveDaysData();
+      },
+    );
+  };
+
   selectTransport = async (transport, fromServiceId, toServiceId, position = 'middle') => {
     const requestBody = {
       position,
@@ -992,6 +1089,8 @@ export default class TripOrganizer extends React.Component {
           fromService={this.state.fromService}
           toService={this.state.toService}
           showingMap={this.state.showingMap}
+          saveDayNote={this.changeDayNote}
+          daysData={this.state.daysData}
         />
         <Footer
           price={tripData.totalPrice.toFixed(2)}
