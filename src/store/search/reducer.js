@@ -13,7 +13,7 @@ const initialState = {
   searchQuery: {
     type: [],
     tags: [],
-    page: 0,
+    page: 1,
     sortBy: '',
   },
 };
