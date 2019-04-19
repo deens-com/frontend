@@ -34,6 +34,7 @@ export const Cart = styled.div`
   margin-bottom: 15px;
   text-align: ${props => props.centerText || 'left'};
   min-height: ${props => props.height || 'auto'};
+  position: relative;
 
   & > a {
     color: ${props => props.linkColor || 'inherit'};

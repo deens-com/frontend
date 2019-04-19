@@ -6,7 +6,8 @@ import { withRouter } from 'react-router';
 
 // COMPONENTS
 import Row from '../../../shared_components/layout/Row';
-import TripCard from '../../../shared_components/Cards/Trip';
+//import TripCard from '../../../shared_components/Cards/Trip';
+import TripCard from 'shared_components/Carts/Trip';
 import PaginationWrap from 'shared_components/PaginationWrap';
 import Button from 'shared_components/Button';
 import ReactPaginate from 'react-paginate';
@@ -149,38 +150,34 @@ class Results extends Component {
               </Loader>
             </LoaderWithMargin>
           ) : (
-            <Grid columns={this.props.showMap ? 2 : 5} doubling stackable>
+            <Grid columns={this.props.showMap ? 3 : 5} doubling stackable>
               {this.props.data.map((result, i) => (
                 <Grid.Column key={result._id}>
                   <ResultItem>
-                    <Link
-                      to={
-                        result.categories && result.categories.length
-                          ? '/services/' + generateServiceSlug(result)
-                          : '/trips/' + generateTripSlug(result)
+                    <TripCard
+                      key={result.label}
+                      onOver={onCardOver}
+                      onLeave={onCardLeave}
+                      withTooltip
+                      withShadow
+                      item={result}
+                      isTrip={!(result.categories && result.categories.length)}
+                      isPlaceholder={false}
+                      type={this.props.searchParams.type[0]}
+                      numberOfGuests={
+                        this.props.searchParams.adults + (this.props.searchParams.children || 0)
                       }
-                    >
-                      {result.contractAddress && <Badge>Decentralized</Badge>}
-                      <TripCard
-                        key={result.label}
-                        onOver={onCardOver}
-                        onLeave={onCardLeave}
-                        withTooltip
-                        withShadow
-                        item={result}
-                        isTrip={!(result.categories && result.categories.length)}
-                        addToTrip={
-                          this.props.routeState && {
-                            id: this.props.routeState.tripId,
-                            day: this.props.routeState.day,
-                            days: this.days,
-                            addToTrip: this.addToTrip,
-                            removeFromTrip: this.removeFromTrip,
-                            goBackToTrip: this.props.goBackToTrip,
-                          }
+                      addToTrip={
+                        this.props.routeState && {
+                          id: this.props.routeState.tripId,
+                          day: this.props.routeState.day,
+                          days: this.days,
+                          addToTrip: this.addToTrip,
+                          removeFromTrip: this.removeFromTrip,
+                          goBackToTrip: this.props.goBackToTrip,
                         }
-                      />
-                    </Link>
+                      }
+                    />
                   </ResultItem>
                 </Grid.Column>
               ))}

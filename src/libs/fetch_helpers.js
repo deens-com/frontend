@@ -220,7 +220,7 @@ const buildServiceForView = service => {
 
 const normalizeServiceToPatch = createService;
 
-const buildServicesJson = services => {
+const buildServicesJson = (services, shouldParseTags = true) => {
   const i18nLocale = 'en-us';
   return services.map(service => {
     try {
@@ -259,7 +259,7 @@ const buildServicesJson = services => {
         (service.periods && service.periods[0] && service.periods[0].startTime) || '00';
       service.closingTime =
         (service.periods && service.periods[0] && service.periods[0].endTime) || '23';
-      if (service.tags && service.tags.length && service.tags[0].type) {
+      if (shouldParseTags && service.tags && service.tags.length && service.tags[0].type) {
         service.tags = parseTags(service.tags);
       }
       if (service.type === undefined) {

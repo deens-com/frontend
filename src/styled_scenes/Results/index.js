@@ -32,6 +32,7 @@ const MapWrapper = styled.div`
   margin-top: 1.8em;
   position: relative;
   width: 100%;
+  max-width: 600px;
   h3 {
     color: #fff;
     font-size: 52px;
@@ -43,6 +44,7 @@ const MapWrapper = styled.div`
 const MapPlaceholder = styled.div`
   display: none;
   width: 100%;
+  max-width: 600px;
 `;
 
 const ServicesWrapper = styled.div`

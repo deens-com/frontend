@@ -270,6 +270,16 @@ export function parseTagsText(tags) {
   });
 }
 
+export function tagsById(tags) {
+  return tags.reduce((prevTags, tag) => {
+    const { _id } = tag;
+    return {
+      ...prevTags,
+      [_id]: tag,
+    };
+  }, {});
+}
+
 export function getKmFromMeters(meters) {
   if (typeof meters !== 'number') {
     return null;
