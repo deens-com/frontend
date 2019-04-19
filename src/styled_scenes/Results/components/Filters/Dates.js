@@ -42,7 +42,7 @@ const DropdownContent = ({ startDate, endDate, onDateSelect, closeDropdown, isSi
       setSelectedEndDate(null);
       if (isSingle) {
         onDateSelect({
-          start_date: startDate.valueOf(),
+          startDate: startDate.valueOf(),
         });
         closeDropdown();
         return;
@@ -55,15 +55,15 @@ const DropdownContent = ({ startDate, endDate, onDateSelect, closeDropdown, isSi
     if (startDate && endDate) {
       setSelectedEndDate(endDate);
       onDateSelect({
-        start_date: startDate.valueOf(),
-        end_date: endDate.valueOf(),
+        startDate: startDate.valueOf(),
+        endDate: endDate.valueOf(),
       });
       closeDropdown();
     }
   };
 
   const resetDates = () => {
-    onDateSelect({ start_date: null, end_date: null });
+    onDateSelect({ startDate: null, endDate: null });
     closeDropdown();
   };
 

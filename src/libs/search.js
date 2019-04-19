@@ -31,8 +31,8 @@ export const mapUrlToProps = location => {
     adults: Number(searchParams.adults) || undefined,
     children: Number(searchParams.children) || undefined,
     infants: Number(searchParams.infants) || undefined,
-    start_date: Number(searchParams.start_date) || undefined,
-    end_date: Number(searchParams.end_date) || undefined,
+    startDate: Number(searchParams.startDate) || undefined,
+    endDate: Number(searchParams.endDate) || undefined,
     priceStart: Number(searchParams.priceStart) || undefined,
     priceEnd: Number(searchParams.priceEnd) || undefined,
     priceLevel:
@@ -56,8 +56,10 @@ export const mapUrlToProps = location => {
 
 // If there is some processing required, just add the field here
 // otherwise, the same object will be passed to the request
-export const mapDataToQuery = ({ type, ...searchParams }) => ({
+export const mapDataToQuery = ({ type, startDate, endDate, ...searchParams }) => ({
   address: undefined,
+  start_date: startDate,
+  end_date: endDate,
   category: !type.length
     ? undefined
     : type.map(a => a.charAt(0).toUpperCase() + a.substr(1)).join('+'),
@@ -88,5 +90,5 @@ export const filtersByType = {
   trip: [GUESTS, DATES, PRICE_RANGE, TAGS],
   accommodation: [GUESTS, DATES, PRICE_RANGE, TAGS],
   activity: [GUESTS, SINGLE_DATE, PRICE_RANGE, TAGS],
-  food: [GUESTS, SINGLE_DATE, PRICE_TAGS, TAGS],
+  food: [GUESTS, PRICE_TAGS, TAGS],
 };

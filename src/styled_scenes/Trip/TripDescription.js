@@ -65,7 +65,7 @@ export default class ResultsScene extends Component {
   handleDatesChange = dateRange => {
     const start = dateRange.startDate;
     const end = dateRange.endDate;
-    this.props.changeDates({ start_date: start, end_date: end });
+    this.props.changeDates({ startDate: start, endDate: end });
   };
 
   render() {

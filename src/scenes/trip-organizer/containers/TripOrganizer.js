@@ -102,7 +102,7 @@ class TripOrganizerContainer extends Component {
 const mapStateToProps = (state, props) => {
   const trip = state.trips.trip;
 
-  let startDate = state.search.searchQuery.start_date;
+  let startDate = state.search.searchQuery.startDate;
   if (!startDate) {
     const tomorrow = moment()
       .add(1, 'days')

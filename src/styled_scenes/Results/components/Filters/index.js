@@ -36,15 +36,15 @@ const Filters = ({ searchParams }) => {
       )}
       {filters.includes(availableFilters.dates) && (
         <DatesFilter
-          startDate={searchParams.start_date}
-          endDate={searchParams.end_date}
+          startDate={searchParams.startDate}
+          endDate={searchParams.endDate}
           onDateSelect={search}
         />
       )}
       {filters.includes(availableFilters.singleDate) && (
         <DatesFilter
-          startDate={searchParams.start_date}
-          endDate={searchParams.end_date}
+          startDate={searchParams.startDate}
+          endDate={searchParams.endDate}
           onDateSelect={search}
           isSingle
         />

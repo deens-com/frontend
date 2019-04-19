@@ -161,7 +161,7 @@ const mapStateToProps = state => {
     adults: state.search.searchQuery.adults || 1,
     children: state.search.searchQuery.children || 0,
     infants: state.search.searchQuery.infants || 0,
-    startDate: state.search.searchQuery.start_date,
+    startDate: state.search.searchQuery.startDate,
     endDate: state.search.searchQuery.end_date,
     availability: state.trips.availability,
     isCloning: state.trips.isCloning,
