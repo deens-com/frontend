@@ -179,6 +179,7 @@ export const getCurrentUser = fetchReferralInfo => async (dispatch, getState) =>
 export const logOut = () => dispatch => {
   removeSession();
   dispatch(sessionsFetched({ session: {} })); // why this???
+  dispatch(changeCurrentUserTrip(null));
   history.push('/');
 };
 
@@ -276,6 +277,7 @@ export const loginRequest = (email, password, { from, action }) => {
           dispatch(sessionsFetched({ session: userObject }));
           saveSession(userData);
           getFavoriteTrips();
+          dispatch(getCurrentUserTrip());
           redirect(from, action);
         }
       }
