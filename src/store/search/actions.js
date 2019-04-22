@@ -1,7 +1,7 @@
 import fetchHelpers from 'libs/fetch_helpers';
 import api from 'libs/apiClient';
 import { createAsyncActions, dispatchAsyncActions } from 'store/utils';
-import { parseTagsText, tagsById } from 'libs/Utils';
+import { parseTagsText, parseTagsCount } from 'libs/Utils';
 import { mapDataToQuery, hasLocationParams } from 'libs/search';
 
 const SEARCH = 'SEARCH';
@@ -54,7 +54,9 @@ const fetchResults = searchQuery =>
     const resultsArr = searchForTrips ? results.data.trips : results.data.services;
     const data = fetchHelpers.buildServicesJson(resultsArr, false);
 
-    const tags = parseTagsText(results.data.tags);
+    const tags = parseTagsText(
+      searchForTrips ? parseTagsCount(results.data.tagsWithCount) : results.data.tags,
+    );
 
     return {
       results: data,

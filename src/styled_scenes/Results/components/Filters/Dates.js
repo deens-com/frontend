@@ -50,6 +50,8 @@ const DropdownContent = ({ startDate, endDate, onDateSelect, closeDropdown, isSi
       setFocusedInput(END_DATE);
       return;
     }
+    setSelectedStartDate(startDate);
+    setSelectedEndDate(endDate);
     setFocusedInput(endDate ? START_DATE : END_DATE);
 
     if (startDate && endDate) {

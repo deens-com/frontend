@@ -266,7 +266,13 @@ export function generateServiceSlug(service) {
 export function parseTagsText(tags) {
   return tags.map(tag => {
     const tagName = tag.names['en-us'].charAt(0).toUpperCase() + tag.names['en-us'].substr(1);
-    return { text: tagName, value: tag.names['en-us'], _id: tag._id };
+    return { text: tagName, value: tag.names['en-us'], _id: tag._id, count: tag.count };
+  });
+}
+
+export function parseTagsCount(tagsWithCount) {
+  return tagsWithCount.map(tagWithCount => {
+    return { ...tagWithCount.tag, count: tagWithCount.count };
   });
 }
 
