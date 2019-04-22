@@ -25,7 +25,7 @@ import * as colors from 'libs/colors';
 import { duration } from 'libs/trips';
 import Stars from 'shared_components/Rating/Stars';
 import { Link } from 'react-router-dom';
-import ImgurAvatar from './../../assets/no-avatar.png';
+import ImgurAvatar from 'assets/no-avatar.png';
 import Rating from 'shared_components/Rating';
 
 const Wrap = styled.div`
@@ -303,11 +303,19 @@ class TripCart extends Component {
     }));
   };
 
+  isFastBookable = () => {
+    if (this.props.type === 'trip') {
+      return this.props.item.fastBookable;
+    }
+    return this.props.item.checkoutOptions.payAt === 'please';
+  };
+
   renderThumb() {
     const { isPlaceholder, hideAuthor, type } = this.props;
     const owner = isPlaceholder ? {} : this.props.item.owner;
-    const avatar =
-      owner.profilePicture + '?auto=compress&dpr=1&crop=true&fit=crop&w=33&h=33' || ImgurAvatar;
+    const avatar = owner.profilePicture
+      ? owner.profilePicture + '?auto=compress&dpr=1&crop=true&fit=crop&w=33&h=33'
+      : ImgurAvatar;
     const isFavorite = isPlaceholder ? false : this.props.favoriteTrips[this.props.item._id];
 
     return (
@@ -444,7 +452,7 @@ class TripCart extends Component {
           </Location>
         </SecondLine>
         <TagsLine>
-          <BookableTag>Fast Booking</BookableTag>
+          {this.isFastBookable() && <BookableTag>Fast Booking</BookableTag>}
           {this.renderTags()}
         </TagsLine>
       </>

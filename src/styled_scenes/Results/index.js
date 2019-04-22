@@ -28,6 +28,7 @@ import { PageContent } from './../../shared_components/layout/Page';
 import { pushSearch } from 'libs/search';
 import { primary } from 'libs/colors';
 import { P } from 'libs/commonStyles';
+import Sort from './components/Sort';
 
 import addPrefixArticle from 'indefinite';
 
@@ -63,10 +64,20 @@ const ServicesWrapper = styled.div`
   }
 `;
 
+const TopFiltersWrapper = styled.div``;
+
+const RightColumn = styled.div`
+  dislay: flex;
+  flex-direction: column;
+  > *:first-child {
+    margin-bottom: 10px;
+  }
+`;
+
 const AddingServiceTopBar = styled.div`
   display: flex;
   align-items: center;
-  margin: 10px 30px;
+  margin: 10px 15px;
 `;
 
 const CreateService = styled.span`
@@ -77,7 +88,7 @@ const CreateService = styled.span`
 
 const MapToggle = styled.div`
   display: flex;
-  flex-flow: row-reverse;
+  cursor: pointer;
 `;
 
 const TopFilters = styled.div`
@@ -89,7 +100,7 @@ const TopFilters = styled.div`
 const ByYelp = styled.div`
   display: flex;
   align-items: center;
-  margin: 0 30px;
+  margin: -10px 15px;
   > p {
     margin-top: 10px;
   }
@@ -288,34 +299,35 @@ class ResultsScene extends Component {
     const type = props.searchParams.type[0];
     return (
       <React.Fragment>
-        <TopFilters>
-          <Filters
-            backToTrip={props.routeState && props.routeState.tripId}
-            searchParams={props.searchParams}
-          />
-          <Media query={`(min-width: 600px)`}>
-            {matches =>
-              matches ? (
-                <MapToggle>
-                  <Checkbox color="green" toggle onClick={this.toggleMap} /> &nbsp;&nbsp;
-                  <div>
-                    <h3 onClick={this.toggleMap}>Show Map</h3>
-                  </div>
-                </MapToggle>
-              ) : (
-                <span />
-              )
-            }
-          </Media>
-        </TopFilters>
-        {type === 'food' && (
-          <ByYelp>
-            <P>Food places provided by</P>
-            <a href="https://yelp.com" target="_blank" rel="noopener noreferrer">
-              <img src={yelpLogo} alt="Yelp" />
-            </a>
-          </ByYelp>
-        )}
+        <TopFiltersWrapper>
+          <TopFilters>
+            <Filters
+              backToTrip={props.routeState && props.routeState.tripId}
+              searchParams={props.searchParams}
+            />
+            <RightColumn>
+              <Media query={`(min-width: 600px)`}>
+                {matches =>
+                  matches ? (
+                    <MapToggle>
+                      <Checkbox
+                        color="green"
+                        toggle
+                        checked={this.state.showMap}
+                        onClick={this.toggleMap}
+                      />{' '}
+                      &nbsp;&nbsp;
+                      <P onClick={this.toggleMap}>Show Map</P>
+                    </MapToggle>
+                  ) : (
+                    <span />
+                  )
+                }
+              </Media>
+              <Sort searchParams={this.props.searchParams} />
+            </RightColumn>
+          </TopFilters>
+        </TopFiltersWrapper>
         {props.routeState &&
           Boolean(props.routeState.tripId) && (
             <AddingServiceTopBar>
@@ -349,6 +361,14 @@ class ResultsScene extends Component {
               )}
             </AddingServiceTopBar>
           )}
+        {type === 'food' && (
+          <ByYelp>
+            <P>Restaurants provided by</P>
+            <a href="https://yelp.com" target="_blank" rel="noopener noreferrer">
+              <img src={yelpLogo} alt="Yelp" />
+            </a>
+          </ByYelp>
+        )}
         <PageContent flex>
           <ServicesWrapper>
             <Results

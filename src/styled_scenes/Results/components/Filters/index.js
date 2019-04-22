@@ -23,7 +23,6 @@ const Wrapper = styled.div`
 const BackToTrip = styled(Link)`
   color: ${primary};
   cursor: pointer;
-  margin-left: 20px;
   display: inline-flex;
   align-items: center;
   > p {
