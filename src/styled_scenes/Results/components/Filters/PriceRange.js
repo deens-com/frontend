@@ -28,12 +28,19 @@ const Content = styled.div`
 const PerDay = styled(P)`
   margin-top: 15px;
   text-align: center;
+  > * {
+    display: block;
+  }
+  > *:nth-child(2) {
+    margin-top: 5px;
+    font-size: 14px;
+  }
 `;
 
 const MAX_PRICE = 500;
 const MIN_PRICE = 0;
 
-const PriceRange = ({ minPrice, maxPrice, onApply, pricePer = 'per day' }) => {
+const PriceRange = ({ minPrice, maxPrice, onApply, pricePer, numberOfPeople }) => {
   const [values, setValues] = useState({ min: minPrice || MIN_PRICE, max: maxPrice || MAX_PRICE });
 
   const renderTrigger = () => {
@@ -53,6 +60,8 @@ const PriceRange = ({ minPrice, maxPrice, onApply, pricePer = 'per day' }) => {
     });
   };
 
+  const showTotalPrice = pricePer === 'per person' && numberOfPeople > 1;
+
   return (
     <Dropdown onClose={onClose} trigger={renderTrigger()}>
       <Content style={{ width: '250px' }}>
@@ -64,8 +73,17 @@ const PriceRange = ({ minPrice, maxPrice, onApply, pricePer = 'per day' }) => {
           formatLabel={value => `$${value}`}
         />
         <PerDay>
-          ${values.min} to ${values.max}
-          {values.max === MAX_PRICE ? '+' : ''} {pricePer}
+          {showTotalPrice && (
+            <span>
+              ${values.min * numberOfPeople} to ${values.max * numberOfPeople}
+              {values.max === MAX_PRICE ? '+' : ''} for {numberOfPeople} people
+            </span>
+          )}
+          <span>
+            {showTotalPrice && '('}${values.min} to ${values.max}
+            {values.max === MAX_PRICE ? '+' : ''} {pricePer}
+            {showTotalPrice && ')'}
+          </span>
         </PerDay>
       </Content>
     </Dropdown>
@@ -76,8 +94,12 @@ PriceRange.propTypes = {
   onApply: PropTypes.func.isRequired,
   minPrice: PropTypes.number,
   maxPrice: PropTypes.number,
+  pricePer: PropTypes.oneOf(['per day', 'per person']),
+  numberOfPeople: PropTypes.number,
 };
 
-PriceRange.defaultProps = {};
+PriceRange.defaultProps = {
+  pricePer: 'per day',
+};
 
 export default PriceRange;

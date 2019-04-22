@@ -76,6 +76,7 @@ const Filters = ({ searchParams, backToTrip }) => {
           maxPrice={searchParams.priceEnd}
           onApply={search}
           pricePer={searchParams.type[0] === 'activity' ? 'per person' : undefined}
+          numberOfPeople={(searchParams.adults || 1) + (searchParams.children || 0)}
         />
       )}
       {filters.includes(availableFilters.priceTags) && (

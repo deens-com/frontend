@@ -307,7 +307,7 @@ class TripCart extends Component {
     if (this.props.type === 'trip') {
       return this.props.item.fastBookable;
     }
-    return this.props.item.checkoutOptions.payAt === 'please';
+    return this.props.item.checkoutOptions && this.props.item.checkoutOptions.payAt === 'please';
   };
 
   renderThumb() {
