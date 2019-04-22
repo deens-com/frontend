@@ -6,6 +6,7 @@ import GoogleMapReact from 'google-map-react';
 import { Checkbox } from 'semantic-ui-react';
 import Media from 'react-media';
 import { getCenterAndZoom } from 'libs/location';
+import yelpLogo from 'assets/yelp/logo.png';
 
 import history from 'main/history';
 // COMPONENTS
@@ -80,6 +81,18 @@ const TopFilters = styled.div`
   display: flex;
   margin: 0 15px;
   align-items: center;
+`;
+
+const ByYelp = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 0 30px;
+  > p {
+    margin-top: 10px;
+  }
+  img {
+    width: 100px;
+  }
 `;
 
 const defaultCenter = {
@@ -291,6 +304,14 @@ export default class ResultsScene extends Component {
             }
           </Media>
         </TopFilters>
+        {type === 'food' && (
+          <ByYelp>
+            <P>Food places provided by</P>
+            <a href="https://yelp.com" target="_blank" rel="noopener noreferrer">
+              <img src={yelpLogo} alt="Yelp" />
+            </a>
+          </ByYelp>
+        )}
         {props.routeState &&
           Boolean(props.routeState.tripId) && (
             <AddingServiceTopBar>

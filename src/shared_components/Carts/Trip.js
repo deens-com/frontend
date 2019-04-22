@@ -26,6 +26,7 @@ import { duration } from 'libs/trips';
 import Stars from 'shared_components/Rating/Stars';
 import { Link } from 'react-router-dom';
 import ImgurAvatar from './../../assets/no-avatar.png';
+import Rating from 'shared_components/Rating';
 
 const Wrap = styled.div`
   display: inline-block;
@@ -156,7 +157,7 @@ const FirstLine = styled.div`
   display: flex;
 `;
 
-const Hearts = styled.div`
+const RatingWrapper = styled.div`
   > svg {
     color: ${colors.secondary};
     margin-top: 1px;
@@ -397,6 +398,27 @@ class TripCart extends Component {
     );
   }
 
+  renderRating() {
+    if (this.props.type === 'trip') {
+      return (
+        <RatingWrapper>
+          <Heart />
+          <HeartsNumber>{this.props.item.hearts + this.state.sumToHearts}</HeartsNumber>
+        </RatingWrapper>
+      );
+    }
+
+    return (
+      <RatingWrapper>
+        <Rating
+          rating={this.props.item.ratings.average}
+          count={this.props.item.ratings.count}
+          starsType={this.props.type === 'food' ? 'yelp' : 'golden'}
+        />
+      </RatingWrapper>
+    );
+  }
+
   renderContent() {
     if (this.props.isPlaceholder) {
       return (
@@ -406,18 +428,12 @@ class TripCart extends Component {
         </>
       );
     }
-    const hearts = this.props.item.hearts;
 
     return (
       <>
         <FirstLine>
           {this.renderPrice()}
-          {this.props.type === 'trip' && (
-            <Hearts>
-              <Heart />
-              <HeartsNumber>{hearts + this.state.sumToHearts}</HeartsNumber>
-            </Hearts>
-          )}
+          {this.renderRating()}
         </FirstLine>
         <SecondLine>
           {this.props.type !== 'food' &&
