@@ -183,7 +183,11 @@ class TopBar extends Component {
             </Content>
           </InnerWrap>
         </Wrapper>
-        <MobileNav toggleMenu={this.toggleMenu} showProfileMenu={showMenu} />
+        <MobileNav
+          toggleMenu={this.toggleMenu}
+          showProfileMenu={showMenu}
+          latestTrip={this.props.latestTrip}
+        />
         {!transparent && !forceNotFixed && <FixedPlaceholder noMargin={noMargin} />}
       </React.Fragment>
     );

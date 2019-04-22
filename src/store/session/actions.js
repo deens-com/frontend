@@ -30,6 +30,8 @@ export const types = {
   ADD_FAVORITE_TRIP: 'ADD_FAVORITE_TRIP',
   REMOVE_FAVORITE_TRIP: 'REMOVE_FAVORITE_TRIP',
   LOADED_FAVORITE_TRIPS: 'LOADED_FAVORITE_TRIPS',
+  MODIFY_USER: 'MODIFY_USER',
+  IS_LOADING: 'IS_LOADING',
 };
 
 function redirect(to, action) {
@@ -130,6 +132,7 @@ export const getFavoriteTrips = () => async (dispatch, getState) => {
 };
 
 export const getCurrentUser = fetchReferralInfo => async (dispatch, getState) => {
+  dispatch({ type: types.IS_LOADING });
   let session = getSession();
   let currentUser;
 
@@ -176,39 +179,22 @@ export const getCurrentUser = fetchReferralInfo => async (dispatch, getState) =>
 export const logOut = () => dispatch => {
   removeSession();
   dispatch(sessionsFetched({ session: {} })); // why this???
+  dispatch(changeCurrentUserTrip(null));
   history.push('/');
 };
 
 export const update_user_profile = (user_id, field_type, value) => {
-  return async dispatch => {
-    const session = getSession();
+  return async (dispatch, getState) => {
+    dispatch({
+      type: types.MODIFY_USER,
+      payload: {
+        [field_type]: value,
+      },
+    });
+    const state = getState();
+    const session = state.session.session;
     if (session) {
       try {
-        const currentUser = await axios.get('/users/me').catch(error => {
-          dispatch(displayUpdateError({ code: 422, error: error }));
-        });
-        let isUsernameValid = false;
-        let isEmailValid = false;
-        if (field_type === 'username') {
-          isUsernameValid = validator.isAlphanumeric(value, 'en-US');
-          if (!isUsernameValid) {
-            dispatch(displayUpdateError({ code: 203, error: 'Username should be alphanumeric.' }));
-            const userObject = fetch_helpers.buildUserJson(currentUser.data);
-            dispatch(sessionsFetched({ session: userObject }));
-            return;
-          }
-        }
-        if (field_type === 'email') {
-          isEmailValid = validator.isEmail(value);
-          if (!isEmailValid) {
-            dispatch(
-              displayUpdateError({ code: 203, error: 'Please, enter a valid email address.' }),
-            );
-            const userObject = fetch_helpers.buildUserJson(currentUser.data);
-            dispatch(sessionsFetched({ session: userObject }));
-            return;
-          }
-        }
         const updatedUser = await axios.patch('/users/me', { [field_type]: value }).catch(error => {
           return dispatch(
             displayUpdateError({
@@ -291,6 +277,7 @@ export const loginRequest = (email, password, { from, action }) => {
           dispatch(sessionsFetched({ session: userObject }));
           saveSession(userData);
           getFavoriteTrips();
+          dispatch(getCurrentUserTrip());
           redirect(from, action);
         }
       }

@@ -10,6 +10,7 @@ import BrandFooter from 'shared_components/BrandFooter';
 import history from 'main/history';
 import headerActions from 'store/header/actions';
 import analytics from 'libs/analytics';
+import * as sessionActions from 'store/session/actions';
 
 const PageContent = styled.div`
   margin: 0 20px auto;
@@ -29,6 +30,7 @@ class TripCreatorContainer extends Component {
           title: { 'en-us': 'Unnamed Trip' },
         })
         .then(response => {
+          this.props.changeUserTrip(response.data);
           history.replace(`/trips/organize/${response.data._id}`);
         });
     };
@@ -66,6 +68,7 @@ const mapDispatchToProps = dispatch =>
     {
       changeDates: actions.patchSearchQuery,
       changeHeader: headerActions.changeHeader,
+      changeUserTrip: sessionActions.changeCurrentUserTrip,
     },
     dispatch,
   );

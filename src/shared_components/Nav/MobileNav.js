@@ -7,12 +7,12 @@ import { connect } from 'react-redux';
 
 // ACTIONS/CONFIG
 import { sizes } from '../../libs/styled';
-import { mainNav } from '../../data/nav';
 import Button from '../Button';
 import { Briefcase, AccountCircle, Settings } from '../icons';
 import { bindActionCreators } from 'redux';
 import { logOut } from 'store/session/actions';
 import { icoReady } from 'libs/config';
+import I18nText from 'shared_components/I18nText';
 
 // STYLES
 const Wrap = styled.div`
@@ -257,7 +257,7 @@ class MobileNav extends Component {
   render() {
     if (!this.props.showProfileMenu) return null;
     const { analytics } = this.props;
-
+    console.log(this.props.latestTrip);
     return (
       <Media
         query={`(max-width: ${sizes.large})`}
@@ -277,21 +277,26 @@ class MobileNav extends Component {
                 </li>
               )}
               {this.renderLoggedInMenu()}
+              {this.props.latestTrip && (
+                <li aria-hidden="false">
+                  <NavLink
+                    onClick={this.onOptionClick}
+                    to={`/trips/organize/${this.props.latestTrip._id}`}
+                  >
+                    <I18nText data={this.props.latestTrip.title} />
+                  </NavLink>
+                </li>
+              )}
               <li aria-hidden="false">
-                <NavLink onClick={this.onOptionClick} to="/">
+                <NavLink onClick={this.onOptionClick} to="/earn-money">
                   Earn Money
                 </NavLink>
               </li>
-              <li aria-hidden="true">
-                <Divider />
+              <li aria-hidden="false">
+                <NavLink onClick={this.onOptionClick} to="/trips/create">
+                  Create Trip
+                </NavLink>
               </li>
-              {mainNav.map(item => (
-                <li aria-hidden="false" key={item.label} onClick={this.props.toggleMenu}>
-                  <NavLink onClick={this.onOptionClick} activeclassname="is-active" to={item.href}>
-                    {item.label}
-                  </NavLink>
-                </li>
-              ))}
               <li aria-hidden="true">
                 <Divider />
               </li>

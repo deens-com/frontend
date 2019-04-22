@@ -28,8 +28,7 @@ const Input = styled.input`
   outline: none;
   padding: ${props => props.padding};
   &:focus {
-    border-color: ${primary};
-    box-shadow: 0 0 10px ${primary};
+    border: 1px solid ${primary};
   }
 `;
 
@@ -47,8 +46,7 @@ const Textarea = styled.textarea`
   outline: none;
   padding: ${props => props.padding};
   &:focus {
-    border-color: ${primary};
-    box-shadow: 0 0 10px ${primary};
+    border: 1px solid ${primary};
   }
 `;
 

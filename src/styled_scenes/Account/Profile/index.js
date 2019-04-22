@@ -3,6 +3,7 @@ import { Grid, Divider, Icon, Input, Button, Message } from 'semantic-ui-react';
 import styled from 'styled-components';
 import { SectionWrap } from './../../../shared_components/layout/Page';
 import UserBasicInfo from './../components/UserBasicInfo';
+import { Loader } from 'semantic-ui-react';
 
 const HorizontalSpan = styled.span`
   display: flex;
@@ -17,43 +18,12 @@ class AccountProfileScene extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isUsernameEditable: false,
-      isEmailEditable: false,
       isBiographyEditable: false,
-      biography: '',
-      username: '',
-      email: '',
     };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.state.biography === '' || nextProps.user_profile.biography !== this.state.biography) {
-      this.setState({ biography: nextProps.user_profile.biography });
-    }
-    if (this.state.email === '' || nextProps.user_profile.email !== this.state.email) {
-      this.setState({ email: nextProps.user_profile.email });
-    }
-    if (this.state.username === '' || nextProps.user_profile.username !== this.state.username) {
-      this.setState({ username: nextProps.user_profile.username });
-    }
   }
 
   toggleEdition = field => {
     switch (field) {
-      case 'email':
-        this.setState({ isEmailEditable: !this.state.isEmailEditable });
-        if (this.state.isEmailEditable) {
-          const user_id = this.props.user_profile.objectId;
-          this.props.update_user_profile(user_id, 'email', this.state.email);
-        }
-        break;
-      case 'username':
-        this.setState({ isUsernameEditable: !this.state.isUsernameEditable });
-        if (this.state.isUsernameEditable) {
-          const user_id = this.props.user_profile.objectId;
-          this.props.update_user_profile(user_id, 'username', this.state.username);
-        }
-        break;
       case 'biography':
         this.setState({ isBiographyEditable: !this.state.isBiographyEditable });
         if (this.state.isBiographyEditable) {
@@ -95,37 +65,43 @@ class AccountProfileScene extends Component {
             <h6 style={{ color: 'red' }}>{this.props.editUserError.error}</h6>
           ) : null}
           <Divider />
-          <HorizontalSpan>
-            <BoldH4>Bio :</BoldH4>
-            {this.state.isBiographyEditable ? (
-              <Input
-                style={{ minWidth: '35em' }}
-                placeholder="Biography"
-                name="biography"
-                value={this.state.biography}
-                onChange={this.handleInputChange}
-              />
-            ) : (
-              <p>
-                &nbsp;
-                {this.state.biography}
-                &nbsp;
-              </p>
-            )}
-            {this.state.isBiographyEditable ? (
-              <Button onClick={() => this.toggleEdition('biography')}>Save</Button>
-            ) : (
-              <Icon onClick={() => this.toggleEdition('biography')} name="pencil" />
-            )}
-          </HorizontalSpan>
-          <HorizontalSpan>
-            <BoldH4>Email :</BoldH4>
-            <p>
-              &nbsp;
-              {this.state.email}
-              &nbsp;
-            </p>
-          </HorizontalSpan>
+          {this.props.isLoading ? (
+            <Loader active inline="centerd" />
+          ) : (
+            <>
+              <HorizontalSpan>
+                <BoldH4>Bio :</BoldH4>
+                {this.state.isBiographyEditable ? (
+                  <Input
+                    style={{ minWidth: '35em' }}
+                    placeholder="Biography"
+                    name="biography"
+                    defaultValue={this.props.user_profile.biography}
+                    onChange={this.handleInputChange}
+                  />
+                ) : (
+                  <p>
+                    &nbsp;
+                    {this.props.user_profile.biography}
+                    &nbsp;
+                  </p>
+                )}
+                {this.state.isBiographyEditable ? (
+                  <Button onClick={() => this.toggleEdition('biography')}>Save</Button>
+                ) : (
+                  <Icon onClick={() => this.toggleEdition('biography')} name="pencil" />
+                )}
+              </HorizontalSpan>
+              <HorizontalSpan>
+                <BoldH4>Email :</BoldH4>
+                <p>
+                  &nbsp;
+                  {this.props.user_profile.email}
+                  &nbsp;
+                </p>
+              </HorizontalSpan>
+            </>
+          )}
         </Grid.Column>
       </Grid>
     );
