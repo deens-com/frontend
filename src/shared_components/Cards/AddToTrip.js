@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Loader } from 'semantic-ui-react';
 import Button from 'shared_components/Button';
+import AddToTripButton from 'shared_components/AddToTripButton';
 import { primary } from 'libs/colors';
 
 const AddButton = styled.div`
@@ -24,12 +25,23 @@ export default class AddToTrip extends Component {
 
     this.state = {
       saving: false,
+      showingPanel: false,
     };
   }
 
   buttonClick = async e => {
     e.preventDefault();
     e.stopPropagation();
+    if (this.props.data) {
+      this.addToCurrentTrip();
+      return;
+    }
+    this.setState({
+      showingPanel: true,
+    });
+  };
+
+  addToCurrentTrip = async () => {
     this.setState({
       saving: true,
     });
@@ -41,17 +53,47 @@ export default class AddToTrip extends Component {
     });
   };
 
+  addToSpecificTrip = async data => {
+    this.setState({
+      saving: true,
+    });
+    await this.props.addToAnyTrip(data.trip, data.day, this.props.service);
+    this.setState({
+      saving: false,
+    });
+  };
+
+  addToNewTrip = async () => {
+    this.setState({
+      saving: true,
+    });
+    await this.props.addToNewTrip(this.props.service);
+    this.setState({
+      saving: false,
+    });
+  };
+
   render() {
+    const button = (
+      <Button theme="fillLightGreen" onClick={this.props.data ? () => {} : this.buttonClick}>
+        <strong>Add to trip</strong>
+      </Button>
+    );
     return (
       <AddButton>
         {this.state.saving ? (
           <LoaderWrapper>
             <Loader inline="centered" active inverted />
           </LoaderWrapper>
+        ) : this.props.data ? (
+          button
         ) : (
-          <Button theme="fillLightGreen" onClick={this.buttonClick}>
-            <strong>Add to trip</strong>
-          </Button>
+          <AddToTripButton
+            customTrigger={button}
+            myUnpurchasedTrips={this.props.userTrips}
+            onTripClick={this.addToSpecificTrip}
+            onNewTripClick={this.addToNewTrip}
+          />
         )}
       </AddButton>
     );

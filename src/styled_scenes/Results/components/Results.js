@@ -21,6 +21,7 @@ import { P } from 'libs/commonStyles';
 import { valid, primary } from 'libs/colors';
 import * as tripUtils from 'libs/trips';
 import { hasLocationParams } from 'libs/search';
+import apiClient from 'libs/apiClient';
 import AddToTrip from 'shared_components/Cards/AddToTrip';
 
 function getDays(type, day, tripDate, duration, start, end) {
@@ -145,6 +146,28 @@ class Results extends Component {
 
     await tripUtils.addServiceManyDaysRequest(this.props.trip._id, days, service._id);
 
+    this.showAddedToDays(days, service, this.props.trip);
+  };
+
+  addToAnyTrip = async (trip, day, service) => {
+    await tripUtils.addServiceManyDaysRequest(trip._id, [day], service._id);
+    this.showAddedToDays([day], service, trip);
+  };
+
+  addToNewTrip = async service => {
+    const newTripTitle = { 'en-us': `Trip to ${service.location}` };
+    const serviceGroup = {
+      title: newTripTitle,
+      basePrice: service.basePrice,
+      baseCurrency: service.baseCurrency,
+      services: [{ service: service._id, day: 1 }],
+      duration: service.duration,
+    };
+    const newTrip = (await apiClient.trips.post(serviceGroup)).data;
+    this.showAddedToDays([1], service, newTrip);
+  };
+
+  showAddedToDays = (days, service, trip) => {
     const timestamp = new Date().valueOf();
 
     this.setState({
@@ -152,6 +175,7 @@ class Results extends Component {
         days,
         timestamp,
         service,
+        trip,
       },
     });
 
@@ -230,17 +254,21 @@ class Results extends Component {
               {this.props.data.map((result, i) => (
                 <Grid.Column key={result._id}>
                   <ResultItem>
-                    {this.props.routeState &&
-                      this.props.searchParams.type[0] !== 'trip' && (
-                        <AddToTrip
-                          data={{
+                    {this.props.searchParams.type[0] !== 'trip' && (
+                      <AddToTrip
+                        data={
+                          this.props.routeState && {
                             id: this.props.routeState.tripId,
                             day: this.props.routeState.day,
                             addToTrip: this.addToTrip,
-                          }}
-                          service={result}
-                        />
-                      )}
+                          }
+                        }
+                        addToAnyTrip={this.addToAnyTrip}
+                        addToNewTrip={this.addToNewTrip}
+                        userTrips={this.props.userTrips}
+                        service={result}
+                      />
+                    )}
                     <TripCard
                       key={result.label}
                       onOver={onCardOver}
@@ -283,8 +311,8 @@ class Results extends Component {
               <strong>{this.state.addedToTrip.service.name}</strong> has been added to day
               {this.state.addedToTrip.days.length > 1 ? 's' : ''}{' '}
               {this.state.addedToTrip.days.join(', ')} of your trip{' '}
-              <Link to={`/trips/organize/${this.props.routeState.tripId}`}>
-                <I18nText data={this.props.trip.title} />
+              <Link to={`/trips/organize/${this.state.addedToTrip.trip._id}`}>
+                <I18nText data={this.state.addedToTrip.trip.title} />
               </Link>
             </P>
           </AddedToTrip>

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 import { media } from 'libs/styled';
 import I18nText from 'shared_components/I18nText';
-import AddToTripButton from './AddToTripButton';
+import AddToTripButton from 'shared_components/AddToTripButton';
 
 const GridContainer = styled.div`
   display: grid;

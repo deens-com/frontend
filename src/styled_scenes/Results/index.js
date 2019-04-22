@@ -7,6 +7,9 @@ import { Checkbox } from 'semantic-ui-react';
 import Media from 'react-media';
 import { getCenterAndZoom } from 'libs/location';
 import yelpLogo from 'assets/yelp/logo.png';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import tripActions from 'store/trips/actions';
 
 import history from 'main/history';
 // COMPONENTS
@@ -101,7 +104,7 @@ const defaultCenter = {
 };
 const defaultZoom = 11;
 
-export default class ResultsScene extends Component {
+class ResultsScene extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -151,6 +154,7 @@ export default class ResultsScene extends Component {
   }
 
   componentDidMount() {
+    this.props.fetchUserTrips();
     const { center, zoom } = this.getCenterAndZoom([], this.props);
     this.setState({ center, zoom, markers: [] });
   }
@@ -355,6 +359,7 @@ export default class ResultsScene extends Component {
               showMap={this.state.showMap}
               goBackToTrip={this.goBackToTrip}
               pushSearch={pushSearch}
+              userTrips={this.props.userTrips}
             />
           </ServicesWrapper>
           <MapPlaceholder ref={this.mapPlaceholderRef} />
@@ -386,3 +391,23 @@ export default class ResultsScene extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    userTrips: state.trips.userTrips.unbookedTrips,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      fetchUserTrips: tripActions.fetchUserTrips,
+    },
+    dispatch,
+  );
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ResultsScene);

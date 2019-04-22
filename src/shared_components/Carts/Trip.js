@@ -382,20 +382,16 @@ class TripCart extends Component {
       );
     }
     if (this.props.type === 'accommodation') {
-      return <Price>${this.props.item.basePrice.toFixed(2)} per night</Price>;
+      return <Price>${this.props.item.basePrice} per night</Price>;
     }
     if (this.props.type === 'activity') {
       return (
         <Price>
-          ${this.props.item.basePrice.toFixed(2)} for {this.props.numberOfGuests}
+          ${this.props.item.basePrice} for {this.props.numberOfGuests}
         </Price>
       );
     }
-    return (
-      <Price>
-        ${calculatePricePerDay(this.props.item.totalPrice, this.props.item.duration)} per day
-      </Price>
-    );
+    return <Price>${this.props.item.totalPricePerDay} per day</Price>;
   }
 
   renderRating() {
