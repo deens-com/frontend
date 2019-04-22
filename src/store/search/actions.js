@@ -54,10 +54,9 @@ const fetchResults = searchQuery =>
     const resultsArr = searchForTrips ? results.data.trips : results.data.services;
     const data = fetchHelpers.buildServicesJson(resultsArr, false);
 
-    /*const tags = parseTagsText(
+    const tags = parseTagsText(
       searchForTrips ? parseTagsCount(results.data.tagsWithCount) : results.data.tags,
-    );*/
-    const tags = parseTagsText(results.data.tags);
+    );
 
     return {
       results: data,
