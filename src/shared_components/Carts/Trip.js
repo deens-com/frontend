@@ -16,7 +16,7 @@ import Thumb from './components/Thumb';
 // STYLES
 import { Cart, ContentWrap } from './styles';
 import { cardConfig } from 'libs/config';
-import { calculatePricePerDay, generateTripSlug } from 'libs/Utils';
+import { calculatePricePerDay, generateTripSlug, generateServiceSlug } from 'libs/Utils';
 import { getImageUrlFromMedia } from 'libs/media';
 import { Heart } from 'shared_components/icons';
 import I18nText from 'shared_components/I18nText';
@@ -325,7 +325,7 @@ class TripCart extends Component {
                 {isPlaceholder ? <ImagePlaceholder /> : <Image src={avatar} />}
                 <Stars
                   length={3}
-                  rating={((isPlaceholder ? 0 : owner.rating.average) * 3) / 5}
+                  rating={((isPlaceholder || !owner.rating ? 0 : owner.rating.average) * 3) / 5}
                   width={8.25}
                   height={18}
                 />
@@ -347,7 +347,7 @@ class TripCart extends Component {
     if (this.props.isPlaceholder) {
       return;
     }
-    console.log(this.props.item.tags);
+
     return this.props.item.tags.map(tag => (
       <TagLink
         to={`/results?tags=${I18nText.translate(tag.names)}&type=trip`}
@@ -362,9 +362,20 @@ class TripCart extends Component {
 
   renderPrice() {
     if (this.props.type === 'food') {
+      if (
+        !this.props.item.otherAttributes ||
+        !this.props.item.otherAttributes.yelp ||
+        !this.props.item.otherAttributes.yelp.yelpPrice
+      ) {
+        return null;
+      }
       return (
         <>
-          <FoodPriceBackground>$$$$</FoodPriceBackground>
+          <FoodPriceBackground>
+            {Array(4)
+              .fill(this.props.item.otherAttributes.yelp.yelpPrice[0])
+              .join('')}
+          </FoodPriceBackground>
           <Price>{this.props.item.otherAttributes.yelp.yelpPrice}</Price>
         </>
       );
@@ -396,7 +407,7 @@ class TripCart extends Component {
       );
     }
     const hearts = this.props.item.hearts;
-    console.log(this.props.item);
+
     return (
       <>
         <FirstLine>
@@ -428,9 +439,23 @@ class TripCart extends Component {
     );
   }
 
+  getLink = () => {
+    const { isPlaceholder, type } = this.props;
+
+    if (isPlaceholder) {
+      return '';
+    }
+
+    if (type === 'trip') {
+      return `/trips/${generateTripSlug(this.props.item)}`;
+    }
+
+    return `/services/${generateServiceSlug(this.props.item)}`;
+  };
+
   renderCard() {
     const { isPlaceholder } = this.props;
-    const linkUrl = isPlaceholder ? '' : `/trips/${generateTripSlug(this.props.item)}`;
+    const linkUrl = this.getLink();
     return (
       <Wrap isPlaceholder={isPlaceholder}>
         <Cart column className="card-animate">

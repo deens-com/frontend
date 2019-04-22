@@ -338,10 +338,10 @@ export default class TripOrganizer extends React.Component {
         lat: coord && coord.lat,
         lng: coord && coord.lng,
         address,
-        start_date: moment(tripData.startDate)
+        startDate: moment(tripData.startDate)
           .add(day - 1, 'days')
           .valueOf(),
-        end_date:
+        endDate:
           type === 'accommodation'
             ? moment(tripData.startDate)
                 .add(day, 'days')
@@ -350,7 +350,6 @@ export default class TripOrganizer extends React.Component {
       },
       {
         tripId: trip._id,
-        day,
         duration: this.state.tripData.duration,
         startDate: this.state.tripData.startDate.valueOf(),
       },

@@ -57,6 +57,7 @@ export default function search(state = initialState, action = {}) {
         },
         count: initialState.count,
         tagsOptions: initialState.tagsOptions,
+        error: action.error,
       };
     case types.updateQueryParams:
       return {

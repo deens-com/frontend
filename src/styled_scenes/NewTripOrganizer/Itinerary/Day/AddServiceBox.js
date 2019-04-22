@@ -157,8 +157,12 @@ const AddServiceBox = ({ day, goToAddService, lowMargin }) => {
 };
 
 AddServiceBox.propTypes = {
-  goToAddService: PropTypes.func.isRequired,
   day: PropTypes.number.isRequired,
+  goToAddService: PropTypes.func,
+};
+
+AddServiceBox.defaultProps = {
+  goToAddService: () => {},
 };
 
 export default AddServiceBox;

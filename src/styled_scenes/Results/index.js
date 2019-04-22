@@ -22,6 +22,10 @@ import { waitUntilMapsLoaded } from 'libs/Utils';
 // STYLES
 import { PageContent } from './../../shared_components/layout/Page';
 import { pushSearch } from 'libs/search';
+import { primary } from 'libs/colors';
+import { P } from 'libs/commonStyles';
+
+import addPrefixArticle from 'indefinite';
 
 const MapWrapper = styled.div`
   display: flex;
@@ -55,26 +59,15 @@ const ServicesWrapper = styled.div`
   }
 `;
 
-const GoBackToTrip = styled.span`
-  color: white;
-  margin-top: 15px;
-  margin-left: 20px;
-  padding: 3px 7px;
-  cursor: pointer;
-  display: inline-block;
-  background-color: #4ac4a1;
-  border-radius: 20px;
-`;
-
 const AddingServiceTopBar = styled.div`
   display: flex;
   align-items: center;
+  margin: 10px 30px;
 `;
 
-const CreateService = styled.div`
-  color: #4ac4a1;
+const CreateService = styled.span`
+  color: ${primary};
   margin-top: 15px;
-  margin-left: 20px;
   cursor: pointer;
 `;
 
@@ -275,12 +268,14 @@ export default class ResultsScene extends Component {
   render() {
     const { props } = this;
     const { center, zoom, markers } = this.state;
-
+    const type = props.searchParams.type[0];
     return (
       <React.Fragment>
         <TopFilters>
-          {/*<Filters {...props.searchParams} />*/}
-          <Filters searchParams={props.searchParams} />
+          <Filters
+            backToTrip={props.routeState && props.routeState.tripId}
+            searchParams={props.searchParams}
+          />
           <Media query={`(min-width: 600px)`}>
             {matches =>
               matches ? (
@@ -299,10 +294,25 @@ export default class ResultsScene extends Component {
         {props.routeState &&
           Boolean(props.routeState.tripId) && (
             <AddingServiceTopBar>
-              <GoBackToTrip onClick={this.goBackToTrip}>Go back to trip</GoBackToTrip>
-              <CreateService onClick={this.createExternalService}>
-                I can't find my service
-              </CreateService>
+              <P>
+                {Boolean(props.count) && (
+                  <strong>
+                    {props.count >= 1000
+                      ? `More than ${props.count} found.`
+                      : `${props.count} found.`}
+                  </strong>
+                )}{' '}
+                <span>Still not satisfied?</span>{' '}
+                {type !== 'trip' ? (
+                  <CreateService onClick={this.createExternalService}>
+                    Add {type !== 'food' ? addPrefixArticle(type) : type}
+                  </CreateService>
+                ) : (
+                  <CreateService onClick={this.createExternalService}>
+                    Create your own trip
+                  </CreateService>
+                )}
+              </P>
               {this.state.modalOpen && (
                 <CreateServiceModal
                   day={props.routeState.day}

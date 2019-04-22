@@ -1,21 +1,37 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { pushSearch, filtersByType, availableFilters } from 'libs/search';
+import { P } from 'libs/commonStyles';
+import { primary } from 'libs/colors';
 import GuestsFilter from './Guests';
 import DatesFilter from './Dates';
 import PriceRangeFilter from './PriceRange';
 import PriceTagsFilter from './PriceTags';
 import TagsFilter from './Tags';
+import { BackArrow } from 'shared_components/icons';
 import 'react-dates.css';
 
 const Wrapper = styled.div`
   flex-grow: 1;
+  display: flex;
   > div:not(:first-child) {
     margin-left: 15px;
   }
 `;
 
-const Filters = ({ searchParams }) => {
+const BackToTrip = styled(Link)`
+  color: ${primary};
+  cursor: pointer;
+  margin-left: 20px;
+  display: inline-flex;
+  align-items: center;
+  > p {
+    margin-left: 5px;
+  }
+`;
+
+const Filters = ({ searchParams, backToTrip }) => {
   const search = params => {
     pushSearch({
       ...searchParams,
@@ -26,6 +42,12 @@ const Filters = ({ searchParams }) => {
 
   return (
     <Wrapper>
+      {backToTrip && (
+        <BackToTrip to={`/trips/organize/${backToTrip}`}>
+          <BackArrow />
+          <P>Back to trip</P>
+        </BackToTrip>
+      )}
       {filters.includes(availableFilters.guests) && (
         <GuestsFilter
           adults={searchParams.adults}

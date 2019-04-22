@@ -31,7 +31,11 @@ export const duration = minutes => {
 };
 
 export const addServiceRequest = async (id, day, serviceId) => {
-  return apiClient.trips.serviceOrganizations.post(id, { days: [day], serviceId });
+  return addServiceManyDaysRequest(id, [day], serviceId);
+};
+
+export const addServiceManyDaysRequest = async (id, days, serviceId) => {
+  return apiClient.trips.serviceOrganizations.post(id, { days, serviceId });
 };
 
 export const removeServiceRequest = async (id, serviceOrgId) => {

@@ -2,7 +2,7 @@ import fetchHelpers from 'libs/fetch_helpers';
 import api from 'libs/apiClient';
 import { createAsyncActions, dispatchAsyncActions } from 'store/utils';
 import { parseTagsText, tagsById } from 'libs/Utils';
-import { mapDataToQuery } from 'libs/search';
+import { mapDataToQuery, hasLocationParams } from 'libs/search';
 
 const SEARCH = 'SEARCH';
 const UPDATE_QUERY_PARAMS = 'UPDATE_QUERY_PARAMS';
@@ -38,7 +38,7 @@ const fetchResults = searchQuery =>
     if (!searchForTrips) {
       if (
         params.text || // next we check that we have any kind of location
-        (!(params.lat && params.lng) && !(params.city && params.countryCode))
+        !hasLocationParams(params)
       ) {
         return {
           results: [],

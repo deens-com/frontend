@@ -149,7 +149,6 @@ export default class DesktopSearch extends Component {
     history.push(`/results`);
   }
   handleLocationChange(address, serviceType, text) {
-    console.log('cuco', address, serviceType, text);
     if (text) {
       const params = {
         city: undefined,

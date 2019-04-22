@@ -16,8 +16,57 @@ import { Loader, Grid } from 'semantic-ui-react';
 import moment from 'moment';
 import { minutesToDays } from 'styled_scenes/Trip/mapServicesToDays';
 import notFoundImg from '../not_found.png';
-import { generateTripSlug, generateServiceSlug } from 'libs/Utils';
+import I18nText from 'shared_components/I18nText';
+import { P } from 'libs/commonStyles';
+import { valid, primary } from 'libs/colors';
 import * as tripUtils from 'libs/trips';
+import { hasLocationParams } from 'libs/search';
+import AddToTrip from 'shared_components/Cards/AddToTrip';
+
+function getDays(type, day, tripDate, duration, start, end) {
+  // make unit tests!!!
+  if (!start) {
+    return [day];
+  }
+
+  const numberOfDays = minutesToDays(duration);
+  const tripStartDate = moment(tripDate);
+  const tripEndDate = moment(tripDate).add(numberOfDays - 1, 'days');
+  const startDate = moment(start);
+  const endDate = moment(end);
+
+  if (type !== 'accommodation' || !end) {
+    if (startDate.isBefore(tripStartDate)) {
+      return [1];
+    }
+    if (startDate.isAfter(tripEndDate)) {
+      return [numberOfDays];
+    }
+    return [startDate.diff(tripStartDate, 'days') + 1];
+  }
+
+  let startDay;
+  let endDay;
+  if (startDate.isSameOrBefore(tripStartDate)) {
+    startDay = 1;
+  } else if (startDate.isAfter(tripEndDate)) {
+    return [numberOfDays];
+  } else {
+    startDay = startDate.diff(tripStartDate, 'days') + 1;
+  }
+
+  if (endDate.isSameOrBefore(tripEndDate)) {
+    endDay = endDate.diff(tripStartDate, 'days') + 1;
+  } else {
+    endDay = numberOfDays;
+  }
+
+  if (endDay <= startDay) {
+    return [startDay];
+  }
+
+  return [...Array(endDay - startDay + 1).keys()].map(day => day + startDay);
+}
 
 // STYLES
 const Wrap = styled.div`
@@ -33,20 +82,6 @@ const ResultItem = styled.div`
   }
 `;
 
-const Badge = styled.div`
-  position: absolute;
-  z-index: 10;
-  font-size: 10px;
-  font-weight: bold;
-  top: 20px;
-  left: 2px;
-  background: #4183c4;
-  color: white;
-  padding: 0 5px;
-  border-radius: 3px;
-  font-weight: 300;
-`;
-
 const LoaderWithMargin = styled.section`
   margin-top: 40px;
 `;
@@ -58,6 +93,20 @@ const NotFound = styled.div`
   text-align: center;
 `;
 
+const AddedToTrip = styled.div`
+  position: fixed;
+  bottom: 25px;
+  background-color: ${valid};
+  padding: 13px 21px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  border-radius: 4px 4px 4px 0;
+  a {
+    color: ${primary};
+  }
+`;
+
 // MODULE
 class Results extends Component {
   constructor(props) {
@@ -66,13 +115,6 @@ class Results extends Component {
     const trip = props.trip;
 
     if (props.routeState && trip._id === props.routeState.tripId) {
-      this.days =
-        props.routeState &&
-        Array.from({ length: minutesToDays(props.routeState.duration) }).map((_, i) =>
-          moment(props.routeState.startDate)
-            .add(i, 'days')
-            .format('MMMM DD'),
-        );
       this.tripServices = props.trip.services.map(service => ({
         ...service,
         service: service.service,
@@ -80,28 +122,48 @@ class Results extends Component {
     }
   }
 
-  componentWillReceiveProps() {
-    this.loadData();
-    //this.setState({ totalItems: this.props.data.length });
-  }
+  state = {
+    addedToTrip: null,
+  };
 
-  refetch_results(param_object) {
-    const query_params = this.props.searchParams;
-    query_params[Object.keys(param_object)[0]] = param_object[Object.keys(param_object)[0]];
-    this.props.pushSearch(query_params, this.props.routeState);
-  }
-
-  loadData = item => {
+  changePage = item => {
     if (item !== undefined) {
       const selectedPage = item.selected + 1;
-      this.refetch_results({ page: selectedPage });
+      this.props.pushSearch({ ...this.props.searchParams }, this.props.routeState, selectedPage);
     }
   };
 
-  addToTrip = async (service, day) => {
-    this.tripServices = tripUtils.addServiceToTrip(this.tripServices, service, day);
+  addToTrip = async service => {
+    this.tripServices = tripUtils.addServiceToTrip(this.tripServices, service);
+    const day = this.props.routeState.day;
+    const tripStartDate = this.props.routeState.startDate;
+    const duration = this.props.routeState.duration;
+    const startDate = this.props.searchParams.startDate;
+    const endDate = this.props.searchParams.endDate;
+    const type = this.props.searchParams.type[0];
+    const days = getDays(type, day, tripStartDate, duration, startDate, endDate);
 
-    await tripUtils.addServiceRequest(this.props.trip._id, day, service._id);
+    await tripUtils.addServiceManyDaysRequest(this.props.trip._id, days, service._id);
+
+    const timestamp = new Date().valueOf();
+
+    this.setState({
+      addedToTrip: {
+        days,
+        timestamp,
+        service,
+      },
+    });
+
+    setTimeout(() => {
+      this.setState(prevState => {
+        if (prevState.addedToTrip && prevState.addedToTrip.timestamp === timestamp) {
+          return {
+            addedToTrip: null,
+          };
+        }
+      });
+    }, 5000);
   };
 
   removeFromTrip = async (serviceId, day) => {
@@ -115,34 +177,48 @@ class Results extends Component {
     return;
   };
 
+  renderNotFound() {
+    if (!hasLocationParams(this.props.searchParams)) {
+      return (
+        <section>
+          <h4>Please select a location at the top search bar</h4>
+        </section>
+      );
+    }
+    if (!this.props.isLoadingResults && this.props.data.length === 0) {
+      return (
+        <section>
+          {this.props.searchParams.type && this.props.searchParams.type[0] === 'trip' ? (
+            <NotFound>
+              <img src={notFoundImg} alt="Not found" />
+              <h3>There are no trips available in the location selected.</h3>
+              <p>
+                Be the first to create a trip for {this.props.searchParams.address}, and share to
+                earn rewards!
+              </p>
+              <Button type="link" href="/trips/create">
+                Create a trip
+              </Button>
+            </NotFound>
+          ) : (
+            <h4 style={{ textAlign: 'center', color: 'grey' }}>
+              There are no search results for given search criteria.
+            </h4>
+          )}
+          <br />
+        </section>
+      );
+    }
+    return null;
+  }
+
   render() {
     const { onCardOver, onCardLeave } = this.props;
+
     return (
       <Wrap>
         <Row>
-          {!this.props.isLoadingResults &&
-            this.props.data.length === 0 && (
-              <section>
-                {this.props.searchParams.type && this.props.searchParams.type[0] === 'trip' ? (
-                  <NotFound>
-                    <img src={notFoundImg} alt="Not found" />
-                    <h3>There are no trips available in the location selected.</h3>
-                    <p>
-                      Be the first to create a trip for {this.props.searchParams.address}, and share
-                      to earn rewards!
-                    </p>
-                    <Button type="link" href="/trips/create">
-                      Create a trip
-                    </Button>
-                  </NotFound>
-                ) : (
-                  <h4 style={{ textAlign: 'center', color: 'grey' }}>
-                    There are no search results for given search criteria.
-                  </h4>
-                )}
-                <br />
-              </section>
-            )}
+          {this.renderNotFound()}
           {this.props.isLoadingResults ? (
             <LoaderWithMargin>
               <Loader active inline="centered" size="massive">
@@ -154,6 +230,17 @@ class Results extends Component {
               {this.props.data.map((result, i) => (
                 <Grid.Column key={result._id}>
                   <ResultItem>
+                    {this.props.routeState &&
+                      this.props.searchParams.type[0] !== 'trip' && (
+                        <AddToTrip
+                          data={{
+                            id: this.props.routeState.tripId,
+                            day: this.props.routeState.day,
+                            addToTrip: this.addToTrip,
+                          }}
+                          service={result}
+                        />
+                      )}
                     <TripCard
                       key={result.label}
                       onOver={onCardOver}
@@ -165,17 +252,8 @@ class Results extends Component {
                       isPlaceholder={false}
                       type={this.props.searchParams.type[0]}
                       numberOfGuests={
-                        this.props.searchParams.adults + (this.props.searchParams.children || 0)
-                      }
-                      addToTrip={
-                        this.props.routeState && {
-                          id: this.props.routeState.tripId,
-                          day: this.props.routeState.day,
-                          days: this.days,
-                          addToTrip: this.addToTrip,
-                          removeFromTrip: this.removeFromTrip,
-                          goBackToTrip: this.props.goBackToTrip,
-                        }
+                        (this.props.searchParams.adults || 1) +
+                        (this.props.searchParams.children || 0)
                       }
                     />
                   </ResultItem>
@@ -191,7 +269,7 @@ class Results extends Component {
                 pageCount={Math.ceil(this.props.count / this.props.searchParams.limit)}
                 marginPagesDisplayed={1}
                 pageRangeDisplayed={2}
-                onPageChange={this.loadData}
+                onPageChange={this.changePage}
                 previousClassName="previousButton"
                 nextClassName="nextButton"
                 forcePage={parseInt(this.props.searchParams.page, 10) - 1}
@@ -199,6 +277,18 @@ class Results extends Component {
             ) : null}
           </PaginationWrap>
         </Row>
+        {this.state.addedToTrip && (
+          <AddedToTrip>
+            <P>
+              <strong>{this.state.addedToTrip.service.name}</strong> has been added to day
+              {this.state.addedToTrip.days.length > 1 ? 's' : ''}{' '}
+              {this.state.addedToTrip.days.join(', ')} of your trip{' '}
+              <Link to={`/trips/organize/${this.props.routeState.tripId}`}>
+                <I18nText data={this.props.trip.title} />
+              </Link>
+            </P>
+          </AddedToTrip>
+        )}
       </Wrap>
     );
   }

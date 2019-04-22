@@ -66,8 +66,13 @@ export const mapDataToQuery = ({ type, startDate, endDate, ...searchParams }) =>
   ...searchParams,
 });
 
-export const pushSearch = (searchParams, state) => {
-  history.push(`/results?${queryString.stringify(searchParams, { arrayFormat: 'comma' })}`, state);
+export const pushSearch = (searchParams, state, customPage) => {
+  const params = { ...searchParams, page: customPage || 1 };
+  history.push(`/results?${queryString.stringify(params, { arrayFormat: 'comma' })}`, state);
+};
+
+export const hasLocationParams = params => {
+  return (params.lat && params.lng) || (params.city && params.countryCode);
 };
 
 const GUESTS = 'guests';
@@ -88,7 +93,7 @@ export const availableFilters = {
 
 export const filtersByType = {
   trip: [GUESTS, DATES, PRICE_RANGE, TAGS],
-  accommodation: [GUESTS, DATES, PRICE_RANGE, TAGS],
+  accommodation: [GUESTS, DATES, PRICE_RANGE],
   activity: [GUESTS, SINGLE_DATE, PRICE_RANGE, TAGS],
   food: [GUESTS, PRICE_TAGS, TAGS],
 };

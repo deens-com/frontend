@@ -41,6 +41,7 @@ class ResultsContainer extends Component {
     return (
       <ResultsComponent
         searchParams={this.props.searchParams}
+        routeState={this.props.routeState}
         service_data={this.props.results}
         pushSearch={pushSearch}
         isLoadingResults={this.props.isLoadingResults || this.hasToLoadTripYet()}
