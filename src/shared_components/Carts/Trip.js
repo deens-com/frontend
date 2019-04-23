@@ -211,7 +211,7 @@ const BookableTag = styled(Tag)`
 
 const TagsLine = styled.div`
   overflow: hidden;
-  height: calc(3.6em + 5px);
+  min-height: calc(3.6em + 5px);
 `;
 
 const HeartWrapper = styled.div`
@@ -395,7 +395,8 @@ class TripCart extends Component {
     if (this.props.type === 'activity') {
       return (
         <Price>
-          ${this.props.item.basePrice} for {this.props.numberOfGuests}
+          ${this.props.item.basePrice}{' '}
+          {this.props.numberOfGuests > 1 ? `for ${this.props.numberOfGuests} people` : 'per person'}
         </Price>
       );
     }
