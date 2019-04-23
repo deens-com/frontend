@@ -200,12 +200,12 @@ export default class Trip extends Component {
   };
 
   handleCustomizeClick = (event, force = false) => {
-    if (this.props.trip.owner === this.props.currentUserId && !this.props.booked) {
+    if (this.props.trip.owner === this.props.session._id && !this.props.booked) {
       history.push(`/trips/organize/${this.props.trip._id}`);
       return;
     }
     analytics.trip.customize();
-    this.props.cloneTrip(this.props.trip, this.props.currentUserId);
+    this.props.cloneTrip(this.props.trip, this.props.session._id);
   };
 
   goToDay = index => {
@@ -351,7 +351,7 @@ export default class Trip extends Component {
   };
 
   render() {
-    const { trip, adults, children, infants, isGDPRDismissed, gdprHeight } = this.props;
+    const { trip, adults, children, infants, owner, session } = this.props;
 
     if (!trip) {
       return (
@@ -374,6 +374,9 @@ export default class Trip extends Component {
           endDate={this.props.endDate}
           booked={this.props.booked}
           onCustomizeClick={this.handleCustomizeClick}
+          trip={trip}
+          owner={owner}
+          session={session}
         />
       </CustomPage>
     );

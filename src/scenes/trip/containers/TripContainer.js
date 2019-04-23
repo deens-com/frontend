@@ -133,7 +133,7 @@ class TripContainer extends Component {
           isCheckingAvailability={availability.isChecking}
           isCloning={isCloning}
           cloneTrip={cloneTrip}
-          currentUserId={session._id}
+          session={session}
           history={this.props.history}
           adults={booked ? trip.adultCount : adults}
           children={booked ? trip.childrenCount : children}
