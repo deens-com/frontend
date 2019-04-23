@@ -29,7 +29,7 @@ const fetchResults = searchQuery =>
     const searchForTrips = searchQuery.type.includes('trip');
     const params = {
       page: 1,
-      limit: 10,
+      limit: 25,
       ...mapDataToQuery(searchQuery),
       include: ['tags'],
       ...(searchForTrips ? { include: ['owner', 'tags'] } : {}),

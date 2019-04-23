@@ -50,7 +50,7 @@ export const mapUrlToProps = location => {
     countryCode: searchParams.countryCode,
     text: searchParams.text,
     page: searchParams.page || 1,
-    limit: searchParams.limit || 10,
+    limit: searchParams.limit || 25,
   };
 };
 
