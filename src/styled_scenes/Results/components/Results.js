@@ -105,7 +105,7 @@ const AddedToTrip = styled.div`
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(285px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
 `;
 
 // MODULE
