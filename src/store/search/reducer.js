@@ -6,8 +6,10 @@ import {
   actionErrorState,
 } from 'store/utils';
 
+const initialData = [];
+
 const initialState = {
-  results: asyncInitialState([]),
+  results: asyncInitialState(initialData),
   count: null,
   tagsOptions: [],
   searchQuery: {
@@ -53,7 +55,7 @@ export default function search(state = initialState, action = {}) {
         ...state,
         results: {
           ...state.results,
-          ...actionErrorState(action, state.results, initialState.results),
+          ...actionErrorState(action, state.results, initialData),
         },
         count: initialState.count,
         tagsOptions: initialState.tagsOptions,
