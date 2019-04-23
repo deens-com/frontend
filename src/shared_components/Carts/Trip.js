@@ -16,11 +16,11 @@ import Thumb from './components/Thumb';
 // STYLES
 import { Cart, ContentWrap } from './styles';
 import { cardConfig } from 'libs/config';
-import { calculatePricePerDay, generateTripSlug, generateServiceSlug } from 'libs/Utils';
+import { generateTripSlug, generateServiceSlug } from 'libs/Utils';
 import { getImageUrlFromMedia } from 'libs/media';
 import { Heart } from 'shared_components/icons';
 import I18nText from 'shared_components/I18nText';
-import { H6, P, PStrong, PSmallStrong, PSmall, PXSmall } from 'libs/commonStyles';
+import { H6, P, PStrong, PSmall, PXSmall } from 'libs/commonStyles';
 import * as colors from 'libs/colors';
 import { duration } from 'libs/trips';
 import Stars from 'shared_components/Rating/Stars';
@@ -61,13 +61,6 @@ const Wrap = styled.div`
         z-index: 1;
         animation: slide 1s infinite;
         animation-delay: 0;
-        background: linear-gradient(
-          to right,
-          rgba(255, 255, 255, 0) 0%,
-          rgba(255, 255, 255, 0.8) 50%,
-          rgba(60, 217, 184, 0) 99%,
-          rgba(60, 217, 184, 0) 100%
-        );
         will-change: transform;
       }
     `};
@@ -142,10 +135,14 @@ const AuthorPro = styled.p`
   text-align: center;
 `;
 
-const Price = styled(PSmallStrong)`
+const Price = styled(PStrong)`
   margin-bottom: 2px;
   flex-grow: 1;
   z-index: 1;
+`;
+
+const PriceText = styled.span`
+  font-size: 14px;
 `;
 
 const FoodPriceBackground = styled(PStrong)`
@@ -390,17 +387,29 @@ class TripCart extends Component {
       );
     }
     if (this.props.type === 'accommodation') {
-      return <Price>${this.props.item.basePrice} per night</Price>;
+      return (
+        <Price>
+          ${this.props.item.basePrice} <PriceText>per night</PriceText>
+        </Price>
+      );
     }
     if (this.props.type === 'activity') {
       return (
         <Price>
           ${this.props.item.basePrice}{' '}
-          {this.props.numberOfGuests > 1 ? `for ${this.props.numberOfGuests} people` : 'per person'}
+          <PriceText>
+            {this.props.numberOfGuests > 1
+              ? `for ${this.props.numberOfGuests} people`
+              : 'per person'}
+          </PriceText>
         </Price>
       );
     }
-    return <Price>${this.props.item.totalPricePerDay} per day</Price>;
+    return (
+      <Price>
+        ${this.props.item.totalPricePerDay} <PriceText>per day</PriceText>
+      </Price>
+    );
   }
 
   renderRating() {
