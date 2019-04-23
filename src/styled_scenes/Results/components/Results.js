@@ -12,7 +12,7 @@ import PaginationWrap from 'shared_components/PaginationWrap';
 import Button from 'shared_components/Button';
 import ReactPaginate from 'react-paginate';
 import { media } from '../../../libs/styled';
-import { Loader, Grid } from 'semantic-ui-react';
+import { Loader } from 'semantic-ui-react';
 import moment from 'moment';
 import { minutesToDays } from 'styled_scenes/Trip/mapServicesToDays';
 import notFoundImg from '../not_found.png';
@@ -75,12 +75,7 @@ const Wrap = styled.div`
 `;
 
 const ResultItem = styled.div`
-  // position: relative;
-  // display: inline-block;
-  // margin-left: 8%;
-  ${media.minSmall} {
-    //margin-left: 0px;
-  }
+  position: relative;
 `;
 
 const LoaderWithMargin = styled.section`
@@ -106,6 +101,11 @@ const AddedToTrip = styled.div`
   a {
     color: ${primary};
   }
+`;
+
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(285px, 1fr));
 `;
 
 // MODULE
@@ -250,42 +250,40 @@ class Results extends Component {
               </Loader>
             </LoaderWithMargin>
           ) : (
-            <Grid columns={this.props.showMap ? 3 : 5} doubling stackable>
+            <Grid>
               {this.props.data.map((result, i) => (
-                <Grid.Column key={result._id}>
-                  <ResultItem>
-                    {this.props.searchParams.type[0] !== 'trip' && (
-                      <AddToTrip
-                        data={
-                          this.props.routeState && {
-                            id: this.props.routeState.tripId,
-                            day: this.props.routeState.day,
-                            addToTrip: this.addToTrip,
-                          }
+                <ResultItem key={result._id}>
+                  {this.props.searchParams.type[0] !== 'trip' && (
+                    <AddToTrip
+                      data={
+                        this.props.routeState && {
+                          id: this.props.routeState.tripId,
+                          day: this.props.routeState.day,
+                          addToTrip: this.addToTrip,
                         }
-                        addToAnyTrip={this.addToAnyTrip}
-                        addToNewTrip={this.addToNewTrip}
-                        userTrips={this.props.userTrips}
-                        service={result}
-                      />
-                    )}
-                    <TripCard
-                      key={result.label}
-                      onOver={onCardOver}
-                      onLeave={onCardLeave}
-                      withTooltip
-                      withShadow
-                      item={result}
-                      isTrip={!(result.categories && result.categories.length)}
-                      isPlaceholder={false}
-                      type={this.props.searchParams.type[0]}
-                      numberOfGuests={
-                        (this.props.searchParams.adults || 1) +
-                        (this.props.searchParams.children || 0)
                       }
+                      addToAnyTrip={this.addToAnyTrip}
+                      addToNewTrip={this.addToNewTrip}
+                      userTrips={this.props.userTrips}
+                      service={result}
                     />
-                  </ResultItem>
-                </Grid.Column>
+                  )}
+                  <TripCard
+                    key={result.label}
+                    onOver={onCardOver}
+                    onLeave={onCardLeave}
+                    withTooltip
+                    withShadow
+                    item={result}
+                    isTrip={!(result.categories && result.categories.length)}
+                    isPlaceholder={false}
+                    type={this.props.searchParams.type[0]}
+                    numberOfGuests={
+                      (this.props.searchParams.adults || 1) +
+                      (this.props.searchParams.children || 0)
+                    }
+                  />
+                </ResultItem>
               ))}
             </Grid>
           )}

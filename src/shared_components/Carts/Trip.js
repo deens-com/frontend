@@ -20,7 +20,7 @@ import { calculatePricePerDay, generateTripSlug, generateServiceSlug } from 'lib
 import { getImageUrlFromMedia } from 'libs/media';
 import { Heart } from 'shared_components/icons';
 import I18nText from 'shared_components/I18nText';
-import { H6, P, PStrong, PSmall, PXSmall } from 'libs/commonStyles';
+import { H6, P, PStrong, PSmallStrong, PSmall, PXSmall } from 'libs/commonStyles';
 import * as colors from 'libs/colors';
 import { duration } from 'libs/trips';
 import Stars from 'shared_components/Rating/Stars';
@@ -30,6 +30,7 @@ import Rating from 'shared_components/Rating';
 
 const Wrap = styled.div`
   display: inline-block;
+  min-width: 255px;
   width: calc(100% - 30px);
   margin: 0 15px;
   position: relative;
@@ -82,13 +83,11 @@ const LinkWrapper = styled(Link)`
 `;
 
 const Title = styled(H6)`
-  padding: 0 5px 12px;
-  max-height: ${cardConfig.titleHeight};
+  padding: 5px;
   position: absolute;
   bottom: 0;
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.8);
-  min-height: 50px;
+  background-color: rgba(255, 255, 255, 0.9);
   border-radius: 0 0 15px 0;
   a {
     color: inherit;
@@ -142,7 +141,7 @@ const AuthorPro = styled.p`
   text-align: center;
 `;
 
-const Price = styled(PStrong)`
+const Price = styled(PSmallStrong)`
   margin-bottom: 2px;
   flex-grow: 1;
   z-index: 1;
