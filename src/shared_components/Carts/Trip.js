@@ -32,6 +32,7 @@ const Wrap = styled.div`
   display: inline-block;
   min-width: 255px;
   width: calc(100% - 30px);
+  max-width: 510px;
   margin: 0 15px;
   position: relative;
   &:focus {
