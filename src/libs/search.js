@@ -56,10 +56,8 @@ export const mapUrlToProps = location => {
 
 // If there is some processing required, just add the field here
 // otherwise, the same object will be passed to the request
-export const mapDataToQuery = ({ type, startDate, endDate, ...searchParams }) => ({
+export const mapDataToQuery = ({ type, ...searchParams }) => ({
   address: undefined,
-  start_date: startDate,
-  end_date: endDate,
   category: !type.length
     ? undefined
     : type.map(a => a.charAt(0).toUpperCase() + a.substr(1)).join('+'),
