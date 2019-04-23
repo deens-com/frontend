@@ -33,7 +33,7 @@ const thumbStyles = `
   background: #f7f7f7;
   background-size: cover;
   background-position: center;
-  height: 300px;
+  height: 280px;
   border-radius: 0 0 15px 0;
 `;
 

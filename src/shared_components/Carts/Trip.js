@@ -16,7 +16,7 @@ import Thumb from './components/Thumb';
 // STYLES
 import { Cart, ContentWrap } from './styles';
 import { cardConfig } from 'libs/config';
-import { calculatePricePerDay, generateTripSlug, generateServiceSlug } from 'libs/Utils';
+import { generateTripSlug, generateServiceSlug } from 'libs/Utils';
 import { getImageUrlFromMedia } from 'libs/media';
 import { Heart } from 'shared_components/icons';
 import I18nText from 'shared_components/I18nText';
@@ -30,7 +30,9 @@ import Rating from 'shared_components/Rating';
 
 const Wrap = styled.div`
   display: inline-block;
+  min-width: 255px;
   width: calc(100% - 30px);
+  max-width: 510px;
   margin: 0 15px;
   position: relative;
   &:focus {
@@ -59,13 +61,6 @@ const Wrap = styled.div`
         z-index: 1;
         animation: slide 1s infinite;
         animation-delay: 0;
-        background: linear-gradient(
-          to right,
-          rgba(255, 255, 255, 0) 0%,
-          rgba(255, 255, 255, 0.8) 50%,
-          rgba(60, 217, 184, 0) 99%,
-          rgba(60, 217, 184, 0) 100%
-        );
         will-change: transform;
       }
     `};
@@ -82,13 +77,11 @@ const LinkWrapper = styled(Link)`
 `;
 
 const Title = styled(H6)`
-  padding: 0 5px 12px;
-  max-height: ${cardConfig.titleHeight};
+  padding: 5px;
   position: absolute;
   bottom: 0;
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.8);
-  min-height: 50px;
+  background-color: rgba(255, 255, 255, 0.9);
   border-radius: 0 0 15px 0;
   a {
     color: inherit;
@@ -146,6 +139,10 @@ const Price = styled(PStrong)`
   margin-bottom: 2px;
   flex-grow: 1;
   z-index: 1;
+`;
+
+const PriceText = styled.span`
+  font-size: 14px;
 `;
 
 const FoodPriceBackground = styled(PStrong)`
@@ -390,17 +387,29 @@ class TripCart extends Component {
       );
     }
     if (this.props.type === 'accommodation') {
-      return <Price>${this.props.item.basePrice} per night</Price>;
+      return (
+        <Price>
+          ${this.props.item.basePrice} <PriceText>per night</PriceText>
+        </Price>
+      );
     }
     if (this.props.type === 'activity') {
       return (
         <Price>
           ${this.props.item.basePrice}{' '}
-          {this.props.numberOfGuests > 1 ? `for ${this.props.numberOfGuests} people` : 'per person'}
+          <PriceText>
+            {this.props.numberOfGuests > 1
+              ? `for ${this.props.numberOfGuests} people`
+              : 'per person'}
+          </PriceText>
         </Price>
       );
     }
-    return <Price>${this.props.item.totalPricePerDay} per day</Price>;
+    return (
+      <Price>
+        ${this.props.item.totalPricePerDay} <PriceText>per day</PriceText>
+      </Price>
+    );
   }
 
   renderRating() {

@@ -7,8 +7,8 @@ import { primary } from 'libs/colors';
 
 const AddButton = styled.div`
   position: absolute;
-  right: 35px;
-  top: 20px;
+  right: 20px;
+  top: 5px;
   z-index: 2;
 `;
 
