@@ -19,7 +19,7 @@ Cypress.Commands.add('logout', () => {
 });
 
 Cypress.Commands.add('checkTripOrganizerIsEmpty', () => {
-  cy.getTestElement('tripNameInput').should('have.value', 'Unnamed Trip');
+  cy.getTestElement('tripNameInput').should('have.value', 'My Trip');
   cy.findTestElement('day').should('have.length', 1);
   cy.getTestElement('noServicesText').should('exist');
 

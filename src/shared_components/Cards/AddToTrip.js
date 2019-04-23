@@ -75,7 +75,7 @@ export default class AddToTrip extends Component {
 
   render() {
     const button = (
-      <Button theme="fillLightGreen" onClick={this.props.data ? () => {} : this.buttonClick}>
+      <Button theme="fillLightGreen" onClick={this.props.data ? this.buttonClick : () => {}}>
         <strong>Add to trip</strong>
       </Button>
     );

@@ -27,7 +27,7 @@ class TripCreatorContainer extends Component {
           duration: 1,
           media: [],
           services: [],
-          title: { 'en-us': 'Unnamed Trip' },
+          title: { 'en-us': 'My Trip' },
         })
         .then(response => {
           this.props.changeUserTrip(response.data);
