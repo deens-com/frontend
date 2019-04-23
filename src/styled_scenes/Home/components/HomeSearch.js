@@ -14,6 +14,7 @@ import SemanticLocationControl from 'shared_components/Form/LocationAutoSuggest'
 
 // ACTIONS & CONFIG
 import { placeholderMixin } from '../../../libs/styled';
+import { pushSearch } from 'libs/search';
 
 const Input = styled.input`
   appearance: none;
@@ -107,11 +108,11 @@ export default class HomeSearch extends Component {
     this.state = {
       search: '',
       address: '',
-      latitude: undefined,
-      longitude: undefined,
+      lat: undefined,
+      lng: undefined,
       countryCode: undefined,
       city: undefined,
-      serviceType: undefined,
+      serviceType: 'trip',
       keywords: '',
       show_banner: false,
       focus: false,
@@ -135,41 +136,48 @@ export default class HomeSearch extends Component {
 
   handleLocationChange(address, serviceType, text) {
     if (text) {
-      this.setState({ text }, this.handleSearchSubmit);
+      this.setState({ serviceType, text }, this.handleSearchSubmit);
       return;
     }
 
     geocodeByAddress(address).then(results => {
       const result = results[0];
-      const searchParams = getSearchParams(result);
+      const searchParams = getSearchParams(address, result);
       this.setState({ serviceType, ...searchParams }, this.handleSearchSubmit);
     });
   }
 
   handleSearchSubmit() {
-    const query_params = {
+    const params = {
       address: this.state.address,
-      latitude: this.state.latitude,
-      longitude: this.state.longitude,
+      lat: this.state.lat,
+      lng: this.state.lng,
       city: this.state.city,
       state: this.state.state,
       countryCode: this.state.countryCode,
-      serviceTypes: this.state.serviceType,
+      type: this.state.serviceType,
       text: this.state.text,
     };
-    let query_arr = [];
+    /*let query_arr = [];
     Object.entries(query_params).forEach(([key, value]) => {
       if (value) {
         let to_concat = key + '=' + value;
         query_arr = query_arr.concat(to_concat);
       }
     });
-    let query_string = query_arr.join('&');
+    let query_string = query_arr.join('&');*/
     if (this.props.toggleSearch) {
       this.props.toggleSearch();
     }
-    history.push(`/results?${query_string}`);
+    pushSearch(params);
+    //history.push(`/results?${query_string}`);
   }
+
+  handleServiceTypeChange = serviceType => {
+    this.setState({
+      serviceType,
+    });
+  };
 
   onFocus = () => {
     this.setState({
@@ -191,6 +199,9 @@ export default class HomeSearch extends Component {
         customStyle={suggestionStyle}
         onFocus={this.onFocus}
         onBlur={this.onBlur}
+        showServiceTypes
+        handleServiceTypeChange={this.handleServiceTypeChange}
+        serviceType={this.state.serviceType}
       />
     );
   };

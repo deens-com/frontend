@@ -6,7 +6,7 @@ import actions from 'store/trips/actions';
 import styled from 'styled-components';
 import searchActions from 'store/search/actions';
 import { changeCurrentUserTrip } from 'store/session/actions';
-import { updatePath } from 'store/search/helpers';
+import { pushSearch } from 'libs/search';
 import moment from 'moment';
 import TripOrganizer from 'styled_scenes/NewTripOrganizer';
 import history from 'main/history';
@@ -75,7 +75,7 @@ class TripOrganizerContainer extends Component {
         children={this.props.children}
         infants={this.props.infants}
         changeDates={this.props.changeDates}
-        updatePath={updatePath}
+        pushSearch={pushSearch}
         history={this.props.history}
         isGDPRDismissed={this.props.isGDPRDismissed}
         gdprHeight={this.props.gdprHeight}
@@ -102,7 +102,7 @@ class TripOrganizerContainer extends Component {
 const mapStateToProps = (state, props) => {
   const trip = state.trips.trip;
 
-  let startDate = state.search.searchQuery.start_date;
+  let startDate = state.search.searchQuery.startDate;
   if (!startDate) {
     const tomorrow = moment()
       .add(1, 'days')
@@ -135,7 +135,7 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       ...actions,
-      changeDates: searchActions.updateSearchQuery,
+      changeDates: searchActions.patchSearchQuery,
       changeHeader: headerActions.changeHeader,
       changeCurrentUserTrip: changeCurrentUserTrip,
     },

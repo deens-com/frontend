@@ -67,6 +67,19 @@ export const DropArrow = SvgWithProps(({ ariaHidden, focusable, role, style }) =
   </svg>
 ));
 
+export const MenuDownArrow = SvgWithProps(({ ariaHidden, focusable, role, style }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    aria-hidden={ariaHidden}
+    focusable={focusable.toString()}
+    role={role}
+    style={style}
+  >
+    <path d="M7,10L12,15L17,10H7Z" />
+  </svg>
+));
+
 export const LeftArrow = SvgWithProps(({ ariaHidden, focusable, role, style }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -77,6 +90,19 @@ export const LeftArrow = SvgWithProps(({ ariaHidden, focusable, role, style }) =
     style={style}
   >
     <path d="M14,7L9,12L14,17V7Z" />
+  </svg>
+));
+
+export const BackArrow = SvgWithProps(({ ariaHidden, focusable, role, style }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    aria-hidden={ariaHidden}
+    focusable={focusable.toString()}
+    role={role}
+    style={style}
+  >
+    <path d="M19 7V11H5.83L9.41 7.41L8 6L2 12L8 18L9.41 16.59L5.83 13H21V7H19Z" />
   </svg>
 ));
 

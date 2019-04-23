@@ -24,7 +24,14 @@ const TriggerWrap = styled.button`
 `;
 
 // MODULE
-export default function TopBarSearch({ isMenuOpen, toggleSearch, address, isMobileSearchOpen }) {
+export default function TopBarSearch({
+  searchParams,
+  isMenuOpen,
+  toggleSearch,
+  address,
+  isMobileSearchOpen,
+  updateQuery,
+}) {
   if (isMenuOpen) return null;
 
   return (
@@ -35,7 +42,13 @@ export default function TopBarSearch({ isMenuOpen, toggleSearch, address, isMobi
             <SearchIcon />
           </TriggerWrap>
         ) : (
-          <Search address={address} isMobile={matches} toggleSearch={toggleSearch} />
+          <Search
+            address={address}
+            isMobile={matches}
+            toggleSearch={toggleSearch}
+            searchParams={searchParams}
+            updateQuery={updateQuery}
+          />
         )
       }
     </Media>

@@ -1,14 +1,17 @@
 import fetchHelpers from 'libs/fetch_helpers';
 import api from 'libs/apiClient';
 import { createAsyncActions, dispatchAsyncActions } from 'store/utils';
-import { parseTagsText } from 'libs/Utils';
+import { parseTagsText, parseTagsCount } from 'libs/Utils';
+import { mapDataToQuery, hasLocationParams } from 'libs/search';
 
 const SEARCH = 'SEARCH';
 const UPDATE_QUERY_PARAMS = 'UPDATE_QUERY_PARAMS';
+const PATCH_QUERY_PARAMS = 'PATCH_QUERY_PARAMS';
 
 const types = {
   search: createAsyncActions(SEARCH),
   updateQueryParams: UPDATE_QUERY_PARAMS,
+  patchQueryParams: PATCH_QUERY_PARAMS,
 };
 
 const updateSearchQuery = searchParams => ({
@@ -16,44 +19,44 @@ const updateSearchQuery = searchParams => ({
   payload: searchParams,
 });
 
-const composeSearchParams = searchParams => ({
-  category: !searchParams.type.length
-    ? undefined
-    : searchParams.type.map(a => a.charAt(0).toUpperCase() + a.substr(1)).join('+'),
-  startDate: searchParams.start_date || undefined,
-  endDate: searchParams.end_date || undefined,
-  adults: Number(searchParams.adults) || undefined,
-  children: Number(searchParams.children) || undefined,
-  infants: Number(searchParams.infants) || undefined,
-  lat: searchParams.latitude || undefined,
-  lng: searchParams.longitude || undefined,
-  address: searchParams.address || undefined,
-  tags: !searchParams.tags.length ? undefined : searchParams.tags.join(','),
-  onlySmartContracts: searchParams.onlySmartContracts || undefined,
-  page: searchParams.page || 1,
-  limit: searchParams.limit || 1,
-  text: searchParams.text || undefined,
-  sortBy: searchParams.sortBy || undefined,
-  radiusInKm: searchParams.radiusInKm || 10,
-  city: searchParams.city || undefined,
-  state: searchParams.state || undefined,
-  countryCode: searchParams.countryCode || undefined,
+const patchSearchQuery = searchParams => ({
+  type: PATCH_QUERY_PARAMS,
+  payload: searchParams,
 });
 
 const fetchResults = searchQuery =>
   dispatchAsyncActions(SEARCH, async () => {
     const searchForTrips = searchQuery.type.includes('trip');
     const params = {
-      ...composeSearchParams(searchQuery),
-      ...(searchForTrips ? { include: 'owner' } : {}),
+      page: 1,
+      limit: 10,
+      ...mapDataToQuery(searchQuery),
+      include: ['tags'],
+      ...(searchForTrips ? { include: ['owner', 'tags'] } : {}),
     };
+
+    if (!searchForTrips) {
+      if (
+        params.text || // next we check that we have any kind of location
+        !hasLocationParams(params)
+      ) {
+        return {
+          results: [],
+          count: 0,
+          tags: [],
+        };
+      }
+    }
     const results = await (searchForTrips
       ? api.trips.search.get(params)
       : api.services.search.get(params));
 
     const resultsArr = searchForTrips ? results.data.trips : results.data.services;
-    const data = fetchHelpers.buildServicesJson(resultsArr);
+    const data = fetchHelpers.buildServicesJson(resultsArr, false);
 
+    /*const tags = parseTagsText(
+      searchForTrips ? parseTagsCount(results.data.tagsWithCount) : results.data.tags,
+    );*/
     const tags = parseTagsText(results.data.tags);
 
     return {
@@ -75,4 +78,5 @@ export default {
   types,
   fetchResults,
   updateSearchQuery,
+  patchSearchQuery,
 };

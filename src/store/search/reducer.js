@@ -6,14 +6,16 @@ import {
   actionErrorState,
 } from 'store/utils';
 
+const initialData = [];
+
 const initialState = {
-  results: asyncInitialState([]),
+  results: asyncInitialState(initialData),
   count: null,
   tagsOptions: [],
   searchQuery: {
-    serviceTypes: [],
+    type: [],
     tags: [],
-    page: 0,
+    page: 1,
     sortBy: '',
   },
 };
@@ -53,12 +55,18 @@ export default function search(state = initialState, action = {}) {
         ...state,
         results: {
           ...state.results,
-          ...actionErrorState(action, state.results, initialState.results),
+          ...actionErrorState(action, state.results, initialData),
         },
         count: initialState.count,
         tagsOptions: initialState.tagsOptions,
+        error: action.error,
       };
     case types.updateQueryParams:
+      return {
+        ...state,
+        searchQuery: action.payload,
+      };
+    case types.patchQueryParams:
       return {
         ...state,
         searchQuery: {

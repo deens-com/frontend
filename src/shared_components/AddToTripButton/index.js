@@ -52,7 +52,7 @@ export default class AddToTripButton extends React.Component {
   render() {
     const { props } = this;
 
-    const addToTripButton = (
+    const addToTripButton = props.customTrigger || (
       <CustomColorSemanticButton
         icon
         labelPosition="right"
@@ -73,7 +73,7 @@ export default class AddToTripButton extends React.Component {
         onTripClick={this.onTripClickOverride}
         onNewTripClick={this.onNewTripClickOverride}
       />
-    )
+    );
 
     return (
       <Popup
@@ -83,6 +83,7 @@ export default class AddToTripButton extends React.Component {
         on="click"
         open={this.state.isOpen}
         onOpen={this.handleOpen}
+        position="bottom center"
         wide
       />
     );

@@ -158,8 +158,8 @@ export default class Trip extends Component {
     const day = dates.startDate;
     this.handleDatePopupClose();
     this.props.changeDates({
-      start_date: day && day.valueOf(),
-      end_date:
+      startDate: day && day.valueOf(),
+      endDate:
         day &&
         day
           .clone()

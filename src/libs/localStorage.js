@@ -63,7 +63,7 @@ export function loadTrip(withFullServices = true) {
   }
   return {
     title: {
-      'en-us': 'Unnamed Trip',
+      'en-us': 'My Trip',
     },
     services: [],
     media: [],

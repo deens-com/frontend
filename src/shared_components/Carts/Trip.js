@@ -16,7 +16,7 @@ import Thumb from './components/Thumb';
 // STYLES
 import { Cart, ContentWrap } from './styles';
 import { cardConfig } from 'libs/config';
-import { calculatePricePerDay, generateTripSlug } from 'libs/Utils';
+import { calculatePricePerDay, generateTripSlug, generateServiceSlug } from 'libs/Utils';
 import { getImageUrlFromMedia } from 'libs/media';
 import { Heart } from 'shared_components/icons';
 import I18nText from 'shared_components/I18nText';
@@ -25,7 +25,8 @@ import * as colors from 'libs/colors';
 import { duration } from 'libs/trips';
 import Stars from 'shared_components/Rating/Stars';
 import { Link } from 'react-router-dom';
-import ImgurAvatar from './../../assets/no-avatar.png';
+import ImgurAvatar from 'assets/no-avatar.png';
+import Rating from 'shared_components/Rating';
 
 const Wrap = styled.div`
   display: inline-block;
@@ -70,6 +71,16 @@ const Wrap = styled.div`
     `};
 `;
 
+const LinkWrapper = styled(Link)`
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+`;
+
 const Title = styled(H6)`
   padding: 0 5px 12px;
   max-height: ${cardConfig.titleHeight};
@@ -87,7 +98,6 @@ const Title = styled(H6)`
 const Location = styled.span`
   display: flex;
   align-items: flex-start;
-  margin-left: 5px;
   font-size: 12px;
   line-height: 16px;
 
@@ -100,6 +110,7 @@ const Location = styled.span`
 
 const Dot = styled.span`
   color: ${colors.secondary};
+  margin: 0 5px;
 
   p {
     width: 100%;
@@ -121,6 +132,7 @@ const Author = styled(Link)`
   border: 1px solid white;
   background-color: white;
   box-shadow: 0 0 1px;
+  z-index: 1;
 `;
 
 const AuthorPro = styled.p`
@@ -133,13 +145,19 @@ const AuthorPro = styled.p`
 const Price = styled(PStrong)`
   margin-bottom: 2px;
   flex-grow: 1;
+  z-index: 1;
+`;
+
+const FoodPriceBackground = styled(PStrong)`
+  position: absolute;
+  color: ${colors.disabled};
 `;
 
 const FirstLine = styled.div`
   display: flex;
 `;
 
-const Hearts = styled.div`
+const RatingWrapper = styled.div`
   > svg {
     color: ${colors.secondary};
     margin-top: 1px;
@@ -173,6 +191,8 @@ const Tag = styled(PXSmall)`
 `;
 
 const TagLink = styled(Link)`
+  position: relative;
+  z-index: 1;
   margin-bottom: 5px;
   line-height: 1.8em;
   margin-right: 3px;
@@ -283,11 +303,19 @@ class TripCart extends Component {
     }));
   };
 
+  isFastBookable = () => {
+    if (this.props.type === 'trip') {
+      return this.props.item.fastBookable;
+    }
+    return this.props.item.checkoutOptions && this.props.item.checkoutOptions.payAt === 'please';
+  };
+
   renderThumb() {
-    const { isPlaceholder, hideAuthor } = this.props;
+    const { isPlaceholder, hideAuthor, type } = this.props;
     const owner = isPlaceholder ? {} : this.props.item.owner;
-    const avatar =
-      owner.profilePicture + '?auto=compress&dpr=1&crop=true&fit=crop&w=33&h=33' || ImgurAvatar;
+    const avatar = owner.profilePicture
+      ? owner.profilePicture + '?auto=compress&dpr=1&crop=true&fit=crop&w=33&h=33'
+      : ImgurAvatar;
     const isFavorite = isPlaceholder ? false : this.props.favoriteTrips[this.props.item._id];
 
     return (
@@ -296,20 +324,24 @@ class TripCart extends Component {
         url={isPlaceholder ? '' : getTripImage(this.props.item)}
         withTooltip={this.props.withTooltip}
       >
-        <HeartWrapper filled={isFavorite}>
-          <Heart style={{ height: '24px', width: '21px' }} onClick={this.toggleFavorite} />
-        </HeartWrapper>
-        {hideAuthor ? null : (
-          <Author to={`/users/${owner.username}`}>
-            {isPlaceholder ? <ImagePlaceholder /> : <Image src={avatar} />}
-            <Stars
-              length={3}
-              rating={((isPlaceholder ? 0 : owner.rating.average) * 3) / 5}
-              width={8.25}
-              height={18}
-            />
-            {owner.level === 'pro' && <AuthorPro>PRO</AuthorPro>}
-          </Author>
+        {type === 'trip' && (
+          <>
+            <HeartWrapper filled={isFavorite}>
+              <Heart style={{ height: '24px', width: '21px' }} onClick={this.toggleFavorite} />
+            </HeartWrapper>
+            {hideAuthor ? null : (
+              <Author to={`/users/${owner.username}`}>
+                {isPlaceholder ? <ImagePlaceholder /> : <Image src={avatar} />}
+                <Stars
+                  length={3}
+                  rating={((isPlaceholder || !owner.rating ? 0 : owner.rating.average) * 3) / 5}
+                  width={8.25}
+                  height={18}
+                />
+                {owner.level === 'pro' && <AuthorPro>PRO</AuthorPro>}
+              </Author>
+            )}
+          </>
         )}
         <Title>
           <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>
@@ -324,9 +356,10 @@ class TripCart extends Component {
     if (this.props.isPlaceholder) {
       return;
     }
+
     return this.props.item.tags.map(tag => (
       <TagLink
-        to={`/results?tags=${I18nText.translate(tag.names)}&serviceTypes=trip`}
+        to={`/results?tags=${I18nText.translate(tag.names)}&type=trip`}
         key={I18nText.translate(tag.names)}
       >
         <Tag>
@@ -334,6 +367,60 @@ class TripCart extends Component {
         </Tag>
       </TagLink>
     ));
+  }
+
+  renderPrice() {
+    if (this.props.type === 'food') {
+      if (
+        !this.props.item.otherAttributes ||
+        !this.props.item.otherAttributes.yelp ||
+        !this.props.item.otherAttributes.yelp.yelpPrice
+      ) {
+        return null;
+      }
+      return (
+        <>
+          <FoodPriceBackground>
+            {Array(4)
+              .fill(this.props.item.otherAttributes.yelp.yelpPrice[0])
+              .join('')}
+          </FoodPriceBackground>
+          <Price>{this.props.item.otherAttributes.yelp.yelpPrice}</Price>
+        </>
+      );
+    }
+    if (this.props.type === 'accommodation') {
+      return <Price>${this.props.item.basePrice} per night</Price>;
+    }
+    if (this.props.type === 'activity') {
+      return (
+        <Price>
+          ${this.props.item.basePrice} for {this.props.numberOfGuests}
+        </Price>
+      );
+    }
+    return <Price>${this.props.item.totalPricePerDay} per day</Price>;
+  }
+
+  renderRating() {
+    if (this.props.type === 'trip') {
+      return (
+        <RatingWrapper>
+          <Heart />
+          <HeartsNumber>{this.props.item.hearts + this.state.sumToHearts}</HeartsNumber>
+        </RatingWrapper>
+      );
+    }
+
+    return (
+      <RatingWrapper>
+        <Rating
+          rating={this.props.item.ratings.average}
+          count={this.props.item.ratings.count}
+          starsType={this.props.type === 'food' ? 'yelp' : 'golden'}
+        />
+      </RatingWrapper>
+    );
   }
 
   renderContent() {
@@ -345,44 +432,56 @@ class TripCart extends Component {
         </>
       );
     }
-    const hearts = this.props.item.hearts;
+
     return (
       <>
         <FirstLine>
-          <Price>
-            ${calculatePricePerDay(this.props.item.totalPrice, this.props.item.duration)} per day
-          </Price>
-          <Hearts>
-            <Heart />
-            <HeartsNumber>{hearts + this.state.sumToHearts}</HeartsNumber>
-          </Hearts>
+          {this.renderPrice()}
+          {this.renderRating()}
         </FirstLine>
         <SecondLine>
-          <Duration>{duration(this.props.item.duration)}</Duration>
-          <Dot>•</Dot>
+          {this.props.type !== 'food' &&
+            this.props.type !== 'food' && (
+              <>
+                <Duration>{duration(this.props.item.duration)}</Duration>
+                <Dot>•</Dot>
+              </>
+            )}
           <Location>
-            <PSmall>{formatLocation(this.props.item.location)}</PSmall>
+            <PSmall>{formatLocation(this.props.item.originalLocation)}</PSmall>
           </Location>
         </SecondLine>
         <TagsLine>
-          <BookableTag>Fast Booking</BookableTag>
+          {this.isFastBookable() && <BookableTag>Fast Booking</BookableTag>}
           {this.renderTags()}
         </TagsLine>
       </>
     );
   }
 
+  getLink = () => {
+    const { isPlaceholder, type } = this.props;
+
+    if (isPlaceholder) {
+      return '';
+    }
+
+    if (type === 'trip') {
+      return `/trips/${generateTripSlug(this.props.item)}`;
+    }
+
+    return `/services/${generateServiceSlug(this.props.item)}`;
+  };
+
   renderCard() {
     const { isPlaceholder } = this.props;
-    const LinkWrap = isPlaceholder ? ({ children }) => children : Link;
-    const linkUrl = isPlaceholder ? '' : `/trips/${generateTripSlug(this.props.item)}`;
+    const linkUrl = this.getLink();
     return (
       <Wrap isPlaceholder={isPlaceholder}>
         <Cart column className="card-animate">
-          <LinkWrap to={linkUrl}>
-            {this.renderThumb()}
-            <ContentWrap>{this.renderContent()}</ContentWrap>
-          </LinkWrap>
+          {!isPlaceholder && <LinkWrapper to={linkUrl} />}
+          {this.renderThumb()}
+          <ContentWrap>{this.renderContent()}</ContentWrap>
         </Cart>
       </Wrap>
     );
@@ -438,6 +537,7 @@ TripCart.propTypes = {
   href: PropTypes.string,
   hideAuthor: PropTypes.bool,
   isPlaceholder: PropTypes.bool,
+  type: PropTypes.oneOf(['trip', 'accommodation', 'activity', 'food']),
 };
 
 // Default props
@@ -446,4 +546,5 @@ TripCart.defaultProps = {
   hideAuthor: false,
   href: '/',
   isPlaceholder: true,
+  type: 'trip',
 };

@@ -1,6 +1,6 @@
 import history from 'main/history';
 import axios from 'libs/axios';
-import fetch_helpers from 'libs/fetch_helpers';
+import fetch_helpers, { parseTags } from 'libs/fetch_helpers';
 import * as tripUtils from 'libs/trips';
 
 const trips_fetched = trips => {
@@ -42,9 +42,7 @@ const set_service_unavailability_modal = bool => {
 const fetch_service = serviceId => async dispatch => {
   dispatch(serviceFetchStart());
   try {
-    const service = await axios.get(`/services/${serviceId}?include=owner,tags`).catch(error => {
-      dispatch({ type: 'SERVICE_FETCH_ERROR', payload: error });
-    });
+    const service = await axios.get(`/services/${serviceId}?include=owner,tags`);
     if (service) {
       const serviceData = service.data;
       const formattedServiceData = fetch_helpers.buildServicesJson([serviceData])[0];
@@ -56,9 +54,18 @@ const fetch_service = serviceId => async dispatch => {
         const formattedTripsData = fetch_helpers.buildServicesJson(tripsData);
         dispatch(trips_fetched({ trips: formattedTripsData }));
       }
-      dispatch(service_fetched({ service: formattedServiceData }));
+
+      dispatch(
+        service_fetched({
+          service: {
+            ...formattedServiceData,
+            tags: parseTags(serviceData.tags),
+          },
+        }),
+      );
     }
   } catch (e) {
+    console.log(e);
     dispatch({
       type: 'SERVICE_FETCH_ERROR',
       payload: e.response ? e.response.data : e,

@@ -177,7 +177,7 @@ export default class Itinerary extends Component {
   handleDatesChange = dateRange => {
     const start = dateRange.startDate;
     const end = dateRange.endDate;
-    this.props.changeDates({ start_date: start, end_date: end });
+    this.props.changeDates({ startDate: start, endDate: end });
   };
 
   renderAvailability = (day, id) => {
@@ -273,11 +273,7 @@ export default class Itinerary extends Component {
             {dayData.service.tags.length > 0 && (
               <ServiceTags>
                 {dayData.service.tags.slice(0, 5).map(tag => (
-                  <Tag
-                    key={tag.label}
-                    item={tag}
-                    href={`/results?serviceTypes=trip&tags=${tag.label}`}
-                  />
+                  <Tag key={tag.label} item={tag} href={`/results?type=trip&tags=${tag.label}`} />
                 ))}
               </ServiceTags>
             )}

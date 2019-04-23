@@ -25,6 +25,7 @@ const patch = url => body => axios.patch(url, body);
 export default {
   trips: {
     get: get('/trips'),
+    post: post('/trips'),
     getById: (params, id) => get(`/trips/${id}`)(params),
     copy: {
       post: (id, anonymous) =>

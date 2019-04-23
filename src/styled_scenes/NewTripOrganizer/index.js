@@ -332,23 +332,26 @@ export default class TripOrganizer extends React.Component {
     const address =
       location && `${location.city || location.state}${country ? `, ${country}` : ''}`;
 
-    this.props.updatePath(
+    this.props.pushSearch(
       {
         type: [type],
+        lat: coord && coord.lat,
+        lng: coord && coord.lng,
         address,
-        latitude: coord && coord.lat,
-        longitude: coord && coord.lng,
-        start_date: moment(tripData.startDate)
+        startDate: moment(tripData.startDate)
           .add(day - 1, 'days')
           .valueOf(),
+        endDate:
+          type === 'accommodation'
+            ? moment(tripData.startDate)
+                .add(day, 'days')
+                .valueOf()
+            : undefined,
       },
-      history,
       {
         tripId: trip._id,
-        day,
         duration: this.state.tripData.duration,
         startDate: this.state.tripData.startDate.valueOf(),
-        isCreatingTripNotLoggedIn: !Boolean(trip._id),
       },
     );
   };
@@ -754,7 +757,6 @@ export default class TripOrganizer extends React.Component {
     const numberOfDays = minutesToDays(this.state.tripData.duration);
 
     for (let day = 1; day <= numberOfDays; day++) {
-      console.log(day);
       const servicesOfCurrentDay = this.state.services[day] || [];
       newServices[day] = servicesOfCurrentDay;
       if (!serviceDays.has(Number(day))) {
@@ -771,7 +773,6 @@ export default class TripOrganizer extends React.Component {
         });
       }
     }
-    console.log(newServices);
     this.setState({
       services: newServices,
     });

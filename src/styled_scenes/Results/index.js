@@ -6,6 +6,10 @@ import GoogleMapReact from 'google-map-react';
 import { Checkbox } from 'semantic-ui-react';
 import Media from 'react-media';
 import { getCenterAndZoom } from 'libs/location';
+import yelpLogo from 'assets/yelp/logo.png';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import tripActions from 'store/trips/actions';
 
 import history from 'main/history';
 // COMPONENTS
@@ -21,7 +25,12 @@ import { waitUntilMapsLoaded } from 'libs/Utils';
 
 // STYLES
 import { PageContent } from './../../shared_components/layout/Page';
-import { updatePath } from 'store/search/helpers';
+import { pushSearch } from 'libs/search';
+import { primary } from 'libs/colors';
+import { P } from 'libs/commonStyles';
+import Sort from './components/Sort';
+
+import addPrefixArticle from 'indefinite';
 
 const MapWrapper = styled.div`
   display: flex;
@@ -32,6 +41,7 @@ const MapWrapper = styled.div`
   margin-top: 1.8em;
   position: relative;
   width: 100%;
+  max-width: 600px;
   h3 {
     color: #fff;
     font-size: 52px;
@@ -43,6 +53,7 @@ const MapWrapper = styled.div`
 const MapPlaceholder = styled.div`
   display: none;
   width: 100%;
+  max-width: 600px;
 `;
 
 const ServicesWrapper = styled.div`
@@ -53,35 +64,49 @@ const ServicesWrapper = styled.div`
   }
 `;
 
-const GoBackToTrip = styled.span`
-  color: white;
-  margin-top: 15px;
-  margin-left: 20px;
-  padding: 3px 7px;
-  cursor: pointer;
-  display: inline-block;
-  background-color: #4ac4a1;
-  border-radius: 20px;
+const TopFiltersWrapper = styled.div``;
+
+const RightColumn = styled.div`
+  dislay: flex;
+  flex-direction: column;
+  > *:first-child {
+    margin-bottom: 10px;
+  }
 `;
 
 const AddingServiceTopBar = styled.div`
   display: flex;
   align-items: center;
+  margin: 10px 15px;
 `;
 
-const CreateService = styled.div`
-  color: #4ac4a1;
+const CreateService = styled.span`
+  color: ${primary};
   margin-top: 15px;
-  margin-left: 20px;
   cursor: pointer;
 `;
 
 const MapToggle = styled.div`
   display: flex;
-  flex-flow: row-reverse;
-  padding-right: 1em;
-  //padding-bottom: 1em;
-  margin-top: -1.3em;
+  cursor: pointer;
+`;
+
+const TopFilters = styled.div`
+  display: flex;
+  margin: 0 15px;
+  align-items: center;
+`;
+
+const ByYelp = styled.div`
+  display: flex;
+  align-items: center;
+  margin: -10px 15px;
+  > p {
+    margin-top: 10px;
+  }
+  img {
+    width: 100px;
+  }
 `;
 
 const defaultCenter = {
@@ -90,7 +115,7 @@ const defaultCenter = {
 };
 const defaultZoom = 11;
 
-export default class ResultsScene extends Component {
+class ResultsScene extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -118,36 +143,13 @@ export default class ResultsScene extends Component {
       }));
   };
 
-  getZoomByRadius = () => {
-    const radius = Number(this.props.radiusInKm);
-
-    if (radius >= 100) {
-      return 9;
-    }
-
-    if (radius >= 50) {
-      return 10;
-    }
-
-    if (radius >= 20) {
-      return 11;
-    }
-
-    if (radius >= 10) {
-      return 12;
-    }
-
-    return 13;
-  };
-
   getCenterAndZoom = (markers, props) => {
-    const zoomByRadius = this.getZoomByRadius();
     const center =
       props.latitude && props.longitude
         ? { lat: parseFloat(props.latitude), lng: parseFloat(props.longitude) }
         : defaultCenter;
 
-    return getCenterAndZoom(markers, center, zoomByRadius);
+    return getCenterAndZoom(markers, center);
   };
 
   componentWillReceiveProps(nextProps) {
@@ -163,6 +165,7 @@ export default class ResultsScene extends Component {
   }
 
   componentDidMount() {
+    this.props.fetchUserTrips();
     const { center, zoom } = this.getCenterAndZoom([], this.props);
     this.setState({ center, zoom, markers: [] });
   }
@@ -293,33 +296,60 @@ export default class ResultsScene extends Component {
   render() {
     const { props } = this;
     const { center, zoom, markers } = this.state;
-
+    const type = props.searchParams.type[0];
     return (
       <React.Fragment>
-        <span>
-          <Filters {...props} />
-          <Media query={`(min-width: 600px)`}>
-            {matches =>
-              matches ? (
-                <MapToggle>
-                  <Checkbox color="green" toggle onClick={this.toggleMap} /> &nbsp;&nbsp;
-                  <div>
-                    <h3 onClick={this.toggleMap}>Show Map</h3>
-                  </div>
-                </MapToggle>
-              ) : (
-                <span />
-              )
-            }
-          </Media>
-        </span>
+        <TopFiltersWrapper>
+          <TopFilters>
+            <Filters
+              backToTrip={props.routeState && props.routeState.tripId}
+              searchParams={props.searchParams}
+            />
+            <RightColumn>
+              <Media query={`(min-width: 600px)`}>
+                {matches =>
+                  matches ? (
+                    <MapToggle>
+                      <Checkbox
+                        color="green"
+                        toggle
+                        checked={this.state.showMap}
+                        onClick={this.toggleMap}
+                      />{' '}
+                      &nbsp;&nbsp;
+                      <P onClick={this.toggleMap}>Show Map</P>
+                    </MapToggle>
+                  ) : (
+                    <span />
+                  )
+                }
+              </Media>
+              <Sort searchParams={this.props.searchParams} />
+            </RightColumn>
+          </TopFilters>
+        </TopFiltersWrapper>
         {props.routeState &&
           Boolean(props.routeState.tripId) && (
             <AddingServiceTopBar>
-              <GoBackToTrip onClick={this.goBackToTrip}>Go back to trip</GoBackToTrip>
-              <CreateService onClick={this.createExternalService}>
-                I can't find my service
-              </CreateService>
+              <P>
+                {Boolean(props.count) && (
+                  <strong>
+                    {props.count >= 1000
+                      ? `More than ${props.count} found.`
+                      : `${props.count} found.`}
+                  </strong>
+                )}{' '}
+                <span>Still not satisfied?</span>{' '}
+                {type !== 'trip' ? (
+                  <CreateService onClick={this.createExternalService}>
+                    Add {type !== 'food' ? addPrefixArticle(type) : type}
+                  </CreateService>
+                ) : (
+                  <CreateService onClick={this.createExternalService}>
+                    Create your own trip
+                  </CreateService>
+                )}
+              </P>
               {this.state.modalOpen && (
                 <CreateServiceModal
                   day={props.routeState.day}
@@ -331,6 +361,14 @@ export default class ResultsScene extends Component {
               )}
             </AddingServiceTopBar>
           )}
+        {type === 'food' && (
+          <ByYelp>
+            <P>Restaurants provided by</P>
+            <a href="https://yelp.com" target="_blank" rel="noopener noreferrer">
+              <img src={yelpLogo} alt="Yelp" />
+            </a>
+          </ByYelp>
+        )}
         <PageContent flex>
           <ServicesWrapper>
             <Results
@@ -340,7 +378,8 @@ export default class ResultsScene extends Component {
               data={props.service_data}
               showMap={this.state.showMap}
               goBackToTrip={this.goBackToTrip}
-              updatePath={updatePath}
+              pushSearch={pushSearch}
+              userTrips={this.props.userTrips}
             />
           </ServicesWrapper>
           <MapPlaceholder ref={this.mapPlaceholderRef} />
@@ -372,3 +411,23 @@ export default class ResultsScene extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    userTrips: state.trips.userTrips.unbookedTrips,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      fetchUserTrips: tripActions.fetchUserTrips,
+    },
+    dispatch,
+  );
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ResultsScene);
