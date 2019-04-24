@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { primary } from 'libs/colors';
+import { primary, error } from 'libs/colors';
 import { MenuDownArrow } from 'shared_components/icons';
 
 const Wrapper = styled.div`
@@ -18,6 +18,7 @@ const Button = styled.div`
   display: inline-flex;
   align-items: center;
   cursor: pointer;
+  ${props => props.error && `border: 1px solid ${error};`};
 `;
 
 const Icon = styled.span`
@@ -34,9 +35,15 @@ const Content = styled.div`
   border-radius: 5px 5px 5px 0px;
   box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.1);
   display: ${props => (props.hide ? 'none' : 'block')};
+  ${props =>
+    props.maxHeight &&
+    `
+    max-height: ${props.maxHeight}px;
+    overflow-y: scroll;
+  `};
 `;
 
-const Dropdown = ({ children, trigger, onClose, onOpen }) => {
+const Dropdown = ({ children, trigger, onClose, onOpen, maxHeight, error }) => {
   const [isOpen, setOpen] = useState(false);
   const toggleOpen = useCallback(
     () => {
@@ -77,13 +84,13 @@ const Dropdown = ({ children, trigger, onClose, onOpen }) => {
 
   return (
     <Wrapper>
-      <Button ref={buttonRef} onClick={toggleOpen}>
+      <Button error={error} ref={buttonRef} onClick={toggleOpen}>
         {trigger}
         <Icon>
           <MenuDownArrow />
         </Icon>
       </Button>
-      <Content hide={!isOpen} ref={contentRef}>
+      <Content maxHeight={maxHeight} hide={!isOpen} ref={contentRef}>
         {isOpen && childrenWithProps}
       </Content>
     </Wrapper>
@@ -95,11 +102,15 @@ Dropdown.propTypes = {
   trigger: PropTypes.node.isRequired,
   onClose: PropTypes.func,
   onOpen: PropTypes.func,
+  maxHeight: PropTypes.number,
+  error: PropTypes.bool,
 };
 
 Dropdown.defaultProps = {
   onClose: () => {},
   onOpen: () => {},
+  maxHeight: null,
+  error: false,
 };
 
 export default Dropdown;

@@ -133,37 +133,43 @@ export default class GuestsSelector extends React.Component {
     }
   };
 
-  addAdult = () => {
+  addAdult = e => {
+    e.preventDefault();
     this.setState(prevState => ({
       adults: prevState.adults + 1,
     }));
   };
 
-  addChild = () => {
+  addChild = e => {
+    e.preventDefault();
     this.setState(prevState => ({
       children: prevState.children + 1,
     }));
   };
 
-  addInfant = () => {
+  addInfant = e => {
+    e.preventDefault();
     this.setState(prevState => ({
       infants: prevState.infants + 1,
     }));
   };
 
-  removeAdult = () => {
+  removeAdult = e => {
+    e.preventDefault();
     this.setState(prevState => ({
       adults: prevState.adults - 1,
     }));
   };
 
-  removeChild = () => {
+  removeChild = e => {
+    e.preventDefault();
     this.setState(prevState => ({
       children: prevState.children - 1,
     }));
   };
 
-  removeInfant = () => {
+  removeInfant = e => {
+    e.preventDefault();
     this.setState(prevState => ({
       infants: prevState.infants - 1,
     }));
@@ -189,7 +195,7 @@ export default class GuestsSelector extends React.Component {
             (Ages > 13)
           </LeftColumn>
           <RightColumn>
-            <IconButton disabled={adults === 1} onClick={this.removeAdult}>
+            <IconButton disabled={adults <= 1} onClick={this.removeAdult}>
               <MinusIcon style={{ width: 24, height: 24 }} />
             </IconButton>
             <NumberOfPeople>{adults}</NumberOfPeople>
