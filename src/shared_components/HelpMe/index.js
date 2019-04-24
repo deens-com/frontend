@@ -13,7 +13,6 @@ export default ({ tripId, session, tripParent, isLoadingUser, user, buttonSize }
           Help me!
         </Button>
       }
-      open={true}
       content={
         <Content
           tripParent={tripParent}
