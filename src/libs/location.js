@@ -34,9 +34,10 @@ export const parseLocationData = data => {
 
 export const getSearchParams = (address, googleMapsResult) => {
   const { address_components: addressComponents, geometry } = googleMapsResult;
-  const region = getAddressComponent(addressComponents, 'sublocality', 'long_name');
+  /*const region = getAddressComponent(addressComponents, 'sublocality', 'long_name');
   const establishment = getAddressComponent(addressComponents, 'establishment', 'long_name');
   const poi = getAddressComponent(addressComponents, 'point_of_interest', 'long_name');
+  const neighborhood = getAddressComponent(addressComponents, 'neighborhood', 'long_name');*/
   const city = getAddressComponent(addressComponents, 'locality', 'long_name');
   const state = getAddressComponent(addressComponents, 'administrative_area_level_1', 'long_name');
   const countryCode = getAddressComponent(addressComponents, 'country', 'short_name');
@@ -51,7 +52,7 @@ export const getSearchParams = (address, googleMapsResult) => {
     lng: undefined,
     address: undefined,
   };
-  if (region || establishment || poi) {
+  if (!addressComponents[0].types.includes('locality')) {
     return { ...allUndefined, lat, lng, address };
   } else if (city || state || countryCode) {
     return { ...allUndefined, city, state, countryCode, address };
