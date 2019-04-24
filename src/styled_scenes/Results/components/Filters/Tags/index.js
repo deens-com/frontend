@@ -55,7 +55,7 @@ const Tags = ({ selectedTags, suggestedTags, onApply }) => {
   const onClose = () => {
     setIsOpen(false);
     onApply({
-      tags: tags.map(tag => tag.value),
+      tags: tags.length === 0 ? undefined : tags.map(tag => tag.value),
     });
   };
 

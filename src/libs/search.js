@@ -25,7 +25,7 @@ export const mapUrlToProps = location => {
   return {
     // does not properly parse '+'.
     type: (searchParams.type && searchParams.type.split(',')) || [],
-    tags: searchParams.tags ? searchParams.tags.split(',') : [],
+    tags: searchParams.tags ? searchParams.tags.split(',') : undefined,
     lat: Number(searchParams.lat) || undefined,
     lng: Number(searchParams.lng) || undefined,
     adults: Number(searchParams.adults) || undefined,
@@ -65,7 +65,8 @@ export const mapDataToQuery = ({ type, ...searchParams }) => ({
 });
 
 export const pushSearch = (searchParams, state, customPage) => {
-  const params = { ...searchParams, page: customPage || 1 };
+  const page = customPage || (searchParams.page ? 1 : undefined);
+  const params = { ...searchParams, page };
   history.push(`/results?${queryString.stringify(params, { arrayFormat: 'comma' })}`, state);
 };
 

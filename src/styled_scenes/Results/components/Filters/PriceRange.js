@@ -55,8 +55,8 @@ const PriceRange = ({ minPrice, maxPrice, onApply, pricePer, numberOfPeople }) =
 
   const onClose = () => {
     onApply({
-      priceStart: values.min,
-      priceEnd: values.max < 500 ? values.max : undefined,
+      priceStart: values.min > MIN_PRICE ? values.min : undefined,
+      priceEnd: values.max < MAX_PRICE ? values.max : undefined,
     });
   };
 

@@ -10,6 +10,7 @@ import PriceRangeFilter from './PriceRange';
 import PriceTagsFilter from './PriceTags';
 import TagsFilter from './Tags';
 import { BackArrow } from 'shared_components/icons';
+import isMatch from 'lodash.ismatch';
 import 'react-dates.css';
 
 const Wrapper = styled.div`
@@ -32,10 +33,15 @@ const BackToTrip = styled(Link)`
 
 const Filters = ({ searchParams, backToTrip }) => {
   const search = params => {
-    pushSearch({
-      ...searchParams,
-      ...params,
-    });
+    const keepPage = isMatch(searchParams, params);
+    pushSearch(
+      {
+        ...searchParams,
+        ...params,
+      },
+      undefined,
+      keepPage ? searchParams.page : undefined,
+    );
   };
   const filters = filtersByType[searchParams.type[0]];
 
