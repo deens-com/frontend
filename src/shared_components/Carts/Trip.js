@@ -458,7 +458,9 @@ class TripCart extends Component {
               </>
             )}
           <Location>
-            <PSmall>{formatLocation(this.props.item.originalLocation)}</PSmall>
+            <PSmall>
+              {formatLocation(this.props.item.originalLocation || this.props.item.location)}
+            </PSmall>
           </Location>
         </SecondLine>
         <TagsLine>
