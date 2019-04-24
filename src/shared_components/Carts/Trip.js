@@ -457,11 +457,9 @@ class TripCart extends Component {
                 <Dot>•</Dot>
               </>
             )}
-          {this.props.type !== 'trip' && (
-            <Location>
-              <PSmall>{formatLocation(this.props.item.originalLocation)}</PSmall>
-            </Location>
-          )}
+          <Location>
+            <PSmall>{formatLocation(this.props.item.originalLocation)}</PSmall>
+          </Location>
         </SecondLine>
         <TagsLine>
           {this.isFastBookable() && <BookableTag>Fast Booking</BookableTag>}
