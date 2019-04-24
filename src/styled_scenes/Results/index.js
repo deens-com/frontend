@@ -33,7 +33,10 @@ import Sort from './components/Sort';
 import addPrefixArticle from 'indefinite';
 
 const MapWrapper = styled.div`
-  display: flex;
+  display: none;
+  ${media.minSmall} {
+    display: ${props => (props.showing ? 'flex' : 'none')};
+  }
   align-items: center;
   justify-content: center;
   height: calc(100vh - 70px - 1.8em - 60px);
@@ -41,7 +44,7 @@ const MapWrapper = styled.div`
   margin-top: 1.8em;
   position: relative;
   width: 100%;
-  max-width: 600px;
+  max-width: 700px;
   h3 {
     color: #fff;
     font-size: 52px;
@@ -52,8 +55,10 @@ const MapWrapper = styled.div`
 
 const MapPlaceholder = styled.div`
   display: none;
-  width: 100%;
-  max-width: 600px;
+  ${media.minSmall} {
+    width: 100%;
+    max-width: 700px;
+  }
 `;
 
 const ServicesWrapper = styled.div`
@@ -87,7 +92,10 @@ const CreateService = styled.span`
 `;
 
 const MapToggle = styled.div`
-  display: flex;
+  display: none;
+  ${media.minSmall} {
+    display: flex;
+  }
   cursor: pointer;
 `;
 
@@ -122,7 +130,7 @@ class ResultsScene extends Component {
       center: defaultCenter,
       zoom: defaultZoom,
       markers: [],
-      showMap: false,
+      showMap: true,
     };
     this.mapRef = React.createRef();
     this.mapPlaceholderRef = React.createRef();
@@ -168,6 +176,10 @@ class ResultsScene extends Component {
     this.props.fetchUserTrips();
     const { center, zoom } = this.getCenterAndZoom([], this.props);
     this.setState({ center, zoom, markers: [] });
+    if (this.state.showMap) {
+      window.addEventListener('scroll', this.handleScroll);
+      window.addEventListener('scroll', this.resizeHandler);
+    }
   }
 
   componentWillUnmount() {
@@ -306,24 +318,16 @@ class ResultsScene extends Component {
               searchParams={props.searchParams}
             />
             <RightColumn>
-              <Media query={`(min-width: 600px)`}>
-                {matches =>
-                  matches ? (
-                    <MapToggle>
-                      <Checkbox
-                        color="green"
-                        toggle
-                        checked={this.state.showMap}
-                        onClick={this.toggleMap}
-                      />{' '}
-                      &nbsp;&nbsp;
-                      <P onClick={this.toggleMap}>Show Map</P>
-                    </MapToggle>
-                  ) : (
-                    <span />
-                  )
-                }
-              </Media>
+              <MapToggle>
+                <Checkbox
+                  color="green"
+                  toggle
+                  checked={this.state.showMap}
+                  onClick={this.toggleMap}
+                />{' '}
+                &nbsp;&nbsp;
+                <P onClick={this.toggleMap}>Show Map</P>
+              </MapToggle>
               <Sort searchParams={this.props.searchParams} />
             </RightColumn>
           </TopFilters>
@@ -383,7 +387,7 @@ class ResultsScene extends Component {
             />
           </ServicesWrapper>
           <MapPlaceholder ref={this.mapPlaceholderRef} />
-          <MapWrapper ref={this.mapRef} style={{ display: this.state.showMap ? 'flex' : 'none' }}>
+          <MapWrapper ref={this.mapRef} showing={this.state.showMap}>
             <GoogleMapReact
               center={center}
               zoom={zoom}
