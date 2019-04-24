@@ -16,7 +16,7 @@ class HomeContainer extends Component {
       trips: defaultState,
     };
 
-    this.fetchTrips = fetchHelperFactory(this.setState.bind(this), 'trips', api.trips.search.get);
+    this.fetchTrips = fetchHelperFactory(this.setState.bind(this), 'trips', api.trips.featured.get);
   }
 
   componentDidMount() {
