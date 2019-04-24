@@ -317,7 +317,7 @@ export default class TripOrganizer extends React.Component {
   // SINGLE ACTIONS
 
   goToAddService = (day, type = 'accommodation') => {
-    const { history, trip } = this.props;
+    const { trip } = this.props;
     const { services, tripData } = this.state;
 
     let location;
@@ -337,6 +337,9 @@ export default class TripOrganizer extends React.Component {
         type: [type],
         lat: coord && coord.lat,
         lng: coord && coord.lng,
+        adults: tripData.adultCount,
+        children: tripData.childrenCount,
+        infants: tripData.infantCount,
         address,
         startDate: moment(tripData.startDate)
           .add(day - 1, 'days')
@@ -810,6 +813,7 @@ export default class TripOrganizer extends React.Component {
       childrenCount: data.children,
       infantCount: data.infants,
     };
+    this.saveTrip(newData);
     this.setState(
       prevState => ({
         tripData: {
@@ -819,7 +823,6 @@ export default class TripOrganizer extends React.Component {
       }),
       async () => {
         this.startCheckingAvailability();
-        await this.saveTrip(newData);
         await this.checkAvailability();
       },
     );
