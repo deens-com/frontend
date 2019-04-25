@@ -69,7 +69,7 @@ const Filters = ({ searchParams, backToTrip }) => {
       keepPage ? searchParams.page : undefined,
     );
   };
-  const filters = filtersByType[searchParams.type[0]];
+  const filters = filtersByType[searchParams.type];
 
   return (
     <Wrapper showingMobile={showingMobile}>
@@ -117,7 +117,7 @@ const Filters = ({ searchParams, backToTrip }) => {
           minPrice={searchParams.priceStart}
           maxPrice={searchParams.priceEnd}
           onApply={search}
-          pricePer={searchParams.type[0] === 'activity' ? 'per person' : undefined}
+          pricePer={searchParams.type === 'activity' ? 'per person' : undefined}
           numberOfPeople={(searchParams.adults || 1) + (searchParams.children || 0)}
         />
       )}

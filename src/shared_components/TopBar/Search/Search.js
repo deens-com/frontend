@@ -117,7 +117,7 @@ export default class DesktopSearch extends Component {
       search: '',
       mode: 'text',
       inFocus: false,
-      serviceType: props.searchParams.type[0] || 'trip',
+      serviceType: props.searchParams.type || 'trip',
       params: {},
     };
 
@@ -225,7 +225,7 @@ export default class DesktopSearch extends Component {
               ref={this.inputRef}
               showServiceTypes
               handleServiceTypeChange={this.handleServiceTypeChange}
-              serviceType={this.props.searchParams.type[0]}
+              serviceType={this.props.searchParams.type}
               hasSearchedText={Boolean(this.state.text)}
             />
             {isMobile && (

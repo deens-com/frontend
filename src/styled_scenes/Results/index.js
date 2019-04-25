@@ -323,7 +323,7 @@ class ResultsScene extends Component {
   render() {
     const { props } = this;
     const { center, zoom, markers } = this.state;
-    const type = props.searchParams.type[0];
+    const type = props.searchParams.type;
     return (
       <React.Fragment>
         <TopFiltersWrapper>

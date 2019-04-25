@@ -1,11 +1,11 @@
 // NPM
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 
 import { media } from 'libs/styled';
 import { H1, H2 } from 'libs/commonStyles';
 import { secondary } from 'libs/colors';
+import { pushSearch } from 'libs/search';
 
 import sydneyImg from './images/big/sydney.jpg';
 import sanFranciscoImg from './images/small/san-francisco.jpg';
@@ -59,8 +59,9 @@ const Row = styled.div`
   }
 `;
 
-const FlexLink = styled(Link)`
+const FlexLink = styled.div`
   flex: 1;
+  cursor: pointer;
   ${media.minSmall} {
     margin-bottom: 20px;
     height: 190px;
@@ -75,7 +76,12 @@ const NewYorkLink = styled(FlexLink)`
   }
 `;
 
-const SFLink = styled(Link)`
+const LondonLink = styled.div`
+  cursor: pointer;
+`;
+
+const SFLink = styled.div`
+  cursor: pointer;
   margin-bottom: 10px;
   ${media.minSmall} {
     margin-bottom: 20px;
@@ -143,14 +149,37 @@ const InnerText = styled(H1)`
   color: white;
 `;
 
-const sydneyParams =
-  'type=trip&address=Sydney%20NSW%2C%20Australia&city=Sydney&state=New%20South%20Wales&countryCode=AU&page=1&limit=10';
-const newYorkParams =
-  'type=trip&address=New%20York%2C%20NY%2C%20USA&city=New%20York&state=New%20York&countryCode=US&page=1&limit=10';
-const londonParams =
-  'type=trip&address=London%2C%20UK&city=London&state=England&countryCode=GB&page=1&limit=10';
-const sanFranciscoParams =
-  'type=trip&address=San%20Francisco%2C%20CA%2C%20USA&city=San%20Francisco&state=California&countryCode=US&page=1&limit=10';
+const sydneyParams = {
+  type: 'trip',
+  address: 'Sydney, Australia',
+  city: 'Sydney',
+  state: 'New South Wales',
+  countryCode: 'AU',
+};
+
+const newYorkParams = {
+  type: 'trip',
+  address: 'New York, NY, USA',
+  city: 'New York',
+  state: 'New York',
+  countryCode: 'US',
+};
+
+const londonParams = {
+  type: 'trip',
+  address: 'London, UK',
+  city: 'London',
+  state: 'England',
+  countryCode: 'GB',
+};
+
+const sanFranciscoParams = {
+  type: 'trip',
+  address: 'San Francisco, CA, USA',
+  city: 'San Francisco',
+  state: 'California',
+  countryCode: 'US',
+};
 
 export default function HomeSectionTopDestinations() {
   return (
@@ -160,27 +189,43 @@ export default function HomeSectionTopDestinations() {
           <H2>Top Destinations</H2>
         </SectionHeader>
         <SectionContent>
-          <FlexLink to={`/results?${sydneyParams}`}>
+          <FlexLink
+            onClick={() => {
+              pushSearch(sydneyParams);
+            }}
+          >
             <Sydney>
               <InnerText>Sydney</InnerText>
             </Sydney>
           </FlexLink>
-          <NewYorkLink to={`/results?${newYorkParams}`}>
+          <NewYorkLink
+            onClick={() => {
+              pushSearch(newYorkParams);
+            }}
+          >
             <NewYork>
               <InnerText>New York</InnerText>
             </NewYork>
           </NewYorkLink>
           <CenterContainer>
-            <SFLink to={`/results?${sanFranciscoParams}`}>
+            <SFLink
+              onClick={() => {
+                pushSearch(sanFranciscoParams);
+              }}
+            >
               <SanFrancisco>
                 <InnerText>San Francisco</InnerText>
               </SanFrancisco>
             </SFLink>
-            <Link to={`/results?${londonParams}`}>
+            <LondonLink
+              onClick={() => {
+                pushSearch(londonParams);
+              }}
+            >
               <London>
                 <InnerText>London</InnerText>
               </London>
-            </Link>
+            </LondonLink>
           </CenterContainer>
         </SectionContent>
       </SectionWrap>

@@ -141,7 +141,7 @@ class Results extends Component {
     const duration = this.props.routeState.duration;
     const startDate = this.props.searchParams.startDate;
     const endDate = this.props.searchParams.endDate;
-    const type = this.props.searchParams.type[0];
+    const type = this.props.searchParams.type;
     const days = getDays(type, day, tripStartDate, duration, startDate, endDate);
 
     await tripUtils.addServiceManyDaysRequest(this.props.trip._id, days, service._id);
@@ -212,7 +212,7 @@ class Results extends Component {
     if (!this.props.isLoadingResults && this.props.data.length === 0) {
       return (
         <section>
-          {this.props.searchParams.type && this.props.searchParams.type[0] === 'trip' ? (
+          {this.props.searchParams.type && this.props.searchParams.type === 'trip' ? (
             <NotFound>
               <img src={notFoundImg} alt="Not found" />
               <h3>There are no trips available in the location selected.</h3>
@@ -253,7 +253,7 @@ class Results extends Component {
             <Grid>
               {this.props.data.map((result, i) => (
                 <ResultItem key={result._id}>
-                  {this.props.searchParams.type[0] !== 'trip' && (
+                  {this.props.searchParams.type !== 'trip' && (
                     <AddToTrip
                       data={
                         this.props.routeState && {
@@ -277,7 +277,7 @@ class Results extends Component {
                     item={result}
                     isTrip={!(result.categories && result.categories.length)}
                     isPlaceholder={false}
-                    type={this.props.searchParams.type[0]}
+                    type={this.props.searchParams.type}
                     numberOfGuests={
                       (this.props.searchParams.adults || 1) +
                       (this.props.searchParams.children || 0)

@@ -70,7 +70,7 @@ const Sort = ({ searchParams }) => {
     pushSearch({ ...searchParams, sortBy });
   };
 
-  const validOptions = getValidOptions(searchParams.type[0]);
+  const validOptions = getValidOptions(searchParams.type);
 
   return (
     <Popup

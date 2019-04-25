@@ -24,7 +24,7 @@ class Results extends React.Component {
     let helmet;
 
     const location = searchParams.address ? `near ${searchParams.address}` : '';
-    const serviceTypesStr = searchParams.type.join(', ');
+    const serviceTypesStr = searchParams.type;
     const title = `Find ${serviceTypesStr || 'services'} ${location}`;
     const url = `${websiteUrl}${this.props.location.pathname}${this.props.location.search}`;
 

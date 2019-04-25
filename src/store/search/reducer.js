@@ -13,10 +13,8 @@ const initialState = {
   count: null,
   tagsOptions: [],
   searchQuery: {
-    type: [],
-    tags: [],
+    type: 'trip',
     page: 1,
-    sortBy: '',
   },
 };
 
