@@ -14,15 +14,8 @@ import {
   backgroundDark,
   primary,
 } from 'libs/colors';
-import {
-  MapMarker,
-  Activity,
-  Briefcase,
-  Food,
-  Accommodation,
-  Pen,
-  LinkIcon,
-} from 'shared_components/icons';
+import { MapMarker, Activity, Briefcase, Food, Accommodation } from 'shared_components/icons';
+import ReactResizeDetector from 'react-resize-detector';
 
 const Wrapper = styled.div`
   flex-grow: 1;
@@ -90,6 +83,7 @@ const ExternalWrapper = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
+  white-space: nowrap;
 `;
 
 const ExternalText = styled.label`
@@ -228,6 +222,47 @@ export default class SemanticLocationControl extends Component {
     return 'Trips';
   };
 
+  onResize = width => {
+    this.setState(prevState => {
+      if (width < 280) {
+        if (prevState.showExternal === 'none') {
+          return;
+        }
+        return {
+          showExternal: 'none',
+        };
+      }
+      if (width < 340) {
+        if (prevState.showExternal === 'partial') {
+          return;
+        }
+        return {
+          showExternal: 'partial',
+        };
+      }
+      if (prevState.showExternal === 'full') {
+        return;
+      }
+      return {
+        showExternal: 'full',
+      };
+    });
+  };
+
+  renderExternalText() {
+    const { hasSearchedText } = this.props;
+    const { showExternal } = this.state;
+    if (hasSearchedText) {
+      return 'Showing Trips containing';
+    }
+    if (showExternal === 'full') {
+      return `Showing ${this.getSentenceWord()} in`;
+    } else if (showExternal === 'partial') {
+      return `${this.getSentenceWord()} in`;
+    }
+    return '';
+  }
+
   render() {
     const {
       inputProps,
@@ -240,12 +275,12 @@ export default class SemanticLocationControl extends Component {
       handleServiceTypeChange,
       serviceType,
       defaultAddress,
-      hasSearchedText,
     } = this.props;
     this.changeDefaultAddress(defaultAddress);
     return (
       <>
         <ExternalWrapper>
+          {showServiceTypes && <ReactResizeDetector handleWidth onResize={this.onResize} />}
           {!this.state.isOpen &&
             this.state.address &&
             showServiceTypes && (
@@ -255,9 +290,7 @@ export default class SemanticLocationControl extends Component {
                 }}
                 htmlFor="search"
               >
-                {hasSearchedText
-                  ? 'Showing Trips containing'
-                  : `Showing ${this.getSentenceWord()} in`}
+                {this.renderExternalText()}
               </ExternalText>
             )}
           <PlacesAutocomplete
