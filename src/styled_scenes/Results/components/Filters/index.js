@@ -34,7 +34,7 @@ const FilterIconWrapper = styled.span`
   color: ${props => (props.showingMobile ? disabled : primary)};
   align-self: flex-start;
   margin-bottom: 15px;
-  > svg {
+  svg {
     width: 1.5em !important;
     height: 1.5em !important;
   }
@@ -78,11 +78,13 @@ const Filters = ({ searchParams, backToTrip }) => {
       )}
 
       <FilterIconWrapper showingMobile={showingMobile}>
-        <FiltersIcon
+        <span
           onClick={() => {
             setShowingMobile(!showingMobile);
           }}
-        />
+        >
+          <FiltersIcon />
+        </span>
       </FilterIconWrapper>
 
       {filters.includes(availableFilters.guests) && (
