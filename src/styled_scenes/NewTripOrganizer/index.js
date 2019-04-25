@@ -427,6 +427,7 @@ export default class TripOrganizer extends React.Component {
       },
       {
         tripId: trip._id,
+        day,
         duration: this.state.tripData.duration,
         startDate: this.state.tripData.startDate.valueOf(),
       },
