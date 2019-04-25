@@ -411,7 +411,7 @@ class ResultsScene extends Component {
               }}
               googleMapLoader={waitUntilMapsLoaded}
               options={
-                window.google
+                window.google && window.google.maps
                   ? {
                       zoomControlOptions: {
                         position: window.google.maps.ControlPosition.LEFT_CENTER,

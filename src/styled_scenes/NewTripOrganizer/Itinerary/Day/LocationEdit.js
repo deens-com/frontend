@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
-import { geocodeByPlaceId } from 'react-places-autocomplete';
+import { geocodeByPlaceId } from 'libs/placesAutocomplete';
 import { parseLocationData } from 'libs/location';
 import { primary, error } from 'libs/colors';
 import { P } from 'libs/commonStyles';

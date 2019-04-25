@@ -3,7 +3,7 @@ import axios from 'libs/axios';
 import apiClient from 'libs/apiClient';
 import { parseLocationData } from 'libs/location';
 import ObjectID from 'bson-objectid';
-import { geocodeByPlaceId } from 'react-places-autocomplete';
+import { geocodeByPlaceId } from 'libs/placesAutocomplete';
 
 export const patchTrip = async (id, data) => {
   return axios.patch(`/trips/${id}`, {

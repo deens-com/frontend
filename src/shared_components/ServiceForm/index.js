@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Dropdown, Form, Modal, Button } from 'semantic-ui-react';
 import { withFormik } from 'formik';
-import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete';
+import { getLatLng, geocodeByPlaceId } from 'libs/placesAutocomplete';
 import styled from 'styled-components';
 import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
 import HelpTooltip from 'shared_components/HelpTooltip';

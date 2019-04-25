@@ -7,7 +7,7 @@ import history from './../../../main/history';
 // COMPONENTS
 import { CrossIcon, SearchIcon } from '../../icons';
 import SemanticLocationControl from 'shared_components/Form/LocationAutoSuggest';
-import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
+import { geocodeByAddress, getLatLng } from 'libs/placesAutocomplete';
 import { disabled } from 'libs/colors';
 import { pushSearch, getAddress } from 'libs/search';
 
