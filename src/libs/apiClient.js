@@ -34,6 +34,9 @@ export default {
     search: {
       get: get('/search'),
     },
+    featured: {
+      get: get('/trips/featured'),
+    },
     heart: {
       post: id => post(`/trips/${id}/heart`)(),
       delete: id => deleteEndpoint(`/trips/${id}/heart`)(),

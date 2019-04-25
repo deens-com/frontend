@@ -16,7 +16,7 @@ class HomeContainer extends Component {
       trips: defaultState,
     };
 
-    this.fetchTrips = fetchHelperFactory(this.setState.bind(this), 'trips', api.trips.search.get);
+    this.fetchTrips = fetchHelperFactory(this.setState.bind(this), 'trips', api.trips.featured.get);
   }
 
   componentDidMount() {
@@ -29,11 +29,12 @@ class HomeContainer extends Component {
       {
         trip: defaultState,
       },
-      () => this.fetchTrips({ include: 'owner' }),
+      () => this.fetchTrips({ include: ['owner', 'tags'] }),
     );
   };
 
   render() {
+    console.log(this.state.trips);
     return (
       <div className="HomeContainer">
         <Helmet>
@@ -41,7 +42,7 @@ class HomeContainer extends Component {
           <link rel="canonical" href={websiteUrl} />
         </Helmet>
         <HomeComponent
-          trips={this.state.trips.data && this.state.trips.data.trips}
+          trips={this.state.trips.data}
           isLoading={this.state.trips.isLoading}
           retryFunction={this.getTrips}
         />
