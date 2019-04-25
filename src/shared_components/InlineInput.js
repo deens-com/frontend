@@ -13,6 +13,11 @@ const Text = styled.div`
   margin: ${props => props.margin};
   > svg {
     margin-left: 15px;
+    ${props =>
+      props.iconColor &&
+      `
+      color: ${props.iconColor};
+    `};
   }
 `;
 
@@ -59,6 +64,7 @@ const InlineInput = ({
   disallowEmptySubmit,
   useTextarea,
   inputPadding,
+  iconColor,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const onStartEditing = () => setIsEditing(true);
@@ -133,7 +139,12 @@ const InlineInput = ({
   const child = typeof children === 'number' ? children : children || placeholder; // this is to support 0 as children
 
   return (
-    <Text margin={inputPadding} wrapLines={useTextarea} onClick={onStartEditing}>
+    <Text
+      iconColor={iconColor}
+      margin={inputPadding}
+      wrapLines={useTextarea}
+      onClick={onStartEditing}
+    >
       {textPrefix}
       {child}
       <PencilIcon />

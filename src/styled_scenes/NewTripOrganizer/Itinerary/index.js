@@ -50,6 +50,8 @@ const Itinerary = ({
   fromService,
   toService,
   showingMap,
+  saveDayNote,
+  daysData,
 }) => {
   const numberOfDays = minutesToDays(duration);
   const [days, setDays] = useState(generateDaysArray(numberOfDays));
@@ -108,6 +110,8 @@ const Itinerary = ({
             fromService={fromService}
             toService={toService}
             isLastDay={index + 1 === days.length}
+            saveDayNote={saveDayNote}
+            dayMetadata={daysData[index + 1]}
           />
         ))}
         <EmptyDay addNewDay={addNewDay} day={days.length + 1} tripStartDate={tripStartDate} />
@@ -136,6 +140,8 @@ Itinerary.propTypes = {
   toService: PropTypes.object,
   summaryView: PropTypes.bool,
   showingMap: PropTypes.bool,
+  saveDayNote: PropTypes.func.isRequired,
+  daysData: PropTypes.object.isRequired,
 };
 
 Itinerary.defaultProps = {

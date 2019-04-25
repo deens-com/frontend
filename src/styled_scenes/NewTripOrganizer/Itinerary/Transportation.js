@@ -21,6 +21,7 @@ const TransportBox = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
+  margin-top: 40px;
 `;
 
 // height: 225px;

@@ -34,7 +34,9 @@ const Trigger = styled(P)`
 const DropdownContent = ({ startDate, endDate, onDateSelect, closeDropdown, isSingle }) => {
   const [focusedInput, setFocusedInput] = useState(START_DATE);
   const [selectedStartDate, setSelectedStartDate] = useState(startDate ? moment(startDate) : null);
-  const [selectedEndDate, setSelectedEndDate] = useState(endDate ? moment(endDate) : null);
+  const [selectedEndDate, setSelectedEndDate] = useState(
+    endDate && !isSingle ? moment(endDate) : null,
+  );
 
   const onDatesChange = ({ startDate, endDate }) => {
     if (focusedInput === START_DATE) {
@@ -43,6 +45,7 @@ const DropdownContent = ({ startDate, endDate, onDateSelect, closeDropdown, isSi
       if (isSingle) {
         onDateSelect({
           startDate: startDate.valueOf(),
+          endDate: undefined,
         });
         closeDropdown();
         return;

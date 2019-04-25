@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { geocodeByAddress } from 'react-places-autocomplete';
 import { getSearchParams } from 'libs/location';
-import history from './../../../main/history';
 import { media } from './../../../libs/styled';
 
 import { Message } from 'semantic-ui-react';

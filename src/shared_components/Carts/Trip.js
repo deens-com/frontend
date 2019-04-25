@@ -451,14 +451,16 @@ class TripCart extends Component {
         </FirstLine>
         <SecondLine>
           {this.props.type !== 'food' &&
-            this.props.type !== 'food' && (
+            this.props.type !== 'accommodation' && (
               <>
                 <Duration>{duration(this.props.item.duration)}</Duration>
                 <Dot>•</Dot>
               </>
             )}
           <Location>
-            <PSmall>{formatLocation(this.props.item.originalLocation)}</PSmall>
+            <PSmall>
+              {formatLocation(this.props.item.originalLocation || this.props.item.location)}
+            </PSmall>
           </Location>
         </SecondLine>
         <TagsLine>

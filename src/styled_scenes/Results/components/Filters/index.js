@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { pushSearch, filtersByType, availableFilters } from 'libs/search';
 import { P } from 'libs/commonStyles';
-import { primary } from 'libs/colors';
+import { primary, disabled } from 'libs/colors';
 import GuestsFilter from './Guests';
 import DatesFilter from './Dates';
 import PriceRangeFilter from './PriceRange';
@@ -11,27 +11,54 @@ import PriceTagsFilter from './PriceTags';
 import TagsFilter from './Tags';
 import { BackArrow } from 'shared_components/icons';
 import isMatch from 'lodash.ismatch';
+import { media } from 'libs/styled';
+import { FiltersIcon, BackArrow } from 'shared_components/icons';
+
 import 'react-dates.css';
 
 const Wrapper = styled.div`
   flex-grow: 1;
-  display: flex;
-  > div:not(:first-child) {
-    margin-left: 15px;
+  display: block;
+  margin-right: 15px;
+  > div:not(:last-child) {
+    margin-right: 15px;
+  }
+  > div {
+    display: ${props => (props.showingMobile ? 'inline-block' : 'none')};
+    ${media.minSmall} {
+      display: inline-block;
+    }
+    margin-bottom: 10px;
+  }
+`;
+
+const FilterIconWrapper = styled.span`
+  display: block;
+  color: ${props => (props.showingMobile ? disabled : primary)};
+  align-self: flex-start;
+  margin-bottom: 15px;
+  ${media.minSmall} {
+    display: none;
   }
 `;
 
 const BackToTrip = styled(Link)`
   color: ${primary};
   cursor: pointer;
-  display: inline-flex;
+  display: inline-flex !important;
   align-items: center;
+  margin-bottom: 15px;
+  margin-right: 15px;
   > p {
     margin-left: 5px;
+  }
+  ${media.minSmall} {
+    margin-bottom: 0;
   }
 `;
 
 const Filters = ({ searchParams, backToTrip }) => {
+  const [showingMobile, setShowingMobile] = useState(false);
   const search = params => {
     const keepPage = isMatch(searchParams, params);
     pushSearch(
@@ -46,13 +73,23 @@ const Filters = ({ searchParams, backToTrip }) => {
   const filters = filtersByType[searchParams.type[0]];
 
   return (
-    <Wrapper>
+    <Wrapper showingMobile={showingMobile}>
       {backToTrip && (
         <BackToTrip to={`/trips/organize/${backToTrip}`}>
           <BackArrow />
           <P>Back to trip</P>
         </BackToTrip>
       )}
+
+      <FilterIconWrapper
+        showingMobile={showingMobile}
+        onClick={() => {
+          setShowingMobile(!showingMobile);
+        }}
+      >
+        <FiltersIcon />
+      </FilterIconWrapper>
+
       {filters.includes(availableFilters.guests) && (
         <GuestsFilter
           adults={searchParams.adults}

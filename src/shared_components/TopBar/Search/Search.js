@@ -217,18 +217,6 @@ export default class DesktopSearch extends Component {
             </IconButton>
           </div>
           <Form onSubmit={this.handleSubmit}>
-            {/*<Input
-              ref={el => {
-                this.input = el;
-              }}
-              onFocus={this.onFocus}
-              onBlur={this.onBlur}
-              value={this.state.search}
-              onChange={this.handleInputChange}
-              type="text"
-              placeholder="Tell us about your dream stay"
-            />*/}
-
             <SemanticLocationControl
               onChange={this.handleLocationChange}
               customStyle={suggestionStyle}
@@ -240,7 +228,6 @@ export default class DesktopSearch extends Component {
               serviceType={this.props.searchParams.type[0]}
               hasSearchedText={Boolean(this.state.text)}
             />
-
             {isMobile && (
               <SubmitButton style={{ color: 'grey' }}>
                 <ArrowWrap onClick={toggleSearch}>

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { DragSource, DropTarget } from 'react-dnd';
 import Service from '../Service/index';
 import { types } from '../../constants';
-import { primary, primaryHover, error } from 'libs/colors';
+import { primary, primaryHover, error, textDisabled } from 'libs/colors';
 import { H2, P } from 'libs/commonStyles';
 import { Drag, TrashCan } from 'shared_components/icons';
 import locationIcon from 'assets/location.svg';
@@ -12,8 +12,10 @@ import Transportation from '../Transportation';
 import LocationEdit from './LocationEdit';
 import AddServiceBox from './AddServiceBox';
 import DayTitle from './DayTitle';
+import InlineInput from 'shared_components/InlineInput';
 import { TripContext } from '../..';
 import { media } from 'libs/styled';
+import I18nText from 'shared_components/I18nText';
 
 const DraggableDay = styled.div`
   background-color: white;
@@ -24,7 +26,7 @@ const DraggableDay = styled.div`
 const ServicesWrapper = styled.div`
   display: ${props => (props.hidden ? 'none' : 'flex')};
   min-height: 225px;
-  margin: 10px 0 64px;
+  margin: 0 0 64px;
 `;
 
 const Location = styled.div`
@@ -68,11 +70,10 @@ const Services = styled.div`
   display: flex;
   width: 100%;
   flex-wrap: wrap;
-  margin-top: -40px;
+  margin-top: 0;
   justify-content: center;
-  > div > div {
+  > div {
     margin-right: 30px;
-    margin-top: 40px;
   }
   > div {
     &:first-child {
@@ -101,6 +102,11 @@ const DeleteDay = styled.div`
   }
 `;
 
+const Note = styled.div`
+  color: ${textDisabled};
+  max-width: 500px;
+`;
+
 const Day = ({
   services,
   day,
@@ -124,10 +130,19 @@ const Day = ({
   fromService,
   toService,
   isLastDay,
+  saveDayNote,
+  dayMetadata,
 }) => {
   const onAddService = useCallback(
     type => {
       goToAddService(day, type);
+    },
+    [day],
+  );
+
+  const saveNote = useCallback(
+    note => {
+      saveDayNote(note, day);
     },
     [day],
   );
@@ -153,6 +168,16 @@ const Day = ({
             </DraggableDay>
           )}
         </div>
+        <Note>
+          <InlineInput
+            iconColor={primary}
+            useTextarea
+            onChanged={saveNote}
+            placeholder="Add some notes"
+          >
+            {dayMetadata && dayMetadata.notes && I18nText.translate(dayMetadata.notes)}
+          </InlineInput>
+        </Note>
         {connectDropServiceTarget(
           <div>
             <ServicesWrapper hidden={!isNotDraggingAnyDay}>
@@ -246,6 +271,8 @@ Day.propTypes = {
   selectOption: PropTypes.func.isRequired,
   selectTransport: PropTypes.func.isRequired,
   isLastDay: PropTypes.bool.isRequired,
+  saveNote: PropTypes.func.isRequired,
+  dayMetadata: PropTypes.object,
 };
 
 const serviceDragAndDrop = {
