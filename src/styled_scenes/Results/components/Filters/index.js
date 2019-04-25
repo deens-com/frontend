@@ -14,9 +14,13 @@ import 'react-dates.css';
 
 const Wrapper = styled.div`
   flex-grow: 1;
-  display: flex;
-  > div:not(:first-child) {
-    margin-left: 15px;
+  display: block;
+  margin-right: 15px;
+  > div:not(:last-child) {
+    margin-right: 15px;
+  }
+  > div {
+    margin-bottom: 10px;
   }
 `;
 

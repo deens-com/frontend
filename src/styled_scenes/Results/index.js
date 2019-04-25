@@ -75,7 +75,7 @@ const ServicesWrapper = styled.div`
 const TopFiltersWrapper = styled.div``;
 
 const RightColumn = styled.div`
-  dislay: flex;
+  align-self: flex-start;
   flex-direction: column;
   > *:first-child {
     margin-bottom: 10px;
