@@ -15,10 +15,21 @@ export const paramsSerializer = params => {
   return searchParams.toString();
 };
 
-const get = url => params => axios.get(url, { params, paramsSerializer });
-const post = url => body => axios.post(url, body);
-const deleteEndpoint = url => body => axios.delete(url, body);
-const patch = url => body => axios.patch(url, body);
+const handleError = e => {
+  if (
+    e.response === undefined ||
+    e.code === 'ECONNABORTED' ||
+    (e.response && e.response.status === 500)
+  ) {
+    return;
+  }
+  throw e;
+};
+
+const get = url => params => axios.get(url, { params, paramsSerializer }).catch(handleError);
+const post = url => body => axios.post(url, body).catch(handleError);
+const deleteEndpoint = url => body => axios.delete(url, body).catch(handleError);
+const patch = url => body => axios.patch(url, body).catch(handleError);
 
 // await axios.get(`${serverBaseURL}/search?include=${includes.join(',')}`)).data.trips
 // GET endpoint are called like xxx.get(params, ...urlParams) where params are the query params
@@ -43,13 +54,7 @@ export default {
     },
     availability: {
       get: (id, { bookingDate, adultCount, infantCount, childrenCount, peopleCount }) =>
-        get(`/trips/${id}/availability`)({
-          bookingDate,
-          adultCount,
-          infantCount,
-          childrenCount,
-          peopleCount,
-        }),
+        get(`/trips/${id}/availability`)({}),
       anonymous: {
         post: body => post(`/trips/anonymous-availability`)(body),
       },

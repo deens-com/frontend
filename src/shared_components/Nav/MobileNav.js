@@ -257,7 +257,6 @@ class MobileNav extends Component {
   render() {
     if (!this.props.showProfileMenu) return null;
     const { analytics } = this.props;
-    console.log(this.props.latestTrip);
     return (
       <Media
         query={`(max-width: ${sizes.large})`}

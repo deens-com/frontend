@@ -34,7 +34,6 @@ class HomeContainer extends Component {
   };
 
   render() {
-    console.log(this.state.trips);
     return (
       <div className="HomeContainer">
         <Helmet>
