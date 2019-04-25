@@ -4,7 +4,7 @@ import { waitUntilMapsLoaded } from 'libs/Utils';
 
 export default class CustomPlacesAutocomplete extends React.Component {
   state = {
-    gmapsLoaded: Boolean(window.google && window.google.map),
+    gmapsLoaded: Boolean(window.google && window.google.maps),
   };
 
   initMap = () => {

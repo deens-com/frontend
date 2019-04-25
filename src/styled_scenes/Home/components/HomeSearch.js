@@ -1,7 +1,7 @@
 // NPM
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { geocodeByAddress } from 'react-places-autocomplete';
+import { geocodeByAddress } from 'libs/placesAutocomplete';
 import { getSearchParams } from 'libs/location';
 import { media } from './../../../libs/styled';
 
