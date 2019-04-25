@@ -9,7 +9,6 @@ import DatesFilter from './Dates';
 import PriceRangeFilter from './PriceRange';
 import PriceTagsFilter from './PriceTags';
 import TagsFilter from './Tags';
-import { BackArrow } from 'shared_components/icons';
 import isMatch from 'lodash.ismatch';
 import { media } from 'libs/styled';
 import { FiltersIcon, BackArrow } from 'shared_components/icons';
