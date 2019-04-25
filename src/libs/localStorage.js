@@ -3,6 +3,25 @@ import { env } from 'libs/config';
 const tripKey = `deens-${env}-anonymous-trip`;
 const favoriteTripsKey = `deens-${env}-favorite-trips`;
 
+if (!('localStorage' in window)) {
+  // this is shitty but at least Opera Mini users will be able to browse our website
+  window.localStorage = {
+    _data: {},
+    setItem: function(id, val) {
+      return (this._data[id] = String(val));
+    },
+    getItem: function(id) {
+      return this._data.hasOwnProperty(id) ? this._data[id] : undefined;
+    },
+    removeItem: function(id) {
+      return delete this._data[id];
+    },
+    clear: function() {
+      return (this._data = {});
+    },
+  };
+}
+
 function removeUselessFields(trip) {
   // this could be removed in the future
   // it's for already saved trips to not break the app
