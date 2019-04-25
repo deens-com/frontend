@@ -32,6 +32,8 @@ import Sort from './components/Sort';
 
 import addPrefixArticle from 'indefinite';
 
+const mapHeight = 'calc(100vh - 66px)';
+
 const MapWrapper = styled.div`
   display: none;
   ${media.minSmall} {
@@ -39,9 +41,9 @@ const MapWrapper = styled.div`
   }
   align-items: center;
   justify-content: center;
-  height: calc(100vh - 70px - 1.8em - 60px);
+  height: ${mapHeight};
   right: 0;
-  margin-top: 1.8em;
+  margin-top: 26px;
   position: relative;
   width: 100%;
   max-width: 700px;
@@ -57,6 +59,7 @@ const MapPlaceholder = styled.div`
   display: none;
   ${media.minSmall} {
     width: 100%;
+    height: ${mapHeight};
     max-width: 700px;
   }
 `;
@@ -134,6 +137,7 @@ class ResultsScene extends Component {
     };
     this.mapRef = React.createRef();
     this.mapPlaceholderRef = React.createRef();
+    this.mapPosition = 'initial';
   }
 
   static propTypes = {};
@@ -215,7 +219,7 @@ class ResultsScene extends Component {
     const style = this.mapRef.current.style;
     style.position = 'fixed';
     style.width = 'calc(50vw - 10px)';
-    style.height = 'calc(100vh - 70px)';
+    style.height = mapHeight;
     style.marginTop = '0';
     style.top = '70px';
 
@@ -227,8 +231,8 @@ class ResultsScene extends Component {
     const style = this.mapRef.current.style;
     style.position = 'relative';
     style.width = '100%';
-    style.height = initial ? 'calc(100vh - 70px - 1.8em - 60px)' : `calc(100vh - 70px - 105px)`;
-    style.marginTop = initial ? '1.8em' : '0';
+    style.height = mapHeight;
+    style.marginTop = initial ? '26px' : '0';
     style.top = initial ? '0' : null;
     style.alignSelf = initial ? 'flex-start' : 'flex-end';
 
@@ -239,27 +243,38 @@ class ResultsScene extends Component {
   handleScroll = () => {
     const fullHeight = document.body.scrollHeight;
     const scrolled = window.scrollY;
+    const initialCondition = scrolled < 112;
+    const endCondition = scrolled + window.innerHeight >= fullHeight - 245;
 
     if (this.mapPosition === 'initial') {
-      if (scrolled >= 70) {
+      if (!initialCondition) {
+        if (endCondition) {
+          this.unfixMap(false);
+          return;
+        }
         this.fixMap();
         return;
       }
       return;
     }
     if (this.mapPosition === 'fixed') {
-      if (scrolled + window.innerHeight >= fullHeight - 105) {
+      if (endCondition) {
         this.unfixMap(false);
         return;
       }
 
-      if (scrolled < 70) {
+      if (initialCondition) {
         this.unfixMap();
         return;
       }
       return;
     }
-    if (scrolled + window.innerHeight < fullHeight - 105) {
+
+    if (!endCondition) {
+      if (initialCondition) {
+        this.unfixMap();
+        return;
+      }
       this.fixMap();
       return;
     }
