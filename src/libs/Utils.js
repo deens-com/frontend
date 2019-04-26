@@ -1,6 +1,7 @@
 import moment from 'moment';
 import tagsData from './../data/tags';
 import I18nText from 'shared_components/I18nText';
+import * as Sentry from '@sentry/browser';
 
 export const serverBaseURL = () => {
   if (process.env.REACT_APP_NODE_ENV === 'production') {
@@ -202,9 +203,19 @@ export function getPeopleCount(trip) {
 
 export async function waitUntilMapsLoaded() {
   if (!window.google || !window.google.maps) {
+    Sentry.addBreadcrumb({
+      category: 'loading-maps',
+      message: 'Maps not loaded',
+      level: Sentry.Severity.Debug,
+    });
     await new Promise(resolve => setTimeout(resolve, 50));
     return waitUntilMapsLoaded();
   }
+  Sentry.addBreadcrumb({
+    category: 'loading-maps',
+    message: 'Maps loaded',
+    level: Sentry.Severity.Debug,
+  });
   return window.google.maps;
 }
 
