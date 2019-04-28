@@ -7,7 +7,7 @@ import Content from './Content';
 export default ({ tripId, session, tripParent, isLoadingUser, user, buttonSize }) => {
   return (
     <Modal
-      style={{ maxWidth: '750px' }}
+      style={{ maxWidth: '720px', marginTop: '85px !important' }}
       trigger={
         <Button onClick={analytics.planning.brief.start} theme="fillLightGreen" size={buttonSize}>
           Help me!
