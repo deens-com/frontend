@@ -103,10 +103,11 @@ const mapStateToProps = (state, props) => {
   const trip = state.trips.trip;
 
   let startDate = state.search.searchQuery.startDate;
-  if (!startDate) {
-    const tomorrow = moment()
-      .add(1, 'days')
-      .startOf('day');
+  const tomorrow = moment()
+    .add(1, 'days')
+    .startOf('day');
+
+  if (!startDate || startDate < tomorrow.valueOf()) {
     if (!trip) {
       startDate = tomorrow;
     } else {

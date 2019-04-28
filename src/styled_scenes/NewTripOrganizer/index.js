@@ -92,7 +92,7 @@ function createStateBasedOnTrip(props) {
     services: mapServicesByDay(props.trip.services),
     tripData: {
       duration: props.trip.duration,
-      startDate: props.trip.startDate || props.startDate,
+      startDate: props.startDate,
       title: props.trip.title['en-us'],
       description: props.trip.description ? props.trip.description['en-us'] : '',
       location: props.trip.location,
