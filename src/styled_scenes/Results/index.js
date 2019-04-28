@@ -29,6 +29,7 @@ import { pushSearch } from 'libs/search';
 import { primary } from 'libs/colors';
 import { P } from 'libs/commonStyles';
 import Sort from './components/Sort';
+import HelpMe from 'shared_components/HelpMe';
 
 import addPrefixArticle from 'indefinite';
 
@@ -117,6 +118,14 @@ const ByYelp = styled.div`
   }
   img {
     width: 100px;
+  }
+`;
+
+const FirstLineRightColumn = styled.div`
+  display: flex;
+  align-items: center;
+  > *:not(:first-child) {
+    margin-left: 10px;
   }
 `;
 
@@ -333,16 +342,19 @@ class ResultsScene extends Component {
               searchParams={props.searchParams}
             />
             <RightColumn>
-              <MapToggle>
-                <Checkbox
-                  color="green"
-                  toggle
-                  checked={this.state.showMap}
-                  onClick={this.toggleMap}
-                />{' '}
-                &nbsp;&nbsp;
-                <P onClick={this.toggleMap}>Show Map</P>
-              </MapToggle>
+              <FirstLineRightColumn>
+                <HelpMe isLoadingUser={false} session={this.props.session} buttonSize="small" />
+                <MapToggle>
+                  <Checkbox
+                    color="green"
+                    toggle
+                    checked={this.state.showMap}
+                    onClick={this.toggleMap}
+                  />{' '}
+                  &nbsp;&nbsp;
+                  <P onClick={this.toggleMap}>Show Map</P>
+                </MapToggle>
+              </FirstLineRightColumn>
               <Sort searchParams={this.props.searchParams} />
             </RightColumn>
           </TopFilters>
@@ -434,6 +446,7 @@ class ResultsScene extends Component {
 const mapStateToProps = state => {
   return {
     userTrips: state.trips.userTrips.unbookedTrips,
+    session: state.session.session,
   };
 };
 
