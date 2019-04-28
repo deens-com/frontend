@@ -48,7 +48,7 @@ export default function(setState, stateKey, fn) {
           return {
             [stateKey]: {
               isLoading: false,
-              data: response.data,
+              data: response && response.data,
             },
           };
         });
@@ -62,7 +62,7 @@ export default function(setState, stateKey, fn) {
           return {
             [stateKey]: {
               isLoading: false,
-              error: response.error,
+              error: response && response.error,
             },
           };
         });
