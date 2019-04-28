@@ -26,7 +26,7 @@ const patchSearchQuery = searchParams => ({
 
 const fetchResults = searchQuery =>
   dispatchAsyncActions(SEARCH, async () => {
-    const searchForTrips = searchQuery.type.includes('trip');
+    const searchForTrips = searchQuery.type === 'trip';
     const params = {
       page: 1,
       limit: 25,

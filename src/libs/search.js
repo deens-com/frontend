@@ -19,13 +19,11 @@ export function getAddress(params) {
   }
 }
 
-export const mapUrlToProps = location => {
-  let searchParams = queryString.parse(location.search, { ignoreQueryPrefix: true });
-
+const getSearchParams = searchParams => {
   return {
     // does not properly parse '+'.
-    type: (searchParams.type && searchParams.type.split(',')) || [],
-    tags: searchParams.tags ? searchParams.tags.split(',') : [],
+    type: searchParams.type,
+    tags: searchParams.tags ? searchParams.tags.split(',') : undefined,
     lat: Number(searchParams.lat) || undefined,
     lng: Number(searchParams.lng) || undefined,
     adults: Number(searchParams.adults) || undefined,
@@ -42,30 +40,34 @@ export const mapUrlToProps = location => {
           .map(Number)
           .sort()) ||
       undefined,
-    keywords: searchParams.keywords,
-    sortBy: searchParams.sortBy,
+    sortBy: searchParams.sortBy || undefined,
     address: searchParams.address || undefined,
-    city: searchParams.city,
-    state: searchParams.state,
-    countryCode: searchParams.countryCode,
-    text: searchParams.text,
+    city: searchParams.city || undefined,
+    state: searchParams.state || undefined,
+    countryCode: searchParams.countryCode || undefined,
+    text: searchParams.text || undefined,
     page: searchParams.page || 1,
     limit: searchParams.limit || 25,
   };
+};
+
+export const mapUrlToProps = location => {
+  let searchParams = queryString.parse(location.search, { ignoreQueryPrefix: true });
+
+  return getSearchParams(searchParams);
 };
 
 // If there is some processing required, just add the field here
 // otherwise, the same object will be passed to the request
 export const mapDataToQuery = ({ type, ...searchParams }) => ({
   address: undefined,
-  category: !type.length
-    ? undefined
-    : type.map(a => a.charAt(0).toUpperCase() + a.substr(1)).join('+'),
+  category: type.charAt(0).toUpperCase() + type.substr(1),
   ...searchParams,
 });
 
 export const pushSearch = (searchParams, state, customPage) => {
-  const params = { ...searchParams, page: customPage || 1 };
+  const page = customPage || (searchParams.page ? 1 : undefined);
+  const params = getSearchParams({ ...searchParams, page });
   history.push(`/results?${queryString.stringify(params, { arrayFormat: 'comma' })}`, state);
 };
 

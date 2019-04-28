@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { paramsSerializer } from 'libs/apiClient';
 import axios from 'libs/axios';

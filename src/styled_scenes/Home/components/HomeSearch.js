@@ -112,7 +112,6 @@ export default class HomeSearch extends Component {
       countryCode: undefined,
       city: undefined,
       serviceType: 'trip',
-      keywords: '',
       show_banner: false,
       focus: false,
     };
@@ -120,17 +119,12 @@ export default class HomeSearch extends Component {
     this.setSearch = this.setSearch.bind(this);
     this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
     this.handleLocationChange = this.handleLocationChange.bind(this);
-    this.setKeyWords = this.setKeyWords.bind(this);
   }
 
   componentDidMount() {}
 
   setSearch(ev) {
     this.setState({ search: ev.target.value });
-  }
-
-  setKeyWords(ev) {
-    this.setState({ keywords: ev.target.value });
   }
 
   handleLocationChange(address, serviceType, text) {

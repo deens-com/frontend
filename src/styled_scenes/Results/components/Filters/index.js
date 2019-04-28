@@ -9,8 +9,10 @@ import DatesFilter from './Dates';
 import PriceRangeFilter from './PriceRange';
 import PriceTagsFilter from './PriceTags';
 import TagsFilter from './Tags';
+import isMatch from 'lodash.ismatch';
 import { media } from 'libs/styled';
 import { FiltersIcon, BackArrow } from 'shared_components/icons';
+
 import 'react-dates.css';
 
 const Wrapper = styled.div`
@@ -61,12 +63,17 @@ const BackToTrip = styled(Link)`
 const Filters = ({ searchParams, backToTrip }) => {
   const [showingMobile, setShowingMobile] = useState(false);
   const search = params => {
-    pushSearch({
-      ...searchParams,
-      ...params,
-    });
+    const keepPage = isMatch(searchParams, params);
+    pushSearch(
+      {
+        ...searchParams,
+        ...params,
+      },
+      undefined,
+      keepPage ? searchParams.page : undefined,
+    );
   };
-  const filters = filtersByType[searchParams.type[0]];
+  const filters = filtersByType[searchParams.type];
 
   return (
     <Wrapper showingMobile={showingMobile}>
@@ -115,7 +122,7 @@ const Filters = ({ searchParams, backToTrip }) => {
           minPrice={searchParams.priceStart}
           maxPrice={searchParams.priceEnd}
           onApply={search}
-          pricePer={searchParams.type[0] === 'activity' ? 'per person' : undefined}
+          pricePer={searchParams.type === 'activity' ? 'per person' : undefined}
           numberOfPeople={(searchParams.adults || 1) + (searchParams.children || 0)}
         />
       )}
