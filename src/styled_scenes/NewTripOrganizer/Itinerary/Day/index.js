@@ -8,6 +8,7 @@ import { primary, primaryHover, error, textDisabled } from 'libs/colors';
 import { H2, P } from 'libs/commonStyles';
 import { Drag, TrashCan } from 'shared_components/icons';
 import locationIcon from 'assets/location.svg';
+import locationFinishIcon from 'assets/location-finish.svg';
 import Transportation from '../Transportation';
 import LocationEdit from './LocationEdit';
 import AddServiceBox from './AddServiceBox';
@@ -228,7 +229,7 @@ const Day = ({
                 ))}
                 {isLastDay && (
                   <Location>
-                    <img alt="Start location" src={locationIcon} />
+                    <img alt="End location" src={locationFinishIcon} />
                     <LocationEdit
                       onChange={changeFinalLocation}
                       location={tripData.userEndLocation}

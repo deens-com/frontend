@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { minutesToDays } from 'libs/Utils';
-import Day from './Day/index';
+import Day from './Day';
 import ObjectID from 'bson-objectid';
 import { itineraryDroppablePrefix, types } from '../constants';
 import arrayMove from 'array-move';
