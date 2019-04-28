@@ -16,7 +16,6 @@ const history = createHistory();
 
 if (isProd || isStaging) {
   let environment = window.location.hostname.split('.')[0];
-
   if (environment !== 'localhost') {
     if (isProd) {
       environment = 'production';
@@ -36,7 +35,12 @@ if (isProd || isStaging) {
 
 if (isProd) {
   const noop = () => {};
-  const error = error => Sentry.captureException(error);
+  const error = error =>
+    Sentry.addBreadcrumb({
+      category: 'printed-error',
+      message: error,
+      level: Sentry.Severity.Error,
+    });
   console.log = noop;
   console.warn = noop;
   console.error = error;
