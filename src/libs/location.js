@@ -52,8 +52,11 @@ export const getSearchParams = (address, googleMapsResult) => {
     lng: undefined,
     address: undefined,
   };
-
-  if (!addressComponents[0].types.includes('locality') && city) {
+  console.log(addressComponents[0], addressComponents);
+  if (
+    (!addressComponents[0].types.includes('locality') && city) ||
+    (!city && state && !addressComponents[0].types.includes('administrative_area_level_1'))
+  ) {
     return { ...allUndefined, lat, lng, address };
   } else if (city || state || countryCode) {
     return { ...allUndefined, city, state, countryCode, address };
