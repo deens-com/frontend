@@ -83,7 +83,7 @@ const InlineInput = ({
       setIsEditing(false);
     }
 
-    if (event.keyCode === 13 && !(useTextarea && event.shiftKey)) {
+    if (event.keyCode === 13 && !useTextarea) {
       setIsEditing(false);
       if (event.target.value !== '' || !disallowEmptySubmit) {
         onChanged(event.target.value);
