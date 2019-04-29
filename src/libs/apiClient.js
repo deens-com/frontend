@@ -54,7 +54,13 @@ export default {
     },
     availability: {
       get: (id, { bookingDate, adultCount, infantCount, childrenCount, peopleCount }) =>
-        get(`/trips/${id}/availability`)({}),
+        get(`/trips/${id}/availability`)({
+          bookingDate,
+          adultCount,
+          infantCount,
+          childrenCount,
+          peopleCount,
+        }),
       anonymous: {
         post: body => post(`/trips/anonymous-availability`)(body),
       },

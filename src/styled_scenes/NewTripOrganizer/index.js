@@ -194,7 +194,7 @@ export default class TripOrganizer extends React.Component {
 
   componentDidMount() {
     this._isMounted = true;
-    if (!this.props.trip.startDate || !this.props.adultCount) {
+    if (!(this.props.trip.startDate !== this.state.tripData.startDate) || !this.props.adultCount) {
       this.saveTrip({
         adultCount: this.state.tripData.adultCount,
         childrenCount: this.state.tripData.childrenCount,
