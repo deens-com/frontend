@@ -29,6 +29,19 @@ const parseArrayOrString = field => {
   return field;
 };
 
+const parseArrayOrNumber = field => {
+  if (!field) {
+    return undefined;
+  }
+  if (typeof field === 'string') {
+    return field
+      .split(',')
+      .map(Number)
+      .sort();
+  }
+  return field.sort();
+};
+
 const getSearchParams = searchParams => {
   return {
     // does not properly parse '+'.
@@ -43,13 +56,7 @@ const getSearchParams = searchParams => {
     endDate: Number(searchParams.endDate) || undefined,
     priceStart: Number(searchParams.priceStart) || undefined,
     priceEnd: Number(searchParams.priceEnd) || undefined,
-    priceLevel:
-      (searchParams.priceLevel &&
-        searchParams.priceLevel
-          .split(',')
-          .map(Number)
-          .sort()) ||
-      undefined,
+    priceLevel: parseArrayOrNumber(searchParams.priceLevel),
     sortBy: searchParams.sortBy || undefined,
     address: searchParams.address || undefined,
     city: searchParams.city || undefined,
