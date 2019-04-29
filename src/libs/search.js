@@ -19,11 +19,21 @@ export function getAddress(params) {
   }
 }
 
+const parseArrayOrString = field => {
+  if (!field) {
+    return undefined;
+  }
+  if (typeof field === 'string') {
+    return field.split(',');
+  }
+  return field;
+};
+
 const getSearchParams = searchParams => {
   return {
     // does not properly parse '+'.
     type: searchParams.type,
-    tags: searchParams.tags ? searchParams.tags.split(',') : undefined,
+    tags: parseArrayOrString(searchParams.tags),
     lat: Number(searchParams.lat) || undefined,
     lng: Number(searchParams.lng) || undefined,
     adults: Number(searchParams.adults) || undefined,
