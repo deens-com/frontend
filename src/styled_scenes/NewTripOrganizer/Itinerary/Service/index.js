@@ -11,11 +11,11 @@ import {
   primary,
   textDark,
   primaryHover,
-  secondaryContrast,
   error,
   activity,
   food,
   accommodation,
+  secondary,
 } from 'libs/colors';
 import { Drag } from 'shared_components/icons';
 import Stars from 'shared_components/Rating/Stars';
@@ -117,10 +117,10 @@ const NotAvailable = styled(PXSmall)`
 
 const ServiceData = styled.div`
   padding: 8px 6px;
-  color: ${primary};
+  color: ${textDark};
   position: absolute;
   bottom: 0;
-  background-color: ${secondaryContrast}99;
+  background-color: rgba(255, 255, 255, 0.9);
   width: 100%;
 `;
 
@@ -130,7 +130,6 @@ const ServiceTitle = styled(P)`
 `;
 
 const Price = styled.div`
-  color: ${textLight};
   flex-grow: 1;
 `;
 
@@ -147,8 +146,8 @@ const StarsWrapper = styled.div`
 
 const BookableTag = styled(PXSmall)`
   display: inline-block;
-  background-color: ${primary};
-  border: 1px solid ${primary};
+  background-color: ${secondary};
+  border: 1px solid ${secondary};
   color: ${textLight};
   border-radius: 2px 2px 2px 0;
   padding: 1px 1px;
@@ -286,7 +285,9 @@ const Service = ({
                   </Price>
                   <StarsWrapper>
                     {data.service.privacy === 'public' &&
-                      data.service.ratings && <Stars rating={data.service.ratings.average} />}
+                      data.service.ratings && (
+                        <Stars rating={data.service.ratings.average} type="golden" />
+                      )}
                     {fastBookable && <BookableTag>Fast Booking</BookableTag>}
                   </StarsWrapper>
                 </RatingAndPrice>

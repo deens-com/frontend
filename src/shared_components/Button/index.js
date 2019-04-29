@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
-import { textLight, primary, primaryHover } from 'libs/colors';
+import { textLight, primary, primaryHover, tertiary } from 'libs/colors';
 
 // COMPONENTS
 import { ArrowIcon } from '../icons';
@@ -67,13 +67,13 @@ export const theme = {
     color: colors.green,
     colorHover: colors.white,
   },
-  whiteTransparent: {
-    background: 'transparent',
-    backgroundHover: colors.green,
-    border: colors.green,
-    borderHover: colors.greenActive,
-    color: colors.white,
-    colorHover: colors.white,
+  tertiary: {
+    background: tertiary,
+    backgroundHover: tertiary,
+    border: tertiary,
+    borderHover: tertiary,
+    color: textLight,
+    colorHover: textLight,
   },
   allWhite: {
     background: 'transparent',

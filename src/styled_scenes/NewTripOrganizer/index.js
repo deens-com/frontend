@@ -92,7 +92,7 @@ function createStateBasedOnTrip(props) {
     services: mapServicesByDay(props.trip.services),
     tripData: {
       duration: props.trip.duration,
-      startDate: props.trip.startDate || props.startDate,
+      startDate: props.startDate,
       title: props.trip.title['en-us'],
       description: props.trip.description ? props.trip.description['en-us'] : '',
       location: props.trip.location,
@@ -194,7 +194,7 @@ export default class TripOrganizer extends React.Component {
 
   componentDidMount() {
     this._isMounted = true;
-    if (!this.props.trip.startDate || !this.props.adultCount) {
+    if (!(this.props.trip.startDate !== this.state.tripData.startDate) || !this.props.adultCount) {
       this.saveTrip({
         adultCount: this.state.tripData.adultCount,
         childrenCount: this.state.tripData.childrenCount,

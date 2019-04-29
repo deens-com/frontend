@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Loader } from 'semantic-ui-react';
-import { secondary, secondaryContrast, textLight, textDark } from 'libs/colors';
+import { textDisabled, textLight, textDark } from 'libs/colors';
 import { PStrong, PSmall, P } from 'libs/commonStyles';
 import Button from 'shared_components/Button';
 import LoadingDots from 'shared_components/LoadingDots';
@@ -25,8 +25,8 @@ const Wrapper = styled.div`
   height: 70px;
   z-index: 5;
   width: 100%;
-  background-color: ${secondaryContrast};
-  border-top: 1px solid ${secondary};
+  background-color: white;
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
   padding: 25px 10px;
   display: flex;
   align-items: center;
@@ -48,7 +48,7 @@ const TotalPriceText = styled(PSmall)`
 const Price = styled.div`
   font-weight: bold;
   font-size: 16px;
-  color: ${textLight};
+  color: ${textDark};
   display: flex;
   align-items: center;
   > p:first-child {
@@ -56,8 +56,8 @@ const Price = styled.div`
   }
 `;
 
-const SaveText = styled(PStrong)`
-  color: #c4c4c4;
+const SaveText = styled(P)`
+  color: ${textDisabled};
   display: none;
   ${media.minSmall} {
     display: inline-block;
@@ -171,7 +171,7 @@ const Footer = ({
         <Price>
           {isLoadingPrice ? (
             <LoaderWrapper>
-              <Loader size="mini" inverted inline="centered" active />
+              <Loader size="mini" inline="centered" active />
             </LoaderWrapper>
           ) : (
             <PStrong>${price}</PStrong>
@@ -189,14 +189,7 @@ const Footer = ({
         >
           Book
         </Button>
-        <Button
-          id="shareButton"
-          size="small"
-          type="button"
-          theme="fillLightGreen"
-          onClick={share}
-          bold
-        >
+        <Button id="shareButton" size="small" type="button" theme="tertiary" onClick={share} bold>
           Share and earn rewards
         </Button>
         <SaveText>{saveButtonText(isSaving)}</SaveText>
