@@ -4,6 +4,8 @@ import styled from 'styled-components';
 
 import { primary } from 'libs/colors';
 import { PencilIcon } from 'shared_components/icons';
+import { P } from 'libs/commonStyles';
+import TextArea from 'shared_components/TextArea';
 
 const Text = styled.div`
   display: inline-flex;
@@ -11,6 +13,9 @@ const Text = styled.div`
   align-items: center;
   white-space: ${props => (props.wrapLines ? 'pre-wrap' : 'normal')};
   margin: ${props => props.margin};
+  > p {
+    line-height: 22px;
+  }
   > svg {
     margin-left: 15px;
     ${props =>
@@ -32,12 +37,13 @@ const Input = styled.input`
   border: 0;
   outline: none;
   padding: ${props => props.padding};
+  line-height: 22px;
   &:focus {
     border: 1px solid ${primary};
   }
 `;
 
-const Textarea = styled.textarea`
+const Textarea = styled(TextArea)`
   color: ${props => props.inputTextColor || 'inherit'};
   max-width: 80vw;
   min-height: 100px;
@@ -50,6 +56,7 @@ const Textarea = styled.textarea`
   border: 0;
   outline: none;
   padding: ${props => props.padding};
+  line-height: 22px;
   &:focus {
     border: 1px solid ${primary};
   }
@@ -63,6 +70,7 @@ const InlineInput = ({
   inputTextColor,
   disallowEmptySubmit,
   useTextarea,
+  autoexpandTextarea,
   inputPadding,
   iconColor,
 }) => {
@@ -122,6 +130,7 @@ const InlineInput = ({
           ref={inputEl}
           autoFocus
           defaultValue={defaultValue}
+          autoexpand={autoexpandTextarea}
         />
       );
     }
@@ -145,7 +154,7 @@ const InlineInput = ({
       wrapLines={useTextarea}
       onClick={onStartEditing}
     >
-      {textPrefix}
+      <P>{textPrefix}</P>
       {child}
       <PencilIcon />
     </Text>
@@ -160,6 +169,7 @@ InlineInput.propTypes = {
   textPrefix: PropTypes.string,
   disallowEmptySubmit: PropTypes.bool,
   useTextarea: PropTypes.bool,
+  autoexpandTextarea: PropTypes.bool,
   inputPadding: PropTypes.string,
 };
 
@@ -170,6 +180,7 @@ InlineInput.defaultProps = {
   textPrefix: '',
   disallowEmptySubmit: false,
   useTextarea: false,
+  autoexpandTextarea: false,
   inputPadding: '0 5px',
 };
 

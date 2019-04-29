@@ -173,6 +173,7 @@ const Day = ({
           <InlineInput
             iconColor={primary}
             useTextarea
+            autoexpandTextarea
             onChanged={saveNote}
             placeholder="Add some notes"
           >

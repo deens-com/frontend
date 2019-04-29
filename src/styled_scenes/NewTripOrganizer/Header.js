@@ -85,6 +85,7 @@ const Header = ({ title, image, description, onEditTitle, onEditDescription, onI
               inputTextColor={textDark}
               onChanged={onEditDescription}
               useTextarea
+              autoexpandTextarea
             >
               {description}
             </InlineInput>
