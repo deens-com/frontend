@@ -264,11 +264,13 @@ export default class TripOrganizer extends React.Component {
     this.removeIsSaving();
   };
 
-  saveRearrangeServices = async () => {
+  saveRearrangeServices = async dontCheck => {
     this.addIsSaving();
     this.addIsLoadingTransports();
-    this.startCheckingAvailability();
-    this.addIsLoadingPrice();
+    if (!dontCheck) {
+      this.startCheckingAvailability();
+      this.addIsLoadingPrice();
+    }
 
     const dataToSave = this.parseServicesForSaving();
 
@@ -277,9 +279,11 @@ export default class TripOrganizer extends React.Component {
       dataToSave,
     )).data;
 
-    this.removeIsLoadingPrice(trip.totalPrice);
     this.removeIsSaving();
-    this.checkAvailability();
+    if (!dontCheck) {
+      this.removeIsLoadingPrice(trip.totalPrice);
+      this.checkAvailability();
+    }
     this.getTransportation();
     this.removeIsLoadingTransports();
   };
@@ -525,7 +529,9 @@ export default class TripOrganizer extends React.Component {
   };
 
   changeServicePosition = (currentDay, currentPosition, nextDay, nextPosition) => {
-    const saveTrip = this.saveRearrangeServices;
+    const saveTrip = () => {
+      this.saveRearrangeServices(currentDay === nextDay);
+    };
 
     if (currentDay === nextDay) {
       this.setState(prevState => {
