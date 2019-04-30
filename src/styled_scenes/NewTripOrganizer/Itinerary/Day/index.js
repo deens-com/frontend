@@ -273,7 +273,7 @@ Day.propTypes = {
   selectOption: PropTypes.func.isRequired,
   selectTransport: PropTypes.func.isRequired,
   isLastDay: PropTypes.bool.isRequired,
-  saveNote: PropTypes.func.isRequired,
+  saveDayNote: PropTypes.func.isRequired,
   dayMetadata: PropTypes.object,
 };
 

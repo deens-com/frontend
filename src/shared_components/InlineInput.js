@@ -163,7 +163,7 @@ const InlineInput = ({
 
 InlineInput.propTypes = {
   onChanged: PropTypes.func.isRequired,
-  children: PropTypes.string,
+  children: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   placeholder: PropTypes.string,
   inputTextColor: PropTypes.string,
   textPrefix: PropTypes.string,

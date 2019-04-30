@@ -115,6 +115,11 @@ const NotAvailable = styled(PXSmall)`
   color: ${error};
 `;
 
+const PriceNumber = styled.div`
+  font-size: 14px;
+  font-weight: 700;
+`;
+
 const ServiceData = styled.div`
   padding: 8px 6px;
   color: ${textDark};
@@ -124,7 +129,8 @@ const ServiceData = styled.div`
   width: 100%;
 `;
 
-const ServiceTitle = styled(P)`
+const ServiceTitle = styled.div`
+  font-size: 15px;
   margin-bottom: 9px;
   line-height: 1.25em;
 `;
@@ -268,7 +274,7 @@ const Service = ({
                 </ServiceTitle>
                 <RatingAndPrice>
                   <Price>
-                    <PSmallStrong>
+                    <PriceNumber>
                       {data.service.privacy === 'private' ? (
                         <InlineInput
                           textPrefix="$"
@@ -278,9 +284,9 @@ const Service = ({
                           {data.service.basePrice}
                         </InlineInput>
                       ) : (
-                        `$${data.service.basePrice}`
+                        <p>${data.service.basePrice}</p>
                       )}
-                    </PSmallStrong>
+                    </PriceNumber>
                     <PXSmall>{getPriceText(data.service.categories[0].names['en-us'])}</PXSmall>
                   </Price>
                   <StarsWrapper>
