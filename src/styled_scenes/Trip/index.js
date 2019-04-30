@@ -4,7 +4,8 @@ import ReactDOM from 'react-dom';
 import moment from 'moment';
 import styled from 'styled-components';
 import history from 'main/history';
-import { Loader, Popup, Icon, Dimmer, Modal } from 'semantic-ui-react';
+import { Loader, Popup, Icon, Dimmer } from 'semantic-ui-react';
+import BrandFooter from 'shared_components/BrandFooter';
 import { DayPickerRangeController } from 'react-dates';
 import { START_DATE } from 'react-dates/constants';
 
@@ -35,9 +36,7 @@ const getCountryCount = services => {
   return countries.size;
 };
 
-const CustomPage = styled(Page)`
-  padding-bottom: 150px;
-`;
+const CustomPage = styled(Page)``;
 const Wrapper = styled.div``;
 const TripData = styled.div`
   background-color: #097da8;
@@ -378,6 +377,7 @@ export default class Trip extends Component {
           owner={owner}
           session={session}
         />
+        <BrandFooter />
       </CustomPage>
     );
   }

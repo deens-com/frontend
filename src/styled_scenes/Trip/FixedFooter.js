@@ -1,18 +1,21 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { media } from 'libs/styled';
 import Button from 'shared_components/Button';
 import HelpMe from 'shared_components/HelpMe';
+import throttle from 'lodash.throttle';
+
+const bottomOffset = 245;
 
 const Wrapper = styled.div`
   width: 100%;
-  position: fixed;
+  position: ${props => props.position};
   height: 65px;
   display: flex;
   align-items: center;
-  bottom: ${props => props.bottom || 0}px;
+  bottom: 0;
   justify-content: flex-end;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px -2px 2px rgba(0, 0, 0, 0.2);
   background-color: white;
   padding: 0 10px;
   z-index: 5;
@@ -44,37 +47,62 @@ const Sentence = styled.span`
   }
 `;
 
-const FixedFooter = ({
-  trip,
-  owner,
-  session,
-  booked,
-  price,
-  peopleNumber,
-  onCustomizeClick,
-  bottom,
-}) => {
+const Placeholder = styled.div`
+  height: 65px;
+`;
+
+const FixedFooter = ({ trip, owner, session, booked, price, peopleNumber, onCustomizeClick }) => {
+  const [position, setPosition] = useState('fixed');
+  useEffect(
+    () => {
+      const handleScroll = () => {
+        const fullHeight = document.body.scrollHeight;
+        const scrolled = window.scrollY;
+        const viewportHeight = window.innerHeight;
+
+        if (scrolled + viewportHeight >= fullHeight - bottomOffset) {
+          setPosition('relative');
+          return;
+        }
+
+        if (position === 'relative') {
+          setPosition('fixed');
+        }
+      };
+
+      const handleScrollThrottle = throttle(handleScroll, 10);
+
+      window.addEventListener('scroll', handleScrollThrottle);
+      return () => {
+        window.removeEventListener('scroll', handleScrollThrottle);
+      };
+    },
+    [position],
+  );
   return (
-    <Wrapper bottom={bottom}>
-      <Text>
-        <Sentence>
-          {booked ? 'Paid' : 'Estimated'} price for {peopleNumber} people:
-        </Sentence>{' '}
-        ${price}
-      </Text>
-      <HelpMe
-        tripId={trip._id}
-        user={owner}
-        isLoadingUser={false}
-        session={session}
-        buttonSize="medium"
-      />
-      <div style={{ marginLeft: '15px' }} id="customizeButton">
-        <Button theme="fillLightGreen" size="medium" onClick={onCustomizeClick}>
-          {booked ? 'Copy this trip' : 'Customize this trip'}
-        </Button>
-      </div>
-    </Wrapper>
+    <>
+      <Wrapper position={position}>
+        <Text>
+          <Sentence>
+            {booked ? 'Paid' : 'Estimated'} price for {peopleNumber} people:
+          </Sentence>{' '}
+          ${price}
+        </Text>
+        <HelpMe
+          tripId={trip._id}
+          user={owner}
+          isLoadingUser={false}
+          session={session}
+          buttonSize="medium"
+        />
+        <div style={{ marginLeft: '15px' }} id="customizeButton">
+          <Button theme="fillLightGreen" size="medium" onClick={onCustomizeClick}>
+            {booked ? 'Copy this trip' : 'Customize this trip'}
+          </Button>
+        </div>
+      </Wrapper>
+      {position === 'fixed' && <Placeholder />}
+    </>
   );
 };
 
