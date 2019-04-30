@@ -83,11 +83,14 @@ const addServiceToTrip = ({ trip, day }) => async (dispatch, getState) => {
     });
 
     const updatedTrip = await tripUtils.addServiceRequest(trip._id, day, service._id);
-
-    if (updatedTrip.data && updatedTrip.data.success) {
+    if (updatedTrip.status === 200) {
       fetch_service(service._id)(dispatch);
       setAddedToTripMessage(trip)(dispatch);
     }
+
+    dispatch({
+      type: 'TRIP_UPDATED',
+    });
   } catch (error) {
     console.error(error);
   }

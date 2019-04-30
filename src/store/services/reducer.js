@@ -61,6 +61,11 @@ export default function services(state = initialState, action = {}) {
         ...state,
         isUpdatingTrip: true,
       };
+    case 'TRIP_UPDATED':
+      return {
+        ...state,
+        isUpdatingTrip: false,
+      };
     case 'SERVICE_RECENTLY_ADDED_TO_TRIP':
       return {
         ...state,
