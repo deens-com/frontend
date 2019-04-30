@@ -354,10 +354,12 @@ export default class TripOrganizer extends React.Component {
 
       const body = {
         ...common,
-        location: {
-          lat: location.lat,
-          lng: location.lng,
-        },
+        location: location
+          ? {
+              lat: location.lat,
+              lng: location.lng,
+            }
+          : null,
         dates: [
           moment(this.state.tripData.startDate)
             .add(day - 1, 'days')
