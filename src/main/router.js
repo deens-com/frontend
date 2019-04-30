@@ -24,6 +24,7 @@ import ServiceUpsert from '../scenes/service-upsert';
 import Checkout from '../scenes/checkout';
 import BlogPost from '../scenes/blog';
 import PrivateRoute from './PrivateRoute';
+import OnlyPublicRoute from './OnlyPublicRoute';
 import withSegmentTracker from './middlewares/with_segment_tracker';
 
 const commonHOCs = comp => withErrorBoundary(withSegmentTracker(comp));
@@ -32,12 +33,15 @@ export default (
   <ScrollToTop>
     <Switch>
       <Route exact path={process.env.PUBLIC_URL + '/'} component={commonHOCs(Home)} />
-      <Route path={process.env.PUBLIC_URL + '/login'} component={commonHOCs(Sessions)} />
+      <OnlyPublicRoute path={process.env.PUBLIC_URL + '/login'} component={commonHOCs(Sessions)} />
       <Route
         path={process.env.PUBLIC_URL + '/user-verification'}
         component={commonHOCs(UserVerification)}
       />
-      <Route path={process.env.PUBLIC_URL + '/register'} component={commonHOCs(Registrations)} />
+      <OnlyPublicRoute
+        path={process.env.PUBLIC_URL + '/register'}
+        component={commonHOCs(Registrations)}
+      />
       <Route
         path={process.env.PUBLIC_URL + '/recover-password'}
         component={commonHOCs(RecoverPassword)}

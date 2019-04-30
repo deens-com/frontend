@@ -1,4 +1,5 @@
 import * as sessions_actions from './actions';
+import { getSession } from 'libs/user-session';
 
 // set default base currency
 let defaultBaseCurrency = { label: '$', value: 'USD', rates: {} };
@@ -8,7 +9,7 @@ if (typeof localStorage !== 'undefined' && localStorage.getItem('currency')) {
 }
 
 const initialState = {
-  session: {},
+  session: getSession() || {},
   loginError: {},
   metaMaskError: {},
   ledgerError: {},
@@ -29,7 +30,10 @@ export default function session(state = initialState, action = {}) {
     case sessions_actions.types.LOGIN_SUCCESS:
       return {
         ...state,
-        session: action.payload.session,
+        session: {
+          ...action.payload.session,
+          confirmedByRequest: true,
+        },
         loggedIn: true,
         loginError: {},
         isLoading: false,
