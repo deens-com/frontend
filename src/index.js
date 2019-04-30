@@ -38,7 +38,7 @@ if (isProd) {
   const error = error =>
     Sentry.addBreadcrumb({
       category: 'printed-error',
-      message: error,
+      message: `${error}`,
       level: Sentry.Severity.Error,
     });
   console.log = noop;
