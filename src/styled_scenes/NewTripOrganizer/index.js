@@ -325,7 +325,10 @@ export default class TripOrganizer extends React.Component {
   };
 
   prefetchSearchResults = async () => {
-    const startLocation = getFromCoordinates(this.state.tripData.userStartLocation.geo.coordinates);
+    const startLocation = getFromCoordinates(
+      this.state.tripData.userStartLocation &&
+        this.state.tripData.userStartLocation.geo.coordinates,
+    );
     const common = {
       adultCount: this.state.tripData.adultCount,
       childrenCount: this.state.tripData.childrenCount,
