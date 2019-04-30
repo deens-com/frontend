@@ -570,6 +570,9 @@ export default class TripOrganizer extends React.Component {
           this.removeDay(daysDuration + diff, false);
           diff--;
         }
+        if (currentDuration < daysDuration) {
+          this.prefetchSearchResults();
+        }
         this.saveTrip({
           duration: this.state.tripData.duration,
         });
