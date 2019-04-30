@@ -85,7 +85,7 @@ const Filters = ({ searchParams, backToTrip }) => {
       ) {
         if (searchParams.startDate) {
           const body = {
-            adultCount: searchParams.adults || 1,
+            adultCount: searchParams.adults || 2,
             childrenCount: searchParams.children || 0,
             infantCount: searchParams.infants || 0,
             location: {
@@ -164,7 +164,7 @@ const Filters = ({ searchParams, backToTrip }) => {
           maxPrice={searchParams.priceEnd}
           onApply={search}
           pricePer={searchParams.type === 'activity' ? 'per person' : undefined}
-          numberOfPeople={(searchParams.adults || 1) + (searchParams.children || 0)}
+          numberOfPeople={(searchParams.adults || 2) + (searchParams.children || 0)}
         />
       )}
       {filters.includes(availableFilters.priceTags) && (

@@ -26,7 +26,7 @@ Guests.propTypes = {
 };
 
 Guests.defaultProps = {
-  adults: 1,
+  adults: 2,
   children: 0,
   infants: 0,
 };

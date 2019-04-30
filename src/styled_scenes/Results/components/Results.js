@@ -279,7 +279,7 @@ class Results extends Component {
                     isPlaceholder={false}
                     type={this.props.searchParams.type}
                     numberOfGuests={
-                      (this.props.searchParams.adults || 1) +
+                      (this.props.searchParams.adults || 2) +
                       (this.props.searchParams.children || 0)
                     }
                   />

@@ -158,7 +158,7 @@ const mapStateToProps = state => {
     error: state.trips.error,
     isLoading: state.trips.isLoading,
     owner: state.trips.owner,
-    adults: state.search.searchQuery.adults || 1,
+    adults: state.search.searchQuery.adults || 2,
     children: state.search.searchQuery.children || 0,
     infants: state.search.searchQuery.infants || 0,
     startDate: state.search.searchQuery.startDate,

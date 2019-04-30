@@ -96,7 +96,7 @@ function createStateBasedOnTrip(props) {
       title: props.trip.title['en-us'],
       description: props.trip.description ? props.trip.description['en-us'] : '',
       location: props.trip.location,
-      adultCount: props.trip.adultCount || props.adults || 1,
+      adultCount: props.trip.adultCount || props.adults || 2,
       childrenCount: props.trip.childrenCount || props.children || 0,
       infantCount: props.trip.infantCount || props.infants || 0,
       totalPrice: props.trip.totalPrice || 0,
