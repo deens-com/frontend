@@ -111,7 +111,7 @@ class TripsListInDropDown extends React.Component {
     return (
       <Wrapper ref={this.props.innerRef}>
         <List selection verticalAlign="middle" divided>
-          {this.props.trips.map(this.renderItemWithPopup)}
+          {this.props.trips && this.props.trips.map(this.renderItemWithPopup)}
           <List.Item onClick={this.props.onNewTripClick}>
             <List.Icon name="add" />
             <List.Content>
