@@ -1,28 +1,28 @@
 import { shouldTrack } from 'libs/config';
 
 const track = (...args) => {
-  if (!shouldTrack) {
+  if (!shouldTrack || !window.analytics) {
     return;
   }
   return window.analytics.track(...args);
 };
 
 const identify = (...args) => {
-  if (!shouldTrack) {
+  if (!shouldTrack || !window.analytics) {
     return;
   }
   return window.analytics.identify(...args);
 };
 
 const reset = (...args) => {
-  if (!shouldTrack) {
+  if (!shouldTrack || !window.analytics) {
     return;
   }
   return window.analytics.reset(...args);
 };
 
 const page = url => {
-  if (!shouldTrack) {
+  if (!shouldTrack || !window.analytics) {
     return;
   }
   return window.analytics.page(url);
