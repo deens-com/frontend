@@ -7,6 +7,7 @@ import Button from 'shared_components/Button';
 import fetchHelpers from 'libs/fetch_helpers';
 import { parseLocationDataAndCoordinates } from 'libs/location';
 import * as colors from 'libs/colors';
+import apiClient from 'libs/apiClient';
 
 const { error: errorColor } = colors;
 
@@ -48,7 +49,7 @@ const AddCustomServiceModal = ({ close, setServiceData }) => {
     setIsFetching(true);
     setError('');
     try {
-      const metadata = (await axios.post('/links/extract', { url })).data;
+      const metadata = (await apiClient.links.extract.post({ url })).data;
       if (metadata.location) {
         const latlng = {
           lat: parseFloat(metadata.location.latitude),
@@ -81,6 +82,8 @@ const AddCustomServiceModal = ({ close, setServiceData }) => {
       if (e.response && e.response.status === 400 && e.response.data) {
         const err = e.response.data.message;
         setError(err.charAt(0).toUpperCase() + err.substr(1));
+      } else {
+        setError('We could not fetch the webpage. Please try a different URL.');
       }
     } finally {
       setIsFetching(false);
