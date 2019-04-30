@@ -35,7 +35,7 @@ const patch = url => body => axios.patch(url, body).catch(handleError);
 // GET endpoint are called like xxx.get(params, ...urlParams) where params are the query params
 export default {
   trips: {
-    get: get('/trips'),
+    get: params => get('/trips')(params),
     post: post('/trips'),
     getById: (params, id) => get(`/trips/${id}`)(params),
     copy: {
@@ -95,6 +95,19 @@ export default {
     reviews: {
       get: (params, { serviceId }) => get(`/services/${serviceId}/reviews`)(params),
     },
+    import: {
+      find: {
+        post: body => post('/services/import/find')(body),
+      },
+    },
+  },
+  links: {
+    extract: {
+      post: body => post('/links/extract')(body),
+    },
+  },
+  tags: {
+    get: get('/tags'),
   },
   users: {
     kycToken: {
@@ -109,6 +122,18 @@ export default {
       },
       hearts: {
         get: (params, { username }) => get(`/users/username/${username}/hearts`)(params),
+      },
+    },
+    me: {
+      get: get('/users/me'),
+      patch: params => patch('/users/me')(params),
+      referralInfo: {
+        get: get('/users/me/referral-info'),
+      },
+    },
+    signup: {
+      anonymously: {
+        post: post('/users/signup/anonymously'),
       },
     },
   },

@@ -2,6 +2,7 @@ import fetch_helpers from './../../libs/fetch_helpers';
 import { serverBaseURL, env } from 'libs/config';
 import validator from 'validator';
 import axios from 'libs/axios';
+import apiClient from 'libs/apiClient';
 
 export const types = {
   PROFILE_FETCHED: 'account/USER_PROFILE_FETCHED',
@@ -127,7 +128,7 @@ export const fetch_user_services = () => async dispatch => {
 
 export const fetchUserTrips = () => async dispatch => {
   dispatch(myTripsFetchStarted());
-  const { data: trips } = await axios.get('/trips', { params: { include: 'services' } });
+  const { data: trips } = await apiClient.trips.get({ include: 'services' });
   dispatch(myTripsFetched(trips));
 };
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Modal, Dimmer, Loader } from 'semantic-ui-react';
 import styled from 'styled-components';
-import axios from 'libs/axios';
 import Input from 'shared_components/StyledInput';
 import Button from 'shared_components/Button';
 import ServiceForm from 'shared_components/ServiceForm';
@@ -45,7 +44,7 @@ export default class CreateServiceModal extends React.Component {
     this.inputRef = React.createRef();
     this.geocoder = new window.google.maps.Geocoder();
 
-    axios.get('/tags').then(response => {
+    apiClient.tags.get().then(response => {
       this.setState({
         tags: response.data,
       });
@@ -75,7 +74,7 @@ export default class CreateServiceModal extends React.Component {
 
     const url = this.inputRef.current.value;
     try {
-      const response = await axios.post('/services/import/find', { url });
+      const response = await apiClient.services.import.find.post({ url });
       this.addServiceToTrip(response.data);
     } catch (e) {
       try {
@@ -84,7 +83,7 @@ export default class CreateServiceModal extends React.Component {
           fetchingUnique: false,
         });
 
-        const metadata = (await axios.post('/links/extract', { url })).data;
+        const metadata = (await apiClient.links.extract.post({ url })).data;
 
         if (metadata.location) {
           const latlng = {

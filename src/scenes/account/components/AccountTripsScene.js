@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { Grid } from 'semantic-ui-react';
 import { withRouter } from 'react-router-dom';
-import axios from 'libs/axios';
 
-import { Page, PageContent } from 'shared_components/layout/Page';
-import TopBar from 'shared_components/TopBar';
+import { PageContent } from 'shared_components/layout/Page';
 import { SectionWrap } from 'shared_components/layout/Page';
 import UserBasicInfo from 'styled_scenes/Account/components/UserBasicInfo';
 import TripSectionComponent from 'styled_scenes/Account/Trips/shared/TripSectionComponent';
+import apiClient from 'libs/apiClient';
 
 class AccountTripsScene extends Component {
   constructor(props) {
@@ -31,8 +30,9 @@ class AccountTripsScene extends Component {
         page: prevState.page + 1,
       }),
       async () => {
-        const res = await axios.get('/trips', {
-          params: { include: 'services', page: this.state.page },
+        const res = await apiClient.trips.get({
+          include: 'services',
+          page: this.state.page,
         });
 
         this.setState(prevState => ({

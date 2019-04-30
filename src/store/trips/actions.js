@@ -42,7 +42,7 @@ const fetchUserTripsError = error => ({
 const fetchUserTrips = (serviceId, slotsNb) => async dispatch => {
   dispatch(fetchUserTripsStart());
   try {
-    const myTrips = await axios.get(`/trips`);
+    const myTrips = await apiClient.trips.get();
     dispatch(fetchUserTripsSuccess(myTrips.data.trips));
   } catch (e) {
     dispatch(fetchUserTripsError(e));

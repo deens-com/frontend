@@ -1,8 +1,7 @@
 import axios from 'libs/axios';
-import validator from 'validator';
 import history from 'main/history';
 import fetch_helpers from 'libs/fetch_helpers';
-import analytics, { user } from 'libs/analytics';
+import analytics from 'libs/analytics';
 import { serverBaseURL } from 'libs/config';
 import apiClient from 'libs/apiClient';
 import {
@@ -137,9 +136,9 @@ export const getCurrentUser = fetchReferralInfo => async (dispatch, getState) =>
   let currentUser;
 
   if (!session) {
-    const anonymous = (await axios.post('/users/signup/anonymously')).data;
+    const anonymous = (await apiClient.users.signup.anonymously.post()).data;
     saveSession({ accessToken: anonymous.access_token });
-    const currentUser = (await axios.get('/users/me')).data;
+    const currentUser = (await apiClient.users.me.get()).data;
     currentUser.accessToken = anonymous.access_token;
     saveSession(currentUser);
     session = currentUser;
@@ -152,13 +151,13 @@ export const getCurrentUser = fetchReferralInfo => async (dispatch, getState) =>
       return;
     }
 
-    currentUser = currentUser || (await axios.get('/users/me')).data;
+    currentUser = currentUser || (await apiClient.users.me.get()).data;
 
     if (currentUser) {
       const userObject = fetch_helpers.buildUserJson(currentUser);
       let referralInfo;
       if (userObject.username && fetchReferralInfo) {
-        referralInfo = (await axios.get('/users/me/referral-info')).data;
+        referralInfo = (await apiClient.users.me.referralInfo.get()).data;
       }
       dispatch(
         sessionsFetched({
@@ -195,14 +194,7 @@ export const update_user_profile = (user_id, field_type, value) => {
     const session = state.session.session;
     if (session) {
       try {
-        const updatedUser = await axios.patch('/users/me', { [field_type]: value }).catch(error => {
-          return dispatch(
-            displayUpdateError({
-              code: 422,
-              error: error.response ? error.response.data.message : error,
-            }),
-          );
-        });
+        const updatedUser = await apiClient.users.me.patch({ [field_type]: value });
         if (updatedUser.data) {
           const userObject = fetch_helpers.buildUserJson(updatedUser.data);
           dispatch(sessionsFetched({ session: userObject }));
@@ -225,7 +217,7 @@ export const update_user_avatar = file => {
         const uploadedFile = await apiClient.media.post(file);
         if (uploadedFile) {
           const pictureUrl = uploadedFile.data.url;
-          const updatedUser = await axios.patch(`${serverBaseURL}/users/me`, {
+          const updatedUser = apiClient.users.me.patch({
             profilePicture: pictureUrl,
           });
 
@@ -268,7 +260,7 @@ export const loginRequest = (email, password, { from, action }) => {
       if (auth0Response) {
         const auth0Token = auth0Response.data.access_token;
         saveSession({ accessToken: auth0Token });
-        const user = await axios.get(`/users/me`);
+        const user = await apiClient.users.me.get();
         if (user) {
           const userData = user.data;
           analytics.user.login(userData);

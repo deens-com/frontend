@@ -23,7 +23,7 @@ export default ChildComponent => {
         }
       });
 
-      Sentry.captureException(error, { extra: info });
+      Sentry.captureException(error);
     }
 
     render() {
