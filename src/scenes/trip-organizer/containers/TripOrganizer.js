@@ -27,9 +27,6 @@ const ContentWrapper = styled.div`
 `;
 
 class TripOrganizerContainer extends Component {
-  constructor(props) {
-    super(props);
-  }
   componentDidMount() {
     this.props.changeHeader({ noMargin: true, forceNotFixed: true });
     if (this.props.match.params.id) {
@@ -58,12 +55,8 @@ class TripOrganizerContainer extends Component {
   }
 
   renderContent() {
-    if (this.props.isLoading) {
+    if (!this.props.trip || this.props.isLoading) {
       return <Loader size="massive" active />;
-    }
-
-    if (!this.props.trip) {
-      return <NotFound />;
     }
 
     return (
@@ -90,6 +83,9 @@ class TripOrganizerContainer extends Component {
   }
 
   render() {
+    if (this.props.error) {
+      return <NotFound />;
+    }
     return (
       <Wrapper>
         <ContentWrapper>{this.renderContent()}</ContentWrapper>

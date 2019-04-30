@@ -72,7 +72,7 @@ const Wrapper = styled.header`
 
 // So we don't need to add a margin to each page
 const FixedPlaceholder = styled.div`
-  margin-top: ${props => (props.noMargin ? '70px' : '85px')};
+  margin-top: ${props => (props.noMargin ? '60px' : '85px')};
 `;
 
 // MODULE
@@ -136,6 +136,7 @@ class TopBar extends Component {
     const { showMenu, showSearchMobile } = this.state;
 
     const InnerWrap = transparent || noSearch ? PageWrapper : React.Fragment;
+    console.log(this.props);
     return (
       <React.Fragment>
         <Wrapper
