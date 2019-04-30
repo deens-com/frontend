@@ -11,8 +11,13 @@ import headerActions from 'store/header/actions';
 class ResultsContainer extends Component {
   componentDidMount() {
     this.props.changeHeader();
-    this.props.updateSearchQuery(this.props.searchParams);
-    this.props.fetchResults(this.props.searchParams);
+    let params = this.props.searchParams;
+    if (!params.type) {
+      params = { ...params, type: 'trip' };
+      pushSearch(params);
+    }
+    this.props.updateSearchQuery(params);
+    this.props.fetchResults(params);
     if (this.hasToLoadTripYet()) {
       this.props.fetchTrip(this.props.routeState.tripId);
     }
@@ -20,8 +25,13 @@ class ResultsContainer extends Component {
 
   componentWillUpdate(nextProps) {
     if (this.props.rawSearchQuery !== nextProps.rawSearchQuery) {
-      this.props.updateSearchQuery(nextProps.searchParams);
-      this.props.fetchResults(nextProps.searchParams);
+      let params = nextProps.searchParams;
+      if (!params.type) {
+        params = { ...params, type: 'trip' };
+        pushSearch(params);
+      }
+      this.props.updateSearchQuery(params);
+      this.props.fetchResults(params);
     }
   }
 

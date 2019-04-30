@@ -116,6 +116,10 @@ const Filters = ({ searchParams, backToTrip }) => {
     ],
   );
 
+  if (!filters) {
+    return null;
+  }
+
   return (
     <Wrapper showingMobile={showingMobile}>
       {backToTrip && (

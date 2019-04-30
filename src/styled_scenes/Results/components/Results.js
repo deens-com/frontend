@@ -202,7 +202,7 @@ class Results extends Component {
   };
 
   renderNotFound() {
-    if (!hasLocationParams(this.props.searchParams)) {
+    if (this.props.searchParams.type !== 'trip' && !hasLocationParams(this.props.searchParams)) {
       return (
         <section>
           <h4>Please select a location at the top search bar</h4>
