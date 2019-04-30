@@ -14,7 +14,7 @@ import { getCenterAndZoom } from 'libs/location';
 import { media } from 'libs/styled';
 
 const topMargin = 0;
-const topOffset = 308; // when do we fix the map?
+const topOffset = 60 + 65; // when do we fix the map?
 const bottomMargin = 70;
 const bottomOffset = 245;
 
@@ -116,7 +116,8 @@ const getLocationMarker = (location, key) => ({
 });
 
 const Map = ({ showingMap, servicesByDay, numberOfDays }) => {
-  const { tripData } = useContext(TripContext);
+  const { tripData, headerHeight } = useContext(TripContext);
+
   const [startLocation, setStartLocation] = useState(
     tripData.userStartLocation &&
       tripData.userStartLocation.geo &&
@@ -273,14 +274,14 @@ const Map = ({ showingMap, servicesByDay, numberOfDays }) => {
         }
 
         if (position !== 'fixed') {
-          if (scrolled >= topOffset) {
+          if (scrolled >= topOffset + headerHeight) {
             setPosition('fixed');
             return;
           }
           return;
         }
         if (position === 'fixed') {
-          if (scrolled < topOffset) {
+          if (scrolled < topOffset + headerHeight) {
             setPosition('relative');
             return;
           }
@@ -300,7 +301,7 @@ const Map = ({ showingMap, servicesByDay, numberOfDays }) => {
         window.removeEventListener('scroll', handleScrollThrottle);
       };
     },
-    [position],
+    [position, headerHeight],
   );
 
   const display = showingMap ? 'block' : 'none';

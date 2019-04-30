@@ -109,6 +109,7 @@ function createStateBasedOnTrip(props) {
     draggingDay: false,
     showingMap: false,
     showingTransports: false,
+    headerHeight: 0,
     // transportation methods
     fromService: {},
     toService: {},
@@ -1020,6 +1021,12 @@ export default class TripOrganizer extends React.Component {
     this.changeLocation(location, 'userEndLocation');
   };
 
+  onHeaderHeightChanged = headerHeight => {
+    this.setState({
+      headerHeight,
+    });
+  };
+
   changeLocation = (location, key, dontSave = false) => {
     this.setState(
       prevState => ({
@@ -1096,6 +1103,7 @@ export default class TripOrganizer extends React.Component {
       showingTransports,
       isCheckingAvailability,
       lastRemovedService,
+      headerHeight,
     } = this.state;
 
     return (
@@ -1117,6 +1125,7 @@ export default class TripOrganizer extends React.Component {
           changeTripDuration: this.changeTripDuration,
           changeStartDate: this.changeStartDate,
           session: this.props.session,
+          headerHeight,
         }}
       >
         <Header
@@ -1126,6 +1135,7 @@ export default class TripOrganizer extends React.Component {
           description={tripData.description}
           image={image}
           onImageUpload={this.uploadImage}
+          onHeightChanged={this.onHeaderHeightChanged}
         />
         {!this.props.session.username && <WarningLogin />}
         <Options

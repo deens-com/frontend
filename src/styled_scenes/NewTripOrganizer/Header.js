@@ -5,7 +5,7 @@ import { H1, P } from 'libs/commonStyles';
 import { primary, secondary, textLight, textDark } from 'libs/colors';
 import InlineInput from 'shared_components/InlineInput';
 import { Loader } from 'semantic-ui-react';
-//https://maps.googleapis.com/maps/api/staticmap?center=${location.city}&zoom=13&size=140x140&maptype=roadmap&key=AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc
+import ReactResizeDetector from 'react-resize-detector';
 
 const Wrapper = styled.header`
   background: url('${props => props.image}');
@@ -55,7 +55,15 @@ const More = styled.div`
   }
 `;
 
-const Header = ({ title, image, description, onEditTitle, onEditDescription, onImageUpload }) => {
+const Header = ({
+  title,
+  image,
+  description,
+  onEditTitle,
+  onEditDescription,
+  onImageUpload,
+  onHeightChanged,
+}) => {
   const [isUploading, setIsUploading] = useState(false);
 
   const onFileSelect = async e => {
@@ -70,8 +78,13 @@ const Header = ({ title, image, description, onEditTitle, onEditDescription, onI
     setIsUploading(false);
   };
 
+  const onResize = (width, height) => {
+    onHeightChanged(height);
+  };
+
   return (
     <Wrapper image={image}>
+      <ReactResizeDetector handleHeight onResize={onResize} />
       <Overlay>
         <Content>
           <Title>
