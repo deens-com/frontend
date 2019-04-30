@@ -91,6 +91,7 @@ export default {
     patch: (id, body) => patch(`/services/${id}`)(body),
     search: {
       get: get('/search/services'),
+      prefetch: body => post('/search/prefetch/availabilities')(body),
     },
     reviews: {
       get: (params, { serviceId }) => get(`/services/${serviceId}/reviews`)(params),

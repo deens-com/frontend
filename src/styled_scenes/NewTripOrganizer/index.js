@@ -324,6 +324,50 @@ export default class TripOrganizer extends React.Component {
     return trip;
   };
 
+  prefetchSearchResults = async () => {
+    const startLocation = getFromCoordinates(this.state.tripData.userStartLocation.geo.coordinates);
+    const common = {
+      adultCount: this.state.tripData.adultCount,
+      childrenCount: this.state.tripData.childrenCount,
+      infantCount: this.state.tripData.infantCount,
+      location: startLocation
+        ? {
+            lat: startLocation.lat,
+            lng: startLocation.lng,
+          }
+        : null,
+    };
+
+    const days = minutesToDays(this.state.tripData.duration);
+
+    for (let day = 1; day <= days; day++) {
+      const location =
+        this.state.services[day] && this.state.services[day].length > 0
+          ? getFromCoordinates(
+              this.state.services[day][this.state.services[day].length - 1].service.location.geo
+                .coordinates,
+            )
+          : common.location;
+
+      const body = {
+        ...common,
+        location: {
+          lat: location.lat,
+          lng: location.lng,
+        },
+        dates: [
+          moment(this.state.tripData.startDate)
+            .add(day - 1, 'days')
+            .format('YYYY-MM-DD'),
+        ],
+      };
+
+      if (body.location) {
+        apiClient.services.search.prefetch(body);
+      }
+    }
+  };
+
   getTransportation = async () => {
     this.addIsLoadingTransports();
 
@@ -526,6 +570,9 @@ export default class TripOrganizer extends React.Component {
           this.removeDay(daysDuration + diff, false);
           diff--;
         }
+        if (currentDuration < daysDuration) {
+          this.prefetchSearchResults();
+        }
         this.saveTrip({
           duration: this.state.tripData.duration,
         });
@@ -542,6 +589,7 @@ export default class TripOrganizer extends React.Component {
         },
       }),
       () => {
+        this.prefetchSearchResults();
         this.saveTrip({
           startDate: this.state.tripData.startDate,
         });
@@ -590,6 +638,7 @@ export default class TripOrganizer extends React.Component {
         this.saveTrip({
           duration: this.state.tripData.duration,
         });
+        this.prefetchSearchResults();
         this.saveDaysData();
         this.saveRearrangeServices();
       },
@@ -634,6 +683,7 @@ export default class TripOrganizer extends React.Component {
         };
       },
       () => {
+        this.prefetchSearchResults();
         this.waitAndRemoveService(removedService.service._id);
       },
     );
@@ -716,6 +766,7 @@ export default class TripOrganizer extends React.Component {
         this.saveTrip({
           duration: this.state.tripData.duration,
         });
+        this.prefetchSearchResults();
       },
     );
   };
@@ -902,6 +953,7 @@ export default class TripOrganizer extends React.Component {
         },
       }),
       async () => {
+        this.prefetchSearchResults();
         this.startCheckingAvailability();
         await this.checkAvailability();
       },
@@ -974,6 +1026,9 @@ export default class TripOrganizer extends React.Component {
       async () => {
         if (dontSave) {
           return;
+        }
+        if (key === 'userStartLocation') {
+          this.prefetchSearchResults();
         }
         await this.saveTrip({
           [key]: location,
