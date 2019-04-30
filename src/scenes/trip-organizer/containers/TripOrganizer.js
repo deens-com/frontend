@@ -14,6 +14,7 @@ import { Loader } from 'semantic-ui-react';
 import { generateTripSlug } from 'libs/Utils';
 import headerActions from 'store/header/actions';
 import BrandFooter from 'shared_components/BrandFooter';
+import NotFound from 'styled_scenes/NotFound';
 
 const Wrapper = styled.div`
   min-height: calc(100vh - 85px);
@@ -28,9 +29,6 @@ const ContentWrapper = styled.div`
 class TripOrganizerContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isLoading: false,
-    };
   }
   componentDidMount() {
     this.props.changeHeader({ noMargin: true, forceNotFixed: true });
@@ -42,28 +40,30 @@ class TripOrganizerContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (!this.state.isLoading) {
-      if (this.props.trip && !prevProps.trip) {
-        if (this.props.trip && this.props.trip.bookingStatus === 'booked') {
-          history.replace(`/trips/${generateTripSlug(this.props.trip)}`);
-          return;
-        }
-        if (
-          this.props.match.params.id &&
-          this.props.trip &&
-          this.props.session._id &&
-          this.props.trip.owner !== this.props.session._id
-        ) {
-          history.replace('/');
-          return;
-        }
+    if (this.props.trip && !prevProps.trip) {
+      if (this.props.trip && this.props.trip.bookingStatus === 'booked') {
+        history.replace(`/trips/${generateTripSlug(this.props.trip)}`);
+        return;
+      }
+      if (
+        this.props.match.params.id &&
+        this.props.trip &&
+        this.props.session._id &&
+        this.props.trip.owner !== this.props.session._id
+      ) {
+        history.replace('/');
+        return;
       }
     }
   }
 
   renderContent() {
-    if (this.state.isLoading || !this.props.trip) {
+    if (this.props.isLoading) {
       return <Loader size="massive" active />;
+    }
+
+    if (!this.props.trip) {
+      return <NotFound />;
     }
 
     return (
@@ -79,7 +79,7 @@ class TripOrganizerContainer extends Component {
         history={this.props.history}
         isGDPRDismissed={this.props.isGDPRDismissed}
         gdprHeight={this.props.gdprHeight}
-        isLoading={this.props.isLoading || this.isLoading}
+        isLoading={this.props.isLoading}
         action={
           this.props.location && this.props.location.state && this.props.location.state.action
         }
