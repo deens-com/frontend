@@ -329,7 +329,7 @@ export default class TripOrganizer extends React.Component {
     return trip;
   };
 
-  prefetchSearchResults = async () => {
+  prefetchSearchResults = async onlyLastDay => {
     const startLocation = getFromCoordinates(
       this.state.tripData.userStartLocation &&
         this.state.tripData.userStartLocation.geo.coordinates,
@@ -354,14 +354,15 @@ export default class TripOrganizer extends React.Component {
         : null,
     };
 
-    for (let day = 1; day <= days; day++) {
-      const location =
-        this.state.services[day] && this.state.services[day].length > 0
-          ? getFromCoordinates(
-              this.state.services[day][this.state.services[day].length - 1].service.location.geo
-                .coordinates,
-            )
-          : common.location;
+    let alreadySentWithCommonLocation = false; // avoid sending more than once the same request
+    for (let day = onlyLastDay ? days : 1; day <= days; day++) {
+      const useCustomLocation = this.state.services[day] && this.state.services[day].length > 0;
+      const location = useCustomLocation
+        ? getFromCoordinates(
+            this.state.services[day][this.state.services[day].length - 1].service.location.geo
+              .coordinates,
+          )
+        : common.location;
 
       const body = {
         ...common,
@@ -374,7 +375,14 @@ export default class TripOrganizer extends React.Component {
       };
 
       if (body.location) {
-        apiClient.services.search.prefetch(body);
+        if (useCustomLocation) {
+          apiClient.services.search.prefetch(body);
+        } else {
+          if (!alreadySentWithCommonLocation) {
+            alreadySentWithCommonLocation = true;
+            apiClient.services.search.prefetch(body);
+          }
+        }
       }
     }
   };
@@ -584,7 +592,7 @@ export default class TripOrganizer extends React.Component {
           diff--;
         }
         if (currentDuration < daysDuration) {
-          this.prefetchSearchResults();
+          this.prefetchSearchResults(true);
         }
         this.saveTrip({
           duration: this.state.tripData.duration,
@@ -779,7 +787,7 @@ export default class TripOrganizer extends React.Component {
         this.saveTrip({
           duration: this.state.tripData.duration,
         });
-        this.prefetchSearchResults();
+        this.prefetchSearchResults(true);
       },
     );
   };
