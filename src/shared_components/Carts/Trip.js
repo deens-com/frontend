@@ -463,7 +463,9 @@ class TripCart extends Component {
               {this.props.type === 'trip' &&
               this.props.item.topLocations &&
               this.props.item.topLocations.length > 0
-                ? this.props.item.topLocations.map(location => location.city).join(', ')
+                ? this.props.item.topLocations
+                    .map(location => location.city || location.state || location.country)
+                    .join(', ')
                 : formatLocation(this.props.item.originalLocation || this.props.item.location)}
             </PSmall>
           </Location>
