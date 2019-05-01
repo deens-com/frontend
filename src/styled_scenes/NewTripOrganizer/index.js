@@ -334,10 +334,18 @@ export default class TripOrganizer extends React.Component {
       this.state.tripData.userStartLocation &&
         this.state.tripData.userStartLocation.geo.coordinates,
     );
+    const days = minutesToDays(this.state.tripData.duration);
+
+    const dates = Array.from({ length: days }).map((_, i) =>
+      moment(this.state.tripData.startDate)
+        .add(i, 'days')
+        .format('YYYY-MM-DD'),
+    );
     const common = {
       adultCount: this.state.tripData.adultCount,
       childrenCount: this.state.tripData.childrenCount,
       infantCount: this.state.tripData.infantCount,
+      dates,
       location: startLocation
         ? {
             lat: startLocation.lat,
@@ -345,8 +353,6 @@ export default class TripOrganizer extends React.Component {
           }
         : null,
     };
-
-    const days = minutesToDays(this.state.tripData.duration);
 
     for (let day = 1; day <= days; day++) {
       const location =
@@ -365,11 +371,6 @@ export default class TripOrganizer extends React.Component {
               lng: location.lng,
             }
           : null,
-        dates: [
-          moment(this.state.tripData.startDate)
-            .add(day - 1, 'days')
-            .format('YYYY-MM-DD'),
-        ],
       };
 
       if (body.location) {
