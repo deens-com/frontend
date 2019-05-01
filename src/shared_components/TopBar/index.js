@@ -136,7 +136,6 @@ class TopBar extends Component {
     const { showMenu, showSearchMobile } = this.state;
 
     const InnerWrap = transparent || noSearch ? PageWrapper : React.Fragment;
-
     return (
       <React.Fragment>
         <Wrapper
@@ -164,7 +163,7 @@ class TopBar extends Component {
                   address={this.props.address}
                   isMobileSearchOpen={showSearchMobile}
                   searchParams={this.props.searchParams}
-                  updateQuery={this.props.updateQuery}
+                  updateSearchParams={this.props.updateSearchParams}
                 />
               )}
               <DesktopNav
@@ -220,7 +219,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    { getCurrentUserTrip, logOut, updateQuery: searchActions.updateSearchQuery },
+    { getCurrentUserTrip, logOut, updateSearchParams: searchActions.updateSearchParams },
     dispatch,
   );
 };

@@ -4,8 +4,6 @@ import styled from 'styled-components';
 
 import { media } from 'libs/styled';
 import { H1, H2 } from 'libs/commonStyles';
-import { secondary } from 'libs/colors';
-import { pushSearch } from 'libs/search';
 
 import sydneyImg from './images/big/sydney.jpg';
 import sanFranciscoImg from './images/small/san-francisco.jpg';
@@ -181,7 +179,7 @@ const sanFranciscoParams = {
   countryCode: 'US',
 };
 
-export default function HomeSectionTopDestinations() {
+export default function HomeSectionTopDestinations({ updateSearchParams }) {
   return (
     <PageWrapper>
       <SectionWrap>
@@ -191,7 +189,7 @@ export default function HomeSectionTopDestinations() {
         <SectionContent>
           <FlexLink
             onClick={() => {
-              pushSearch(sydneyParams);
+              updateSearchParams(sydneyParams);
             }}
           >
             <Sydney>
@@ -200,7 +198,7 @@ export default function HomeSectionTopDestinations() {
           </FlexLink>
           <NewYorkLink
             onClick={() => {
-              pushSearch(newYorkParams);
+              updateSearchParams(newYorkParams);
             }}
           >
             <NewYork>
@@ -210,7 +208,7 @@ export default function HomeSectionTopDestinations() {
           <CenterContainer>
             <SFLink
               onClick={() => {
-                pushSearch(sanFranciscoParams);
+                updateSearchParams(sanFranciscoParams);
               }}
             >
               <SanFrancisco>
@@ -219,7 +217,7 @@ export default function HomeSectionTopDestinations() {
             </SFLink>
             <LondonLink
               onClick={() => {
-                pushSearch(londonParams);
+                updateSearchParams(londonParams);
               }}
             >
               <London>

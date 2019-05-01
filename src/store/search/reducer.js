@@ -5,6 +5,7 @@ import {
   actionSuccessState,
   actionErrorState,
 } from 'store/utils';
+import { getLastSearchParams } from 'libs/localStorage';
 
 const initialData = [];
 
@@ -15,6 +16,7 @@ const initialState = {
   searchQuery: {
     type: 'trip',
     page: 1,
+    ...getLastSearchParams(),
   },
 };
 
@@ -60,6 +62,7 @@ export default function search(state = initialState, action = {}) {
         error: action.error,
       };
     case types.updateQueryParams:
+      console.log('caco', action);
       return {
         ...state,
         searchQuery: action.payload,

@@ -59,7 +59,7 @@ const HomeComponent = props => {
           {matches => (matches ? <HeroSlider /> : <MobileHero />)}
         </Media>
         <HomeTagLine>Customizable Trips created by Locals at no cost!</HomeTagLine>
-        <HomeSearch />
+        <HomeSearch updateSearchParams={props.updateSearchParams} />
       </PageTop>
       <PageContent
         itemProp="itemList"

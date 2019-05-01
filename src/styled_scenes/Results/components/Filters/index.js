@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { pushSearch, filtersByType, availableFilters } from 'libs/search';
+import { filtersByType, availableFilters } from 'libs/search';
 import { P } from 'libs/commonStyles';
 import { primary, disabled } from 'libs/colors';
 import GuestsFilter from './Guests';
@@ -62,18 +62,11 @@ const BackToTrip = styled(Link)`
   }
 `;
 
-const Filters = ({ searchParams, backToTrip }) => {
+const Filters = ({ searchParams, backToTrip, updateSearchParams }) => {
   const [showingMobile, setShowingMobile] = useState(false);
   const search = params => {
     const keepPage = isMatch(searchParams, params);
-    pushSearch(
-      {
-        ...searchParams,
-        ...params,
-      },
-      undefined,
-      keepPage ? searchParams.page : undefined,
-    );
+    updateSearchParams(params, undefined, keepPage ? searchParams.page : undefined);
   };
   const filters = filtersByType[searchParams.type];
 

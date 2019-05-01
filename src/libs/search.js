@@ -1,5 +1,4 @@
 import queryString from 'qs';
-import history from 'main/history';
 
 export function getAddress(params) {
   if (params.text) {
@@ -42,7 +41,7 @@ const parseArrayOrNumber = field => {
   return field.sort();
 };
 
-const getSearchParams = searchParams => {
+export const getSearchParams = searchParams => {
   return {
     // does not properly parse '+'.
     type: searchParams.type,
@@ -68,6 +67,32 @@ const getSearchParams = searchParams => {
   };
 };
 
+const paramsToSaveKeys = [
+  'adults',
+  'children',
+  'infants',
+  'city',
+  'state',
+  'countryCode',
+  'lat',
+  'lng',
+  'address',
+  'startDate',
+  'endDate',
+];
+
+export const getParamsToSave = (searchParams, currentSavedParams) => {
+  const paramsToSave = {
+    ...currentSavedParams,
+  };
+  paramsToSaveKeys.forEach(param => {
+    if (param in searchParams) {
+      paramsToSave[param] = searchParams[param];
+    }
+  });
+  return paramsToSave;
+};
+
 export const mapUrlToProps = location => {
   let searchParams = queryString.parse(location.search, { ignoreQueryPrefix: true });
 
@@ -81,12 +106,6 @@ export const mapDataToQuery = ({ type, ...searchParams }) => ({
   category: type.charAt(0).toUpperCase() + type.substr(1),
   ...searchParams,
 });
-
-export const pushSearch = (searchParams, state, customPage) => {
-  const page = customPage || (searchParams.page ? 1 : undefined);
-  const params = getSearchParams({ ...searchParams, page });
-  history.push(`/results?${queryString.stringify(params, { arrayFormat: 'comma' })}`, state);
-};
 
 export const hasLocationParams = params => {
   return (params.lat && params.lng) || (params.city && params.countryCode);

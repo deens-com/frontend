@@ -5,18 +5,13 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import tripActions from 'store/trips/actions';
 import { Loader } from 'semantic-ui-react';
-import { pushSearch } from 'libs/search';
 import headerActions from 'store/header/actions';
 
 class ResultsContainer extends Component {
   componentDidMount() {
     this.props.changeHeader();
-    let params = this.props.searchParams;
-    if (!params.type) {
-      params = { ...params, type: 'trip' };
-      pushSearch(params);
-    }
-    this.props.updateSearchQuery(params);
+    const params = this.props.searchParams;
+    this.props.updateSearchParams(params);
     this.props.fetchResults(params);
     if (this.hasToLoadTripYet()) {
       this.props.fetchTrip(this.props.routeState.tripId);
@@ -25,18 +20,12 @@ class ResultsContainer extends Component {
 
   componentWillUpdate(nextProps) {
     if (this.props.rawSearchQuery !== nextProps.rawSearchQuery) {
-      let params = nextProps.searchParams;
-      if (!params.type) {
-        params = { ...params, type: 'trip' };
-        pushSearch(params);
-      }
-      this.props.updateSearchQuery(params);
-      this.props.fetchResults(params);
+      this.props.fetchResults(nextProps.searchParams);
     }
   }
 
   retryFetch = () => {
-    //this.props.updateSearchQuery(searchQuery);
+    //this.props.updateSearchParams(searchQuery);
     //this.props.fetchResults(searchQuery);
   };
 
@@ -53,7 +42,7 @@ class ResultsContainer extends Component {
         searchParams={this.props.searchParams}
         routeState={this.props.routeState}
         service_data={this.props.results}
-        pushSearch={pushSearch}
+        updateSearchParams={this.props.updateSearchParams}
         isLoadingResults={this.props.isLoadingResults || this.hasToLoadTripYet()}
         trip={this.props.trip}
         retryFetch={this.retryFetch}
@@ -66,11 +55,11 @@ class ResultsContainer extends Component {
 const mapStateToProps = state => {
   return {
     results: state.search.results.data,
-    search_query: state.search.searchQuery,
     count: state.search.count,
     isLoadingResults: state.search.results.isLoading,
     tagsOptions: state.search.tagsOptions,
     trip: state.trips.trip,
+    searchParams: state.search.searchQuery,
   };
 };
 

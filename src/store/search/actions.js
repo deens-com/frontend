@@ -1,8 +1,11 @@
+import queryString from 'qs';
 import fetchHelpers from 'libs/fetch_helpers';
 import api from 'libs/apiClient';
+import history from 'main/history';
 import { createAsyncActions, dispatchAsyncActions } from 'store/utils';
 import { parseTagsText, parseTagsCount } from 'libs/Utils';
-import { mapDataToQuery, hasLocationParams } from 'libs/search';
+import { mapDataToQuery, hasLocationParams, getSearchParams, getParamsToSave } from 'libs/search';
+import { setLastSearchParams, getLastSearchParams } from 'libs/localStorage';
 
 const SEARCH = 'SEARCH';
 const UPDATE_QUERY_PARAMS = 'UPDATE_QUERY_PARAMS';
@@ -14,10 +17,23 @@ const types = {
   patchQueryParams: PATCH_QUERY_PARAMS,
 };
 
-const updateSearchQuery = searchParams => ({
-  type: UPDATE_QUERY_PARAMS,
-  payload: searchParams,
-});
+const updateSearchParams = (searchParams, state, customPage) => (dispatch, getState) => {
+  const paramsToSave = getParamsToSave(searchParams, getLastSearchParams());
+  const page = customPage || (searchParams.page ? 1 : undefined);
+  let params = { ...paramsToSave, ...searchParams };
+  if (!params.type) {
+    params = { ...params, type: 'trip' };
+  }
+  params = getSearchParams({ ...params, ...searchParams, page });
+
+  history.push(`/results?${queryString.stringify(params, { arrayFormat: 'comma' })}`, state);
+
+  setLastSearchParams(paramsToSave);
+  dispatch({
+    type: types.updateQueryParams,
+    payload: params,
+  });
+};
 
 const patchSearchQuery = searchParams => ({
   type: PATCH_QUERY_PARAMS,
@@ -76,6 +92,6 @@ const fetchResults = searchQuery =>
 export default {
   types,
   fetchResults,
-  updateSearchQuery,
+  updateSearchParams,
   patchSearchQuery,
 };

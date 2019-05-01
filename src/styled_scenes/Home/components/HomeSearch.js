@@ -13,7 +13,6 @@ import SemanticLocationControl from 'shared_components/Form/LocationAutoSuggest'
 
 // ACTIONS & CONFIG
 import { placeholderMixin } from '../../../libs/styled';
-import { pushSearch } from 'libs/search';
 
 const Input = styled.input`
   appearance: none;
@@ -162,7 +161,7 @@ export default class HomeSearch extends Component {
     if (this.props.toggleSearch) {
       this.props.toggleSearch();
     }
-    pushSearch(params);
+    this.props.updateSearchParams(params);
     //history.push(`/results?${query_string}`);
   }
 

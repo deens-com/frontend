@@ -9,7 +9,7 @@ import { CrossIcon, SearchIcon } from '../../icons';
 import SemanticLocationControl from 'shared_components/Form/LocationAutoSuggest';
 import { geocodeByAddress, getLatLng } from 'libs/placesAutocomplete';
 import { disabled } from 'libs/colors';
-import { pushSearch, getAddress } from 'libs/search';
+import { getAddress } from 'libs/search';
 
 // ACTIONS/CONFIG
 import { resetButton } from '../../../libs/styled';
@@ -179,12 +179,10 @@ export default class DesktopSearch extends Component {
       ...this.props.searchParams,
       ...this.state.params,
       text,
-      type: [text ? 'trip' : this.state.serviceType || this.props.searchParams.type],
+      type: text ? 'trip' : this.state.serviceType || this.props.searchParams.type,
     };
 
-    this.props.updateQuery(params);
-
-    pushSearch(params);
+    this.props.updateSearchParams(params);
   }
 
   handleServiceTypeChange = serviceType => {
@@ -192,7 +190,7 @@ export default class DesktopSearch extends Component {
       ...this.props.searchParams,
       ...this.state.params,
       text: this.state.text,
-      type: [serviceType],
+      type: serviceType,
       end_date:
         serviceType === 'food' || serviceType === 'activity'
           ? undefined
@@ -203,7 +201,7 @@ export default class DesktopSearch extends Component {
       tags: undefined,
       sortBy: undefined,
     };
-    pushSearch(params);
+    this.props.updateSearchParams(params);
   };
 
   render() {

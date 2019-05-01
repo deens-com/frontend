@@ -469,9 +469,9 @@ export default class TripOrganizer extends React.Component {
     const address =
       location && `${location.city || location.state}${country ? `, ${country}` : ''}`;
 
-    this.props.pushSearch(
+    this.props.updateSearchParams(
       {
-        type: [type],
+        type,
         lat: coord && coord.lat,
         lng: coord && coord.lng,
         adults: tripData.adultCount,
