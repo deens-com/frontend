@@ -250,13 +250,14 @@ export default class SemanticLocationControl extends Component {
   };
 
   renderExternalText() {
-    const { hasSearchedText } = this.props;
+    const { hasSearchedText, isInResultsPage } = this.props;
     const { showExternal } = this.state;
+    const externalText = isInResultsPage ? 'Showing' : 'Search'
     if (hasSearchedText) {
-      return 'Showing Trips containing';
+      return `${externalText} Trips containing`;
     }
     if (showExternal === 'full') {
-      return `Showing ${this.getSentenceWord()} in`;
+      return `${externalText} ${this.getSentenceWord()} in`;
     } else if (showExternal === 'partial') {
       return `${this.getSentenceWord()} in`;
     }
