@@ -95,6 +95,7 @@ export const hasLocationParams = params => {
 const GUESTS = 'guests';
 const DATES = 'dates';
 const PRICE_RANGE = 'priceRange';
+const PRICE_RANGE_ONLY_MAX = 'priceRangeOnlyMax';
 const TAGS = 'tags';
 const SINGLE_DATE = 'singleDate';
 const PRICE_TAGS = 'priceTags';
@@ -103,6 +104,7 @@ export const availableFilters = {
   guests: GUESTS,
   dates: DATES,
   priceRange: PRICE_RANGE,
+  priceRangeOnlyMax: PRICE_RANGE_ONLY_MAX,
   tags: TAGS,
   singleDate: SINGLE_DATE,
   priceTags: PRICE_TAGS,
@@ -111,6 +113,6 @@ export const availableFilters = {
 export const filtersByType = {
   trip: [GUESTS, DATES, PRICE_RANGE, TAGS],
   accommodation: [GUESTS, DATES, PRICE_RANGE],
-  activity: [GUESTS, SINGLE_DATE, PRICE_RANGE, TAGS],
+  activity: [GUESTS, SINGLE_DATE, PRICE_RANGE_ONLY_MAX, TAGS],
   food: [GUESTS, PRICE_TAGS, TAGS],
 };

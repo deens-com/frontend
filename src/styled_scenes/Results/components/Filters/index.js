@@ -167,7 +167,15 @@ const Filters = ({ searchParams, backToTrip }) => {
           minPrice={searchParams.priceStart}
           maxPrice={searchParams.priceEnd}
           onApply={search}
-          pricePer={searchParams.type === 'activity' ? 'per person' : undefined}
+          numberOfPeople={(searchParams.adults || 2) + (searchParams.children || 0)}
+        />
+      )}
+      {filters.includes(availableFilters.priceRangeOnlyMax) && (
+        <PriceRangeFilter
+          onlyMax
+          maxPrice={searchParams.priceEnd}
+          onApply={search}
+          pricePer="per person"
           numberOfPeople={(searchParams.adults || 2) + (searchParams.children || 0)}
         />
       )}

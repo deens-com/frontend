@@ -40,8 +40,16 @@ const PerDay = styled(P)`
 const MAX_PRICE = 500;
 const MIN_PRICE = 0;
 
-const PriceRange = ({ minPrice, maxPrice, onApply, pricePer, numberOfPeople }) => {
+const PriceRange = ({ minPrice, maxPrice, onApply, pricePer, numberOfPeople, onlyMax }) => {
   const [values, setValues] = useState({ min: minPrice || MIN_PRICE, max: maxPrice || MAX_PRICE });
+
+  const onChange = newValues => {
+    if (onlyMax) {
+      setValues({ ...values, max: newValues });
+      return;
+    }
+    setValues(newValues);
+  };
 
   const renderTrigger = () => {
     if (!minPrice && !maxPrice) {
@@ -68,8 +76,8 @@ const PriceRange = ({ minPrice, maxPrice, onApply, pricePer, numberOfPeople }) =
         <Range
           maxValue={MAX_PRICE}
           minValue={MIN_PRICE}
-          value={values}
-          onChange={setValues}
+          value={onlyMax ? values.max : values}
+          onChange={onChange}
           formatLabel={value => `$${value}`}
         />
         <PerDay>
@@ -96,10 +104,12 @@ PriceRange.propTypes = {
   maxPrice: PropTypes.number,
   pricePer: PropTypes.oneOf(['per day', 'per person']),
   numberOfPeople: PropTypes.number,
+  onlyMax: PropTypes.bool,
 };
 
 PriceRange.defaultProps = {
   pricePer: 'per day',
+  onlyMax: false,
 };
 
 export default PriceRange;

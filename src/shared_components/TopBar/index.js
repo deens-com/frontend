@@ -136,7 +136,7 @@ class TopBar extends Component {
     const { showMenu, showSearchMobile } = this.state;
 
     const InnerWrap = transparent || noSearch ? PageWrapper : React.Fragment;
-    console.log(this.props);
+
     return (
       <React.Fragment>
         <Wrapper
