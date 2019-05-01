@@ -79,12 +79,7 @@ const AddCustomServiceModal = ({ close, setServiceData }) => {
       }
       setServiceData(fetchHelpers.buildServiceForView(fetchHelpers.createServiceFromUrl(metadata)));
     } catch (e) {
-      if (e.response && e.response.status === 400 && e.response.data) {
-        const err = e.response.data.message;
-        setError(err.charAt(0).toUpperCase() + err.substr(1));
-      } else {
-        setError('We could not fetch the webpage. Please try a different URL.');
-      }
+      setServiceData({});
     } finally {
       setIsFetching(false);
     }
