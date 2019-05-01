@@ -64,7 +64,7 @@
     "react-paginate": "^5.2.3",
     "react-places-autocomplete": "https://github.com/fcmatteo/react-places-autocomplete.git",
     "react-redux": "^5.0.7",
-    "react-resize-detector": "^3.4.0",
+    "react-resize-detector": "^4.1.3",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-scripts": "2.1.1",
