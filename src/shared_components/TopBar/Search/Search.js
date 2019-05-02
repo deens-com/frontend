@@ -226,6 +226,8 @@ export default class DesktopSearch extends Component {
               serviceType={this.props.searchParams.type}
               hasSearchedText={Boolean(this.state.text)}
               isInResultsPage={window.location.pathname === '/results'}
+              showGoButton={window.location.pathname !== '/results'}
+              updateSearchParams={this.props.updateSearchParams}
             />
             {isMobile && (
               <SubmitButton style={{ color: 'grey' }}>

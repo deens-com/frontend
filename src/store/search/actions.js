@@ -75,7 +75,7 @@ const updateSearchParams = (searchParams, state, customPage) => (dispatch, getSt
   const page = customPage || (searchParams.page ? 1 : undefined);
   let params = { ...paramsToSave, ...searchParams };
   if (!params.type) {
-    params = { ...params, type: 'trip' };
+    params = { ...params, type: getState().search.searchQuery.type || 'trip' };
   }
   params = getSearchParams({ ...params, ...searchParams, page });
 
