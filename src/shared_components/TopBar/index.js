@@ -13,7 +13,7 @@ import Search from './Search';
 import { bindActionCreators } from 'redux';
 import { getCurrentUserTrip, logOut } from 'store/session/actions';
 import { PageWrapper } from 'shared_components/layout/Page';
-import { secondaryContrast } from 'libs/colors';
+import { withRouter } from 'react-router';
 import searchActions from 'store/search/actions';
 
 // ACTIONS/CONFIG
@@ -164,6 +164,7 @@ class TopBar extends Component {
                   isMobileSearchOpen={showSearchMobile}
                   searchParams={this.props.searchParams}
                   updateSearchParams={this.props.updateSearchParams}
+                  windowLocation={this.props.location}
                 />
               )}
               <DesktopNav
@@ -200,6 +201,7 @@ TopBar.propTypes = {
   withPadding: PropTypes.bool,
   noMargin: PropTypes.bool,
   forceNotFixed: PropTypes.bool,
+  location: PropTypes.object,
 };
 
 TopBar.defaultProps = {
@@ -224,7 +226,9 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(TopBar);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(TopBar),
+);

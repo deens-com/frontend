@@ -31,6 +31,7 @@ export default function TopBarSearch({
   address,
   isMobileSearchOpen,
   updateSearchParams,
+  windowLocation,
 }) {
   if (isMenuOpen) return null;
 
@@ -48,6 +49,7 @@ export default function TopBarSearch({
             toggleSearch={toggleSearch}
             searchParams={searchParams}
             updateSearchParams={updateSearchParams}
+            windowLocation={windowLocation}
           />
         )
       }

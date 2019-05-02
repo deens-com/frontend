@@ -96,9 +96,9 @@ const ExternalText = styled.label`
 
 const GoButton = styled.span`
   cursor: pointer;
-  background-color: ${primary};
-  padding: 2px 5px;
-  color: white;
+  border: 1px solid ${primary};
+  padding: 1px 5px;
+  color: ${primary};
   border-radius: 2px 2px 2px 0;
   margin-left: 10px;
 `;

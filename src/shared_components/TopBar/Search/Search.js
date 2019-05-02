@@ -205,7 +205,7 @@ export default class DesktopSearch extends Component {
   };
 
   render() {
-    const { isMobile, toggleSearch } = this.props;
+    const { isMobile, toggleSearch, windowLocation } = this.props;
     return (
       <Wrapper isMobile={isMobile} inFocus={this.state.inFocus}>
         <Inner>
@@ -225,8 +225,8 @@ export default class DesktopSearch extends Component {
               handleServiceTypeChange={this.handleServiceTypeChange}
               serviceType={this.props.searchParams.type}
               hasSearchedText={Boolean(this.state.text)}
-              isInResultsPage={window.location.pathname === '/results'}
-              showGoButton={window.location.pathname !== '/results'}
+              isInResultsPage={windowLocation.pathname === '/results'}
+              showGoButton={windowLocation.pathname !== '/results'}
               updateSearchParams={this.props.updateSearchParams}
             />
             {isMobile && (
