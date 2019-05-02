@@ -195,9 +195,9 @@ export default class DesktopSearch extends Component {
         serviceType === 'food' || serviceType === 'activity'
           ? undefined
           : this.props.searchParams.end_date,
-      priceLevel: serviceType !== 'food' ? undefined : this.props.searchParams.priceLevel,
-      priceStart: serviceType === 'food' ? undefined : this.props.searchParams.priceStart,
-      priceEnd: serviceType === 'food' ? undefined : this.props.searchParams.priceEnd,
+      priceLevel: undefined,
+      priceStart: undefined,
+      priceEnd: undefined,
       tags: undefined,
       sortBy: undefined,
     };
