@@ -4,7 +4,13 @@ import api from 'libs/apiClient';
 import history from 'main/history';
 import { createAsyncActions, dispatchAsyncActions } from 'store/utils';
 import { parseTagsText, parseTagsCount } from 'libs/Utils';
-import { mapDataToQuery, hasLocationParams, getSearchParams, getParamsToSave } from 'libs/search';
+import {
+  mapDataToQuery,
+  hasLocationParams,
+  getSearchParams,
+  getParamsToSave,
+  prefetchWithNewParams,
+} from 'libs/search';
 import { setLastSearchParams, getLastSearchParams } from 'libs/localStorage';
 
 const SEARCH = 'SEARCH';
@@ -18,7 +24,8 @@ const types = {
 };
 
 const updateSearchParams = (searchParams, state, customPage) => (dispatch, getState) => {
-  const paramsToSave = getParamsToSave(searchParams, getLastSearchParams());
+  const savedParams = getLastSearchParams();
+  const paramsToSave = getParamsToSave(searchParams, savedParams);
   const page = customPage || (searchParams.page ? 1 : undefined);
   let params = { ...paramsToSave, ...searchParams };
   if (!params.type) {
@@ -26,7 +33,15 @@ const updateSearchParams = (searchParams, state, customPage) => (dispatch, getSt
   }
   params = getSearchParams({ ...params, ...searchParams, page });
 
+  if (params.lat && params.lng) {
+    delete params.city;
+    delete params.state;
+    delete params.countryCode;
+  }
+
   history.push(`/results?${queryString.stringify(params, { arrayFormat: 'comma' })}`, state);
+
+  prefetchWithNewParams(paramsToSave, savedParams);
 
   setLastSearchParams(paramsToSave);
   dispatch({

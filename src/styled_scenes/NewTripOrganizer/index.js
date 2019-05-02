@@ -205,6 +205,7 @@ export default class TripOrganizer extends React.Component {
     }
     this.checkAvailability();
     this.getTransportation();
+    this.prefetchSearchResults();
   }
 
   componentWillUnmount() {

@@ -1,4 +1,7 @@
 import queryString from 'qs';
+import moment from 'moment';
+import apiClient from 'libs/apiClient';
+import isEqual from 'lodash.isequal';
 
 export function getAddress(params) {
   if (params.text) {
@@ -85,6 +88,15 @@ export const getParamsToSave = (searchParams, currentSavedParams) => {
   const paramsToSave = {
     ...currentSavedParams,
   };
+  if (searchParams.city || searchParams.state || searchParams.countryCode) {
+    delete paramsToSave.lat;
+    delete paramsToSave.lng;
+  }
+  if (searchParams.lng && searchParams.lat) {
+    delete paramsToSave.city;
+    delete paramsToSave.state;
+    delete paramsToSave.countryCode;
+  }
   paramsToSaveKeys.forEach(param => {
     if (param in searchParams) {
       paramsToSave[param] = searchParams[param];
@@ -134,4 +146,32 @@ export const filtersByType = {
   accommodation: [GUESTS, DATES, PRICE_RANGE],
   activity: [GUESTS, SINGLE_DATE, PRICE_RANGE_ONLY_MAX, TAGS],
   food: [GUESTS, PRICE_TAGS, TAGS],
+};
+
+export const prefetchWithNewParams = (newParams, oldParams) => {
+  if (isEqual(newParams, oldParams)) {
+    return;
+  }
+  if ((newParams.city && newParams.countryCode) || (newParams.lat && newParams.lng)) {
+    if (newParams.startDate) {
+      const body = {
+        adultCount: newParams.adults || 2,
+        childrenCount: newParams.children || 0,
+        infantCount: newParams.infants || 0,
+        location: {
+          ...(newParams.city
+            ? {
+                city: newParams.city,
+                countryCode: newParams.countryCode,
+              }
+            : {
+                lat: newParams.lat,
+                lng: newParams.lng,
+              }),
+        },
+        dates: [moment(newParams.startDate).format('YYYY-MM-DD')],
+      };
+      apiClient.services.search.prefetch(body);
+    }
+  }
 };
