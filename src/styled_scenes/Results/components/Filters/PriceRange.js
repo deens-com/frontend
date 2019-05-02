@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Dropdown from 'shared_components/Dropdown';
@@ -40,8 +40,32 @@ const PerDay = styled(P)`
 const MAX_PRICE = 500;
 const MIN_PRICE = 0;
 
-const PriceRange = ({ minPrice, maxPrice, onApply, pricePer, numberOfPeople, onlyMax }) => {
-  const [values, setValues] = useState({ min: minPrice || MIN_PRICE, max: maxPrice || MAX_PRICE });
+const PriceRange = ({
+  minPrice,
+  maxPrice,
+  maxPossiblePrice,
+  minPossiblePrice,
+  onApply,
+  pricePer,
+  numberOfPeople,
+  onlyMax,
+}) => {
+  const defaultMin = minPossiblePrice || MIN_PRICE;
+  const defaultMax = maxPossiblePrice || MAX_PRICE;
+  const [values, setValues] = useState({
+    min: minPrice || defaultMin,
+    max: maxPrice || defaultMax,
+  });
+
+  useEffect(
+    () => {
+      const min = minPrice < defaultMin ? defaultMin : minPrice;
+      const max = maxPrice > defaultMax ? defaultMax : maxPrice;
+
+      setValues({ min: min || defaultMin, max: max || defaultMax });
+    },
+    [defaultMin, defaultMax],
+  );
 
   const onChange = newValues => {
     if (onlyMax) {
@@ -52,30 +76,30 @@ const PriceRange = ({ minPrice, maxPrice, onApply, pricePer, numberOfPeople, onl
   };
 
   const renderTrigger = () => {
-    if (!minPrice && !maxPrice) {
+    if (!values.min && !maxPrice) {
       return 'Select price';
     }
-    const isMaxPrice = maxPrice === MAX_PRICE || !maxPrice;
-    return `$${minPrice || MIN_PRICE} to $${maxPrice || MAX_PRICE}${
+    const isMaxPrice = maxPrice === defaultMax || !maxPrice;
+    return `$${values.min || defaultMin} to $${maxPrice || defaultMax}${
       isMaxPrice ? '+' : ''
     } ${pricePer}`;
   };
 
   const onClose = () => {
     onApply({
-      priceStart: values.min > MIN_PRICE ? values.min : undefined,
-      priceEnd: values.max < MAX_PRICE ? values.max : undefined,
+      priceStart: values.min > defaultMin ? values.min : undefined,
+      priceEnd: values.max < defaultMax ? values.max : undefined,
     });
   };
 
   const showTotalPrice = pricePer === 'per person' && numberOfPeople > 1;
-
+  console.log(values, defaultMin, defaultMax, onlyMax);
   return (
     <Dropdown onClose={onClose} trigger={renderTrigger()}>
       <Content style={{ width: '250px' }}>
         <Range
-          maxValue={MAX_PRICE}
-          minValue={MIN_PRICE}
+          maxValue={defaultMax}
+          minValue={defaultMin}
           value={onlyMax ? values.max : values}
           onChange={onChange}
           formatLabel={value => `$${value}`}
@@ -84,12 +108,12 @@ const PriceRange = ({ minPrice, maxPrice, onApply, pricePer, numberOfPeople, onl
           {showTotalPrice && (
             <span>
               ${values.min * numberOfPeople} to ${values.max * numberOfPeople}
-              {values.max === MAX_PRICE ? '+' : ''} for {numberOfPeople} people
+              {values.max === defaultMax ? '+' : ''} for {numberOfPeople} people
             </span>
           )}
           <span>
             {showTotalPrice && '('}${values.min} to ${values.max}
-            {values.max === MAX_PRICE ? '+' : ''} {pricePer}
+            {values.max === defaultMax ? '+' : ''} {pricePer}
             {showTotalPrice && ')'}
           </span>
         </PerDay>
@@ -102,6 +126,8 @@ PriceRange.propTypes = {
   onApply: PropTypes.func.isRequired,
   minPrice: PropTypes.number,
   maxPrice: PropTypes.number,
+  minPossiblePrice: PropTypes.number,
+  maxPossiblePrice: PropTypes.number,
   pricePer: PropTypes.oneOf(['per day', 'per person']),
   numberOfPeople: PropTypes.number,
   onlyMax: PropTypes.bool,

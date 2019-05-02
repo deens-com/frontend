@@ -60,7 +60,7 @@ const BackToTrip = styled(Link)`
   }
 `;
 
-const Filters = ({ searchParams, backToTrip, updateSearchParams }) => {
+const Filters = ({ searchParams, backToTrip, minPossiblePrice, maxPossiblePrice, updateSearchParams }) => {
   const [showingMobile, setShowingMobile] = useState(false);
   const search = params => {
     const keepPage = isMatch(searchParams, params);
@@ -118,6 +118,8 @@ const Filters = ({ searchParams, backToTrip, updateSearchParams }) => {
         <PriceRangeFilter
           minPrice={searchParams.priceStart}
           maxPrice={searchParams.priceEnd}
+          minPossiblePrice={minPossiblePrice}
+          maxPossiblePrice={maxPossiblePrice}
           onApply={search}
           numberOfPeople={(searchParams.adults || 2) + (searchParams.children || 0)}
         />

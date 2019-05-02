@@ -47,6 +47,8 @@ const fetchResults = searchQuery =>
         return {
           results: [],
           count: 0,
+          minPrice: null,
+          maxPrice: null,
           tags: [],
         };
       }
@@ -65,6 +67,8 @@ const fetchResults = searchQuery =>
     return {
       results: data,
       count: results.data.count,
+      maxPrice: results.data.maxPrice,
+      minPrice: results.data.minPrice,
       tags,
     };
   });

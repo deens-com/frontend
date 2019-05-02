@@ -12,6 +12,8 @@ const initialData = [];
 const initialState = {
   results: asyncInitialState(initialData),
   count: null,
+  minPrice: null,
+  maxPrice: null,
   tagsOptions: [],
   searchQuery: {
     type: 'trip',
@@ -32,6 +34,8 @@ export default function search(state = initialState, action = {}) {
           ...actionStartState(action, initialState.results.data),
         },
         count: initialState.count,
+        //minPrice: initialState.minPrice,
+        //maxPrice: initialState.maxPrice,
         tagsOptions: initialState.tagsOptions,
       };
     case types.search.success:
@@ -48,6 +52,8 @@ export default function search(state = initialState, action = {}) {
           ),
         },
         count: action.payload.count,
+        minPrice: action.payload.minPrice,
+        maxPrice: action.payload.maxPrice,
         tagsOptions: action.payload.tags,
       };
     case types.search.error:
@@ -58,6 +64,8 @@ export default function search(state = initialState, action = {}) {
           ...actionErrorState(action, state.results, initialData),
         },
         count: initialState.count,
+        minPrice: initialState.minPrice,
+        maxPrice: initialState.maxPrice,
         tagsOptions: initialState.tagsOptions,
         error: action.error,
       };
