@@ -12,21 +12,10 @@ class ResultsContainer extends Component {
     this.props.changeHeader();
     const params = this.props.searchParams;
     this.props.updateSearchParams(params);
-    this.props.fetchResults(params);
-    if (this.hasToLoadTripYet()) {
-      this.props.fetchTrip(this.props.routeState.tripId);
-    }
-  }
-
-  componentWillUpdate(nextProps) {
-    if (this.props.rawSearchQuery !== nextProps.rawSearchQuery) {
-      this.props.fetchResults(nextProps.searchParams);
-    }
   }
 
   retryFetch = () => {
-    //this.props.updateSearchParams(searchQuery);
-    //this.props.fetchResults(searchQuery);
+    this.props.fetchResults(this.props.searchParams);
   };
 
   hasToLoadTripYet = () =>

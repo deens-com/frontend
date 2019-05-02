@@ -273,7 +273,6 @@ class Results extends Component {
                     />
                   )}
                   <TripCard
-                    key={result.label}
                     onOver={onCardOver}
                     onLeave={onCardLeave}
                     withTooltip

@@ -82,7 +82,9 @@ const Sort = ({ searchParams, updateSearchParams }) => {
     >
       <PopupContent>
         {validOptions.map(item => (
-          <li onClick={() => selectSorting(item)}>{sortByToComponent(item)}</li>
+          <li key={item} onClick={() => selectSorting(item)}>
+            {sortByToComponent(item)}
+          </li>
         ))}
       </PopupContent>
     </Popup>

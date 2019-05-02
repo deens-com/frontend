@@ -23,33 +23,6 @@ const types = {
   patchQueryParams: PATCH_QUERY_PARAMS,
 };
 
-const updateSearchParams = (searchParams, state, customPage) => (dispatch, getState) => {
-  const savedParams = getLastSearchParams();
-  const paramsToSave = getParamsToSave(searchParams, savedParams);
-  const page = customPage || (searchParams.page ? 1 : undefined);
-  let params = { ...paramsToSave, ...searchParams };
-  if (!params.type) {
-    params = { ...params, type: 'trip' };
-  }
-  params = getSearchParams({ ...params, ...searchParams, page });
-
-  if (params.lat && params.lng) {
-    delete params.city;
-    delete params.state;
-    delete params.countryCode;
-  }
-
-  history.push(`/results?${queryString.stringify(params, { arrayFormat: 'comma' })}`, state);
-
-  prefetchWithNewParams(paramsToSave, savedParams);
-
-  setLastSearchParams(paramsToSave);
-  dispatch({
-    type: types.updateQueryParams,
-    payload: params,
-  });
-};
-
 const patchSearchQuery = searchParams => ({
   type: PATCH_QUERY_PARAMS,
   payload: searchParams,
@@ -96,13 +69,34 @@ const fetchResults = searchQuery =>
     };
   });
 
-/*const searchTrips = (includes = []) => {
-  return dispatchAsyncActions(
-    SEARCH_TRIPS,
-    async () =>
-      (,
-  );
-};*/
+const updateSearchParams = (searchParams, state, customPage) => (dispatch, getState) => {
+  const savedParams = getLastSearchParams();
+  const paramsToSave = getParamsToSave(searchParams, savedParams);
+  const page = customPage || (searchParams.page ? 1 : undefined);
+  let params = { ...paramsToSave, ...searchParams };
+  if (!params.type) {
+    params = { ...params, type: 'trip' };
+  }
+  params = getSearchParams({ ...params, ...searchParams, page });
+
+  if (params.lat && params.lng) {
+    delete params.city;
+    delete params.state;
+    delete params.countryCode;
+  }
+
+  dispatch(fetchResults(params));
+
+  history.push(`/results?${queryString.stringify(params, { arrayFormat: 'comma' })}`, state);
+
+  prefetchWithNewParams(paramsToSave, savedParams);
+
+  setLastSearchParams(paramsToSave);
+  dispatch({
+    type: types.updateQueryParams,
+    payload: params,
+  });
+};
 
 export default {
   types,
