@@ -91,7 +91,7 @@ const Tags = ({ selectedTags, suggestedTags, onApply }) => {
           <PSmall>Suggestions</PSmall>
           {filteredTags.slice(0, 20).map(tag => (
             <SuggestedTag key={tag.value} onClick={() => addTag(tag)}>
-              {tag.value}
+              {tag.value} {tag.count && `(${tag.count})`}
             </SuggestedTag>
           ))}
         </Suggestions>
