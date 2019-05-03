@@ -6,6 +6,7 @@ import {
   actionErrorState,
 } from 'store/utils';
 import { getLastSearchParams } from 'libs/localStorage';
+import { mapUrlToProps } from 'libs/search';
 
 const initialData = [];
 
@@ -17,6 +18,7 @@ const initialState = {
     type: 'trip',
     page: 1,
     ...getLastSearchParams(),
+    ...mapUrlToProps(window.location),
   },
 };
 
