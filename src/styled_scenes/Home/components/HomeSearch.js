@@ -194,6 +194,9 @@ export default class HomeSearch extends Component {
         showServiceTypes
         handleServiceTypeChange={this.handleServiceTypeChange}
         serviceType={this.state.serviceType}
+        defaultAddress={this.props.savedAddress}
+        showGoButton
+        updateSearchParams={this.props.updateSearchParams}
       />
     );
   };

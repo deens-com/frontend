@@ -46,11 +46,16 @@ class HomeContainer extends Component {
           isLoading={this.state.trips.isLoading}
           retryFunction={this.getTrips}
           updateSearchParams={this.props.updateSearchParams}
+          savedAddress={this.props.savedAddress}
         />
       </div>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  savedAddress: state.search.searchQuery.address,
+});
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
@@ -62,6 +67,6 @@ const mapDispatchToProps = dispatch =>
   );
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(HomeContainer);
