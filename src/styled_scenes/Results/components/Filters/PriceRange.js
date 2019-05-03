@@ -93,7 +93,7 @@ const PriceRange = ({
   };
 
   const showTotalPrice = pricePer === 'per person' && numberOfPeople > 1;
-  console.log(values, defaultMin, defaultMax, onlyMax);
+
   return (
     <Dropdown onClose={onClose} trigger={renderTrigger()}>
       <Content style={{ width: '250px' }}>
