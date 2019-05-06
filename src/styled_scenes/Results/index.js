@@ -130,6 +130,17 @@ const FirstLineRightColumn = styled.div`
   }
 `;
 
+const MapOptions = styled.div`
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
+  background-color: white;
+  padding: 3px 5px;
+  border-radius: 2px 2px 2px 0;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1), -1px 0px 2px rgba(0, 0, 0, 0.1);
+`;
+
 const defaultCenter = {
   lat: 48.856614,
   lng: 2.3522219000000177,
@@ -144,6 +155,7 @@ class ResultsScene extends Component {
       zoom: defaultZoom,
       markers: [],
       showMap: true,
+      searchByMoving: true,
     };
     this.mapRef = React.createRef();
     this.mapPlaceholderRef = React.createRef();
@@ -169,7 +181,7 @@ class ResultsScene extends Component {
     const center =
       props.latitude && props.longitude
         ? { lat: parseFloat(props.latitude), lng: parseFloat(props.longitude) }
-        : defaultCenter;
+        : this.state.center;
 
     return getCenterAndZoom(markers, center);
   };
@@ -215,6 +227,12 @@ class ResultsScene extends Component {
       }
       return { showMap: !prevState.showMap };
     });
+  };
+
+  onToggleSearchByMoving = () => {
+    this.setState(prevState => ({
+      searchByMoving: !prevState.searchByMoving,
+    }));
   };
 
   resizeHandler = () => {
@@ -331,6 +349,10 @@ class ResultsScene extends Component {
   };
 
   onChangeMap = debounce(map => {
+    if (!this.state.searchByMoving) {
+      return;
+    }
+
     const bounds = map.getBounds();
     const southWest = bounds.getSouthWest();
     const northEast = bounds.getNorthEast();
@@ -340,7 +362,7 @@ class ResultsScene extends Component {
       bottomRightLat: southWest.lat(),
       bottomRightLng: southWest.lng(),
     });
-  }, 1500);
+  }, 1000);
 
   render() {
     const { props } = this;
@@ -432,6 +454,13 @@ class ResultsScene extends Component {
           </ServicesWrapper>
           <MapPlaceholder ref={this.mapPlaceholderRef} />
           <MapWrapper ref={this.mapRef} showing={this.state.showMap}>
+            <MapOptions>
+              <Checkbox
+                onChange={this.onToggleSearchByMoving}
+                label="Search as I move the map"
+                checked={this.state.searchByMoving}
+              />
+            </MapOptions>
             <GoogleMapReact
               center={center}
               zoom={zoom}
