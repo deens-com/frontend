@@ -338,7 +338,7 @@ class ResultsScene extends Component {
       topLeftLat: northEast.lat(),
       topLeftLng: northEast.lng(),
       bottomRightLat: southWest.lat(),
-      bottomRightLng: southWest.lat(),
+      bottomRightLng: southWest.lng(),
     });
   }, 1500);
 
