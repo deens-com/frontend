@@ -42,7 +42,7 @@ export default (
         path={process.env.PUBLIC_URL + '/register'}
         component={commonHOCs(Registrations)}
       />
-      <Route
+      <OnlyPublicRoute
         path={process.env.PUBLIC_URL + '/recover-password'}
         component={commonHOCs(RecoverPassword)}
       />
