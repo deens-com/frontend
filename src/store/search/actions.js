@@ -32,13 +32,13 @@ const patchSearchQuery = searchParams => ({
 const fetchResults = searchQuery =>
   dispatchAsyncActions(SEARCH, async () => {
     const searchForTrips = searchQuery.type === 'trip';
-    const params = removeMultipleLocations({
+    const params = {
       page: 1,
       limit: 25,
       ...mapDataToQuery(searchQuery),
       include: ['tags'],
       ...(searchForTrips ? { include: ['owner', 'tags'] } : {}),
-    });
+    };
 
     if (!searchForTrips) {
       if (
@@ -78,7 +78,7 @@ const updateSearchParams = (searchParams, state, customPage) => (dispatch, getSt
   if (!params.type) {
     params = { ...params, type: getState().search.searchQuery.type || 'trip' };
   }
-  params = getSearchParams({ ...params, ...searchParams, page });
+  params = removeMultipleLocations(getSearchParams({ ...params, ...searchParams, page }));
 
   if (params.lat && params.lng) {
     delete params.city;

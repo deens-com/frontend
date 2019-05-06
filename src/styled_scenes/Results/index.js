@@ -31,6 +31,7 @@ import { primary } from 'libs/colors';
 import { P } from 'libs/commonStyles';
 import Sort from './components/Sort';
 import HelpMe from 'shared_components/HelpMe';
+import { usingBoundingBox } from 'libs/search';
 
 import addPrefixArticle from 'indefinite';
 
@@ -193,8 +194,12 @@ class ResultsScene extends Component {
 
     if (hasLocationsChanged) {
       const newMarkers = this.getMarkerLatLngs(nextProps);
-      const { center, zoom } = this.getCenterAndZoom(newMarkers, nextProps);
-      this.setState({ center, zoom, markers: newMarkers });
+      if (!usingBoundingBox(nextProps.searchParams)) {
+        const { center, zoom } = this.getCenterAndZoom(newMarkers, nextProps);
+        this.setState({ center, zoom, markers: newMarkers });
+      } else {
+        this.setState({ markers: newMarkers });
+      }
     }
   }
 

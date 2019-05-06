@@ -127,9 +127,9 @@ export const mapDataToQuery = ({ type, ...searchParams }) => ({
   ...searchParams,
 });
 
-const usingLatAndLng = params => params.lat && params.lng;
-const usingCityAndCountry = params => params.city && params.countryCode;
-const usingBoundingBox = params =>
+export const usingLatAndLng = params => params.lat && params.lng;
+export const usingCityAndCountry = params => params.city && params.countryCode;
+export const usingBoundingBox = params =>
   params.topLeftLat && params.topLeftLng && params.bottomRightLat && params.bottomRightLng;
 
 export const hasLocationParams = params => {
