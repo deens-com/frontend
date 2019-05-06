@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import tripActions from 'store/trips/actions';
 import searchActions from 'store/search/actions';
+import debounce from 'lodash.debounce';
 
 import history from 'main/history';
 // COMPONENTS
@@ -329,6 +330,18 @@ class ResultsScene extends Component {
     history.replace('/trips/organize');
   };
 
+  onChangeMap = debounce(map => {
+    const bounds = map.getBounds();
+    const southWest = bounds.getSouthWest();
+    const northEast = bounds.getNorthEast();
+    this.props.updateSearchParams({
+      topLeftLat: northEast.lat(),
+      topLeftLng: northEast.lng(),
+      bottomRightLat: southWest.lat(),
+      bottomRightLng: southWest.lat(),
+    });
+  }, 1500);
+
   render() {
     const { props } = this;
     const { center, zoom, markers } = this.state;
@@ -426,6 +439,7 @@ class ResultsScene extends Component {
                 key: 'AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc',
               }}
               googleMapLoader={waitUntilMapsLoaded}
+              onDrag={this.onChangeMap}
               options={
                 window.google && window.google.maps
                   ? {

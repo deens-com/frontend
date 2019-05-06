@@ -51,6 +51,10 @@ export const getSearchParams = searchParams => {
     tags: parseArrayOrString(searchParams.tags),
     lat: Number(searchParams.lat) || undefined,
     lng: Number(searchParams.lng) || undefined,
+    topLeftLat: Number(searchParams.topLeftLat) || undefined,
+    topLeftLng: Number(searchParams.topLeftLng) || undefined,
+    bottomRightLat: Number(searchParams.bottomRightLat) || undefined,
+    bottomRightLng: Number(searchParams.bottomRightLng) || undefined,
     adults: Number(searchParams.adults) || undefined,
     children: Number(searchParams.children) || undefined,
     infants: Number(searchParams.infants) || undefined,
@@ -123,8 +127,43 @@ export const mapDataToQuery = ({ type, ...searchParams }) => ({
   ...searchParams,
 });
 
+const usingLatAndLng = params => params.lat && params.lng;
+const usingCityAndCountry = params => params.city && params.countryCode;
+const usingBoundingBox = params =>
+  params.topLeftLat && params.topLeftLng && params.bottomRightLat && params.bottomRightLng;
+
 export const hasLocationParams = params => {
-  return (params.lat && params.lng) || (params.city && params.countryCode);
+  return usingLatAndLng(params) || usingCityAndCountry(params) || usingBoundingBox(params);
+};
+
+export const hasMultipleLocationParams = params => {
+  const numberOfLocations = [
+    usingLatAndLng(params),
+    usingCityAndCountry(params),
+    usingBoundingBox(params),
+  ].reduce((num, elem) => num + (elem ? 1 : 0), 0);
+  return numberOfLocations > 1;
+};
+
+export const removeMultipleLocations = params => {
+  if (hasMultipleLocationParams(params)) {
+    if (usingLatAndLng(params)) {
+      return removeMultipleLocations({
+        ...params,
+        lat: undefined,
+        lng: undefined,
+      });
+    }
+    if (usingCityAndCountry(params)) {
+      return removeMultipleLocations({
+        ...params,
+        city: undefined,
+        state: undefined,
+        countryCode: undefined,
+      });
+    }
+  }
+  return params;
 };
 
 const GUESTS = 'guests';

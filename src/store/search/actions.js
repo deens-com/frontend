@@ -12,6 +12,7 @@ import {
   prefetchWithNewParams,
 } from 'libs/search';
 import { setLastSearchParams, getLastSearchParams } from 'libs/localStorage';
+import { removeMultipleLocations } from 'libs/search';
 
 const SEARCH = 'SEARCH';
 const UPDATE_QUERY_PARAMS = 'UPDATE_QUERY_PARAMS';
@@ -31,13 +32,13 @@ const patchSearchQuery = searchParams => ({
 const fetchResults = searchQuery =>
   dispatchAsyncActions(SEARCH, async () => {
     const searchForTrips = searchQuery.type === 'trip';
-    const params = {
+    const params = removeMultipleLocations({
       page: 1,
       limit: 25,
       ...mapDataToQuery(searchQuery),
       include: ['tags'],
       ...(searchForTrips ? { include: ['owner', 'tags'] } : {}),
-    };
+    });
 
     if (!searchForTrips) {
       if (
