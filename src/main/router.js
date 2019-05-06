@@ -1,7 +1,8 @@
 import React, { Suspense } from 'react';
 import { Switch } from 'react-router';
 import { Route } from 'react-router-dom';
-import asyncComponent from 'libs/asyncHOC';
+import Loadable from 'react-loadable';
+import ComponentLoader from './ComponentLoader';
 import withErrorBoundary from './middlewares/WithErrorBoundary';
 import ScrollToTop from './middlewares/ScrollToTop';
 
