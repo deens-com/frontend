@@ -47,6 +47,7 @@
   font-weight: 700;
   font-style: normal;
 }
+*/
 
 * {
   padding: 0;
@@ -57,7 +58,8 @@
 body {
   color: #262626;
   font-family: 'Nunito', sans-serif;
-  font-weight: 300;
+  font-display: swap;
+  font-weight: 400;
   font-size: 16px;
   word-wrap: break-word;
   -webkit-font-kerning: normal;
@@ -73,6 +75,7 @@ h4,
 h5,
 h6 {
   font-family: 'Roboto', sans-serif;
+  font-display: swap;
   font-weight: 700;
   margin: 0;
 }
@@ -132,6 +135,7 @@ p {
 
 .ui.button {
   font-family: 'Nunito', sans-serif;
+  font-display: swap;
   font-weight: 400;
 }
 
