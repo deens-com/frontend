@@ -1,4 +1,5 @@
 import { fitBounds } from 'google-map-react/utils';
+import { waitUntilMapsLoaded } from 'libs/Utils';
 
 export const parseLocationData = data => {
   let res = {};
@@ -118,4 +119,14 @@ export const getCenterAndZoom = (
 
   // if we zoom more than 14, it's too much zoomed into a really small location
   return { center, zoom: Math.min(zoom, 14) };
+};
+
+export const getCenterFromBounds = async (params, size = { width: 400, height: 800 }) => {
+  await waitUntilMapsLoaded();
+  const bounds = {
+    sw: { lat: params.bottomRightLat, lng: params.bottomRightLng },
+    ne: { lat: params.topLeftLat, lng: params.topLeftLng },
+  };
+  const { center, zoom } = fitBounds(bounds, size);
+  return { center, zoom };
 };

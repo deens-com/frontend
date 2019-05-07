@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import GoogleMapReact from 'google-map-react';
 import { Checkbox } from 'semantic-ui-react';
 import Media from 'react-media';
-import { getCenterAndZoom } from 'libs/location';
+import { getCenterAndZoom, getCenterFromBounds } from 'libs/location';
 import yelpLogo from 'assets/yelp/logo.png';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -194,6 +194,10 @@ class ResultsScene extends Component {
 
     if (hasLocationsChanged) {
       const newMarkers = this.getMarkerLatLngs(nextProps);
+      if (newMarkers.length === 0) {
+        this.setState({ markers: newMarkers });
+        return;
+      }
       if (!usingBoundingBox(nextProps.searchParams)) {
         const { center, zoom } = this.getCenterAndZoom(newMarkers, nextProps);
         this.setState({ center, zoom, markers: newMarkers });
@@ -205,8 +209,14 @@ class ResultsScene extends Component {
 
   componentDidMount() {
     this.props.fetchUserTrips();
-    const { center, zoom } = this.getCenterAndZoom([], this.props);
-    this.setState({ center, zoom, markers: [] });
+    if (usingBoundingBox(this.props.searchParams)) {
+      getCenterFromBounds(this.props.searchParams).then(({ center, zoom }) =>
+        this.setState({ center, zoom, markers: [] }),
+      );
+    } else {
+      const { center, zoom } = this.getCenterAndZoom([], this.props);
+      this.setState({ center, zoom, markers: [] });
+    }
     if (this.state.showMap) {
       window.addEventListener('scroll', this.handleScroll);
       window.addEventListener('scroll', this.resizeHandler);
@@ -372,6 +382,7 @@ class ResultsScene extends Component {
   render() {
     const { props } = this;
     const { center, zoom, markers } = this.state;
+    console.log(zoom);
     const type = props.searchParams.type;
     return (
       <React.Fragment>
