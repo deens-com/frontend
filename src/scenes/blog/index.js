@@ -153,7 +153,7 @@ class BlogPost extends React.Component {
   }
 
   componentDidMount() {
-    this.props.changeHeader({ transparent: true });
+    this.props.changeHeader(); // not transparent?
     prismic.getApi(prismicUrl).then(async api => {
       try {
         const article = await api.getByUID('article', this.props.match.params.slug);

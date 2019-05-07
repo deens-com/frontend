@@ -1,26 +1,58 @@
 @import url('https://fonts.googleapis.com/css?family=Nunito:400,700|Roboto:300,400,400i,500,700,900&display=swap');
 
-/* body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+@font-face {
+  font-family: "Nunito";
+  src: url("/fonts/Nunito-Regular.ttf") format('truetype');
+  font-display: swap;
+  font-weight: 400;
+  font-style: normal;
 }
 
-.input-valid {
-  border: 2px dashed green;
-} */
+@font-face {
+  font-family: "Roboto";
+  src: url("/fonts/Roboto-Regular.ttf") format('truetype');
+  font-display: swap;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("/fonts/Roboto-Italic.ttf") format('truetype');
+  font-display: swap;
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("/fonts/Roboto-Light.ttf") format('truetype');
+  font-display: swap;
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("/fonts/Roboto-Medium.ttf") format('truetype');
+  font-display: swap;
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("/fonts/Roboto-Bold.ttf") format('truetype');
+  font-display: swap;
+  font-weight: 700;
+  font-style: normal;
+}
 
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
-
-/* html,
-body,
-#___gatsby {
-  height: 100%;
-} */
 
 body {
   color: #262626;

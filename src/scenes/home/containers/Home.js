@@ -22,7 +22,7 @@ class HomeContainer extends Component {
 
   componentDidMount() {
     this.fetchTrips({ include: ['owner', 'tags'] });
-    this.props.changeHeader({ transparent: true, noSearch: true });
+    this.props.changeHeader({ noSearch: true }); // not transparent?
   }
 
   getTrips = () => {

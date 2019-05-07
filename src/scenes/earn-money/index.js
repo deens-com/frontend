@@ -127,7 +127,7 @@ const InfoImage = styled.span`
 
 const EarnMoney = ({ loggedIn, userProfile, changeHeader }) => {
   useEffect(() => {
-    changeHeader({ transparent: true });
+    changeHeader(); // not transparent?
   });
 
   return (

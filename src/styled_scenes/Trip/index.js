@@ -43,7 +43,7 @@ const Wrapper = styled.div``;
 const TripData = styled.div`
   background-color: #097da8;
   color: white;
-  height: 65px;
+  height: 60px;
   font-size: 16px;
   text-align: center;
   display: flex;
@@ -135,7 +135,7 @@ export default class Trip extends Component {
     if (!this.ticking) {
       window.requestAnimationFrame(() => {
         if (shouldBeFixed) {
-          this.sentenceRef.current.style.top = '65px';
+          this.sentenceRef.current.style.top = '60px';
           this.sentenceRef.current.style.position = 'fixed';
           this.sentenceRef.current.style.left = 0;
           this.sentenceRef.current.style.right = 0;

@@ -106,7 +106,7 @@ class TokenSale extends Component {
       this.getToken();
     }
     if (!prevProps.loggedIn && this.props.loggedIn) {
-      this.props.changeHeader({ transparent: true, noSearch: true });
+      this.props.changeHeader({ noSearch: true }); // not transparent?
     }
   }
 

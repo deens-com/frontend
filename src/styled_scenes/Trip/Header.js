@@ -17,10 +17,8 @@ const Wrapper = styled.div`
   text-align: center;
   color: white;
   height: 350px;
-  margin-top: -20px;
   ${media.minMedium} {
     height: 450px;
-    margin-top: -15px;
   }
 `;
 

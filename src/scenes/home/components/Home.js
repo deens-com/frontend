@@ -29,7 +29,7 @@ const PageTop = styled.div`
 const HomeTagLine = styled.h1`
   color: #fff;
   font-size: 34px;
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: 0px;
   margin-top: 0px;
   margin-left: 13px;

@@ -23,7 +23,7 @@ import * as colors from 'libs/colors';
 const Content = styled.div`
   display: flex;
   justify-content: ${props => (props.transparent ? 'space-between' : 'flex-start')};
-  height: 65px;
+  height: 60px;
   width: 100%;
 `;
 
@@ -34,7 +34,7 @@ const Wrapper = styled.header`
   position: ${props => props.transparent && !props.showMenu && 'absolute'};
   display: flex;
   justify-content: ${props => (props.transparent ? 'space-between' : 'flex-start')};
-  height: 65px;
+  height: 60px;
   padding: ${props => (props.transparent ? '0' : '10px')};
   width: 100%;
   z-index: 110;
@@ -72,7 +72,7 @@ const Wrapper = styled.header`
 
 // So we don't need to add a margin to each page
 const FixedPlaceholder = styled.div`
-  margin-top: ${props => (props.noMargin ? '60px' : '85px')};
+  margin-top: 60px;
 `;
 
 // MODULE
@@ -139,7 +139,6 @@ class TopBar extends Component {
     return (
       <React.Fragment>
         <Wrapper
-          role="baner"
           showShadow={!transparent && !showMenu}
           showMenu={showMenu}
           transparent={transparent}
