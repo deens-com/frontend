@@ -6845,10 +6845,16 @@ jest@24.7.1:
     import-local "^2.0.0"
     jest-cli "^24.7.1"
 
+<<<<<<< HEAD
 jquery@x.*:
   version "3.4.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.4.1.tgz#714f1f8d9dde4bdfa55764ba37ef214630d80ef2"
   integrity sha512-36+AdBzCL+y6qjw5Tx7HgzeGCzC81MDDgaUP8ld2zhx58HdqXGoBd+tHdrBMiyjGQs0Hxs/MLZTu/eHNJJuWPw==
+=======
+js-base64@^2.3.2:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.5.0.tgz#42255ba183ab67ce59a0dee640afdc00ab5ae93e"
+>>>>>>> Import only necessary css from semantic
 
 js-cookie@^2.2.0:
   version "2.2.0"
@@ -10899,7 +10905,6 @@ semantic-ui-css@2.3.1:
   integrity sha512-8M2OkoKZHfEnNUYB4Ha8q+tTAWN/g17X2l6HUg6n3DP4QDJLQl1xyhnRvM9UhJpsRvkRqgWgQLbRA6cl7Ep2dw==
   dependencies:
     jquery x.*
-
 "semantic-ui-react@https://github.com/fcmatteo/Semantic-UI-React.git":
   version "0.83.0"
   resolved "https://github.com/fcmatteo/Semantic-UI-React.git#c709e27b7aea94848ac7b3314098889c5954964e"
