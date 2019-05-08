@@ -180,6 +180,8 @@ export default class DesktopSearch extends Component {
       ...this.state.params,
       text,
       type: text ? 'trip' : this.state.serviceType || this.props.searchParams.type,
+      priceStart: undefined,
+      priceEnd: undefined,
     };
 
     this.props.updateSearchParams(params);
