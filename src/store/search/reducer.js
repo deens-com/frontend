@@ -6,10 +6,11 @@ import {
   actionErrorState,
 } from 'store/utils';
 import { getLastSearchParams } from 'libs/localStorage';
+import { mapUrlToProps } from 'libs/search';
 
 const initialData = [];
 
-const initialState = {
+const defaultState = {
   results: asyncInitialState(initialData),
   count: null,
   minPrice: null,
@@ -22,6 +23,15 @@ const initialState = {
   },
 };
 
+const initialState = {
+  // this is only used when the app starts, to get the url search, if it exists
+  ...defaultState,
+  searchQuery: {
+    ...defaultState.searchQuery,
+    ...mapUrlToProps(window.location),
+  },
+};
+
 const types = actions.types;
 
 export default function search(state = initialState, action = {}) {
@@ -31,12 +41,10 @@ export default function search(state = initialState, action = {}) {
         ...state,
         results: {
           ...state.results,
-          ...actionStartState(action, initialState.results.data),
+          ...actionStartState(action, defaultState.results.data),
         },
-        count: initialState.count,
-        //minPrice: initialState.minPrice,
-        //maxPrice: initialState.maxPrice,
-        tagsOptions: initialState.tagsOptions,
+        count: defaultState.count,
+        tagsOptions: defaultState.tagsOptions,
       };
     case types.search.success:
       return {
@@ -61,12 +69,10 @@ export default function search(state = initialState, action = {}) {
         ...state,
         results: {
           ...state.results,
-          ...actionErrorState(action, state.results, initialData),
+          ...actionErrorState(action, state.results, defaultState),
         },
-        count: initialState.count,
-        minPrice: initialState.minPrice,
-        maxPrice: initialState.maxPrice,
-        tagsOptions: initialState.tagsOptions,
+        count: defaultState.count,
+        tagsOptions: defaultState.tagsOptions,
         error: action.error,
       };
     case types.updateQueryParams:

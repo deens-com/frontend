@@ -106,7 +106,11 @@ export const getParamsToSave = (searchParams, currentSavedParams) => {
 };
 
 export const mapUrlToProps = location => {
-  let searchParams = queryString.parse(location.search, { ignoreQueryPrefix: true });
+  if (location.pathname !== '/results') {
+    return {};
+  }
+
+  const searchParams = queryString.parse(location.search, { ignoreQueryPrefix: true });
 
   return getSearchParams(searchParams);
 };
