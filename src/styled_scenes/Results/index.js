@@ -422,6 +422,8 @@ class ResultsScene extends Component {
               backToTrip={props.routeState && props.routeState.tripId}
               searchParams={props.searchParams}
               updateSearchParams={props.updateSearchParams}
+              minPossiblePrice={props.minPossiblePrice}
+              maxPossiblePrice={props.maxPossiblePrice}
             />
             <RightColumn>
               <FirstLineRightColumn>
@@ -549,6 +551,8 @@ const mapStateToProps = state => {
     session: state.session.session,
     searchError: state.search.error,
     searchExtraData: state.search.extraData,
+    minPossiblePrice: state.search.minPrice,
+    maxPossiblePrice: state.search.maxPrice,
   };
 };
 

@@ -48,6 +48,8 @@ const fetchResults = searchQuery =>
         return {
           results: [],
           count: 0,
+          minPrice: null,
+          maxPrice: null,
           tags: [],
           extraData: null,
         };
@@ -68,6 +70,8 @@ const fetchResults = searchQuery =>
       results: data,
       count: results.data.count,
       extraData: results.data.extraData,
+      maxPrice: results.data.maxPrice,
+      minPrice: results.data.minPrice,
       tags,
     };
   });

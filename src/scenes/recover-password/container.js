@@ -19,9 +19,6 @@ class RegistrationsContainer extends Component {
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.isInputInvalid = this.isInputInvalid.bind(this);
-    if (props.session._id) {
-      history.push('/');
-    }
   }
 
   validateEmailInput(target) {

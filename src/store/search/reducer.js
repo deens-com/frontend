@@ -13,6 +13,8 @@ const initialData = [];
 const defaultState = {
   results: asyncInitialState(initialData),
   count: null,
+  minPrice: null,
+  maxPrice: null,
   tagsOptions: [],
   searchQuery: {
     type: 'trip',
@@ -59,6 +61,8 @@ export default function search(state = initialState, action = {}) {
           ),
         },
         count: action.payload.count,
+        minPrice: action.payload.minPrice,
+        maxPrice: action.payload.maxPrice,
         tagsOptions: action.payload.tags,
         extraData: action.payload.extraData,
       };
