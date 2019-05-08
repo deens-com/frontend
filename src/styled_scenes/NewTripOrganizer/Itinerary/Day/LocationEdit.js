@@ -23,13 +23,10 @@ const NotEditing = styled.div`
   }
 `;
 
-const NotValid = styled.div`
-  color: ${error};
-  font-size: 12px;
-  line-height: 12px;
-`;
-
-function getCityText({ city, countryCode }) {
+function getCityText({ formattedAddress, city, countryCode }) {
+  if (formattedAddress) {
+    return formattedAddress;
+  }
   if (!city) {
     return '';
   }
@@ -38,32 +35,27 @@ function getCityText({ city, countryCode }) {
 
 export default ({ location, onChange, isFinal }) => {
   const [isEditing, setEditing] = useState(false);
-  const [isValid, setValid] = useState(Boolean(!location || location.city));
   const [savingData, setSavingData] = useState(null);
-
   const onLocationChange = (_, placeId) => {
-    setValid(true);
-
     geocodeByPlaceId(placeId).then(results => {
       const currentResult = results[0];
-      const { countryCode, city, postalCode: postcode, state, country } = parseLocationData(
-        currentResult,
-      );
+      const {
+        countryCode,
+        city,
+        postalCode: postcode,
+        state,
+        country,
+        formattedAddress,
+      } = parseLocationData(currentResult);
 
-      if (!city) {
-        setValid(false);
-        setEditing(false);
-        return;
-      }
-
-      setSavingData(getCityText({ city, state, country, countryCode }));
+      setSavingData(getCityText({ formattedAddress, city, state, country, countryCode }));
 
       const { lat, lng } = currentResult.geometry.location;
       const geo = {
         type: 'Point',
         coordinates: [lng(), lat()],
       };
-      onChange({ countryCode, city, postcode, state, geo });
+      onChange({ countryCode, city, postcode, state, geo, formattedAddress });
 
       setEditing(false);
       setSavingData(null);
@@ -85,11 +77,6 @@ export default ({ location, onChange, isFinal }) => {
         <NotEditing onClick={() => setEditing(true)}>
           <P>{place || `Please select ${isFinal ? 'a final' : 'an initial'} location`}</P>
           <PencilIcon />
-          {!isValid && (
-            <NotValid>
-              Please select a more specific location, e.g. a city, a street or an airport.
-            </NotValid>
-          )}
         </NotEditing>
       )}
     </Wrapper>
