@@ -1,6 +1,7 @@
 import React, { useCallback, useContext } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Modal } from 'semantic-ui-react';
 import { DragSource, DropTarget } from 'react-dnd';
 import Service from '../Service/index';
 import { types } from '../../constants';
@@ -148,6 +149,10 @@ const Day = ({
     [day],
   );
 
+  const onDelete = () => {
+    removeDay(day);
+  };
+
   const { tripData, changeInitialLocation, changeFinalLocation } = useContext(TripContext);
 
   return (
@@ -162,9 +167,19 @@ const Day = ({
             <DraggableDay>
               <TitleWrapper>
                 <DayTitle day={day} tripStartDate={tripStartDate} />
-                <DeleteDay onClick={() => removeDay(day)}>
-                  <TrashCan />
-                </DeleteDay>
+                <Modal
+                  trigger={
+                    <DeleteDay>
+                      <TrashCan />
+                    </DeleteDay>
+                  }
+                  header="Delete day"
+                  content="Are you sure you want to delete this day?"
+                  actions={[
+                    'Keep day',
+                    { key: 'delete', content: 'Delete', negative: true, onClick: onDelete },
+                  ]}
+                />
               </TitleWrapper>
             </DraggableDay>
           )}
