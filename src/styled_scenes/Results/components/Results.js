@@ -255,39 +255,40 @@ class Results extends Component {
             </LoaderWithMargin>
           ) : (
             <Grid>
-              {this.props.data.map((result, i) => (
-                <ResultItem key={result._id}>
-                  {this.props.searchParams.type !== 'trip' && (
-                    <AddToTrip
-                      data={
-                        this.props.routeState && {
-                          id: this.props.routeState.tripId,
-                          day: this.props.routeState.day,
-                          addToTrip: this.addToTrip,
+              {this.props.data &&
+                this.props.data.map((result, i) => (
+                  <ResultItem key={result._id}>
+                    {this.props.searchParams.type !== 'trip' && (
+                      <AddToTrip
+                        data={
+                          this.props.routeState && {
+                            id: this.props.routeState.tripId,
+                            day: this.props.routeState.day,
+                            addToTrip: this.addToTrip,
+                          }
                         }
+                        addToAnyTrip={this.addToAnyTrip}
+                        addToNewTrip={this.addToNewTrip}
+                        userTrips={this.props.userTrips}
+                        service={result}
+                      />
+                    )}
+                    <TripCard
+                      onOver={onCardOver}
+                      onLeave={onCardLeave}
+                      withTooltip
+                      withShadow
+                      item={result}
+                      isTrip={!(result.categories && result.categories.length)}
+                      isPlaceholder={false}
+                      type={this.props.searchParams.type}
+                      numberOfGuests={
+                        (this.props.searchParams.adults || 2) +
+                        (this.props.searchParams.children || 0)
                       }
-                      addToAnyTrip={this.addToAnyTrip}
-                      addToNewTrip={this.addToNewTrip}
-                      userTrips={this.props.userTrips}
-                      service={result}
                     />
-                  )}
-                  <TripCard
-                    onOver={onCardOver}
-                    onLeave={onCardLeave}
-                    withTooltip
-                    withShadow
-                    item={result}
-                    isTrip={!(result.categories && result.categories.length)}
-                    isPlaceholder={false}
-                    type={this.props.searchParams.type}
-                    numberOfGuests={
-                      (this.props.searchParams.adults || 2) +
-                      (this.props.searchParams.children || 0)
-                    }
-                  />
-                </ResultItem>
-              ))}
+                  </ResultItem>
+                ))}
             </Grid>
           )}
         </Row>

@@ -27,7 +27,7 @@ import { waitUntilMapsLoaded } from 'libs/Utils';
 
 // STYLES
 import { PageContent } from './../../shared_components/layout/Page';
-import { primary } from 'libs/colors';
+import { primary, textLight } from 'libs/colors';
 import { P } from 'libs/commonStyles';
 import Sort from './components/Sort';
 import HelpMe from 'shared_components/HelpMe';
@@ -42,6 +42,7 @@ const MapWrapper = styled.div`
   ${media.minSmall} {
     display: ${props => (props.showing ? 'flex' : 'none')};
   }
+  position: relative;
   align-items: center;
   justify-content: center;
   height: ${mapHeight};
@@ -73,6 +74,23 @@ const ServicesWrapper = styled.div`
   ${media.minLarge} {
     // width: 58%;
   }
+`;
+
+const MapOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0.5);
+  font-weight: bold;
+  font-size: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 300px;
+  color: ${textLight};
 `;
 
 const TopFiltersWrapper = styled.div``;
@@ -143,8 +161,8 @@ const MapOptions = styled.div`
 `;
 
 const defaultCenter = {
-  lat: 48.856614,
-  lng: 2.3522219000000177,
+  lat: null,
+  lng: null,
 };
 const defaultZoom = 11;
 
@@ -188,6 +206,9 @@ class ResultsScene extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.searchExtraData) {
+      return;
+    }
     const hasLocationsChanged =
       nextProps.service_data.map(item => item._id).join(',') !==
       this.props.service_data.map(item => item._id).join(',');
@@ -214,8 +235,8 @@ class ResultsScene extends Component {
         this.setState({ center, zoom, markers: [] }),
       );
     } else {
-      const { center, zoom } = this.getCenterAndZoom([], this.props);
-      this.setState({ center, zoom, markers: [] });
+      const { center } = this.getCenterAndZoom([], this.props);
+      this.setState({ center, markers: [] });
     }
     if (this.state.showMap) {
       window.addEventListener('scroll', this.handleScroll);
@@ -363,26 +384,35 @@ class ResultsScene extends Component {
     history.replace('/trips/organize');
   };
 
-  onChangeMap = debounce(map => {
+  onChangeMap = ({ center, zoom, bounds }) => {
+    if (zoom !== this.state.zoom && this.state.searchByMoving) {
+      this.setState({ zoom, center });
+      this.searchByBounds(bounds.ne.lat, bounds.ne.lng, bounds.sw.lat, bounds.sw.lng);
+    }
+  };
+
+  onDragMap = debounce(map => {
     if (!this.state.searchByMoving) {
       return;
     }
-
     const bounds = map.getBounds();
     const southWest = bounds.getSouthWest();
     const northEast = bounds.getNorthEast();
-    this.props.updateSearchParams({
-      topLeftLat: northEast.lat(),
-      topLeftLng: northEast.lng(),
-      bottomRightLat: southWest.lat(),
-      bottomRightLng: southWest.lng(),
-    });
+    this.searchByBounds(northEast.lat(), northEast.lng(), southWest.lat(), southWest.lng());
   }, 1000);
+
+  searchByBounds = (northEastLat, northEastLng, southWestLat, southWestLng) => {
+    this.props.updateSearchParams({
+      topRightLat: northEastLat,
+      topRightLng: northEastLng,
+      bottomLeftLat: southWestLat,
+      bottomLeftLng: southWestLng,
+    });
+  };
 
   render() {
     const { props } = this;
     const { center, zoom, markers } = this.state;
-    console.log(zoom);
     const type = props.searchParams.type;
     return (
       <React.Fragment>
@@ -477,6 +507,12 @@ class ResultsScene extends Component {
                 checked={this.state.searchByMoving}
               />
             </MapOptions>
+            {this.props.searchExtraData && (
+              <MapOverlay>
+                {(this.props.searchExtraData.zoomOut || this.props.searchExtraData.zoomIn) &&
+                  this.props.searchError}
+              </MapOverlay>
+            )}
             <GoogleMapReact
               center={center}
               zoom={zoom}
@@ -484,7 +520,8 @@ class ResultsScene extends Component {
                 key: 'AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc',
               }}
               googleMapLoader={waitUntilMapsLoaded}
-              onDrag={this.onChangeMap}
+              onDrag={this.onDragMap}
+              onChange={this.onChangeMap}
               options={
                 window.google && window.google.maps
                   ? {
@@ -510,6 +547,8 @@ const mapStateToProps = state => {
   return {
     userTrips: state.trips.userTrips.unbookedTrips,
     session: state.session.session,
+    searchError: state.search.error,
+    searchExtraData: state.search.extraData,
   };
 };
 

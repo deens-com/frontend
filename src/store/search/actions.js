@@ -49,6 +49,7 @@ const fetchResults = searchQuery =>
           results: [],
           count: 0,
           tags: [],
+          extraData: null,
         };
       }
     }
@@ -66,6 +67,7 @@ const fetchResults = searchQuery =>
     return {
       results: data,
       count: results.data.count,
+      extraData: results.data.extraData,
       tags,
     };
   });

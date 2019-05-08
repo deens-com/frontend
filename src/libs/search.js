@@ -51,10 +51,10 @@ export const getSearchParams = searchParams => {
     tags: parseArrayOrString(searchParams.tags),
     lat: Number(searchParams.lat) || undefined,
     lng: Number(searchParams.lng) || undefined,
-    topLeftLat: Number(searchParams.topLeftLat) || undefined,
-    topLeftLng: Number(searchParams.topLeftLng) || undefined,
-    bottomRightLat: Number(searchParams.bottomRightLat) || undefined,
-    bottomRightLng: Number(searchParams.bottomRightLng) || undefined,
+    topRightLat: Number(searchParams.topRightLat) || undefined,
+    topRightLng: Number(searchParams.topRightLng) || undefined,
+    bottomLeftLat: Number(searchParams.bottomLeftLat) || undefined,
+    bottomLeftLng: Number(searchParams.bottomLeftLng) || undefined,
     adults: Number(searchParams.adults) || undefined,
     children: Number(searchParams.children) || undefined,
     infants: Number(searchParams.infants) || undefined,
@@ -130,7 +130,7 @@ export const mapDataToQuery = ({ type, ...searchParams }) => ({
 export const usingLatAndLng = params => params.lat && params.lng;
 export const usingCityAndCountry = params => params.city && params.countryCode;
 export const usingBoundingBox = params =>
-  params.topLeftLat && params.topLeftLng && params.bottomRightLat && params.bottomRightLng;
+  params.topRightLat && params.topRightLng && params.bottomLeftLat && params.bottomLeftLng;
 
 export const hasLocationParams = params => {
   return usingLatAndLng(params) || usingCityAndCountry(params) || usingBoundingBox(params);

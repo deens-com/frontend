@@ -30,8 +30,8 @@ export const actionErrorState = (action, currentState, initialDataState) => {
   }
 
   return {
+    ...initialDataState,
     isLoading: false,
-    data: initialDataState,
     timestamp: action.timestamp,
   };
 };
@@ -71,11 +71,12 @@ function makeAsyncActionCreators(type) {
         timestamp,
       };
     },
-    function(error, timestamp) {
+    function(error, timestamp, extraData) {
       return {
         type: actions.error,
         error,
         timestamp,
+        extraData,
       };
     },
   ];
@@ -92,8 +93,10 @@ export function dispatchAsyncActions(type, fn) {
       const res = await fn();
       dispatch(actions[1](res, timestamp)); // Success
     } catch (e) {
-      const errorAction = actions[2](e, timestamp);
-      console.error(`Error in ${errorAction.type}`, e);
+      const error = (e.response && e.response.data && e.response.data.message) || e;
+      const extraData = e.response && e.response.data && e.response.data.extraData;
+      const errorAction = actions[2](error, timestamp, extraData);
+      console.error(`Error in ${errorAction.type}`, error);
 
       dispatch(errorAction); // Error
     }

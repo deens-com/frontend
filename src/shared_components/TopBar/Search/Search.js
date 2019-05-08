@@ -179,10 +179,10 @@ export default class DesktopSearch extends Component {
     const params = {
       ...this.props.searchParams,
       ...this.state.params,
-      topLeftLat: undefined,
-      topLeftLng: undefined,
-      bottomRightLat: undefined,
-      bottomRightLng: undefined,
+      topRightLat: undefined,
+      topRightLng: undefined,
+      bottomLeftLat: undefined,
+      bottomLeftLng: undefined,
       text,
       type: text ? 'trip' : this.state.serviceType || this.props.searchParams.type,
     };

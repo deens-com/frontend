@@ -43,6 +43,7 @@ export default function search(state = initialState, action = {}) {
         },
         count: defaultState.count,
         tagsOptions: defaultState.tagsOptions,
+        extraData: defaultState.extraData,
       };
     case types.search.success:
       return {
@@ -59,6 +60,7 @@ export default function search(state = initialState, action = {}) {
         },
         count: action.payload.count,
         tagsOptions: action.payload.tags,
+        extraData: action.payload.extraData,
       };
     case types.search.error:
       return {
@@ -70,6 +72,7 @@ export default function search(state = initialState, action = {}) {
         count: defaultState.count,
         tagsOptions: defaultState.tagsOptions,
         error: action.error,
+        extraData: action.extraData,
       };
     case types.updateQueryParams:
       return {

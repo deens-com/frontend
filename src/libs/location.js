@@ -124,8 +124,8 @@ export const getCenterAndZoom = (
 export const getCenterFromBounds = async (params, size = { width: 400, height: 800 }) => {
   await waitUntilMapsLoaded();
   const bounds = {
-    sw: { lat: params.bottomRightLat, lng: params.bottomRightLng },
-    ne: { lat: params.topLeftLat, lng: params.topLeftLng },
+    sw: { lat: params.bottomLeftLat, lng: params.bottomLeftLng },
+    ne: { lat: params.topRightLat, lng: params.topRightLng },
   };
   const { center, zoom } = fitBounds(bounds, size);
   return { center, zoom };
