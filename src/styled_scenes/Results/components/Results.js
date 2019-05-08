@@ -130,7 +130,11 @@ class Results extends Component {
   changePage = item => {
     if (item !== undefined) {
       const selectedPage = item.selected + 1;
-      this.props.pushSearch({ ...this.props.searchParams }, this.props.routeState, selectedPage);
+      this.props.updateSearchParams(
+        { ...this.props.searchParams },
+        this.props.routeState,
+        selectedPage,
+      );
     }
   };
 
@@ -269,7 +273,6 @@ class Results extends Component {
                     />
                   )}
                   <TripCard
-                    key={result.label}
                     onOver={onCardOver}
                     onLeave={onCardLeave}
                     withTooltip

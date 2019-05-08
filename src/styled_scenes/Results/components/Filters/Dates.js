@@ -45,7 +45,10 @@ const DropdownContent = ({ startDate, endDate, onDateSelect, closeDropdown, isSi
       if (isSingle) {
         onDateSelect({
           startDate: startDate.valueOf(),
-          endDate: undefined,
+          endDate: startDate
+            .clone()
+            .add(1, 'days')
+            .valueOf(),
         });
         closeDropdown();
         return;

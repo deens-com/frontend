@@ -6,7 +6,6 @@ import actions from 'store/trips/actions';
 import styled from 'styled-components';
 import searchActions from 'store/search/actions';
 import { changeCurrentUserTrip } from 'store/session/actions';
-import { pushSearch } from 'libs/search';
 import moment from 'moment';
 import TripOrganizer from 'styled_scenes/NewTripOrganizer';
 import history from 'main/history';
@@ -68,7 +67,7 @@ class TripOrganizerContainer extends Component {
         children={this.props.children}
         infants={this.props.infants}
         changeDates={this.props.changeDates}
-        pushSearch={pushSearch}
+        updateSearchParams={this.props.updateSearchParams}
         history={this.props.history}
         isGDPRDismissed={this.props.isGDPRDismissed}
         gdprHeight={this.props.gdprHeight}
@@ -135,6 +134,7 @@ const mapDispatchToProps = dispatch =>
       changeDates: searchActions.patchSearchQuery,
       changeHeader: headerActions.changeHeader,
       changeCurrentUserTrip: changeCurrentUserTrip,
+      updateSearchParams: searchActions.updateSearchParams,
     },
     dispatch,
   );

@@ -30,7 +30,8 @@ export default function TopBarSearch({
   toggleSearch,
   address,
   isMobileSearchOpen,
-  updateQuery,
+  updateSearchParams,
+  windowLocation,
 }) {
   if (isMenuOpen) return null;
 
@@ -47,7 +48,8 @@ export default function TopBarSearch({
             isMobile={matches}
             toggleSearch={toggleSearch}
             searchParams={searchParams}
-            updateQuery={updateQuery}
+            updateSearchParams={updateSearchParams}
+            windowLocation={windowLocation}
           />
         )
       }

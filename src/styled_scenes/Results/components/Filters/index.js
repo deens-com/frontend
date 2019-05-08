@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { pushSearch, filtersByType, availableFilters } from 'libs/search';
+import { filtersByType, availableFilters } from 'libs/search';
 import { P } from 'libs/commonStyles';
 import { primary, disabled } from 'libs/colors';
 import GuestsFilter from './Guests';
@@ -12,8 +12,6 @@ import TagsFilter from './Tags';
 import isMatch from 'lodash.ismatch';
 import { media } from 'libs/styled';
 import { FiltersIcon, BackArrow } from 'shared_components/icons';
-import moment from 'moment';
-import apiClient from 'libs/apiClient';
 
 import 'react-dates.css';
 
@@ -62,59 +60,13 @@ const BackToTrip = styled(Link)`
   }
 `;
 
-const Filters = ({ searchParams, backToTrip }) => {
+const Filters = ({ searchParams, backToTrip, updateSearchParams }) => {
   const [showingMobile, setShowingMobile] = useState(false);
   const search = params => {
     const keepPage = isMatch(searchParams, params);
-    pushSearch(
-      {
-        ...searchParams,
-        ...params,
-      },
-      undefined,
-      keepPage ? searchParams.page : undefined,
-    );
+    updateSearchParams(params, undefined, keepPage ? searchParams.page : undefined);
   };
   const filters = filtersByType[searchParams.type];
-
-  useEffect(
-    () => {
-      if (
-        (searchParams.city && searchParams.countryCode) ||
-        (searchParams.lat && searchParams.lng)
-      ) {
-        if (searchParams.startDate) {
-          const body = {
-            adultCount: searchParams.adults || 2,
-            childrenCount: searchParams.children || 0,
-            infantCount: searchParams.infants || 0,
-            location: {
-              ...(searchParams.city
-                ? {
-                    city: searchParams.city,
-                    countryCode: searchParams.countryCode,
-                  }
-                : {
-                    lat: searchParams.lat,
-                    lng: searchParams.lng,
-                  }),
-            },
-            dates: [moment(searchParams.startDate).format('YYYY-MM-DD')],
-          };
-          apiClient.services.search.prefetch(body);
-        }
-      }
-    },
-    [
-      searchParams.adults,
-      searchParams.children,
-      searchParams.infants,
-      searchParams.city,
-      searchParams.lat,
-      searchParams.lng,
-      searchParams.startDate,
-    ],
-  );
 
   if (!filters) {
     return null;

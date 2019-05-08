@@ -2,6 +2,7 @@ import { env } from 'libs/config';
 
 const tripKey = `deens-${env}-anonymous-trip`;
 const favoriteTripsKey = `deens-${env}-favorite-trips`;
+const lastSearchKey = `deens-${env}-last-search-params`;
 
 if (!('localStorage' in window)) {
   // this is shitty but at least Opera Mini users will be able to browse our website
@@ -126,4 +127,12 @@ export function getFavoriteTrips() {
 
 export function clearFavoriteTrips() {
   localStorage.removeItem(favoriteTripsKey);
+}
+
+export function setLastSearchParams(params) {
+  localStorage.setItem(lastSearchKey, JSON.stringify(params));
+}
+
+export function getLastSearchParams() {
+  return JSON.parse(localStorage.getItem(lastSearchKey));
 }

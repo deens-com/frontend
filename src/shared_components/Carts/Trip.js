@@ -327,7 +327,7 @@ class TripCart extends Component {
             <HeartWrapper filled={isFavorite}>
               <Heart style={{ height: '24px', width: '21px' }} onClick={this.toggleFavorite} />
             </HeartWrapper>
-            {hideAuthor || !owner ? null : (
+            {hideAuthor ? null : (
               <Author to={`/users/${owner.username}`}>
                 {isPlaceholder ? <ImagePlaceholder /> : <Image src={avatar} />}
                 <Stars
@@ -548,8 +548,8 @@ TripCart.propTypes = {
   item: PropTypes.shape({
     image: PropTypes.string,
     partof: PropTypes.number,
-    title: PropTypes.object,
-    description: PropTypes.object,
+    title: PropTypes.string,
+    description: PropTypes.string,
     rating: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     review: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     price: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),

@@ -7,6 +7,7 @@ import { websiteUrl } from 'libs/config';
 import api from 'libs/apiClient';
 import fetchHelperFactory, { defaultState } from 'libs/fetchHelper';
 import headerActions from 'store/header/actions';
+import searchActions from 'store/search/actions';
 
 class HomeContainer extends Component {
   constructor(props) {
@@ -44,21 +45,28 @@ class HomeContainer extends Component {
           trips={this.state.trips.data}
           isLoading={this.state.trips.isLoading}
           retryFunction={this.getTrips}
+          updateSearchParams={this.props.updateSearchParams}
+          savedAddress={this.props.savedAddress}
         />
       </div>
     );
   }
 }
 
+const mapStateToProps = state => ({
+  savedAddress: state.search.searchQuery.address,
+});
+
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       changeHeader: headerActions.changeHeader,
+      updateSearchParams: searchActions.updateSearchParams,
     },
     dispatch,
   );
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(HomeContainer);

@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { Popup } from 'semantic-ui-react';
 import { P } from 'libs/commonStyles';
 import { disabled, primary } from 'libs/colors';
-import { pushSearch } from 'libs/search';
 
 const options = ['relevance:desc', 'rating:desc', 'price:desc', 'price:asc'];
 const tripOptions = options;
@@ -63,11 +62,11 @@ const getValidOptions = type => {
   }
 };
 
-const Sort = ({ searchParams }) => {
+const Sort = ({ searchParams, updateSearchParams }) => {
   const [isOpen, setIsOpen] = useState(false);
   const selectSorting = sortBy => {
     setIsOpen(false);
-    pushSearch({ ...searchParams, sortBy });
+    updateSearchParams({ ...searchParams, sortBy });
   };
 
   const validOptions = getValidOptions(searchParams.type);
@@ -83,7 +82,9 @@ const Sort = ({ searchParams }) => {
     >
       <PopupContent>
         {validOptions.map(item => (
-          <li onClick={() => selectSorting(item)}>{sortByToComponent(item)}</li>
+          <li key={item} onClick={() => selectSorting(item)}>
+            {sortByToComponent(item)}
+          </li>
         ))}
       </PopupContent>
     </Popup>

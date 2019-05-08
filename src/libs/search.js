@@ -1,5 +1,7 @@
 import queryString from 'qs';
-import history from 'main/history';
+import moment from 'moment';
+import apiClient from 'libs/apiClient';
+import isEqual from 'lodash.isequal';
 
 export function getAddress(params) {
   if (params.text) {
@@ -42,7 +44,7 @@ const parseArrayOrNumber = field => {
   return field.sort();
 };
 
-const getSearchParams = searchParams => {
+export const getSearchParams = searchParams => {
   return {
     // does not properly parse '+'.
     type: searchParams.type,
@@ -68,8 +70,47 @@ const getSearchParams = searchParams => {
   };
 };
 
+const paramsToSaveKeys = [
+  'adults',
+  'children',
+  'infants',
+  'city',
+  'state',
+  'countryCode',
+  'lat',
+  'lng',
+  'address',
+  'startDate',
+  'endDate',
+];
+
+export const getParamsToSave = (searchParams, currentSavedParams) => {
+  const paramsToSave = {
+    ...currentSavedParams,
+  };
+  if (searchParams.city || searchParams.state || searchParams.countryCode) {
+    delete paramsToSave.lat;
+    delete paramsToSave.lng;
+  }
+  if (searchParams.lng && searchParams.lat) {
+    delete paramsToSave.city;
+    delete paramsToSave.state;
+    delete paramsToSave.countryCode;
+  }
+  paramsToSaveKeys.forEach(param => {
+    if (param in searchParams) {
+      paramsToSave[param] = searchParams[param];
+    }
+  });
+  return paramsToSave;
+};
+
 export const mapUrlToProps = location => {
-  let searchParams = queryString.parse(location.search, { ignoreQueryPrefix: true });
+  if (location.pathname !== '/results') {
+    return {};
+  }
+
+  const searchParams = queryString.parse(location.search, { ignoreQueryPrefix: true });
 
   return getSearchParams(searchParams);
 };
@@ -81,12 +122,6 @@ export const mapDataToQuery = ({ type, ...searchParams }) => ({
   category: type.charAt(0).toUpperCase() + type.substr(1),
   ...searchParams,
 });
-
-export const pushSearch = (searchParams, state, customPage) => {
-  const page = customPage || (searchParams.page ? 1 : undefined);
-  const params = getSearchParams({ ...searchParams, page });
-  history.push(`/results?${queryString.stringify(params, { arrayFormat: 'comma' })}`, state);
-};
 
 export const hasLocationParams = params => {
   return (params.lat && params.lng) || (params.city && params.countryCode);
@@ -115,4 +150,32 @@ export const filtersByType = {
   accommodation: [GUESTS, DATES, PRICE_RANGE],
   activity: [GUESTS, SINGLE_DATE, PRICE_RANGE_ONLY_MAX, TAGS],
   food: [GUESTS, PRICE_TAGS, TAGS],
+};
+
+export const prefetchWithNewParams = (newParams, oldParams) => {
+  if (isEqual(newParams, oldParams)) {
+    return;
+  }
+  if ((newParams.city && newParams.countryCode) || (newParams.lat && newParams.lng)) {
+    if (newParams.startDate) {
+      const body = {
+        adultCount: newParams.adults || 2,
+        childrenCount: newParams.children || 0,
+        infantCount: newParams.infants || 0,
+        location: {
+          ...(newParams.city
+            ? {
+                city: newParams.city,
+                countryCode: newParams.countryCode,
+              }
+            : {
+                lat: newParams.lat,
+                lng: newParams.lng,
+              }),
+        },
+        dates: [moment(newParams.startDate).format('YYYY-MM-DD')],
+      };
+      apiClient.services.search.prefetch(body);
+    }
+  }
 };

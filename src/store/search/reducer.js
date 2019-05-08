@@ -5,16 +5,28 @@ import {
   actionSuccessState,
   actionErrorState,
 } from 'store/utils';
+import { getLastSearchParams } from 'libs/localStorage';
+import { mapUrlToProps } from 'libs/search';
 
 const initialData = [];
 
-const initialState = {
+const defaultState = {
   results: asyncInitialState(initialData),
   count: null,
   tagsOptions: [],
   searchQuery: {
     type: 'trip',
     page: 1,
+    ...getLastSearchParams(),
+  },
+};
+
+const initialState = {
+  // this is only used when the app starts, to get the url search, if it exists
+  ...defaultState,
+  searchQuery: {
+    ...defaultState.searchQuery,
+    ...mapUrlToProps(window.location),
   },
 };
 
@@ -27,10 +39,10 @@ export default function search(state = initialState, action = {}) {
         ...state,
         results: {
           ...state.results,
-          ...actionStartState(action, initialState.results.data),
+          ...actionStartState(action, defaultState.results.data),
         },
-        count: initialState.count,
-        tagsOptions: initialState.tagsOptions,
+        count: defaultState.count,
+        tagsOptions: defaultState.tagsOptions,
       };
     case types.search.success:
       return {
@@ -53,10 +65,10 @@ export default function search(state = initialState, action = {}) {
         ...state,
         results: {
           ...state.results,
-          ...actionErrorState(action, state.results, initialData),
+          ...actionErrorState(action, state.results, defaultState),
         },
-        count: initialState.count,
-        tagsOptions: initialState.tagsOptions,
+        count: defaultState.count,
+        tagsOptions: defaultState.tagsOptions,
         error: action.error,
       };
     case types.updateQueryParams:

@@ -19,6 +19,7 @@ import ReactResizeDetector from 'react-resize-detector';
 
 const Wrapper = styled.div`
   flex-grow: 1;
+  cursor: text;
   input {
     font-weight: bold;
     &::placeholder {
@@ -91,6 +92,15 @@ const ExternalText = styled.label`
   flex-shrink: 1;
   margin-right: 0.35em;
   cursor: text;
+`;
+
+const GoButton = styled.span`
+  cursor: pointer;
+  border: 1px solid ${primary};
+  padding: 1px 5px;
+  color: ${primary};
+  border-radius: 2px 2px 2px 0;
+  margin-left: 10px;
 `;
 
 /**
@@ -175,11 +185,15 @@ export default class SemanticLocationControl extends Component {
   };
 
   handleOpen = event => {
-    event.target.select();
-    this.setState({
-      isOpen: true,
-    });
-    this.props.onFocus();
+    this.setState(
+      {
+        isOpen: true,
+      },
+      () => {
+        this.inputRef.select();
+        this.props.onFocus();
+      },
+    );
   };
 
   handleClose = () => {
@@ -250,13 +264,14 @@ export default class SemanticLocationControl extends Component {
   };
 
   renderExternalText() {
-    const { hasSearchedText } = this.props;
+    const { hasSearchedText, isInResultsPage } = this.props;
     const { showExternal } = this.state;
+    const externalText = isInResultsPage ? 'Showing' : 'Search';
     if (hasSearchedText) {
-      return 'Showing Trips containing';
+      return `${externalText} Trips containing`;
     }
     if (showExternal === 'full') {
-      return `Showing ${this.getSentenceWord()} in`;
+      return `${externalText} ${this.getSentenceWord()} in`;
     } else if (showExternal === 'partial') {
       return `${this.getSentenceWord()} in`;
     }
@@ -284,12 +299,7 @@ export default class SemanticLocationControl extends Component {
           {!this.state.isOpen &&
             this.state.address &&
             showServiceTypes && (
-              <ExternalText
-                onClick={() => {
-                  this.inputRef.focus();
-                }}
-                htmlFor="search"
-              >
+              <ExternalText onClick={this.handleOpen} htmlFor="search">
                 {this.renderExternalText()}
               </ExternalText>
             )}
@@ -309,7 +319,7 @@ export default class SemanticLocationControl extends Component {
                   basic
                   context={this.props.context}
                   trigger={
-                    <Wrapper>
+                    <Wrapper onClick={this.handleOpen}>
                       {useStyledInput ? (
                         <StyledInput
                           {...getInputProps({
@@ -325,24 +335,47 @@ export default class SemanticLocationControl extends Component {
                           innerRef={this.handleInputRef}
                         />
                       ) : (
-                        <Ref innerRef={this.handleInputRef}>
-                          <Form.Input
-                            icon="map pin"
-                            iconPosition="left"
-                            type="text"
-                            {...getInputProps({
-                              ...inputProps,
-                              placeholder: inputProps.placeholder || 'Enter location ...',
-                            })}
-                            style={inputStyles}
-                            onFocus={this.handleOpen}
-                            onBlur={this.handleClose}
-                            onKeyDown={event => this.handleKeyDown(event, suggestions[0])}
-                            onKeyUp={this.props.onKeyUp}
-                            autoFocus={autoFocus}
-                            name="search"
-                          />
-                        </Ref>
+                        <>
+                          <Ref innerRef={this.handleInputRef}>
+                            <Form.Input
+                              icon="map pin"
+                              iconPosition="left"
+                              type="text"
+                              {...getInputProps({
+                                ...inputProps,
+                                placeholder: inputProps.placeholder || 'Enter location ...',
+                              })}
+                              style={{
+                                ...inputStyles,
+                                display:
+                                  this.state.isOpen || !this.state.address
+                                    ? 'inline-block'
+                                    : 'none',
+                              }}
+                              onFocus={this.handleOpen}
+                              onBlur={this.handleClose}
+                              onKeyDown={event => this.handleKeyDown(event, suggestions[0])}
+                              onKeyUp={this.props.onKeyUp}
+                              autoFocus={autoFocus}
+                              name="search"
+                            />
+                          </Ref>
+                          {!this.state.isOpen && (
+                            <span style={{ fontWeight: 700 }}>{this.state.address}</span>
+                          )}
+                          {!this.state.isOpen &&
+                            this.state.address &&
+                            this.props.showGoButton && (
+                              <GoButton
+                                onClick={e => {
+                                  e.stopPropagation();
+                                  this.props.updateSearchParams({});
+                                }}
+                              >
+                                Go
+                              </GoButton>
+                            )}
+                        </>
                       )}
                     </Wrapper>
                   }

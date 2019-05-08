@@ -172,7 +172,7 @@ const Options = ({
         />
         <DatePicker>
           <Popup
-            position="center bottom"
+            position="bottom center"
             on="click"
             open={isOpenDate}
             onOpen={openDate}

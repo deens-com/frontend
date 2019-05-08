@@ -13,7 +13,7 @@ import Search from './Search';
 import { bindActionCreators } from 'redux';
 import { getCurrentUserTrip, logOut } from 'store/session/actions';
 import { PageWrapper } from 'shared_components/layout/Page';
-import { secondaryContrast } from 'libs/colors';
+import { withRouter } from 'react-router';
 import searchActions from 'store/search/actions';
 
 // ACTIONS/CONFIG
@@ -136,7 +136,6 @@ class TopBar extends Component {
     const { showMenu, showSearchMobile } = this.state;
 
     const InnerWrap = transparent || noSearch ? PageWrapper : React.Fragment;
-
     return (
       <React.Fragment>
         <Wrapper
@@ -164,7 +163,8 @@ class TopBar extends Component {
                   address={this.props.address}
                   isMobileSearchOpen={showSearchMobile}
                   searchParams={this.props.searchParams}
-                  updateQuery={this.props.updateQuery}
+                  updateSearchParams={this.props.updateSearchParams}
+                  windowLocation={this.props.location}
                 />
               )}
               <DesktopNav
@@ -201,6 +201,7 @@ TopBar.propTypes = {
   withPadding: PropTypes.bool,
   noMargin: PropTypes.bool,
   forceNotFixed: PropTypes.bool,
+  location: PropTypes.object,
 };
 
 TopBar.defaultProps = {
@@ -220,12 +221,14 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    { getCurrentUserTrip, logOut, updateQuery: searchActions.updateSearchQuery },
+    { getCurrentUserTrip, logOut, updateSearchParams: searchActions.updateSearchParams },
     dispatch,
   );
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(TopBar);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(TopBar),
+);

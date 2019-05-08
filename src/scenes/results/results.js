@@ -42,7 +42,6 @@ class Results extends React.Component {
         {helmet}
         <ResultsContainer
           {...this.props}
-          searchParams={searchParams}
           routeState={this.routeState}
           rawSearchQuery={this.props.location.search}
         />

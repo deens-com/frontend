@@ -1,8 +1,17 @@
+import queryString from 'qs';
 import fetchHelpers from 'libs/fetch_helpers';
 import api from 'libs/apiClient';
+import history from 'main/history';
 import { createAsyncActions, dispatchAsyncActions } from 'store/utils';
 import { parseTagsText, parseTagsCount } from 'libs/Utils';
-import { mapDataToQuery, hasLocationParams } from 'libs/search';
+import {
+  mapDataToQuery,
+  hasLocationParams,
+  getSearchParams,
+  getParamsToSave,
+  prefetchWithNewParams,
+} from 'libs/search';
+import { setLastSearchParams, getLastSearchParams } from 'libs/localStorage';
 
 const SEARCH = 'SEARCH';
 const UPDATE_QUERY_PARAMS = 'UPDATE_QUERY_PARAMS';
@@ -13,11 +22,6 @@ const types = {
   updateQueryParams: UPDATE_QUERY_PARAMS,
   patchQueryParams: PATCH_QUERY_PARAMS,
 };
-
-const updateSearchQuery = searchParams => ({
-  type: UPDATE_QUERY_PARAMS,
-  payload: searchParams,
-});
 
 const patchSearchQuery = searchParams => ({
   type: PATCH_QUERY_PARAMS,
@@ -54,10 +58,9 @@ const fetchResults = searchQuery =>
     const resultsArr = searchForTrips ? results.data.trips : results.data.services;
     const data = fetchHelpers.buildServicesJson(resultsArr, false);
 
-    /*const tags = parseTagsText(
+    const tags = parseTagsText(
       searchForTrips ? parseTagsCount(results.data.tagsWithCount) : results.data.tags,
-    );*/
-    const tags = parseTagsText(results.data.tags);
+    );
 
     return {
       results: data,
@@ -66,17 +69,38 @@ const fetchResults = searchQuery =>
     };
   });
 
-/*const searchTrips = (includes = []) => {
-  return dispatchAsyncActions(
-    SEARCH_TRIPS,
-    async () =>
-      (,
-  );
-};*/
+const updateSearchParams = (searchParams, state, customPage) => (dispatch, getState) => {
+  const savedParams = getLastSearchParams();
+  const paramsToSave = getParamsToSave(searchParams, savedParams);
+  const page = customPage || (searchParams.page ? 1 : undefined);
+  let params = { ...paramsToSave, ...searchParams };
+  if (!params.type) {
+    params = { ...params, type: getState().search.searchQuery.type || 'trip' };
+  }
+  params = getSearchParams({ ...params, ...searchParams, page });
+
+  if (params.lat && params.lng) {
+    delete params.city;
+    delete params.state;
+    delete params.countryCode;
+  }
+
+  dispatch(fetchResults(params));
+
+  history.push(`/results?${queryString.stringify(params, { arrayFormat: 'comma' })}`, state);
+
+  prefetchWithNewParams(paramsToSave, savedParams);
+
+  setLastSearchParams(paramsToSave);
+  dispatch({
+    type: types.updateQueryParams,
+    payload: params,
+  });
+};
 
 export default {
   types,
   fetchResults,
-  updateSearchQuery,
+  updateSearchParams,
   patchSearchQuery,
 };

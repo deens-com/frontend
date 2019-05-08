@@ -10,6 +10,7 @@ import yelpLogo from 'assets/yelp/logo.png';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import tripActions from 'store/trips/actions';
+import searchActions from 'store/search/actions';
 
 import history from 'main/history';
 // COMPONENTS
@@ -25,7 +26,6 @@ import { waitUntilMapsLoaded } from 'libs/Utils';
 
 // STYLES
 import { PageContent } from './../../shared_components/layout/Page';
-import { pushSearch } from 'libs/search';
 import { primary } from 'libs/colors';
 import { P } from 'libs/commonStyles';
 import Sort from './components/Sort';
@@ -340,6 +340,7 @@ class ResultsScene extends Component {
             <Filters
               backToTrip={props.routeState && props.routeState.tripId}
               searchParams={props.searchParams}
+              updateSearchParams={props.updateSearchParams}
             />
             <RightColumn>
               <FirstLineRightColumn>
@@ -355,7 +356,10 @@ class ResultsScene extends Component {
                   <P onClick={this.toggleMap}>Show Map</P>
                 </MapToggle>
               </FirstLineRightColumn>
-              <Sort searchParams={this.props.searchParams} />
+              <Sort
+                searchParams={this.props.searchParams}
+                updateSearchParams={props.updateSearchParams}
+              />
             </RightColumn>
           </TopFilters>
         </TopFiltersWrapper>
@@ -409,7 +413,7 @@ class ResultsScene extends Component {
               data={props.service_data}
               showMap={this.state.showMap}
               goBackToTrip={this.goBackToTrip}
-              pushSearch={pushSearch}
+              updateSearchParams={props.updateSearchParams}
               userTrips={this.props.userTrips}
             />
           </ServicesWrapper>
@@ -454,6 +458,7 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
       fetchUserTrips: tripActions.fetchUserTrips,
+      updateSearchParams: searchActions.updateSearchParams,
     },
     dispatch,
   );
