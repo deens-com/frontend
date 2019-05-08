@@ -35,10 +35,10 @@ if (isProd || isStaging) {
 
 if (isProd) {
   const noop = () => {};
-  const error = error =>
+  const error = errorMsg =>
     Sentry.addBreadcrumb({
       category: 'printed-error',
-      message: `${error}`,
+      message: `${errorMsg}`,
       level: Sentry.Severity.Error,
     });
   console.log = noop;

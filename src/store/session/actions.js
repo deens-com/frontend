@@ -79,8 +79,11 @@ export const setLoginError = payload => {
   };
 };
 
-export const getCurrentUserTrip = () => async dispatch => {
+export const getCurrentUserTrip = () => async (dispatch, getState) => {
   try {
+    if (!getState().session.session._id) {
+      return;
+    }
     const response = await apiClient.trips.get({ limit: 1 });
     if (response.data.trips.length === 0) {
       return;
@@ -100,6 +103,9 @@ export const getFavoriteTrips = () => async (dispatch, getState) => {
 
   const savedFavoriteTrips = getFavoriteTripsLocally() || {};
   try {
+    if (!sessionData.username) {
+      return;
+    }
     const response = (await apiClient.users.username.hearts.get(
       {},
       { username: sessionData.username },

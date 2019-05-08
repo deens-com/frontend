@@ -215,6 +215,7 @@ const HeartWrapper = styled.div`
   top: 10px;
   left: 10px;
   position: absolute;
+  z-index: 2;
   > svg {
     color: ${props => (props.filled ? colors.secondary : 'rgba(217,117,110,0.3)')};
     stroke: white;
