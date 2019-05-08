@@ -33,6 +33,7 @@ const Inner = styled.div`
   padding: 8px 12px;
   transition: border 0.1s ease-in;
   width: 100%;
+  overflow: hidden;
 `;
 
 const IconButton = styled.span`
@@ -178,6 +179,10 @@ export default class DesktopSearch extends Component {
     const params = {
       ...this.props.searchParams,
       ...this.state.params,
+      topRightLat: undefined,
+      topRightLng: undefined,
+      bottomLeftLat: undefined,
+      bottomLeftLng: undefined,
       text,
       type: text ? 'trip' : this.state.serviceType || this.props.searchParams.type,
       priceStart: undefined,

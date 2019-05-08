@@ -12,6 +12,7 @@ import {
   prefetchWithNewParams,
 } from 'libs/search';
 import { setLastSearchParams, getLastSearchParams } from 'libs/localStorage';
+import { removeMultipleLocations } from 'libs/search';
 
 const SEARCH = 'SEARCH';
 const UPDATE_QUERY_PARAMS = 'UPDATE_QUERY_PARAMS';
@@ -50,6 +51,7 @@ const fetchResults = searchQuery =>
           minPrice: null,
           maxPrice: null,
           tags: [],
+          extraData: null,
         };
       }
     }
@@ -67,6 +69,7 @@ const fetchResults = searchQuery =>
     return {
       results: data,
       count: results.data.count,
+      extraData: results.data.extraData,
       maxPrice: results.data.maxPrice,
       minPrice: results.data.minPrice,
       tags,
@@ -81,7 +84,7 @@ const updateSearchParams = (searchParams, state, customPage) => (dispatch, getSt
   if (!params.type) {
     params = { ...params, type: getState().search.searchQuery.type || 'trip' };
   }
-  params = getSearchParams({ ...params, ...searchParams, page });
+  params = removeMultipleLocations(getSearchParams({ ...params, ...searchParams, page }));
 
   if (params.lat && params.lng) {
     delete params.city;

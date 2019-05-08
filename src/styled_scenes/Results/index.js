@@ -5,12 +5,13 @@ import styled from 'styled-components';
 import GoogleMapReact from 'google-map-react';
 import { Checkbox } from 'semantic-ui-react';
 import Media from 'react-media';
-import { getCenterAndZoom } from 'libs/location';
+import { getCenterAndZoom, getCenterFromBounds } from 'libs/location';
 import yelpLogo from 'assets/yelp/logo.png';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import tripActions from 'store/trips/actions';
 import searchActions from 'store/search/actions';
+import debounce from 'lodash.debounce';
 
 import history from 'main/history';
 // COMPONENTS
@@ -26,10 +27,11 @@ import { waitUntilMapsLoaded } from 'libs/Utils';
 
 // STYLES
 import { PageContent } from './../../shared_components/layout/Page';
-import { primary } from 'libs/colors';
+import { primary, textLight } from 'libs/colors';
 import { P } from 'libs/commonStyles';
 import Sort from './components/Sort';
 import HelpMe from 'shared_components/HelpMe';
+import { usingBoundingBox } from 'libs/search';
 
 import addPrefixArticle from 'indefinite';
 
@@ -40,6 +42,7 @@ const MapWrapper = styled.div`
   ${media.minSmall} {
     display: ${props => (props.showing ? 'flex' : 'none')};
   }
+  position: relative;
   align-items: center;
   justify-content: center;
   height: ${mapHeight};
@@ -71,6 +74,23 @@ const ServicesWrapper = styled.div`
   ${media.minLarge} {
     // width: 58%;
   }
+`;
+
+const MapOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0.5);
+  font-weight: bold;
+  font-size: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 300px;
+  color: ${textLight};
 `;
 
 const TopFiltersWrapper = styled.div``;
@@ -129,9 +149,20 @@ const FirstLineRightColumn = styled.div`
   }
 `;
 
+const MapOptions = styled.div`
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
+  background-color: white;
+  padding: 3px 5px;
+  border-radius: 2px 2px 2px 0;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1), -1px 0px 2px rgba(0, 0, 0, 0.1);
+`;
+
 const defaultCenter = {
-  lat: 48.856614,
-  lng: 2.3522219000000177,
+  lat: null,
+  lng: null,
 };
 const defaultZoom = 11;
 
@@ -143,6 +174,7 @@ class ResultsScene extends Component {
       zoom: defaultZoom,
       markers: [],
       showMap: true,
+      searchByMoving: true,
     };
     this.mapRef = React.createRef();
     this.mapPlaceholderRef = React.createRef();
@@ -168,27 +200,44 @@ class ResultsScene extends Component {
     const center =
       props.latitude && props.longitude
         ? { lat: parseFloat(props.latitude), lng: parseFloat(props.longitude) }
-        : defaultCenter;
+        : this.state.center;
 
     return getCenterAndZoom(markers, center);
   };
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.searchExtraData) {
+      return;
+    }
     const hasLocationsChanged =
       nextProps.service_data.map(item => item._id).join(',') !==
       this.props.service_data.map(item => item._id).join(',');
 
     if (hasLocationsChanged) {
       const newMarkers = this.getMarkerLatLngs(nextProps);
-      const { center, zoom } = this.getCenterAndZoom(newMarkers, nextProps);
-      this.setState({ center, zoom, markers: newMarkers });
+      if (newMarkers.length === 0) {
+        this.setState({ markers: newMarkers });
+        return;
+      }
+      if (!usingBoundingBox(nextProps.searchParams)) {
+        const { center, zoom } = this.getCenterAndZoom(newMarkers, nextProps);
+        this.setState({ center, zoom, markers: newMarkers });
+      } else {
+        this.setState({ markers: newMarkers });
+      }
     }
   }
 
   componentDidMount() {
     this.props.fetchUserTrips();
-    const { center, zoom } = this.getCenterAndZoom([], this.props);
-    this.setState({ center, zoom, markers: [] });
+    if (usingBoundingBox(this.props.searchParams)) {
+      getCenterFromBounds(this.props.searchParams).then(({ center, zoom }) =>
+        this.setState({ center, zoom, markers: [] }),
+      );
+    } else {
+      const { center } = this.getCenterAndZoom([], this.props);
+      this.setState({ center, markers: [] });
+    }
     if (this.state.showMap) {
       window.addEventListener('scroll', this.handleScroll);
       window.addEventListener('scroll', this.resizeHandler);
@@ -214,6 +263,12 @@ class ResultsScene extends Component {
       }
       return { showMap: !prevState.showMap };
     });
+  };
+
+  onToggleSearchByMoving = () => {
+    this.setState(prevState => ({
+      searchByMoving: !prevState.searchByMoving,
+    }));
   };
 
   resizeHandler = () => {
@@ -329,6 +384,32 @@ class ResultsScene extends Component {
     history.replace('/trips/organize');
   };
 
+  onChangeMap = ({ center, zoom, bounds }) => {
+    if (zoom !== this.state.zoom && this.state.searchByMoving) {
+      this.setState({ zoom, center });
+      this.searchByBounds(bounds.ne.lat, bounds.ne.lng, bounds.sw.lat, bounds.sw.lng);
+    }
+  };
+
+  onDragMap = debounce(map => {
+    if (!this.state.searchByMoving) {
+      return;
+    }
+    const bounds = map.getBounds();
+    const southWest = bounds.getSouthWest();
+    const northEast = bounds.getNorthEast();
+    this.searchByBounds(northEast.lat(), northEast.lng(), southWest.lat(), southWest.lng());
+  }, 1000);
+
+  searchByBounds = (northEastLat, northEastLng, southWestLat, southWestLng) => {
+    this.props.updateSearchParams({
+      topRightLat: northEastLat,
+      topRightLng: northEastLng,
+      bottomLeftLat: southWestLat,
+      bottomLeftLng: southWestLng,
+    });
+  };
+
   render() {
     const { props } = this;
     const { center, zoom, markers } = this.state;
@@ -421,6 +502,19 @@ class ResultsScene extends Component {
           </ServicesWrapper>
           <MapPlaceholder ref={this.mapPlaceholderRef} />
           <MapWrapper ref={this.mapRef} showing={this.state.showMap}>
+            <MapOptions>
+              <Checkbox
+                onChange={this.onToggleSearchByMoving}
+                label="Search as I move the map"
+                checked={this.state.searchByMoving}
+              />
+            </MapOptions>
+            {this.props.searchExtraData && (
+              <MapOverlay>
+                {(this.props.searchExtraData.zoomOut || this.props.searchExtraData.zoomIn) &&
+                  this.props.searchError}
+              </MapOverlay>
+            )}
             <GoogleMapReact
               center={center}
               zoom={zoom}
@@ -428,6 +522,8 @@ class ResultsScene extends Component {
                 key: 'AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc',
               }}
               googleMapLoader={waitUntilMapsLoaded}
+              onDrag={this.onDragMap}
+              onChange={this.onChangeMap}
               options={
                 window.google && window.google.maps
                   ? {
@@ -453,6 +549,8 @@ const mapStateToProps = state => {
   return {
     userTrips: state.trips.userTrips.unbookedTrips,
     session: state.session.session,
+    searchError: state.search.error,
+    searchExtraData: state.search.extraData,
     minPossiblePrice: state.search.minPrice,
     maxPossiblePrice: state.search.maxPrice,
   };

@@ -51,6 +51,10 @@ export const getSearchParams = searchParams => {
     tags: parseArrayOrString(searchParams.tags),
     lat: Number(searchParams.lat) || undefined,
     lng: Number(searchParams.lng) || undefined,
+    topRightLat: Number(searchParams.topRightLat) || undefined,
+    topRightLng: Number(searchParams.topRightLng) || undefined,
+    bottomLeftLat: Number(searchParams.bottomLeftLat) || undefined,
+    bottomLeftLng: Number(searchParams.bottomLeftLng) || undefined,
     adults: Number(searchParams.adults) || undefined,
     children: Number(searchParams.children) || undefined,
     infants: Number(searchParams.infants) || undefined,
@@ -123,8 +127,43 @@ export const mapDataToQuery = ({ type, ...searchParams }) => ({
   ...searchParams,
 });
 
+export const usingLatAndLng = params => params.lat && params.lng;
+export const usingCityAndCountry = params => params.city && params.countryCode;
+export const usingBoundingBox = params =>
+  params.topRightLat && params.topRightLng && params.bottomLeftLat && params.bottomLeftLng;
+
 export const hasLocationParams = params => {
-  return (params.lat && params.lng) || (params.city && params.countryCode);
+  return usingLatAndLng(params) || usingCityAndCountry(params) || usingBoundingBox(params);
+};
+
+export const hasMultipleLocationParams = params => {
+  const numberOfLocations = [
+    usingLatAndLng(params),
+    usingCityAndCountry(params),
+    usingBoundingBox(params),
+  ].reduce((num, elem) => num + (elem ? 1 : 0), 0);
+  return numberOfLocations > 1;
+};
+
+export const removeMultipleLocations = params => {
+  if (hasMultipleLocationParams(params)) {
+    if (usingLatAndLng(params)) {
+      return removeMultipleLocations({
+        ...params,
+        lat: undefined,
+        lng: undefined,
+      });
+    }
+    if (usingCityAndCountry(params)) {
+      return removeMultipleLocations({
+        ...params,
+        city: undefined,
+        state: undefined,
+        countryCode: undefined,
+      });
+    }
+  }
+  return params;
 };
 
 const GUESTS = 'guests';
