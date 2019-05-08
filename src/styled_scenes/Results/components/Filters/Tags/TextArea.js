@@ -62,7 +62,9 @@ const MAX_SUGGESTIONS = 3;
 export default ({ selectedTags, suggestedTags, addTag, removeTag }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [selectedResult, setSelectedResult] = useState(0);
+  const [isShowing, setIsShowing] = useState(false);
   const textareaRef = useRef(null);
+  const resultsRef = useRef(null);
 
   useEffect(
     () => {
@@ -72,6 +74,27 @@ export default ({ selectedTags, suggestedTags, addTag, removeTag }) => {
       setSearchResults(search(suggestedTags, textareaRef.current.value));
     },
     [suggestedTags],
+  );
+
+  useEffect(
+    () => {
+      if (!isShowing) {
+        return;
+      }
+
+      const close = e => {
+        if (resultsRef.current.contains(e.target)) {
+          return;
+        }
+        setIsShowing(false);
+      };
+
+      window.addEventListener('click', close);
+      return () => {
+        window.removeEventListener('click', close);
+      };
+    },
+    [isShowing],
   );
 
   const focus = e => {
@@ -86,6 +109,7 @@ export default ({ selectedTags, suggestedTags, addTag, removeTag }) => {
       return;
     }
     setSearchResults(search(suggestedTags, e.currentTarget.value));
+    setIsShowing(true);
   };
 
   const onKeyDown = e => {
@@ -138,19 +162,20 @@ export default ({ selectedTags, suggestedTags, addTag, removeTag }) => {
         })}
       </Selected>
       <Element onKeyDown={onKeyDown} onChange={onChange} ref={textareaRef} />
-      {searchResults.length > 0 && (
-        <Results>
-          {searchResults.slice(0, MAX_SUGGESTIONS).map((result, i) => (
-            <Result
-              onClick={() => addTag(result)}
-              key={result.value}
-              selected={selectedResult === i}
-            >
-              {result.value}
-            </Result>
-          ))}
-        </Results>
-      )}
+      {searchResults.length > 0 &&
+        isShowing && (
+          <Results ref={resultsRef}>
+            {searchResults.slice(0, MAX_SUGGESTIONS).map((result, i) => (
+              <Result
+                onClick={() => addTag(result)}
+                key={result.value}
+                selected={selectedResult === i}
+              >
+                {result.value} {result.count && `(${result.count})`}
+              </Result>
+            ))}
+          </Results>
+        )}
     </Wrapper>
   );
 };
