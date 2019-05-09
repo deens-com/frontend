@@ -523,7 +523,6 @@ class ResultsScene extends Component {
               }}
               googleMapLoader={waitUntilMapsLoaded}
               onDrag={this.onDragMap}
-              onChange={this.onChangeMap}
               options={
                 window.google && window.google.maps
                   ? {
