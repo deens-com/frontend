@@ -161,8 +161,8 @@ const MapOptions = styled.div`
 `;
 
 const defaultCenter = {
-  lat: null,
-  lng: null,
+  lat: 48.856614,
+  lng: 2.3522219000000177,
 };
 const defaultZoom = 11;
 
