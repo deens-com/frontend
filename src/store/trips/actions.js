@@ -200,7 +200,7 @@ const checkAvailability = (id, startDate, peopleData, attempt = 1) => async disp
   dispatch(checkAvailabilityStart(timestamp));
   try {
     const availability = await axios.get(
-      `${serverBaseURL}/trips/${id}/availability?bookingDate=${moment(startDate).format(
+      `${serverBaseURL}/availabilities/trips/${id}?bookingDate=${moment(startDate).format(
         'YYYY-MM-DD',
       )}&adultCount=${adults}&childrenCount=${children}&infantCount=${infants}&peopleCount=${adults +
         children +

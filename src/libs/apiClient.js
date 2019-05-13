@@ -49,12 +49,12 @@ export default {
       get: get('/trips/featured'),
     },
     heart: {
-      post: id => post(`/trips/${id}/heart`)(),
-      delete: id => deleteEndpoint(`/trips/${id}/heart`)(),
+      post: id => post(`/hearts/trips/${id}`)(),
+      delete: id => deleteEndpoint(`/hearts/trips/${id}`)(),
     },
     availability: {
       get: (id, { bookingDate, adultCount, infantCount, childrenCount, peopleCount }) =>
-        get(`/trips/${id}/availability`)({
+        get(`/availabilities/trips/${id}`)({
           bookingDate,
           adultCount,
           infantCount,
@@ -66,22 +66,22 @@ export default {
       },
     },
     calculateDistances: {
-      post: (id, body) => post(`/trips/${id}/calculate-distances`)(body),
+      post: (id, body) => post(`/trip-ops/${id}/calculate-distances`)(body),
     },
     transports: {
-      post: (id, body) => post(`/trips/${id}/transports`)(body),
+      post: (id, body) => post(`/trip-ops/${id}/transports`)(body),
     },
     // edit trip
     patch: (id, body) => patch(`/trips/${id}`)(body),
     serviceOrganizations: {
-      post: (id, body) => post(`/trips/${id}/service-organizations`)(body),
+      post: (id, body) => post(`/trip-ops/${id}/service-organizations`)(body),
       delete: (id, servOrgIds = []) =>
-        deleteEndpoint(`/trips/${id}/service-organizations/${servOrgIds.join(',')}`)(),
+        deleteEndpoint(`/trip-ops/${id}/service-organizations/${servOrgIds.join(',')}`)(),
       rearrange: {
-        post: (id, body) => post(`/trips/${id}/service-organizations/rearrange`)(body),
+        post: (id, body) => post(`/trip-ops/${id}/service-organizations/rearrange`)(body),
       },
       availabilityCode: {
-        post: (id, body) => post(`/trips/${id}/service-organizations/availability-code`)(body),
+        post: (id, body) => post(`/trip-ops/${id}/service-organizations/availability-code`)(body),
       },
     },
   },
@@ -94,7 +94,7 @@ export default {
       prefetch: body => post('/search/prefetch/availabilities')(body),
     },
     reviews: {
-      get: (params, { serviceId }) => get(`/services/${serviceId}/reviews`)(params),
+      get: (params, { serviceId }) => get(`/reviews/services/${serviceId}`)(params),
     },
     import: {
       find: {
@@ -122,7 +122,7 @@ export default {
         get: (params, { username }) => get(`/users/username/${username}/trips`)(params),
       },
       hearts: {
-        get: (params, { username }) => get(`/users/username/${username}/hearts`)(params),
+        get: (params, { username }) => get(`/hearts/trips/by-username/${username}`)(params),
       },
     },
     me: {

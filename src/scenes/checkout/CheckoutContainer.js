@@ -315,7 +315,7 @@ class CheckoutContainer extends React.Component {
       },
       async () => {
         try {
-          const provision = await axios.post(`/trips/${this.tripId}/provision`);
+          const provision = await axios.post(`/bookings/trips/${this.tripId}/provision`);
 
           if (provision.data.some(service => !service.provisioned)) {
             throw new Error('Some services could not be provisioned');
