@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { H2, H2Subtitle, H3, P, PStrong } from 'libs/commonStyles';
 import { secondary, textDark, primary, secondaryContrast } from 'libs/colors';
-import featuredTripCreatorImage from 'assets/featured-trip-creator.png';
+import Image from 'shared_components/Image';
 
 import ListsHandler from 'shared_components/ListsHandler';
 import api from 'libs/apiClient';
@@ -157,9 +157,9 @@ export default class FeaturedTripCreator extends React.Component {
         </PageWrapper>
         <PageWrapper>
           <TripCreator>
-            <img
-              src={featuredTripCreatorImage}
-              alt={`Featured trip creatpor ${featuredTripCreator}`}
+            <Image
+              src={'https://please-com.imgix.net/featured-trip-creator.png'}
+              alt={`Featured trip creator ${featuredTripCreator}`}
             />
             <TripCreatorData>
               <H3>

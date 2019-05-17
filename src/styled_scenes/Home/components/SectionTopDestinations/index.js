@@ -5,11 +5,6 @@ import styled from 'styled-components';
 import { media } from 'libs/styled';
 import { H1, H2 } from 'libs/commonStyles';
 
-import sydneyImg from './images/big/sydney.jpg';
-import sanFranciscoImg from './images/small/san-francisco.jpg';
-import londonImg from './images/small/london.jpg';
-import newYorkImg from './images/big/new-york.jpg';
-
 // ACTIONS/CONFIG
 
 // STYLES
@@ -103,7 +98,7 @@ const CenterContainer = styled(Column)`
 `;
 
 const Sydney = styled(Row)`
-  background-image: url(${sydneyImg});
+  background-image: url(https://please-com.imgix.net/big-sydney.jpg?auto=compress);
   flex: 1;
   margin-bottom: 10px;
   ${media.minSmall} {
@@ -119,7 +114,7 @@ const Sydney = styled(Row)`
 `;
 
 const NewYork = styled(Row)`
-  background-image: url(${newYorkImg});
+  background-image: url(https://please-com.imgix.net/big-new-york.jpg?auto=compress);
   margin-bottom: 10px;
   ${media.minSmall} {
     height: 190px;
@@ -133,12 +128,12 @@ const NewYork = styled(Row)`
 `;
 
 const SanFrancisco = styled(Row)`
-  background-image: url(${sanFranciscoImg});
+  background-image: url(https://please-com.imgix.net/small-san-francisco.jpg?auto=compress);
   height: 190px;
 `;
 
 const London = styled(Row)`
-  background-image: url(${londonImg});
+  background-image: url(https://please-com.imgix.net/small-london.jpg?auto=compress);
   height: 190px;
 `;
 

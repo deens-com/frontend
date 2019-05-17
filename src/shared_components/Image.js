@@ -14,6 +14,8 @@ const Image = props => {
    * crop=true is set below as we are having a conflict with Coral images that's expecting that param to be true,
    *by default it's value is 'faces' and that will throw 505 for Coral images once the URL has been generated
    */
+  const imageProps = {};
+  if (props.alt) imageProps.alt = props.alt;
   return (
     <Imgix
       {...props}
@@ -27,6 +29,7 @@ const Image = props => {
 
 Image.propTypes = {
   src: PropTypes.string.isRequired,
+  alt: PropTypes.string,
   background: PropTypes.bool,
 };
 
