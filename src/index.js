@@ -7,44 +7,45 @@ import './index.css';
 import App from './main/app';
 import createHistory from 'history/createBrowserHistory';
 import { unregister as unregisterServiceWorker } from './registerServiceWorker';
-import * as Sentry from '@sentry/browser';
 import { isProd, isStaging } from './libs/config';
 import * as featureFlags from './libs/feature-flags';
 import { readSession } from 'libs/user-session';
 
 const history = createHistory();
 
-if (isProd || isStaging) {
-  let environment = window.location.hostname.split('.')[0];
-  if (environment !== 'localhost') {
-    if (isProd) {
-      environment = 'production';
-      Sentry.init({
-        dsn: 'https://f9fde204a5e449f19e907d9042dd04c8@sentry.io/1435541',
-        environment,
-      });
-    } else {
-      // staging
-      Sentry.init({
-        dsn: 'https://fd51482cf40f43fca379bc14417b6f2b@sentry.io/1220761',
-        environment,
-      });
+import('@sentry/browser').then(Sentry => {
+  if (isProd || isStaging) {
+    let environment = window.location.hostname.split('.')[0];
+    if (environment !== 'localhost') {
+      if (isProd) {
+        environment = 'production';
+        Sentry.init({
+          dsn: 'https://f9fde204a5e449f19e907d9042dd04c8@sentry.io/1435541',
+          environment,
+        });
+      } else {
+        // staging
+        Sentry.init({
+          dsn: 'https://fd51482cf40f43fca379bc14417b6f2b@sentry.io/1220761',
+          environment,
+        });
+      }
     }
   }
-}
 
-if (isProd) {
-  const noop = () => {};
-  const error = errorMsg =>
-    Sentry.addBreadcrumb({
-      category: 'printed-error',
-      message: `${errorMsg}`,
-      level: Sentry.Severity.Error,
-    });
-  console.log = noop;
-  console.warn = noop;
-  console.error = error;
-}
+  if (isProd) {
+    const noop = () => {};
+    const error = errorMsg =>
+      Sentry.addBreadcrumb({
+        category: 'printed-error',
+        message: `${errorMsg}`,
+        level: Sentry.Severity.Error,
+      });
+    console.log = noop;
+    console.warn = noop;
+    console.error = error;
+  }
+});
 
 // reads localStorage to get the user object on load
 readSession();

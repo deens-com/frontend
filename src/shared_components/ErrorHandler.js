@@ -1,8 +1,7 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import * as Sentry from '@sentry/browser';
+import React from 'react';
 import { connect } from 'react-redux';
+import styled from 'styled-components';
 
 const Error = styled.div`
   cursor: ${props => (props.retry ? 'pointer' : 'auto')};
@@ -38,17 +37,19 @@ class ErrorHandler extends React.Component {
   componentDidCatch(error, info) {
     console.log({ error, info });
 
-    Sentry.configureScope(scope => {
-      scope.setExtra('info', info);
-      scope.setExtra('wasHandledByComponent', true);
-      if (this.props.session.username) {
-        scope.setUser({ username: this.props.session.username });
-      } else {
-        scope.setUser(null);
-      }
-    });
+    import('@sentry/browser').then(Sentry => {
+      Sentry.configureScope(scope => {
+        scope.setExtra('info', info);
+        scope.setExtra('wasHandledByComponent', true);
+        if (this.props.session.username) {
+          scope.setUser({ username: this.props.session.username });
+        } else {
+          scope.setUser(null);
+        }
+      });
 
-    Sentry.captureException(error);
+      Sentry.captureException(error);
+    });
   }
 
   handleClick = () => {

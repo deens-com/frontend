@@ -203,18 +203,22 @@ export function getPeopleCount(trip) {
 
 export async function waitUntilMapsLoaded() {
   if (!window.google || !window.google.maps) {
-    Sentry.addBreadcrumb({
-      category: 'loading-maps',
-      message: 'Maps not loaded',
-      level: Sentry.Severity.Debug,
+    import('@sentry/browser').then(Sentry => {
+      Sentry.addBreadcrumb({
+        category: 'loading-maps',
+        message: 'Maps not loaded',
+        level: Sentry.Severity.Debug,
+      });
     });
     await new Promise(resolve => setTimeout(resolve, 50));
     return waitUntilMapsLoaded();
   }
-  Sentry.addBreadcrumb({
-    category: 'loading-maps',
-    message: 'Maps loaded',
-    level: Sentry.Severity.Debug,
+  import('@sentry/browser').then(Sentry => {
+    Sentry.addBreadcrumb({
+      category: 'loading-maps',
+      message: 'Maps loaded',
+      level: Sentry.Severity.Debug,
+    });
   });
   return window.google.maps;
 }
