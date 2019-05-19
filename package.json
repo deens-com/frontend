@@ -37,7 +37,6 @@
     "memoize-one": "^5.0.4",
     "moment": "^2.22.1",
     "now": "^12.1.12",
-    "parse": "^1.11.1",
     "prismic-javascript": "^2.0.1",
     "prismic-reactjs": "^0.3.2",
     "prop-types": "^15.6.1",
