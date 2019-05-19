@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import tripActions from 'store/trips/actions';
 import searchActions from 'store/search/actions';
-import debounce from 'lodash.debounce';
+import { debounce } from 'lodash';
 
 import history from 'main/history';
 // COMPONENTS

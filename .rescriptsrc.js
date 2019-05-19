@@ -1,6 +1,7 @@
 const util = require('util');
 const { appendWebpackPlugin } = require('@rescripts/utilities');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
 const logConfig = config => {
   console.log(util.inspect(config, null, 20, true));
@@ -9,8 +10,8 @@ const logConfig = config => {
 
 logConfig.isMiddleware = true;
 
-const addWebpackBundleAnalyzer = config => {
-  return appendWebpackPlugin(
+const addWebpackPlugins = config => {
+  config = appendWebpackPlugin(
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',
       reportFilename: 'report.html',
@@ -18,6 +19,8 @@ const addWebpackBundleAnalyzer = config => {
     }),
     config,
   );
+  config = appendWebpackPlugin(new LodashModuleReplacementPlugin(), config);
+  return config;
 };
 
 const addEntryPoints = config => {
@@ -28,6 +31,6 @@ const addEntryPoints = config => {
 module.exports = [
   ['use-babel-config', '.babelrc.js'],
   addEntryPoints,
-  addWebpackBundleAnalyzer,
+  addWebpackPlugins,
   logConfig,
 ];

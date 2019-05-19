@@ -1,4 +1,4 @@
-import round from 'lodash.round';
+import { round } from 'lodash';
 
 export const plsValue = 0.036;
 

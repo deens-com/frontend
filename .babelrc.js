@@ -5,10 +5,11 @@ module.exports = {
     [
       'babel-plugin-semantic-ui-react-transform-imports',
       {
-        convertMemberImports: false,
-        addCssImports: true,
+        convertMemberImports: true,
+        importType: 'es',
+        addCssImports: false,
       },
     ],
-    // ['lodash', { id: ['semantic-ui-react'] }],
+    'lodash',
   ],
 };

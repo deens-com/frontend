@@ -6,7 +6,7 @@ import { waitUntilMapsLoaded } from 'libs/Utils';
 import { mapDaysToServices } from 'styled_scenes/Trip/mapServicesToDays';
 import { getFromCoordinates } from 'libs/Utils';
 import { TripContext } from '../../';
-import throttle from 'lodash.throttle';
+import { throttle } from 'lodash';
 import MapMarker from './MapMarker';
 import Filters from './Filters';
 import { generateDaysArray } from '../';

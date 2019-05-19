@@ -8,7 +8,7 @@ import Button from 'shared_components/Button';
 import LoadingDots from 'shared_components/LoadingDots';
 import { UndoArrow } from 'shared_components/icons';
 import I18nText from 'shared_components/I18nText';
-import throttle from 'lodash.throttle';
+import { throttle } from 'lodash';
 import { media } from 'libs/styled';
 
 const bottomOffset = 245;
