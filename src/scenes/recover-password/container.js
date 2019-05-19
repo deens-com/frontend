@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import RecoverPasswordComponent from './component';
-import validator from 'validator';
+import isEmail from 'validator/lib/isEmail';
 import history from 'main/history';
 import axios from 'libs/axios';
 import { connect } from 'react-redux';
@@ -52,7 +52,7 @@ class RegistrationsContainer extends Component {
   }
 
   parseRecoverPassword = async () => {
-    if (!validator.isEmail(this.state.email)) {
+    if (!isEmail(this.state.email)) {
       this.setState({
         errors: { message: 'Please enter a valid email address' },
       });

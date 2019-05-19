@@ -1,6 +1,7 @@
 import fetch_helpers from './../../libs/fetch_helpers';
 import { serverBaseURL, env } from 'libs/config';
-import validator from 'validator';
+import isEmail from 'validator/lib/isEmail';
+import isAlphanumeric from 'validator/lib/isAlphanumeric';
 import axios from 'libs/axios';
 import apiClient from 'libs/apiClient';
 
@@ -81,7 +82,7 @@ export const update_user_profile = (user_id, field_type, value) => {
         let isUsernameValid = false;
         let isEmailValid = false;
         if (field_type === 'username') {
-          isUsernameValid = validator.isAlphanumeric(value, 'en-US');
+          isUsernameValid = isAlphanumeric(value, 'en-US');
           if (!isUsernameValid) {
             dispatch(
               edit_user_error_raised({ code: 203, error: 'Username should be alphanumeric.' }),
@@ -91,7 +92,7 @@ export const update_user_profile = (user_id, field_type, value) => {
           }
         }
         if (field_type === 'email') {
-          isEmailValid = validator.isEmail(value);
+          isEmailValid = isEmail(value);
           if (!isEmailValid) {
             dispatch(
               edit_user_error_raised({ code: 203, error: 'Please, enter a valid email address.' }),
