@@ -22,12 +22,12 @@ const addWebpackPlugins = config => {
   );
   config = appendWebpackPlugin(
     new LodashModuleReplacementPlugin({
-      // shorthands: true,
       // cloning: true,
 
       // used by semantic-ui
-      currying: true,
-      collections: true,
+      shorthands: true, // breaks Form.Dropdown
+      currying: true, // breaks everything
+      collections: true, // breaks Login
 
       // caching: true,
       // exotics: true,
