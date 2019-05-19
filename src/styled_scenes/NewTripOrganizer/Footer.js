@@ -234,7 +234,7 @@ Footer.propTypes = {
       service: PropTypes.shape({
         title: PropTypes.string.isRequired,
       }).isRequired,
-    }).isRequried,
+    }).isRequired,
   }),
 };
 
