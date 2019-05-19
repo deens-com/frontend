@@ -22,7 +22,7 @@
     "copy-to-clipboard": "^3.0.8",
     "ethers": "^3.0.17",
     "fine-uploader": "^5.16.2",
-    "formik": "0.11.11",
+    "formik": "^1.5.7",
     "gh-pages": "^1.1.0",
     "google-map-react": "^1.0.0",
     "history": "^4.7.2",

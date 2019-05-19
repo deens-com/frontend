@@ -1,7 +1,7 @@
 import queryString from 'qs';
 import moment from 'moment';
 import apiClient from 'libs/apiClient';
-import isEqual from 'lodash.isequal';
+import { isEqual } from 'lodash';
 
 export function getAddress(params) {
   if (params.text) {
