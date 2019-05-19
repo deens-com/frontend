@@ -37,5 +37,5 @@ module.exports = [
   ['use-babel-config', '.babelrc.js'],
   addEntryPoints,
   addWebpackPlugins,
-  logConfig,
+  // logConfig,
 ];
