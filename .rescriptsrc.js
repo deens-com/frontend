@@ -19,7 +19,12 @@ const addWebpackPlugins = config => {
     }),
     config,
   );
-  config = appendWebpackPlugin(new LodashModuleReplacementPlugin(), config);
+  config = appendWebpackPlugin(
+    new LodashModuleReplacementPlugin({
+      currying: true,
+    }),
+    config,
+  );
   return config;
 };
 

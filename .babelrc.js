@@ -3,7 +3,7 @@ module.exports = {
   presets: ['react-app'],
   plugins: [
     [
-      'babel-plugin-semantic-ui-react-transform-imports',
+      'transform-semantic-ui-react-imports',
       {
         convertMemberImports: true,
         importType: 'es',

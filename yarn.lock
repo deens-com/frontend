@@ -2400,13 +2400,6 @@ babel-plugin-named-asset-import@^0.3.2:
   resolved "https://registry.yarnpkg.com/babel-plugin-named-asset-import/-/babel-plugin-named-asset-import-0.3.2.tgz#20978ed446b8e1bf4a2f42d0a94c0ece85f75f4f"
   integrity sha512-CxwvxrZ9OirpXQ201Ec57OmGhmI8/ui/GwTDy0hSp6CmRvgRC0pSair6Z04Ck+JStA0sMPZzSJ3uE4n17EXpPQ==
 
-babel-plugin-semantic-ui-react-transform-imports@^1.3.2:
-  version "1.3.2"
-  resolved "https://registry.yarnpkg.com/babel-plugin-semantic-ui-react-transform-imports/-/babel-plugin-semantic-ui-react-transform-imports-1.3.2.tgz#c8a07da6fd77fa6c714e7f82e843b6e0170217d8"
-  dependencies:
-    colors "^1.1.2"
-    directory-tree "^2.0.0"
-
 "babel-plugin-styled-components@>= 1":
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-styled-components/-/babel-plugin-styled-components-1.10.0.tgz#ff1f42ad2cc78c21f26b62266b8f564dbc862939"
@@ -2637,6 +2630,14 @@ babel-plugin-transform-regenerator@^6.22.0:
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-regenerator/-/babel-plugin-transform-regenerator-6.26.0.tgz#e0703696fbde27f0a3efcacf8b4dca2f7b3a8f2f"
   dependencies:
     regenerator-transform "^0.10.0"
+
+babel-plugin-transform-semantic-ui-react-imports@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/babel-plugin-transform-semantic-ui-react-imports/-/babel-plugin-transform-semantic-ui-react-imports-1.4.1.tgz#2490134c1a1fc6dcdaa8453ae72b784fdf1d5b7f"
+  integrity sha512-iUt6PVoscvNKzxLqezFpWT0xYcqcyTVOJITTxI35RSavtJNo2vXTilJbIALC+3oeUqknSwrznjgruHmRZA0f2w==
+  dependencies:
+    colors "^1.1.2"
+    directory-tree "^2.0.0"
 
 babel-plugin-transform-strict-mode@^6.24.1:
   version "6.24.1"
