@@ -15,7 +15,6 @@
     "@sentry/browser": "^5.2.1",
     "array-move": "^1.0.0",
     "axios": "^0.18.0",
-    "babel-core": "^6.26.3",
     "babel-plugin-transform-semantic-ui-react-imports": "^1.4.1",
     "bson-objectid": "^1.2.4",
     "clipboard-copy": "^2.0.0",
@@ -99,6 +98,7 @@
     "test-ci": "cypress run --config video=false --env REACT_APP_NODE_ENV=development"
   },
   "devDependencies": {
+    "@babel/cli": "^7.4.4",
     "@babel/polyfill": "^7.2.5",
     "@rescripts/cli": "^0.0.10",
     "@rescripts/rescript-use-babel-config": "^0.0.8",

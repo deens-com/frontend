@@ -7,7 +7,10 @@ module.exports = {
       {
         convertMemberImports: true,
         importType: 'es',
-        addCssImports: false,
+        addCssImports: true,
+        importMinifiedCssFiles: true,
+        addLessImports: false,
+        addDuplicateStyleImports: false,
       },
     ],
     'lodash',
