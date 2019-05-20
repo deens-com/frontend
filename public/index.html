@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Unless -->
-    <script>(function(p,e,r,s,o,n,i,f,y){n=p.getElementsByTagName(e)[0];function m(a,t,h){(i=p.createElement('link')).rel=t?'preload':'preconnect',i.href=a,i.crossOrigin=t?null:'anonymous',h?i.as=h:null,n.parentNode.insertBefore(i,n)};m(r+s);m(r+s+o,!0,e);m(r+'global.'+s);f=p.documentElement,f.style.opacity=0,setTimeout(function(){f.style.opacity=''},3e3);(y=p.createElement(e)).src=r+s+o,y.async=!0,n.parentNode.insertBefore(y,n)})(document,'script','https://','unless.com','/js/v5/latest/txt.min.js?id=888cba68-66ea-4285-ba25-f27ddce709ba');</script>
-    <!-- End Unless -->
+    
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -73,7 +71,7 @@
 
     <script>
       // disable Speedy from styled-components to allow unless.com to work
-      SC_DISABLE_SPEEDY=true
+      // SC_DISABLE_SPEEDY=true
     </script>
 
   </head>
@@ -109,7 +107,7 @@
 
     <!-- Segment Analytics -->
     <script type="text/javascript">
-      (function(){
+      var initSegment = function(){
 
         // Create a queue, but don't obliterate an existing one!
         var analytics = window.analytics = window.analytics || [];
@@ -197,7 +195,18 @@
         }else{
           analytics.load("JS7vZSv3cvBCHvMbVM3TSxR7pAhlKEAb");
         }
-      })();
+      }
+
+      function initUnlessCom() {
+        // Unless.com
+        (function(p,e,r,s,o,n,i,f,y){n=p.getElementsByTagName(e)[0];function m(a,t,h){(i=p.createElement('link')).rel=t?'preload':'preconnect',i.href=a,i.crossOrigin=t?null:'anonymous',h?i.as=h:null,n.parentNode.insertBefore(i,n)};m(r+s);m(r+s+o,!0,e);m(r+'global.'+s);f=p.documentElement,f.style.opacity=0,setTimeout(function(){f.style.opacity=''},3e3);(y=p.createElement(e)).src=r+s+o,y.async=!0,n.parentNode.insertBefore(y,n)})(document,'script','https://','unless.com','/js/v5/latest/txt.min.js?id=888cba68-66ea-4285-ba25-f27ddce709ba');
+        // End Unless.com
+      }
+
+      window.addEventListener('load', function() {
+        initSegment();
+        initUnlessCom();
+      });
 
     </script>
     <!-- End Segment Analytics -->
