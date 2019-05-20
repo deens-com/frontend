@@ -5893,6 +5893,11 @@ get-caller-file@^1.0.1:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-1.0.3.tgz#f978fa4c90d1dfe7ff2d6beda2a515e713bdcf4a"
 
+get-node-dimensions@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/get-node-dimensions/-/get-node-dimensions-1.2.1.tgz#fb7b4bb57060fb4247dd51c9d690dfbec56b0823"
+  integrity sha512-2MSPMu7S1iOTL+BOa6K1S62hB2zUAYNF/lV0gSVlOaacd087lc6nR1H1r0e3B1CerTo+RceOmi1iJW+vp21xcQ==
+
 get-own-enumerable-property-symbols@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/get-own-enumerable-property-symbols/-/get-own-enumerable-property-symbols-3.0.0.tgz#b877b49a5c16aefac3655f2ed2ea5b684df8d203"
@@ -10570,12 +10575,16 @@ react-i18next@^7.8.0:
     html-parse-stringify2 "2.0.1"
     prop-types "^15.6.0"
 
-react-imgix@^7.2.0:
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/react-imgix/-/react-imgix-7.2.0.tgz#9bdec021461f766fde286bc9a4237b837a9b078e"
+react-imgix@^8.6.1:
+  version "8.6.1"
+  resolved "https://registry.yarnpkg.com/react-imgix/-/react-imgix-8.6.1.tgz#47dcb3cf72c9a4cd2b03edaaff48adfcd8b6fbca"
+  integrity sha512-74JVKJcBh8XbJ1FtnPKLL4YhdcapO1USfhkpECadnuJgT4iV7ZB6d3LU2jZ9/7uBuej0w04d2lrbtRZIS+HZaA==
   dependencies:
     js-base64 "^2.3.2"
     jsuri "^1.3.1"
+    react-measure "2.1.3 - 2.2.5"
+    shallowequal "^1.1.0"
+    warning "^4.0.1"
 
 react-infinite-scroller@^1.2.4:
   version "1.2.4"
@@ -10608,6 +10617,16 @@ react-is@^16.8.1:
 react-lifecycles-compat@^3.0.0, react-lifecycles-compat@^3.0.2, react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
+
+"react-measure@2.1.3 - 2.2.5":
+  version "2.2.5"
+  resolved "https://registry.yarnpkg.com/react-measure/-/react-measure-2.2.5.tgz#35f6be9a8c31d61a4cf847282f9d54c310eb1624"
+  integrity sha512-j1OE5U3AfX97Tk/LNkn2KSdE03hGgBOqUoQQ8QdxHoAudAvP1K1R7hvEH+S5zHILFh7ejGCKK3wWZOMDcHL3mA==
+  dependencies:
+    "@babel/runtime" "^7.2.0"
+    get-node-dimensions "^1.2.1"
+    prop-types "^15.6.2"
+    resize-observer-polyfill "^1.5.0"
 
 react-media@^1.8.0:
   version "1.9.2"

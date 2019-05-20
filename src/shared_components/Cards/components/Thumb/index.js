@@ -70,7 +70,7 @@ export default class CartThumb extends Component {
 
     return (
       <Wrap withTooltip={withTooltip} onMouseLeave={this.hideTooltip}>
-        <Thumb src={url} background />
+        <Thumb src={url} background width="400" height="300" />
         {/*withTooltip && (
           <TagWrap
             ref={tag => {

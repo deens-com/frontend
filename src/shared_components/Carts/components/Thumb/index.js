@@ -78,7 +78,11 @@ export default class CartThumb extends Component {
 
     return (
       <Wrap isPlaceholder={isPlaceholder} withTooltip={withTooltip} onMouseLeave={this.hideTooltip}>
-        {isPlaceholder ? <ThumbPlaceholder /> : <Thumb src={url} background />}
+        {isPlaceholder ? (
+          <ThumbPlaceholder />
+        ) : (
+          <Thumb src={url} background width="400" height="300" />
+        )}
         {this.props.children}
       </Wrap>
     );
