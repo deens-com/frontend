@@ -51,37 +51,40 @@ class GDPRBanner extends React.Component {
     this.ticking = false;
   }
 
-  componentDidMount() {
-    if (!this.props.closed) {
-      this.sendRenderedHeight();
-    }
+  // @Facundo please review
+  // This is commented out by @jaydp, because `getBoundingClientRect` is an expensive operation to do on first page load
 
-    window.addEventListener('scroll', () => {
-      if (!this.ticking) {
-        window.requestAnimationFrame(() => {
-          if (window.scrollY > 0 && this.props.height !== 0) {
-            this.props.renderedGdpr(0);
-          }
-          if (window.scrollY === 0 && this.props.height === 0) {
-            this.sendRenderedHeight();
-          }
-          this.ticking = false;
-        });
-      }
-      this.ticking = true;
-    });
-  }
+  // componentDidMount() {
+  //   if (!this.props.closed) {
+  //     this.sendRenderedHeight();
+  //   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.closed && !this.props.closed) {
-      this.sendRenderedHeight();
-    }
-  }
+  //   window.addEventListener('scroll', () => {
+  //     if (!this.ticking) {
+  //       window.requestAnimationFrame(() => {
+  //         if (window.scrollY > 0 && this.props.height !== 0) {
+  //           this.props.renderedGdpr(0);
+  //         }
+  //         if (window.scrollY === 0 && this.props.height === 0) {
+  //           this.sendRenderedHeight();
+  //         }
+  //         this.ticking = false;
+  //       });
+  //     }
+  //     this.ticking = true;
+  //   });
+  // }
 
-  sendRenderedHeight = () => {
-    const height = this.gdprRef.current.getBoundingClientRect().height;
-    this.props.renderedGdpr(height);
-  };
+  // componentDidUpdate(prevProps) {
+  //   if (prevProps.closed && !this.props.closed) {
+  //     this.sendRenderedHeight();
+  //   }
+  // }
+
+  // sendRenderedHeight = () => {
+  //   const height = this.gdprRef.current.getBoundingClientRect().height;
+  //   this.props.renderedGdpr(height);
+  // };
 
   showAgain = () => {
     this.props.showGdpr();
