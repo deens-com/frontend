@@ -28,11 +28,11 @@ const Image = props => {
     <ImageComponent
       {...props}
       className={'lazyload ' + (props.className || '')}
-      // attributeConfig={{
-      //   src: 'data-src',
-      //   srcSet: 'data-srcset',
-      //   sizes: 'data-sizes',
-      // }}
+      attributeConfig={{
+        src: 'data-src',
+        srcSet: 'data-srcset',
+        sizes: 'data-sizes',
+      }}
       auto={['compress']}
       imgixParams={imgixParams}
     />
