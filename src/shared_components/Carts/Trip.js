@@ -2,11 +2,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
-import Truncate from 'react-truncate';
 import { Popup, Image } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { addFavoriteTrip, removeFavoriteTrip } from 'store/session/actions';
+import CssOnlyTruncate from 'shared_components/CssOnlyTruncate';
 
 // COMPONENTS
 import Thumb from './components/Thumb';
@@ -15,11 +15,10 @@ import Thumb from './components/Thumb';
 
 // STYLES
 import { Cart, ContentWrap } from './styles';
-import { cardConfig } from 'libs/config';
 import { generateTripSlug, generateServiceSlug } from 'libs/Utils';
 import { getImageUrlFromMedia } from 'libs/media';
 import { Heart } from 'shared_components/icons';
-import I18nText from 'shared_components/I18nText';
+import I18nText, { translate } from 'shared_components/I18nText';
 import { H6, P, PStrong, PSmall, PXSmall } from 'libs/commonStyles';
 import * as colors from 'libs/colors';
 import { duration } from 'libs/trips';
@@ -271,18 +270,9 @@ class TripCart extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      truncated: false,
       sumToHearts: 0,
     };
   }
-
-  handleTruncate = truncated => {
-    if (this.state.truncated !== truncated) {
-      this.setState({
-        truncated,
-      });
-    }
-  };
 
   toggleFavorite = event => {
     event.preventDefault();
@@ -343,9 +333,9 @@ class TripCart extends Component {
           </>
         )}
         <Title>
-          <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>
+          <CssOnlyTruncate>
             {!isPlaceholder && <I18nText data={this.props.item.title} />}
-          </Truncate>
+          </CssOnlyTruncate>
         </Title>
       </Thumb>
     );
@@ -497,12 +487,12 @@ class TripCart extends Component {
   };
 
   renderCard() {
-    const { isPlaceholder } = this.props;
+    const { isPlaceholder, item } = this.props;
     const linkUrl = this.getLink();
     return (
       <Wrap isPlaceholder={isPlaceholder}>
         <Cart column className="card-animate">
-          {!isPlaceholder && <LinkWrapper to={linkUrl} />}
+          {!isPlaceholder && <LinkWrapper title={item && translate(item.title)} to={linkUrl} />}
           {this.renderThumb()}
           <ContentWrap>{this.renderContent()}</ContentWrap>
         </Cart>

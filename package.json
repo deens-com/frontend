@@ -65,7 +65,6 @@
     "react-sticky": "^6.0.3",
     "react-stripe-elements": "2.0.1",
     "react-transition-group": "1.x",
-    "react-truncate": "^2.4.0",
     "react-waypoint": "^8.0.3",
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.2",

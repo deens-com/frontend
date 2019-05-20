@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Label as SemanticLabel, Icon } from 'semantic-ui-react';
-import Truncate from 'react-truncate';
 import { Popup } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
@@ -13,6 +12,7 @@ import PriceTag from '../Currency/PriceTag';
 import Thumb from './components/Thumb';
 import Col from '../layout/Col';
 import { PinIcon } from '../icons';
+import CssOnlyTruncate from 'shared_components/CssOnlyTruncate';
 
 // ACTIONS/CONFIG
 
@@ -138,21 +138,6 @@ function getSmartContractBookingStatus(reservation) {
 }
 
 export default class LocationCart extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      truncated: false,
-    };
-  }
-
-  handleTruncate = truncated => {
-    if (this.state.truncated !== truncated) {
-      this.setState({
-        truncated,
-      });
-    }
-  };
-
   renderCard = () => {
     const smartContractBookingStatus = getSmartContractBookingStatus(this.props.item.reservation);
     return (
@@ -161,14 +146,12 @@ export default class LocationCart extends Component {
         <Thumb url={this.props.item.image} />
         <ContentWrap>
           <Title>
-            <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>
-              {this.props.item.title}
-            </Truncate>
+            <CssOnlyTruncate>{this.props.item.title}</CssOnlyTruncate>
           </Title>
           <Location>
             <PinIcon />
             <p>
-              <Truncate lines={cardConfig.locationLines}>{this.props.item.location}</Truncate>
+              <CssOnlyTruncate>{this.props.item.location}</CssOnlyTruncate>
             </p>
           </Location>
           <Rating

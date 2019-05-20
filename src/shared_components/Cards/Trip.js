@@ -1,13 +1,11 @@
 // NPM
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import styled from 'styled-components';
-import Truncate from 'react-truncate';
-import { Popup, Image } from 'semantic-ui-react';
+import { Image } from 'semantic-ui-react';
 
 import { withRouter } from 'react-router-dom';
-import ReactResizeDetector from 'react-resize-detector';
+import CssOnlyTruncate from 'shared_components/CssOnlyTruncate';
 
 // COMPONENTS
 import Rating from '../Rating';
@@ -24,7 +22,6 @@ import { getImageUrlFromMedia } from 'libs/media';
 import { PinIcon } from 'shared_components/icons';
 import I18nText from 'shared_components/I18nText';
 import AddToTrip from './AddToTrip';
-import * as colors from 'libs/colors';
 
 import ImgurAvatar from './../../assets/no-avatar.png';
 
@@ -151,40 +148,6 @@ function formatLocation(location) {
 }
 
 class TripCard extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      truncated: false,
-      showTitlePopup: false,
-    };
-  }
-
-  onMouseEnter = () => {
-    const { onOver, item } = this.props;
-    if (onOver) {
-      onOver(item.objectId);
-    }
-    if (!this.state.truncated) return;
-    this.setState({ showTitlePopup: true });
-  };
-
-  onMouseLeave = () => {
-    const { onLeave, item } = this.props;
-    if (onLeave) {
-      onLeave(item.objectId);
-    }
-    if (!this.state.truncated) return;
-    this.setState({ showTitlePopup: false });
-  };
-
-  handleTruncate = truncated => {
-    if (this.state.truncated !== truncated) {
-      this.setState({
-        truncated,
-      });
-    }
-  };
-
   isViewTypeOf = type => {
     const param = queryString.parse(this.props.location.search, { ignoreQueryPrefix: true });
 
@@ -193,15 +156,6 @@ class TripCard extends Component {
     }
 
     return false;
-  };
-
-  onResize = () => {
-    if (this.truncate) {
-      this.truncate.onResize();
-    }
-    if (this.truncateTitle) {
-      this.truncateTitle.onResize();
-    }
   };
 
   renderContent() {
@@ -216,7 +170,6 @@ class TripCard extends Component {
 
     return (
       <Wrap>
-        <ReactResizeDetector handleWidth onResize={this.onResize} />
         <Cart column className="card-animate">
           {Boolean(this.props.addToTrip) && (
             <AddToTrip service={item} data={this.props.addToTrip} />
@@ -238,21 +191,17 @@ class TripCard extends Component {
                 this.titleRef = x;
               }}
             >
-              <Truncate
-                onTruncate={!this.state.truncated && this.handleTruncate}
-                lines={cardConfig.titleLines}
-                ref={ref => (this.truncateTitle = ref)}
-              >
+              <CssOnlyTruncate>
                 <I18nText data={item.title} />
-              </Truncate>
+              </CssOnlyTruncate>
               <Rating rating={rating} count={count} marginBottom="10px" />
             </Title>
 
             {!this.isViewTypeOf('food') && (
               <Description>
-                <Truncate ref={ref => (this.truncate = ref)} lines={cardConfig.descriptionLines}>
+                <CssOnlyTruncate>
                   <I18nText data={item.subtitle.length > 0 ? item.subtitle : item.description} />
-                </Truncate>
+                </CssOnlyTruncate>
               </Description>
             )}
             <ContentFooter isTrip={isTrip}>
@@ -266,9 +215,7 @@ class TripCard extends Component {
               <Location>
                 <PinIcon />
                 <p>
-                  <Truncate lines={cardConfig.locationLines}>
-                    {formatLocation(item.location)}
-                  </Truncate>
+                  <CssOnlyTruncate>{formatLocation(item.location)}</CssOnlyTruncate>
                 </p>
               </Location>
             </ContentFooter>
@@ -290,22 +237,7 @@ class TripCard extends Component {
   }
 
   render() {
-    const { item } = this.props;
-
-    return (
-      <div onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
-        {this.state.truncated && (
-          <Popup
-            style={{ zIndex: 4 }}
-            content={item.title}
-            context={this.titleRef}
-            open={this.state.showTitlePopup}
-          />
-        )}
-
-        {this.renderContent()}
-      </div>
-    );
+    return this.renderContent();
   }
 }
 

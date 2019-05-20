@@ -2,7 +2,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import Truncate from 'react-truncate';
 import { Popup } from 'semantic-ui-react';
 
 // COMPONENTS
@@ -12,6 +11,7 @@ import Col from 'shared_components/layout/Col';
 import { PinIcon } from 'shared_components/icons';
 import I18nText from 'shared_components/I18nText';
 import CityCountry from 'shared_components/CityCountry';
+import CssOnlyTruncate from 'shared_components/CssOnlyTruncate';
 
 // ACTIONS/CONFIG
 
@@ -83,21 +83,6 @@ const ImageItem = styled.div`
 
 // MODULE
 class ServiceLocationCard extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      truncated: false,
-    };
-  }
-
-  handleTruncate = truncated => {
-    if (this.state.truncated !== truncated) {
-      this.setState({
-        truncated,
-      });
-    }
-  };
-
   wrapWithLink = element => {
     const { item } = this.props;
     return <Link to={`/services/${generateServiceSlug(item)}`}>{element}</Link>;
@@ -117,18 +102,18 @@ class ServiceLocationCard extends React.PureComponent {
             {this.wrapWithLink(
               <div>
                 <Title>
-                  <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>
+                  <CssOnlyTruncate>
                     <I18nText data={item.title} />
-                  </Truncate>
+                  </CssOnlyTruncate>
                 </Title>
 
                 {item.location && (
                   <Location>
                     <PinIcon />
                     <p>
-                      <Truncate lines={cardConfig.locationLines}>
+                      <CssOnlyTruncate>
                         <CityCountry location={item.location} />
-                      </Truncate>
+                      </CssOnlyTruncate>
                     </p>
                   </Location>
                 )}
