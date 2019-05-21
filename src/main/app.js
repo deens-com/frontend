@@ -11,7 +11,6 @@ import GDPRNotification from './GDPRNotification';
 import Routes from './router';
 import Skeleton from './skeleton';
 import 'semantic-ui-css/components/reset.min.css';
-import 'semantic-ui-css/components/site.min.css';
 
 class App extends React.Component {
   checkForReferrerAndSet = () => {
