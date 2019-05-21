@@ -2,7 +2,6 @@ import React, { Suspense } from 'react';
 import { Switch } from 'react-router';
 import { Route } from 'react-router-dom';
 import withErrorBoundary from './middlewares/WithErrorBoundary';
-import Home from './../scenes/home/home';
 
 import Notfound from './../styled_scenes/NotFound';
 import ScrollToTop from './middlewares/ScrollToTop';
@@ -22,6 +21,7 @@ const WaitForComponent = Component => {
 };
 const asyncCommonHOCs = Component => commonHOCs(WaitForComponent(Component));
 
+const Home = React.lazy(() => import('./../scenes/home/home'));
 const Sessions = React.lazy(() => import('./../scenes/sessions/sessions'));
 const UserVerification = React.lazy(() => import('../scenes/user-verification'));
 const Registrations = React.lazy(() => import('./../scenes/registrations/registrations'));
@@ -44,7 +44,7 @@ const Blog = React.lazy(() => import('../scenes/blog'));
 export default (
   <ScrollToTop>
     <Switch>
-      <Route exact path={process.env.PUBLIC_URL + '/'} component={commonHOCs(Home)} />
+      <Route exact path={process.env.PUBLIC_URL + '/'} component={asyncCommonHOCs(Home)} />
       <OnlyPublicRoute
         path={process.env.PUBLIC_URL + '/login'}
         component={asyncCommonHOCs(Sessions)}
