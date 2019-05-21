@@ -81,7 +81,7 @@ export default class CartThumb extends Component {
         {isPlaceholder ? (
           <ThumbPlaceholder />
         ) : (
-          <Thumb src={url} background width="400" height="300" />
+          <Thumb src={url} background width={400} height={300} />
         )}
         {this.props.children}
       </Wrap>

@@ -19,6 +19,7 @@ const Image = props => {
   const imgixParams = {
     ...(props.circular ? { mask: 'ellipse' } : {}),
     fit: 'crop',
+    auto: 'compress',
     ...props.imgIxParams,
   };
   if (props.width) imgixParams.w = props.width;
@@ -33,7 +34,6 @@ const Image = props => {
         srcSet: 'data-srcset',
         sizes: 'data-sizes',
       }}
-      auto={['compress']}
       imgixParams={imgixParams}
     />
   );
