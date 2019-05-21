@@ -3,7 +3,6 @@ import { Switch } from 'react-router';
 import { Route } from 'react-router-dom';
 import withErrorBoundary from './middlewares/WithErrorBoundary';
 
-import Notfound from './../styled_scenes/NotFound';
 import ScrollToTop from './middlewares/ScrollToTop';
 
 import PrivateRoute from './PrivateRoute';
@@ -40,6 +39,7 @@ const Trips = React.lazy(() => import('./../scenes/trip'));
 const Users = React.lazy(() => import('./../scenes/users/users'));
 const Account = React.lazy(() => import('./../scenes/account/account'));
 const Blog = React.lazy(() => import('../scenes/blog'));
+const Notfound = React.lazy(() => import('./../styled_scenes/NotFound'));
 
 export default (
   <ScrollToTop>
@@ -119,7 +119,7 @@ export default (
       />
       <Route path={process.env.PUBLIC_URL + '/account'} component={asyncCommonHOCs(Account)} />
       <Route path={process.env.PUBLIC_URL + '/:slug'} component={asyncCommonHOCs(Blog)} />
-      <Route component={withErrorBoundary(Notfound)} />
+      <Route component={withErrorBoundary(WaitForComponent(Notfound))} />
     </Switch>
   </ScrollToTop>
 );
