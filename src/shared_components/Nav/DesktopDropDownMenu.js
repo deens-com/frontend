@@ -9,6 +9,7 @@ import { Image } from 'semantic-ui-react';
 // COMMENT: the homeSearch is just for the time being
 // ACTIONS/CONFIG
 import { Dropdown } from 'semantic-ui-react';
+import 'semantic-ui-css/components/transition.min.css';
 
 import { PStrong } from 'libs/commonStyles';
 
