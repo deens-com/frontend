@@ -53,9 +53,15 @@ const addEntryPoints = config => {
   return config;
 };
 
+const useDayJsInsteadOfMoment = config => {
+  config.resolve.alias['moment'] = 'dayjs/esm';
+  return config;
+};
+
 module.exports = [
   ['use-babel-config', '.babelrc.js'],
   addEntryPoints,
   addWebpackPlugins,
+  useDayJsInsteadOfMoment,
   // logConfig,
 ];

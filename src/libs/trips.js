@@ -1,4 +1,3 @@
-import moment from 'moment';
 import axios from 'libs/axios';
 import apiClient from 'libs/apiClient';
 import { parseLocationData } from 'libs/location';
@@ -13,21 +12,11 @@ export const patchTrip = async (id, data) => {
 };
 
 export const duration = minutes => {
-  const humanizedDuration = moment.duration(minutes || 0, 'minutes').humanize();
-  let startsWithLetter = '';
-  if (humanizedDuration.startsWith('a ')) {
-    startsWithLetter = 'a';
-  }
-
-  if (humanizedDuration.startsWith('an ')) {
-    startsWithLetter = 'an';
-  }
-
-  if (startsWithLetter) {
-    return humanizedDuration.replace(startsWithLetter, '1');
-  }
-
-  return humanizedDuration;
+  if (minutes < 60) return `${minutes} minutes`;
+  const hours = Math.ceil(minutes / 60);
+  if (hours < 24) return `${hours} hours`;
+  const days = Math.ceil(minutes / (60 * 24));
+  return `${days} days`;
 };
 
 export const addServiceRequest = async (id, day, serviceId) => {

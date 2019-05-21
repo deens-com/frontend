@@ -103,6 +103,7 @@
     "babel-plugin-lodash": "^3.3.4",
     "cross-env": "^5.2.0",
     "cypress": "^3.1.5",
+    "dayjs": "^1.8.14",
     "duplicate-package-checker-webpack-plugin": "3.0.0",
     "enzyme": "^3.3.0",
     "eslint-plugin-cypress": "^2.2.0",
