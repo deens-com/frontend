@@ -203,7 +203,7 @@ export function getPeopleCount(trip) {
 
 export async function waitUntilMapsLoaded() {
   if (!window.google || !window.google.maps) {
-    import('@sentry/browser').then(Sentry => {
+    import(/* webpackChunkName: "sentry" */ '@sentry/browser').then(Sentry => {
       Sentry.addBreadcrumb({
         category: 'loading-maps',
         message: 'Maps not loaded',
@@ -213,7 +213,7 @@ export async function waitUntilMapsLoaded() {
     await new Promise(resolve => setTimeout(resolve, 50));
     return waitUntilMapsLoaded();
   }
-  import('@sentry/browser').then(Sentry => {
+  import(/* webpackChunkName: "sentry" */ '@sentry/browser').then(Sentry => {
     Sentry.addBreadcrumb({
       category: 'loading-maps',
       message: 'Maps loaded',

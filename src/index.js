@@ -13,7 +13,7 @@ import { readSession } from 'libs/user-session';
 
 const history = createHistory();
 
-import('@sentry/browser').then(Sentry => {
+import(/* webpackChunkName: "sentry" */ '@sentry/browser').then(Sentry => {
   if (isProd || isStaging) {
     let environment = window.location.hostname.split('.')[0];
     if (environment !== 'localhost') {

@@ -12,7 +12,7 @@ export default ChildComponent => {
       this.setState({ showErrorPage: true });
       console.log({ error, info });
 
-      import('@sentry/browser').then(Sentry => {
+      import(/* webpackChunkName: "sentry" */ '@sentry/browser').then(Sentry => {
         Sentry.configureScope(scope => {
           scope.setExtra('info', info);
           scope.setExtra('wasHandledByComponent', false);
