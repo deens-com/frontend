@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import I18nText from 'shared_components/I18nText';
 import ImgurAvatar from 'assets/no-avatar.png';
 import { getHeroImageUrlFromMedia } from 'libs/media';
+import { buildURL } from 'react-imgix';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -56,7 +57,7 @@ const Username = styled.p`
 
 const Header = ({ trip, owner, innerRef }) => {
   const hero = trip && getHeroImageUrlFromMedia(trip.media);
-  const img = hero;
+  const img = buildURL(hero, { auto: 'compress' });
 
   return (
     <Wrapper ref={innerRef} img={img}>
