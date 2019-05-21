@@ -6,8 +6,10 @@ import styled from 'styled-components';
 import history from 'main/history';
 import { Loader, Popup, Icon, Dimmer } from 'semantic-ui-react';
 import BrandFooter from 'shared_components/BrandFooter';
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
 import { DayPickerRangeController } from 'react-dates';
-import { START_DATE } from 'react-dates/constants';
+import { START_DATE, END_DATE } from 'react-dates/constants';
 
 // STYLES
 import { Page, PageContent } from 'shared_components/layout/Page';

@@ -62,6 +62,6 @@ module.exports = [
   ['use-babel-config', '.babelrc.js'],
   addEntryPoints,
   addWebpackPlugins,
-  useDayJsInsteadOfMoment,
+  // useDayJsInsteadOfMoment, // (react-dates crashes with it)
   // logConfig,
 ];
