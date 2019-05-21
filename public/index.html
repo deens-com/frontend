@@ -223,25 +223,33 @@
         // End Unless.com
       }
 
+      function initOneSignal() {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.defer = true;
+        script.src = 'https://cdn.onesignal.com/sdks/OneSignalSDK.js';
+        // Insert our script next to the first script element.
+        var first = document.getElementsByTagName('script')[0];
+        first.parentNode.insertBefore(script, first);
+
+        const environment = '%REACT_APP_NODE_ENV%';
+        if (environment === 'production') {
+          var OneSignal = window.OneSignal || [];
+          OneSignal.push(function() {
+            OneSignal.init({
+              appId: 'b8c79061-209a-4902-832d-62d4fd02d18b',
+            });
+          });
+        }
+      }
+
       window.addEventListener('load', function() {
         initSegment();
         initUnlessCom();
+        initOneSignal();
       });
 
     </script>
     <!-- End Segment Analytics -->
-
-    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" defer></script>
-    <script>
-      const environment = "%REACT_APP_NODE_ENV%"
-      if(environment === "production"){
-        var OneSignal = window.OneSignal || [];
-        OneSignal.push(function() {
-          OneSignal.init({
-            appId: "b8c79061-209a-4902-832d-62d4fd02d18b",
-          });
-        });
-      }
-    </script>
   </body>
 </html>
