@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import dayjs from 'dayjs/esm';
+import moment from 'moment';
 
 const Wrapper = styled.div`
   background-color: #4ac4a1;
@@ -23,7 +23,7 @@ export default class Countdown extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      timeLeft: props.expireDate - dayjs().valueOf(),
+      timeLeft: props.expireDate - moment().valueOf(),
     };
   }
 
@@ -40,7 +40,7 @@ export default class Countdown extends React.Component {
       return;
     }
 
-    const timeLeft = this.props.expireDate - dayjs().valueOf();
+    const timeLeft = this.props.expireDate - moment().valueOf();
 
     if (timeLeft <= 0) {
       clearInterval(this.interval);
@@ -53,9 +53,9 @@ export default class Countdown extends React.Component {
   };
 
   render() {
-    const milliseconds = this.state.timeLeft;
-    const minutes = String((milliseconds / (1000 * 60)) % 60).padStart(2, '0');
-    const seconds = String((milliseconds / 1000) % 60).padStart(2, '0');
+    const duration = moment.duration(this.state.timeLeft, 'milliseconds');
+    const minutes = String(duration.minutes()).padStart(2, '0');
+    const seconds = String(duration.seconds()).padStart(2, '0');
     return (
       <Wrapper>
         <Text>Time to book</Text>
