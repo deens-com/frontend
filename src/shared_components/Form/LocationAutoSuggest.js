@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import memoize from 'memoize-one';
 import PlacesAutocomplete from 'shared_components/PlacesAutocomplete';
-import { Form, Popup, Icon, Ref } from 'semantic-ui-react';
+import { FormInput, Popup, Icon, Ref } from 'semantic-ui-react';
 import StyledInput from 'shared_components/StyledInput';
 import styled from 'styled-components';
 import {
@@ -337,7 +337,7 @@ export default class SemanticLocationControl extends Component {
                       ) : (
                         <>
                           <Ref innerRef={this.handleInputRef}>
-                            <Form.Input
+                            <FormInput
                               icon="map pin"
                               iconPosition="left"
                               type="text"

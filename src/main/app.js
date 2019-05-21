@@ -12,6 +12,8 @@ import Routes from './router';
 import Skeleton from './skeleton';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
+import 'semantic-ui-css/components/reset.min.css';
+import 'semantic-ui-css/components/site.min.css';
 
 class App extends React.Component {
   checkForReferrerAndSet = () => {
