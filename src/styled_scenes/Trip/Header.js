@@ -59,6 +59,11 @@ const Header = ({ trip, owner, innerRef }) => {
   const hero = trip && getHeroImageUrlFromMedia(trip.media);
   const img = buildURL(hero, { auto: 'compress' });
 
+  const ownerImage =
+    (owner &&
+      owner.profilePicture &&
+      buildURL(owner.profilePicture, { auto: 'compress', mask: 'ellipse', w: 45, h: 45 })) ||
+    ImgurAvatar;
   return (
     <Wrapper ref={innerRef} img={img}>
       <Title>
@@ -68,7 +73,7 @@ const Header = ({ trip, owner, innerRef }) => {
         <React.Fragment>
           <AvatarWrapper>
             <Link to={`/users/${owner.username}`}>
-              <Image src={owner.profilePicture || ImgurAvatar} circular width={45} height={45} />
+              <Image src={ownerImage} circular width={45} height={45} />
             </Link>
           </AvatarWrapper>
           <CreatedBy>Created by</CreatedBy>
