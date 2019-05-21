@@ -2,8 +2,6 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import queryString from 'query-string';
 import Cookies from 'js-cookie';
-import { DragDropContextProvider } from 'react-dnd';
-import TouchBackend from 'react-dnd-touch-backend';
 import store from './store';
 import history from 'main/history';
 import { Router } from 'react-router-dom';
@@ -35,22 +33,14 @@ class App extends React.Component {
   render() {
     return (
       <HelmetProvider>
-        <DragDropContextProvider
-          backend={TouchBackend({
-            enableTouchEvents: true,
-            enableMouseEvents: true,
-            enableHoverOutsideTarget: true,
-          })}
-        >
-          <Provider store={store}>
-            <React.Fragment>
-              <GDPRNotification />
-              <Router history={history}>
-                <Skeleton>{Routes}</Skeleton>
-              </Router>
-            </React.Fragment>
-          </Provider>
-        </DragDropContextProvider>
+        <Provider store={store}>
+          <React.Fragment>
+            <GDPRNotification />
+            <Router history={history}>
+              <Skeleton>{Routes}</Skeleton>
+            </Router>
+          </React.Fragment>
+        </Provider>
       </HelmetProvider>
     );
   }
