@@ -1,7 +1,7 @@
 import queryString from 'qs';
-import moment from 'moment';
 import apiClient from 'libs/apiClient';
 import { isEqual } from 'lodash';
+import { formatYYYYMMDD } from 'libs/Utils';
 
 export function getAddress(params) {
   if (params.text) {
@@ -212,7 +212,7 @@ export const prefetchWithNewParams = (newParams, oldParams) => {
                 lng: newParams.lng,
               }),
         },
-        dates: [moment(newParams.startDate).format('YYYY-MM-DD')],
+        dates: [formatYYYYMMDD(newParams.startDate)],
       };
       apiClient.services.search.prefetch(body);
     }

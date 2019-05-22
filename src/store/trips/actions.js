@@ -2,7 +2,7 @@ import axios from 'libs/axios';
 import { serverBaseURL } from 'libs/config';
 import { parseTags } from 'libs/fetch_helpers';
 import history from './../../main/history';
-import moment from 'moment';
+import { formatYYYYMMDD } from 'libs/Utils';
 import apiClient from 'libs/apiClient';
 
 const types = {
@@ -200,8 +200,8 @@ const checkAvailability = (id, startDate, peopleData, attempt = 1) => async disp
   dispatch(checkAvailabilityStart(timestamp));
   try {
     const availability = await axios.get(
-      `${serverBaseURL}/availabilities/trips/${id}?bookingDate=${moment(startDate).format(
-        'YYYY-MM-DD',
+      `${serverBaseURL}/availabilities/trips/${id}?bookingDate=${formatYYYYMMDD(
+        startDate,
       )}&adultCount=${adults}&childrenCount=${children}&infantCount=${infants}&peopleCount=${adults +
         children +
         infants}`,

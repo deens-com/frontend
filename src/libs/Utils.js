@@ -78,6 +78,16 @@ export const getISODateString = date => {
   }
 };
 
+export const formatYYYYMMDD = date => {
+  const forSureDate = new Date(date);
+  let month = '' + forSureDate.getDate();
+  let day = '' + forSureDate.getDate();
+  const year = '' + forSureDate.getFullYear();
+  if (month.length < 2) month = '0' + month;
+  if (day.length < 2) day = '0' + day;
+  return [year, month, day].join('-');
+};
+
 /**
  * @param {string} str The string to pad
  * @param {number} length what should be the final length of the string after padding
