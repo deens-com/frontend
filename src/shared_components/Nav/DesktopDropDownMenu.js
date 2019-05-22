@@ -1,19 +1,15 @@
 // NPM
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
-import { withRouter } from 'react-router-dom';
 
 // COMPONENTS
 import Button from '../Button';
 import { Image } from 'semantic-ui-react';
 // COMMENT: the homeSearch is just for the time being
 // ACTIONS/CONFIG
-import { Dropdown } from 'semantic-ui-react';
+
 import 'semantic-ui-css/components/transition.min.css';
-
 import { PStrong } from 'libs/commonStyles';
-
-import history from './../../main/history';
 import ImgurAvatar from './../../assets/no-avatar.png';
 // STYLES
 const Wrap = styled.div`
@@ -60,10 +56,6 @@ export default class DesktopDropDownMenu extends Component {
     this.props.logOut();
   };
 
-  navigate_to = path => {
-    history.push(path);
-  };
-
   trigger = () => (
     <AvatarWrapper>
       <Image src={this.props.session.profilePicture || ImgurAvatar} width={38} height={38} />
@@ -90,37 +82,15 @@ export default class DesktopDropDownMenu extends Component {
   }
 
   logged_in() {
+    const DesktopLoggedInDropDownMenu = React.lazy(() => import('./DesktopLoggedInDropDownMenu'));
     return (
       <Wrap>
         <Button type="link" theme="primaryFilled" size="small" href="/trips/create">
           <PStrong>Create Trip</PStrong>
         </Button>
-        <Dropdown direction="left" trigger={this.trigger()} icon={null}>
-          <Dropdown.Menu>
-            <Dropdown.Item
-              icon="plane"
-              text="My Trips"
-              onClick={() => this.navigate_to('/account/trips/all')}
-            />
-            {/*<Dropdown.Item
-              icon="list"
-              text="My Services"
-              onClick={() => this.navigate_to('/account/services')}
-            />*/}
-            <Dropdown.Item
-              icon="user"
-              text="Profile"
-              onClick={() => this.navigate_to('/account/profile')}
-            />
-            {/*<Dropdown.Item
-              icon="cogs"
-              text="Settings"
-              onClick={() => this.navigate_to('/account/settings')}
-            />*/}
-            <Dropdown.Divider />
-            <Dropdown.Item icon="power" text="Logout" onClick={this.logout} />
-          </Dropdown.Menu>
-        </Dropdown>
+        <Suspense fallback={this.trigger()}>
+          <DesktopLoggedInDropDownMenu {...this.props} trigger={this.trigger} />
+        </Suspense>
       </Wrap>
     );
   }
