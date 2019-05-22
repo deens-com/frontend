@@ -2,14 +2,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Popup } from 'semantic-ui-react';
 
 // COMPONENTS
 import Rating from 'shared_components/Rating';
 import Thumb from './components/Thumb';
 import Col from 'shared_components/layout/Col';
 import { PinIcon } from 'shared_components/icons';
-import I18nText from 'shared_components/I18nText';
+import I18nText, { translate } from 'shared_components/I18nText';
 import CityCountry from 'shared_components/CityCountry';
 import CssOnlyTruncate from 'shared_components/CssOnlyTruncate';
 
@@ -101,7 +100,7 @@ class ServiceLocationCard extends React.PureComponent {
           <ContentWrap>
             {this.wrapWithLink(
               <div>
-                <Title>
+                <Title title={translate(item.title)}>
                   <CssOnlyTruncate>
                     <I18nText data={item.title} />
                   </CssOnlyTruncate>
@@ -130,7 +129,6 @@ class ServiceLocationCard extends React.PureComponent {
         </RelativeCard>
       </Col>
     );
-    if (this.state.truncated) return <Popup trigger={card} content={this.props.item.title} />;
     return card;
   }
 }

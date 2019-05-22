@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Label as SemanticLabel, Icon } from 'semantic-ui-react';
-import { Popup } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 // COMPONENTS
@@ -13,6 +12,7 @@ import Thumb from './components/Thumb';
 import Col from '../layout/Col';
 import { PinIcon } from '../icons';
 import CssOnlyTruncate from 'shared_components/CssOnlyTruncate';
+import { translate } from 'shared_components/I18nText';
 
 // ACTIONS/CONFIG
 
@@ -169,16 +169,16 @@ export default class LocationCart extends Component {
   render() {
     const { href } = this.props;
     const card = this.renderCard();
-    const cartWithLink = href ? <Link to={href}>{card}</Link> : card;
+    const cartWithLink = href ? (
+      <Link title={(this.props.item && translate(this.props.item.title)) || ''} to={href}>
+        {card}
+      </Link>
+    ) : (
+      card
+    );
     return (
       <Col>
-        <div>
-          {this.state.truncated ? (
-            <Popup trigger={cartWithLink} content={this.props.item.title} />
-          ) : (
-            cartWithLink
-          )}
-        </div>
+        <div>{cartWithLink}</div>
       </Col>
     );
   }

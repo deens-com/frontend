@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
-import { Popup, Image } from 'semantic-ui-react';
+import { Image } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { addFavoriteTrip, removeFavoriteTrip } from 'store/session/actions';
@@ -501,15 +501,7 @@ class TripCart extends Component {
   }
 
   render() {
-    return (
-      <div>
-        {this.state.truncated ? (
-          <Popup trigger={this.renderCard()} content={this.props.item.title} />
-        ) : (
-          this.renderCard()
-        )}
-      </div>
-    );
+    return <div>{this.renderCard()}</div>;
   }
 }
 
