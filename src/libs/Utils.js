@@ -1,7 +1,5 @@
-import moment from 'moment';
 import tagsData from './../data/tags';
 import I18nText from 'shared_components/I18nText';
-import * as Sentry from '@sentry/browser';
 
 export const serverBaseURL = () => {
   if (process.env.REACT_APP_NODE_ENV === 'production') {
@@ -142,9 +140,18 @@ export function checkRequiredFields(values, requiredFields) {
  * @returns {string}
  */
 export function getFormattedTripDates(trip) {
-  const startMoment = moment(getISODateString(trip.startDate));
-  const endMoment = startMoment.clone().add(minutesToDays(trip.duration), 'days');
-  return `${startMoment.format('LL')} - ${endMoment.format('LL')}`;
+  let startDate = new Date();
+  if (trip.startDate && typeof trip.startDate === 'string') {
+    startDate = new Date(trip.startDate);
+  } else if (trip.startDate && typeof trip.startDate.getMonth === 'function') {
+    startDate = trip.startDate;
+  }
+  // add trip duration minutes to generate endDate
+  const endDate = new Date(startDate.getTime() + trip.duration * 60000);
+  const localStringOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+  const startDateStr = startDate.toLocaleString('en-us', localStringOptions);
+  const endDateStr = endDate.toLocaleString('en-us', localStringOptions);
+  return `${startDateStr} - ${endDateStr}`;
 }
 
 /**
