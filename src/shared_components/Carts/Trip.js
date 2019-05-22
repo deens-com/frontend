@@ -2,7 +2,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
-import { Image } from 'semantic-ui-react';
+import Image from 'shared_components/Image';
+import { buildURL } from 'react-imgix';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { addFavoriteTrip, removeFavoriteTrip } from 'store/session/actions';
@@ -303,7 +304,7 @@ class TripCart extends Component {
     const owner = isPlaceholder ? {} : this.props.item.owner;
     const avatar =
       owner && owner.profilePicture
-        ? owner.profilePicture + '?auto=compress&dpr=1&crop=true&fit=crop&w=33&h=33'
+        ? buildURL(owner.profilePicture, { auto: 'compress', fit: 'crop', w: 33, h: 33 })
         : ImgurAvatar;
     const isFavorite = isPlaceholder ? false : this.props.favoriteTrips[this.props.item._id];
 
