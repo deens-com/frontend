@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 // COMPONENTS
 
 // COMMENT: the homeSearch is just for the time being
-import { Image } from 'semantic-ui-react';
+import Image from 'shared_components/Image';
 
 // ACTIONS/CONFIG
 import { sizes } from '../../libs/styled';
@@ -73,7 +73,8 @@ class MobileDropDownMenu extends Component {
           ) : (
             <Menu style={{ color: '097DA8', height: '30px', width: '30px' }} />
           )}
-          {this.props.session.username && !this.props.isMenuOpen && <Image src={dpUrl} circular />}
+          {this.props.session.username &&
+            !this.props.isMenuOpen && <Image src={dpUrl} circular height={30} width={30} />}
         </AvatarWithUsername>
       </Media>
     );
