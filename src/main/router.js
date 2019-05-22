@@ -152,6 +152,10 @@ export default (
         component={asyncCommonHOCs(Users)}
       />
       <Route path={process.env.PUBLIC_URL + '/account'} component={asyncCommonHOCs(Account)} />
+      <Route
+        path={process.env.PUBLIC_URL + '/404'}
+        component={withErrorBoundary(WaitForComponent(Notfound))}
+      />
       <Route path={process.env.PUBLIC_URL + '/:slug'} component={asyncCommonHOCs(Blog)} />
       <Route component={withErrorBoundary(WaitForComponent(Notfound))} />
     </Switch>
