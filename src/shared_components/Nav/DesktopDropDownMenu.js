@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 // COMPONENTS
 import Button from '../Button';
-import { Image } from 'semantic-ui-react';
+import Image from 'shared_components/Image';
 // COMMENT: the homeSearch is just for the time being
 // ACTIONS/CONFIG
 
@@ -50,6 +50,8 @@ const AvatarWrapper = styled.div`
   order: 2;
 `;
 
+const DesktopLoggedInDropDownMenu = React.lazy(() => import('./DesktopLoggedInDropDownMenu'));
+
 // MODULE
 export default class DesktopDropDownMenu extends Component {
   logout = () => {
@@ -82,7 +84,6 @@ export default class DesktopDropDownMenu extends Component {
   }
 
   logged_in() {
-    const DesktopLoggedInDropDownMenu = React.lazy(() => import('./DesktopLoggedInDropDownMenu'));
     return (
       <Wrap>
         <Button type="link" theme="primaryFilled" size="small" href="/trips/create">
