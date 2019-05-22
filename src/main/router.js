@@ -20,26 +20,60 @@ const WaitForComponent = Component => {
 };
 const asyncCommonHOCs = Component => commonHOCs(WaitForComponent(Component));
 
-const Home = React.lazy(() => import('./../scenes/home/home'));
-const Sessions = React.lazy(() => import('./../scenes/sessions/sessions'));
-const UserVerification = React.lazy(() => import('../scenes/user-verification'));
-const Registrations = React.lazy(() => import('./../scenes/registrations/registrations'));
-const RecoverPassword = React.lazy(() => import('./../scenes/recover-password'));
-const EarnMoney = React.lazy(() => import('./../scenes/earn-money'));
-const TokenSale = React.lazy(() => import('./../scenes/token-sale'));
-const CookiePolicy = React.lazy(() => import('./../scenes/cookie-policy'));
-const SearchResults = React.lazy(() => import('./../scenes/results/results'));
-const ServiceUpsert = React.lazy(() => import('../scenes/service-upsert'));
-const Services = React.lazy(() => import('./../scenes/services/services'));
-const TripOrganizer = React.lazy(() => import('./../scenes/trip-organizer'));
-const TripShare = React.lazy(() => import('./../scenes/trip-share'));
-const Checkout = React.lazy(() => import('../scenes/checkout'));
-const TripCreator = React.lazy(() => import('./../scenes/trip-creator'));
-const Trips = React.lazy(() => import('./../scenes/trip'));
-const Users = React.lazy(() => import('./../scenes/users/users'));
-const Account = React.lazy(() => import('./../scenes/account/account'));
-const Blog = React.lazy(() => import('../scenes/blog'));
-const Notfound = React.lazy(() => import('./../styled_scenes/NotFound'));
+const Home = React.lazy(() =>
+  import(/* webpackChunkName: "home", webpackPrefetch: 100 */ './../scenes/home/home'),
+);
+const Sessions = React.lazy(() =>
+  import(/* webpackChunkName: "sessions" */ './../scenes/sessions/sessions'),
+);
+const UserVerification = React.lazy(() =>
+  import(/* webpackChunkName: "user-verification" */ '../scenes/user-verification'),
+);
+const Registrations = React.lazy(() =>
+  import(/* webpackChunkName: "registrations" */ './../scenes/registrations/registrations'),
+);
+const RecoverPassword = React.lazy(() =>
+  import(/* webpackChunkName: "recover-password" */ './../scenes/recover-password'),
+);
+const EarnMoney = React.lazy(() =>
+  import(/* webpackChunkName: "earn-money" */ './../scenes/earn-money'),
+);
+const TokenSale = React.lazy(() =>
+  import(/* webpackChunkName: "token-sale" */ './../scenes/token-sale'),
+);
+const CookiePolicy = React.lazy(() =>
+  import(/* webpackChunkName: "cookie-policy" */ './../scenes/cookie-policy'),
+);
+const SearchResults = React.lazy(() =>
+  import(/* webpackChunkName: "results", webpackPrefetch: true */ './../scenes/results/results'),
+);
+const ServiceUpsert = React.lazy(() =>
+  import(/* webpackChunkName: "service-upsert" */ '../scenes/service-upsert'),
+);
+const Services = React.lazy(() =>
+  import(/* webpackChunkName: "services", webpackPrefetch: true */ './../scenes/services/services'),
+);
+const TripOrganizer = React.lazy(() =>
+  import(/* webpackChunkName: "trip-organizer" */ './../scenes/trip-organizer'),
+);
+const TripShare = React.lazy(() =>
+  import(/* webpackChunkName: "trip-share" */ './../scenes/trip-share'),
+);
+const Checkout = React.lazy(() => import(/* webpackChunkName: "checkout" */ '../scenes/checkout'));
+const TripCreator = React.lazy(() =>
+  import(/* webpackChunkName: "trip-creator" */ './../scenes/trip-creator'),
+);
+const Trips = React.lazy(() =>
+  import(/* webpackChunkName: "trip", webpackPrefetch: true */ './../scenes/trip'),
+);
+const Users = React.lazy(() => import(/* webpackChunkName: "users" */ './../scenes/users/users'));
+const Account = React.lazy(() =>
+  import(/* webpackChunkName: "account" */ './../scenes/account/account'),
+);
+const Blog = React.lazy(() => import(/* webpackChunkName: "blog" */ '../scenes/blog'));
+const Notfound = React.lazy(() =>
+  import(/* webpackChunkName: "not-found" */ './../styled_scenes/NotFound'),
+);
 
 export default (
   <ScrollToTop>
