@@ -321,7 +321,11 @@ class TripCart extends Component {
             </HeartWrapper>
             {hideAuthor ? null : (
               <Author to={`/users/${owner.username}`}>
-                {isPlaceholder ? <ImagePlaceholder /> : <Image src={avatar} />}
+                {isPlaceholder ? (
+                  <ImagePlaceholder />
+                ) : (
+                  <Image src={avatar} height={33} width={33} />
+                )}
                 <Stars
                   length={3}
                   rating={((isPlaceholder || !owner.rating ? 0 : owner.rating.average) * 3) / 5}
