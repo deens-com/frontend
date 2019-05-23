@@ -102,8 +102,15 @@ export const getParamsToSave = (searchParams, currentSavedParams) => {
     delete paramsToSave.countryCode;
   }
   const now = Date.now();
-  if (paramsToSave.startDate && now >= paramsToSave.startDate) delete paramsToSave.startDate;
-  if (paramsToSave.endDate && now <= paramsToSave.endDate) delete paramsToSave.endDate;
+  if (
+    (paramsToSave.startDate && now >= paramsToSave.startDate) ||
+    (paramsToSave.endDate && now >= paramsToSave.startDate)
+  ) {
+    // startDate or endDate is in the past
+    delete paramsToSave.startDate;
+    delete paramsToSave.endDate;
+  }
+
   paramsToSaveKeys.forEach(param => {
     if (param in searchParams) {
       paramsToSave[param] = searchParams[param];
