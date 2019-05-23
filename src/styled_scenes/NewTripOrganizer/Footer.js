@@ -6,7 +6,7 @@ import { textDisabled, textLight, textDark } from 'libs/colors';
 import { PStrong, PSmall, P } from 'libs/commonStyles';
 import Button from 'shared_components/Button';
 import LoadingDots from 'shared_components/LoadingDots';
-import { UndoArrow } from 'shared_components/icons';
+import UndoArrow from 'shared_components/icons/UndoArrow';
 import I18nText from 'shared_components/I18nText';
 import { throttle } from 'lodash';
 import { media } from 'libs/styled';

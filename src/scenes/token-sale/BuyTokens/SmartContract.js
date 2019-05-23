@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import axios from 'libs/axios';
-import { CopyToClipboard } from 'shared_components/icons';
+import CopyToClipboard from 'shared_components/icons/CopyToClipboard';
 import Button from 'shared_components/Button';
 import { Popup } from 'semantic-ui-react';
 import etherScanLogo from '../images/etherscan.png';

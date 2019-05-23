@@ -17,14 +17,17 @@ import {
   accommodation,
   secondary,
 } from 'libs/colors';
-import { Drag } from 'shared_components/icons';
+import Drag from 'shared_components/icons/Drag';
 import Stars from 'shared_components/Rating/Stars';
 import InlineInput from 'shared_components/InlineInput';
 import ServiceOptions from './Options';
 import ServiceSettings from './Settings';
 import { TripContext } from '../../';
 import { getImageUrlFromMedia } from 'libs/media';
-import { Activity, Food, Accommodation, Settings } from 'shared_components/icons';
+import Settings from 'shared_components/icons/Settings';
+import Activity from 'shared_components/icons/RunningPerson';
+import Food from 'shared_components/icons/SilverWare';
+import Accommodation from 'shared_components/icons/Bed';
 
 const serviceSource = {
   beginDrag(props) {

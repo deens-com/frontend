@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 // COMPONENTS
-import { PinIcon } from '../icons';
+import PinIcon from 'shared_components/icons/PinIcon';
 
 // ACTIONS/CONFIG
 

@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { primary, error } from 'libs/colors';
-import { MenuDownArrow } from 'shared_components/icons';
+import MenuDownArrow from 'shared_components/icons/MenuDownArrow';
 
 const Wrapper = styled.div`
   position: relative;

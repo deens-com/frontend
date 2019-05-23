@@ -5,7 +5,7 @@ import Media from 'react-media';
 import styled from 'styled-components';
 
 // COMPONENTS
-import { SearchIcon } from '../../icons';
+import SearchIcon from 'shared_components/icons/SearchIcon';
 import Search from './Search';
 
 // ACTIONS/CONFIG

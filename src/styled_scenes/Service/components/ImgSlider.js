@@ -3,13 +3,13 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 // COMPONENTS
-import { ArrowIcon } from '../../../shared_components/icons';
+import ArrowIcon from 'shared_components/icons/ArrowIcon';
 import Image from 'shared_components/Image';
 import placeholder from './../../../assets/placeholder350x350.svg';
 
 // ACTIONS/CONFIG
 import { media } from '../../../libs/styled';
-import { getImageUrlFromMedia } from 'libs/media'
+import { getImageUrlFromMedia } from 'libs/media';
 
 // STYLES
 const Wrap = styled.div`
@@ -137,10 +137,7 @@ export default class FoodImgSlider extends Component {
           )}
         <Image
           src={
-            (
-              getImageUrlFromMedia(this.props.images, 'hero', false, this.state.index) ||
-              placeholder
-            )
+            getImageUrlFromMedia(this.props.images, 'hero', false, this.state.index) || placeholder
           }
           sizes="42vw"
           alt="service main picture"

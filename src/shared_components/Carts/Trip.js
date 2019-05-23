@@ -18,7 +18,7 @@ import Thumb from './components/Thumb';
 import { Cart, ContentWrap } from './styles';
 import { generateTripSlug, generateServiceSlug } from 'libs/Utils';
 import { getImageUrlFromMedia } from 'libs/media';
-import { Heart } from 'shared_components/icons';
+import Heart from 'shared_components/icons/Heart';
 import I18nText, { translate } from 'shared_components/I18nText';
 import { H6, P, PStrong, PSmall, PXSmall } from 'libs/commonStyles';
 import * as colors from 'libs/colors';

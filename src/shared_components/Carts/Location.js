@@ -10,7 +10,7 @@ import Rating from '../Rating';
 import PriceTag from '../Currency/PriceTag';
 import Thumb from './components/Thumb';
 import Col from '../layout/Col';
-import { PinIcon } from '../icons';
+import PinIcon from 'shared_components/icons/PinIcon';
 import CssOnlyTruncate from 'shared_components/CssOnlyTruncate';
 import { translate } from 'shared_components/I18nText';
 

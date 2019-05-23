@@ -11,7 +11,7 @@ import { getHeroImageUrlFromMedia } from 'libs/media';
 import Image from 'shared_components/Image';
 
 import I18nText from 'shared_components/I18nText';
-import { MapMarker } from 'shared_components/icons';
+import MapMarker from 'shared_components/icons/MapMarker';
 import Category from 'shared_components/Category';
 import Tag from 'shared_components/Tag';
 import Rating from 'shared_components/Rating';

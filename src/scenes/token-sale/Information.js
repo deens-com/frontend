@@ -2,7 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import Button from 'shared_components/Button';
 import { media } from 'libs/styled';
-import { SignUpIcon, KYCIcon, TokensIcon } from './icons';
+import SignUpIcon from './icons/SignUpIcon';
+import KYCIcon from './icons/KYCIcon';
+import TokensIcon from './icons/TokensIcon';
 
 const Wrapper = styled.div`
   padding: 0 25px;

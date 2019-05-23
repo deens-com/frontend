@@ -14,7 +14,11 @@ import {
   backgroundDark,
   primary,
 } from 'libs/colors';
-import { MapMarker, Activity, Briefcase, Food, Accommodation } from 'shared_components/icons';
+import MapMarker from 'shared_components/icons/MapMarker';
+import Briefcase from 'shared_components/icons/Briefcase';
+import Activity from 'shared_components/icons/RunningPerson';
+import Food from 'shared_components/icons/SilverWare';
+import Accommodation from 'shared_components/icons/Bed';
 import ReactResizeDetector from 'react-resize-detector';
 
 const Wrapper = styled.div`

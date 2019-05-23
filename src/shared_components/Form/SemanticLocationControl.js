@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import PlacesAutocomplete from 'shared_components/PlacesAutocomplete';
 import { Form, List, Popup } from 'semantic-ui-react';
 import Input from 'shared_components/StyledInput';
-import { MapMarker } from 'shared_components/icons';
+import MapMarker from 'shared_components/icons/MapMarker';
 
 /**
  * A more advanced version of LocationControl

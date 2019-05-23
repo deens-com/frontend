@@ -19,7 +19,7 @@ import { Cart, ContentWrap } from './styles';
 import { cardConfig } from 'libs/config';
 import { duration } from 'libs/trips';
 import { getImageUrlFromMedia } from 'libs/media';
-import { PinIcon } from 'shared_components/icons';
+import PinIcon from 'shared_components/icons/PinIcon';
 import I18nText from 'shared_components/I18nText';
 import AddToTrip from './AddToTrip';
 

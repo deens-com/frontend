@@ -11,7 +11,8 @@ import { generateTripSlug } from 'libs/Utils';
 
 import I18nText from 'shared_components/I18nText';
 import { formatLocation } from 'shared_components/Carts/Trip';
-import { MapMarker, LeftArrow } from 'shared_components/icons';
+import MapMarker from 'shared_components/icons/MapMarker';
+import LeftArrow from 'shared_components/icons/LeftArrow';
 import PaymentContainer from './PaymentContainer';
 import BookingDone from './components/BookingDone';
 import CheckoutTrip from './components/CheckoutTrip';

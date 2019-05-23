@@ -6,8 +6,10 @@ import { Link } from 'react-router-dom';
 import { textLight, primary, primaryHover, tertiary } from 'libs/colors';
 
 // COMPONENTS
-import { ArrowIcon } from '../icons';
-import { DropArrow, PlusIcon, Camera } from '../icons';
+import ArrowIcon from 'shared_components/icons/ArrowIcon';
+import DropArrow from 'shared_components/icons/DropArrow';
+import PlusIcon from 'shared_components/icons/PlusIcon';
+import Camera from 'shared_components/icons/Camera';
 
 // ACTIONS/CONFIG
 import { resetButton } from '../../libs/styled';

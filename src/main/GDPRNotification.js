@@ -4,7 +4,7 @@ import { media } from 'libs/styled';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from 'store/settings/actions';
-import { CrossIcon } from 'shared_components/icons';
+import CrossIcon from 'shared_components/icons/CrossIcon';
 
 const Notification = styled.div`
   background-color: rgba(210, 236, 241, 0.98);

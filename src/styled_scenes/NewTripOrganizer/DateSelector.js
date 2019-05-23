@@ -1,6 +1,7 @@
 import 'react-dates.css';
-import React, { useContext, useState, useEffect } from 'react';
-import { PlusIcon, MinusIcon } from 'shared_components/icons';
+import React, { useContext, useState } from 'react';
+import PlusIcon from 'shared_components/icons/PlusIcon';
+import MinusIcon from 'shared_components/icons/MinusIcon';
 import styled from 'styled-components';
 import moment from 'moment';
 import { minutesToDays } from 'libs/Utils';
@@ -11,7 +12,7 @@ import { P, H2Subtitle } from 'libs/commonStyles';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import { DayPickerRangeController } from 'react-dates';
-import { START_DATE, END_DATE } from 'react-dates/constants';
+import { START_DATE } from 'react-dates/constants';
 
 const now = moment().add(1, 'days');
 const isDayBlocked = date => date.valueOf() <= now.valueOf();

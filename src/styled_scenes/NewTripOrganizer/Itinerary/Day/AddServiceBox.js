@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { Popup } from 'semantic-ui-react';
 import { Modal } from 'semantic-ui-react';
-import { Activity, Food, Accommodation, Pen, LinkIcon } from 'shared_components/icons';
+import Activity from 'shared_components/icons/RunningPerson';
+import Food from 'shared_components/icons/SilverWare';
+import Accommodation from 'shared_components/icons/Bed';
+import Pen from 'shared_components/icons/Pen';
+import LinkIcon from 'shared_components/icons/LinkIcon';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import AddButton from '../../AddButton';

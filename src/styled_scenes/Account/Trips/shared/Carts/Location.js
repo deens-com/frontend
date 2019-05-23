@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import Rating from 'shared_components/Rating';
 import Thumb from './components/Thumb';
 import Col from 'shared_components/layout/Col';
-import { PinIcon } from 'shared_components/icons';
+import PinIcon from 'shared_components/icons/PinIcon';
 import I18nText, { translate } from 'shared_components/I18nText';
 import CityCountry from 'shared_components/CityCountry';
 import CssOnlyTruncate from 'shared_components/CssOnlyTruncate';

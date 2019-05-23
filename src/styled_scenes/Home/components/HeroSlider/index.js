@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 // COMPONENTS
-import { ArrowIcon } from '../../../../shared_components/icons';
+import ArrowIcon from 'shared_components/icons/ArrowIcon';
 import SliderPerson from './SliderPerson';
 
 // ACTIONS/CONFIG

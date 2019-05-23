@@ -5,7 +5,7 @@ import { resetButton } from 'libs/styled';
 import React, { Component } from 'react';
 import SemanticLocationControl from 'shared_components/Form/LocationAutoSuggest';
 import styled from 'styled-components';
-import { CrossIcon } from '../../icons';
+import CrossIcon from 'shared_components/icons/CrossIcon';
 import history from './../../../main/history';
 
 const Form = styled.form`

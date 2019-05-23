@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import queryString from 'query-string';
 import styled from 'styled-components';
 import Button from 'shared_components/Button';
-import { CheckIcon } from 'shared_components/icons';
+import CheckIcon from 'shared_components/icons/CheckIcon';
 import { PageContent } from 'shared_components/layout/Page';
 import BrandFooter from 'shared_components/BrandFooter';
 import { connect } from 'react-redux';

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 // COMPONENTS
-import { Logo } from '../../icons';
+import Logo from 'shared_components/icons/Logo';
 
 // ACTIONS/CONFIG
 // import { sizes, resetButton } from '../../../libs/styled';
@@ -46,7 +46,7 @@ export default function TopBarLogo({ menuIsOpened, toggleMenu, applyFixation }) 
   return (
     <Wrap>
       <LogoLink to="/" aria-label="Please homepage">
-        <Logo style={{height: '50px'}}/>
+        <Logo style={{ height: '50px' }} />
       </LogoLink>
     </Wrap>
   );

@@ -12,7 +12,8 @@ import Image from 'shared_components/Image';
 // ACTIONS/CONFIG
 import { sizes } from '../../libs/styled';
 import ImgurAvatar from './../../assets/no-avatar.png';
-import { Menu, CrossIcon } from 'shared_components/icons';
+import Menu from 'shared_components/icons/Menu';
+import CrossIcon from 'shared_components/icons/CrossIcon';
 
 // STYLES
 const AvatarWithUsername = styled.div`
