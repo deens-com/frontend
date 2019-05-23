@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
-import Image from 'shared_components/Image';
+import { buildImgUrl } from 'libs/Utils';
 
 // STYLES
 const Wrap = styled.div`
@@ -29,12 +29,12 @@ const Wrap = styled.div`
     `};
 `;
 
-const Thumb = styled(Image)`
-  padding-top: 65%;
+const Thumb = styled.img`
   background: #f7f7f7;
   background-size: cover;
   background-position: center;
   height: 100%;
+  width: 100%;
 `;
 
 // MODULE
@@ -68,9 +68,10 @@ export default class CartThumb extends Component {
   render() {
     const { url, withTooltip } = this.props;
 
+    const optimizedUrl = buildImgUrl(url, { width: 400, height: 300 });
     return (
       <Wrap withTooltip={withTooltip} onMouseLeave={this.hideTooltip}>
-        <Thumb src={url} background width={400} height={300} />
+        <Thumb className="lazyload" data-src={optimizedUrl} />
         {/*withTooltip && (
           <TagWrap
             ref={tag => {

@@ -7,13 +7,13 @@ import { connect } from 'react-redux';
 // COMPONENTS
 
 // COMMENT: the homeSearch is just for the time being
-import Image from 'shared_components/Image';
 
 // ACTIONS/CONFIG
 import { sizes } from '../../libs/styled';
 import ImgurAvatar from './../../assets/no-avatar.png';
 import Menu from 'shared_components/icons/Menu';
 import CrossIcon from 'shared_components/icons/CrossIcon';
+import { buildImgUrl } from 'libs/Utils';
 
 // STYLES
 const AvatarWithUsername = styled.div`
@@ -57,7 +57,10 @@ const AvatarWithUsername = styled.div`
 // MODULE
 class MobileDropDownMenu extends Component {
   render() {
-    const dpUrl = this.props.session.profilePicture || ImgurAvatar;
+    const { profilePicture } = this.props.session;
+    const dpUrl = profilePicture
+      ? buildImgUrl(profilePicture, { width: 38, height: 38, circular: true })
+      : ImgurAvatar;
 
     return (
       <Media query={`(max-width: ${sizes.large})`}>
@@ -75,7 +78,9 @@ class MobileDropDownMenu extends Component {
             <Menu style={{ color: '097DA8', height: '30px', width: '30px' }} />
           )}
           {this.props.session.username &&
-            !this.props.isMenuOpen && <Image src={dpUrl} circular height={30} width={30} />}
+            !this.props.isMenuOpen && (
+              <img className="lazyload" data-src={dpUrl} height={30} width={30} alt="user avatar" />
+            )}
         </AvatarWithUsername>
       </Media>
     );

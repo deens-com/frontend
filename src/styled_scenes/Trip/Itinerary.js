@@ -8,7 +8,6 @@ import { getCategory } from 'libs/categories';
 import { parseLocation } from 'libs/fetch_helpers';
 import { getPriceFromServiceOption, getPeopleCount, generateServiceSlug } from 'libs/Utils';
 import { getHeroImageUrlFromMedia } from 'libs/media';
-import Image from 'shared_components/Image';
 
 import I18nText from 'shared_components/I18nText';
 import MapMarker from 'shared_components/icons/MapMarker';
@@ -72,7 +71,7 @@ const ServiceDescription = styled.div`
   }
 `;
 
-const ServiceImage = styled(Image)`
+const ServiceImage = styled.img`
   display: block;
   object-fit: cover;
   width: 100%;
@@ -245,7 +244,10 @@ export default class Itinerary extends Component {
             <I18nText data={dayData.service.description} />
           </ServiceDescription>
           {getHeroImageUrlFromMedia(dayData.service.media) && (
-            <ServiceImage src={getHeroImageUrlFromMedia(dayData.service.media)} />
+            <ServiceImage
+              className="lazyload"
+              data-src={getHeroImageUrlFromMedia(dayData.service.media)}
+            />
           )}
           <ServiceData>
             <CategoryWrapper>

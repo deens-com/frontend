@@ -2,8 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
-import Image from 'shared_components/Image';
-import { buildURL } from 'react-imgix';
+import { buildImgUrl } from 'libs/Utils';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { addFavoriteTrip, removeFavoriteTrip } from 'store/session/actions';
@@ -304,7 +303,7 @@ class TripCart extends Component {
     const owner = isPlaceholder ? {} : this.props.item.owner;
     const avatar =
       owner && owner.profilePicture
-        ? buildURL(owner.profilePicture, { auto: 'compress', fit: 'crop', w: 33, h: 33 })
+        ? buildImgUrl(owner.profilePicture, { width: 33, height: 33 })
         : ImgurAvatar;
     const isFavorite = isPlaceholder ? false : this.props.favoriteTrips[this.props.item._id];
 
@@ -324,7 +323,7 @@ class TripCart extends Component {
                 {isPlaceholder ? (
                   <ImagePlaceholder />
                 ) : (
-                  <Image src={avatar} height={33} width={33} />
+                  <img className="lazyload" data-src={avatar} height="33px" width="33px" />
                 )}
                 <Stars
                   length={3}

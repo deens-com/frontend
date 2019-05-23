@@ -1,6 +1,5 @@
-import tagsData from './../data/tags';
 import I18nText from 'shared_components/I18nText';
-
+import tagsData from './../data/tags';
 export const serverBaseURL = () => {
   if (process.env.REACT_APP_NODE_ENV === 'production') {
     return process.env.SERVER_BASE_URL || 'https://api.deens.com';
@@ -324,4 +323,18 @@ export function getKmFromMeters(meters) {
   }
 
   return (meters / 1000).toFixed(1);
+}
+
+export function buildImgUrl(imgSrc, { width, height, circular }) {
+  const imgUrl = new URL(imgSrc);
+  const searchParams = new URLSearchParams(imgUrl.search);
+  if (searchParams.has('auto')) searchParams.set('auto', 'compress');
+  else searchParams.append('auto', 'compress');
+  if (searchParams.has('fit')) searchParams.set('fit', 'crop');
+  else searchParams.append('fit', 'crop');
+  if (width) searchParams.append('w', width);
+  if (height) searchParams.append('h', height);
+  if (circular) searchParams.append('mask', 'ellipse');
+  imgUrl.search = searchParams.toString();
+  return imgUrl.toString();
 }

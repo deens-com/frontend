@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 // COMPONENTS
 import ArrowIcon from 'shared_components/icons/ArrowIcon';
-import Image from 'shared_components/Image';
 import placeholder from './../../../assets/placeholder350x350.svg';
 
 // ACTIONS/CONFIG
@@ -135,13 +134,13 @@ export default class FoodImgSlider extends Component {
               </RightArrow>
             </span>
           )}
-        <Image
-          src={
+        <img
+          data-src={
             getImageUrlFromMedia(this.props.images, 'hero', false, this.state.index) || placeholder
           }
           sizes="42vw"
           alt="service main picture"
-          className="service-img"
+          className="service-img lazyload"
         />
       </Wrap>
     );

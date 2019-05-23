@@ -102,3 +102,7 @@ p {
   font-family: 'Nunito', sans-serif;
   font-weight: 400;
 }
+
+img.lazyload:not([src]) {
+	visibility: hidden;
+}

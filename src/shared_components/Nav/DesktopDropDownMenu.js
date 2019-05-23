@@ -1,10 +1,10 @@
 // NPM
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
+import { buildImgUrl } from 'libs/Utils';
 
 // COMPONENTS
 import Button from '../Button';
-import Image from 'shared_components/Image';
 // COMMENT: the homeSearch is just for the time being
 // ACTIONS/CONFIG
 
@@ -44,6 +44,7 @@ const AvatarWrapper = styled.div`
   height: 38px;
   width: 38px;
   border-radius: 10px 10px 10px 0;
+  background: #f7f7f7;
   overflow: hidden;
   margin-left: 15px;
   margin-top: -5px;
@@ -58,11 +59,17 @@ export default class DesktopDropDownMenu extends Component {
     this.props.logOut();
   };
 
-  trigger = () => (
-    <AvatarWrapper>
-      <Image src={this.props.session.profilePicture || ImgurAvatar} width={38} height={38} />
-    </AvatarWrapper>
-  );
+  trigger = () => {
+    const { profilePicture } = this.props.session;
+    const url = profilePicture
+      ? buildImgUrl(profilePicture, { width: 38, height: 38 })
+      : ImgurAvatar;
+    return (
+      <AvatarWrapper>
+        <img className="lazyload" data-src={url} width="38px" height="38px" alt="user avatar" />
+      </AvatarWrapper>
+    );
+  };
 
   logged_out() {
     return (
