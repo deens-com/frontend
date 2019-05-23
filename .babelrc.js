@@ -14,5 +14,11 @@ module.exports = {
       },
     ],
     'lodash',
+    [
+      'babel-plugin-styled-components',
+      {
+        ssr: false,
+      },
+    ],
   ],
 };
