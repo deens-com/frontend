@@ -104,7 +104,7 @@ export const getParamsToSave = (searchParams, currentSavedParams) => {
   const now = Date.now();
   if (
     (paramsToSave.startDate && now >= paramsToSave.startDate) ||
-    (paramsToSave.endDate && now >= paramsToSave.startDate)
+    (paramsToSave.endDate && now >= paramsToSave.endDate)
   ) {
     // startDate or endDate is in the past
     delete paramsToSave.startDate;
