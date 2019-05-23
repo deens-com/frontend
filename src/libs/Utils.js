@@ -325,7 +325,7 @@ export function getKmFromMeters(meters) {
   return (meters / 1000).toFixed(1);
 }
 
-export function buildImgUrl(imgSrc, { width, height, circular }) {
+export function buildImgUrl(imgSrc, { width, height, circular } = {}) {
   const imgUrl = new URL(imgSrc);
   const searchParams = new URLSearchParams(imgUrl.search);
   if (searchParams.has('auto')) searchParams.set('auto', 'compress');

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Image } from 'semantic-ui-react';
 import Rating from '../../shared_components/Rating';
 import ImgurAvatar from './../../assets/no-avatar.png';
-import { buildURL } from 'react-imgix';
+import { buildImgUrl } from 'libs/Utils';
 
 const AvatarWrapper = styled.div`
   height: 30px;
@@ -30,7 +30,7 @@ const Avatar = ({ user, usernameColor }) => {
   if (!user) return null;
   const dpUrl =
     (user.profilePicture &&
-      buildURL(user.profilePicture, { auto: 'compress', mask: 'ellipse', w: 30, h: 30 })) ||
+      buildImgUrl(user.profilePicture, { circular: true, width: 30, height: 30 })) ||
     ImgurAvatar;
   //const userProfilePageUrl = `/users/${user.username}`;
   return (
