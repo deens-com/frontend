@@ -9,7 +9,7 @@ import NotFound from 'styled_scenes/NotFound';
 import actions from 'store/trips/actions';
 import searchActions from 'store/search/actions';
 import { getPriceFromServiceOption, getPeopleCount } from 'libs/Utils';
-import Helmet from 'react-helmet-async';
+import { Helmet } from 'react-helmet-async';
 import { websiteUrl } from 'libs/config';
 import I18nText from 'shared_components/I18nText';
 import { generateTripSlug } from 'libs/Utils';

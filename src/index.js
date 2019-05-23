@@ -5,7 +5,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './index.css';
 import App from './main/app';
-import createHistory from 'history/createBrowserHistory';
+import { createBrowserHistory as createHistory } from 'history';
 import { unregister as unregisterServiceWorker } from './registerServiceWorker';
 import { isProd, isStaging } from './libs/config';
 import * as featureFlags from './libs/feature-flags';

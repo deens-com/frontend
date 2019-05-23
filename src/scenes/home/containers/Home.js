@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import HomeComponent from './../components/Home';
-import Helmet from 'react-helmet-async';
+import { Helmet } from 'react-helmet-async';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { websiteUrl } from 'libs/config';

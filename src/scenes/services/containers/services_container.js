@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter, Redirect } from 'react-router';
 import NotFoundScene from 'styled_scenes/NotFound';
-import Helmet from 'react-helmet-async';
+import { Helmet } from 'react-helmet-async';
 import { websiteUrl } from 'libs/config';
 import I18nText from 'shared_components/I18nText';
 import { generateServiceSlug } from 'libs/Utils';

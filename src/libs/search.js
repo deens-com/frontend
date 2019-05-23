@@ -1,4 +1,4 @@
-import queryString from 'qs';
+import queryString from 'query-string';
 import apiClient from 'libs/apiClient';
 import { isEqual } from 'lodash';
 import { formatYYYYMMDD } from 'libs/Utils';
@@ -114,7 +114,7 @@ export const mapUrlToProps = location => {
     return {};
   }
 
-  const searchParams = queryString.parse(location.search, { ignoreQueryPrefix: true });
+  const searchParams = queryString.parse(location.search);
 
   return getSearchParams(searchParams);
 };

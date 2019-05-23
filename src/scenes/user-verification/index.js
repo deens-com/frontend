@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import queryString from 'qs';
+import queryString from 'query-string';
 import styled from 'styled-components';
 import Button from 'shared_components/Button';
 import { CheckIcon } from 'shared_components/icons';
@@ -49,7 +49,7 @@ const IconWrapper = styled.div`
 `;
 
 const TripCreator = props => {
-  const params = queryString.parse(props.location.search, { ignoreQueryPrefix: true });
+  const params = queryString.parse(props.location.search);
   useEffect(() => {
     props.changeHeader();
   });
