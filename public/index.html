@@ -122,10 +122,10 @@
       })();
     </script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc&libraries=places&language=en" async defer></script>
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc&libraries=places&language=en" async defer></script> -->
 
     <!-- Segment Analytics -->
-    <!-- <script type="text/javascript">
+    <script type="text/javascript">
       var initSegment = function(){
 
         // Create a queue, but don't obliterate an existing one!
@@ -242,13 +242,24 @@
         }
       }
 
-      window.addEventListener('load', function() {
+      function initGoogleMaps() {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.async = true;
+        script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc&libraries=places&language=en';
+        // Insert our script next to the first script element.
+        var first = document.getElementsByTagName('script')[0];
+        first.parentNode.insertBefore(script, first);
+      }
+
+      const initLibsScript = function() {
+        initGoogleMaps();
         initSegment();
         // initUnlessCom();
         initOneSignal();
-      });
-
-    </script> -->
+      }
+      window.addEventListener('load', initLibsScript);
+    </script>
     <!-- End Segment Analytics -->
   </body>
 </html>
