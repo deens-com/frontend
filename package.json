@@ -82,7 +82,7 @@
     "build": "REACT_APP_NODE_ENV=production rescripts build",
     "now-build": "REACT_APP_NODE_ENV=staging rescripts build",
     "build:staging": "REACT_APP_NODE_ENV=staging rescripts build",
-    "postbuild": "mkdir -p build/.circleci && cp -r .circleci/* build/.circleci/",
+    "postbuild": "mkdir -p build/.circleci && cp -r .circleci/* build/.circleci/ && react-snap",
     "test": "rescripts test --env=jsdom",
     "eject": "react-scripts eject",
     "precommit": "pretty-quick --staged",
@@ -111,6 +111,7 @@
     "lint-staged": "^7.2.0",
     "lodash-webpack-plugin": "^0.11.5",
     "prettier": "1.14.2",
+    "react-snap": "^1.23.0",
     "webpack-bundle-analyzer": "^3.3.2",
     "webpack-deadcode-plugin": "^0.1.9"
   },
@@ -147,5 +148,9 @@
       "last 1 chrome version",
       "last 1 firefox version"
     ]
+  },
+  "react-snap": {
+    "source": "build",
+    "inlineCss": true
   }
 }
