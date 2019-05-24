@@ -150,7 +150,6 @@
     ]
   },
   "react-snap": {
-    "source": "build",
-    "inlineCss": true
+    "source": "build"
   }
 }
