@@ -50,7 +50,12 @@ import(/* webpackChunkName: "sentry" */ '@sentry/browser').then(Sentry => {
 // reads localStorage to get the user object on load
 readSession();
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const rootElement = document.getElementById('root');
+if (rootElement.hasChildNodes()) {
+  ReactDOM.hydrate(<App />, rootElement);
+} else {
+  ReactDOM.render(<App />, rootElement);
+}
 unregisterServiceWorker();
 
 // Stolen from: https://stackoverflow.com/a/9870540/1115059
