@@ -58,10 +58,20 @@ const useDayJsInsteadOfMoment = config => {
   return config;
 };
 
+const moveHeavyLibsIntoSeparateChunks = config => {
+  config.optimization.splitChunks = {
+    ...config.optimization.splitChunks,
+    maxAsyncRequests: 20,
+    minSize: 100000,
+  };
+  return config;
+};
+
 module.exports = [
   ['use-babel-config', '.babelrc.js'],
   addEntryPoints,
   addWebpackPlugins,
+  moveHeavyLibsIntoSeparateChunks,
   // useDayJsInsteadOfMoment, // (react-dates crashes with it)
   // logConfig,
 ];
