@@ -46,7 +46,8 @@ class ServicesContainer extends Component {
       let helmet;
       const { service } = this.props;
       if (service._id) {
-        const location = service.city || service.state;
+        const locationObject = service.originalLocation || service.location;
+        const location = locationObject ? locationObject.city || locationObject.state : '';
         const metaDescription = service.description
           ? I18nText.translate(service.description)
           : `${I18nText.translate(service.categories[0].names)}${
