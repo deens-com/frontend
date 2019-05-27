@@ -12,6 +12,7 @@ import { generateServiceSlug } from 'libs/Utils';
 import { getHeroImageUrlFromMedia } from 'libs/media';
 import tripActions from 'store/trips/actions';
 import headerActions from 'store/header/actions';
+import { getServiceJsonLdData } from 'libs/json-ld';
 
 class ServicesContainer extends Component {
   state = {
@@ -70,6 +71,9 @@ class ServicesContainer extends Component {
             <meta property="og:title" content={title} />
             <meta property="og:description" content={metaDescription} />
             {image && <meta property="og:image" content={image} />}
+            <script type="application/ld+json">
+              {JSON.stringify(getServiceJsonLdData(service))}
+            </script>
           </Helmet>
         );
 
