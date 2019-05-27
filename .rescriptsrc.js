@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const { appendWebpackPlugin } = require('@rescripts/utilities');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
+const WebpackModules = require('webpack-modules');
 
 const logConfig = config => {
   console.log(util.inspect(config, null, 20, true));
@@ -45,6 +46,7 @@ const addWebpackPlugins = config => {
     config,
   );
   // config = appendWebpackPlugin(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/), config);
+  config = appendWebpackPlugin(new WebpackModules(), config);
   return config;
 };
 
@@ -55,6 +57,12 @@ const addEntryPoints = config => {
 
 const useDayJsInsteadOfMoment = config => {
   config.resolve.alias['moment'] = 'dayjs/esm';
+  return config;
+};
+
+const usePreact = config => {
+  config.resolve.alias['react'] = 'preact/compat';
+  config.resolve.alias['react-dom'] = 'preact/compat';
   return config;
 };
 
@@ -72,6 +80,7 @@ module.exports = [
   addEntryPoints,
   addWebpackPlugins,
   moveHeavyLibsIntoSeparateChunks,
+  usePreact,
   // useDayJsInsteadOfMoment, // (react-dates crashes with it)
   // logConfig,
 ];
