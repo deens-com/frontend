@@ -46,18 +46,19 @@ class ServicesContainer extends Component {
       let helmet;
       const { service } = this.props;
       if (service._id) {
-        const location = service.location ? service.location.city || service.location.state : '';
+        const location = service.city || service.state;
         const metaDescription = service.description
           ? I18nText.translate(service.description)
-          : `${I18nText.translate(service.categories[0].names)}${service.location &&
-              ` in ${location}`}`;
+          : `${I18nText.translate(service.categories[0].names)}${
+              location ? ` in ${location}` : ''
+            }`;
         const description = `${metaDescription.substring(
           0,
           Math.min(155, metaDescription.length),
         )}...`;
         const image = getHeroImageUrlFromMedia(service.media);
         const url = `${websiteUrl}${this.props.location.pathname}`;
-        const title = `${I18nText.translate(service.title)}${service.location && `, ${location}`}`;
+        const title = `${I18nText.translate(service.title)}${location ? `, ${location}` : ''}`;
         const isIncorrectUrl =
           this.props.slug &&
           `${this.props.match.params.slug}_${this.props.match.params.id}` !== this.props.slug;
