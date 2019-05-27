@@ -1,34 +1,47 @@
 import I18nText from 'shared_components/I18nText';
 
 export function getServiceJsonLdData(service, canonicalUrl) {
-  const schemaType = getSchemaType(service);
+  const category = I18nText.translate(service.categories[0].names);
+  switch (category) {
+    case 'Accommodation':
+      return getAccommodationJsonLd(service);
+    case 'Food':
+      return getFoodJsonLd(service);
+    case 'Activity':
+      return getActivityJsonLd(service, canonicalUrl);
+    default:
+      throw new Error('invalid category');
+  }
+}
+
+function getAccommodationJsonLd(service) {
   const structuredData = {
     '@context': 'https://schema.org/',
-    '@type': schemaType,
+    '@type': 'Hotel',
     name: I18nText.translate(service.title),
     image: getHeroImage(service),
   };
-  if (schemaType === 'Product') structuredData.sku = service._id;
   if (service.description && I18nText.translate(service.description))
     structuredData.description = I18nText.translate(service.description);
   injectRatings(service, structuredData);
-  if (schemaType !== 'Product') {
-    const address = {
-      '@type': 'PostalAddress',
-      addressCountry: service.countryCode,
-    };
-    if (service.city) address.addressLocality = service.city;
-    if (service.state) address.addressRegion = service.state;
-    if (service.postcode) address.postalCode = service.postcode;
-    structuredData.address = address;
-  }
-  if (service.location && service.location.geo) {
-    structuredData.geo = {
-      '@type': 'GeoCoordinates',
-      latitude: service.location.geo.coordinates[1],
-      longitude: service.location.geo.coordinates[0],
-    };
-  }
+  injectGeoCoordinates(service.originalLocation, structuredData);
+  injectServiceAddress(service, structuredData);
+  return structuredData;
+}
+
+function getFoodJsonLd(service) {
+  const structuredData = {
+    '@context': 'https://schema.org/',
+    '@type': 'Restaurant',
+    name: I18nText.translate(service.title),
+    image: getHeroImage(service),
+  };
+  if (service.description && I18nText.translate(service.description))
+    structuredData.description = I18nText.translate(service.description);
+  injectRatings(service, structuredData);
+  injectGeoCoordinates(service.originalLocation, structuredData);
+  injectServiceAddress(service, structuredData);
+
   if (service.tags && service.tags.length > 0 && typeof service.tags[0] === 'object') {
     const serviceTags = service.tags
       .map(tag => {
@@ -37,16 +50,28 @@ export function getServiceJsonLdData(service, canonicalUrl) {
         return '';
       })
       .join(', ');
-    if (schemaType === 'Restaurant') structuredData.servesCuisine = serviceTags;
+    structuredData.servesCuisine = serviceTags;
   }
-  if (schemaType === 'Product') {
-    structuredData.offers = {
-      '@type': 'Offer',
-      url: canonicalUrl,
-      price: service.basePrice,
-      priceCurrency: 'USD',
-    };
-  }
+  return structuredData;
+}
+
+function getActivityJsonLd(service, canonicalUrl) {
+  const structuredData = {
+    '@context': 'https://schema.org/',
+    '@type': 'Product',
+    name: I18nText.translate(service.title),
+    image: getHeroImage(service),
+    sku: service._id,
+  };
+  if (service.description && I18nText.translate(service.description))
+    structuredData.description = I18nText.translate(service.description);
+  injectRatings(service, structuredData);
+  structuredData.offers = {
+    '@type': 'Offer',
+    url: canonicalUrl,
+    price: service.basePrice,
+    priceCurrency: 'USD',
+  };
   return structuredData;
 }
 
@@ -92,15 +117,24 @@ function injectRatings(serviceOrTrip, structuredData) {
   }
 }
 
-function getSchemaType(service) {
-  const lowerCaseCategory = I18nText.translate(service.categories[0].names).toLowerCase();
-  switch (lowerCaseCategory) {
-    case 'food':
-      return 'Restaurant';
-    case 'accommodation':
-      return 'Hotel';
-    default:
-      return 'Product';
+function injectServiceAddress(service, structuredData) {
+  const address = {
+    '@type': 'PostalAddress',
+    addressCountry: service.countryCode,
+  };
+  if (service.city) address.addressLocality = service.city;
+  if (service.state) address.addressRegion = service.state;
+  if (service.postcode) address.postalCode = service.postcode;
+  structuredData.address = address;
+}
+
+function injectGeoCoordinates(location, structuredData) {
+  if (location && location.geo) {
+    structuredData.geo = {
+      '@type': 'GeoCoordinates',
+      latitude: location.geo.coordinates[1],
+      longitude: location.geo.coordinates[0],
+    };
   }
 }
 
