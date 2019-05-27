@@ -10,7 +10,6 @@ import { getCurrentUser, getFavoriteTrips } from 'store/session/actions';
 import GDPRNotification from './GDPRNotification';
 import Routes from './router';
 import Skeleton from './skeleton';
-import 'semantic-ui-css/components/reset.min.css';
 
 class App extends React.Component {
   checkForReferrerAndSet = () => {

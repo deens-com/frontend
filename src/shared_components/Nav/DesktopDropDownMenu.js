@@ -8,7 +8,6 @@ import Button from '../Button';
 // COMMENT: the homeSearch is just for the time being
 // ACTIONS/CONFIG
 
-import 'semantic-ui-css/components/transition.min.css';
 import { PStrong } from 'libs/commonStyles';
 import ImgurAvatar from './../../assets/no-avatar.png';
 // STYLES
