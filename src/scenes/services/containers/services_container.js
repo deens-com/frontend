@@ -72,7 +72,7 @@ class ServicesContainer extends Component {
             <meta property="og:description" content={metaDescription} />
             {image && <meta property="og:image" content={image} />}
             <script type="application/ld+json">
-              {JSON.stringify(getServiceJsonLdData(service))}
+              {JSON.stringify(getServiceJsonLdData(service, url))}
             </script>
           </Helmet>
         );

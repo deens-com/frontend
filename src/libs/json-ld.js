@@ -1,6 +1,6 @@
 import I18nText from 'shared_components/I18nText';
 
-export function getServiceJsonLdData(service) {
+export function getServiceJsonLdData(service, canonicalUrl) {
   const schemaType = getSchemaType(service);
   const structuredData = {
     '@context': 'https://schema.org/',
@@ -11,15 +11,7 @@ export function getServiceJsonLdData(service) {
   if (schemaType === 'Product') structuredData.sku = service._id;
   if (service.description && I18nText.translate(service.description))
     structuredData.description = I18nText.translate(service.description);
-  if (service.ratings && service.ratings.count > 0) {
-    structuredData.aggregateRating = {
-      '@type': 'AggregateRating',
-      ratingValue: `${service.ratings.average}`,
-      ratingCount: `${service.ratings.count}`,
-      bestRating: '5',
-      worstRating: '0',
-    };
-  }
+  injectRatings(service, structuredData);
   if (service.location && service.location.countryCode) {
     const address = {
       '@type': 'PostalAddress',
@@ -47,7 +39,57 @@ export function getServiceJsonLdData(service) {
       .join(', ');
     if (schemaType === 'Restaurant') structuredData.servesCuisine = serviceTags;
   }
+  if (schemaType === 'Product') {
+    structuredData.offers = {
+      '@type': 'Offer',
+      url: canonicalUrl,
+      price: service.basePrice,
+      priceCurrency: 'USD',
+    };
+  }
   return structuredData;
+}
+
+export function getTripJsonLdData(trip, canonicalUrl) {
+  const structuredData = {
+    '@context': 'https://schema.org/',
+    '@type': 'Product',
+    name: I18nText.translate(trip.title),
+    image: getHeroImage(trip),
+    sku: trip._id,
+  };
+  if (trip.description && I18nText.translate(trip.description))
+    structuredData.description = I18nText.translate(trip.description);
+  injectRatings(trip, structuredData);
+
+  // get price per day
+  let pricePerDay = trip.totalPricePerDay;
+  if (trip.pricing && trip.pricing.length > 0) {
+    const pricingElement = trip.pricing.find(
+      ({ adults, children }) => adults === 2 && children === 0,
+    );
+    if (pricingElement) pricePerDay = pricingElement.pricePerDay;
+  }
+  structuredData.offers = {
+    '@type': 'Offer',
+    url: canonicalUrl,
+    price: pricePerDay,
+    priceCurrency: 'USD',
+  };
+
+  return structuredData;
+}
+
+function injectRatings(serviceOrTrip, structuredData) {
+  if (serviceOrTrip.ratings && serviceOrTrip.ratings.count > 0) {
+    structuredData.aggregateRating = {
+      '@type': 'AggregateRating',
+      ratingValue: `${serviceOrTrip.ratings.average}`,
+      ratingCount: `${serviceOrTrip.ratings.count}`,
+      bestRating: '5',
+      worstRating: '0',
+    };
+  }
 }
 
 function getSchemaType(service) {

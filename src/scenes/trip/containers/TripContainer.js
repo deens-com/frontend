@@ -14,6 +14,7 @@ import { websiteUrl } from 'libs/config';
 import I18nText from 'shared_components/I18nText';
 import { generateTripSlug } from 'libs/Utils';
 import headerActions from 'store/header/actions';
+import { getTripJsonLdData } from 'libs/json-ld';
 
 function getBookedInformation(trip) {
   return trip.services.reduce((prev, service) => {
@@ -112,6 +113,7 @@ class TripContainer extends Component {
           {this.props.slug && !isIncorrectUrl ? <link rel="canonical" href={url} /> : null}
           <meta property="og:url" content={url} />
           <meta property="og:title" content={title} />
+          <script type="application/ld+json">{JSON.stringify(getTripJsonLdData(trip, url))}</script>
         </Helmet>
       );
     }
