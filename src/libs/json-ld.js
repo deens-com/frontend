@@ -12,14 +12,14 @@ export function getServiceJsonLdData(service, canonicalUrl) {
   if (service.description && I18nText.translate(service.description))
     structuredData.description = I18nText.translate(service.description);
   injectRatings(service, structuredData);
-  if (service.location && service.location.countryCode) {
+  if (schemaType !== 'Product') {
     const address = {
       '@type': 'PostalAddress',
-      addressCountry: service.location.countryCode,
+      addressCountry: service.countryCode,
     };
-    if (service.location.city) address.addressLocality = service.location.city;
-    if (service.location.state) address.addressRegion = service.location.state;
-    if (service.location.postcode) address.postalCode = service.location.postcode;
+    if (service.city) address.addressLocality = service.city;
+    if (service.state) address.addressRegion = service.state;
+    if (service.postcode) address.postalCode = service.postcode;
     structuredData.address = address;
   }
   if (service.location && service.location.geo) {
