@@ -81,7 +81,7 @@
     "build": "REACT_APP_NODE_ENV=production rescripts build",
     "now-build": "REACT_APP_NODE_ENV=staging rescripts build",
     "build:staging": "REACT_APP_NODE_ENV=staging rescripts build",
-    "postbuild": "mkdir -p build/.circleci && cp -r .circleci/* build/.circleci/ && react-snap",
+    "postbuild": "mkdir -p build/.circleci && cp -r .circleci/* build/.circleci/",
     "test": "rescripts test --env=jsdom",
     "eject": "react-scripts eject",
     "precommit": "pretty-quick --staged",
@@ -111,7 +111,6 @@
     "lodash-webpack-plugin": "^0.11.5",
     "prettier": "1.14.2",
     "react": "^16.8.6",
-    "react-snap": "^1.23.0",
     "webpack-bundle-analyzer": "^3.3.2",
     "webpack-deadcode-plugin": "^0.1.9",
     "webpack-modules": "^1.0.0"
