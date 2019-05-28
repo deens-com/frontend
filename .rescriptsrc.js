@@ -5,7 +5,6 @@ const { appendWebpackPlugin } = require('@rescripts/utilities');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const WebpackModules = require('webpack-modules');
-const HTMLPlugin = require('html-webpack-plugin');
 
 const logConfig = config => {
   console.log(util.inspect(config, null, 20, true));
@@ -49,7 +48,6 @@ const addWebpackPlugins = config => {
   );
   // config = appendWebpackPlugin(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/), config);
   config = appendWebpackPlugin(new WebpackModules(), config);
-  config = appendWebpackPlugin(new HTMLPlugin(), config);
   return config;
 };
 

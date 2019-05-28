@@ -121,32 +121,17 @@
         }
       })();
     </script>
-
-    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc&libraries=places&language=en" async defer></script> -->
-
-    <!-- Segment Analytics -->
     <script type="text/javascript">
       var initSegment = function(){
-
-        // Create a queue, but don't obliterate an existing one!
         var analytics = window.analytics = window.analytics || [];
-
-        // If the real analytics.js is already on the page return.
         if (analytics.initialize) return;
-
-        // If the snippet was invoked already show an error.
         if (analytics.invoked) {
           if (window.console && console.error) {
             console.error('Segment snippet included twice.');
           }
           return;
         }
-
-        // Invoked flag, to make sure the snippet
-        // is never invoked twice.
         analytics.invoked = true;
-
-        // A list of the methods in Analytics.js to stub.
         analytics.methods = [
           'trackSubmit',
           'trackClick',
@@ -165,11 +150,6 @@
           'off',
           'on'
         ];
-
-        // Define a factory to create stubs. These are placeholders
-        // for methods in Analytics.js so that you never have to wait
-        // for it to load to actually record data. The `method` is
-        // stored as the first argument, so we can replay the data.
         analytics.factory = function(method){
           return function(){
             var args = Array.prototype.slice.call(arguments);
@@ -178,36 +158,21 @@
             return analytics;
           };
         };
-
-        // For each of our methods, generate a queueing stub.
         for (var i = 0; i < analytics.methods.length; i++) {
           var key = analytics.methods[i];
           analytics[key] = analytics.factory(key);
         }
-
-        // Define a method to load Analytics.js from our CDN,
-        // and that will be sure to only ever load it once.
         analytics.load = function(key, options){
-          // Create an async script element based on your key.
           var script = document.createElement('script');
           script.type = 'text/javascript';
           script.defer = true;
-          script.src = ('https:' === document.location.protocol
-            ? 'https://' : 'http://')
-            + 'cdn.segment.com/analytics.js/v1/'
+          script.src = 'https://cdn.segment.com/analytics.js/v1/'
             + key + '/analytics.min.js';
-
-          // Insert our script next to the first script element.
           var first = document.getElementsByTagName('script')[0];
           first.parentNode.insertBefore(script, first);
           analytics._loadOptions = options;
         };
-
-        // Add a version to keep track of what's in the wild.
         analytics.SNIPPET_VERSION = '4.1.0';
-
-        // Load Analytics.js with your key, which will automatically
-        // load the tools you've enabled for your account. Boosh!
         const environment = "%REACT_APP_NODE_ENV%"
         if(environment === "production"){
           analytics.load("EeTG9XHL50pFZXCYUOyBaZjtqkXDS4o3");
@@ -215,22 +180,13 @@
           analytics.load("JS7vZSv3cvBCHvMbVM3TSxR7pAhlKEAb");
         }
       }
-
-      // function initUnlessCom() {
-      //   // Unless.com
-      //   (function(p,e,r,s,o,n,i,f,y){n=p.getElementsByTagName(e)[0];f=p.documentElement,f.style.opacity=0,setTimeout(function(){f.style.opacity=''},3e3);(y=p.createElement(e)).src=r+s+o,y.async=!0,n.parentNode.insertBefore(y,n)})(document,'script','https://','unless.com','/js/v5/latest/txt.min.js?id=888cba68-66ea-4285-ba25-f27ddce709ba');
-      //   // End Unless.com
-      // }
-
       function initOneSignal() {
         var script = document.createElement('script');
         script.type = 'text/javascript';
         script.defer = true;
         script.src = 'https://cdn.onesignal.com/sdks/OneSignalSDK.js';
-        // Insert our script next to the first script element.
         var first = document.getElementsByTagName('script')[0];
         first.parentNode.insertBefore(script, first);
-
         const environment = '%REACT_APP_NODE_ENV%';
         if (environment === 'production') {
           var OneSignal = window.OneSignal || [];
@@ -241,7 +197,6 @@
           });
         }
       }
-
       function initGoogleMaps() {
         var script = document.createElement('script');
         script.type = 'text/javascript';
@@ -251,11 +206,9 @@
         var first = document.getElementsByTagName('script')[0];
         first.parentNode.insertBefore(script, first);
       }
-
       const initLibsScript = function() {
         initGoogleMaps();
         initSegment();
-        // initUnlessCom();
         initOneSignal();
       }
       window.addEventListener('load', initLibsScript);
