@@ -1,14 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 // import 'semantic-ui-css/semantic.min.css';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 import './index.css';
 import App from './main/app';
 import { createBrowserHistory as createHistory } from 'history';
-import { unregister as unregisterServiceWorker } from './registerServiceWorker';
+//import { unregister as unregisterServiceWorker } from './registerServiceWorker';
 import { isProd, isStaging } from './libs/config';
-import * as featureFlags from './libs/feature-flags';
 import { readSession } from 'libs/user-session';
 
 const history = createHistory();
@@ -56,7 +53,7 @@ if (rootElement.hasChildNodes()) {
 } else {
   ReactDOM.render(<App />, rootElement);
 }
-unregisterServiceWorker();
+//unregisterServiceWorker();
 
 // Stolen from: https://stackoverflow.com/a/9870540/1115059
 function getQueryStringValue(key) {
@@ -78,6 +75,3 @@ if (customerId && window.analytics) {
 
 // reads localStorage to get the user object on load
 readSession();
-
-// for easier access to feature flag functions
-window.featureFlags = featureFlags;
