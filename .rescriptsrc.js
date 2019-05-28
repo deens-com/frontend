@@ -1,5 +1,6 @@
 const util = require('util');
 const webpack = require('webpack');
+const path = require('path');
 const { appendWebpackPlugin } = require('@rescripts/utilities');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
@@ -75,10 +76,18 @@ const moveHeavyLibsIntoSeparateChunks = config => {
   return config;
 };
 
+const nameChunks = config => {
+  config.output.filename = '[name].[hash].js';
+  config.output.chunkFilename = '[name].[chunkhash].js';
+  config.output.path = path.resolve(__dirname, 'dist');
+  return config;
+};
+
 module.exports = [
   ['use-babel-config', '.babelrc.js'],
   addEntryPoints,
   addWebpackPlugins,
+  nameChunks,
   moveHeavyLibsIntoSeparateChunks,
   usePreact,
   // useDayJsInsteadOfMoment, // (react-dates crashes with it)
