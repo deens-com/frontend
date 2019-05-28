@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
 import { withRouter } from 'react-router-dom';
-import { Redirect } from 'react-router';
+import { Redirect } from 'react-router-dom';
 import TripComponent from 'styled_scenes/Trip';
 import NotFound from 'styled_scenes/NotFound';
 import actions from 'store/trips/actions';

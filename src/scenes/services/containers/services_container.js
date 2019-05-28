@@ -3,7 +3,7 @@ import ServiceComponent from '../components/Service';
 import serviceActions from 'store/services/actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { withRouter, Redirect } from 'react-router';
+import { withRouter, Redirect } from 'react-router-dom';
 import NotFoundScene from 'styled_scenes/NotFound';
 import { Helmet } from 'react-helmet-async';
 import { websiteUrl } from 'libs/config';

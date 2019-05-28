@@ -12,6 +12,10 @@ import Routes from './router';
 import Skeleton from './skeleton';
 import 'semantic-ui-css/components/reset.min.css';
 
+if (module.hot) {
+  require('preact/debug');
+}
+
 class App extends React.Component {
   checkForReferrerAndSet = () => {
     const cookieReferrerId = 'deens_referrer_id';
@@ -36,7 +40,9 @@ class App extends React.Component {
           <React.Fragment>
             <GDPRNotification />
             <Router history={history}>
-              <Skeleton>{Routes}</Skeleton>
+              <Skeleton>
+                <Routes />
+              </Skeleton>
             </Router>
           </React.Fragment>
         </Provider>

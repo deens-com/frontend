@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 
-import { withRouter } from 'react-router';
+import { withRouter } from 'react-router-dom';
 import { Loader } from 'semantic-ui-react';
 import history from 'main/history';
 import axios from 'libs/axios';
