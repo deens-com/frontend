@@ -12,6 +12,7 @@ import { generateServiceSlug } from 'libs/Utils';
 import { getHeroImageUrlFromMedia } from 'libs/media';
 import tripActions from 'store/trips/actions';
 import headerActions from 'store/header/actions';
+import { getServiceJsonLdData } from 'libs/json-ld';
 
 class ServicesContainer extends Component {
   state = {
@@ -45,18 +46,20 @@ class ServicesContainer extends Component {
       let helmet;
       const { service } = this.props;
       if (service._id) {
-        const location = service.location ? service.location.city || service.location.state : '';
+        const locationObject = service.originalLocation || service.location;
+        const location = locationObject ? locationObject.city || locationObject.state : '';
         const metaDescription = service.description
           ? I18nText.translate(service.description)
-          : `${I18nText.translate(service.categories[0].names)}${service.location &&
-              ` in ${location}`}`;
+          : `${I18nText.translate(service.categories[0].names)}${
+              location ? ` in ${location}` : ''
+            }`;
         const description = `${metaDescription.substring(
           0,
           Math.min(155, metaDescription.length),
         )}...`;
         const image = getHeroImageUrlFromMedia(service.media);
         const url = `${websiteUrl}${this.props.location.pathname}`;
-        const title = `${I18nText.translate(service.title)}${service.location && `, ${location}`}`;
+        const title = `${I18nText.translate(service.title)}${location ? `, ${location}` : ''}`;
         const isIncorrectUrl =
           this.props.slug &&
           `${this.props.match.params.slug}_${this.props.match.params.id}` !== this.props.slug;
@@ -70,6 +73,9 @@ class ServicesContainer extends Component {
             <meta property="og:title" content={title} />
             <meta property="og:description" content={metaDescription} />
             {image && <meta property="og:image" content={image} />}
+            <script type="application/ld+json">
+              {JSON.stringify(getServiceJsonLdData(service, url))}
+            </script>
           </Helmet>
         );
 
