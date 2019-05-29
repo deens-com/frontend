@@ -13,6 +13,7 @@
     { "src": "^/(.*).ico", "dest": "/$1.ico" },
     { "src": "^/(.*).svg", "dest": "/$1.svg" },
     { "src": "^/(.*).txt", "dest": "/$1.txt" },
+    { "src": "^/(.*).js", "dest": "/$1.js" },
     { "src": "^/asset-manifest.json", "dest": "/asset-manifest.json" },
     { "src": "^/manifest.json", "dest": "/manifest.json" },
     {
