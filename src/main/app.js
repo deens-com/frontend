@@ -12,10 +12,6 @@ import Routes from './router';
 import Skeleton from './skeleton';
 import 'semantic-ui-css/components/reset.min.css';
 
-if (module.hot) {
-  require('preact/debug');
-}
-
 class App extends React.Component {
   checkForReferrerAndSet = () => {
     const cookieReferrerId = 'deens_referrer_id';

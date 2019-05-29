@@ -75,12 +75,6 @@ const useDayJsInsteadOfMoment = config => {
   return config;
 };
 
-const usePreact = config => {
-  config.resolve.alias['react'] = 'preact/compat';
-  config.resolve.alias['react-dom'] = 'preact/compat';
-  return config;
-};
-
 const moveHeavyLibsIntoSeparateChunks = config => {
   config.optimization.splitChunks = {
     ...config.optimization.splitChunks,
@@ -103,7 +97,6 @@ module.exports = [
   addWebpackPlugins,
   nameChunks,
   moveHeavyLibsIntoSeparateChunks,
-  usePreact,
   // useDayJsInsteadOfMoment, // (react-dates crashes with it)
   // logConfig,
 ];
