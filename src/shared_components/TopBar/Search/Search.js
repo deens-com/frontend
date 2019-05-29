@@ -1,8 +1,7 @@
 // NPM
 import { disabled } from 'libs/colors';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
-import Loadable from 'react-loadable';
 // COMPONENTS
 import SearchIcon from 'shared_components/icons/SearchIcon';
 
@@ -49,6 +48,8 @@ const suggestionStyle = {
   maxWidth: '500px',
 };
 
+const SearchInput = React.lazy(() => import('./SearchInput'));
+
 // MODULE
 export default class DesktopSearch extends Component {
   state = { inFocus: false };
@@ -58,23 +59,8 @@ export default class DesktopSearch extends Component {
   onBlur() {
     this.setState({ inFocus: false });
   }
-
-  SearchInput() {
-    return Loadable({
-      loader: () => import('./SearchInput'),
-      loading: (
-        <input
-          type="text"
-          placeholder="Where would you like to go?"
-          style={{ ...suggestionStyle, border: 'none', 'outline-width': 0 }}
-        />
-      ),
-    });
-  }
-
   render() {
     const { isMobile } = this.props;
-    const SearchInput = this.SearchInput;
     return (
       <Wrapper isMobile={isMobile} inFocus={this.state.inFocus}>
         <Inner>
@@ -83,7 +69,18 @@ export default class DesktopSearch extends Component {
               <SearchIcon />
             </IconButton>
           </div>
-          <SearchInput {...this.props} />
+
+          <Suspense
+            fallback={
+              <input
+                type="text"
+                placeholder="Where would you like to go?"
+                style={{ ...suggestionStyle, border: 'none', 'outline-width': 0 }}
+              />
+            }
+          >
+            <SearchInput {...this.props} />
+          </Suspense>
         </Inner>
       </Wrapper>
     );

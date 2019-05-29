@@ -1,7 +1,6 @@
 // NPM
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
-import Loadable from 'react-loadable';
 import { buildImgUrl } from 'libs/Utils';
 
 // COMPONENTS
@@ -9,7 +8,6 @@ import Button from '../Button';
 // COMMENT: the homeSearch is just for the time being
 // ACTIONS/CONFIG
 
-import 'semantic-ui-css/components/transition.min.css';
 import { PStrong } from 'libs/commonStyles';
 import ImgurAvatar from './../../assets/no-avatar.png';
 // STYLES
@@ -52,6 +50,8 @@ const AvatarWrapper = styled.div`
   order: 2;
 `;
 
+const DesktopLoggedInDropDownMenu = React.lazy(() => import('./DesktopLoggedInDropDownMenu'));
+
 // MODULE
 export default class DesktopDropDownMenu extends Component {
   logout = () => {
@@ -89,21 +89,15 @@ export default class DesktopDropDownMenu extends Component {
     );
   }
 
-  DesktopLoggedInMenu() {
-    return Loadable({
-      loader: () => import('./DesktopLoggedInDropDownMenu'),
-      loading: this.trigger,
-    });
-  }
-
   logged_in() {
-    const DesktopLoggedInMenu = this.DesktopLoggedInMenu;
     return (
       <Wrap>
         <Button type="link" theme="primaryFilled" size="small" href="/trips/create">
           <PStrong>Create Trip</PStrong>
         </Button>
-        <DesktopLoggedInMenu {...this.props} trigger={this.trigger} />
+        <Suspense fallback={this.trigger()}>
+          <DesktopLoggedInDropDownMenu {...this.props} trigger={this.trigger} />
+        </Suspense>
       </Wrap>
     );
   }
