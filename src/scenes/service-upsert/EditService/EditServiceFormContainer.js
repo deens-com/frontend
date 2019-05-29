@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter, Link } from 'react-router-dom';
-import Parse from 'parse';
 import { Loader } from 'semantic-ui-react';
 import history from '../../../main/history';
 
@@ -34,7 +33,8 @@ class EditServiceFormContainer extends Component {
 
   render() {
     const { service, isLoading, fetchError, isSubmitting } = this.props;
-    if (fetchError && fetchError.code === Parse.Error.OBJECT_NOT_FOUND) {
+    const PARSE_ERROR_OBJECT_NOT_FOUND = 101;
+    if (fetchError && fetchError.code === PARSE_ERROR_OBJECT_NOT_FOUND) {
       return <NotFound showScene={false} />;
     }
     if (isLoading) {

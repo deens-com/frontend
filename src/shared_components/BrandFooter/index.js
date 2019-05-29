@@ -4,11 +4,8 @@ import styled from 'styled-components';
 
 // COMPONENTS
 import { Link } from 'react-router-dom';
-import { Logo } from '../icons';
-import { Instagram, Twitter, Facebook } from './icons';
 
 // ACTIONS/CONFIG
-import { media } from '../../libs/styled';
 import * as colors from 'libs/colors';
 import { H6, P, PSmall } from 'libs/commonStyles';
 import { PageWrapper } from 'shared_components/layout/Page';

@@ -5,7 +5,7 @@ import { geocodeByPlaceId } from 'libs/placesAutocomplete';
 import { parseLocationData } from 'libs/location';
 import { primary, error } from 'libs/colors';
 import { P } from 'libs/commonStyles';
-import { PencilIcon } from 'shared_components/icons';
+import PencilIcon from 'shared_components/icons/PencilIcon';
 
 const Wrapper = styled.div`
   margin: 0 !important;

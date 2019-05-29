@@ -9,9 +9,10 @@ import DatesFilter from './Dates';
 import PriceRangeFilter from './PriceRange';
 import PriceTagsFilter from './PriceTags';
 import TagsFilter from './Tags';
-import isMatch from 'lodash.ismatch';
+import { isMatch } from 'lodash';
 import { media } from 'libs/styled';
-import { FiltersIcon, BackArrow } from 'shared_components/icons';
+import FiltersIcon from 'shared_components/icons/FiltersIcon';
+import BackArrow from 'shared_components/icons/BackArrow';
 
 import 'react-dates.css';
 
@@ -60,7 +61,13 @@ const BackToTrip = styled(Link)`
   }
 `;
 
-const Filters = ({ searchParams, backToTrip, minPossiblePrice, maxPossiblePrice, updateSearchParams }) => {
+const Filters = ({
+  searchParams,
+  backToTrip,
+  minPossiblePrice,
+  maxPossiblePrice,
+  updateSearchParams,
+}) => {
   const [showingMobile, setShowingMobile] = useState(false);
   const search = params => {
     const keepPage = isMatch(searchParams, params);

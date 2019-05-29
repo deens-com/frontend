@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Loader, Popup } from 'semantic-ui-react';
 import { P, PSmall } from 'libs/commonStyles';
 import { primary, secondary, primaryHover, disabled, tertiaryContrast } from 'libs/colors';
-import { Settings } from 'shared_components/icons';
+import Settings from 'shared_components/icons/Settings';
 import Walk from 'assets/walk.svg';
 import Bike from 'assets/bike.svg';
 import Car from 'assets/car.svg';
@@ -13,7 +13,9 @@ import transportIcon from 'assets/service-icons/transport.svg';
 import { getKmFromMeters } from 'libs/Utils';
 import { secondsToHoursAndMinutes } from 'libs/trips';
 import TextDivisor from 'shared_components/TextDivisor';
-import { Car as CarIcon, Walk as WalkIcon, Bike as BikeIcon } from 'shared_components/icons';
+import CarIcon from 'shared_components/icons/Car';
+import WalkIcon from 'shared_components/icons/Walk';
+import BikeIcon from 'shared_components/icons/Bike';
 
 import { TripContext } from '../';
 

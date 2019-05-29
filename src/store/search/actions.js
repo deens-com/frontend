@@ -1,4 +1,4 @@
-import queryString from 'qs';
+import queryString from 'query-string';
 import fetchHelpers from 'libs/fetch_helpers';
 import api from 'libs/apiClient';
 import history from 'main/history';

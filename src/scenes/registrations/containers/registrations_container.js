@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as sessionsActions from 'store/session/actions';
 import RegistrationsComponent from './../components/Registrations';
-import validator from 'validator';
+import isEmail from 'validator/lib/isEmail';
 import history from 'main/history';
 import axios from 'libs/axios';
 import headerActions from 'store/header/actions';
@@ -88,7 +88,7 @@ class RegistrationsContainer extends Component {
       });
       return;
     }
-    if (!validator.isEmail(this.state.email)) {
+    if (!isEmail(this.state.email)) {
       this.setState({
         errors: { message: 'Please enter a valid email address' },
       });

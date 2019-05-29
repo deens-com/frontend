@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Image } from 'semantic-ui-react';
 import Rating from '../../shared_components/Rating';
 import ImgurAvatar from './../../assets/no-avatar.png';
+import { buildImgUrl } from 'libs/Utils';
 
 const AvatarWrapper = styled.div`
   height: 30px;
@@ -27,13 +28,16 @@ const ImageElement = styled.div`
 
 const Avatar = ({ user, usernameColor }) => {
   if (!user) return null;
-  const dpUrl = user.profilePicture || ImgurAvatar;
+  const dpUrl =
+    (user.profilePicture &&
+      buildImgUrl(user.profilePicture, { circular: true, width: 30, height: 30 })) ||
+    ImgurAvatar;
   //const userProfilePageUrl = `/users/${user.username}`;
   return (
     <GridContainer>
       <ImageElement>
         <AvatarWrapper>
-          <Image src={dpUrl} circular />
+          <Image src={dpUrl} circular width={30} height={30} />
         </AvatarWrapper>
       </ImageElement>
       <WhiteText usernameColor={usernameColor}>{user.username}</WhiteText>

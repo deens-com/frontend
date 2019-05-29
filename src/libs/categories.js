@@ -1,6 +1,7 @@
 import React from 'react';
-
-import { Moon, SilverWare, RunningPerson } from 'shared_components/icons';
+import Moon from 'shared_components/icons/Moon';
+import SilverWare from 'shared_components/icons/SilverWare';
+import RunningPerson from 'shared_components/icons/RunningPerson';
 
 const categories = {
   Accommodation: {

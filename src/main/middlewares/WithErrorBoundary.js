@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import * as Sentry from '@sentry/browser';
-import ErrorPage from 'shared_components/ErrorPage';
 import { connect } from 'react-redux';
+import ErrorPage from 'shared_components/ErrorPage';
 
 export default ChildComponent => {
   class ErrorBoundary extends Component {
@@ -13,17 +12,19 @@ export default ChildComponent => {
       this.setState({ showErrorPage: true });
       console.log({ error, info });
 
-      Sentry.configureScope(scope => {
-        scope.setExtra('info', info);
-        scope.setExtra('wasHandledByComponent', false);
-        if (this.props.session.username) {
-          scope.setUser({ username: this.props.session.username });
-        } else {
-          scope.setUser(null);
-        }
-      });
+      import(/* webpackChunkName: "sentry" */ '@sentry/browser').then(Sentry => {
+        Sentry.configureScope(scope => {
+          scope.setExtra('info', info);
+          scope.setExtra('wasHandledByComponent', false);
+          if (this.props.session.username) {
+            scope.setUser({ username: this.props.session.username });
+          } else {
+            scope.setUser(null);
+          }
+        });
 
-      Sentry.captureException(error);
+        Sentry.captureException(error);
+      });
     }
 
     render() {

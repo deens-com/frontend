@@ -13,7 +13,7 @@ import Search from './Search';
 import { bindActionCreators } from 'redux';
 import { getCurrentUserTrip, logOut } from 'store/session/actions';
 import { PageWrapper } from 'shared_components/layout/Page';
-import { withRouter } from 'react-router';
+import { withRouter } from 'react-router-dom';
 import searchActions from 'store/search/actions';
 
 // ACTIONS/CONFIG

@@ -8,7 +8,8 @@ import { connect } from 'react-redux';
 // ACTIONS/CONFIG
 import { sizes } from '../../libs/styled';
 import Button from '../Button';
-import { Briefcase, AccountCircle, Settings } from '../icons';
+import Briefcase from 'shared_components/icons/Briefcase';
+import AccountCircle from 'shared_components/icons/AccountCircle';
 import { bindActionCreators } from 'redux';
 import { logOut } from 'store/session/actions';
 import { icoReady } from 'libs/config';

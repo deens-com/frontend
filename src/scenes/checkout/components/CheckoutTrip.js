@@ -5,7 +5,7 @@ import moment from 'moment';
 import { Popup } from 'semantic-ui-react';
 import mapServicesToDays from '../../../styled_scenes/Trip/mapServicesToDays';
 import I18nText from 'shared_components/I18nText';
-import { MapMarker } from 'shared_components/icons';
+import MapMarker from 'shared_components/icons/MapMarker';
 import { minutesToHoursOrDays, calculateCancellationCharge } from 'libs/trips';
 import { getPriceFromServiceOption, getPeopleCount } from 'libs/Utils';
 import { getCategory } from 'libs/categories';

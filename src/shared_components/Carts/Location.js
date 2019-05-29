@@ -3,8 +3,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Label as SemanticLabel, Icon } from 'semantic-ui-react';
-import Truncate from 'react-truncate';
-import { Popup } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 // COMPONENTS
@@ -12,7 +10,9 @@ import Rating from '../Rating';
 import PriceTag from '../Currency/PriceTag';
 import Thumb from './components/Thumb';
 import Col from '../layout/Col';
-import { PinIcon } from '../icons';
+import PinIcon from 'shared_components/icons/PinIcon';
+import CssOnlyTruncate from 'shared_components/CssOnlyTruncate';
+import { translate } from 'shared_components/I18nText';
 
 // ACTIONS/CONFIG
 
@@ -138,21 +138,6 @@ function getSmartContractBookingStatus(reservation) {
 }
 
 export default class LocationCart extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      truncated: false,
-    };
-  }
-
-  handleTruncate = truncated => {
-    if (this.state.truncated !== truncated) {
-      this.setState({
-        truncated,
-      });
-    }
-  };
-
   renderCard = () => {
     const smartContractBookingStatus = getSmartContractBookingStatus(this.props.item.reservation);
     return (
@@ -161,14 +146,12 @@ export default class LocationCart extends Component {
         <Thumb url={this.props.item.image} />
         <ContentWrap>
           <Title>
-            <Truncate onTruncate={this.handleTruncate} lines={cardConfig.titleLines}>
-              {this.props.item.title}
-            </Truncate>
+            <CssOnlyTruncate>{this.props.item.title}</CssOnlyTruncate>
           </Title>
           <Location>
             <PinIcon />
             <p>
-              <Truncate lines={cardConfig.locationLines}>{this.props.item.location}</Truncate>
+              <CssOnlyTruncate>{this.props.item.location}</CssOnlyTruncate>
             </p>
           </Location>
           <Rating
@@ -186,16 +169,16 @@ export default class LocationCart extends Component {
   render() {
     const { href } = this.props;
     const card = this.renderCard();
-    const cartWithLink = href ? <Link to={href}>{card}</Link> : card;
+    const cartWithLink = href ? (
+      <Link title={(this.props.item && translate(this.props.item.title)) || ''} to={href}>
+        {card}
+      </Link>
+    ) : (
+      card
+    );
     return (
       <Col>
-        <div>
-          {this.state.truncated ? (
-            <Popup trigger={cartWithLink} content={this.props.item.title} />
-          ) : (
-            cartWithLink
-          )}
-        </div>
+        <div>{cartWithLink}</div>
       </Col>
     );
   }

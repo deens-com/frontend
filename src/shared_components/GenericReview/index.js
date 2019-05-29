@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom';
 
 // COMPONENTS
 import Stars from '../Rating/Stars';
-import Image from 'shared_components/Image';
 import placeholder from './../../assets/placeholder350x350.svg';
+import { buildImgUrl } from 'libs/Utils';
 
 // ACTIONS/CONFIG
 
@@ -65,12 +65,13 @@ const SummaryWrap = styled.div`
 
 // MODULE
 export default function ReviewCart({ title, rating, message, city, country, name, image, link }) {
+  const avatarUrl = image ? buildImgUrl(image, { width: 45, height: 45 }) : placeholder;
   return (
     <Wrap>
       <ProfileWrap>
         <Link to={link}>
           <Avatar>
-            <Image src={image || placeholder} alt="" />
+            <img className="lazyload" data-src={avatarUrl} alt="" />
           </Avatar>
         </Link>
         <Profile>

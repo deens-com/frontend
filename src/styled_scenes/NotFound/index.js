@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 // COMPONENTS
 import BrandFooter from '../../shared_components/BrandFooter';
 import { Divider } from 'semantic-ui-react';
-import Helmet from 'react-helmet-async';
+import { Helmet } from 'react-helmet-async';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import headerActions from 'store/header/actions';

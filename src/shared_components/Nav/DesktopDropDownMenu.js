@@ -1,18 +1,14 @@
 // NPM
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
-import { withRouter } from 'react-router-dom';
+import { buildImgUrl } from 'libs/Utils';
 
 // COMPONENTS
 import Button from '../Button';
-import { Image } from 'semantic-ui-react';
 // COMMENT: the homeSearch is just for the time being
 // ACTIONS/CONFIG
-import { Dropdown } from 'semantic-ui-react';
 
 import { PStrong } from 'libs/commonStyles';
-
-import history from './../../main/history';
 import ImgurAvatar from './../../assets/no-avatar.png';
 // STYLES
 const Wrap = styled.div`
@@ -47,11 +43,14 @@ const AvatarWrapper = styled.div`
   height: 38px;
   width: 38px;
   border-radius: 10px 10px 10px 0;
+  background: #f7f7f7;
   overflow: hidden;
   margin-left: 15px;
   margin-top: -5px;
   order: 2;
 `;
+
+const DesktopLoggedInDropDownMenu = React.lazy(() => import('./DesktopLoggedInDropDownMenu'));
 
 // MODULE
 export default class DesktopDropDownMenu extends Component {
@@ -59,15 +58,17 @@ export default class DesktopDropDownMenu extends Component {
     this.props.logOut();
   };
 
-  navigate_to = path => {
-    history.push(path);
+  trigger = () => {
+    const { profilePicture } = this.props.session;
+    const url = profilePicture
+      ? buildImgUrl(profilePicture, { width: 38, height: 38 })
+      : ImgurAvatar;
+    return (
+      <AvatarWrapper>
+        <img className="lazyload" data-src={url} width="38px" height="38px" alt="user avatar" />
+      </AvatarWrapper>
+    );
   };
-
-  trigger = () => (
-    <AvatarWrapper>
-      <Image src={this.props.session.profilePicture || ImgurAvatar} width={38} height={38} />
-    </AvatarWrapper>
-  );
 
   logged_out() {
     return (
@@ -94,32 +95,9 @@ export default class DesktopDropDownMenu extends Component {
         <Button type="link" theme="primaryFilled" size="small" href="/trips/create">
           <PStrong>Create Trip</PStrong>
         </Button>
-        <Dropdown direction="left" trigger={this.trigger()} icon={null}>
-          <Dropdown.Menu>
-            <Dropdown.Item
-              icon="plane"
-              text="My Trips"
-              onClick={() => this.navigate_to('/account/trips/all')}
-            />
-            {/*<Dropdown.Item
-              icon="list"
-              text="My Services"
-              onClick={() => this.navigate_to('/account/services')}
-            />*/}
-            <Dropdown.Item
-              icon="user"
-              text="Profile"
-              onClick={() => this.navigate_to('/account/profile')}
-            />
-            {/*<Dropdown.Item
-              icon="cogs"
-              text="Settings"
-              onClick={() => this.navigate_to('/account/settings')}
-            />*/}
-            <Dropdown.Divider />
-            <Dropdown.Item icon="power" text="Logout" onClick={this.logout} />
-          </Dropdown.Menu>
-        </Dropdown>
+        <Suspense fallback={this.trigger()}>
+          <DesktopLoggedInDropDownMenu {...this.props} trigger={this.trigger} />
+        </Suspense>
       </Wrap>
     );
   }

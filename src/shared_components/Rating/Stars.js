@@ -2,32 +2,22 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import stars0 from 'assets/yelp/large_0.png';
-import stars1 from 'assets/yelp/large_1.png';
-import stars1Half from 'assets/yelp/large_1_half.png';
-import stars2 from 'assets/yelp/large_2.png';
-import stars2Half from 'assets/yelp/large_2_half.png';
-import stars3 from 'assets/yelp/large_3.png';
-import stars3Half from 'assets/yelp/large_3_half.png';
-import stars4 from 'assets/yelp/large_4.png';
-import stars4Half from 'assets/yelp/large_4_half.png';
-import stars5 from 'assets/yelp/large_5.png';
 
 import { primary, tertiary } from 'libs/colors';
 // COMPONENTS
 import Star from './Star';
 
 const yelpDict = {
-  0: stars0,
-  1: stars1,
-  1.5: stars1Half,
-  2: stars2,
-  2.5: stars2Half,
-  3: stars3,
-  3.5: stars3Half,
-  4: stars4,
-  4.5: stars4Half,
-  5: stars5,
+  0: 'https://please-com.imgix.net/yelp/large_0.png?auto=compress',
+  1: 'https://please-com.imgix.net/yelp/large_1.png?auto=compress',
+  1.5: 'https://please-com.imgix.net/yelp/large_1_half.png?auto=compress',
+  2: 'https://please-com.imgix.net/yelp/large_2.png?auto=compress',
+  2.5: 'https://please-com.imgix.net/yelp/large_2_half.png?auto=compress',
+  3: 'https://please-com.imgix.net/yelp/large_3.png?auto=compress',
+  3.5: 'https://please-com.imgix.net/yelp/large_3_half.png?auto=compress',
+  4: 'https://please-com.imgix.net/yelp/large_4.png?auto=compress',
+  4.5: 'https://please-com.imgix.net/yelp/large_4_half.png?auto=compress',
+  5: 'https://please-com.imgix.net/yelp/large_5.png?auto=compress',
 };
 
 // ACTIONS/CONFIG

@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { PlusIcon, MinusIcon } from 'shared_components/icons';
+import PlusIcon from 'shared_components/icons/PlusIcon';
+import MinusIcon from 'shared_components/icons/MinusIcon';
 import { primary } from 'libs/colors';
 
 const SelectorWrapper = styled.div`

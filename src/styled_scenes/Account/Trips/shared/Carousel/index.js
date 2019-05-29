@@ -5,7 +5,7 @@ import styled, { css } from 'styled-components';
 import Slider from 'react-slick';
 
 // COMPONENTS
-import { ArrowIcon } from '../../../../../shared_components/icons';
+import ArrowIcon from 'shared_components/icons/ArrowIcon';
 
 // ACTIONS/CONFIG
 import { resetButton, media } from '../../../../../libs/styled';

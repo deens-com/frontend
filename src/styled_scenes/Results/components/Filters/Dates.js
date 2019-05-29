@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
 import { DayPickerRangeController } from 'react-dates';
 import { START_DATE, END_DATE } from 'react-dates/constants';
 import { primary, textDark, backgroundDark } from 'libs/colors';

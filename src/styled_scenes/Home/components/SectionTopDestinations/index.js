@@ -5,38 +5,24 @@ import styled from 'styled-components';
 import { media } from 'libs/styled';
 import { H1, H2 } from 'libs/commonStyles';
 
-import sydneyImg from './images/big/sydney.jpg';
-import sanFranciscoImg from './images/small/san-francisco.jpg';
-import londonImg from './images/small/london.jpg';
-import newYorkImg from './images/big/new-york.jpg';
-
 // ACTIONS/CONFIG
 
 // STYLES
 import { PageWrapper, SectionWrap, SectionHeader } from '../../../../shared_components/layout/Page';
 
 const SectionContent = styled.div`
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  flex-direction: column;
+  display: grid;
+  grid-gap: 10px;
 
   ${media.minSmall} {
-    max-height: 400px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
   }
 
   ${media.minMedium} {
-    height: 400px;
-    flex-direction: row;
-  }
-`;
-
-const Column = styled.div`
-  display: flex;
-  flex: 1;
-  ${media.minMedium} {
-    height: 400px;
-    flex-direction: column;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-gap: 20px;
   }
 `;
 
@@ -58,52 +44,46 @@ const Row = styled.div`
 `;
 
 const FlexLink = styled.div`
-  flex: 1;
+  position: relative;
   cursor: pointer;
+`;
+
+const SydneyLink = styled(FlexLink)`
   ${media.minSmall} {
-    margin-bottom: 20px;
-    height: 190px;
-    width: calc(50% - 10px);
+    grid-column: 1;
+    grid-row: 1;
+  }
+  ${media.minMedium} {
+    grid-row: 1 / 3;
   }
 `;
 
 const NewYorkLink = styled(FlexLink)`
   ${media.minSmall} {
-    margin-bottom: 0;
-    order: 2;
+    grid-column: 1;
+    grid-row: 2;
+  }
+  ${media.minMedium} {
+    grid-column: 3;
+    grid-row: 1 / 3;
   }
 `;
 
 const LondonLink = styled.div`
-  cursor: pointer;
+  ${media.minSmall} {
+    grid-column: 2;
+    grid-row: 2;
+  }
 `;
 
 const SFLink = styled.div`
-  cursor: pointer;
-  margin-bottom: 10px;
   ${media.minSmall} {
-    margin-bottom: 20px;
-  }
-`;
-
-const CenterContainer = styled(Column)`
-  flex-direction: column;
-  order: 3;
-  margin: 0;
-  ${media.minSmall} {
-    margin: auto 0 auto 20px;
-    width: calc(50% - 10px);
-  }
-  ${media.minMedium} {
-    order: 1;
-    width: auto;
-    margin: 0 20px;
-    flex: 1;
+    grid-column: 2;
+    grid-row: 1;
   }
 `;
 
 const Sydney = styled(Row)`
-  background-image: url(${sydneyImg});
   flex: 1;
   margin-bottom: 10px;
   ${media.minSmall} {
@@ -119,7 +99,6 @@ const Sydney = styled(Row)`
 `;
 
 const NewYork = styled(Row)`
-  background-image: url(${newYorkImg});
   margin-bottom: 10px;
   ${media.minSmall} {
     height: 190px;
@@ -133,12 +112,10 @@ const NewYork = styled(Row)`
 `;
 
 const SanFrancisco = styled(Row)`
-  background-image: url(${sanFranciscoImg});
   height: 190px;
 `;
 
 const London = styled(Row)`
-  background-image: url(${londonImg});
   height: 190px;
 `;
 
@@ -187,44 +164,54 @@ export default function HomeSectionTopDestinations({ updateSearchParams }) {
           <H2>Top Destinations</H2>
         </SectionHeader>
         <SectionContent>
-          <FlexLink
+          <SydneyLink
             onClick={() => {
               updateSearchParams(sydneyParams);
             }}
           >
-            <Sydney>
+            <Sydney
+              className="lazyload"
+              data-bg="https://please-com.imgix.net/big-sydney.jpg?auto=compress"
+            >
               <InnerText>Sydney</InnerText>
             </Sydney>
-          </FlexLink>
+          </SydneyLink>
           <NewYorkLink
             onClick={() => {
               updateSearchParams(newYorkParams);
             }}
           >
-            <NewYork>
+            <NewYork
+              className="lazyload"
+              data-bg="https://please-com.imgix.net/big-new-york.jpg?auto=compress"
+            >
               <InnerText>New York</InnerText>
             </NewYork>
           </NewYorkLink>
-          <CenterContainer>
-            <SFLink
-              onClick={() => {
-                updateSearchParams(sanFranciscoParams);
-              }}
+          <SFLink
+            onClick={() => {
+              updateSearchParams(sanFranciscoParams);
+            }}
+          >
+            <SanFrancisco
+              className="lazyload"
+              data-bg="https://please-com.imgix.net/small-san-francisco.jpg?auto=compress"
             >
-              <SanFrancisco>
-                <InnerText>San Francisco</InnerText>
-              </SanFrancisco>
-            </SFLink>
-            <LondonLink
-              onClick={() => {
-                updateSearchParams(londonParams);
-              }}
+              <InnerText>San Francisco</InnerText>
+            </SanFrancisco>
+          </SFLink>
+          <LondonLink
+            onClick={() => {
+              updateSearchParams(londonParams);
+            }}
+          >
+            <London
+              className="lazyload"
+              data-bg="https://please-com.imgix.net/small-london.jpg?auto=compress"
             >
-              <London>
-                <InnerText>London</InnerText>
-              </London>
-            </LondonLink>
-          </CenterContainer>
+              <InnerText>London</InnerText>
+            </London>
+          </LondonLink>
         </SectionContent>
       </SectionWrap>
     </PageWrapper>

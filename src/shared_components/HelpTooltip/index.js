@@ -1,6 +1,6 @@
 import React from 'react';
 import { Popup } from 'semantic-ui-react';
-import { QuestionMarkIcon } from 'shared_components/icons';
+import QuestionMarkIcon from 'shared_components/icons/QuestionMarkIcon';
 
 const iconStyle = {
   cursor: 'pointer',

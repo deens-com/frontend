@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
-import Image from 'shared_components/Image';
+import { buildImgUrl } from 'libs/Utils';
 
 // STYLES
 const Wrap = styled.div`
@@ -34,10 +34,12 @@ const thumbStyles = `
   background-size: cover;
   background-position: center;
   height: 280px;
+  min-width: 100%;
+  object-fit: cover;
   border-radius: 0 0 15px 0;
 `;
 
-const Thumb = styled(Image)`
+const Thumb = styled.img`
   ${thumbStyles};
 `;
 
@@ -75,10 +77,17 @@ export default class CartThumb extends Component {
 
   render() {
     const { url, withTooltip, isPlaceholder } = this.props;
-
     return (
       <Wrap isPlaceholder={isPlaceholder} withTooltip={withTooltip} onMouseLeave={this.hideTooltip}>
-        {isPlaceholder ? <ThumbPlaceholder /> : <Thumb src={url} background />}
+        {isPlaceholder || !url ? (
+          <ThumbPlaceholder />
+        ) : (
+          <Thumb
+            className="lazyload"
+            data-src={buildImgUrl(url, { width: 400, height: 300 })}
+            width="100%"
+          />
+        )}
         {this.props.children}
       </Wrap>
     );

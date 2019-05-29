@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import validator from 'validator';
+import isEmail from 'validator/lib/isEmail';
 import LoginFormComponent from '../components/LoginForm';
 import * as sessionsActions from 'store/session/actions';
 import headerActions from 'store/header/actions';
@@ -52,7 +52,7 @@ class SessionsContainer extends Component {
   validateEmailInput(target) {
     const { name, value } = target;
 
-    if (name === 'email' && value.length > 0 && !validator.isEmail(value)) {
+    if (name === 'email' && value.length > 0 && !isEmail(value)) {
       return this.setState({
         [`${name}-error`]: true,
       });

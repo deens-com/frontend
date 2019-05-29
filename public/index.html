@@ -1,104 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Unless -->
-    <script>(function(p,e,r,s,o,n,i,f,y){n=p.getElementsByTagName(e)[0];function m(a,t,h){(i=p.createElement('link')).rel=t?'preload':'preconnect',i.href=a,i.crossOrigin=t?null:'anonymous',h?i.as=h:null,n.parentNode.insertBefore(i,n)};m(r+s);m(r+s+o,!0,e);m(r+'global.'+s);f=p.documentElement,f.style.opacity=0,setTimeout(function(){f.style.opacity=''},3e3);(y=p.createElement(e)).src=r+s+o,y.async=!0,n.parentNode.insertBefore(y,n)})(document,'script','https://','unless.com','/js/v5/latest/txt.min.js?id=888cba68-66ea-4285-ba25-f27ddce709ba');</script>
-    <!-- End Unless -->
     
-    <!-- Segment Analytics -->
-    <script type="text/javascript">
-      (function(){
-
-        // Create a queue, but don't obliterate an existing one!
-        var analytics = window.analytics = window.analytics || [];
-
-        // If the real analytics.js is already on the page return.
-        if (analytics.initialize) return;
-
-        // If the snippet was invoked already show an error.
-        if (analytics.invoked) {
-          if (window.console && console.error) {
-            console.error('Segment snippet included twice.');
-          }
-          return;
-        }
-
-        // Invoked flag, to make sure the snippet
-        // is never invoked twice.
-        analytics.invoked = true;
-
-        // A list of the methods in Analytics.js to stub.
-        analytics.methods = [
-          'trackSubmit',
-          'trackClick',
-          'trackLink',
-          'trackForm',
-          'pageview',
-          'identify',
-          'reset',
-          'group',
-          'track',
-          'ready',
-          'alias',
-          'debug',
-          'page',
-          'once',
-          'off',
-          'on'
-        ];
-
-        // Define a factory to create stubs. These are placeholders
-        // for methods in Analytics.js so that you never have to wait
-        // for it to load to actually record data. The `method` is
-        // stored as the first argument, so we can replay the data.
-        analytics.factory = function(method){
-          return function(){
-            var args = Array.prototype.slice.call(arguments);
-            args.unshift(method);
-            analytics.push(args);
-            return analytics;
-          };
-        };
-
-        // For each of our methods, generate a queueing stub.
-        for (var i = 0; i < analytics.methods.length; i++) {
-          var key = analytics.methods[i];
-          analytics[key] = analytics.factory(key);
-        }
-
-        // Define a method to load Analytics.js from our CDN,
-        // and that will be sure to only ever load it once.
-        analytics.load = function(key, options){
-          // Create an async script element based on your key.
-          var script = document.createElement('script');
-          script.type = 'text/javascript';
-          script.async = true;
-          script.src = ('https:' === document.location.protocol
-            ? 'https://' : 'http://')
-            + 'cdn.segment.com/analytics.js/v1/'
-            + key + '/analytics.min.js';
-
-          // Insert our script next to the first script element.
-          var first = document.getElementsByTagName('script')[0];
-          first.parentNode.insertBefore(script, first);
-          analytics._loadOptions = options;
-        };
-
-        // Add a version to keep track of what's in the wild.
-        analytics.SNIPPET_VERSION = '4.1.0';
-
-        // Load Analytics.js with your key, which will automatically
-        // load the tools you've enabled for your account. Boosh!
-        const environment = "%REACT_APP_NODE_ENV%"
-        if(environment === "production"){
-          analytics.load("EeTG9XHL50pFZXCYUOyBaZjtqkXDS4o3");
-        }else{
-          analytics.load("JS7vZSv3cvBCHvMbVM3TSxR7pAhlKEAb");
-        }
-      })();
-
-    </script>
-    <!-- End Segment Analytics -->
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -112,6 +15,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="%PUBLIC_URL%/favicon-16x16.png">
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
     <link rel="mask-icon" href="%PUBLIC_URL%/safari-pinned-tab.svg" color="#69b4d9">
+    <link as="stylesheet" rel="preload" href="https://fonts.googleapis.com/css?family=Nunito:400,700|Roboto:300,400,400i,500,700,900&display=swap">
     <meta name="apple-mobile-web-app-title" content="Deens">
     <meta name="application-name" content="Deens">
     <meta name="msapplication-TileColor" content="#ffffff">
@@ -145,10 +49,10 @@
     <meta http-equiv="Accept-CH" content="DPR, Width, Viewport-Width">
 
     <!-- Prefetch images required in the Hero Slider -->
-    <link rel="prefetch" href="https://please-com.imgix.net/5ea4f976-6142-4d7e-b342-29b2543963e8.png?auto=compress">
-    <link rel="prefetch" href="https://please-com.imgix.net/981fabde-0314-409c-a394-36acce1f9b3b.png?auto=compress">
-    <link rel="prefetch" href="https://please-com.imgix.net/58dd1807-a82d-41e1-bcf5-e7c4cf0ec95e.png?auto=compress">
-    <link rel="prefetch" href="https://please-com.imgix.net/3cc53d62-b030-49df-9c02-5a9cbd5025eb.png?auto=compress">
+    <!-- <link rel="prefetch" href="https://please-com.imgix.net/5ea4f976-6142-4d7e-b342-29b2543963e8.png?auto=compress&q=5&w=1&h=0.5&fit=crop">
+    <link rel="prefetch" href="https://please-com.imgix.net/981fabde-0314-409c-a394-36acce1f9b3b.png?auto=compress&q=35&w=1&h=0.5&fit=crop">
+    <link rel="prefetch" href="https://please-com.imgix.net/58dd1807-a82d-41e1-bcf5-e7c4cf0ec95e.png?auto=compress&q=5&w=1&h=0.5&fit=crop">
+    <link rel="prefetch" href="https://please-com.imgix.net/3cc53d62-b030-49df-9c02-5a9cbd5025eb.png?auto=compress&q=5&w=1&h=0.5&fit=crop"> -->
 
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
@@ -160,28 +64,6 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
 
-    <!-- TODO: make stripe load async -->
-    <script src="https://js.stripe.com/v3/"></script>
-
-    <script rel="prefetch" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc&libraries=places&language=en"></script>
-
-    <script>
-      // disable Speedy from styled-components to allow unless.com to work
-      SC_DISABLE_SPEEDY=true
-    </script>
-
-    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
-    <script>
-      const environment = "%REACT_APP_NODE_ENV%"
-      if(environment === "production"){
-        var OneSignal = window.OneSignal || [];
-        OneSignal.push(function() {
-          OneSignal.init({
-            appId: "b8c79061-209a-4902-832d-62d4fd02d18b",
-          });
-        });
-      }
-    </script>
   </head>
   <body>
     <noscript>
@@ -210,5 +92,6 @@
           <stop offset="50%" stop-color="rgba(18, 84, 95, 0.25)" />
       </linearGradient>
     </svg>
+    <!-- End Segment Analytics -->
   </body>
 </html>

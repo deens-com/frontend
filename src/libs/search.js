@@ -1,7 +1,7 @@
-import queryString from 'qs';
-import moment from 'moment';
+import queryString from 'query-string';
 import apiClient from 'libs/apiClient';
-import isEqual from 'lodash.isequal';
+import { isEqual } from 'lodash';
+import { formatYYYYMMDD } from 'libs/Utils';
 
 export function getAddress(params) {
   if (params.text) {
@@ -124,7 +124,7 @@ export const mapUrlToProps = location => {
     return {};
   }
 
-  const searchParams = queryString.parse(location.search, { ignoreQueryPrefix: true });
+  const searchParams = queryString.parse(location.search);
 
   return getSearchParams(searchParams);
 };
@@ -222,7 +222,7 @@ export const prefetchWithNewParams = (newParams, oldParams) => {
                 lng: newParams.lng,
               }),
         },
-        dates: [moment(newParams.startDate).format('YYYY-MM-DD')],
+        dates: [formatYYYYMMDD(newParams.startDate)],
       };
       apiClient.services.search.prefetch(body);
     }

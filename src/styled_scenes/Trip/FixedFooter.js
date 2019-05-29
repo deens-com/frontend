@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { media } from 'libs/styled';
 import Button from 'shared_components/Button';
 import HelpMe from 'shared_components/HelpMe';
-import throttle from 'lodash.throttle';
+import { throttle } from 'lodash';
 
 const bottomOffset = 245;
 

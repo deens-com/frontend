@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import queryString from 'qs';
+import queryString from 'query-string';
 import styled from 'styled-components';
 import Button from 'shared_components/Button';
-import { CheckIcon } from 'shared_components/icons';
+import CheckIcon from 'shared_components/icons/CheckIcon';
 import { PageContent } from 'shared_components/layout/Page';
 import BrandFooter from 'shared_components/BrandFooter';
 import { connect } from 'react-redux';
@@ -49,7 +49,7 @@ const IconWrapper = styled.div`
 `;
 
 const TripCreator = props => {
-  const params = queryString.parse(props.location.search, { ignoreQueryPrefix: true });
+  const params = queryString.parse(props.location.search);
   useEffect(() => {
     props.changeHeader();
   });

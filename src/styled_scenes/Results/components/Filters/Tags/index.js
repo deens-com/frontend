@@ -6,7 +6,7 @@ import Dropdown from 'shared_components/Dropdown';
 import TextArea from './TextArea';
 import { P, PSmall, PXSmall } from 'libs/commonStyles';
 import { primary } from 'libs/colors';
-import uniqBy from 'lodash.uniqby';
+import { uniqBy } from 'lodash';
 import AccountSettingsComponent from 'scenes/account/components/AccountSettings';
 
 const Content = styled.div`

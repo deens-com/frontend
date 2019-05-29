@@ -1,8 +1,5 @@
-import moment from 'moment';
-import tagsData from './../data/tags';
 import I18nText from 'shared_components/I18nText';
-import * as Sentry from '@sentry/browser';
-
+import tagsData from './../data/tags';
 export const serverBaseURL = () => {
   if (process.env.REACT_APP_NODE_ENV === 'production') {
     return process.env.SERVER_BASE_URL || 'https://api.deens.com';
@@ -80,6 +77,16 @@ export const getISODateString = date => {
   }
 };
 
+export const formatYYYYMMDD = date => {
+  const forSureDate = new Date(date);
+  let month = '' + forSureDate.getDate();
+  let day = '' + forSureDate.getDate();
+  const year = '' + forSureDate.getFullYear();
+  if (month.length < 2) month = '0' + month;
+  if (day.length < 2) day = '0' + day;
+  return [year, month, day].join('-');
+};
+
 /**
  * @param {string} str The string to pad
  * @param {number} length what should be the final length of the string after padding
@@ -142,9 +149,18 @@ export function checkRequiredFields(values, requiredFields) {
  * @returns {string}
  */
 export function getFormattedTripDates(trip) {
-  const startMoment = moment(getISODateString(trip.startDate));
-  const endMoment = startMoment.clone().add(minutesToDays(trip.duration), 'days');
-  return `${startMoment.format('LL')} - ${endMoment.format('LL')}`;
+  let startDate = new Date();
+  if (trip.startDate && typeof trip.startDate === 'string') {
+    startDate = new Date(trip.startDate);
+  } else if (trip.startDate && typeof trip.startDate.getMonth === 'function') {
+    startDate = trip.startDate;
+  }
+  // add trip duration minutes to generate endDate
+  const endDate = new Date(startDate.getTime() + trip.duration * 60000);
+  const localStringOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+  const startDateStr = startDate.toLocaleString('en-us', localStringOptions);
+  const endDateStr = endDate.toLocaleString('en-us', localStringOptions);
+  return `${startDateStr} - ${endDateStr}`;
 }
 
 /**
@@ -203,18 +219,22 @@ export function getPeopleCount(trip) {
 
 export async function waitUntilMapsLoaded() {
   if (!window.google || !window.google.maps) {
-    Sentry.addBreadcrumb({
-      category: 'loading-maps',
-      message: 'Maps not loaded',
-      level: Sentry.Severity.Debug,
+    import(/* webpackChunkName: "sentry" */ '@sentry/browser').then(Sentry => {
+      Sentry.addBreadcrumb({
+        category: 'loading-maps',
+        message: 'Maps not loaded',
+        level: Sentry.Severity.Debug,
+      });
     });
     await new Promise(resolve => setTimeout(resolve, 50));
     return waitUntilMapsLoaded();
   }
-  Sentry.addBreadcrumb({
-    category: 'loading-maps',
-    message: 'Maps loaded',
-    level: Sentry.Severity.Debug,
+  import(/* webpackChunkName: "sentry" */ '@sentry/browser').then(Sentry => {
+    Sentry.addBreadcrumb({
+      category: 'loading-maps',
+      message: 'Maps loaded',
+      level: Sentry.Severity.Debug,
+    });
   });
   return window.google.maps;
 }
@@ -303,4 +323,18 @@ export function getKmFromMeters(meters) {
   }
 
   return (meters / 1000).toFixed(1);
+}
+
+export function buildImgUrl(imgSrc, { width, height, circular } = {}) {
+  const imgUrl = new URL(imgSrc);
+  const searchParams = new URLSearchParams(imgUrl.search);
+  if (searchParams.has('auto')) searchParams.set('auto', 'compress');
+  else searchParams.append('auto', 'compress');
+  if (searchParams.has('fit')) searchParams.set('fit', 'crop');
+  else searchParams.append('fit', 'crop');
+  if (width) searchParams.append('w', width);
+  if (height) searchParams.append('h', height);
+  if (circular) searchParams.append('mask', 'ellipse');
+  imgUrl.search = searchParams.toString();
+  return imgUrl.toString();
 }

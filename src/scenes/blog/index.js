@@ -11,7 +11,7 @@ import headerActions from 'store/header/actions';
 
 import { PageWrapper, PageContent } from 'shared_components/layout/Page';
 import BrandFooter from 'shared_components/BrandFooter';
-import Helmet from 'react-helmet-async';
+import { Helmet } from 'react-helmet-async';
 import Notfound from 'styled_scenes/NotFound';
 import { websiteUrl, prismicUrl } from 'libs/config';
 

@@ -8,7 +8,8 @@ import { media } from './../../../libs/styled';
 import { Message } from 'semantic-ui-react';
 
 // COMPONENTS
-import { SearchIcon, CrossIcon } from '../../../shared_components/icons';
+import SearchIcon from 'shared_components/icons/SearchIcon';
+import CrossIcon from 'shared_components/icons/CrossIcon';
 import SemanticLocationControl from 'shared_components/Form/LocationAutoSuggest';
 
 // ACTIONS & CONFIG

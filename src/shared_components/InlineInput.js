@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { primary } from 'libs/colors';
-import { PencilIcon } from 'shared_components/icons';
+import PencilIcon from 'shared_components/icons/PencilIcon';
 import { P } from 'libs/commonStyles';
 import TextArea from 'shared_components/TextArea';
 

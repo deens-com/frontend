@@ -15,7 +15,7 @@ import ReferAFriend from './ReferAFriend';
 
 import { PageWrapper, PageContent } from '../../shared_components/layout/Page';
 import BrandFooter from '../../shared_components/BrandFooter';
-import Helmet from 'react-helmet-async';
+import { Helmet } from 'react-helmet-async';
 import { websiteUrl } from 'libs/config';
 import headerActions from 'store/header/actions';
 
@@ -149,7 +149,8 @@ const EarnMoney = ({ loggedIn, userProfile, changeHeader }) => {
           <HeaderText>
             <Title>Earn Money</Title>
             <Subtitle>
-              Make money through your network, by referring a friend or proposing your trip planning services
+              Make money through your network, by referring a friend or proposing your trip planning
+              services
             </Subtitle>
           </HeaderText>
         </PageTop>
@@ -159,7 +160,8 @@ const EarnMoney = ({ loggedIn, userProfile, changeHeader }) => {
             <InfoContent>
               <InfoTitle>Get up to $30 for every trip planner you invite.</InfoTitle>
               <InfoDesc>
-                Your account will be credited once your friend has processed at least 200 USD of trip planning orders.
+                Your account will be credited once your friend has processed at least 200 USD of
+                trip planning orders.
               </InfoDesc>
               <CallToAction
                 loggedIn={loggedIn}
@@ -174,7 +176,8 @@ const EarnMoney = ({ loggedIn, userProfile, changeHeader }) => {
             <InfoContent>
               <InfoTitle>Earn $20 by refering a traveler</InfoTitle>
               <InfoDesc>
-                Your account will be credited once your friend buys a custom trip planning service worth at least 100 USD
+                Your account will be credited once your friend buys a custom trip planning service
+                worth at least 100 USD
               </InfoDesc>
               <CallToAction
                 loggedIn={loggedIn}
@@ -191,7 +194,8 @@ const EarnMoney = ({ loggedIn, userProfile, changeHeader }) => {
             <InfoContent>
               <InfoTitle>Earn $5 when you refer a friend who creates a trip</InfoTitle>
               <InfoDesc>
-                Your account will be credited once your friend creates a trip that passes moderation and receives at least 5 hearts. 
+                Your account will be credited once your friend creates a trip that passes moderation
+                and receives at least 5 hearts.
               </InfoDesc>
               <CallToAction
                 loggedIn={loggedIn}

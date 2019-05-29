@@ -7,7 +7,7 @@ import DateSelector from './DateSelector';
 import HelpMe from 'shared_components/HelpMe';
 import { minutesToDays } from 'libs/Utils';
 import SelectGuests from 'shared_components/SelectGuests';
-import { DropArrow } from 'shared_components/icons';
+import DropArrow from 'shared_components/icons/DropArrow';
 import { PStrong, PSmall } from 'libs/commonStyles';
 import { textDark } from 'libs/colors';
 import Toggle from 'shared_components/ToggleSwitch';

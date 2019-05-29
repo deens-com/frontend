@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import memoize from 'memoize-one';
 import PlacesAutocomplete from 'shared_components/PlacesAutocomplete';
-import { Form, Popup, Icon, Ref } from 'semantic-ui-react';
+import { FormInput, Popup, Icon, Ref } from 'semantic-ui-react';
 import StyledInput from 'shared_components/StyledInput';
 import styled from 'styled-components';
 import {
@@ -14,7 +14,11 @@ import {
   backgroundDark,
   primary,
 } from 'libs/colors';
-import { MapMarker, Activity, Briefcase, Food, Accommodation } from 'shared_components/icons';
+import MapMarker from 'shared_components/icons/MapMarker';
+import Briefcase from 'shared_components/icons/Briefcase';
+import Activity from 'shared_components/icons/RunningPerson';
+import Food from 'shared_components/icons/SilverWare';
+import Accommodation from 'shared_components/icons/Bed';
 import ReactResizeDetector from 'react-resize-detector';
 
 const Wrapper = styled.div`
@@ -337,7 +341,7 @@ export default class SemanticLocationControl extends Component {
                       ) : (
                         <>
                           <Ref innerRef={this.handleInputRef}>
-                            <Form.Input
+                            <FormInput
                               icon="map pin"
                               iconPosition="left"
                               type="text"

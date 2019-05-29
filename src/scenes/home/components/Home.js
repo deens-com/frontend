@@ -76,7 +76,7 @@ const HomeComponent = props => {
           isLoading={props.isLoading}
         />
         <SectionBookTrip />
-        <SectionTopDestinations />
+        <SectionTopDestinations updateSearchParams={props.updateSearchParams} />
         <FeaturedTripCreator />
       </PageContent>
       <BrandFooter />

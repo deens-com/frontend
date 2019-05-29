@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Button from 'shared_components/Button';
-import { CheckIcon } from 'shared_components/icons';
+import CheckIcon from 'shared_components/icons/CheckIcon';
 
 const Wrapper = styled.div`
   flex: 1;

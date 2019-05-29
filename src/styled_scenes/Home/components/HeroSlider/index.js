@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 // COMPONENTS
-import { ArrowIcon } from '../../../../shared_components/icons';
+import ArrowIcon from 'shared_components/icons/ArrowIcon';
 import SliderPerson from './SliderPerson';
 
 // ACTIONS/CONFIG
@@ -73,28 +73,32 @@ export const slider = [
     name: 'NYC Must See',
     location: 'New York City, United States of America',
     avatar: '#',
-    image: 'https://please-com.imgix.net/5ea4f976-6142-4d7e-b342-29b2543963e8.png?auto=compress',
+    image:
+      'https://please-com.imgix.net/5ea4f976-6142-4d7e-b342-29b2543963e8.png?auto=compress&q=5&w=1&h=0.5&fit=crop',
     id: '5bc398950ef3aee10fe5ebc0',
   },
   {
     name: 'Romantic and amazing trip in Sydney',
     location: 'Sydney, Australia',
     avatar: '#',
-    image: 'https://please-com.imgix.net/981fabde-0314-409c-a394-36acce1f9b3b.png?auto=compress',
+    image:
+      'https://please-com.imgix.net/981fabde-0314-409c-a394-36acce1f9b3b.png?auto=compress&q=35&w=1&h=0.5&fit=crop',
     id: '5bc6a5dfacba028138cf594f',
   },
   {
     name: 'London getaway, GB',
     location: 'London, United Kingdom',
     avatar: '#',
-    image: 'https://please-com.imgix.net/58dd1807-a82d-41e1-bcf5-e7c4cf0ec95e.png?auto=compress',
+    image:
+      'https://please-com.imgix.net/58dd1807-a82d-41e1-bcf5-e7c4cf0ec95e.png?auto=compress&q=5&w=1&h=0.5&fit=crop',
     id: '5bc69d8e7dad4cd393e5be7e',
   },
   {
     name: 'The outer San Francisco : From Silicon Valley to Yosemite',
     location: 'San Francisco, United States of America',
     avatar: '#',
-    image: 'https://please-com.imgix.net/3cc53d62-b030-49df-9c02-5a9cbd5025eb.png?auto=compress',
+    image:
+      'https://please-com.imgix.net/3cc53d62-b030-49df-9c02-5a9cbd5025eb.png?auto=compress&q=5&w=1&h=0.5&fit=crop',
     id: '5bc6a9ceacba0224e3cf5950',
   },
 ];

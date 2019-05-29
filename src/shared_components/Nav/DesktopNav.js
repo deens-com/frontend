@@ -2,7 +2,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Dropdown } from 'semantic-ui-react';
 import styled, { css } from 'styled-components';
 import Media from 'react-media';
 import { connect } from 'react-redux';
@@ -16,7 +15,6 @@ import I18nText from 'shared_components/I18nText';
 import { sizes } from '../../libs/styled';
 import * as colors from 'libs/colors';
 import { PStrong } from 'libs/commonStyles';
-import { icoReady } from 'libs/config';
 
 // STYLES
 const Wrap = styled.div`
@@ -139,25 +137,6 @@ const TopBarDesktopNav = function TopBarDesktopNav({
       render={() => (
         <Wrap transparent={transparent}>
           <Nav transparent={transparent}>
-            {icoReady && (
-              <Dropdown
-                trigger={DropdownTrigger()}
-                direction="left"
-                style={{ color: 'inherit', marginRight: 30 }}
-              >
-                <Dropdown.Menu>
-                  <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="item"
-                    href="https://protocol.deens.com"
-                  >
-                    <span className="text">Information</span>
-                  </a>
-                  <Dropdown.Item text="Contribute" as={Link} to="/token-sale" />
-                </Dropdown.Menu>
-              </Dropdown>
-            )}
             {session.username &&
               tripInProgress && (
                 <>

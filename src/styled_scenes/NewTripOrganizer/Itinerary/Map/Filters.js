@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Checkbox } from 'semantic-ui-react';
-import { Settings } from 'shared_components/icons';
 import { primary, activity, accommodation, food, tertiary } from 'libs/colors';
-import { Activity, Food, Accommodation } from 'shared_components/icons';
+import Settings from 'shared_components/icons/Settings';
+import Activity from 'shared_components/icons/RunningPerson';
+import Food from 'shared_components/icons/SilverWare';
+import Accommodation from 'shared_components/icons/Bed';
 
 const Wrapper = styled.div`
   position: absolute;
   display: flex;
   padding: 10px;
-`
+`;
 
 const FiltersButton = styled.div`
   z-index: 2;
@@ -28,7 +30,7 @@ const FiltersButton = styled.div`
 `;
 
 const FiltersContent = styled.div`
-  display: ${props => props.show ? 'flex' : 'none'};
+  display: ${props => (props.show ? 'flex' : 'none')};
   max-height: 400px;
   background-color: white;
   z-index: 2;

@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 
 // COMPONENTS
 import Stars from '../Rating/Stars';
-import Image from 'shared_components/Image';
 import placeholder from './../../assets/placeholder350x350.svg';
+import { buildImgUrl } from 'libs/Utils';
 
 // ACTIONS/CONFIG
 
@@ -68,17 +68,16 @@ export default function ReviewCart({ review }) {
   if (reviewer.city && reviewer.country) reviewerLocation = `${reviewer.city}, ${reviewer.country}`;
   else if (reviewer.city || reviewer.country)
     reviewerLocation = `${reviewer.city} ${reviewer.country}`.trim();
+  const { profilePicture } = review.reviewer;
+  const dpUrl = profilePicture
+    ? buildImgUrl(profilePicture, { width: 30, height: 30 })
+    : placeholder;
   return (
     <Wrap>
       <ProfileWrap>
         <Link to={reviewerProfileLink}>
           <Avatar>
-            <Image
-              src={
-                review.reviewer.profilePicture ? review.reviewer.profilePicture.url : placeholder
-              }
-              alt=""
-            />
+            <img src={dpUrl} width="30px" height="30px" alt="" />
           </Avatar>
         </Link>
         <Profile>

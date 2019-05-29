@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import I18nText from 'shared_components/I18nText';
 import ImgurAvatar from 'assets/no-avatar.png';
 import { getHeroImageUrlFromMedia } from 'libs/media';
+import { buildImgUrl } from 'libs/Utils';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -56,8 +57,13 @@ const Username = styled.p`
 
 const Header = ({ trip, owner, innerRef }) => {
   const hero = trip && getHeroImageUrlFromMedia(trip.media);
-  const img = hero;
+  const img = buildImgUrl(hero);
 
+  const ownerImage =
+    (owner &&
+      owner.profilePicture &&
+      buildImgUrl(owner.profilePicture, { circular: true, width: 45, height: 45 })) ||
+    ImgurAvatar;
   return (
     <Wrapper ref={innerRef} img={img}>
       <Title>
@@ -67,7 +73,7 @@ const Header = ({ trip, owner, innerRef }) => {
         <React.Fragment>
           <AvatarWrapper>
             <Link to={`/users/${owner.username}`}>
-              <Image src={owner.profilePicture || ImgurAvatar} circular width={45} height={45} />
+              <Image src={ownerImage} circular width={45} height={45} />
             </Link>
           </AvatarWrapper>
           <CreatedBy>Created by</CreatedBy>

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { primary, secondary } from 'libs/colors';
-import { PlusIcon } from 'shared_components/icons';
+import { primary } from 'libs/colors';
+import PlusIcon from 'shared_components/icons/PlusIcon';
 
 const Button = styled.button`
   width: 48px;
