@@ -1,12 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 // import 'semantic-ui-css/semantic.min.css';
-import './index.css';
 import App from './main/app';
 import { createBrowserHistory as createHistory } from 'history';
 //import { unregister as unregisterServiceWorker } from './registerServiceWorker';
 import { isProd, isStaging } from './libs/config';
-import { readSession } from 'libs/user-session';
 
 const history = createHistory();
 
@@ -47,9 +45,6 @@ import(/* webpackChunkName: "sentry" */ '@sentry/browser').then(Sentry => {
   }
 });
 
-// reads localStorage to get the user object on load
-readSession();
-
 const rootElement = document.getElementById('root');
 if (rootElement.hasChildNodes()) {
   ReactDOM.hydrate(<App />, rootElement);
@@ -75,6 +70,3 @@ const customerId = getQueryStringValue('customer_id');
 if (customerId && window.analytics) {
   window.analytics.identify(customerId);
 }
-
-// reads localStorage to get the user object on load
-readSession();
