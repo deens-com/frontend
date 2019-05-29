@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Segment } from 'semantic-ui-react';
 
 export const Page = styled.div`
   display: flex;
@@ -21,22 +20,8 @@ export const PageContentStyles = styled.main`
   display: ${props => (props.flex ? 'flex' : 'block')};
 `;
 
-export const SegmentWithoutPadding = styled(Segment)`
-  && {
-    padding: 0;
-    margin: 0;
-    min-height: 600px;
-  }
-`;
-
 export const PageContent = props => {
-  // _removed because sending flex=true to SegmentWithoutPadding causes SemanticUI to log an error in console
-  const { flex: _removed, ...rest } = props;
-  return (
-    <SegmentWithoutPadding basic {...rest}>
-      <PageContentStyles {...props}>{props.children}</PageContentStyles>
-    </SegmentWithoutPadding>
-  );
+  return <PageContentStyles {...props}>{props.children}</PageContentStyles>;
 };
 
 export const SectionWrap = styled.section`

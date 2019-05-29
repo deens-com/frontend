@@ -10,6 +10,8 @@ import { readSession } from 'libs/user-session';
 
 const history = createHistory();
 
+import(/* webpackChunkName: "lazyloading" */ './main/lazyload');
+
 import(/* webpackChunkName: "sentry" */ '@sentry/browser').then(Sentry => {
   if (isProd || isStaging) {
     let environment = window.location.hostname.split('.')[0];

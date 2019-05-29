@@ -103,24 +103,6 @@
           <stop offset="50%" stop-color="rgba(18, 84, 95, 0.25)" />
       </linearGradient>
     </svg>
-
-    <script>
-      (async () => {
-        if ('loading' in HTMLImageElement.prototype) {
-          const images = document.querySelectorAll('img.lazyload');
-          images.forEach(img => {
-            img.src = img.dataset.src;
-          });
-        } else {
-           // Dynamically import the LazySizes library
-            let script = document.createElement("script");
-            script.async = true;
-            script.src =
-              "https://cdnjs.cloudflare.com/ajax/libs/lazysizes/4.1.8/lazysizes.min.js";
-            document.body.appendChild(script);
-        }
-      })();
-    </script>
     <script type="text/javascript">
       var initSegment = function(){
         var analytics = window.analytics = window.analytics || [];
