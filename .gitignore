@@ -24,3 +24,5 @@ yarn-error.log*
 src/vendor/components/
 .vscode
 report.html
+
+sitemap-files.zip
