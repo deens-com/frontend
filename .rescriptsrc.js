@@ -79,7 +79,7 @@ const moveHeavyLibsIntoSeparateChunks = config => {
 const nameChunks = config => {
   config.output.filename = '[name].[hash].js';
   config.output.chunkFilename = '[name].[chunkhash].js';
-  config.output.path = path.resolve(__dirname, 'dist');
+  config.output.path = path.resolve(__dirname, 'build');
   return config;
 };
 
@@ -87,7 +87,7 @@ module.exports = [
   ['use-babel-config', '.babelrc.js'],
   addEntryPoints,
   addWebpackPlugins,
-  //nameChunks,
+  nameChunks,
   moveHeavyLibsIntoSeparateChunks,
   usePreact,
   // useDayJsInsteadOfMoment, // (react-dates crashes with it)
