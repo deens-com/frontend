@@ -11,6 +11,7 @@ import { readSession } from 'libs/user-session';
 const history = createHistory();
 
 import(/* webpackChunkName: "lazyloading" */ './main/lazyload');
+import(/* webpackChunkName: "external-stuff" */ './main/external');
 
 import(/* webpackChunkName: "sentry" */ '@sentry/browser').then(Sentry => {
   if (isProd || isStaging) {

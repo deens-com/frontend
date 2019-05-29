@@ -34,6 +34,7 @@
     "now": "^12.1.12",
     "pluralize": "^7.0.0",
     "preact": "^10.0.0-beta.1",
+    "preload-webpack-plugin": "^3.0.0-beta.3",
     "prismic-javascript": "^2.0.1",
     "prismic-reactjs": "^0.3.2",
     "prop-types": "^15.6.1",
