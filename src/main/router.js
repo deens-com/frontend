@@ -74,7 +74,7 @@ const Notfound = React.lazy(() =>
   import(/* webpackChunkName: "not-found" */ './../styled_scenes/NotFound'),
 );
 
-export default () => (
+export default (
   <ScrollToTop>
     <Switch>
       <Route exact path={process.env.PUBLIC_URL + '/'} component={asyncCommonHOCs(Home)} />

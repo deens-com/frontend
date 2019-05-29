@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import GoogleMapReact from 'google-map-react';
 import { Checkbox } from 'semantic-ui-react';
-import Media from 'react-media';
 import { getCenterAndZoom, getCenterFromBounds } from 'libs/location';
 import yelpLogo from 'assets/yelp/logo.png';
 import { connect } from 'react-redux';
