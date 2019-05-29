@@ -90,6 +90,7 @@ const MapOverlay = styled.div`
   align-items: center;
   padding-bottom: 300px;
   color: ${textLight};
+  pointer-events: none;
 `;
 
 const TopFiltersWrapper = styled.div``;
