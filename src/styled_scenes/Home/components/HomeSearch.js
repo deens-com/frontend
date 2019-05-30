@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { geocodeByAddress } from 'libs/placesAutocomplete';
 import { getSearchParams } from 'libs/location';
-import { media } from './../../../libs/styled';
+import { media } from 'libs/styled';
 
 import { Message } from 'semantic-ui-react';
 
@@ -37,6 +37,9 @@ const Wrapper = styled.div`
   position: relative;
   max-width: 504px;
   margin: auto;
+  ${media.minLarge} {
+    margin: 0;
+  }
 `;
 
 const TypeIcon = styled.div`
@@ -151,19 +154,11 @@ export default class HomeSearch extends Component {
       type: this.state.serviceType,
       text: this.state.text,
     };
-    /*let query_arr = [];
-    Object.entries(query_params).forEach(([key, value]) => {
-      if (value) {
-        let to_concat = key + '=' + value;
-        query_arr = query_arr.concat(to_concat);
-      }
-    });
-    let query_string = query_arr.join('&');*/
+
     if (this.props.toggleSearch) {
       this.props.toggleSearch();
     }
     this.props.updateSearchParams(params);
-    //history.push(`/results?${query_string}`);
   }
 
   handleServiceTypeChange = serviceType => {

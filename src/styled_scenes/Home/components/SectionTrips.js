@@ -2,9 +2,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Loader } from 'semantic-ui-react';
 import { H2, H3 } from 'libs/commonStyles';
-import { secondary } from 'libs/colors';
+import { media } from 'libs/styled';
 
 // COMPONENTS
 import ErrorHandler from 'shared_components/ErrorHandler';
@@ -18,6 +17,18 @@ import { PageWrapper, SectionWrap, SectionContent } from '../../../shared_compon
 const Subtitle = styled(H3)`
   font-weight: lighter;
   margin-top: 0;
+  display: none;
+  ${media.minSmall} {
+    display: block;
+  }
+`;
+
+const SubtitleMobile = styled(H3)`
+  font-weight: lighter;
+  margin-top: 0;
+  ${media.minSmall} {
+    display: none;
+  }
 `;
 
 const SectionHeader = styled.header`
@@ -38,6 +49,7 @@ export default class HomeSectionTrips extends React.PureComponent {
                 Explore the best trips created by locals. They are{' '}
                 <strong>100% customizable</strong> and <strong>we don’t charge you extra!</strong>
               </Subtitle>
+              <SubtitleMobile>100% customizable trips created by locals</SubtitleMobile>
             </SectionHeader>
           </SectionWrap>
         </PageWrapper>
