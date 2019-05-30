@@ -65,6 +65,15 @@ const Secondary = styled.span`
   color: ${secondary};
 `;
 
+const HomeTagSubtitle = styled(H2Subtitle)`
+  margin-top: 15px;
+  margin-bottom: 20px;
+  text-align: center;
+  ${media.minLarge} {
+    text-align: left;
+  }
+`;
+
 const world = (
   <picture>
     <img
@@ -91,9 +100,7 @@ const HomeComponent = props => {
             <Secondary>Customizable</Secondary> holidays created by locals for{' '}
             <Secondary>FREE</Secondary>
           </HomeTagLine>
-          <H2Subtitle style={{ marginTop: '15px', marginBottom: '20px', textAlign: 'center' }}>
-            Where do you want to go?
-          </H2Subtitle>
+          <HomeTagSubtitle>Where do you want to go?</HomeTagSubtitle>
           <HomeSearch
             savedAddress={props.savedAddress}
             updateSearchParams={props.updateSearchParams}
