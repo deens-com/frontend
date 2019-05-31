@@ -6,11 +6,9 @@ import styled, { css } from 'styled-components';
 
 // COMPONENTS
 import DesktopNav from '../Nav/DesktopNav';
-import MobileNav from '../Nav/MobileNav';
 import MobileHomeNav from '../Nav/MobileHomeNav';
 import Media from 'react-media';
 import Logo from './Logo';
-import MobileDropdownMenu from '../Nav/MobileDropdownMenu';
 import Search from './Search';
 import { bindActionCreators } from 'redux';
 import { getCurrentUserTrip, logOut } from 'store/session/actions';
@@ -127,14 +125,7 @@ class TopBar extends Component {
   }
 
   renderMobileDropdown() {
-    const { isHome, transparent } = this.props;
-    const { showMenu } = this.state;
-    if (isHome) {
-      return <MobileHomeNav latestTrip={this.props.latestTrip} />;
-    }
-    return (
-      <MobileDropdownMenu isMenuOpen={showMenu} toggleMenu={this.toggleMenu} dark={!transparent} />
-    );
+    return <MobileHomeNav latestTrip={this.props.latestTrip} />;
   }
 
   render() {
@@ -152,7 +143,6 @@ class TopBar extends Component {
     return (
       <React.Fragment>
         <Wrapper
-          role="baner"
           showShadow={!transparent && !showMenu}
           showMenu={showMenu}
           transparent={transparent}
@@ -195,11 +185,6 @@ class TopBar extends Component {
             </Content>
           </InnerWrap>
         </Wrapper>
-        <MobileNav
-          toggleMenu={this.toggleMenu}
-          showProfileMenu={showMenu}
-          latestTrip={this.props.latestTrip}
-        />
         {!transparent && !forceNotFixed && <FixedPlaceholder noMargin={noMargin} />}
       </React.Fragment>
     );
