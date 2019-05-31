@@ -4,7 +4,7 @@ import { Page } from 'shared_components/layout/Page';
 import TopBar from 'shared_components/TopBar';
 import { withRouter } from 'react-router-dom';
 
-const Skeleton = ({ children, transparent, noSearch, noMargin, forceNotFixed }) => {
+const Skeleton = ({ children, transparent, noSearch, noMargin, forceNotFixed, location }) => {
   return (
     <Page>
       <TopBar
@@ -12,6 +12,7 @@ const Skeleton = ({ children, transparent, noSearch, noMargin, forceNotFixed }) 
         noSearch={noSearch}
         noMargin={noMargin}
         forceNotFixed={forceNotFixed}
+        isHome={location.pathname === '/'}
       />
       {children}
     </Page>

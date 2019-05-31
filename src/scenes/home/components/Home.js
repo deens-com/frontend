@@ -27,9 +27,14 @@ const PageTop = styled.div`
   max-width: 1350px;
   ${media.minLarge} {
     flex-direction: row;
-    picture > img {
-      max-width: 400px;
-    }
+  }
+`;
+
+const WorldWrapper = styled.div`
+  flex-grow: 1;
+  text-align: center;
+  > img {
+    max-width: 400px;
   }
 `;
 
@@ -74,19 +79,16 @@ const HomeTagSubtitle = styled(H2Subtitle)`
   }
 `;
 
-const world = (
-  <picture>
-    <img
-      sizes="(max-width: 821px) 100vw, 821px"
-      srcSet="
-      world_levbj2_c_scale,w_200.png 200w,
-      world_levbj2_c_scale,w_821.png 821w"
-      data-src="world_levbj2_c_scale,w_821.png"
-      alt="Customizable holidays"
-      className="lazyload"
-    />
-  </picture>
-);
+const MobileWorldWrapper = styled.div`
+  height: 50vw;
+  margin-top: 25px;
+  overflow: hidden;
+  > img {
+    width: 100vw;
+  }
+`;
+
+const world = <img data-src="world.png" alt="Customizable holidays" className="lazyload" />;
 
 const Content = React.lazy(() => import('./Content'));
 
@@ -107,7 +109,7 @@ const HomeComponent = props => {
           />
         </div>
         <Media query={`(min-width: ${sizes.large})`}>
-          {matches => matches && <div style={{ flexGrow: 1, textAlign: 'center' }}>{world}</div>}
+          {matches => matches && <WorldWrapper>{world}</WorldWrapper>}
         </Media>
       </PageTop>
       <Suspense
@@ -135,9 +137,7 @@ const HomeComponent = props => {
         </Media>
       </Suspense>
       <Media query={`(min-width: ${sizes.large})`}>
-        {matches =>
-          matches ? null : <div style={{ height: '30vw', overflow: 'hidden' }}>{world}</div>
-        }
+        {matches => (matches ? null : <MobileWorldWrapper>{world}</MobileWorldWrapper>)}
       </Media>
       <BrandFooter />
     </>

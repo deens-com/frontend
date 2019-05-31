@@ -7,6 +7,8 @@ import styled, { css } from 'styled-components';
 // COMPONENTS
 import DesktopNav from '../Nav/DesktopNav';
 import MobileNav from '../Nav/MobileNav';
+import MobileHomeNav from '../Nav/MobileHomeNav';
+import Media from 'react-media';
 import Logo from './Logo';
 import MobileDropdownMenu from '../Nav/MobileDropdownMenu';
 import Search from './Search';
@@ -17,7 +19,7 @@ import { withRouter } from 'react-router-dom';
 import searchActions from 'store/search/actions';
 
 // ACTIONS/CONFIG
-import { media } from 'libs/styled';
+import { media, sizes } from 'libs/styled';
 import * as colors from 'libs/colors';
 
 const Content = styled.div`
@@ -124,6 +126,17 @@ class TopBar extends Component {
     this.setState(prevState => ({ showSearchMobile: !prevState.showSearchMobile }));
   }
 
+  renderMobileDropdown() {
+    const { isHome, transparent } = this.props;
+    const { showMenu } = this.state;
+    if (isHome) {
+      return <MobileHomeNav latestTrip={this.props.latestTrip} />;
+    }
+    return (
+      <MobileDropdownMenu isMenuOpen={showMenu} toggleMenu={this.toggleMenu} dark={!transparent} />
+    );
+  }
+
   render() {
     const {
       transparent,
@@ -175,11 +188,9 @@ class TopBar extends Component {
                 logOut={this.props.logOut}
               />
               {!showSearchMobile && (
-                <MobileDropdownMenu
-                  isMenuOpen={showMenu}
-                  toggleMenu={this.toggleMenu}
-                  dark={!transparent}
-                />
+                <Media query={`(min-width: ${sizes.large})`}>
+                  {matches => (matches ? null : this.renderMobileDropdown())}
+                </Media>
               )}
             </Content>
           </InnerWrap>
@@ -201,6 +212,7 @@ TopBar.propTypes = {
   withPadding: PropTypes.bool,
   noMargin: PropTypes.bool,
   forceNotFixed: PropTypes.bool,
+  isHome: PropTypes.bool,
   location: PropTypes.object,
 };
 
