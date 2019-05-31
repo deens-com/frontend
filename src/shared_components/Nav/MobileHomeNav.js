@@ -97,11 +97,9 @@ class MobileHomeNav extends Component {
       <span onClick={() => this.toggleMenu()}>
         <Account
           style={{
-            fill: 'white',
-            background: primary,
-            height: '2.5em',
-            width: '2.5em',
-            borderRadius: '100px',
+            fill: primary,
+            height: '1.5em',
+            width: '1.5em',
             marginLeft: '15px',
           }}
         />
