@@ -8,6 +8,7 @@ import { logOut } from 'store/session/actions';
 import I18nText from 'shared_components/I18nText';
 import ImgurAvatar from 'assets/no-avatar.png';
 import { primary, secondary } from 'libs/colors';
+import Account from 'shared_components/icons/AccountCircle';
 
 const Wrap = styled.div`
   justify-self: flex-end;
@@ -85,6 +86,27 @@ class MobileHomeNav extends Component {
 
   renderMenu = () => {
     const avatar = this.props.session.profilePicture || ImgurAvatar;
+    const Button = this.props.session.username ? (
+      <img
+        onClick={() => this.toggleMenu()}
+        style={{ borderRadius: '5px 5px 5px 0', width: '30px', marginLeft: '15px' }}
+        src={avatar}
+        alt={this.props.session.username}
+      />
+    ) : (
+      <span onClick={() => this.toggleMenu()}>
+        <Account
+          style={{
+            fill: 'white',
+            background: primary,
+            height: '2.5em',
+            width: '2.5em',
+            borderRadius: '100px',
+            marginLeft: '15px',
+          }}
+        />
+      </span>
+    );
     const sessionMenu = this.props.session.username ? (
       <li onClick={this.logout} style={{ padding: '8px 15px' }}>
         Logout
@@ -106,12 +128,7 @@ class MobileHomeNav extends Component {
             <I18nText data={this.props.latestTrip.title} />
           </Link>
         )}
-        <img
-          onClick={() => this.toggleMenu()}
-          style={{ borderRadius: '5px 5px 5px 0', width: '30px', marginLeft: '15px' }}
-          src={avatar}
-          alt={this.props.session.username}
-        />
+        {Button}
         {this.state.isOpen && (
           <Menu>
             <li>

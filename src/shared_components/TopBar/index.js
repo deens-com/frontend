@@ -28,6 +28,13 @@ const Content = styled.div`
 `;
 
 // STYLES
+const TopWrapper = styled.div`
+  max-width: 1350px;
+  width: calc(100% - 10px);
+  margin: 0 auto;
+  position: relative;
+`;
+
 const Wrapper = styled.header`
   align-items: center;
   background: ${colors.backgroundLight};
@@ -139,7 +146,7 @@ class TopBar extends Component {
     } = this.props;
     const { showMenu, showSearchMobile } = this.state;
 
-    const InnerWrap = transparent || noSearch ? PageWrapper : React.Fragment;
+    const InnerWrap = transparent || noSearch ? TopWrapper : React.Fragment;
     return (
       <React.Fragment>
         <Wrapper
