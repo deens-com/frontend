@@ -6,9 +6,9 @@ import styled, { css } from 'styled-components';
 
 // COMPONENTS
 import DesktopNav from '../Nav/DesktopNav';
-import MobileNav from '../Nav/MobileNav';
+import MobileHomeNav from '../Nav/MobileHomeNav';
+import Media from 'react-media';
 import Logo from './Logo';
-import MobileDropdownMenu from '../Nav/MobileDropdownMenu';
 import Search from './Search';
 import { bindActionCreators } from 'redux';
 import { getCurrentUserTrip, logOut } from 'store/session/actions';
@@ -17,7 +17,7 @@ import { withRouter } from 'react-router-dom';
 import searchActions from 'store/search/actions';
 
 // ACTIONS/CONFIG
-import { media } from 'libs/styled';
+import { media, sizes } from 'libs/styled';
 import * as colors from 'libs/colors';
 
 const Content = styled.div`
@@ -28,6 +28,13 @@ const Content = styled.div`
 `;
 
 // STYLES
+const TopWrapper = styled.div`
+  max-width: 1350px;
+  width: calc(100% - 10px);
+  margin: 0 auto;
+  position: relative;
+`;
+
 const Wrapper = styled.header`
   align-items: center;
   background: ${colors.backgroundLight};
@@ -124,6 +131,10 @@ class TopBar extends Component {
     this.setState(prevState => ({ showSearchMobile: !prevState.showSearchMobile }));
   }
 
+  renderMobileDropdown() {
+    return <MobileHomeNav latestTrip={this.props.latestTrip} />;
+  }
+
   render() {
     const {
       transparent,
@@ -135,11 +146,10 @@ class TopBar extends Component {
     } = this.props;
     const { showMenu, showSearchMobile } = this.state;
 
-    const InnerWrap = transparent || noSearch ? PageWrapper : React.Fragment;
+    const InnerWrap = transparent || noSearch ? TopWrapper : React.Fragment;
     return (
       <React.Fragment>
         <Wrapper
-          role="baner"
           showShadow={!transparent && !showMenu}
           showMenu={showMenu}
           transparent={transparent}
@@ -175,20 +185,13 @@ class TopBar extends Component {
                 logOut={this.props.logOut}
               />
               {!showSearchMobile && (
-                <MobileDropdownMenu
-                  isMenuOpen={showMenu}
-                  toggleMenu={this.toggleMenu}
-                  dark={!transparent}
-                />
+                <Media query={`(min-width: ${sizes.large})`}>
+                  {matches => (matches ? null : this.renderMobileDropdown())}
+                </Media>
               )}
             </Content>
           </InnerWrap>
         </Wrapper>
-        <MobileNav
-          toggleMenu={this.toggleMenu}
-          showProfileMenu={showMenu}
-          latestTrip={this.props.latestTrip}
-        />
         {!transparent && !forceNotFixed && <FixedPlaceholder noMargin={noMargin} />}
       </React.Fragment>
     );
@@ -201,6 +204,7 @@ TopBar.propTypes = {
   withPadding: PropTypes.bool,
   noMargin: PropTypes.bool,
   forceNotFixed: PropTypes.bool,
+  isHome: PropTypes.bool,
   location: PropTypes.object,
 };
 

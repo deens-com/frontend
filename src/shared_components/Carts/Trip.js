@@ -535,7 +535,7 @@ TripCart.propTypes = {
   item: PropTypes.shape({
     image: PropTypes.string,
     partof: PropTypes.number,
-    title: PropTypes.string,
+    title: PropTypes.object,
     description: PropTypes.string,
     rating: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     review: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),

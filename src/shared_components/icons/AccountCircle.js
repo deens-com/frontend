@@ -8,9 +8,12 @@ const AccountCircle = SvgWithProps(({ ariaHidden, focusable, role, style }) => (
     focusable={focusable.toString()}
     role={role}
     style={style}
-    viewBox="0 0 24 24"
+    viewBox="0 0 12 12"
   >
-    <path d="M12,19.2C9.5,19.2 7.29,17.92 6,16C6.03,14 10,12.9 12,12.9C14,12.9 17.97,14 18,16C16.71,17.92 14.5,19.2 12,19.2M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12C22,6.47 17.5,2 12,2Z" />
+    <g>
+      <circle cx="6" cy="3" r="3" data-color="color-2" />
+      <path d="M6,7C2.625,7,1,9.106,1,10.333V11a1,1,0,0,0,1,1h8a1,1,0,0,0,1-1v-.667C11,9.106,9.375,7,6,7Z" />
+    </g>
   </svg>
 ));
 

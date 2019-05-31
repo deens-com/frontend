@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { media } from 'libs/styled';
 
 // COMPONENTS
 import Logo from 'shared_components/icons/Logo';
@@ -39,14 +40,22 @@ const LogoLink = styled(Link)`
   span {
     display: none;
   }
+  > img {
+    height: 40px;
+  }
+  ${media.minMedium} {
+    > img {
+      height: 50px;
+    }
+  }
 `;
 
 // MODULE
 export default function TopBarLogo({ menuIsOpened, toggleMenu, applyFixation }) {
   return (
     <Wrap>
-      <LogoLink to="/" aria-label="Please homepage">
-        <Logo style={{ height: '50px' }} />
+      <LogoLink to="/" aria-label="Deens homepage">
+        <Logo />
       </LogoLink>
     </Wrap>
   );

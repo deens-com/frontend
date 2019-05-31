@@ -83,7 +83,7 @@ const navItemStyle = `
 
 const Divider = styled.span`
   font-size: 18px;
-  color: ${colors.secondary};
+  color: ${colors.disabled};
 `;
 
 const NavLink = styled(Link)`
@@ -157,7 +157,7 @@ const TopBarDesktopNav = function TopBarDesktopNav({
               </>
             )}
             <NavLink activeclassname="is-active" to="/earn-money">
-              <PStrong>Earn Money</PStrong>
+              <PStrong style={{ color: colors.secondary }}>Earn Money</PStrong>
             </NavLink>
             {!session.username && (
               <>

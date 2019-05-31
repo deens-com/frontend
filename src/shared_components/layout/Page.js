@@ -11,7 +11,6 @@ export const PageWrapper = styled.div`
   max-width: 1350px;
   width: calc(100% - 20px);
   margin: 0 auto;
-  padding: 0 10px;
   position: relative;
 `;
 
