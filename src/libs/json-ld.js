@@ -1,5 +1,5 @@
-import I18nText from 'shared_components/I18nText';
 import { formatYYYYMMDD } from 'libs/Utils';
+import I18nText from 'shared_components/I18nText';
 
 export function getServiceJsonLdData(service, canonicalUrl) {
   const category = I18nText.translate(service.categories[0].names);
@@ -63,6 +63,11 @@ function getActivityJsonLd(service, canonicalUrl) {
     name: I18nText.translate(service.title),
     image: getHeroImage(service),
     sku: service._id,
+    mpn: service._id,
+    brand: {
+      '@type': 'Thing',
+      name: 'Deens.com',
+    },
   };
   if (service.description && I18nText.translate(service.description))
     structuredData.description = I18nText.translate(service.description);
@@ -73,6 +78,7 @@ function getActivityJsonLd(service, canonicalUrl) {
     price: service.basePrice,
     priceCurrency: 'USD',
     priceValidUntil: getPriceValidUntil(),
+    availability: 'https://schema.org/InStock',
   };
   return structuredData;
 }
@@ -84,6 +90,11 @@ export function getTripJsonLdData(trip, canonicalUrl) {
     name: I18nText.translate(trip.title),
     image: getHeroImage(trip),
     sku: trip._id,
+    mpn: trip._id,
+    brand: {
+      '@type': 'Thing',
+      name: 'Deens.com',
+    },
   };
   if (trip.description && I18nText.translate(trip.description))
     structuredData.description = I18nText.translate(trip.description);
@@ -103,6 +114,7 @@ export function getTripJsonLdData(trip, canonicalUrl) {
     price: pricePerDay,
     priceCurrency: 'USD',
     priceValidUntil: getPriceValidUntil(),
+    availability: 'https://schema.org/InStock',
   };
 
   return structuredData;
