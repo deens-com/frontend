@@ -1,4 +1,5 @@
 import I18nText from 'shared_components/I18nText';
+import { formatYYYYMMDD } from 'libs/Utils';
 
 export function getServiceJsonLdData(service, canonicalUrl) {
   const category = I18nText.translate(service.categories[0].names);
@@ -71,6 +72,7 @@ function getActivityJsonLd(service, canonicalUrl) {
     url: canonicalUrl,
     price: service.basePrice,
     priceCurrency: 'USD',
+    priceValidUntil: getPriceValidUntil(),
   };
   return structuredData;
 }
@@ -100,6 +102,7 @@ export function getTripJsonLdData(trip, canonicalUrl) {
     url: canonicalUrl,
     price: pricePerDay,
     priceCurrency: 'USD',
+    priceValidUntil: getPriceValidUntil(),
   };
 
   return structuredData;
@@ -147,4 +150,11 @@ function getHeroImage(serviceOrTrip) {
     );
   }
   return media[0] && media[0].files && media[0].files.original && media[0].files.original.url;
+}
+
+function getPriceValidUntil() {
+  const date = new Date();
+  date.setFullYear(date.getFullYear() + 1);
+  date.setMonth((date.getMonth() + 1) % 12);
+  return formatYYYYMMDD(date);
 }
