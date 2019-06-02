@@ -1,3 +1,4 @@
+import { formatYYYYMMDD } from 'libs/Utils';
 import I18nText from 'shared_components/I18nText';
 
 export function getServiceJsonLdData(service, canonicalUrl) {
@@ -62,6 +63,11 @@ function getActivityJsonLd(service, canonicalUrl) {
     name: I18nText.translate(service.title),
     image: getHeroImage(service),
     sku: service._id,
+    mpn: service._id,
+    brand: {
+      '@type': 'Thing',
+      name: 'Deens.com',
+    },
   };
   if (service.description && I18nText.translate(service.description))
     structuredData.description = I18nText.translate(service.description);
@@ -71,6 +77,8 @@ function getActivityJsonLd(service, canonicalUrl) {
     url: canonicalUrl,
     price: service.basePrice,
     priceCurrency: 'USD',
+    priceValidUntil: getPriceValidUntil(),
+    availability: 'https://schema.org/InStock',
   };
   return structuredData;
 }
@@ -82,6 +90,11 @@ export function getTripJsonLdData(trip, canonicalUrl) {
     name: I18nText.translate(trip.title),
     image: getHeroImage(trip),
     sku: trip._id,
+    mpn: trip._id,
+    brand: {
+      '@type': 'Thing',
+      name: 'Deens.com',
+    },
   };
   if (trip.description && I18nText.translate(trip.description))
     structuredData.description = I18nText.translate(trip.description);
@@ -100,6 +113,8 @@ export function getTripJsonLdData(trip, canonicalUrl) {
     url: canonicalUrl,
     price: pricePerDay,
     priceCurrency: 'USD',
+    priceValidUntil: getPriceValidUntil(),
+    availability: 'https://schema.org/InStock',
   };
 
   return structuredData;
@@ -147,4 +162,11 @@ function getHeroImage(serviceOrTrip) {
     );
   }
   return media[0] && media[0].files && media[0].files.original && media[0].files.original.url;
+}
+
+function getPriceValidUntil() {
+  const date = new Date();
+  date.setFullYear(date.getFullYear() + 1);
+  date.setMonth((date.getMonth() + 1) % 12);
+  return formatYYYYMMDD(date);
 }
