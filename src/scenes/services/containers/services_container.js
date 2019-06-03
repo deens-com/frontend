@@ -59,7 +59,9 @@ class ServicesContainer extends Component {
         )}...`;
         const image = getHeroImageUrlFromMedia(service.media);
         const url = `${websiteUrl}${this.props.location.pathname}`;
-        const title = `${I18nText.translate(service.title)}${location ? `, ${location}` : ''}`;
+        const title =
+          service.pageTitle ||
+          `${I18nText.translate(service.title)}${location ? `, ${location}` : ''}`;
         const isIncorrectUrl =
           this.props.slug &&
           `${this.props.match.params.slug}_${this.props.match.params.id}` !== this.props.slug;
