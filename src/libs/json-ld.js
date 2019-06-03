@@ -42,6 +42,7 @@ function getFoodJsonLd(service) {
   injectRatings(service, structuredData);
   injectGeoCoordinates(service.originalLocation, structuredData);
   injectServiceAddress(service, structuredData);
+  injectTelephone(service, structuredData);
 
   if (service.tags && service.tags.length > 0 && typeof service.tags[0] === 'object') {
     const serviceTags = service.tags
@@ -169,4 +170,10 @@ function getPriceValidUntil() {
   date.setFullYear(date.getFullYear() + 1);
   date.setMonth((date.getMonth() + 1) % 12);
   return formatYYYYMMDD(date);
+}
+
+function injectTelephone(service, structuredData) {
+  if (service.telephones && service.telephones[0] && service.telephones[0].displayNumber) {
+    structuredData.telephone = service.telephones[0].displayNumber;
+  }
 }
