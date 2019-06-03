@@ -166,10 +166,9 @@ function getHeroImage(serviceOrTrip) {
 }
 
 function getPriceValidUntil() {
-  const date = new Date();
-  date.setFullYear(date.getFullYear() + 1);
-  date.setMonth((date.getMonth() + 1) % 12);
-  return formatYYYYMMDD(date);
+  const thirtyDaysInMillis = 2592000000;
+  const monthFromNow = new Date(Date.now() + thirtyDaysInMillis);
+  return formatYYYYMMDD(monthFromNow);
 }
 
 function injectTelephone(service, structuredData) {
