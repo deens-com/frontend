@@ -79,7 +79,7 @@ function getActivityJsonLd(service, canonicalUrl) {
     price: service.basePrice,
     priceCurrency: 'USD',
     priceValidUntil: getPriceValidUntil(),
-    availability: 'https://schema.org/InStock',
+    availability: 'http://schema.org/InStock',
   };
   return structuredData;
 }
@@ -115,7 +115,7 @@ export function getTripJsonLdData(trip, canonicalUrl) {
     price: pricePerDay,
     priceCurrency: 'USD',
     priceValidUntil: getPriceValidUntil(),
-    availability: 'https://schema.org/InStock',
+    availability: 'http://schema.org/InStock',
   };
 
   return structuredData;
