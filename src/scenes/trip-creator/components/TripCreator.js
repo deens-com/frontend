@@ -181,7 +181,7 @@ export default ({ savedSearchQuery, handleCreateNewTrip, handleSearch }) => {
   );
   const locationToUse = hasDefaultLocation ? location : address;
   return (
-    <div>
+    <div style={{ margin: '0 auto' }}>
       {selectAddress}
       <Options>
         <OptionWithPopup onClick={() => handleCreateNewTrip(locationToUse)}>

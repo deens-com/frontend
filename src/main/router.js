@@ -93,10 +93,18 @@ const Notfound = asyncCommonHOCs(
 
 let previousLocation;
 
+const TRIPS_CREATE = '/trips/create';
+
+//const routesWithModal = [TRIPS_CREATE]
+
 export default withRouter(props => {
   const { location } = props;
 
-  const isModal = Boolean(location.state && location.state.modal && previousLocation !== location);
+  const isModal = Boolean(location.state && location.state.modal);
+
+  if (isModal && !(previousLocation && previousLocation !== location)) {
+    props.history.replace(props.location.pathname);
+  }
 
   useEffect(() => {
     if (
@@ -107,11 +115,9 @@ export default withRouter(props => {
     }
   });
 
-  console.log(isModal, previousLocation);
-
   return (
     <>
-      {isModal && <Route path={process.env.PUBLIC_URL + '/trips/create'} component={TripCreator} />}
+      {isModal && <Route path={process.env.PUBLIC_URL + TRIPS_CREATE} component={TripCreator} />}
       <ScrollToTop>
         <Switch location={isModal ? previousLocation : location}>
           <Route exact path={process.env.PUBLIC_URL + '/'} component={Home} />
@@ -140,6 +146,9 @@ export default withRouter(props => {
             message="Please login or register to continue with your trip."
           />
           <Route path={process.env.PUBLIC_URL + '/trips/organize'} component={TripOrganizer} />
+          {!isModal && (
+            <Route path={process.env.PUBLIC_URL + TRIPS_CREATE} component={TripCreator} />
+          )}
           <PrivateRoute
             path={process.env.PUBLIC_URL + '/trips/share/:id'}
             component={TripShare}
