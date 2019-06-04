@@ -11,10 +11,21 @@ class AdminModerationContainer extends React.Component {
   state = {
     pendingList: [],
   };
+
   async componentDidMount() {
+    this.fetchPending();
+  }
+
+  fetchPending = async () => {
     const response = await apiClient.moderation.getAllPending()({});
     this.setState({ pendingList: response.data });
-  }
+  };
+
+  onSubmit = async ({ tripId, moderationStatus, comment }) => {
+    console.log({ tripId, moderationStatus, comment });
+    await apiClient.moderation.action({ tripId, moderationStatus, comment });
+    this.fetchPending();
+  };
 
   render() {
     const { pendingList } = this.state;
@@ -22,7 +33,7 @@ class AdminModerationContainer extends React.Component {
     return (
       <Wrapper>
         {pendingList.map(trip => (
-          <TripModeration trip={trip} />
+          <TripModeration key={trip._id} trip={trip} onSubmit={this.onSubmit} />
         ))}
       </Wrapper>
     );

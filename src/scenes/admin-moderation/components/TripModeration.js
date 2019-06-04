@@ -32,6 +32,26 @@ class TripModeration extends React.Component {
     }),
   };
 
+  descInput = React.createRef();
+
+  onApproveClick = () => {
+    const { trip } = this.props;
+    this.props.onSubmit({
+      tripId: trip._id,
+      moderationStatus: 'approved',
+      comment: this.descInput.current.value,
+    });
+  };
+
+  onRejectClick = () => {
+    const { trip } = this.props;
+    this.props.onSubmit({
+      _id: trip._id,
+      moderationStatus: 'rejected',
+      comment: this.descInput.current.value,
+    });
+  };
+
   render() {
     const { trip } = this.props;
     if (!trip) return null;
@@ -43,8 +63,8 @@ class TripModeration extends React.Component {
           </Link>
         </h3>
         <ActionArea>
-          <TextArea />
-          <Button theme="fillLightGreen" onClick={this.approveClick}>
+          <TextArea ref={this.descInput} />
+          <Button theme="fillLightGreen" onClick={this.onApproveClick}>
             Approve
           </Button>
           <Button theme="danger" onClick={this.rejectClick}>

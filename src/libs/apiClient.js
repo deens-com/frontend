@@ -163,5 +163,8 @@ export default {
     getAllPending() {
       return get('/moderation/trips/pending');
     },
+    action(body) {
+      return post('/moderation/trips/action')(body);
+    },
   },
 };
