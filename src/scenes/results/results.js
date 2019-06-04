@@ -6,18 +6,6 @@ import { websiteUrl } from 'libs/config';
 import { mapUrlToProps } from 'libs/search';
 
 class Results extends React.Component {
-  constructor(props) {
-    super(props);
-    this.routeState = props.location.state;
-  }
-  componentDidMount() {
-    //this.unlisten = this.props.history.listen(() => this.forceUpdate());
-  }
-
-  componentWillUnmount() {
-    //this.unlisten();
-  }
-
   render() {
     const searchParams = mapUrlToProps(this.props.location);
 
@@ -42,7 +30,7 @@ class Results extends React.Component {
         {helmet}
         <ResultsContainer
           {...this.props}
-          routeState={this.routeState}
+          routeState={this.props.location.state}
           rawSearchQuery={this.props.location.search}
         />
       </div>

@@ -288,6 +288,7 @@ export default class Button extends Component {
       const props = {
         to: this.props.href,
         href: this.props.href,
+        linkState: this.props.linkState,
         target: this.props.target,
         children: this.props.children,
         rel: this.props.noReferrer && 'noopener noreferrer',
@@ -303,6 +304,10 @@ export default class Button extends Component {
           type={this.props.type}
           disabled={this.props.disabled}
           {...props}
+          to={{
+            pathname: props.to,
+            state: props.linkState,
+          }}
           onClick={this.onClick}
         />
       );
