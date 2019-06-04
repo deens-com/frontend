@@ -58,6 +58,7 @@ class TripCreatorContainer extends Component {
           handleSearch={this.search}
           handleCreateNewTrip={this.createTrip}
           savedSearchQuery={this.props.savedSearchQuery}
+          session={this.props.session}
         />
       </ModalOrNot>
     );

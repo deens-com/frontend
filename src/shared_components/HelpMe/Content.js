@@ -112,7 +112,7 @@ const Required = styled.span`
 
 const url = 'https://hooks.zapier.com/hooks/catch/145807/72cord/';
 
-const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user }) => {
+const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user, defaultLocation }) => {
   const [asked, setAsked] = useState(false);
   const [errors, setErrors] = useState({});
   const [address, setAddress] = useState(undefined);
@@ -150,7 +150,7 @@ const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user }) => {
     const data = {
       user_id: session.username && session._id,
       email: session.email || email.current.value,
-      destination: address,
+      destination: defaultLocation || address,
       budget: budget.current.value,
       currency,
       adults,
@@ -205,19 +205,21 @@ const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user }) => {
         </WillContact>
       )}
       <Form>
-        <FormLine>
-          <FormField>
-            <Label>What is your destination</Label>
-            <Description>Leave blank if you don't know</Description>
-            <SemanticLocationControl
-              onChange={address => setAddress(address)}
-              useStyledInput
-              inputProps={{
-                placeholder: 'Type a city or country',
-              }}
-            />
-          </FormField>
-        </FormLine>
+        {!defaultLocation && (
+          <FormLine>
+            <FormField>
+              <Label>What is your destination?</Label>
+              <Description>Leave blank if you don't know</Description>
+              <SemanticLocationControl
+                onChange={address => setAddress(address)}
+                useStyledInput
+                inputProps={{
+                  placeholder: 'Type a city or country',
+                }}
+              />
+            </FormField>
+          </FormLine>
+        )}
         <FormHalfLine>
           <Label>
             How many travelers?

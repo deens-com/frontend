@@ -126,7 +126,7 @@ export default withRouter(props => {
   return (
     <>
       {isModal && <Route path={process.env.PUBLIC_URL + TRIPS_CREATE} component={TripCreator} />}
-      <ScrollToTop>
+      <ScrollToTop /*dontScroll={isModal}*/>
         <Switch location={isModal ? previousLocation : location}>
           <Route exact path={process.env.PUBLIC_URL + '/'} component={Home} />
           <OnlyPublicRoute path={process.env.PUBLIC_URL + '/login'} component={Sessions} />

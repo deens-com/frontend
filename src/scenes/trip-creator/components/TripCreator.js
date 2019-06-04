@@ -10,6 +10,8 @@ import SearchIcon from 'shared_components/icons/SearchIcon';
 import { placeholderMixin, media } from 'libs/styled';
 import { primary, primaryDisabled, tertiary } from 'libs/colors';
 import BriefcaseHeart from 'shared_components/icons/BriefcaseHeart';
+import HelpMe from 'shared_components/HelpMe/Content';
+import Modal from 'shared_components/Modal';
 
 const TypeIcon = styled.div`
   align-items: center;
@@ -127,13 +129,14 @@ const LeftIcon = () => (
   </TypeIcon>
 );
 
-export default ({ savedSearchQuery, handleCreateNewTrip, handleSearch }) => {
+export default ({ savedSearchQuery, handleCreateNewTrip, handleSearch, session }) => {
   const hasDefaultLocation = hasLocationParams(savedSearchQuery);
   const location = {
     ...getLocationParams(savedSearchQuery),
     formattedAddress: savedSearchQuery.address,
   };
   const [address, setAddress] = useState(null);
+  const [showHelp, setShowHelp] = useState(false);
 
   const onLocationChange = address => {
     geocodeByAddress(address).then(results => {
@@ -180,41 +183,50 @@ export default ({ savedSearchQuery, handleCreateNewTrip, handleSearch }) => {
     </div>
   );
   const locationToUse = hasDefaultLocation ? location : address;
+  const renderHelp = () => {
+    setShowHelp(true);
+  };
+  console.log(showHelp);
   return (
-    <div style={{ margin: '0 auto' }}>
-      {selectAddress}
-      <Options>
-        <OptionWithPopup onClick={() => handleCreateNewTrip(locationToUse)}>
-          <BriefcaseHeart
-            style={{ flexShrink: 0, width: '50px', height: 'auto', color: 'white' }}
-            color={primary}
-          />
-          <Text>
-            <PStrong style={{ marginBottom: '0' }}>FREE</PStrong>
-            <P>Find and customize trips already created by locals</P>
-          </Text>
-        </OptionWithPopup>
-        <OptionWithPopup onClick={() => handleSearch(locationToUse)}>
-          <BriefcaseHeart
-            style={{ flexShrink: 0, width: '50px', height: 'auto', color: 'white' }}
-            color={primaryDisabled}
-          />
-          <Text>
-            <PStrong style={{ marginBottom: '0' }}>FREE</PStrong>
-            <P>Start from scratch with an empty trip</P>
-          </Text>
-        </OptionWithPopup>
-        <OptionWithPopup style={{ border: `1px solid ${tertiary}` }}>
-          <BriefcaseHeart
-            style={{ flexShrink: 0, width: '50px', height: 'auto', color: 'white' }}
-            color={tertiary}
-          />
-          <Text>
-            <PStrong style={{ marginBottom: '0', color: tertiary }}>PREMIUM</PStrong>
-            <P>Brief a local travel planner to organize your ideal trip</P>
-          </Text>
-        </OptionWithPopup>
-      </Options>
-    </div>
+    <>
+      <Modal open={showHelp} onCloseRequest={() => setShowHelp(false)}>
+        <HelpMe session={session} defaultLocation={locationToUse} />
+      </Modal>
+      <div style={{ margin: '0 auto' }}>
+        {selectAddress}
+        <Options>
+          <OptionWithPopup onClick={() => handleCreateNewTrip(locationToUse)}>
+            <BriefcaseHeart
+              style={{ flexShrink: 0, width: '50px', height: 'auto', color: 'white' }}
+              color={primary}
+            />
+            <Text>
+              <PStrong style={{ marginBottom: '0' }}>FREE</PStrong>
+              <P>Find and customize trips already created by locals</P>
+            </Text>
+          </OptionWithPopup>
+          <OptionWithPopup onClick={() => handleSearch(locationToUse)}>
+            <BriefcaseHeart
+              style={{ flexShrink: 0, width: '50px', height: 'auto', color: 'white' }}
+              color={primaryDisabled}
+            />
+            <Text>
+              <PStrong style={{ marginBottom: '0' }}>FREE</PStrong>
+              <P>Start from scratch with an empty trip</P>
+            </Text>
+          </OptionWithPopup>
+          <OptionWithPopup onClick={renderHelp} style={{ border: `1px solid ${tertiary}` }}>
+            <BriefcaseHeart
+              style={{ flexShrink: 0, width: '50px', height: 'auto', color: 'white' }}
+              color={tertiary}
+            />
+            <Text>
+              <PStrong style={{ marginBottom: '0', color: tertiary }}>PREMIUM</PStrong>
+              <P>Brief a local travel planner to organize your ideal trip</P>
+            </Text>
+          </OptionWithPopup>
+        </Options>
+      </div>
+    </>
   );
 };
