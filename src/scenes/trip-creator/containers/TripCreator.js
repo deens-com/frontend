@@ -1,16 +1,13 @@
-import React, { Component, Suspense } from 'react';
+import React, { Component } from 'react';
 import history from 'main/history';
-import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import Modal from 'shared_components/Modal';
 import { getFromCoordinates } from 'libs/Utils';
 import axios from 'libs/axios';
 import analytics from 'libs/analytics';
 import * as sessionActions from 'store/session/actions';
 import searchActions from 'store/search/actions';
-import LoadingDots from 'shared_components/LoadingDots';
-import BrandFooter from 'shared_components/BrandFooter';
+import ModalOrNot from 'shared_components/ModalOrNot';
 
 const TripCreatorContent = React.lazy(() =>
   import(/* webpackChunkName: "trip-creator" */ '../components/TripCreator'),
@@ -55,41 +52,14 @@ class TripCreatorContainer extends Component {
   };
 
   render() {
-    const tripCreator = (
-      <Suspense fallback={<LoadingDots />}>
+    return (
+      <ModalOrNot>
         <TripCreatorContent
           handleSearch={this.search}
           handleCreateNewTrip={this.createTrip}
           savedSearchQuery={this.props.savedSearchQuery}
         />
-      </Suspense>
-    );
-
-    if (this.props.location.state && this.props.location.state.modal) {
-      return (
-        <Modal open onCloseRequest={() => history.goBack()}>
-          {this.state.isLoading ? (
-            <span style={{ display: 'flex' }}>
-              <LoadingDots />
-            </span>
-          ) : (
-            tripCreator
-          )}
-        </Modal>
-      );
-    }
-    return (
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          minHeight: 'calc(100vh - 85px)',
-        }}
-      >
-        {tripCreator}
-        <BrandFooter />
-      </div>
+      </ModalOrNot>
     );
   }
 }
@@ -115,4 +85,4 @@ const mapDispatchToProps = dispatch =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withRouter(TripCreatorContainer));
+)(TripCreatorContainer);

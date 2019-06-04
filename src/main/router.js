@@ -91,7 +91,7 @@ const Notfound = asyncCommonHOCs(
   React.lazy(() => import(/* webpackChunkName: "not-found" */ './../styled_scenes/NotFound')),
 );
 
-let previousLocation;
+let locationQueue = [];
 
 const TRIPS_CREATE = '/trips/create';
 
@@ -102,18 +102,26 @@ export default withRouter(props => {
 
   const isModal = Boolean(location.state && location.state.modal);
 
-  if (isModal && !(previousLocation && previousLocation !== location)) {
+  if (
+    isModal &&
+    !(locationQueue.length > 0 && locationQueue[locationQueue.length - 1] !== location)
+  ) {
     props.history.replace(props.location.pathname);
   }
 
   useEffect(() => {
+    if (props.history.action === 'REPLACE' || props.history.action === 'POP') {
+      locationQueue.shift();
+    }
     if (
-      (props.history.action !== 'POP' || !previousLocation) &&
+      (props.history.action !== 'POP' || locationQueue.length === 0) &&
       (!location.state || !location.state.modal)
     ) {
-      previousLocation = props.location;
+      locationQueue.push(props.location);
     }
   });
+
+  const previousLocation = locationQueue[locationQueue.length - 1];
 
   return (
     <>
