@@ -101,7 +101,7 @@ class TripContainer extends Component {
     let helmet;
 
     if (trip) {
-      const title = I18nText.translate(trip.title);
+      const title = trip.pageTitle || I18nText.translate(trip.title);
       const url = `${websiteUrl}${this.props.location.pathname}`;
       const description = trip.description && I18nText.translate(trip.description);
 
