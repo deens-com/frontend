@@ -11,7 +11,7 @@ class ResultsContainer extends Component {
   componentDidMount() {
     this.props.changeHeader();
     const params = this.props.searchParams;
-    this.props.updateSearchParams(params);
+    this.props.updateSearchParams(params, null, null, true);
   }
 
   retryFetch = () => {

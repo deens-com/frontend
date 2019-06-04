@@ -26,7 +26,6 @@ const Inner = styled.div`
   padding: 8px 12px;
   transition: border 0.1s ease-in;
   width: 100%;
-  overflow: hidden;
 `;
 
 const IconButton = styled.span`
@@ -75,7 +74,7 @@ export default class DesktopSearch extends Component {
               <input
                 type="text"
                 placeholder="Where would you like to go?"
-                style={{ ...suggestionStyle, border: 'none', 'outline-width': 0 }}
+                style={{ ...suggestionStyle, border: 'none', outlineWidth: 0 }}
               />
             }
           >

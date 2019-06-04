@@ -1,14 +1,6 @@
-/* To Read Article : https://medium.com/@pshrmn/a-little-bit-of-history-f245306f48dd */
-
-//import { createBrowserHistory } from 'history'
-// export default createBrowserHistory({
-//   /* pass a configuration object here if needed */
-// })
-
-// Switching to HashHistory in order to get react-router to work
 import { createBrowserHistory, createLocation } from 'history';
 
-const hashHistory = createBrowserHistory({
+const browserHistory = createBrowserHistory({
   /* pass a configuration object here if needed */
 });
 
@@ -29,12 +21,10 @@ const createNewFn = target => (to, state, ...args) => {
   return target(createLocation(obj));
 };
 
-const previousPush = hashHistory.push;
-const previousPop = hashHistory.pop;
-const previousReplace = hashHistory.replace;
+const previousPush = browserHistory.push;
+const previousReplace = browserHistory.replace;
 
-hashHistory.push = createNewFn(previousPush);
-hashHistory.pop = createNewFn(previousPop);
-hashHistory.replace = createNewFn(previousReplace);
+browserHistory.push = createNewFn(previousPush);
+browserHistory.replace = createNewFn(previousReplace);
 
-export default hashHistory;
+export default browserHistory;

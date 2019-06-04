@@ -3,7 +3,7 @@ import { geocodeByAddress } from 'libs/placesAutocomplete';
 import { getAddress } from 'libs/search';
 import { resetButton } from 'libs/styled';
 import React, { Component } from 'react';
-import SemanticLocationControl from 'shared_components/Form/LocationAutoSuggest';
+import LocationAutoSuggest from 'shared_components/Form/LocationAutoSuggest';
 import styled from 'styled-components';
 import CrossIcon from 'shared_components/icons/CrossIcon';
 import history from './../../../main/history';
@@ -164,7 +164,7 @@ export default class DesktopSearchInput extends Component {
     const { isMobile, toggleSearch, windowLocation } = this.props;
     return (
       <Form onSubmit={this.handleSubmit}>
-        <SemanticLocationControl
+        <LocationAutoSuggest
           onChange={this.handleLocationChange}
           customStyle={suggestionStyle}
           {...locationProps}

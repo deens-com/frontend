@@ -96,7 +96,16 @@ export default ({ featuredTripCreator }) => (
       </Column>
     </Content>
     <ButtonWrapper>
-      <Button type="link" href="/trips/create" theme="primaryFilled">
+      <Button
+        type="link"
+        href={{
+          pathname: '/trips/create',
+          state: {
+            modal: true,
+          },
+        }}
+        theme="primaryFilled"
+      >
         <PStrong>Create a Trip & Start Earning</PStrong>
       </Button>
     </ButtonWrapper>

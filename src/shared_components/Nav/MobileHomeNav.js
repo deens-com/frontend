@@ -17,6 +17,7 @@ const Wrap = styled.div`
   display: flex;
   align-items: center;
   position: relative;
+  margin-left: auto;
 `;
 
 const Menu = styled.ul`
@@ -130,19 +131,35 @@ class MobileHomeNav extends Component {
         {this.state.isOpen && (
           <Menu>
             <li>
-              <MenuLink to="/trips/create">Create Trip</MenuLink>
+              <MenuLink
+                to={{
+                  pathname: '/trips/create',
+                  state: {
+                    modal: true,
+                  },
+                }}
+                onClick={this.onOptionClick}
+              >
+                Create Trip
+              </MenuLink>
             </li>
             <li style={{ color: secondary }}>
-              <MenuLink to="/earn-money">Earn Money</MenuLink>
+              <MenuLink onClick={this.onOptionClick} to="/earn-money">
+                Earn Money
+              </MenuLink>
             </li>
             {this.props.session.username && (
               <>
                 <Divider />
                 <li>
-                  <MenuLink to="/account/trips/all">My Trips</MenuLink>
+                  <MenuLink onClick={this.onOptionClick} to="/account/trips/all">
+                    My Trips
+                  </MenuLink>
                 </li>
                 <li>
-                  <MenuLink to="/account/profile">Profile</MenuLink>
+                  <MenuLink onClick={this.onOptionClick} to="/account/profile">
+                    Profile
+                  </MenuLink>
                 </li>
               </>
             )}

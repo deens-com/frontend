@@ -176,6 +176,18 @@ export const removeMultipleLocations = params => {
   return params;
 };
 
+export const getLocationParams = params => ({
+  ...(params.city
+    ? {
+        city: params.city,
+        countryCode: params.countryCode,
+      }
+    : {
+        lat: params.lat,
+        lng: params.lng,
+      }),
+});
+
 const GUESTS = 'guests';
 const DATES = 'dates';
 const PRICE_RANGE = 'priceRange';
@@ -211,17 +223,7 @@ export const prefetchWithNewParams = (newParams, oldParams) => {
         adultCount: newParams.adults || 2,
         childrenCount: newParams.children || 0,
         infantCount: newParams.infants || 0,
-        location: {
-          ...(newParams.city
-            ? {
-                city: newParams.city,
-                countryCode: newParams.countryCode,
-              }
-            : {
-                lat: newParams.lat,
-                lng: newParams.lng,
-              }),
-        },
+        location: getLocationParams(newParams),
         dates: [formatYYYYMMDD(newParams.startDate)],
       };
       apiClient.services.search.prefetch(body);

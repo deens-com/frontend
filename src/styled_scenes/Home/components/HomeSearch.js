@@ -10,7 +10,7 @@ import { Message } from 'semantic-ui-react';
 // COMPONENTS
 import SearchIcon from 'shared_components/icons/SearchIcon';
 import CrossIcon from 'shared_components/icons/CrossIcon';
-import SemanticLocationControl from 'shared_components/Form/LocationAutoSuggest';
+import LocationAutoSuggest from 'shared_components/Form/LocationAutoSuggest';
 
 // ACTIONS & CONFIG
 import { placeholderMixin } from '../../../libs/styled';
@@ -52,7 +52,6 @@ const TypeIcon = styled.div`
   height: 40px;
   justify-content: center;
   line-height: 40px;
-  margin-right: 15px;
   overflow: hidden;
   width: 40px;
 
@@ -181,7 +180,7 @@ export default class HomeSearch extends Component {
 
   renderInputContent = () => {
     return (
-      <SemanticLocationControl
+      <LocationAutoSuggest
         onChange={this.handleLocationChange}
         {...locationProps}
         customStyle={suggestionStyle}

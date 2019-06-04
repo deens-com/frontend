@@ -224,7 +224,15 @@ class Results extends Component {
                 Be the first to create a trip for {this.props.searchParams.address}, and share to
                 earn rewards!
               </p>
-              <Button type="link" href="/trips/create">
+              <Button
+                type="link"
+                href={{
+                  pathname: '/trips/create',
+                  state: {
+                    modal: true,
+                  },
+                }}
+              >
                 Create a trip
               </Button>
             </NotFound>

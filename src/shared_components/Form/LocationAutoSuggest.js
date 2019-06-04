@@ -23,6 +23,7 @@ import ReactResizeDetector from 'react-resize-detector';
 
 const Wrapper = styled.div`
   flex-grow: 1;
+  width: 0;
   cursor: text;
   input {
     font-weight: bold;
@@ -41,9 +42,17 @@ const ListSpan = styled.span`
 `;
 
 const ListWrapper = styled.ul`
+  z-index: 2;
   list-style-type: none;
   display: flex;
   flex-direction: column;
+  position: absolute;
+  background-color: white;
+  padding: 10px;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1), -1px 0px 2px rgba(0, 0, 0, 0.1);
+  border-radius: 5px 5px 5px 0;
+  top: 39px;
+  left: -53px;
   > article {
     display: flex;
     flex-direction: column;
@@ -85,6 +94,7 @@ const ServiceTypes = styled.ul`
 `;
 
 const ExternalWrapper = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   width: 100%;
@@ -144,7 +154,7 @@ export default class SemanticLocationControl extends Component {
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
     showServiceTypes: PropTypes.bool,
-    serviceType: PropTypes.oneOf(['trip', 'accommodation', 'food', 'activity']),
+    serviceType: PropTypes.oneOf(['trip', 'accommodation', 'food', 'activity', 'none']),
     handleServiceTypeChange: PropTypes.func,
   };
 
@@ -237,7 +247,10 @@ export default class SemanticLocationControl extends Component {
     if (serviceType === 'activity') {
       return 'Activities';
     }
-    return 'Trips';
+    if (serviceType === 'trip') {
+      return 'Trips';
+    }
+    return '';
   };
 
   onResize = width => {
@@ -300,13 +313,6 @@ export default class SemanticLocationControl extends Component {
       <>
         <ExternalWrapper>
           {showServiceTypes && <ReactResizeDetector handleWidth onResize={this.onResize} />}
-          {!this.state.isOpen &&
-            this.state.address &&
-            showServiceTypes && (
-              <ExternalText onClick={this.handleOpen} htmlFor="search">
-                {this.renderExternalText()}
-              </ExternalText>
-            )}
           <PlacesAutocomplete
             value={this.state.address}
             onChange={this.onAddressChange}
@@ -318,12 +324,16 @@ export default class SemanticLocationControl extends Component {
           >
             {({ getInputProps, suggestions, getSuggestionItemProps }) => {
               return (
-                <Popup
-                  horizontalOffset={50}
-                  basic
-                  context={this.props.context}
-                  trigger={
-                    <Wrapper onClick={this.handleOpen}>
+                <>
+                  <Wrapper onClick={this.handleOpen}>
+                    <div style={{ overflow: 'hidden', padding: '2px 0' }}>
+                      {!this.state.isOpen &&
+                        this.state.address &&
+                        showServiceTypes && (
+                          <ExternalText onClick={this.handleOpen} htmlFor="search">
+                            {this.renderExternalText()}
+                          </ExternalText>
+                        )}
                       {useStyledInput ? (
                         <StyledInput
                           {...getInputProps({
@@ -381,102 +391,101 @@ export default class SemanticLocationControl extends Component {
                             )}
                         </>
                       )}
-                    </Wrapper>
-                  }
-                  open={this.state.isOpen && Boolean(this.state.address)}
-                  //open={true}
-                  position="bottom left"
-                  style={{ zIndex: 10000, ...customStyle }}
-                >
-                  <ListWrapper>
-                    <ListItem
-                      {...getSuggestionItemProps(this.state.address)}
-                      order={2}
-                      onClick={this.onSelectSearch}
-                      hide={serviceType !== 'trip'}
-                    >
-                      <ListSpan>
-                        <GreyIcon name="search" />
-                        &nbsp;
-                        <p>
-                          Search for <strong>"{this.state.address}"</strong> in trips
-                        </p>
-                      </ListSpan>
-                    </ListItem>
-                    {!(Boolean(this.state.address) && suggestions.length === 0) && (
-                      <React.Fragment>
-                        {suggestions.slice(0, 3).map((suggestion, i) => (
-                          <ListItem
-                            {...getSuggestionItemProps(suggestion)}
-                            key={suggestion.placeId}
-                            onClick={() =>
-                              this.onSelectSuggestion(suggestion.description, serviceType)
-                            }
-                            order={1}
-                          >
-                            <ListSpan>
-                              <GreyIcon name="map marker alternate" />
-                              &nbsp;
-                              <p>
-                                {this.getSentenceWord()} in{' '}
-                                <strong>{suggestion.description}</strong>
-                              </p>
-                            </ListSpan>
-                          </ListItem>
-                        ))}
-                      </React.Fragment>
-                    )}
-                    {showServiceTypes && (
-                      <ServiceTypes
-                        onMouseDown={e => {
-                          e.preventDefault();
-                        }}
-                      >
-                        <li
-                          onClick={() => handleServiceTypeChange('trip')}
-                          style={{
-                            backgroundColor: serviceType === 'trip' ? backgroundDark : 'white',
-                          }}
+                    </div>
+                  </Wrapper>
+                  {this.state.isOpen &&
+                    Boolean(this.state.address) && (
+                      <ListWrapper>
+                        <ListItem
+                          {...getSuggestionItemProps(this.state.address)}
+                          order={2}
+                          onClick={this.onSelectSearch}
+                          hide={serviceType !== 'trip'}
                         >
-                          <Briefcase
-                            style={{ color: serviceType === 'trip' ? primary : disabled }}
-                          />
-                        </li>
-                        <li
-                          onClick={() => handleServiceTypeChange('accommodation')}
-                          style={{
-                            backgroundColor:
-                              serviceType === 'accommodation' ? backgroundDark : 'white',
-                          }}
-                        >
-                          <Accommodation
-                            style={{
-                              color: serviceType === 'accommodation' ? accommodation : disabled,
+                          <ListSpan>
+                            <GreyIcon name="search" />
+                            &nbsp;
+                            <p>
+                              Search for <strong>"{this.state.address}"</strong> in trips
+                            </p>
+                          </ListSpan>
+                        </ListItem>
+                        {!(Boolean(this.state.address) && suggestions.length === 0) && (
+                          <React.Fragment>
+                            {suggestions.slice(0, 3).map((suggestion, i) => (
+                              <ListItem
+                                {...getSuggestionItemProps(suggestion)}
+                                key={suggestion.placeId}
+                                onClick={() =>
+                                  this.onSelectSuggestion(suggestion.description, serviceType)
+                                }
+                                order={1}
+                              >
+                                <ListSpan>
+                                  <GreyIcon name="map marker alternate" />
+                                  &nbsp;
+                                  <p>
+                                    {serviceType !== 'none' && `${this.getSentenceWord()} in `}
+                                    <strong>{suggestion.description}</strong>
+                                  </p>
+                                </ListSpan>
+                              </ListItem>
+                            ))}
+                          </React.Fragment>
+                        )}
+                        {showServiceTypes && (
+                          <ServiceTypes
+                            onMouseDown={e => {
+                              e.preventDefault();
                             }}
-                          />
-                        </li>
-                        <li
-                          onClick={() => handleServiceTypeChange('food')}
-                          style={{
-                            backgroundColor: serviceType === 'food' ? backgroundDark : 'white',
-                          }}
-                        >
-                          <Food style={{ color: serviceType === 'food' ? food : disabled }} />
-                        </li>
-                        <li
-                          onClick={() => handleServiceTypeChange('activity')}
-                          style={{
-                            backgroundColor: serviceType === 'activity' ? backgroundDark : 'white',
-                          }}
-                        >
-                          <Activity
-                            style={{ color: serviceType === 'activity' ? activity : disabled }}
-                          />
-                        </li>
-                      </ServiceTypes>
+                          >
+                            <li
+                              onClick={() => handleServiceTypeChange('trip')}
+                              style={{
+                                backgroundColor: serviceType === 'trip' ? backgroundDark : 'white',
+                              }}
+                            >
+                              <Briefcase
+                                style={{ color: serviceType === 'trip' ? primary : disabled }}
+                              />
+                            </li>
+                            <li
+                              onClick={() => handleServiceTypeChange('accommodation')}
+                              style={{
+                                backgroundColor:
+                                  serviceType === 'accommodation' ? backgroundDark : 'white',
+                              }}
+                            >
+                              <Accommodation
+                                style={{
+                                  color: serviceType === 'accommodation' ? accommodation : disabled,
+                                }}
+                              />
+                            </li>
+                            <li
+                              onClick={() => handleServiceTypeChange('food')}
+                              style={{
+                                backgroundColor: serviceType === 'food' ? backgroundDark : 'white',
+                              }}
+                            >
+                              <Food style={{ color: serviceType === 'food' ? food : disabled }} />
+                            </li>
+                            <li
+                              onClick={() => handleServiceTypeChange('activity')}
+                              style={{
+                                backgroundColor:
+                                  serviceType === 'activity' ? backgroundDark : 'white',
+                              }}
+                            >
+                              <Activity
+                                style={{ color: serviceType === 'activity' ? activity : disabled }}
+                              />
+                            </li>
+                          </ServiceTypes>
+                        )}
+                      </ListWrapper>
                     )}
-                  </ListWrapper>
-                </Popup>
+                </>
               );
             }}
           </PlacesAutocomplete>
@@ -485,14 +494,3 @@ export default class SemanticLocationControl extends Component {
     );
   }
 }
-
-/*export default class LocationAutoSugget extends React.Component {
-  // we need to get suggestions on initial render
-  componentDidMount() {
-    super(props)
-  }
-
-  render() {
-    return <SemanticLocationControl {...this.props} value={this.s} />
-  }
-}*/

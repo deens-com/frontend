@@ -12,21 +12,11 @@ export default props => {
           text="My Trips"
           onClick={() => history.push('/account/trips/all')}
         />
-        {/*<Dropdown.Item
-              icon="list"
-              text="My Services"
-              onClick={() => history.push('/account/services')}
-            />*/}
         <Dropdown.Item
           icon="user"
           text="Profile"
           onClick={() => history.push('/account/profile')}
         />
-        {/*<Dropdown.Item
-              icon="cogs"
-              text="Settings"
-              onClick={() => history.push('/account/settings')}
-            />*/}
         <Dropdown.Divider />
         <Dropdown.Item icon="power" text="Logout" onClick={props.logout} />
       </Dropdown.Menu>
