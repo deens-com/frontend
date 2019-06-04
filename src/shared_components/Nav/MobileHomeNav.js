@@ -89,7 +89,7 @@ class MobileHomeNav extends Component {
     const Button = this.props.session.username ? (
       <img
         onClick={() => this.toggleMenu()}
-        style={{ borderRadius: '5px 5px 5px 0', width: '30px', marginLeft: '15px' }}
+        style={{ borderRadius: '5px 5px 5px 0', width: '40px', marginLeft: '15px' }}
         src={avatar}
         alt={this.props.session.username}
       />
@@ -98,8 +98,8 @@ class MobileHomeNav extends Component {
         <Account
           style={{
             fill: primary,
-            height: '1.5em',
-            width: '1.5em',
+            height: '40px',
+            width: '40px',
             marginLeft: '15px',
           }}
         />
