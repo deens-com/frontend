@@ -73,6 +73,9 @@ const Blog = React.lazy(() => import(/* webpackChunkName: "blog" */ '../scenes/b
 const Notfound = React.lazy(() =>
   import(/* webpackChunkName: "not-found" */ './../styled_scenes/NotFound'),
 );
+const AdminModeration = React.lazy(() =>
+  import(/* webpackChunkName: "moderation" */ '../scenes/admin-moderation'),
+);
 
 export default (
   <ScrollToTop>
@@ -154,6 +157,10 @@ export default (
       <Route
         path={process.env.PUBLIC_URL + '/404'}
         component={withErrorBoundary(WaitForComponent(Notfound))}
+      />
+      <Route
+        path={process.env.PUBLIC_URL + '/admin/moderation/trips'}
+        component={asyncCommonHOCs(AdminModeration)}
       />
       <Route path={process.env.PUBLIC_URL + '/:slug'} component={asyncCommonHOCs(Blog)} />
       <Route component={withErrorBoundary(WaitForComponent(Notfound))} />

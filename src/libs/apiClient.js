@@ -159,4 +159,9 @@ export default {
       });
     },
   },
+  moderation: {
+    getAllPending() {
+      return get('/moderation/trips/pending');
+    },
+  },
 };
