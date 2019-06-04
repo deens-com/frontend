@@ -15,8 +15,7 @@ import WarningLogin from './WarningLogin';
 import I18nText from 'shared_components/I18nText';
 import { addServiceRequest } from 'libs/trips';
 import analytics from 'libs/analytics';
-import { DragDropContextProvider } from 'react-dnd';
-import TouchBackend from 'react-dnd-touch-backend';
+import withTouchHandler from 'shared_components/withTouchHandler';
 
 function addLang(text) {
   return {
@@ -182,7 +181,7 @@ function addAvailabilityData(services, availability) {
 
 export const TripContext = React.createContext();
 
-export default class TripOrganizer extends React.Component {
+class TripOrganizer extends React.Component {
   constructor(props) {
     super(props);
     this.state = createStateBasedOnTrip(props);
@@ -1125,85 +1124,79 @@ export default class TripOrganizer extends React.Component {
     } = this.state;
 
     return (
-      <DragDropContextProvider
-        backend={TouchBackend({
-          enableTouchEvents: true,
-          enableMouseEvents: true,
-          enableHoverOutsideTarget: true,
-        })}
+      <TripContext.Provider
+        value={{
+          tripId: this.props.tripId,
+          tripData: tripData,
+          servicesByDay: services,
+          isLoadingTransportation: Boolean(isLoadingTransportation),
+          isCheckingAvailability: Boolean(isCheckingAvailability),
+          showingTransports,
+          changeInitialLocation: this.changeInitialLocation,
+          changeFinalLocation: this.changeFinalLocation,
+          removeService: this.removeService,
+          addService: this.addService,
+          changeServiceTitle: this.changeServiceTitle,
+          changeServicePrice: this.changeServicePrice,
+          changeServiceDays: this.changeServiceDays,
+          changeTripDuration: this.changeTripDuration,
+          changeStartDate: this.changeStartDate,
+          session: this.props.session,
+          headerHeight,
+        }}
       >
-        <TripContext.Provider
-          value={{
-            tripId: this.props.tripId,
-            tripData: tripData,
-            servicesByDay: services,
-            isLoadingTransportation: Boolean(isLoadingTransportation),
-            isCheckingAvailability: Boolean(isCheckingAvailability),
-            showingTransports,
-            changeInitialLocation: this.changeInitialLocation,
-            changeFinalLocation: this.changeFinalLocation,
-            removeService: this.removeService,
-            addService: this.addService,
-            changeServiceTitle: this.changeServiceTitle,
-            changeServicePrice: this.changeServicePrice,
-            changeServiceDays: this.changeServiceDays,
-            changeTripDuration: this.changeTripDuration,
-            changeStartDate: this.changeStartDate,
-            session: this.props.session,
-            headerHeight,
-          }}
-        >
-          <Header
-            onEditTitle={this.editTitle}
-            onEditDescription={this.editDescription}
-            title={tripData.title}
-            description={tripData.description}
-            image={image}
-            onImageUpload={this.uploadImage}
-            onHeightChanged={this.onHeaderHeightChanged}
-          />
-          {!this.props.session.username && <WarningLogin />}
-          <Options
-            onChangeGuests={this.changeGuests}
-            adults={tripData.adultCount}
-            children={tripData.childrenCount}
-            infants={tripData.infantCount}
-            startDate={tripData.startDate}
-            duration={tripData.duration}
-            changeShowTransport={this.changeShowTransport}
-            changeShowMap={this.changeShowMap}
-            tripParents={this.props.trip.parents}
-          />
-          <Itinerary
-            addNewDay={this.addNewDay}
-            summaryView={draggingDay}
-            tripStartDate={tripData.startDate}
-            services={services}
-            duration={tripData.duration}
-            changeServicePosition={this.changeServicePosition}
-            changeDayPosition={this.changeDayPosition}
-            goToAddService={this.goToAddService}
-            removeDay={this.removeDay}
-            selectOption={this.selectOption}
-            selectTransport={this.selectTransport}
-            fromService={this.state.fromService}
-            toService={this.state.toService}
-            showingMap={this.state.showingMap}
-            saveDayNote={this.changeDayNote}
-            daysData={this.state.daysData}
-          />
-          <Footer
-            price={tripData.totalPrice.toFixed(2)}
-            isLoadingPrice={Boolean(this.state.isLoadingPrice)}
-            book={this.book}
-            share={this.share}
-            isSaving={Boolean(this.state.isSaving)}
-            isCheckingAvailability={Boolean(isCheckingAvailability)}
-            recentlyDeletedService={lastRemovedService}
-            undoRemoveService={this.undoRemoveService}
-          />
-        </TripContext.Provider>
-      </DragDropContextProvider>
+        <Header
+          onEditTitle={this.editTitle}
+          onEditDescription={this.editDescription}
+          title={tripData.title}
+          description={tripData.description}
+          image={image}
+          onImageUpload={this.uploadImage}
+          onHeightChanged={this.onHeaderHeightChanged}
+        />
+        {!this.props.session.username && <WarningLogin />}
+        <Options
+          onChangeGuests={this.changeGuests}
+          adults={tripData.adultCount}
+          children={tripData.childrenCount}
+          infants={tripData.infantCount}
+          startDate={tripData.startDate}
+          duration={tripData.duration}
+          changeShowTransport={this.changeShowTransport}
+          changeShowMap={this.changeShowMap}
+          tripParents={this.props.trip.parents}
+        />
+        <Itinerary
+          addNewDay={this.addNewDay}
+          summaryView={draggingDay}
+          tripStartDate={tripData.startDate}
+          services={services}
+          duration={tripData.duration}
+          changeServicePosition={this.changeServicePosition}
+          changeDayPosition={this.changeDayPosition}
+          goToAddService={this.goToAddService}
+          removeDay={this.removeDay}
+          selectOption={this.selectOption}
+          selectTransport={this.selectTransport}
+          fromService={this.state.fromService}
+          toService={this.state.toService}
+          showingMap={this.state.showingMap}
+          saveDayNote={this.changeDayNote}
+          daysData={this.state.daysData}
+        />
+        <Footer
+          price={tripData.totalPrice.toFixed(2)}
+          isLoadingPrice={Boolean(this.state.isLoadingPrice)}
+          book={this.book}
+          share={this.share}
+          isSaving={Boolean(this.state.isSaving)}
+          isCheckingAvailability={Boolean(isCheckingAvailability)}
+          recentlyDeletedService={lastRemovedService}
+          undoRemoveService={this.undoRemoveService}
+        />
+      </TripContext.Provider>
     );
   }
 }
+
+export default withTouchHandler(TripOrganizer);
