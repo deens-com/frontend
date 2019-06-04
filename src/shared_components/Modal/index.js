@@ -11,7 +11,7 @@ import headerActions from 'store/header/actions';
 import CrossIcon from 'shared_components/icons/CrossIcon';
 
 const Dimmer = styled.div`
-  z-index: 100000;
+  z-index: 10;
   display: none;
   position: absolute;
   top: 0;
@@ -38,7 +38,7 @@ const Wrapper = styled.div`
   z-index: 10;
   pointer-events: none;
   ${media.minMedium} {
-    z-index: 100000;
+    z-index: 10;
   }
 `;
 

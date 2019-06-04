@@ -35,10 +35,7 @@ const TopWrapper = styled.div`
 `;
 
 const Wrapper = styled.header`
-  z-index: 100000;
-  ${media.minMedium} {
-    z-index: 110;
-  }
+  z-index: 8;
   align-items: center;
   background: ${colors.backgroundLight};
   position: ${props => props.transparent && !props.showMenu && 'absolute'};

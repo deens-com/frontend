@@ -58,6 +58,7 @@ class TripCreatorContainer extends Component {
           handleSearch={this.search}
           handleCreateNewTrip={this.createTrip}
           savedSearchQuery={this.props.savedSearchQuery}
+          updateSearchParams={this.props.updateSearchParams}
           session={this.props.session}
         />
       </ModalOrNot>
@@ -77,8 +78,8 @@ const mapDispatchToProps = dispatch =>
     {
       /*changeDates: actions.patchSearchQuery,
       changeHeader: headerActions.changeHeader,*/
-      changeUserTrip: sessionActions.changeCurrentUserTrip,
       updateSearchParams: searchActions.updateSearchParams,
+      changeUserTrip: sessionActions.changeCurrentUserTrip,
     },
     dispatch,
   );

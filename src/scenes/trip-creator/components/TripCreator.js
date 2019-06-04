@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { H2Subtitle, PStrong, P } from 'libs/commonStyles';
-import { geocodeByAddress, getLatLng } from 'libs/placesAutocomplete';
+import { geocodeByAddress } from 'libs/placesAutocomplete';
 import styled from 'styled-components';
 import { getLocationParams, hasLocationParams } from 'libs/search';
 import LocationAutoSuggest from 'shared_components/Form/LocationAutoSuggest';
@@ -129,19 +129,38 @@ const LeftIcon = () => (
   </TypeIcon>
 );
 
-export default ({ savedSearchQuery, handleCreateNewTrip, handleSearch, session }) => {
-  const hasDefaultLocation = hasLocationParams(savedSearchQuery);
+export default ({
+  savedSearchQuery,
+  updateSearchParams,
+  handleCreateNewTrip,
+  handleSearch,
+  session,
+}) => {
+  // hasDefaultLocation keeps the initial value so the location box does not disappear after selecting location
+  const hasDefaultLocation = useRef(hasLocationParams(savedSearchQuery));
   const location = {
     ...getLocationParams(savedSearchQuery),
     formattedAddress: savedSearchQuery.address,
   };
-  const [address, setAddress] = useState(null);
+  const [address, setAddress] = useState(location);
   const [showHelp, setShowHelp] = useState(false);
 
   const onLocationChange = address => {
     geocodeByAddress(address).then(results => {
       const result = results[0];
       const data = parseLocationData(result);
+
+      updateSearchParams(
+        {
+          ...savedSearchQuery,
+          address,
+          lat: result.geometry.location.lat(),
+          lng: result.geometry.location.lng(),
+        },
+        null,
+        null,
+        true,
+      );
 
       setAddress({
         ...data,
@@ -155,7 +174,7 @@ export default ({ savedSearchQuery, handleCreateNewTrip, handleSearch, session }
   };
 
   const OptionWithPopup =
-    !hasDefaultLocation && !address
+    !hasDefaultLocation.current && !address
       ? ({ children, onClick, style }) => (
           <Popup
             content="Please select a location"
@@ -166,7 +185,7 @@ export default ({ savedSearchQuery, handleCreateNewTrip, handleSearch, session }
         )
       : Option;
 
-  const selectAddress = hasDefaultLocation ? null : (
+  const selectAddress = hasDefaultLocation.current ? null : (
     <div style={{ maxWidth: '400px', margin: 'auto', marginBottom: '25px', textAlign: 'center' }}>
       <H2Subtitle style={{ marginBottom: '30px' }}>Where do you want to go?</H2Subtitle>
       <SearchBg style={{ zIndex: 1 }}>
@@ -182,7 +201,7 @@ export default ({ savedSearchQuery, handleCreateNewTrip, handleSearch, session }
       </SearchBg>
     </div>
   );
-  const locationToUse = hasDefaultLocation ? location : address;
+  const locationToUse = address;
   const renderHelp = () => {
     setShowHelp(true);
   };
