@@ -1,19 +1,20 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import history from 'main/history';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Modal from 'shared_components/Modal';
 import { getFromCoordinates } from 'libs/Utils';
-//import 'semantic-ui-css/components/dimmer.min.css';
-//import 'semantic-ui-css/components/modal.min.css';
-import 'semantic-ui-css/semantic.min.css';
 import axios from 'libs/axios';
 import analytics from 'libs/analytics';
-import TripCreatorContent from '../components/TripCreator';
 import * as sessionActions from 'store/session/actions';
 import searchActions from 'store/search/actions';
 import LoadingDots from 'shared_components/LoadingDots';
+import BrandFooter from 'shared_components/BrandFooter';
+
+const TripCreatorContent = React.lazy(() =>
+  import(/* webpackChunkName: "trip-creator" */ '../components/TripCreator'),
+);
 
 class TripCreatorContainer extends Component {
   state = {
@@ -54,20 +55,41 @@ class TripCreatorContainer extends Component {
   };
 
   render() {
+    const tripCreator = (
+      <Suspense fallback={<LoadingDots />}>
+        <TripCreatorContent
+          handleSearch={this.search}
+          handleCreateNewTrip={this.createTrip}
+          savedSearchQuery={this.props.savedSearchQuery}
+        />
+      </Suspense>
+    );
+
+    if (this.props.location.state && this.props.location.state.modal) {
+      return (
+        <Modal open onCloseRequest={() => history.goBack()}>
+          {this.state.isLoading ? (
+            <span style={{ display: 'flex' }}>
+              <LoadingDots />
+            </span>
+          ) : (
+            tripCreator
+          )}
+        </Modal>
+      );
+    }
     return (
-      <Modal open onCloseRequest={() => history.goBack()}>
-        {this.state.isLoading ? (
-          <span style={{ display: 'flex' }}>
-            <LoadingDots />
-          </span>
-        ) : (
-          <TripCreatorContent
-            handleSearch={this.search}
-            handleCreateNewTrip={this.createTrip}
-            savedSearchQuery={this.props.savedSearchQuery}
-          />
-        )}
-      </Modal>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          minHeight: 'calc(100vh - 85px)',
+        }}
+      >
+        {tripCreator}
+        <BrandFooter />
+      </div>
     );
   }
 }
