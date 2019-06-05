@@ -31,19 +31,19 @@ const addWebpackPlugins = config => {
       shorthands: true, // breaks Form.Dropdown
       currying: true, // breaks everything
       collections: true, // breaks Login
-
-      // caching: true,
-      // exotics: true,
-      // guards: true,
-      // metadata: true,
-      // deburring: true,
-      // unicode: true,
-      // chaining: true,
-      // memoizing: true,
-      // coercions: true,
-      // flattening: true,
-      // paths: true,
-      // placeholders: true,
+      placeholders: true, // breaks some Modals
+      coercions: true, // breaks some Modals
+      //flattening: true,
+      //cloning: true,
+      //caching: true,
+      //exotics: true,
+      //guards: true,
+      //metadata: true,
+      //deburring: true,
+      //memoizing: true,
+      //paths: true,
+      //unicode: true,
+      //chaining: true,
     }),
     config,
   );
