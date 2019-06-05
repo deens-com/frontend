@@ -185,6 +185,7 @@ export default ({
         )
       : Option;
 
+  const locationToUse = address;
   const selectAddress = hasDefaultLocation.current ? null : (
     <div style={{ maxWidth: '400px', margin: 'auto', marginBottom: '25px', textAlign: 'center' }}>
       <H2Subtitle style={{ marginBottom: '30px' }}>Where do you want to go?</H2Subtitle>
@@ -197,15 +198,15 @@ export default ({
           onFocus={() => ''}
           onBlur={() => ''}
           serviceType="none"
+          defaultAddress={locationToUse.formattedAddress}
         />
       </SearchBg>
     </div>
   );
-  const locationToUse = address;
   const renderHelp = () => {
     setShowHelp(true);
   };
-  console.log(showHelp);
+
   return (
     <>
       <Modal open={showHelp} onCloseRequest={() => setShowHelp(false)}>

@@ -84,6 +84,9 @@ const Users = asyncCommonHOCs(
 const Account = asyncCommonHOCs(
   React.lazy(() => import(/* webpackChunkName: "account" */ './../scenes/account/account')),
 );
+const Help = asyncCommonHOCs(
+  React.lazy(() => import(/* webpackChunkName: "help" */ './../scenes/help')),
+);
 const Blog = asyncCommonHOCs(
   React.lazy(() => import(/* webpackChunkName: "blog" */ '../scenes/blog')),
 );
@@ -94,6 +97,7 @@ const Notfound = asyncCommonHOCs(
 let locationQueue = [];
 
 const TRIPS_CREATE = '/trips/create';
+const HELP = '/help';
 
 //const routesWithModal = [TRIPS_CREATE]
 
@@ -126,6 +130,7 @@ export default withRouter(props => {
   return (
     <>
       {isModal && <Route path={process.env.PUBLIC_URL + TRIPS_CREATE} component={TripCreator} />}
+      {isModal && <Route path={process.env.PUBLIC_URL + HELP} component={Help} />}
       <ScrollToTop /*dontScroll={isModal}*/>
         <Switch location={isModal ? previousLocation : location}>
           <Route exact path={process.env.PUBLIC_URL + '/'} component={Home} />
@@ -166,6 +171,7 @@ export default withRouter(props => {
           <Route path={process.env.PUBLIC_URL + '/trips/:slug?_:id'} component={Trips} />
           <Route path={process.env.PUBLIC_URL + '/users/:userName'} component={Users} />
           <Route path={process.env.PUBLIC_URL + '/account'} component={Account} />
+          <Route path={process.env.PUBLIC_URL + HELP} component={Help} />
           <Route
             path={process.env.PUBLIC_URL + '/404'}
             component={withErrorBoundary(WaitForComponent(Notfound))}
