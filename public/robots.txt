@@ -1,4 +1,4 @@
 User-Agent: *
-Disallow: 
+Disallow: /admin/
 
 Sitemap: https://deens.com/sitemap.xml
