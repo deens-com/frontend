@@ -137,12 +137,14 @@ export default ({
   session,
 }) => {
   // hasDefaultLocation keeps the initial value so the location box does not disappear after selecting location
-  const hasDefaultLocation = useRef(hasLocationParams(savedSearchQuery));
+  const hasDefaultLocationRef = useRef(hasLocationParams(savedSearchQuery));
+  const hasDefaultLocation = hasDefaultLocationRef.current;
+
   const location = {
     ...getLocationParams(savedSearchQuery),
     formattedAddress: savedSearchQuery.address,
   };
-  const [address, setAddress] = useState(location);
+  const [address, setAddress] = useState(hasDefaultLocation ? location : undefined);
   const [showHelp, setShowHelp] = useState(false);
 
   const onLocationChange = address => {
@@ -164,17 +166,15 @@ export default ({
 
       setAddress({
         ...data,
-        geo: {
-          type: 'Point',
-          coordinates: [result.geometry.location.lng(), result.geometry.location.lat()],
-        },
+        lat: result.geometry.location.lat(),
+        lng: result.geometry.location.lng(),
         formattedAddress: address,
       });
     });
   };
-
+  console.log(hasDefaultLocation, address);
   const OptionWithPopup =
-    !hasDefaultLocation.current && !address
+    !hasDefaultLocation && !address
       ? ({ children, onClick, style }) => (
           <Popup
             content="Please select a location"
@@ -186,7 +186,7 @@ export default ({
       : Option;
 
   const locationToUse = address;
-  const selectAddress = hasDefaultLocation.current ? null : (
+  const selectAddress = hasDefaultLocation ? null : (
     <div style={{ maxWidth: '400px', margin: 'auto', marginBottom: '25px', textAlign: 'center' }}>
       <H2Subtitle style={{ marginBottom: '30px' }}>Where do you want to go?</H2Subtitle>
       <SearchBg style={{ zIndex: 1 }}>
@@ -198,7 +198,7 @@ export default ({
           onFocus={() => ''}
           onBlur={() => ''}
           serviceType="none"
-          defaultAddress={locationToUse.formattedAddress}
+          defaultAddress={locationToUse && locationToUse.formattedAddress}
         />
       </SearchBg>
     </div>
@@ -215,7 +215,7 @@ export default ({
       <div style={{ margin: '0 auto' }}>
         {selectAddress}
         <Options>
-          <OptionWithPopup onClick={() => handleCreateNewTrip(locationToUse)}>
+          <OptionWithPopup onClick={() => handleSearch(locationToUse)}>
             <BriefcaseHeart
               style={{ flexShrink: 0, width: '50px', height: 'auto', color: 'white' }}
               color={primary}
@@ -225,7 +225,19 @@ export default ({
               <P>Find and customize trips already created by locals</P>
             </Text>
           </OptionWithPopup>
-          <OptionWithPopup onClick={() => handleSearch(locationToUse)}>
+          <OptionWithPopup
+            onClick={() =>
+              handleCreateNewTrip({
+                ...locationToUse,
+                ...(locationToUse.lng && {
+                  geo: {
+                    type: 'Point',
+                    coordinates: [locationToUse.lng, locationToUse.lat],
+                  },
+                }),
+              })
+            }
+          >
             <BriefcaseHeart
               style={{ flexShrink: 0, width: '50px', height: 'auto', color: 'white' }}
               color={primaryDisabled}

@@ -29,8 +29,8 @@ const Dimmer = styled.div`
 const Wrapper = styled.div`
   position: absolute;
   top: 65px;
+  height: calc(100vh - 65px);
   right: 0;
-  bottom: 0;
   left: 0;
   display: flex;
   flex-direction: column;

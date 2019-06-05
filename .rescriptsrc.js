@@ -33,7 +33,7 @@ const addWebpackPlugins = config => {
       collections: true, // breaks Login
       placeholders: true, // breaks some Modals
       coercions: true, // breaks some Modals
-      cloning: true, // some location selectors work weird without this
+      cloning: true, // some location selectors work weird without this (check trip premium quote)
       //flattening: true,
       //caching: true,
       //exotics: true,
