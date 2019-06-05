@@ -47,7 +47,7 @@ class TripModeration extends React.Component {
   onRejectClick = () => {
     const { trip } = this.props;
     this.props.onSubmit({
-      _id: trip._id,
+      tripId: trip._id,
       moderationStatus: 'rejected',
       comment: this.descInput.current.value,
     });
@@ -68,7 +68,7 @@ class TripModeration extends React.Component {
           <Button theme="fillLightGreen" onClick={this.onApproveClick}>
             Approve
           </Button>
-          <Button theme="danger" onClick={this.rejectClick}>
+          <Button theme="danger" onClick={this.onRejectClick}>
             Reject
           </Button>
         </ActionArea>
