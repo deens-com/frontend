@@ -32,6 +32,8 @@ class AdminModerationContainer extends React.Component {
     if (pendingList.length === 0) return null;
     return (
       <Wrapper>
+        <h2>Trips pending moderation</h2>
+        <hr />
         {pendingList.map(trip => (
           <TripModeration key={trip._id} trip={trip} onSubmit={this.onSubmit} />
         ))}
