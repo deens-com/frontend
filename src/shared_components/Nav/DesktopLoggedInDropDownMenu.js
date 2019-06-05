@@ -1,7 +1,6 @@
 import React from 'react';
 import { Dropdown } from 'semantic-ui-react';
 import history from 'main/history';
-import 'semantic-ui-css/components/transition.min.css';
 
 export default props => {
   return (

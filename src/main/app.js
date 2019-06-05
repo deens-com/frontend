@@ -11,11 +11,6 @@ import GDPRNotification from './GDPRNotification';
 import Routes from './router';
 import Skeleton from './skeleton';
 import { createGlobalStyle } from 'styled-components';
-import { Switch, Route, Link } from 'react-router-dom';
-import { asyncCommonHOCs } from 'main/router';
-const TripCreator = React.lazy(() =>
-  import(/* webpackChunkName: "trip-creator" */ 'scenes/trip-creator'),
-);
 
 const GlobalStyles = createGlobalStyle`
   * {
@@ -105,10 +100,6 @@ const GlobalStyles = createGlobalStyle`
 
   img.lazyload:not([src]) {
     visibility: hidden;
-  }
-
-  .ui.fullscreen.modal {
-    margin-top: 65px !important;
   }
 `;
 
