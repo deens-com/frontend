@@ -84,6 +84,7 @@ const Users = asyncCommonHOCs(
 const Account = asyncCommonHOCs(
   React.lazy(() => import(/* webpackChunkName: "account" */ './../scenes/account/account')),
 );
+
 const Help = asyncCommonHOCs(
   React.lazy(() => import(/* webpackChunkName: "help" */ './../scenes/help')),
 );

@@ -203,10 +203,10 @@ export default ({
       </SearchBg>
     </div>
   );
+
   const renderHelp = () => {
     setShowHelp(true);
   };
-
   return (
     <>
       <Modal open={showHelp} onCloseRequest={() => setShowHelp(false)}>

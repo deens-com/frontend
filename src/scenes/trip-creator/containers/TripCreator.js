@@ -80,6 +80,7 @@ const mapDispatchToProps = dispatch =>
       changeHeader: headerActions.changeHeader,*/
       updateSearchParams: searchActions.updateSearchParams,
       changeUserTrip: sessionActions.changeCurrentUserTrip,
+      updateSearchParams: searchActions.updateSearchParams,
     },
     dispatch,
   );

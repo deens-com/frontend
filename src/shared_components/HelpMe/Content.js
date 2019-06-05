@@ -150,7 +150,7 @@ const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user, defaultLocat
     const data = {
       user_id: session.username && session._id,
       email: session.email || email.current.value,
-      destination: address,
+      destination: defaultLocation || address,
       budget: budget.current.value,
       currency,
       adults,
