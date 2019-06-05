@@ -23,7 +23,7 @@ const addWebpackPlugins = config => {
     }),
     config,
   );
-  config = appendWebpackPlugin(
+  /*config = appendWebpackPlugin(
     new LodashModuleReplacementPlugin({
       // cloning: true,
 
@@ -46,7 +46,7 @@ const addWebpackPlugins = config => {
       //chaining: true,
     }),
     config,
-  );
+  );*/
   // config = appendWebpackPlugin(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/), config);
   config = appendWebpackPlugin(new WebpackModules(), config);
   config = appendWebpackPlugin(
