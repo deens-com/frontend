@@ -90,6 +90,9 @@ const Blog = asyncCommonHOCs(
 const Notfound = asyncCommonHOCs(
   React.lazy(() => import(/* webpackChunkName: "not-found" */ './../styled_scenes/NotFound')),
 );
+const AdminModeration = asyncCommonHOCs(
+  React.lazy(() => import(/* webpackChunkName: "moderation" */ '../scenes/admin-moderation')),
+);
 
 let locationQueue = [];
 
@@ -170,6 +173,10 @@ export default withRouter(props => {
           <Route
             path={process.env.PUBLIC_URL + '/404'}
             component={withErrorBoundary(WaitForComponent(Notfound))}
+          />
+          <Route
+            path={process.env.PUBLIC_URL + '/admin/moderation/trips'}
+            component={AdminModeration}
           />
           {/* routes which have modal version */}
           <Route path={process.env.PUBLIC_URL + TRIPS_CREATE} component={TripCreator} />

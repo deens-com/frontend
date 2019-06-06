@@ -168,7 +168,7 @@ function getHeroImage(serviceOrTrip) {
 function getPriceValidUntil() {
   const thirtyDaysInMillis = 2592000000;
   const monthFromNow = new Date(Date.now() + thirtyDaysInMillis);
-  return formatYYYYMMDD(monthFromNow);
+  return monthFromNow.toISOString();
 }
 
 function injectTelephone(service, structuredData) {

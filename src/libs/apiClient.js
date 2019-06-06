@@ -159,4 +159,17 @@ export default {
       });
     },
   },
+  moderation: {
+    getAllPending() {
+      return get('/moderation/trips/pending');
+    },
+    action(body) {
+      return post('/moderation/trips/action')(body);
+    },
+  },
+  bookings: {
+    premiumHelp(body) {
+      return post('/bookings/help/premium')(body);
+    },
+  },
 };
