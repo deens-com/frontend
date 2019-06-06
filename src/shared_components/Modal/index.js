@@ -57,9 +57,9 @@ const ChildrenContent = styled.div`
   padding: 35px;
   width: 100%;
   margin: auto;
-  height: 100%;
+  min-height: 100%;
   ${media.minMedium} {
-    height: auto;
+    min-height: auto;
     max-width: 800px;
     border-radius: 10px;
   }

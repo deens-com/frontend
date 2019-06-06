@@ -56,7 +56,7 @@ class TripCreatorContainer extends Component {
       <ModalOrNot>
         <TripCreatorContent
           handleSearch={this.search}
-          handleCreateNewTrip={this.creeateTrip}
+          handleCreateNewTrip={this.createTrip}
           savedSearchQuery={this.props.savedSearchQuery}
           updateSearchParams={this.props.updateSearchParams}
           session={this.props.session}
