@@ -92,6 +92,7 @@ const InlineInput = ({
   };
 
   const onMouseDown = event => {
+    event.preventDefault();
     if (inputEl.current && !inputEl.current.contains(event.target)) {
       const value = inputEl.current.value;
       setIsEditing(false);
@@ -105,14 +106,17 @@ const InlineInput = ({
     () => {
       if (isEditing) {
         window.addEventListener('keydown', onKeyPress);
+        window.addEventListener('touchstart', onMouseDown, { passive: false });
         window.addEventListener('mousedown', onMouseDown);
       } else {
         window.removeEventListener('keydown', onKeyPress);
+        window.removeEventListener('touchstart', onMouseDown, { passive: false });
         window.removeEventListener('mousedown', onMouseDown);
       }
       return () => {
         if (isEditing) {
           window.removeEventListener('keydown', onKeyPress);
+          window.removeEventListener('touchstart', onMouseDown, { passive: false });
           window.removeEventListener('mousedown', onMouseDown);
         }
       };
