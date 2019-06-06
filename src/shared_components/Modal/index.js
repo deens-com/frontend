@@ -37,6 +37,7 @@ const Wrapper = styled.div`
   z-index: 10;
   pointer-events: none;
   ${media.minMedium} {
+    right: 0;
     z-index: 10;
   }
 `;
