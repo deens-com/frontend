@@ -32,6 +32,7 @@ class Results extends React.Component {
           {...this.props}
           routeState={this.props.location.state}
           rawSearchQuery={this.props.location.search}
+          urlSearchParams={searchParams}
         />
       </div>
     );

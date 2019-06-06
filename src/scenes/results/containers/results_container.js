@@ -10,7 +10,7 @@ import headerActions from 'store/header/actions';
 class ResultsContainer extends Component {
   componentDidMount() {
     this.props.changeHeader();
-    const params = this.props.searchParams;
+    const params = this.props.urlSearchParams;
     this.props.updateSearchParams(params, null, null, true);
   }
 

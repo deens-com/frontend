@@ -164,7 +164,7 @@ const defaultCenter = {
   lat: 48.856614,
   lng: 2.3522219000000177,
 };
-const defaultZoom = 11;
+const defaultZoom = 10;
 
 class ResultsScene extends Component {
   constructor(props) {
@@ -234,10 +234,10 @@ class ResultsScene extends Component {
       getCenterFromBounds(this.props.searchParams).then(({ center, zoom }) =>
         this.setState({ center, zoom, markers: [] }),
       );
-    } else {
+    } /* else {
       const { center } = this.getCenterAndZoom([], this.props);
       this.setState({ center, markers: [] });
-    }
+    }*/
     if (this.state.showMap) {
       window.addEventListener('scroll', this.handleScroll);
       window.addEventListener('scroll', this.resizeHandler);
@@ -527,6 +527,7 @@ class ResultsScene extends Component {
               options={
                 window.google && window.google.maps
                   ? {
+                      minZoom: 1,
                       zoomControlOptions: {
                         position: window.google.maps.ControlPosition.LEFT_CENTER,
                       },

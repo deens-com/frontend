@@ -6,7 +6,6 @@ import { createAsyncActions, dispatchAsyncActions } from 'store/utils';
 import { parseTagsText, parseTagsCount } from 'libs/Utils';
 import {
   mapDataToQuery,
-  hasLocationParams,
   getSearchParams,
   getParamsToSave,
   prefetchWithNewParams,
@@ -41,10 +40,7 @@ const fetchResults = searchQuery =>
     };
 
     if (!searchForTrips) {
-      if (
-        params.text || // next we check that we have any kind of location
-        !hasLocationParams(params)
-      ) {
+      if (params.text) {
         return {
           results: [],
           count: 0,
