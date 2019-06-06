@@ -150,7 +150,7 @@ const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user, defaultLocat
     const data = {
       user_id: session.username && session._id,
       email: session.email || email.current.value,
-      destination: defaultLocation || address,
+      destination: address,
       budget: budget.current.value,
       currency,
       adults,
@@ -215,7 +215,7 @@ const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user, defaultLocat
               inputProps={{
                 placeholder: 'Type a city or country',
               }}
-              defaultAddress={address.formattedAddress}
+              defaultAddress={address}
             />
           </FormField>
         </FormLine>

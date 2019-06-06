@@ -4,7 +4,7 @@ import HelpContainer from './container';
 const Home = ({ location }) => {
   return (
     <div className="Help">
-      <HelpContainer data={location.state && location.state.helpData} />
+      <HelpContainer routeState={location.state} />
     </div>
   );
 };

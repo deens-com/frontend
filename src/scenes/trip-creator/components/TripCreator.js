@@ -10,8 +10,7 @@ import SearchIcon from 'shared_components/icons/SearchIcon';
 import { placeholderMixin, media } from 'libs/styled';
 import { primary, primaryDisabled, tertiary } from 'libs/colors';
 import BriefcaseHeart from 'shared_components/icons/BriefcaseHeart';
-import HelpMe from 'shared_components/HelpMe/Content';
-import Modal from 'shared_components/Modal';
+import history from 'main/history';
 
 const TypeIcon = styled.div`
   align-items: center;
@@ -135,6 +134,7 @@ export default ({
   handleCreateNewTrip,
   handleSearch,
   session,
+  routeState,
 }) => {
   // hasDefaultLocation keeps the initial value so the location box does not disappear after selecting location
   const hasDefaultLocationRef = useRef(hasLocationParams(savedSearchQuery));
@@ -145,7 +145,6 @@ export default ({
     formattedAddress: savedSearchQuery.address,
   };
   const [address, setAddress] = useState(hasDefaultLocation ? location : undefined);
-  const [showHelp, setShowHelp] = useState(false);
 
   const onLocationChange = address => {
     geocodeByAddress(address).then(results => {
@@ -172,7 +171,7 @@ export default ({
       });
     });
   };
-  console.log(hasDefaultLocation, address);
+
   const OptionWithPopup =
     !hasDefaultLocation && !address
       ? ({ children, onClick, style }) => (
@@ -186,7 +185,7 @@ export default ({
       : Option;
 
   const locationToUse = address;
-  const selectAddress = hasDefaultLocation ? null : (
+  const selectAddress = (
     <div style={{ maxWidth: '400px', margin: 'auto', marginBottom: '25px', textAlign: 'center' }}>
       <H2Subtitle style={{ marginBottom: '30px' }}>Where do you want to go?</H2Subtitle>
       <SearchBg style={{ zIndex: 1 }}>
@@ -204,14 +203,8 @@ export default ({
     </div>
   );
 
-  const renderHelp = () => {
-    setShowHelp(true);
-  };
   return (
     <>
-      <Modal open={showHelp} onCloseRequest={() => setShowHelp(false)}>
-        <HelpMe session={session} defaultLocation={locationToUse} />
-      </Modal>
       <div style={{ margin: '0 auto' }}>
         {selectAddress}
         <Options>
@@ -247,7 +240,28 @@ export default ({
               <P>Start from scratch with an empty trip</P>
             </Text>
           </OptionWithPopup>
-          <OptionWithPopup onClick={renderHelp} style={{ border: `1px solid ${tertiary}` }}>
+          <OptionWithPopup
+            onClick={() => {
+              if (routeState && routeState.modal) {
+                history.replace('/trips/quote', {
+                  modal: true,
+                  helpData: {
+                    ...(routeState && routeState.helpData),
+                    defaultLocation: locationToUse,
+                  },
+                });
+                return;
+              }
+              history.push('/trips/quote', {
+                modal: true,
+                helpData: {
+                  ...(routeState && routeState.helpData),
+                  defaultLocation: locationToUse,
+                },
+              });
+            }}
+            style={{ border: `1px solid ${tertiary}` }}
+          >
             <BriefcaseHeart
               style={{ flexShrink: 0, width: '50px', height: 'auto', color: 'white' }}
               color={tertiary}

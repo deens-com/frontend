@@ -8,6 +8,9 @@ import PrivateRoute from './PrivateRoute';
 import OnlyPublicRoute from './OnlyPublicRoute';
 import withSegmentTracker from './middlewares/with_segment_tracker';
 import LoadingDots from 'shared_components/LoadingDots';
+import TripCreator from 'scenes/trip-creator';
+import TripQuote from 'scenes/trip-quote';
+import Help from 'scenes/help';
 
 const commonHOCs = comp => withErrorBoundary(withSegmentTracker(comp));
 const WaitForComponent = Component => {
@@ -70,9 +73,6 @@ const TripShare = asyncCommonHOCs(
 const Checkout = asyncCommonHOCs(
   React.lazy(() => import(/* webpackChunkName: "checkout" */ '../scenes/checkout')),
 );
-const TripCreator = asyncCommonHOCs(
-  React.lazy(() => import(/* webpackChunkName: "trip-creator" */ './../scenes/trip-creator')),
-);
 const Trips = asyncCommonHOCs(
   React.lazy(() =>
     import(/* webpackChunkName: "trip", webpackPrefetch: true */ './../scenes/trip'),
@@ -83,10 +83,6 @@ const Users = asyncCommonHOCs(
 );
 const Account = asyncCommonHOCs(
   React.lazy(() => import(/* webpackChunkName: "account" */ './../scenes/account/account')),
-);
-
-const Help = asyncCommonHOCs(
-  React.lazy(() => import(/* webpackChunkName: "help" */ './../scenes/help')),
 );
 const Blog = asyncCommonHOCs(
   React.lazy(() => import(/* webpackChunkName: "blog" */ '../scenes/blog')),
@@ -99,8 +95,9 @@ let locationQueue = [];
 
 const TRIPS_CREATE = '/trips/create';
 const HELP = '/help';
+const TRIPS_QUOTE = '/trips/quote';
 
-//const routesWithModal = [TRIPS_CREATE]
+//const routesWithModal = [TRIPS_CREATE, HELP, ]
 
 export default withRouter(props => {
   const { location } = props;
@@ -132,6 +129,7 @@ export default withRouter(props => {
     <>
       {isModal && <Route path={process.env.PUBLIC_URL + TRIPS_CREATE} component={TripCreator} />}
       {isModal && <Route path={process.env.PUBLIC_URL + HELP} component={Help} />}
+      {isModal && <Route path={process.env.PUBLIC_URL + TRIPS_QUOTE} component={TripQuote} />}
       <ScrollToTop /*dontScroll={isModal}*/>
         <Switch location={isModal ? previousLocation : location}>
           <Route exact path={process.env.PUBLIC_URL + '/'} component={Home} />
@@ -160,9 +158,13 @@ export default withRouter(props => {
             message="Please login or register to continue with your trip."
           />
           <Route path={process.env.PUBLIC_URL + '/trips/organize'} component={TripOrganizer} />
-          {!isModal && (
-            <Route path={process.env.PUBLIC_URL + TRIPS_CREATE} component={TripCreator} />
-          )}
+          {
+            <>
+              <Route path={process.env.PUBLIC_URL + TRIPS_CREATE} component={TripCreator} />
+              <Route path={process.env.PUBLIC_URL + TRIPS_QUOTE} component={TripQuote} />
+              <Route path={process.env.PUBLIC_URL + HELP} component={Help} />
+            </>
+          }
           <PrivateRoute
             path={process.env.PUBLIC_URL + '/trips/share/:id'}
             component={TripShare}
@@ -172,7 +174,6 @@ export default withRouter(props => {
           <Route path={process.env.PUBLIC_URL + '/trips/:slug?_:id'} component={Trips} />
           <Route path={process.env.PUBLIC_URL + '/users/:userName'} component={Users} />
           <Route path={process.env.PUBLIC_URL + '/account'} component={Account} />
-          <Route path={process.env.PUBLIC_URL + HELP} component={Help} />
           <Route
             path={process.env.PUBLIC_URL + '/404'}
             component={withErrorBoundary(WaitForComponent(Notfound))}

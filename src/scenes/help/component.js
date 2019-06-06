@@ -8,6 +8,7 @@ import BriefcaseHeart from 'shared_components/icons/BriefcaseHeart';
 import HelpMe from 'shared_components/HelpMe/Content';
 import Modal from 'shared_components/Modal';
 import icon from './icon.svg';
+import history from 'main/history';
 
 const Options = styled.div`
   display: flex;
@@ -49,24 +50,14 @@ const Text = styled.div`
   }
 `;
 
-export default ({ savedSearchQuery, session, data }) => {
-  const [showHelp, setShowHelp] = useState(false);
-  const renderHelp = () => {
-    setShowHelp(true);
-  };
-
+export default ({ savedSearchQuery, session, routeState }) => {
   const location = {
     ...getLocationParams(savedSearchQuery),
     formattedAddress: savedSearchQuery.address,
   };
 
-  console.log(location);
-
   return (
     <>
-      <Modal open={showHelp} onCloseRequest={() => setShowHelp(false)}>
-        <HelpMe {...data} session={session} defaultLocation={location} />
-      </Modal>
       <div style={{ margin: '0 auto' }}>
         <Options>
           <Option
@@ -78,7 +69,23 @@ export default ({ savedSearchQuery, session, data }) => {
               <P>Find out how to make the most of the trip planner</P>
             </Text>
           </Option>
-          <Option onClick={renderHelp} style={{ border: `1px solid ${tertiary}` }}>
+          <Option
+            onClick={() => {
+              if (routeState && routeState.modal) {
+                history.replace('/trips/quote', {
+                  ...routeState,
+                  modal: true,
+                  defaultLocation: location,
+                });
+                return;
+              }
+              history.push('/trips/quote', {
+                ...routeState,
+                modal: true,
+              });
+            }}
+            style={{ border: `1px solid ${tertiary}` }}
+          >
             <BriefcaseHeart
               style={{ flexShrink: 0, width: '50px', height: 'auto', color: 'white' }}
               color={tertiary}

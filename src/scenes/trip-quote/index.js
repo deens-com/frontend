@@ -2,15 +2,16 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ModalOrNot from 'shared_components/ModalOrNot';
 
-const Help = React.lazy(() => import(/* webpackChunkName: "help" */ './component'));
-class HelpContainer extends Component {
+const TripQuoteContent = React.lazy(() =>
+  import(/* webpackChunkName: "trip-quote" */ 'shared_components/HelpMe/Content'),
+);
+class TripQuote extends Component {
   render() {
     return (
       <ModalOrNot>
-        <Help
-          routeState={this.props.routeState}
+        <TripQuoteContent
           session={this.props.session}
-          savedSearchQuery={this.props.savedSearchQuery}
+          {...this.props.location.state && this.props.location.state.helpData}
         />
       </ModalOrNot>
     );
@@ -27,4 +28,4 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   null,
-)(HelpContainer);
+)(TripQuote);

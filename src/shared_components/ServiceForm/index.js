@@ -731,7 +731,6 @@ class ServiceForm extends Component {
 
 function validate(values) {
   const shortVersion = values.isShortVersion;
-  console.log(shortVersion);
   const requiredFields = ['category', 'title', 'latlong'];
 
   if (!shortVersion) {
@@ -818,7 +817,6 @@ function validate(values) {
     delete errors.refundDuration;
     delete errors.refundAmount;
   }
-  console.log(errors);
   return errors;
 }
 
