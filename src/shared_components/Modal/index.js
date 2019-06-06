@@ -30,7 +30,6 @@ const Wrapper = styled.div`
   position: absolute;
   top: 65px;
   height: calc(100vh - 65px);
-  right: 0;
   left: 0;
   display: flex;
   flex-direction: column;
@@ -52,10 +51,9 @@ const Footer = styled.div`
 const ChildrenContent = styled.div`
   background-color: white;
   pointer-events: all;
-  background-color: white;
   position: relative;
   padding: 35px;
-  width: 100%;
+  width: 100vw;
   margin: auto;
   min-height: 100%;
   ${media.minMedium} {

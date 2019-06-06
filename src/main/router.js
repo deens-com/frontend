@@ -157,19 +157,12 @@ export default withRouter(props => {
             component={TripOrganizer}
             message="Please login or register to continue with your trip."
           />
-          <Route path={process.env.PUBLIC_URL + '/trips/organize'} component={TripOrganizer} />
-          {
-            <>
-              <Route path={process.env.PUBLIC_URL + TRIPS_CREATE} component={TripCreator} />
-              <Route path={process.env.PUBLIC_URL + TRIPS_QUOTE} component={TripQuote} />
-              <Route path={process.env.PUBLIC_URL + HELP} component={Help} />
-            </>
-          }
           <PrivateRoute
             path={process.env.PUBLIC_URL + '/trips/share/:id'}
             component={TripShare}
             message="Please login or register to share your trip."
           />
+          <Route path={process.env.PUBLIC_URL + '/trips/organize'} component={TripOrganizer} />
           <Route path={process.env.PUBLIC_URL + '/trips/checkout/:id'} component={Checkout} />
           <Route path={process.env.PUBLIC_URL + '/trips/:slug?_:id'} component={Trips} />
           <Route path={process.env.PUBLIC_URL + '/users/:userName'} component={Users} />
@@ -178,6 +171,11 @@ export default withRouter(props => {
             path={process.env.PUBLIC_URL + '/404'}
             component={withErrorBoundary(WaitForComponent(Notfound))}
           />
+          {/* routes which have modal version */}
+          <Route path={process.env.PUBLIC_URL + TRIPS_CREATE} component={TripCreator} />
+          <Route path={process.env.PUBLIC_URL + TRIPS_QUOTE} component={TripQuote} />
+          <Route path={process.env.PUBLIC_URL + HELP} component={Help} />
+
           <Route path={process.env.PUBLIC_URL + '/:slug'} component={Blog} />
           <Route component={withErrorBoundary(WaitForComponent(Notfound))} />
         </Switch>
