@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-
+import supportsPassive from 'libs/supportsPassive';
 import { primary } from 'libs/colors';
 import PencilIcon from 'shared_components/icons/PencilIcon';
 import { P } from 'libs/commonStyles';
@@ -106,17 +106,25 @@ const InlineInput = ({
     () => {
       if (isEditing) {
         window.addEventListener('keydown', onKeyPress);
-        window.addEventListener('touchstart', onMouseDown, { passive: false });
+        window.addEventListener('touchstart', onMouseDown, supportsPassive && { passive: false });
         window.addEventListener('mousedown', onMouseDown);
       } else {
         window.removeEventListener('keydown', onKeyPress);
-        window.removeEventListener('touchstart', onMouseDown, { passive: false });
+        window.removeEventListener(
+          'touchstart',
+          onMouseDown,
+          supportsPassive && { passive: false },
+        );
         window.removeEventListener('mousedown', onMouseDown);
       }
       return () => {
         if (isEditing) {
           window.removeEventListener('keydown', onKeyPress);
-          window.removeEventListener('touchstart', onMouseDown, { passive: false });
+          window.removeEventListener(
+            'touchstart',
+            onMouseDown,
+            supportsPassive && { passive: false },
+          );
           window.removeEventListener('mousedown', onMouseDown);
         }
       };
