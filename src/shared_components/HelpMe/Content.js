@@ -1,7 +1,5 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
-import { paramsSerializer } from 'libs/apiClient';
-import axios from 'libs/axios';
 import { Loader } from 'semantic-ui-react';
 import { H2, H5, PSmall, P } from 'libs/commonStyles';
 import { primary, textDark, error } from 'libs/colors';
@@ -15,6 +13,7 @@ import GuestsSelector from 'shared_components/SelectGuests/GuestsSelector';
 import analytics from 'libs/analytics';
 import currencies from 'data/currencies.json';
 import { media } from 'libs/styled';
+import apiClient from 'libs/apiClient';
 
 import CurrencyDropdownContent from './CurrencyDropdownContent';
 
@@ -110,8 +109,6 @@ const Required = styled.span`
   margin-left: 4px;
 `;
 
-const url = 'https://hooks.zapier.com/hooks/catch/145807/72cord/';
-
 const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user }) => {
   const [asked, setAsked] = useState(false);
   const [errors, setErrors] = useState({});
@@ -148,7 +145,6 @@ const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user }) => {
   const askForQuote = () => {
     setErrors({});
     const data = {
-      user_id: session.username && session._id,
       email: session.email || email.current.value,
       destination: address,
       budget: budget.current.value,
@@ -156,14 +152,14 @@ const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user }) => {
       adults,
       children,
       infants,
-      trip_id: tripId,
-      parent: tripParent,
-      recommended_user: user && user._id,
+      tripId: tripId,
+      tripParentId: tripParent,
+      recommendedUser: user && user._id,
     };
     if (!isValid(data)) {
       return;
     }
-    axios.get(url, { params: data, paramsSerializer });
+    apiClient.bookings.premiumHelp(data);
     analytics.planning.brief.complete();
     setAsked(true);
   };

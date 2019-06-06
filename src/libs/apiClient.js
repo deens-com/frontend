@@ -167,4 +167,9 @@ export default {
       return post('/moderation/trips/action')(body);
     },
   },
+  bookings: {
+    premiumHelp(body) {
+      return post('/bookings/help/premium')(body);
+    },
+  },
 };
