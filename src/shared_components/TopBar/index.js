@@ -12,7 +12,6 @@ import Logo from './Logo';
 import Search from './Search';
 import { bindActionCreators } from 'redux';
 import { getCurrentUserTrip, logOut } from 'store/session/actions';
-import { PageWrapper } from 'shared_components/layout/Page';
 import { withRouter } from 'react-router-dom';
 import searchActions from 'store/search/actions';
 
@@ -36,6 +35,7 @@ const TopWrapper = styled.div`
 `;
 
 const Wrapper = styled.header`
+  z-index: 8;
   align-items: center;
   background: ${colors.backgroundLight};
   position: ${props => props.transparent && !props.showMenu && 'absolute'};
@@ -44,7 +44,6 @@ const Wrapper = styled.header`
   height: 65px;
   padding: ${props => (props.transparent ? '0' : '10px')};
   width: 100%;
-  z-index: 110;
   ${props => (props.transparent ? 'left: 0;' : '')}
   ${props =>
     props.showMenu &&

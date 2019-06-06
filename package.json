@@ -23,7 +23,7 @@
     "fine-uploader": "^5.16.2",
     "formik": "^1.5.7",
     "gh-pages": "^1.1.0",
-    "google-map-react": "^1.0.0",
+    "google-map-react": "^1.1.4",
     "history": "^4.9.0",
     "i18next": "^11.3.5",
     "indefinite": "^2.2.0",

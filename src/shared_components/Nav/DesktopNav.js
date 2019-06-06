@@ -165,7 +165,12 @@ const TopBarDesktopNav = function TopBarDesktopNav({
                 <NavLink
                   data-testid="createTripHeaderButton"
                   activeclassname="is-active"
-                  to="/trips/create"
+                  to={{
+                    pathname: '/trips/create',
+                    state: {
+                      modal: true,
+                    },
+                  }}
                 >
                   <PStrong>Create Trip</PStrong>
                 </NavLink>
@@ -175,7 +180,7 @@ const TopBarDesktopNav = function TopBarDesktopNav({
           <ActionsWrap>
             <DesktopDropDownMenu
               session={session}
-              logOut={logOut}
+              logout={logOut}
               isBackgroundWhite={!transparent}
               history={history}
             />

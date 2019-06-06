@@ -76,7 +76,7 @@ const fetchResults = searchQuery =>
     };
   });
 
-const updateSearchParams = (searchParams, state, customPage) => (dispatch, getState) => {
+const updateSearchParams = (searchParams, state, customPage, noPushUrl) => (dispatch, getState) => {
   const savedParams = getLastSearchParams();
   const paramsToSave = getParamsToSave(searchParams, savedParams);
   const page = customPage || (searchParams.page ? 1 : undefined);
@@ -94,7 +94,9 @@ const updateSearchParams = (searchParams, state, customPage) => (dispatch, getSt
 
   dispatch(fetchResults(params));
 
-  history.push(`/results?${queryString.stringify(params, { arrayFormat: 'comma' })}`, state);
+  if (!noPushUrl) {
+    history.push(`/results?${queryString.stringify(params, { arrayFormat: 'comma' })}`, state);
+  }
 
   prefetchWithNewParams(paramsToSave, savedParams);
 

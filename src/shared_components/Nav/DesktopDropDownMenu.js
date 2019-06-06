@@ -54,10 +54,6 @@ const DesktopLoggedInDropDownMenu = React.lazy(() => import('./DesktopLoggedInDr
 
 // MODULE
 export default class DesktopDropDownMenu extends Component {
-  logout = () => {
-    this.props.logOut();
-  };
-
   trigger = () => {
     const { profilePicture } = this.props.session;
     const url = profilePicture
@@ -92,7 +88,17 @@ export default class DesktopDropDownMenu extends Component {
   logged_in() {
     return (
       <Wrap>
-        <Button type="link" theme="primaryFilled" size="small" href="/trips/create">
+        <Button
+          type="link"
+          theme="primaryFilled"
+          size="small"
+          href={{
+            pathname: '/trips/create',
+            state: {
+              modal: true,
+            },
+          }}
+        >
           <PStrong>Create Trip</PStrong>
         </Button>
         <Suspense fallback={this.trigger()}>

@@ -102,11 +102,6 @@ class ServiceForm extends Component {
       uploadingImages: false,
     };
     this.uploadingImagesSet = new Set();
-
-    if (this.props.creatingFromLink) {
-      const { setFieldValue } = props;
-      setFieldValue('isShortVersion', true);
-    }
   }
 
   static propTypes = {
@@ -717,7 +712,11 @@ class ServiceForm extends Component {
             </React.Fragment>
           )}
           <Form.Group>
-            <Form.Button color="green" disabled={submitInFlight || this.state.uploadingImages}>
+            <Form.Button
+              color="green"
+              type="submit"
+              disabled={submitInFlight || this.state.uploadingImages}
+            >
               {this.renderSubmitText()}
             </Form.Button>
             {this.props.onCancel && (
@@ -732,7 +731,6 @@ class ServiceForm extends Component {
 
 function validate(values) {
   const shortVersion = values.isShortVersion;
-
   const requiredFields = ['category', 'title', 'latlong'];
 
   if (!shortVersion) {
@@ -819,12 +817,12 @@ function validate(values) {
     delete errors.refundDuration;
     delete errors.refundAmount;
   }
-
   return errors;
 }
 
 export default withFormik({
-  mapPropsToValues: ({ service }) => ({
+  mapPropsToValues: ({ service, creatingFromLink }) => ({
+    isShortVersion: creatingFromLink,
     category: (service && service.category) || '',
     title: (service && service.title) || '',
     subtitle: (service && service.subtitle) || '',

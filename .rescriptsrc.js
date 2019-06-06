@@ -23,7 +23,7 @@ const addWebpackPlugins = config => {
     }),
     config,
   );
-  config = appendWebpackPlugin(
+  /*config = appendWebpackPlugin(
     new LodashModuleReplacementPlugin({
       // cloning: true,
 
@@ -31,22 +31,22 @@ const addWebpackPlugins = config => {
       shorthands: true, // breaks Form.Dropdown
       currying: true, // breaks everything
       collections: true, // breaks Login
-
-      // caching: true,
-      // exotics: true,
-      // guards: true,
-      // metadata: true,
-      // deburring: true,
-      // unicode: true,
-      // chaining: true,
-      // memoizing: true,
-      // coercions: true,
-      // flattening: true,
-      // paths: true,
-      // placeholders: true,
+      placeholders: true, // breaks some Modals
+      coercions: true, // breaks some Modals
+      cloning: true, // some location selectors work weird without this (check trip premium quote)
+      //flattening: true,
+      //caching: true,
+      //exotics: true,
+      //guards: true,
+      //metadata: true,
+      //deburring: true,
+      //memoizing: true,
+      //paths: true,
+      //unicode: true,
+      //chaining: true,
     }),
     config,
-  );
+  );*/
   // config = appendWebpackPlugin(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/), config);
   config = appendWebpackPlugin(new WebpackModules(), config);
   config = appendWebpackPlugin(

@@ -1,12 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import 'semantic-ui-css/semantic.min.css';
 import App from './main/app';
-import { createBrowserHistory as createHistory } from 'history';
+import history from 'main/history';
 //import { unregister as unregisterServiceWorker } from './registerServiceWorker';
 import { isProd, isStaging } from './libs/config';
-
-const history = createHistory();
+import 'semantic-ui-css/semantic.min.css';
 
 import(/* webpackChunkName: "lazyloading" */ './main/lazyload');
 import(/* webpackChunkName: "external-stuff" */ './main/external');

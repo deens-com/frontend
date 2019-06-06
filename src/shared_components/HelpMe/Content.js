@@ -109,10 +109,10 @@ const Required = styled.span`
   margin-left: 4px;
 `;
 
-const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user }) => {
+const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user, defaultLocation }) => {
   const [asked, setAsked] = useState(false);
   const [errors, setErrors] = useState({});
-  const [address, setAddress] = useState(undefined);
+  const [address, setAddress] = useState(defaultLocation && defaultLocation.formattedAddress);
   const [{ adults, children, infants }, setGuests] = useState({
     adults: 0,
     children: 0,
@@ -203,7 +203,7 @@ const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user }) => {
       <Form>
         <FormLine>
           <FormField>
-            <Label>What is your destination</Label>
+            <Label>What is your destination?</Label>
             <Description>Leave blank if you don't know</Description>
             <SemanticLocationControl
               onChange={address => setAddress(address)}
@@ -211,6 +211,7 @@ const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user }) => {
               inputProps={{
                 placeholder: 'Type a city or country',
               }}
+              defaultAddress={address}
             />
           </FormField>
         </FormLine>

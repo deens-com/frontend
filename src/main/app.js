@@ -128,7 +128,9 @@ class App extends React.Component {
           <React.Fragment>
             <GDPRNotification />
             <Router history={history}>
-              <Skeleton>{Routes}</Skeleton>
+              <Skeleton>
+                <Routes />
+              </Skeleton>
             </Router>
           </React.Fragment>
         </Provider>

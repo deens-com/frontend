@@ -1,6 +1,19 @@
 import { fitBounds } from 'google-map-react/utils';
 import { waitUntilMapsLoaded } from 'libs/Utils';
 
+const fitBoundsFixed = (bounds, ...args) => {
+  // https://github.com/google-map-react/google-map-react/issues/207
+  const { center, zoom } = fitBounds(bounds, ...args);
+  if (zoom === 0) {
+    const newBounds = bounds;
+    newBounds.sw.lat += 0.0000001;
+    newBounds.sw.lng -= 0.0000001;
+    const fixedData = fitBounds(newBounds, ...args);
+    return { center: fixedData.center, zoom: 14 };
+  }
+  return { center, zoom };
+};
+
 export const parseLocationData = data => {
   let res = {};
   const { address_components: addressComponents } = data;
@@ -115,7 +128,7 @@ export const getCenterAndZoom = (
     return { center: markers[0], zoom: defaultZoom };
   }
   const bounds = calculateMapBounds(markers);
-  const { center, zoom } = fitBounds(bounds, size);
+  const { center, zoom } = fitBoundsFixed(bounds, size);
 
   // if we zoom more than 14, it's too much zoomed into a really small location
   return { center, zoom: Math.min(zoom, 14) };
@@ -127,6 +140,6 @@ export const getCenterFromBounds = async (params, size = { width: 400, height: 8
     sw: { lat: params.bottomLeftLat, lng: params.bottomLeftLng },
     ne: { lat: params.topRightLat, lng: params.topRightLng },
   };
-  const { center, zoom } = fitBounds(bounds, size);
+  const { center, zoom } = fitBoundsFixed(bounds, size);
   return { center, zoom };
 };
