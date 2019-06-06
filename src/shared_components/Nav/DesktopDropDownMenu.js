@@ -54,10 +54,6 @@ const DesktopLoggedInDropDownMenu = React.lazy(() => import('./DesktopLoggedInDr
 
 // MODULE
 export default class DesktopDropDownMenu extends Component {
-  logout = () => {
-    this.props.logOut();
-  };
-
   trigger = () => {
     const { profilePicture } = this.props.session;
     const url = profilePicture

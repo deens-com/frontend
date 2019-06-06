@@ -180,7 +180,7 @@ const TopBarDesktopNav = function TopBarDesktopNav({
           <ActionsWrap>
             <DesktopDropDownMenu
               session={session}
-              logOut={logOut}
+              logout={logOut}
               isBackgroundWhite={!transparent}
               history={history}
             />
