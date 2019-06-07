@@ -75,13 +75,20 @@ export default ({ savedSearchQuery, session, routeState }) => {
                 history.replace('/trips/quote', {
                   ...routeState,
                   modal: true,
-                  defaultLocation: location,
+                  helpData: {
+                    ...routeState.helpData,
+                    defaultLocation: location,
+                  },
                 });
                 return;
               }
               history.push('/trips/quote', {
                 ...routeState,
                 modal: true,
+                helpData: {
+                  ...routeState.helpData,
+                  defaultLocation: location,
+                },
               });
             }}
             style={{ border: `1px solid ${tertiary}` }}
