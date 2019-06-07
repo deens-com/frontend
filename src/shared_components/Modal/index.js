@@ -36,6 +36,9 @@ const Wrapper = styled.div`
   overflow-y: auto;
   z-index: 10;
   pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
   ${media.minMedium} {
     right: 0;
     z-index: 10;
@@ -56,11 +59,11 @@ const ChildrenContent = styled.div`
   padding: 35px;
   width: 100vw;
   margin: auto;
-  min-height: 100%;
+  flex: 1;
   ${media.minMedium} {
-    min-height: auto;
     max-width: 800px;
     border-radius: 10px;
+    flex: 0;
   }
 `;
 
@@ -102,7 +105,7 @@ const Modal = ({ open, onCloseRequest, changeHeader, children }) => {
           <CloseButton onClick={onClick}>
             <CrossIcon style={{ width: 18, height: 18 }} />
           </CloseButton>
-          {children}
+          <div style={{ margin: '0 auto' }}>{children}</div>
         </ChildrenContent>
         <Footer>
           <BrandFooter />
