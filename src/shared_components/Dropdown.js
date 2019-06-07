@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import supportsPassive from 'libs/supportsPassive';
 import { primary, error } from 'libs/colors';
 import MenuDownArrow from 'shared_components/icons/MenuDownArrow';
 
@@ -71,9 +72,10 @@ const Dropdown = ({ children, trigger, onClose, onOpen, maxHeight, error }) => {
     if (!isOpen) {
       return;
     }
-
+    window.addEventListener('touchstart', close, supportsPassive && { passive: false });
     window.addEventListener('mousedown', close);
     return () => {
+      window.removeEventListener('touchstart', close, supportsPassive && { passive: false });
       window.removeEventListener('mousedown', close);
     };
   });
