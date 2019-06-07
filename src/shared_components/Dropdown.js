@@ -55,13 +55,14 @@ const Dropdown = ({ children, trigger, onClose, onOpen, maxHeight, error }) => {
       }
       setOpen(!isOpen);
     },
-    [isOpen],
+    [isOpen, onClose, onOpen],
   );
 
   const contentRef = useRef(null);
   const buttonRef = useRef(null);
 
   const close = e => {
+    e.preventDefault();
     if (!contentRef.current.contains(e.target) && !buttonRef.current.contains(e.target)) {
       onClose();
       setOpen(false);

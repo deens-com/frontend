@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import supportsPassive from 'libs/supportsPassive';
 import PlusIcon from 'shared_components/icons/PlusIcon';
 import MinusIcon from 'shared_components/icons/MinusIcon';
 import { primary } from 'libs/colors';
@@ -107,6 +108,11 @@ export default class GuestsSelector extends React.Component {
   };
 
   componentDidMount() {
+    window.addEventListener(
+      'touchstart',
+      this.handleClickOutside,
+      supportsPassive && { passive: false },
+    );
     document.addEventListener('mousedown', this.handleClickOutside);
     const rect = this.wrapperRef.current.getBoundingClientRect();
     if (rect.y + rect.height > window.innerHeight) {
@@ -115,10 +121,16 @@ export default class GuestsSelector extends React.Component {
   }
 
   componentWillUnmount() {
+    window.removeEventListener(
+      'touchstart',
+      this.handleClickOutside,
+      supportsPassive && { passive: false },
+    );
     document.removeEventListener('mousedown', this.handleClickOutside);
   }
 
   handleClickOutside = event => {
+    event.preventDefault();
     if (this.wrapperRef.current && !this.wrapperRef.current.contains(event.target)) {
       if (
         this.props.children !== this.state.children ||
