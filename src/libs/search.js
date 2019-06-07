@@ -92,11 +92,9 @@ export const getParamsToSave = (searchParams, currentSavedParams) => {
   const paramsToSave = {
     ...currentSavedParams,
   };
-  if (searchParams.city || searchParams.state || searchParams.countryCode) {
+  if (hasLocationParams(searchParams)) {
     delete paramsToSave.lat;
     delete paramsToSave.lng;
-  }
-  if (searchParams.lng && searchParams.lat) {
     delete paramsToSave.city;
     delete paramsToSave.state;
     delete paramsToSave.countryCode;
@@ -137,19 +135,19 @@ export const mapDataToQuery = ({ type, ...searchParams }) => ({
   ...searchParams,
 });
 
-export const usingLatAndLng = params => params.lat && params.lng;
-export const usingCityAndCountry = params => params.city && params.countryCode;
+export const usingLatAndLng = params => Boolean(params.lat && params.lng);
+export const usingCountryCode = params => Boolean(params.countryCode);
 export const usingBoundingBox = params =>
-  params.topRightLat && params.topRightLng && params.bottomLeftLat && params.bottomLeftLng;
+  Boolean(params.topRightLat && params.topRightLng && params.bottomLeftLat && params.bottomLeftLng);
 
 export const hasLocationParams = params => {
-  return usingLatAndLng(params) || usingCityAndCountry(params) || usingBoundingBox(params);
+  return usingLatAndLng(params) || usingCountryCode(params) || usingBoundingBox(params);
 };
 
 export const hasMultipleLocationParams = params => {
   const numberOfLocations = [
     usingLatAndLng(params),
-    usingCityAndCountry(params),
+    usingCountryCode(params),
     usingBoundingBox(params),
   ].reduce((num, elem) => num + (elem ? 1 : 0), 0);
   return numberOfLocations > 1;
@@ -164,7 +162,7 @@ export const removeMultipleLocations = params => {
         lng: undefined,
       });
     }
-    if (usingCityAndCountry(params)) {
+    if (usingCountryCode(params)) {
       return removeMultipleLocations({
         ...params,
         city: undefined,
@@ -177,9 +175,10 @@ export const removeMultipleLocations = params => {
 };
 
 export const getLocationParams = params => ({
-  ...(params.city
+  ...(params.city || params.countryCode
     ? {
         city: params.city,
+        state: params.state,
         countryCode: params.countryCode,
       }
     : {
