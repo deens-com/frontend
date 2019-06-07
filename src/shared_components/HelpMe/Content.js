@@ -18,12 +18,13 @@ import apiClient from 'libs/apiClient';
 import CurrencyDropdownContent from './CurrencyDropdownContent';
 
 const Wrapper = styled.div`
+  max-width: 815px;
   margin: 10px 15px;
   ${media.minSmall} {
     margin: 20px 35px;
   }
   ${media.minMedium} {
-    margin: 40px 135px;
+    margin: 40px auto;
   }
 `;
 
