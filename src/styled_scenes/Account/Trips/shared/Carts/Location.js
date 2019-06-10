@@ -21,6 +21,9 @@ import { generateServiceSlug } from 'libs/Utils';
 import { getImageUrlFromMedia } from 'libs/media';
 import NewPriceTag from 'shared_components/Currency/NewPriceTag';
 
+import { getFirstCategoryLowerCase } from 'libs/categories';
+import urls from 'libs/urlGenerator';
+
 const ContentWrap = styled.div`
   padding: 20px;
 `;
@@ -84,7 +87,17 @@ const ImageItem = styled.div`
 class ServiceLocationCard extends React.PureComponent {
   wrapWithLink = element => {
     const { item } = this.props;
-    return <Link to={`/services/${generateServiceSlug(item)}`}>{element}</Link>;
+    return (
+      <Link
+        to={urls.service.view({
+          id: item._id,
+          slug: generateServiceSlug(item),
+          category: getFirstCategoryLowerCase(item.categories),
+        })}
+      >
+        {element}
+      </Link>
+    );
   };
 
   render() {

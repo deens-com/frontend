@@ -13,6 +13,18 @@ import { getHeroImageUrlFromMedia } from 'libs/media';
 import tripActions from 'store/trips/actions';
 import headerActions from 'store/header/actions';
 import { getServiceJsonLdData } from 'libs/json-ld';
+import { getFirstCategoryLowerCase } from 'libs/categories';
+import urls from 'libs/urlGenerator';
+
+const isIncorrectUrl = (matchParams, slug, service) => {
+  if (!service || !slug) {
+    return false;
+  }
+  return (
+    `${matchParams.slug}_${matchParams.id}` !== slug ||
+    getFirstCategoryLowerCase(service.categories) !== matchParams.category
+  );
+};
 
 class ServicesContainer extends Component {
   state = {
@@ -62,13 +74,14 @@ class ServicesContainer extends Component {
         const title =
           service.pageTitle ||
           `${I18nText.translate(service.title)}${location ? `, ${location}` : ''}`;
-        const isIncorrectUrl =
-          this.props.slug &&
-          `${this.props.match.params.slug}_${this.props.match.params.id}` !== this.props.slug;
-
+        const shouldRedirect = isIncorrectUrl(
+          this.props.match.params,
+          this.props.slug,
+          this.props.service,
+        );
         helmet = (
           <Helmet>
-            {this.props.slug && !isIncorrectUrl ? <link rel="canonical" href={url} /> : null}
+            {this.props.slug && !shouldRedirect ? <link rel="canonical" href={url} /> : null}
             <title>{title} | Deens.com</title>
             <meta name="description" content={description} />
             <meta property="og:url" content={url} />
@@ -81,8 +94,16 @@ class ServicesContainer extends Component {
           </Helmet>
         );
 
-        if (isIncorrectUrl) {
-          return <Redirect to={`/services/${this.props.slug}`} />;
+        if (shouldRedirect) {
+          return (
+            <Redirect
+              to={urls.service.view({
+                id: this.props.service._id,
+                category: getFirstCategoryLowerCase(this.props.service.categories),
+                slug: this.props.slug,
+              })}
+            />
+          );
         }
       }
 

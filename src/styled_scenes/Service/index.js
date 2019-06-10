@@ -11,7 +11,7 @@ import Row from './../../shared_components/layout/Row';
 // COMPONENTS
 import BrandFooter from '../../shared_components/BrandFooter';
 import { BadgeIcon } from './icons';
-import TripCart from '../../shared_components/Cards/Trip';
+import TripCart from '../../shared_components/Carts/Trip';
 // import Carousel from '../../shared_components/Carousel';
 import ImgSlider from './components/ImgSlider';
 import MapMaker from '../../shared_components/MapMarker';
@@ -323,9 +323,14 @@ class Service extends Component {
                     <Grid columns={4} doubling stackable>
                       {this.props.trips.map(trip => (
                         <Grid.Column key={trip._id}>
-                          <Link to={'/trips/' + generateTripSlug(trip)}>
-                            <TripCart key={trip._id} withTooltip withShadow item={trip} />
-                          </Link>
+                          <TripCart
+                            showTags={false}
+                            isPlaceholder={false}
+                            key={trip._id}
+                            withTooltip
+                            withShadow
+                            item={trip}
+                          />
                         </Grid.Column>
                       ))}
                     </Grid>

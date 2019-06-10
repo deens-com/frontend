@@ -22,6 +22,7 @@ import I18nText, { translate } from 'shared_components/I18nText';
 import { H6, P, PStrong, PSmall, PXSmall } from 'libs/commonStyles';
 import * as colors from 'libs/colors';
 import { duration } from 'libs/trips';
+import urls from 'libs/urlGenerator';
 import Stars from 'shared_components/Rating/Stars';
 import { Link } from 'react-router-dom';
 import ImgurAvatar from 'assets/no-avatar.png';
@@ -346,7 +347,7 @@ class TripCart extends Component {
   }
 
   renderTags() {
-    if (this.props.isPlaceholder) {
+    if (this.props.isPlaceholder || !this.props.showTags) {
       return;
     }
 
@@ -484,10 +485,17 @@ class TripCart extends Component {
     }
 
     if (type === 'trip') {
-      return `/trips/${generateTripSlug(this.props.item)}`;
+      return urls.trip.view({
+        slug: generateTripSlug(this.props.item),
+        id: this.props.item._id,
+      });
     }
 
-    return `/services/${generateServiceSlug(this.props.item)}`;
+    return urls.service.view({
+      id: this.props.item._id,
+      slug: generateServiceSlug(this.props.item),
+      category: this.props.type,
+    });
   };
 
   renderCard() {
@@ -546,6 +554,7 @@ TripCart.propTypes = {
   href: PropTypes.string,
   hideAuthor: PropTypes.bool,
   isPlaceholder: PropTypes.bool,
+  showTags: PropTypes.bool,
   type: PropTypes.oneOf(['trip', 'accommodation', 'activity', 'food']),
 };
 
@@ -555,5 +564,6 @@ TripCart.defaultProps = {
   hideAuthor: false,
   href: '/',
   isPlaceholder: true,
+  showTags: true,
   type: 'trip',
 };

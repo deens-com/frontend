@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { media } from 'libs/styled';
 import I18nText from 'shared_components/I18nText';
 import AddToTripButton from 'shared_components/AddToTripButton';
+import urls from 'libs/urlGenerator';
 
 const GridContainer = styled.div`
   display: grid;
@@ -82,9 +83,7 @@ function ServiceActionButtons(props) {
       )}
       <ErrorMsgDiv>
         {props.serviceRecentlyAddedToTrip && (
-          <SuccessMessage
-            to={`/trips/organize/${props.isLoggedIn ? props.serviceRecentlyAddedToTrip._id : ''}`}
-          >
+          <SuccessMessage to={urls.trip.organize(props.serviceRecentlyAddedToTrip._id)}>
             Added to{' '}
             <b>
               {props.isLoggedIn ? (
@@ -97,7 +96,7 @@ function ServiceActionButtons(props) {
           </SuccessMessage>
         )}
         {props.serviceAlreadyAddedToTrip && (
-          <WarningMessage to={`/trips/organize/${props.serviceAlreadyAddedToTrip._id}`}>
+          <WarningMessage to={urls.trip.organize(props.serviceAlreadyAddedToTrip._id)}>
             Already added to{' '}
             <b>
               <I18nText data={props.serviceAlreadyAddedToTrip.title} />

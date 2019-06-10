@@ -8,6 +8,7 @@ import analytics from 'libs/analytics';
 import * as sessionActions from 'store/session/actions';
 import searchActions from 'store/search/actions';
 import ModalOrNot from 'shared_components/ModalOrNot';
+import urls from 'libs/urlGenerator';
 
 const TripCreatorContent = React.lazy(() =>
   import(/* webpackChunkName: "trip-creator" */ '../components/TripCreator'),
@@ -33,7 +34,7 @@ class TripCreatorContainer extends Component {
       })
       .then(response => {
         this.props.changeUserTrip(response.data);
-        history.replace(`/trips/organize/${response.data._id}`);
+        history.replace(urls.trip.organize(response.data._id));
       });
   };
 

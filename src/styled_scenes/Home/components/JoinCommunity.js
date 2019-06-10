@@ -99,7 +99,7 @@ export default ({ featuredTripCreator }) => (
       <Button
         type="link"
         href={{
-          pathname: '/trips/create',
+          pathname: '/planner/create',
           state: {
             modal: true,
           },

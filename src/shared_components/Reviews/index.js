@@ -8,6 +8,8 @@ import Rating from 'shared_components/Rating';
 import Button from 'shared_components/Button';
 import I18nText from 'shared_components/I18nText';
 import { generateServiceSlug } from 'libs/Utils';
+import { getFirstCategoryLowerCase } from 'libs/categories';
+import urls from 'libs/urlGenerator';
 
 import AnonymousAvatar from 'assets/no-avatar.png';
 
@@ -135,7 +137,13 @@ class ServiceReviews extends React.Component {
   renderService(review) {
     return (
       <Service>
-        <Link to={`/services/${generateServiceSlug(review.service)}`}>
+        <Link
+          to={urls.service.view({
+            id: review.service._id,
+            slug: generateServiceSlug(review.service),
+            category: getFirstCategoryLowerCase(review.service.categories),
+          })}
+        >
           At <I18nText data={review.service.title} />
         </Link>
       </Service>

@@ -6,7 +6,6 @@ import { withRouter } from 'react-router-dom';
 
 // COMPONENTS
 import Row from '../../../shared_components/layout/Row';
-//import TripCard from '../../../shared_components/Cards/Trip';
 import TripCard from 'shared_components/Carts/Trip';
 import PaginationWrap from 'shared_components/PaginationWrap';
 import Button from 'shared_components/Button';
@@ -22,7 +21,8 @@ import { valid, primary } from 'libs/colors';
 import * as tripUtils from 'libs/trips';
 import { hasLocationParams } from 'libs/search';
 import apiClient from 'libs/apiClient';
-import AddToTrip from 'shared_components/Cards/AddToTrip';
+import AddToTrip from 'shared_components/Carts/AddToTrip';
+import urls from 'libs/urlGenerator';
 
 function getDays(type, day, tripDate, duration, start, end) {
   // make unit tests!!!
@@ -227,7 +227,7 @@ class Results extends Component {
               <Button
                 type="link"
                 href={{
-                  pathname: '/trips/create',
+                  pathname: '/planner/create',
                   state: {
                     modal: true,
                   },
@@ -321,7 +321,7 @@ class Results extends Component {
               <strong>{this.state.addedToTrip.service.name}</strong> has been added to day
               {this.state.addedToTrip.days.length > 1 ? 's' : ''}{' '}
               {this.state.addedToTrip.days.join(', ')} of your trip{' '}
-              <Link to={`/trips/organize/${this.state.addedToTrip.trip._id}`}>
+              <Link to={urls.trip.organize(this.state.addedToTrip.trip._id)}>
                 <I18nText data={this.state.addedToTrip.trip.title} />
               </Link>
             </P>

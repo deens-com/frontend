@@ -16,6 +16,7 @@ import I18nText from 'shared_components/I18nText';
 import { addServiceRequest } from 'libs/trips';
 import analytics from 'libs/analytics';
 import withTouchHandler from 'shared_components/withTouchHandler';
+import urls from 'libs/urlGenerator';
 
 function addLang(text) {
   return {
@@ -410,11 +411,11 @@ class TripOrganizer extends React.Component {
 
   book = () => {
     analytics.trip.book();
-    history.push(`/trips/checkout/${this.props.tripId}`);
+    history.push(urls.trip.checkout(this.props.tripId));
   };
 
   share = () => {
-    history.push(`/trips/share/${this.props.tripId}`);
+    history.push(urls.trip.share(this.props.tripId));
   };
 
   requestAvailability = async () => {

@@ -148,7 +148,10 @@ export default function services(state = initialState, action = {}) {
     }
 
     case types.RESET_TRIP: {
-      return initialState;
+      return {
+        ...initialState,
+        userTrips: state.userTrips,
+      };
     }
     default:
       return state;

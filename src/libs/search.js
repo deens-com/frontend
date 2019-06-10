@@ -121,6 +121,7 @@ export const mapUrlToProps = location => {
   if (location.pathname !== '/results') {
     return {};
   }
+  console.log(location);
 
   const searchParams = queryString.parse(location.search);
 

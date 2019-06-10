@@ -25,4 +25,12 @@ export const getCategory = category => {
   return categories[category.names['en-us']];
 };
 
+export const getFirstCategoryLowerCase = categories => {
+  if (!categories || !categories[0] || !categories[0].names) {
+    console.warn('`categories` is undefined or has an incorrect structure:', categories);
+    return undefined;
+  }
+  return categories[0].names['en-us'].toLowerCase();
+};
+
 export default categories;

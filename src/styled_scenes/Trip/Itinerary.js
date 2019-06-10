@@ -4,10 +4,11 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { media } from 'libs/styled';
-import { getCategory } from 'libs/categories';
+import { getCategory, getFirstCategoryLowerCase } from 'libs/categories';
 import { parseLocation } from 'libs/fetch_helpers';
 import { getPriceFromServiceOption, getPeopleCount, generateServiceSlug } from 'libs/Utils';
 import { getHeroImageUrlFromMedia } from 'libs/media';
+import urls from 'libs/urlGenerator';
 
 import I18nText from 'shared_components/I18nText';
 import MapMarker from 'shared_components/icons/MapMarker';
@@ -260,7 +261,13 @@ export default class Itinerary extends Component {
               {this.renderAvailability(day.day, dayData.service._id)}
             </CategoryWrapper>
             <ServiceTitle>
-              <Link to={`/services/${generateServiceSlug(dayData.service)}`}>
+              <Link
+                to={urls.service.view({
+                  id: dayData.service._id,
+                  slug: generateServiceSlug(dayData.service),
+                  category: getFirstCategoryLowerCase(dayData.service.categories),
+                })}
+              >
                 <I18nText data={dayData.service.title} />
               </Link>
             </ServiceTitle>

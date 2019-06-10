@@ -72,7 +72,7 @@ export default ({ savedSearchQuery, session, routeState }) => {
           <Option
             onClick={() => {
               if (routeState && routeState.modal) {
-                history.replace('/trips/quote', {
+                history.replace('/travel-quote', {
                   ...routeState,
                   modal: true,
                   helpData: {
@@ -82,7 +82,7 @@ export default ({ savedSearchQuery, session, routeState }) => {
                 });
                 return;
               }
-              history.push('/trips/quote', {
+              history.push('/travel-quote', {
                 ...routeState,
                 modal: true,
                 helpData: {

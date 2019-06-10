@@ -9,6 +9,8 @@ import * as actions from 'store/services-upsert/actions';
 import ServiceForm from '../../../shared_components/ServiceForm';
 import NotFound from '../../../styled_scenes/NotFound';
 import { generateServiceSlug } from 'libs/Utils';
+import { getFirstCategoryLowerCase } from 'libs/categories';
+import urls from 'libs/urlGenerator';
 
 class EditServiceFormContainer extends Component {
   getServiceId = () => this.props.match.params.id;
@@ -46,7 +48,15 @@ class EditServiceFormContainer extends Component {
           {' '}
           Editing Service{' '}
           {service && (
-            <Link to={`/services/${generateServiceSlug(service)}`}>{service.name}</Link>
+            <Link
+              to={urls.service.view({
+                id: service._id,
+                slug: generateServiceSlug(service),
+                category: getFirstCategoryLowerCase(service.categories),
+              })}
+            >
+              {service.name}
+            </Link>
           )}{' '}
         </h2>
         <ServiceForm

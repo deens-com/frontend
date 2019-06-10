@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import Button from 'shared_components/Button';
 import I18nText from 'shared_components/I18nText';
 import styled from 'styled-components';
+import { generateTripSlug } from 'libs/Utils';
+import urls from 'libs/urlGenerator';
 
 const TextArea = styled.textarea`
   padding: 5px;
@@ -59,7 +61,12 @@ class TripModeration extends React.Component {
     return (
       <Wrapper>
         <h3>
-          <Link to={`/trips/_${trip._id}`}>
+          <Link
+            to={urls.trip.view({
+              slug: generateTripSlug(trip),
+              id: trip._id,
+            })}
+          >
             <I18nText data={trip.title} />
           </Link>
         </h3>

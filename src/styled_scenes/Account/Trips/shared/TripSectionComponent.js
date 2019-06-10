@@ -11,6 +11,7 @@ import LocationCart from './Carts/Location';
 import { Loader } from 'semantic-ui-react';
 import I18nText from 'shared_components/I18nText';
 import InfiniteScroll from 'react-infinite-scroller';
+import urls from 'libs/urlGenerator';
 
 const get_label_color = status => {
   switch (status) {
@@ -67,7 +68,12 @@ class Trip extends React.PureComponent {
       <SectionContent key={trip._id}>
         <Divider />
         <TripTitleRow>
-          <Link to={`/trips/${generateTripSlug(trip)}`}>
+          <Link
+            to={urls.trip.view({
+              slug: generateTripSlug(trip),
+              id: trip._id,
+            })}
+          >
             <InlineH2>
               <I18nText data={trip.title} />
             </InlineH2>
@@ -79,7 +85,7 @@ class Trip extends React.PureComponent {
               icon
               labelPosition="left"
               size="tiny"
-              to={`/trips/organize/${trip._id}`}
+              to={urls.trip.organize(trip._id)}
             >
               <Icon name="edit" />
               Edit
