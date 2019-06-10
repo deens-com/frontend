@@ -22,7 +22,6 @@ class AdminModerationContainer extends React.Component {
   };
 
   onSubmit = async ({ tripId, moderationStatus, comment }) => {
-    console.log({ tripId, moderationStatus, comment });
     await apiClient.moderation.action({ tripId, moderationStatus, comment });
     this.fetchPending();
   };

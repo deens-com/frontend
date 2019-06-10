@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import supportsPassive from 'libs/supportsPassive';
+import { useVoid } from 'libs/hooks';
 import { primary } from 'libs/colors';
 import PencilIcon from 'shared_components/icons/PencilIcon';
 import { P } from 'libs/commonStyles';
@@ -78,58 +78,58 @@ const InlineInput = ({
   const onStartEditing = () => setIsEditing(true);
   const inputEl = useRef(null);
 
-  const onKeyPress = event => {
-    if (event.keyCode === 27) {
-      setIsEditing(false);
-    }
-
-    if (event.keyCode === 13 && !useTextarea) {
-      setIsEditing(false);
-      if (event.target.value !== '' || !disallowEmptySubmit) {
-        onChanged(event.target.value);
+  const onKeyPress = useCallback(
+    event => {
+      if (event.keyCode === 27) {
+        setIsEditing(false);
       }
-    }
-  };
 
-  const onMouseDown = event => {
-    event.preventDefault();
-    if (inputEl.current && !inputEl.current.contains(event.target)) {
-      const value = inputEl.current.value;
-      setIsEditing(false);
-      if (value !== '' || !disallowEmptySubmit) {
-        onChanged(value);
+      if (event.keyCode === 13 && !useTextarea) {
+        setIsEditing(false);
+        if (event.target.value !== '' || !disallowEmptySubmit) {
+          onChanged(event.target.value);
+        }
       }
-    }
-  };
+    },
+    [onChanged, disallowEmptySubmit, useTextarea],
+  );
+
+  const onMouseDown = useCallback(
+    event => {
+      event.preventDefault();
+      if (inputEl.current && !inputEl.current.contains(event.target)) {
+        const value = inputEl.current.value;
+        setIsEditing(false);
+        if (value !== '' || !disallowEmptySubmit) {
+          onChanged(value);
+        }
+      }
+    },
+    [disallowEmptySubmit, onChanged],
+  );
+
+  const voidFn = useVoid();
 
   useEffect(
     () => {
       if (isEditing) {
         window.addEventListener('keydown', onKeyPress);
-        window.addEventListener('touchstart', onMouseDown, supportsPassive && { passive: false });
+        document.body.addEventListener('click', voidFn);
         window.addEventListener('mousedown', onMouseDown);
       } else {
         window.removeEventListener('keydown', onKeyPress);
-        window.removeEventListener(
-          'touchstart',
-          onMouseDown,
-          supportsPassive && { passive: false },
-        );
+        document.body.removeEventListener('click', voidFn);
         window.removeEventListener('mousedown', onMouseDown);
       }
       return () => {
         if (isEditing) {
           window.removeEventListener('keydown', onKeyPress);
-          window.removeEventListener(
-            'touchstart',
-            onMouseDown,
-            supportsPassive && { passive: false },
-          );
+          document.body.removeEventListener('click', voidFn);
           window.removeEventListener('mousedown', onMouseDown);
         }
       };
     },
-    [isEditing],
+    [isEditing, voidFn, onMouseDown, onKeyPress],
   );
 
   if (isEditing) {

@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { minutesToDays } from 'libs/Utils';
 import Day from './Day';
 import ObjectID from 'bson-objectid';
-import { itineraryDroppablePrefix, types } from '../constants';
 import arrayMove from 'array-move';
 import Map from './Map';
 import EmptyDay from './Day/EmptyDay';

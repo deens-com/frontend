@@ -122,7 +122,7 @@ const mapStateToProps = (state, props) => {
     adults: state.search.searchQuery.adults,
     children: state.search.searchQuery.children,
     infants: state.search.searchQuery.infants,
-    startDate,
+    startDate: startDate.toJSON(),
     endDate: state.search.searchQuery.end_date,
     isGDPRDismissed: state.settings.gdprDismissed,
     gdprHeight: state.settings.gdprHeight,
