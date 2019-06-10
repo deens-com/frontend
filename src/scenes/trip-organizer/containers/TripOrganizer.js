@@ -99,12 +99,12 @@ class TripOrganizerContainer extends Component {
 const mapStateToProps = (state, props) => {
   const trip = state.trips.trip;
 
-  let startDate = state.search.searchQuery.startDate;
+  let startDate = moment(state.search.searchQuery.startDate || undefined);
   const tomorrow = moment()
     .add(1, 'days')
     .startOf('day');
 
-  if (!startDate || startDate < tomorrow.valueOf()) {
+  if (!startDate || startDate.startOf('day').valueOf() < tomorrow.valueOf()) {
     if (!trip) {
       startDate = tomorrow;
     } else {
