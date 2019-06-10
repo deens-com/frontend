@@ -29,6 +29,7 @@ class TripCreatorContainer extends Component {
         services: [],
         title: { 'en-us': 'My Trip' },
         userStartLocation: location,
+        location,
       })
       .then(response => {
         this.props.changeUserTrip(response.data);
