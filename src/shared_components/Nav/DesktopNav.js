@@ -97,6 +97,7 @@ const NavLink = styled(Link)`
 `;
 
 const ActionsWrap = styled.div`
+  flex-shrink: 0;
   align-items: center;
   display: flex;
   padding-left: 15px;

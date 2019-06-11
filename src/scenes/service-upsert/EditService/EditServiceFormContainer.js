@@ -25,7 +25,7 @@ class EditServiceFormContainer extends Component {
     const { service, userProfile } = nextProps;
 
     if (service && userProfile && service.owner !== userProfile._id) {
-      history.push('/account/services');
+      history.push('/my/services');
     }
   }
 

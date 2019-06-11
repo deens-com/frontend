@@ -123,7 +123,7 @@ class UserBasicInfo extends Component {
   render() {
     const name = this.props.user_profile.fullName || this.props.user_profile.username;
     const dpUrl = this.props.user_profile.profilePicture || ImgurAvatar;
-    let activePath = this.props.match.path.replace('/account/', '');
+    let activePath = this.props.match.path.replace('/my/', '');
     return (
       <Card>
         <Wrapper>
@@ -206,7 +206,7 @@ class UserBasicInfo extends Component {
           )}
           <br />
           <Menu secondary fluid vertical style={{ paddingLeft: '10px' }}>
-            <Link to="/account/trips/all" onClick={this.scrollDownMobileOnly}>
+            <Link to="/my/trips" onClick={this.scrollDownMobileOnly}>
               <Menu.Item name="trips" active={activePath === 'trips'}>
                 <MenuIcon disabled name="angle right" circular />
                 <span>
@@ -216,7 +216,7 @@ class UserBasicInfo extends Component {
               </Menu.Item>
             </Link>
 
-            {/*<Link to="/account/services" onClick={this.scrollDownMobileOnly}>
+            {/*<Link to="/my/services" onClick={this.scrollDownMobileOnly}>
               <Menu.Item name="services" active={activePath === 'services'}>
                 <MenuIcon disabled name="angle right" circular />
                 <span>
@@ -226,7 +226,7 @@ class UserBasicInfo extends Component {
               </Menu.Item>
             </Link>*/}
 
-            <Link to="/account/profile" onClick={this.scrollDownMobileOnly}>
+            <Link to="/my/profile" onClick={this.scrollDownMobileOnly}>
               <Menu.Item name="profile" active={activePath === 'profile'}>
                 <MenuIcon disabled name="angle right" circular />
                 <span>

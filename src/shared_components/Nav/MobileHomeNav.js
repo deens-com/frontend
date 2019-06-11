@@ -153,12 +153,12 @@ class MobileHomeNav extends Component {
               <>
                 <Divider />
                 <li>
-                  <MenuLink onClick={this.onOptionClick} to="/account/trips/all">
+                  <MenuLink onClick={this.onOptionClick} to="/my/trips">
                     My Trips
                   </MenuLink>
                 </li>
                 <li>
-                  <MenuLink onClick={this.onOptionClick} to="/account/profile">
+                  <MenuLink onClick={this.onOptionClick} to="/my/profile">
                     Profile
                   </MenuLink>
                 </li>

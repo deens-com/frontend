@@ -76,7 +76,7 @@ const BookingDone = ({ number, onChange, trip }) => {
         <Title>Your booking on Deens is complete!</Title>
         <FirstLine>All the details will be sent to your email.</FirstLine>
         <SecondLine>Thank you for booking with Deens.com.</SecondLine>
-        <Button type="link" href="/account/trips/planned" theme="textLightGreen">
+        <Button type="link" href="/my/trips" theme="textLightGreen">
           View your booking
         </Button>
       </Wrapper>

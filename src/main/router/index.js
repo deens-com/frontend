@@ -106,6 +106,7 @@ export default withRouter(props => {
           <Route exact path={process.env.PUBLIC_URL + '/'} component={Home} />
           <Route path={process.env.PUBLIC_URL + '/book'} component={BookRouter} />
           <Route path={process.env.PUBLIC_URL + '/designer'} component={DesignerRouter} />
+          <Route path={process.env.PUBLIC_URL + '/my'} component={Account} />
 
           <Route path={TRIPS_CREATE} component={TripCreator} />
           <OnlyPublicRoute path={process.env.PUBLIC_URL + '/login'} component={Sessions} />
@@ -126,7 +127,6 @@ export default withRouter(props => {
             component={ServiceUpsert}
           />
           <Route path={process.env.PUBLIC_URL + '/users/:userName'} component={Users} />
-          <Route path={process.env.PUBLIC_URL + '/account'} component={Account} />
           <Route
             path={process.env.PUBLIC_URL + '/404'}
             component={withErrorBoundary(WaitForComponent(Notfound))}
