@@ -126,7 +126,7 @@ export default withRouter(props => {
             path={process.env.PUBLIC_URL + '/services/edit/:id'}
             component={ServiceUpsert}
           />
-          <Route path={process.env.PUBLIC_URL + '/users/:userName'} component={Users} />
+          <Route path={process.env.PUBLIC_URL + '/user/:userName'} component={Users} />
           <Route
             path={process.env.PUBLIC_URL + '/404'}
             component={withErrorBoundary(WaitForComponent(Notfound))}

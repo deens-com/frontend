@@ -128,7 +128,7 @@ class ServiceReviews extends React.Component {
     );
 
     return review[this.props.userKey].type === 'internal' ? (
-      <Link to={`/users/${review[this.props.userKey].name}`}>{user}</Link>
+      <Link to={urls.user.view(review[this.props.userKey].name)}>{user}</Link>
     ) : (
       user
     );

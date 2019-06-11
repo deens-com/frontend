@@ -322,7 +322,7 @@ class TripCart extends Component {
               <Heart style={{ height: '24px', width: '21px' }} onClick={this.toggleFavorite} />
             </HeartWrapper>
             {hideAuthor ? null : (
-              <Author to={`/users/${owner.username}`}>
+              <Author to={urls.user.view(owner.username)}>
                 {isPlaceholder ? (
                   <ImagePlaceholder />
                 ) : (

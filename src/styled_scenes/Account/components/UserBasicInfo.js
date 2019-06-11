@@ -9,8 +9,7 @@ import { Link } from 'react-router-dom';
 import CustomButton from 'shared_components/Button';
 import { Menu, Card, Button, Input } from 'semantic-ui-react';
 import ImgurAvatar from './../../../assets/no-avatar.png';
-import PlsIcon from 'assets/ic_pls.png';
-import NumberFormat from 'react-number-format';
+import urls from 'libs/urlGenerator';
 import { websiteUrl, icoReady } from 'libs/config';
 
 const AttributeTitle = styled.h6`
@@ -146,7 +145,7 @@ class UserBasicInfo extends Component {
               </FileInputWrapper>
             </CenteredDiv>
           )}
-          <Link to={'/users/' + this.props.user_profile.username}>
+          <Link to={urls.user.view(this.props.user_profile.username)}>
             {name && <NameDiv>{name}</NameDiv>}
           </Link>
 

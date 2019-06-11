@@ -21,6 +21,11 @@ export default {
       return `/designer/${id}/checkout`;
     },
   },
+  user: {
+    view: username => {
+      return `/user/${username}`;
+    },
+  },
   search: (type, params = {}) => {
     const q = queryString.stringify(params, { arrayFormat: 'comma' });
     if (!type) {

@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import Stars from '../Rating/Stars';
 import placeholder from './../../assets/placeholder350x350.svg';
 import { buildImgUrl } from 'libs/Utils';
+import urls from 'libs/urlGenerator';
 
 // ACTIONS/CONFIG
 
@@ -63,7 +64,7 @@ const SummaryWrap = styled.div`
 // MODULE
 export default function ReviewCart({ review }) {
   const { reviewer } = review;
-  const reviewerProfileLink = `/users/${reviewer.username}`;
+  const reviewerProfileLink = urls.user.view(reviewer.username);
   let reviewerLocation = '';
   if (reviewer.city && reviewer.country) reviewerLocation = `${reviewer.city}, ${reviewer.country}`;
   else if (reviewer.city || reviewer.country)
