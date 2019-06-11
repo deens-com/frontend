@@ -7,6 +7,7 @@ import I18nText from 'shared_components/I18nText';
 import ImgurAvatar from 'assets/no-avatar.png';
 import { getHeroImageUrlFromMedia } from 'libs/media';
 import { buildImgUrl } from 'libs/Utils';
+import urls from 'libs/urlGenerator';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -72,13 +73,13 @@ const Header = ({ trip, owner, innerRef }) => {
       {owner && (
         <React.Fragment>
           <AvatarWrapper>
-            <Link to={`/users/${owner.username}`}>
+            <Link to={urls.user.view(owner.username)}>
               <Image src={ownerImage} circular width={45} height={45} />
             </Link>
           </AvatarWrapper>
           <CreatedBy>Created by</CreatedBy>
           <Username>
-            <Link to={`/users/${owner.username}`}>{owner.username}</Link>
+            <Link to={urls.user.view(owner.username)}>{owner.username}</Link>
           </Username>
         </React.Fragment>
       )}

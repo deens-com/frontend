@@ -23,6 +23,7 @@ import Itinerary from './Itinerary';
 import DaySelector from './DaySelector';
 import mapServicesToDays from './mapServicesToDays';
 import analytics from 'libs/analytics';
+import urls from 'libs/urlGenerator';
 
 const getCityCount = services => {
   const cities = new Set();
@@ -202,7 +203,7 @@ export default class Trip extends Component {
 
   handleCustomizeClick = (event, force = false) => {
     if (this.props.trip.owner === this.props.session._id && !this.props.booked) {
-      history.push(`/trips/organize/${this.props.trip._id}`);
+      history.push(urls.trip.organize(this.props.trip._id));
       return;
     }
     analytics.trip.customize();

@@ -16,6 +16,7 @@ import I18nText from 'shared_components/I18nText';
 import { addServiceRequest } from 'libs/trips';
 import analytics from 'libs/analytics';
 import withTouchHandler from 'shared_components/withTouchHandler';
+import urls from 'libs/urlGenerator';
 
 function addLang(text) {
   return {
@@ -260,7 +261,7 @@ class TripOrganizer extends React.Component {
     this.addIsSaving();
     this.addIsLoadingPrice();
 
-    const trip = (await apiClient.trips.patch(this.props.trip._id, dataToSave)).data;
+    const trip = (await apiClient.trips.patch(this.props.tripId, dataToSave)).data;
 
     this.removeIsLoadingPrice(trip.totalPrice);
     this.removeIsSaving();
@@ -277,7 +278,7 @@ class TripOrganizer extends React.Component {
     const dataToSave = this.parseServicesForSaving();
 
     const trip = (await apiClient.trips.serviceOrganizations.rearrange.post(
-      this.props.trip._id,
+      this.props.tripId,
       dataToSave,
     )).data;
 
@@ -294,7 +295,7 @@ class TripOrganizer extends React.Component {
     this.addIsSaving();
     const dataToSave = parseDaysDataToSave(this.state.daysData);
 
-    await apiClient.trips.patch(this.props.trip._id, dataToSave);
+    await apiClient.trips.patch(this.props.tripId, dataToSave);
 
     this.removeIsSaving();
   };
@@ -307,7 +308,7 @@ class TripOrganizer extends React.Component {
     this.addIsLoadingPrice();
 
     const trip = (await apiClient.trips.serviceOrganizations.delete(
-      this.props.trip._id,
+      this.props.tripId,
       serviceOrgIds,
     )).data;
 
@@ -321,7 +322,7 @@ class TripOrganizer extends React.Component {
     this.addIsLoadingPrice();
 
     const trip = (await apiClient.trips.serviceOrganizations.availabilityCode.post(
-      this.props.trip._id,
+      this.props.tripId,
       [{ serviceOrgId, availabilityCode }],
     )).data;
 
@@ -392,8 +393,7 @@ class TripOrganizer extends React.Component {
   getTransportation = async () => {
     this.addIsLoadingTransports();
 
-    const transportation = (await apiClient.trips.calculateDistances.post(this.props.trip._id))
-      .data;
+    const transportation = (await apiClient.trips.calculateDistances.post(this.props.tripId)).data;
 
     this.removeIsLoadingTransports(transportation);
   };
@@ -401,7 +401,7 @@ class TripOrganizer extends React.Component {
   setTransportation = async body => {
     this.addIsLoadingTransports();
 
-    await apiClient.trips.transports.post(this.props.trip._id, body);
+    await apiClient.trips.transports.post(this.props.tripId, body);
 
     await this.getTransportation();
 
@@ -410,11 +410,11 @@ class TripOrganizer extends React.Component {
 
   book = () => {
     analytics.trip.book();
-    history.push(`/trips/checkout/${this.props.tripId}`);
+    history.push(urls.trip.checkout(this.props.tripId));
   };
 
   share = () => {
-    history.push(`/trips/share/${this.props.tripId}`);
+    history.push(urls.trip.share(this.props.tripId));
   };
 
   requestAvailability = async () => {
@@ -423,7 +423,7 @@ class TripOrganizer extends React.Component {
     const peopleCount = adultCount + infantCount + childrenCount;
     const data = { bookingDate, adultCount, childrenCount, infantCount, peopleCount };
 
-    return apiClient.trips.availability.get(this.props.trip._id, data);
+    return apiClient.trips.availability.get(this.props.tripId, data);
   };
 
   startCheckingAvailability = () => {
@@ -491,7 +491,7 @@ class TripOrganizer extends React.Component {
             : undefined,
       },
       {
-        tripId: trip._id,
+        tripId: this.props.tripId,
         day,
         duration: this.state.tripData.duration,
         startDate: this.state.tripData.startDate.valueOf(),

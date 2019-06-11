@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import { PageWrapper, SectionWrap, SectionContent } from '../../../shared_components/layout/Page';
 import LoadingDots from 'shared_components/LoadingDots';
 import Media from 'react-media';
+import urls from 'libs/urlGenerator';
 
 const featuredTripCreator = 'beabatravel';
 
@@ -103,7 +104,7 @@ export default class FeaturedTripCreator extends React.Component {
             />
             <TripCreatorData>
               <H3>
-                <Link to={`/users/${featuredTripCreator}`}>{featuredTripCreator}</Link>
+                <Link to={urls.user.view(featuredTripCreator)}>{featuredTripCreator}</Link>
               </H3>
               <P>
                 Béatrice was born and raised in Paris, France. She was a lawyer before she decided

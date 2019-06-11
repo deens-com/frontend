@@ -54,7 +54,7 @@ class CoinbaseButtonContainer extends Component {
 
   onModalClosed = () => {
     if (this.state.chargeSuccess) {
-      history.push('/account/trips/all');
+      history.push('/my/trips');
     }
   };
 

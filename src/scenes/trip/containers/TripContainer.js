@@ -15,6 +15,7 @@ import I18nText from 'shared_components/I18nText';
 import { generateTripSlug } from 'libs/Utils';
 import headerActions from 'store/header/actions';
 import { getTripJsonLdData } from 'libs/json-ld';
+import urls from 'libs/urlGenerator';
 
 function getBookedInformation(trip) {
   return trip.services.reduce((prev, service) => {
@@ -65,6 +66,10 @@ class TripContainer extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.props.resetTrip();
+  }
+
   render() {
     const {
       error,
@@ -94,7 +99,9 @@ class TripContainer extends Component {
       this.props.slug &&
       `${this.props.match.params.slug}_${this.props.match.params.id}` !== this.props.slug;
     if (isIncorrectUrl) {
-      return <Redirect to={`/trips/${this.props.slug}`} />;
+      return (
+        <Redirect to={urls.trip.view({ slug: this.props.slug, id: this.props.match.params.id })} />
+      );
     }
     const booked = trip && trip.bookingStatus === 'booked';
 

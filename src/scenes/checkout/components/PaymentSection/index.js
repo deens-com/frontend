@@ -11,6 +11,7 @@ import StripeCardDetails from '../StripeCardDetails';
 import CoinbaseButtonContainer from '../../CoinbaseButtonContainer';
 import PLSButton from './PLSButton';
 import Button from 'shared_components/Button';
+import urls from 'libs/urlGenerator';
 
 import VisaLogo from '../logos/visa.svg';
 import MasterLogo from '../logos/mastercard.svg';
@@ -23,8 +24,6 @@ import BTCLogo from '../logos/bitcoin.svg';
 import ETHLogo from '../logos/ether.svg';
 import LTCLogo from '../logos/ltc.svg';
 import BCHLogo from '../logos/bch.svg';
-
-import PLSLogo from '../logos/pls.svg';
 
 const Wrap = styled.div`
   ${media.minSmall} {
@@ -123,17 +122,6 @@ const CryptoLogos = styled(Logos)`
     ${media.minSmall} {
       width: 28px;
       height: 28px;
-    }
-  }
-`;
-
-const PLSLogoWrapper = styled(Logos)`
-  > img {
-    width: 40px;
-    height: 40px;
-    ${media.minSmall} {
-      width: 52px;
-      height: 52px;
     }
   }
 `;
@@ -296,7 +284,13 @@ export default class PaymentSection extends Component {
               {
                 key: 'trip',
                 content: 'Go to trip',
-                onClick: () => history.replace(`/trips/${generateTripSlug(trip)}`),
+                onClick: () =>
+                  history.replace(
+                    urls.trip.view({
+                      slug: generateTripSlug(trip),
+                      id: trip._id,
+                    }),
+                  ),
               },
             ]}
           />

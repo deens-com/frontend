@@ -25,6 +25,7 @@ import Countdown from './components/Countdown';
 import ReprovisionModal from './components/ReprovisionModal';
 import history from 'main/history';
 import analytics from 'libs/analytics';
+import urls from 'libs/urlGenerator';
 
 function formatDate(date, days) {
   const startDate = moment(date);
@@ -255,14 +256,24 @@ class CheckoutContainer extends React.Component {
     if (this.props.trip) {
       if (this.props.trip && this.props.trip.owner !== this.props.session._id) {
         if (this.props.trip.privacy === 'public') {
-          history.replace(`/trips/${generateTripSlug(this.props.trip)}`);
+          history.replace(
+            urls.trip.view({
+              slug: generateTripSlug(this.props.trip),
+              id: this.props.trip._id,
+            }),
+          );
           return;
         }
         history.replace('/');
         return;
       }
       if (this.props.trip.bookingStatus === 'booked') {
-        history.replace(`/trips/${generateTripSlug(this.props.trip)}`);
+        history.replace(
+          urls.trip.view({
+            slug: generateTripSlug(this.props.trip),
+            id: this.props.trip._id,
+          }),
+        );
         return;
       }
       if (!this.props.trip.startDate || !this.props.trip.adultCount) {
@@ -291,7 +302,7 @@ class CheckoutContainer extends React.Component {
   }
 
   goToTripOrganizer = () => {
-    history.replace(`/trips/organize/${this.tripId}`);
+    history.replace(urls.trip.organize(this.tripId));
   };
 
   startPayment = () => {
@@ -447,7 +458,7 @@ class CheckoutContainer extends React.Component {
           <Top>
             {step < 4 && (
               <React.Fragment>
-                <BackButton to={`/trips/organize/${this.tripId}`} replace>
+                <BackButton to={urls.trip.organize(this.tripId)} replace>
                   <BackIcon>
                     <LeftArrow />
                   </BackIcon>

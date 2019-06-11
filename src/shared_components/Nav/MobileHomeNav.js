@@ -9,6 +9,7 @@ import I18nText from 'shared_components/I18nText';
 import ImgurAvatar from 'assets/no-avatar.png';
 import { primary, secondary } from 'libs/colors';
 import Account from 'shared_components/icons/AccountCircle';
+import urls from 'libs/urlGenerator';
 
 const Wrap = styled.div`
   justify-self: flex-end;
@@ -123,7 +124,7 @@ class MobileHomeNav extends Component {
     return (
       <>
         {this.props.latestTrip && (
-          <Link to={`/trips/organize/${this.props.latestTrip._id}`} style={{ color: 'inherit' }}>
+          <Link to={urls.trip.organize(this.props.latestTrip._id)} style={{ color: 'inherit' }}>
             <I18nText data={this.props.latestTrip.title} />
           </Link>
         )}
@@ -133,7 +134,7 @@ class MobileHomeNav extends Component {
             <li>
               <MenuLink
                 to={{
-                  pathname: '/trips/create',
+                  pathname: '/new/trip',
                   state: {
                     modal: true,
                   },
@@ -152,12 +153,12 @@ class MobileHomeNav extends Component {
               <>
                 <Divider />
                 <li>
-                  <MenuLink onClick={this.onOptionClick} to="/account/trips/all">
+                  <MenuLink onClick={this.onOptionClick} to="/my/trips">
                     My Trips
                   </MenuLink>
                 </li>
                 <li>
-                  <MenuLink onClick={this.onOptionClick} to="/account/profile">
+                  <MenuLink onClick={this.onOptionClick} to="/my/profile">
                     Profile
                   </MenuLink>
                 </li>

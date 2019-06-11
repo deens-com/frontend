@@ -6,6 +6,7 @@ import { buildImgUrl } from 'libs/Utils';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { addFavoriteTrip, removeFavoriteTrip } from 'store/session/actions';
+import searchActions from 'store/search/actions';
 import CssOnlyTruncate from 'shared_components/CssOnlyTruncate';
 
 // COMPONENTS
@@ -22,6 +23,7 @@ import I18nText, { translate } from 'shared_components/I18nText';
 import { H6, P, PStrong, PSmall, PXSmall } from 'libs/commonStyles';
 import * as colors from 'libs/colors';
 import { duration } from 'libs/trips';
+import urls from 'libs/urlGenerator';
 import Stars from 'shared_components/Rating/Stars';
 import { Link } from 'react-router-dom';
 import ImgurAvatar from 'assets/no-avatar.png';
@@ -186,7 +188,8 @@ const Tag = styled(PXSmall)`
   padding: 1px 3px;
 `;
 
-const TagLink = styled(Link)`
+const TagLink = styled.span`
+  cursor: pointer;
   position: relative;
   z-index: 1;
   margin-bottom: 5px;
@@ -319,7 +322,7 @@ class TripCart extends Component {
               <Heart style={{ height: '24px', width: '21px' }} onClick={this.toggleFavorite} />
             </HeartWrapper>
             {hideAuthor ? null : (
-              <Author to={`/users/${owner.username}`}>
+              <Author to={urls.user.view(owner.username)}>
                 {isPlaceholder ? (
                   <ImagePlaceholder />
                 ) : (
@@ -346,13 +349,13 @@ class TripCart extends Component {
   }
 
   renderTags() {
-    if (this.props.isPlaceholder) {
+    if (this.props.isPlaceholder || !this.props.showTags) {
       return;
     }
 
     return this.props.item.tags.map(tag => (
       <TagLink
-        to={`/results?tags=${I18nText.translate(tag.names)}&type=trip`}
+        onClick={() => this.props.updateSearchParams({ tags: I18nText.translate(tag.names) })}
         key={I18nText.translate(tag.names)}
       >
         <Tag>
@@ -484,10 +487,17 @@ class TripCart extends Component {
     }
 
     if (type === 'trip') {
-      return `/trips/${generateTripSlug(this.props.item)}`;
+      return urls.trip.view({
+        slug: generateTripSlug(this.props.item),
+        id: this.props.item._id,
+      });
     }
 
-    return `/services/${generateServiceSlug(this.props.item)}`;
+    return urls.service.view({
+      id: this.props.item._id,
+      slug: generateServiceSlug(this.props.item),
+      category: this.props.type,
+    });
   };
 
   renderCard() {
@@ -520,6 +530,7 @@ const mapDispatchToProps = dispatch => {
     {
       addFavoriteTrip,
       removeFavoriteTrip,
+      updateSearchParams: searchActions.updateSearchParams,
     },
     dispatch,
   );
@@ -546,6 +557,7 @@ TripCart.propTypes = {
   href: PropTypes.string,
   hideAuthor: PropTypes.bool,
   isPlaceholder: PropTypes.bool,
+  showTags: PropTypes.bool,
   type: PropTypes.oneOf(['trip', 'accommodation', 'activity', 'food']),
 };
 
@@ -555,5 +567,6 @@ TripCart.defaultProps = {
   hideAuthor: false,
   href: '/',
   isPlaceholder: true,
+  showTags: true,
   type: 'trip',
 };

@@ -14,6 +14,7 @@ import { generateTripSlug } from 'libs/Utils';
 import headerActions from 'store/header/actions';
 import BrandFooter from 'shared_components/BrandFooter';
 import NotFound from 'styled_scenes/NotFound';
+import urls from 'libs/urlGenerator';
 
 const Wrapper = styled.div`
   min-height: calc(100vh - 85px);
@@ -32,7 +33,7 @@ class TripOrganizerContainer extends Component {
       this.props.fetchTrip(this.props.match.params.id);
       return;
     }
-    history.replace('/trips/create', {
+    history.replace('/new/trip', {
       modal: true,
     });
   }
@@ -40,7 +41,12 @@ class TripOrganizerContainer extends Component {
   componentDidUpdate(prevProps) {
     if (this.props.trip && !prevProps.trip) {
       if (this.props.trip && this.props.trip.bookingStatus === 'booked') {
-        history.replace(`/trips/${generateTripSlug(this.props.trip)}`);
+        history.replace(
+          urls.trip.view({
+            slug: generateTripSlug(this.props.trip),
+            id: this.props.trip._id,
+          }),
+        );
         return;
       }
       if (

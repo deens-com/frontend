@@ -13,7 +13,7 @@ import SemanticLocationControl from 'shared_components/Form/SemanticLocationCont
 import { generateTripSlug } from 'libs/Utils';
 import { getHeroImageUrlFromMedia } from 'libs/media';
 import { Message } from 'semantic-ui-react';
-
+import urls from 'libs/urlGenerator';
 import apiClient from 'libs/apiClient';
 import analytics from 'libs/analytics';
 
@@ -193,7 +193,12 @@ export default class Share extends React.Component {
 
       await tripUtils.patchTrip(this.props.trip._id, trip);
 
-      history.push(`/trips/${generateTripSlug(this.props.trip)}`);
+      history.push(
+        urls.trip.view({
+          slug: generateTripSlug(this.props.trip),
+          id: this.props.trip._id,
+        }),
+      );
     });
   };
 
@@ -312,7 +317,7 @@ export default class Share extends React.Component {
         <Dimmer active={this.state.isSaving} page>
           <Loader size="massive" />
         </Dimmer>
-        <BackButton to={`/trips/organize/${this.props.tripId}`} replace>
+        <BackButton to={urls.trip.organize(this.props.tripId)} replace>
           Back to customization
         </BackButton>
         <Content>

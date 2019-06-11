@@ -2,6 +2,7 @@ import history from 'main/history';
 import axios from 'libs/axios';
 import fetch_helpers, { parseTags } from 'libs/fetch_helpers';
 import * as tripUtils from 'libs/trips';
+import urls from 'libs/urlGenerator';
 
 const trips_fetched = trips => {
   return {
@@ -14,13 +15,6 @@ const tripCreated = trip => {
   return {
     type: 'TRIP_CREATED',
     payload: trip,
-  };
-};
-
-const reviews_fetched = reviews => {
-  return {
-    type: 'REVIEWS_FETCHED',
-    payload: reviews,
   };
 };
 
@@ -122,7 +116,7 @@ const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (dispatch, getSt
       setAddedToTripMessage(formattedTrip)(dispatch);
       dispatch(tripCreated({ trip: formattedTrip }));
       if (redirectToCreatedTrip) {
-        history.push(`/trips/organize/${newTrip.data._id}`);
+        history.push(urls.trip.organize(newTrip.data._id));
       }
     }
   } catch (error) {

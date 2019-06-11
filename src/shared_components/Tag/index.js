@@ -31,7 +31,6 @@ const tagSizes = {
 
 // quick fix to maintain the style
 const ServiceCarouselButton = styled.a``;
-const ServiceCarouselLink = styled(Link)``;
 
 const Wrap = styled.div`
   background: #ffffff;
@@ -55,12 +54,12 @@ const Wrap = styled.div`
     box-shadow: ${props => (props.withShadow ? '0 8px 40px 0px rgba(141,141,141,0.28)' : 'none')};
     opacity: 0.8;
 
-    a {
+    span {
       color: #ffffff;
     }
   }
 
-  a {
+  span {
     align-items: center;
     color: ${props => props.background || '#000000'};
     display: flex;
@@ -73,8 +72,8 @@ const Wrap = styled.div`
 
 // MODULE
 export default function CategoryTag(props) {
-  const tagButton = props.href ? (
-    <ServiceCarouselLink to={props.href}>{props.item.label}</ServiceCarouselLink>
+  const tagButton = props.onClick ? (
+    <span onClick={props.onClick}>{props.item.label}</span>
   ) : (
     <ServiceCarouselButton>{props.item.label}</ServiceCarouselButton>
   );

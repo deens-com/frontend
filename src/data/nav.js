@@ -1,18 +1,19 @@
 import i18n from 'libs/i18n';
+import urls from 'libs/urlGenerator';
 
 export const mainNav = [
-  { label: i18n.t('trips.label'), href: '/results?type=trip', service_type: 'trip' },
+  { label: i18n.t('trips.label'), href: urls.search('trip'), service_type: 'trip' },
   {
     label: i18n.t('places.singular'),
-    href: '/results?type=accommodation',
+    href: urls.search('accommodation'),
     service_type: 'place',
   },
   {
     label: i18n.t('activities.label'),
-    href: '/results?type=activity',
+    href: urls.search('activity'),
     service_type: 'activity',
   },
-  { label: i18n.t('foods.label'), href: '/results?type=food', service_type: 'food' },
+  { label: i18n.t('foods.label'), href: urls.search('food'), service_type: 'food' },
 ];
 
 export const languages = [

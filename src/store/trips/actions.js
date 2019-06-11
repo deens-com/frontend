@@ -4,6 +4,7 @@ import { parseTags } from 'libs/fetch_helpers';
 import history from './../../main/history';
 import { formatYYYYMMDD } from 'libs/Utils';
 import apiClient from 'libs/apiClient';
+import urls from 'libs/urlGenerator';
 
 const types = {
   FETCH_USER_TRIPS_START: 'FETCH_USER_TRIPS_START',
@@ -223,7 +224,7 @@ const cloneTrip = (trip, userId) => async dispatch => {
 
     const newId = newTrip.data._id;
     dispatch(cloneTripSuccess());
-    history.push(`/trips/organize/${userId ? newId : ''}`);
+    history.push(urls.trip.organize(newId));
   } catch (e) {
     dispatch(cloneTripError());
     console.error(e);

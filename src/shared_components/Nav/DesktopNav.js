@@ -15,6 +15,7 @@ import I18nText from 'shared_components/I18nText';
 import { sizes } from '../../libs/styled';
 import * as colors from 'libs/colors';
 import { PStrong } from 'libs/commonStyles';
+import urls from 'libs/urlGenerator';
 
 // STYLES
 const Wrap = styled.div`
@@ -35,6 +36,8 @@ const Wrap = styled.div`
 
 const Nav = styled.nav`
   color: inherit;
+  display: flex;
+  align-items: center;
   ${props =>
     props.transparent &&
     css`
@@ -93,11 +96,8 @@ const NavLink = styled(Link)`
   }
 `;
 
-const NavDropdown = styled.span`
-  ${navItemStyle};
-`;
-
 const ActionsWrap = styled.div`
+  flex-shrink: 0;
   align-items: center;
   display: flex;
   padding-left: 15px;
@@ -116,8 +116,6 @@ const ActionsWrap = styled.div`
   }
 `;
 
-const DropdownTrigger = () => <NavDropdown activeclassname="is-active">Token Sale</NavDropdown>;
-
 // MODULE
 const TopBarDesktopNav = function TopBarDesktopNav({
   transparent,
@@ -128,7 +126,6 @@ const TopBarDesktopNav = function TopBarDesktopNav({
   analytics,
   session,
   logOut,
-  tripInProgress,
   latestTrip,
 }) {
   return (
@@ -137,18 +134,9 @@ const TopBarDesktopNav = function TopBarDesktopNav({
       render={() => (
         <Wrap transparent={transparent}>
           <Nav transparent={transparent}>
-            {session.username &&
-              tripInProgress && (
-                <>
-                  <Divider isBackgroundWhite={!transparent}>•</Divider>
-                  <NavLink activeclassname="is-active" to="/trips/organize/...">
-                    <PStrong>This is a trip name</PStrong>
-                  </NavLink>
-                </>
-              )}
             {latestTrip && (
               <>
-                <NavLink activeclassname="is-active" to={`/trips/organize/${latestTrip._id}`}>
+                <NavLink activeclassname="is-active" to={urls.trip.organize(latestTrip._id)}>
                   <PStrong>
                     <I18nText data={latestTrip.title} />
                   </PStrong>
@@ -166,7 +154,7 @@ const TopBarDesktopNav = function TopBarDesktopNav({
                   data-testid="createTripHeaderButton"
                   activeclassname="is-active"
                   to={{
-                    pathname: '/trips/create',
+                    pathname: '/new/trip',
                     state: {
                       modal: true,
                     },

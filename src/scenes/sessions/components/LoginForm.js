@@ -247,6 +247,7 @@ export default class LoginFormComponent extends Component {
                         },
                       }}
                       replace
+                      rel="nofollow"
                     >
                       Forgot password
                     </Link>

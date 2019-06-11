@@ -39,8 +39,7 @@ export default {
     post: post('/trips'),
     getById: (params, id) => get(`/trips/${id}`)(params),
     copy: {
-      post: (id, anonymous) =>
-        post(`/trips/${id}/copy?${anonymous ? paramsSerializer({ noSave: 1 }) : ''}`)(),
+      post: id => post(`/trips/${id}/copy`)(),
     },
     search: {
       get: get('/search'),

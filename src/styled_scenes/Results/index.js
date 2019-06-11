@@ -31,6 +31,7 @@ import { P } from 'libs/commonStyles';
 import Sort from './components/Sort';
 import HelpMe from 'shared_components/HelpMe';
 import { usingBoundingBox } from 'libs/search';
+import urls from 'libs/urlGenerator';
 
 import addPrefixArticle from 'indefinite';
 
@@ -378,10 +379,10 @@ class ResultsScene extends Component {
   goBackToTrip = () => {
     this.props.resetTrip();
     if (this.props.routeState.tripId) {
-      history.replace(`/trips/organize/${this.props.routeState.tripId}`);
+      history.replace(urls.trip.organize(this.props.routeState.tripId));
       return;
     }
-    history.replace('/trips/organize');
+    history.replace('/');
   };
 
   onChangeMap = ({ center, zoom, bounds }) => {

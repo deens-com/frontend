@@ -243,7 +243,7 @@ export default ({
           <OptionWithPopup
             onClick={() => {
               if (routeState && routeState.modal) {
-                history.replace('/trips/quote', {
+                history.replace('/help/travel-planning', {
                   modal: true,
                   helpData: {
                     ...(routeState && routeState.helpData),
@@ -252,7 +252,7 @@ export default ({
                 });
                 return;
               }
-              history.push('/trips/quote', {
+              history.push('/help/travel-planning', {
                 modal: true,
                 helpData: {
                   ...(routeState && routeState.helpData),

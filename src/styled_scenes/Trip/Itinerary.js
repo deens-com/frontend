@@ -4,10 +4,14 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { media } from 'libs/styled';
-import { getCategory } from 'libs/categories';
+import { getCategory, getFirstCategoryLowerCase } from 'libs/categories';
 import { parseLocation } from 'libs/fetch_helpers';
 import { getPriceFromServiceOption, getPeopleCount, generateServiceSlug } from 'libs/Utils';
 import { getHeroImageUrlFromMedia } from 'libs/media';
+import searchActions from 'store/search/actions';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import urls from 'libs/urlGenerator';
 
 import I18nText from 'shared_components/I18nText';
 import MapMarker from 'shared_components/icons/MapMarker';
@@ -164,7 +168,7 @@ const Note = styled.div`
 
 const BookingId = styled.div``;
 
-export default class Itinerary extends Component {
+class Itinerary extends Component {
   constructor(props) {
     super(props);
     this.days = mapServicesToDays(props.trip.services, props.trip.duration);
@@ -260,7 +264,13 @@ export default class Itinerary extends Component {
               {this.renderAvailability(day.day, dayData.service._id)}
             </CategoryWrapper>
             <ServiceTitle>
-              <Link to={`/services/${generateServiceSlug(dayData.service)}`}>
+              <Link
+                to={urls.service.view({
+                  id: dayData.service._id,
+                  slug: generateServiceSlug(dayData.service),
+                  category: getFirstCategoryLowerCase(dayData.service.categories),
+                })}
+              >
                 <I18nText data={dayData.service.title} />
               </Link>
             </ServiceTitle>
@@ -274,7 +284,11 @@ export default class Itinerary extends Component {
             {dayData.service.tags.length > 0 && (
               <ServiceTags>
                 {dayData.service.tags.slice(0, 5).map(tag => (
-                  <Tag key={tag.label} item={tag} href={`/results?type=trip&tags=${tag.label}`} />
+                  <Tag
+                    key={tag.label}
+                    item={tag}
+                    onClick={() => this.props.updateSearchParams({ type: 'trip', tags: tag.label })}
+                  />
                 ))}
               </ServiceTags>
             )}
@@ -308,3 +322,12 @@ Itinerary.propTypes = {
   startDate: PropTypes.number,
   assignRefsToParent: PropTypes.func.isRequired,
 };
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(searchActions, dispatch);
+};
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(Itinerary);

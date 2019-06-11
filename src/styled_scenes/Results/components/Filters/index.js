@@ -13,6 +13,7 @@ import { isMatch } from 'lodash';
 import { media } from 'libs/styled';
 import FiltersIcon from 'shared_components/icons/FiltersIcon';
 import BackArrow from 'shared_components/icons/BackArrow';
+import urls from 'libs/urlGenerator';
 
 import 'react-dates.css';
 
@@ -82,7 +83,7 @@ const Filters = ({
   return (
     <Wrapper showingMobile={showingMobile}>
       {backToTrip && (
-        <BackToTrip to={`/trips/organize/${backToTrip}`}>
+        <BackToTrip to={urls.trip.organize(backToTrip)}>
           <BackArrow />
           <P>Back to trip</P>
         </BackToTrip>

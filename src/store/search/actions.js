@@ -1,4 +1,3 @@
-import queryString from 'query-string';
 import fetchHelpers from 'libs/fetch_helpers';
 import api from 'libs/apiClient';
 import history from 'main/history';
@@ -12,6 +11,7 @@ import {
 } from 'libs/search';
 import { setLastSearchParams, getLastSearchParams } from 'libs/localStorage';
 import { removeMultipleLocations } from 'libs/search';
+import urls from 'libs/urlGenerator';
 
 const SEARCH = 'SEARCH';
 const UPDATE_QUERY_PARAMS = 'UPDATE_QUERY_PARAMS';
@@ -91,7 +91,7 @@ const updateSearchParams = (searchParams, state, customPage, noPushUrl) => (disp
   dispatch(fetchResults(params));
 
   if (!noPushUrl) {
-    history.push(`/results?${queryString.stringify(params, { arrayFormat: 'comma' })}`, state);
+    history.push(urls.search(params.type, params), state);
   }
 
   prefetchWithNewParams(paramsToSave, savedParams);

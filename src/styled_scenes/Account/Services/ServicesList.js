@@ -11,6 +11,8 @@ import PriceTag from '../../../shared_components/Currency/PriceTag';
 import Thumb from '../../../shared_components/Carts/components/Thumb';
 import { Cart } from '../../../shared_components/Carts/styles';
 import I18nText from '../../../shared_components/I18nText';
+import { getFirstCategoryLowerCase } from 'libs/categories';
+import urls from 'libs/urlGenerator';
 
 const EmptyServicesText = styled.p`
   font-style: italic;
@@ -81,13 +83,27 @@ const ServiceItem = item => {
         <SmartContractStatus.Wrapper status={item.contractStatus} hash={item.hash} />
       )}
       {image && (
-        <Link to={'/services/' + generateServiceSlug(item)} key={item.objectId}>
+        <Link
+          to={urls.service.view({
+            id: item._id,
+            slug: generateServiceSlug(item),
+            category: getFirstCategoryLowerCase(item.categories),
+          })}
+          key={item.objectId}
+        >
           <Thumb url={image} />
         </Link>
       )}
 
       <ContentWrap>
-        <Link to={'/services/' + generateServiceSlug(item)} key={item.objectId}>
+        <Link
+          to={urls.service.view({
+            id: item._id,
+            slug: generateServiceSlug(item),
+            category: getFirstCategoryLowerCase(item.categories),
+          })}
+          key={item.objectId}
+        >
           <Title>{item.name}</Title>
 
           <Rating marginBottom="25px" rating={item.ratings.average} count={item.ratings.count} />

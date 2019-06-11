@@ -2,6 +2,8 @@ import fetch_helpers from 'libs/fetch_helpers';
 import { serverBaseURL } from 'libs/config';
 import axios from 'libs/axios';
 import { generateServiceSlug } from 'libs/Utils';
+import { getFirstCategoryLowerCase } from 'libs/categories';
+import urls from 'libs/urlGenerator';
 
 // We should remove this actions/reducer and handle that in the component
 
@@ -70,7 +72,13 @@ export const registerService = (values, history) => async (dispatch, getState) =
         type: types.SERVICE_CREATE_SUCCESS,
         payload: result,
       });
-      history.push(`/services/${generateServiceSlug(result.data)}`);
+      history.push(
+        urls.service.view({
+          id: result.data._id,
+          slug: generateServiceSlug(result.data),
+          category: getFirstCategoryLowerCase(result.data.categories),
+        }),
+      );
     }
   } catch (error) {
     if (error.errors) {
@@ -129,7 +137,13 @@ export const saveServiceChanges = (serviceId, values, history) => async (dispatc
       //dispatch(deployContract(result, updatedService, history));
     } else {
       dispatch({ type: types.SERVICE_SAVE_SUCCESS, payload: result.data });
-      history.push(`/services/${generateServiceSlug(result.data)}`);
+      history.push(
+        urls.service.view({
+          id: result.data._id,
+          slug: generateServiceSlug(result.data),
+          category: getFirstCategoryLowerCase(result.data.categories),
+        }),
+      );
     }
   } catch (error) {
     if (error.errors) {

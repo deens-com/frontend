@@ -32,7 +32,7 @@ const Avatar = ({ user, usernameColor }) => {
     (user.profilePicture &&
       buildImgUrl(user.profilePicture, { circular: true, width: 30, height: 30 })) ||
     ImgurAvatar;
-  //const userProfilePageUrl = `/users/${user.username}`;
+
   return (
     <GridContainer>
       <ImageElement>

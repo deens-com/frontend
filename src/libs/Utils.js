@@ -326,15 +326,19 @@ export function getKmFromMeters(meters) {
 }
 
 export function buildImgUrl(imgSrc, { width, height, circular } = {}) {
-  const imgUrl = new URL(imgSrc);
-  const searchParams = new URLSearchParams(imgUrl.search);
-  if (searchParams.has('auto')) searchParams.set('auto', 'compress');
-  else searchParams.append('auto', 'compress');
-  if (searchParams.has('fit')) searchParams.set('fit', 'crop');
-  else searchParams.append('fit', 'crop');
-  if (width) searchParams.append('w', width);
-  if (height) searchParams.append('h', height);
-  if (circular) searchParams.append('mask', 'ellipse');
-  imgUrl.search = searchParams.toString();
-  return imgUrl.toString();
+  try {
+    const imgUrl = new URL(imgSrc);
+    const searchParams = new URLSearchParams(imgUrl.search);
+    if (searchParams.has('auto')) searchParams.set('auto', 'compress');
+    else searchParams.append('auto', 'compress');
+    if (searchParams.has('fit')) searchParams.set('fit', 'crop');
+    else searchParams.append('fit', 'crop');
+    if (width) searchParams.append('w', width);
+    if (height) searchParams.append('h', height);
+    if (circular) searchParams.append('mask', 'ellipse');
+    imgUrl.search = searchParams.toString();
+    return imgUrl.toString();
+  } catch (e) {
+    return '';
+  }
 }

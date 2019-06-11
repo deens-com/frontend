@@ -103,7 +103,7 @@ class GDPRBanner extends React.Component {
           This site uses cookies to provide you with a great user experience. By using Deens.com you
           accept our use of{' '}
           <a
-            href="/cookie-policy"
+            href="/legal/cookies"
             rel="nofollow"
             target="_blank"
             onClick={e => e.stopPropagation()}

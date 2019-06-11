@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import AccountProfileComponent from './../components/AccountProfile';
-import AccountServicesComponent from './../components/AccountServices';
-import AccountSettingsContainer from './AccountSettingsContainer';
 import * as account_actions from 'store/account/actions';
 import * as session_actions from 'store/session/actions';
 import headerActions from 'store/header/actions';
@@ -34,11 +32,11 @@ class AccountContainer extends Component {
     return (
       <div className="AccountContainer">
         <Route
-          path={process.env.PUBLIC_URL + '/account/trips'}
+          path={`${this.props.match.path}/trips`}
           render={props => <AccountTripsContainer {...this.props} user={this.props.session} />}
         />
         <Route
-          path={process.env.PUBLIC_URL + '/account/profile'}
+          path={`${this.props.match.path}/profile`}
           render={props => (
             <AccountProfileComponent
               {...this.props}
@@ -51,17 +49,17 @@ class AccountContainer extends Component {
           )}
         />
         {/*<Route
-          path={process.env.PUBLIC_URL + '/account/services'}
+          path={process.env.PUBLIC_URL + '/my/services'}
           render={props => (
             <AccountServicesComponent {...this.props} user_profile={this.props.session} />
           )}
           />*/}
-        <Route
-          path={process.env.PUBLIC_URL + '/account/settings'}
+        {/*<Route
+          path={`${this.props.match.path}/settings`}
           render={props => (
             <AccountSettingsContainer {...this.props} user_profile={this.props.session} />
           )}
-        />
+          />*/}
         <StaticFooter>
           <BrandFooter withTopBorder withPadding />
         </StaticFooter>

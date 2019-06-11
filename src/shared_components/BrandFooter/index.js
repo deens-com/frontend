@@ -60,31 +60,28 @@ export default ({ marginBottom = 0 }) => (
             </a>
           </LinkElement>
           <LinkElement>
-            <Link to="/partners">Partners</Link>
+            <Link to="/about/partners">Partners</Link>
           </LinkElement>
           <LinkElement>
-            <Link to="/affiliates">Affiliates</Link>
-          </LinkElement>
-          <LinkElement>
-            <Link to="/press">Press</Link>
+            <Link to="/about/press">Press</Link>
           </LinkElement>
         </Column>
         <Column>
           <H6>Legal</H6>
           <LinkElement>
-            <a rel="nofollow" href="/cookie-policy">
+            <Link rel="nofollow" to="/legal/cookies">
               Use of Cookies
-            </a>
+            </Link>
           </LinkElement>
           <LinkElement>
-            <a rel="nofollow" href="/terms-conditions">
+            <Link rel="nofollow" to="/legal/terms">
               Terms & Conditions
-            </a>
+            </Link>
           </LinkElement>
           <LinkElement>
-            <a rel="nofollow" href="/privacy-policy">
+            <Link rel="nofollow" to="/legal/privacy">
               Privacy Policy
-            </a>
+            </Link>
           </LinkElement>
         </Column>
         <Column>
@@ -92,7 +89,7 @@ export default ({ marginBottom = 0 }) => (
           <LinkElement>
             <a
               target="_blank"
-              rel="noopener noreferrer"
+              rel="noopener noreferrer nofollow"
               href="https://pleaseassist.freshdesk.com/support/home"
             >
               Help Center
