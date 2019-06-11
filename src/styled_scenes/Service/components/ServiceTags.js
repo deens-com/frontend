@@ -29,7 +29,7 @@ const ServiceTags = ({ service, updateSearchParams }) => {
   return (
     <TagWrap>
       {tags.map(tag => (
-        <Tag key={tag.label} item={tag} href={updateSearchParams({ tags: tag.label })} />
+        <Tag key={tag.label} item={tag} href={() => updateSearchParams({ tags: tag.label })} />
       ))}
     </TagWrap>
   );

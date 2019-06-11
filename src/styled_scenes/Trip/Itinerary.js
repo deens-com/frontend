@@ -287,7 +287,7 @@ class Itinerary extends Component {
                   <Tag
                     key={tag.label}
                     item={tag}
-                    href={this.props.updateSearchParams({ type: 'trip', tags: tag.label })}
+                    href={() => this.props.updateSearchParams({ type: 'trip', tags: tag.label })}
                   />
                 ))}
               </ServiceTags>

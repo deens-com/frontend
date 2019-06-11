@@ -105,7 +105,7 @@ class TripDescription extends Component {
             <Tag
               key={tag.label}
               item={tag}
-              href={this.props.updateSearchParams({ tags: tag.label })}
+              href={() => this.props.updateSearchParams({ tags: tag.label })}
             />
           ))}
         </Tags>

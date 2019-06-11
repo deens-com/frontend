@@ -60,29 +60,29 @@ export default ({ marginBottom = 0 }) => (
             </a>
           </LinkElement>
           <LinkElement>
-            <Link to="/partners">Partners</Link>
+            <Link to="/about/partners">Partners</Link>
           </LinkElement>
           <LinkElement>
-            <Link to="/affiliates">Affiliates</Link>
+            <Link to="/about/affiliates">Affiliates</Link>
           </LinkElement>
           <LinkElement>
-            <Link to="/press">Press</Link>
+            <Link to="/about/press">Press</Link>
           </LinkElement>
         </Column>
         <Column>
           <H6>Legal</H6>
           <LinkElement>
-            <a rel="nofollow" href="/legal/cookies">
+            <a rel="nofollow" rel="nofollow" href="/legal/cookies">
               Use of Cookies
             </a>
           </LinkElement>
           <LinkElement>
-            <a rel="nofollow" href="/terms-conditions">
+            <a rel="nofollow" href="/legal/terms">
               Terms & Conditions
             </a>
           </LinkElement>
           <LinkElement>
-            <a rel="nofollow" href="/privacy-policy">
+            <a rel="nofollow" href="/legal/privacy">
               Privacy Policy
             </a>
           </LinkElement>

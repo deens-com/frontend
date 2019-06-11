@@ -66,11 +66,13 @@ const ServiceInformation = ({ service, updateSearchParams }) => {
           <td>Location</td>
           <td>
             <Link
-              to={updateSearchParams({
-                address: service.location,
-                latitude: service.geo.lat,
-                longitude: service.geo.lng,
-              })}
+              to={() =>
+                updateSearchParams({
+                  address: service.location,
+                  latitude: service.geo.lat,
+                  longitude: service.geo.lng,
+                })
+              }
             >
               {service.type === 'Food'
                 ? service.originalLocation.formattedAddress
