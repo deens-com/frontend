@@ -92,7 +92,7 @@ export const getParamsToSave = (searchParams, currentSavedParams) => {
   const paramsToSave = {
     ...currentSavedParams,
   };
-  if (hasLocationParams(searchParams)) {
+  if (usingLatAndLng(searchParams) || usingCountryCode(searchParams)) {
     delete paramsToSave.lat;
     delete paramsToSave.lng;
     delete paramsToSave.city;
