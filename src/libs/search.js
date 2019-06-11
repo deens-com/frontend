@@ -118,10 +118,9 @@ export const getParamsToSave = (searchParams, currentSavedParams) => {
 };
 
 export const mapUrlToProps = location => {
-  if (location.pathname !== '/results') {
+  if (location.pathname !== '/search') {
     return {};
   }
-  console.log(location);
 
   const searchParams = queryString.parse(location.search);
 

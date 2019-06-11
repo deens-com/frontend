@@ -4,6 +4,10 @@ import styled from 'styled-components';
 
 import Tag from 'shared_components/Tag';
 
+import searchActions from 'store/search/actions';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 const TagWrap = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -19,13 +23,13 @@ const TagWrap = styled.div`
   }
 `;
 
-const ServiceTags = ({ service }) => {
+const ServiceTags = ({ service, updateSearchParams }) => {
   const { tags } = service;
   if (!tags || !tags.length) return null;
   return (
     <TagWrap>
       {tags.map(tag => (
-        <Tag key={tag.label} item={tag} href={`/results?tags=${tag.label}`} />
+        <Tag key={tag.label} item={tag} href={updateSearchParams({ tags: tag.label })} />
       ))}
     </TagWrap>
   );
@@ -39,4 +43,11 @@ ServiceTags.defaultProps = {
   service: {},
 };
 
-export default ServiceTags;
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(searchActions, dispatch);
+};
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(ServiceTags);

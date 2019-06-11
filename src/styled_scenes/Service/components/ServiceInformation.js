@@ -7,6 +7,9 @@ import { padStart } from 'libs/Utils';
 import PriceTag from 'shared_components/Currency/PriceTag';
 import Rating from 'shared_components/Rating';
 import { Link } from 'react-router-dom';
+import searchActions from 'store/search/actions';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 const Table = styled.table`
   table-layout: fixed;
@@ -35,7 +38,7 @@ const Row = styled.tr`
   height: 65px;
 `;
 
-const ServiceInformation = ({ service }) => {
+const ServiceInformation = ({ service, updateSearchParams }) => {
   if (!service || !service.ratings) return null;
   return (
     <Table>
@@ -63,9 +66,11 @@ const ServiceInformation = ({ service }) => {
           <td>Location</td>
           <td>
             <Link
-              to={`/results?address=${service.location}&latitude=${service.geo.lat}&longitude=${
-                service.geo.lng
-              }`}
+              to={updateSearchParams({
+                address: service.location,
+                latitude: service.geo.lat,
+                longitude: service.geo.lng,
+              })}
             >
               {service.type === 'Food'
                 ? service.originalLocation.formattedAddress
@@ -88,4 +93,11 @@ ServiceInformation.propTypes = {
   service: PropTypes.object,
 };
 
-export default ServiceInformation;
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(searchActions, dispatch);
+};
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(ServiceInformation);

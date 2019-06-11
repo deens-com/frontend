@@ -120,7 +120,7 @@ export default withRouter(props => {
             component={RecoverPassword}
           />
           <Route path={process.env.PUBLIC_URL + '/earn-money'} component={EarnMoney} />
-          <Route path={process.env.PUBLIC_URL + '/results'} component={SearchResults} />
+          <Route path={process.env.PUBLIC_URL + '/search'} component={SearchResults} />
           <PrivateRoute path={process.env.PUBLIC_URL + '/services/new'} component={ServiceUpsert} />
           <PrivateRoute
             path={process.env.PUBLIC_URL + '/services/edit/:id'}

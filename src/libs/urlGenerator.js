@@ -1,3 +1,4 @@
+import queryString from 'query-string';
 // Ideally all routes should be here, but at least try to add dynamic routes
 
 export default {
@@ -19,5 +20,12 @@ export default {
     checkout: id => {
       return `/designer/${id}/checkout`;
     },
+  },
+  search: (type, params = {}) => {
+    const q = queryString.stringify(params, { arrayFormat: 'comma' });
+    if (!type) {
+      return `/search?${q}`;
+    }
+    return `/search/${type}?${q}`;
   },
 };

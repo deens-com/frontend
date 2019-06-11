@@ -9,6 +9,9 @@ import Calendar from 'shared_components/icons/Calendar';
 import I18nText from 'shared_components/I18nText';
 import { minutesToDays } from './mapServicesToDays';
 import Tag from 'shared_components/Tag';
+import searchActions from 'store/search/actions';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 const Wrapper = styled.div`
   margin: 40px 20px 0;
@@ -59,7 +62,7 @@ const DataChunk = styled.div`
   }
 `;
 
-export default class ResultsScene extends Component {
+class TripDescription extends Component {
   static getDerivedStateFromProps(props, state) {
     return null;
   }
@@ -99,10 +102,23 @@ export default class ResultsScene extends Component {
         </Description>
         <Tags>
           {trip.tags.map(tag => (
-            <Tag key={tag.label} item={tag} href={`/results?type=trip&tags=${tag.label}`} />
+            <Tag
+              key={tag.label}
+              item={tag}
+              href={this.props.updateSearchParams({ tags: tag.label })}
+            />
           ))}
         </Tags>
       </Wrapper>
     );
   }
 }
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(searchActions, dispatch);
+};
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(TripDescription);

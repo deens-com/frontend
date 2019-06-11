@@ -6,6 +6,7 @@ import { buildImgUrl } from 'libs/Utils';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { addFavoriteTrip, removeFavoriteTrip } from 'store/session/actions';
+import searchActions from 'store/search/actions';
 import CssOnlyTruncate from 'shared_components/CssOnlyTruncate';
 
 // COMPONENTS
@@ -187,7 +188,8 @@ const Tag = styled(PXSmall)`
   padding: 1px 3px;
 `;
 
-const TagLink = styled(Link)`
+const TagLink = styled.span`
+  cursor: pointer;
   position: relative;
   z-index: 1;
   margin-bottom: 5px;
@@ -353,7 +355,7 @@ class TripCart extends Component {
 
     return this.props.item.tags.map(tag => (
       <TagLink
-        to={`/results?tags=${I18nText.translate(tag.names)}&type=trip`}
+        onClick={() => this.props.updateSearchParams({ tags: I18nText.translate(tag.names) })}
         key={I18nText.translate(tag.names)}
       >
         <Tag>
@@ -528,6 +530,7 @@ const mapDispatchToProps = dispatch => {
     {
       addFavoriteTrip,
       removeFavoriteTrip,
+      updateSearchParams: searchActions.updateSearchParams,
     },
     dispatch,
   );
