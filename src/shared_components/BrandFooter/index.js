@@ -63,9 +63,6 @@ export default ({ marginBottom = 0 }) => (
             <Link to="/about/partners">Partners</Link>
           </LinkElement>
           <LinkElement>
-            <Link to="/about/affiliates">Affiliates</Link>
-          </LinkElement>
-          <LinkElement>
             <Link to="/about/press">Press</Link>
           </LinkElement>
         </Column>
