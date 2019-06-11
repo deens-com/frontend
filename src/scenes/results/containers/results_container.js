@@ -36,6 +36,7 @@ class ResultsContainer extends Component {
         trip={this.props.trip}
         retryFetch={this.retryFetch}
         count={this.props.count}
+        isBehindModal={this.props.isBehindModal}
       />
     );
   }

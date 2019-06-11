@@ -153,13 +153,13 @@ export default ({
 
       updateSearchParams(
         {
-          ...savedSearchQuery,
           address,
           lat: result.geometry.location.lat(),
           lng: result.geometry.location.lng(),
         },
         null,
         null,
+        true,
         true,
       );
 

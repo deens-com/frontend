@@ -207,6 +207,9 @@ class ResultsScene extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.isBehindModal) {
+      return;
+    }
     if (nextProps.searchExtraData) {
       return;
     }

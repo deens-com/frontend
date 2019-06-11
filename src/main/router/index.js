@@ -62,6 +62,10 @@ const BlogRoute = ({ type, ...rest }) => (
   <Route {...rest} render={props => <Blog type={type} {...props} />} />
 );
 
+const RouteBehindModal = ({ isBehindModal, component: Component, ...rest }) => (
+  <Route {...rest} render={props => <Component isBehindModal={isBehindModal} {...props} />} />
+);
+
 let locationQueue = [];
 
 const TRIPS_CREATE = '/new/trip';
@@ -120,7 +124,11 @@ export default withRouter(props => {
             component={RecoverPassword}
           />
           <Route path={process.env.PUBLIC_URL + '/earn-money'} component={EarnMoney} />
-          <Route path={process.env.PUBLIC_URL + '/search'} component={SearchResults} />
+          <RouteBehindModal
+            isBehindModal={isModal}
+            path={process.env.PUBLIC_URL + '/search'}
+            component={SearchResults}
+          />
           <PrivateRoute path={process.env.PUBLIC_URL + '/services/new'} component={ServiceUpsert} />
           <PrivateRoute
             path={process.env.PUBLIC_URL + '/services/edit/:id'}

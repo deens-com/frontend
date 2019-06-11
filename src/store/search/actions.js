@@ -72,7 +72,10 @@ const fetchResults = searchQuery =>
     };
   });
 
-const updateSearchParams = (searchParams, state, customPage, noPushUrl) => (dispatch, getState) => {
+const updateSearchParams = (searchParams, state, customPage, noPushUrl, noFetch) => (
+  dispatch,
+  getState,
+) => {
   const savedParams = getLastSearchParams();
   const paramsToSave = getParamsToSave(searchParams, savedParams);
   const page = customPage || (searchParams.page ? 1 : undefined);
@@ -88,14 +91,15 @@ const updateSearchParams = (searchParams, state, customPage, noPushUrl) => (disp
     delete params.countryCode;
   }
 
-  dispatch(fetchResults(params));
+  if (!noFetch) {
+    dispatch(fetchResults(params));
+  }
 
   if (!noPushUrl) {
     history.push(urls.search(params.type, params), state);
   }
 
   prefetchWithNewParams(paramsToSave, savedParams);
-
   setLastSearchParams(paramsToSave);
   dispatch({
     type: types.updateQueryParams,
