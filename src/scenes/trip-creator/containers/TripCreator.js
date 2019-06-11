@@ -9,6 +9,7 @@ import * as sessionActions from 'store/session/actions';
 import searchActions from 'store/search/actions';
 import ModalOrNot from 'shared_components/ModalOrNot';
 import urls from 'libs/urlGenerator';
+import LoadingDots from 'shared_components/LoadingDots';
 
 const TripCreatorContent = React.lazy(() =>
   import(/* webpackChunkName: "trip-creator" */ '../components/TripCreator'),
@@ -35,6 +36,10 @@ class TripCreatorContainer extends Component {
       .then(response => {
         this.props.changeUserTrip(response.data);
         history.replace(urls.trip.organize(response.data._id));
+        this.setState({ isLoading: false });
+      })
+      .catch(() => {
+        this.setState({ isLoading: false });
       });
   };
 
@@ -56,14 +61,20 @@ class TripCreatorContainer extends Component {
   render() {
     return (
       <ModalOrNot>
-        <TripCreatorContent
-          handleSearch={this.search}
-          handleCreateNewTrip={this.createTrip}
-          savedSearchQuery={this.props.savedSearchQuery}
-          updateSearchParams={this.props.updateSearchParams}
-          session={this.props.session}
-          routeState={this.props.location.state}
-        />
+        {this.state.isLoading ? (
+          <div style={{ display: 'flex' }}>
+            <LoadingDots />
+          </div>
+        ) : (
+          <TripCreatorContent
+            handleSearch={this.search}
+            handleCreateNewTrip={this.createTrip}
+            savedSearchQuery={this.props.savedSearchQuery}
+            updateSearchParams={this.props.updateSearchParams}
+            session={this.props.session}
+            routeState={this.props.location.state}
+          />
+        )}
       </ModalOrNot>
     );
   }
