@@ -2,8 +2,7 @@ import React, { useEffect } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import withErrorBoundary from '../middlewares/WithErrorBoundary';
 import BookRouter from './book';
-import PlannerRouter from './planner';
-import LegalRouter from './legal';
+import DesignerRouter from './designer';
 
 import ScrollToTop from '../middlewares/ScrollToTop';
 
@@ -59,11 +58,15 @@ const AdminModeration = asyncCommonHOCs(
   React.lazy(() => import(/* webpackChunkName: "moderation" */ 'scenes/admin-moderation')),
 );
 
+const BlogRoute = ({ type, ...rest }) => (
+  <Route {...rest} render={props => <Blog type={type} {...props} />} />
+);
+
 let locationQueue = [];
 
-const TRIPS_CREATE = '/planner/create';
+const TRIPS_CREATE = '/new/trip';
 const HELP = '/help';
-const TRAVEL_QUOTE = '/travel-quote';
+const TRAVEL_QUOTE = '/help/travel-planning';
 
 //const routesWithModal = [TRIPS_CREATE, HELP, ]
 
@@ -102,13 +105,9 @@ export default withRouter(props => {
         <Switch location={currentLocation}>
           <Route exact path={process.env.PUBLIC_URL + '/'} component={Home} />
           <Route path={process.env.PUBLIC_URL + '/book'} component={BookRouter} />
-          <Route
-            tripCreatePath={TRIPS_CREATE}
-            path={process.env.PUBLIC_URL + '/planner'}
-            component={PlannerRouter}
-          />
-          <Route path={process.env.PUBLIC_URL + '/legal'} component={LegalRouter} />
+          <Route path={process.env.PUBLIC_URL + '/designer'} component={DesignerRouter} />
 
+          <Route path={TRIPS_CREATE} component={TripCreator} />
           <OnlyPublicRoute path={process.env.PUBLIC_URL + '/login'} component={Sessions} />
           <Route
             path={process.env.PUBLIC_URL + '/user-verification'}
@@ -140,7 +139,9 @@ export default withRouter(props => {
           <Route path={process.env.PUBLIC_URL + TRAVEL_QUOTE} component={TripQuote} />
           <Route path={process.env.PUBLIC_URL + HELP} component={Help} />
 
-          <Route path={process.env.PUBLIC_URL + '/:slug'} component={Blog} />
+          <BlogRoute path={`${process.env.PUBLIC_URL}/legal/:slug`} type="legal" />
+          <BlogRoute path={`${process.env.PUBLIC_URL}/about/:slug`} type="about" />
+          <BlogRoute path={`${process.env.PUBLIC_URL}/:slug`} />
           <Route component={withErrorBoundary(WaitForComponent(Notfound))} />
         </Switch>
       </ScrollToTop>

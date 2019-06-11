@@ -134,7 +134,7 @@ class MobileHomeNav extends Component {
             <li>
               <MenuLink
                 to={{
-                  pathname: '/planner/create',
+                  pathname: '/new/trip',
                   state: {
                     modal: true,
                   },

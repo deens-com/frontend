@@ -2,7 +2,6 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { asyncCommonHOCs } from './utils';
 import PrivateRoute from './PrivateRoute';
-import TripCreator from 'scenes/trip-creator';
 
 const TripOrganizer = asyncCommonHOCs(
   React.lazy(() => import(/* webpackChunkName: "trip-organizer" */ 'scenes/trip-organizer')),
@@ -16,7 +15,7 @@ const Checkout = asyncCommonHOCs(
   React.lazy(() => import(/* webpackChunkName: "checkout" */ 'scenes/checkout')),
 );
 
-export default ({ tripCreatePath, ...props }) => {
+export default props => {
   return (
     <>
       <Switch>
@@ -27,7 +26,6 @@ export default ({ tripCreatePath, ...props }) => {
         />
         <Route path={`${props.match.path}/:id/checkout`} component={Checkout} />
         <Route path={`${props.match.path}/:id`} component={TripOrganizer} />
-        <Route path={tripCreatePath} component={TripCreator} />
       </Switch>
     </>
   );

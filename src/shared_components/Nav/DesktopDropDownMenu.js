@@ -93,7 +93,7 @@ export default class DesktopDropDownMenu extends Component {
           theme="primaryFilled"
           size="small"
           href={{
-            pathname: '/planner/create',
+            pathname: '/new/trip',
             state: {
               modal: true,
             },

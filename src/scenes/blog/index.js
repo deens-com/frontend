@@ -14,6 +14,7 @@ import BrandFooter from 'shared_components/BrandFooter';
 import { Helmet } from 'react-helmet-async';
 import Notfound from 'styled_scenes/NotFound';
 import { websiteUrl, prismicUrl } from 'libs/config';
+import { primary, secondary, tertiary } from 'libs/colors';
 
 function serializer(type, element, content, children, index) {
   switch (type) {
@@ -30,7 +31,6 @@ function serializer(type, element, content, children, index) {
 const PageTop = styled.div`
   width: 100%;
   position: relative;
-  height: 426px;
 `;
 
 const Header = styled.div`
@@ -41,13 +41,12 @@ const Header = styled.div`
   width: 100vw;
   position: absolute;
   left: calc(-50vw - -50%);
-  height: 426px;
+  height: 100%;
 `;
 
 const HeaderText = styled.div`
   color: white;
   position: relative;
-  padding-top: 170px;
   text-align: center;
 `;
 
@@ -82,17 +81,18 @@ const PostContent = styled.div`
   margin: auto;
   font-size: 18px;
   padding-top: 25px;
+  margin-bottom: 25px;
 
   h2 {
-    color: #65afbb;
+    color: ${secondary};
   }
   h3 {
-    color: #097da8;
+    color: ${tertiary};
     font-weight: bold;
   }
 
   a {
-    color: #65afbb;
+    color: ${primary};
     font-weight: bolder;
     text-decoration: underline;
     &:hover {
@@ -156,7 +156,10 @@ class BlogPost extends React.Component {
     this.props.changeHeader({ transparent: true });
     prismic.getApi(prismicUrl).then(async api => {
       try {
-        const article = await api.getByUID('article', this.props.match.params.slug);
+        const article = await api.getByUID(
+          this.props.type || 'article',
+          this.props.match.params.slug,
+        );
 
         this.setState({
           article: article.data,
@@ -169,16 +172,45 @@ class BlogPost extends React.Component {
     });
   }
 
+  renderHeader(description) {
+    const { article } = this.state;
+    if (!this.showHeaderImage()) {
+      return (
+        <HeaderText style={{ paddingTop: '100px' }}>
+          <Title style={{ color: primary }}>{article.title[0].text}</Title>
+        </HeaderText>
+      );
+    }
+
+    return (
+      <HeaderText style={{ paddingTop: '170px' }}>
+        <Title>{article.title[0].text}</Title>
+        <Subtitle>{description}</Subtitle>
+      </HeaderText>
+    );
+  }
+
+  showHeaderImage = () => {
+    if (!this.state.article) {
+      return this.props.type !== 'legal';
+    }
+    return Boolean(this.props.type !== 'legal' && this.state.article.image);
+  };
+
   render() {
     if (this.state.error) {
       return <Notfound />;
     }
     const { article } = this.state;
     let description;
-    if (article) {
-      description = article.article.find(fraction => fraction.type === 'paragraph');
-      if (description) {
-        description = description.text;
+    if (article && this.props.type !== 'legal') {
+      if (article.subtitle) {
+        description = article.subtitle;
+      } else {
+        description = article.article.find(fraction => fraction.type === 'paragraph');
+        if (description) {
+          description = description.text;
+        }
       }
     }
 
@@ -188,24 +220,17 @@ class BlogPost extends React.Component {
           <Helmet>
             <title>{article.title[0].text} | Deens.com</title>
             <link rel="canonical" href={`${websiteUrl}/${this.props.match.params.slug}`} />
-            <meta name="description" content={description} />
+            {description && <meta name="description" content={description} />}
             <meta property="og:url" content={`${websiteUrl}/${this.props.match.params.slug}`} />
             <meta property="og:title" content={article.title[0].text} />
-            <meta property="og:description" content={description} />
-            <meta property="og:image" content={article.image.url} />
+            {description && <meta property="og:description" content={description} />}
+            {this.showHeaderImage() && <meta property="og:image" content={article.image.url} />}
           </Helmet>
         )}
         <PageWrapper>
-          <PageTop>
-            <Header image={article ? article.image.url : ''} />
-            {article ? (
-              <HeaderText>
-                <Title>{article.title[0].text}</Title>
-                <Subtitle>{description}</Subtitle>
-              </HeaderText>
-            ) : (
-              <Loader />
-            )}
+          <PageTop style={{ height: this.showHeaderImage() ? '426px' : 'auto' }}>
+            {this.showHeaderImage() && <Header image={article ? article.image.url : ''} />}
+            {article ? this.renderHeader(description) : <Loader />}
           </PageTop>
           <PageContent>
             <PostContent>

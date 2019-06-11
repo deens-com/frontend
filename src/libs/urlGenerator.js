@@ -11,13 +11,13 @@ export default {
       return `/book/trip/${slug || `_${id}`}`;
     },
     organize: id => {
-      return `/planner/${id}`;
+      return `/designer/${id}`;
     },
     share: id => {
-      return `/planner/${id}/share`;
+      return `/designer/${id}/share`;
     },
     checkout: id => {
-      return `/planner/${id}/checkout`;
+      return `/designer/${id}/checkout`;
     },
   },
 };

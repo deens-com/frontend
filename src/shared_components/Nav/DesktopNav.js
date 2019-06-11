@@ -36,6 +36,8 @@ const Wrap = styled.div`
 
 const Nav = styled.nav`
   color: inherit;
+  display: flex;
+  align-items: center;
   ${props =>
     props.transparent &&
     css`

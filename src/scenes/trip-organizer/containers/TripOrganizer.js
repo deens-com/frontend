@@ -33,7 +33,7 @@ class TripOrganizerContainer extends Component {
       this.props.fetchTrip(this.props.match.params.id);
       return;
     }
-    history.replace('/planner/create', {
+    history.replace('/new/trip', {
       modal: true,
     });
   }
