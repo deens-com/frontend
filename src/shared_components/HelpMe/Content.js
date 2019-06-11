@@ -143,7 +143,7 @@ const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user, defaultLocat
     return isValid;
   };
 
-  const askForQuote = () => {
+  const askForQuote = async () => {
     setErrors({});
     const data = {
       email: session.email || email.current.value,
@@ -160,9 +160,17 @@ const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user, defaultLocat
     if (!isValid(data)) {
       return;
     }
-    apiClient.bookings.premiumHelp(data);
-    analytics.planning.brief.complete();
-    setAsked(true);
+    try {
+      await apiClient.bookings.premiumHelp(data);
+      analytics.planning.brief.complete();
+      setAsked(true);
+    } catch (e) {
+      if (e.response.data.message == 'invalid email') {
+        setErrors({
+          email: true,
+        });
+      }
+    }
   };
 
   if (asked) {
