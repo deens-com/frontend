@@ -2,7 +2,7 @@ import { types } from './actions';
 import { isGDPRDismissed } from 'libs/feature-flags';
 
 const initialState = {
-  gdprDismissed: isGDPRDismissed(),
+  gdprDismissed: true, //isGDPRDismissed(),
   gdprHeight: 0,
 };
 

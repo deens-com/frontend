@@ -126,7 +126,6 @@ class App extends React.Component {
         <GlobalStyles />
         <Provider store={store}>
           <React.Fragment>
-            <GDPRNotification />
             <Router history={history}>
               <Skeleton>
                 <Routes />
