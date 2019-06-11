@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import prismic from 'prismic-javascript';
 import { RichText } from 'prismic-reactjs';
 import { Loader } from 'semantic-ui-react';
+import LoadingDots from 'shared_components/LoadingDots';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -82,6 +83,8 @@ const PostContent = styled.div`
   font-size: 18px;
   padding-top: 25px;
   margin-bottom: 25px;
+  display: flex;
+  min-height: 300px;
 
   h2 {
     color: ${secondary};
@@ -154,6 +157,23 @@ class BlogPost extends React.Component {
 
   componentDidMount() {
     this.props.changeHeader({ transparent: true });
+    this.getArticle();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.type !== prevProps.type ||
+      this.props.match.params.slug !== prevProps.match.params.slug
+    ) {
+      this.getArticle();
+    }
+  }
+
+  getArticle() {
+    this.setState({
+      error: false,
+      article: null,
+    });
     prismic.getApi(prismicUrl).then(async api => {
       try {
         const article = await api.getByUID(
@@ -230,11 +250,11 @@ class BlogPost extends React.Component {
         <PageWrapper>
           <PageTop style={{ height: this.showHeaderImage() ? '426px' : 'auto' }}>
             {this.showHeaderImage() && <Header image={article ? article.image.url : ''} />}
-            {article ? this.renderHeader(description) : <Loader />}
+            {article ? this.renderHeader(description) : null}
           </PageTop>
           <PageContent>
             <PostContent>
-              {article ? RichText.render(article.article, null, serializer) : null}
+              {article ? RichText.render(article.article, null, serializer) : <LoadingDots />}
             </PostContent>
           </PageContent>
         </PageWrapper>
