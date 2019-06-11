@@ -84,7 +84,7 @@ const Modal = ({ open, onCloseRequest, changeHeader, children }) => {
     onCloseRequest();
   };
 
-  useEffect(() => changeHeader({ noSearch: true }));
+  //useEffect(() => changeHeader({ noSearch: true }));
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
