@@ -92,7 +92,7 @@ export default ({ marginBottom = 0 }) => (
           <LinkElement>
             <a
               target="_blank"
-              rel="noopener noreferrer"
+              rel="noopener noreferrer nofollow"
               href="https://pleaseassist.freshdesk.com/support/home"
             >
               Help Center

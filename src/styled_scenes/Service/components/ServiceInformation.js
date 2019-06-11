@@ -65,8 +65,9 @@ const ServiceInformation = ({ service, updateSearchParams }) => {
         <Row>
           <td>Location</td>
           <td>
-            <Link
-              to={() =>
+            <span
+              style={{ cursor: 'pointer' }}
+              onClick={() =>
                 updateSearchParams({
                   address: service.location,
                   latitude: service.geo.lat,
@@ -77,7 +78,7 @@ const ServiceInformation = ({ service, updateSearchParams }) => {
               {service.type === 'Food'
                 ? service.originalLocation.formattedAddress
                 : service.location}
-            </Link>
+            </span>
           </td>
         </Row>
         <Row>
