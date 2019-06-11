@@ -154,7 +154,7 @@ const TopBarDesktopNav = function TopBarDesktopNav({
                   data-testid="createTripHeaderButton"
                   activeclassname="is-active"
                   to={{
-                    pathname: '/trips/create',
+                    pathname: '/new/trip',
                     state: {
                       modal: true,
                     },
