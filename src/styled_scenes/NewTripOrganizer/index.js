@@ -147,6 +147,7 @@ function formatMedia(url) {
 }
 
 function makeTransportationState(transportation) {
+  return { toService: [], fromService: [] };
   return {
     toService: transportation.reduce(
       (prevObj, transport) =>

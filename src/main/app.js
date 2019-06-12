@@ -29,6 +29,7 @@ const GlobalStyles = createGlobalStyle`
     font-kerning: normal;
     -webkit-font-feature-settings: 'kern', 'liga', 'clig', 'calt';
     font-feature-settings: 'kern', 'liga', 'clig', 'calt', 'kern';
+    min-width: auto !important;
   }
 
   h1,

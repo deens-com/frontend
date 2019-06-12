@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import PlusIcon from 'shared_components/icons/PlusIcon';
 import MinusIcon from 'shared_components/icons/MinusIcon';
 import { primary } from 'libs/colors';
+import { isIosDevice } from 'libs/Utils';
 
 const SelectorWrapper = styled.div`
   position: ${props => (props.relative ? 'relative' : 'absolute')};
@@ -106,11 +107,11 @@ export default class GuestsSelector extends React.Component {
     close: () => {},
   };
 
-  voidFn = () => {};
-
   componentDidMount() {
     document.addEventListener('mousedown', this.handleClickOutside);
-    document.body.addEventListener('click', this.voidFn);
+    if (isIosDevice) {
+      document.body.style.cursor = 'pointer';
+    }
     const rect = this.wrapperRef.current.getBoundingClientRect();
     if (rect.y + rect.height > window.innerHeight) {
       this.wrapperRef.current.style.top = `${window.innerHeight - (rect.height + rect.y)}px`;
@@ -119,7 +120,9 @@ export default class GuestsSelector extends React.Component {
 
   componentWillUnmount() {
     document.removeEventListener('mousedown', this.handleClickOutside);
-    document.body.removeEventListener('click', this.voidFn);
+    if (isIosDevice) {
+      document.body.style.cursor = 'initial';
+    }
   }
 
   handleClickOutside = event => {

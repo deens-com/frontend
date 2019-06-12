@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { useVoid } from 'libs/hooks';
+import { isIosDevice } from 'libs/Utils';
 import { primary, error } from 'libs/colors';
 import MenuDownArrow from 'shared_components/icons/MenuDownArrow';
 
@@ -69,17 +69,19 @@ const Dropdown = ({ children, trigger, onClose, onOpen, maxHeight, error }) => {
     }
   };
 
-  const voidFn = useVoid();
-
   useEffect(() => {
     if (!isOpen) {
       return;
     }
     window.addEventListener('mousedown', close);
-    document.body.addEventListener('click', voidFn);
+    if (isIosDevice) {
+      document.body.style.cursor = 'pointer';
+    }
     return () => {
       window.removeEventListener('mousedown', close);
-      document.body.removeEventListener('click', voidFn);
+      if (isIosDevice) {
+        document.body.style.cursor = 'initial';
+      }
     };
   });
 

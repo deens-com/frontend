@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { useVoid } from 'libs/hooks';
+import { isIosDevice } from 'libs/Utils';
 import { primary } from 'libs/colors';
 import PencilIcon from 'shared_components/icons/PencilIcon';
 import { P } from 'libs/commonStyles';
@@ -108,28 +108,32 @@ const InlineInput = ({
     [disallowEmptySubmit, onChanged],
   );
 
-  const voidFn = useVoid();
-
   useEffect(
     () => {
       if (isEditing) {
         window.addEventListener('keydown', onKeyPress);
-        document.body.addEventListener('click', voidFn);
         window.addEventListener('mousedown', onMouseDown);
+        if (isIosDevice) {
+          document.body.style.cursor = 'pointer';
+        }
       } else {
         window.removeEventListener('keydown', onKeyPress);
-        document.body.removeEventListener('click', voidFn);
         window.removeEventListener('mousedown', onMouseDown);
+        if (isIosDevice) {
+          document.body.style.cursor = 'initial';
+        }
       }
       return () => {
         if (isEditing) {
           window.removeEventListener('keydown', onKeyPress);
-          document.body.removeEventListener('click', voidFn);
           window.removeEventListener('mousedown', onMouseDown);
+          if (isIosDevice) {
+            document.body.style.cursor = 'initial';
+          }
         }
       };
     },
-    [isEditing, voidFn, onMouseDown, onKeyPress],
+    [isEditing, onMouseDown, onKeyPress],
   );
 
   if (isEditing) {

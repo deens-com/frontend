@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef, useLayoutEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Portal from 'shared_components/Portal';
@@ -9,39 +9,45 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import headerActions from 'store/header/actions';
 import CrossIcon from 'shared_components/icons/CrossIcon';
+import {
+  disableBodyScroll,
+  enableBodyScroll,
+  clearAllBodyScrollLocks,
+} from 'libs/body-scroll-lock';
 
 const Dimmer = styled.div`
   z-index: 10;
   display: none;
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
   background-color: rgba(0, 0, 0, 0.4);
   flex-direction: column;
-  overflow-y: auto;
+  pointer-events: all;
   ${media.minMedium} {
     display: block;
   }
 `;
 
 const Wrapper = styled.div`
-  position: absolute;
+  position: fixed;
   top: 65px;
-  height: calc(100vh - 65px);
+  bottom: 0;
+  width: 100%;
   left: 0;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
   z-index: 10;
-  pointer-events: none;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   ${media.minMedium} {
     right: 0;
+    margin: auto;
     z-index: 10;
+    bottom: initial;
+    max-width: 815px;
   }
 `;
 
@@ -57,11 +63,10 @@ const ChildrenContent = styled.div`
   pointer-events: all;
   position: relative;
   padding: 35px;
-  width: 100vw;
+  width: 100%;
   margin: auto;
   flex: 1;
   ${media.minMedium} {
-    max-width: 800px;
     border-radius: 10px;
     flex: 0;
   }
@@ -78,20 +83,29 @@ const CloseButton = styled.div`
 `;
 
 const Modal = ({ open, onCloseRequest, changeHeader, children }) => {
-  const childrenRef = useRef(null);
-
+  const contentRef = useRef(null);
+  const dimmerRef = useRef(null);
   const onClick = e => {
     onCloseRequest();
   };
 
-  //useEffect(() => changeHeader({ noSearch: true }));
-
-  useEffect(() => {
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = 'visible';
-    };
-  }, []);
+  useLayoutEffect(
+    () => {
+      const scrollable = contentRef.current;
+      const allowTouchMove = el => el === dimmerRef.current;
+      if (open) {
+        disableBodyScroll(scrollable, { allowTouchMove });
+      } else {
+        enableBodyScroll(scrollable);
+        clearAllBodyScrollLocks();
+      }
+      return () => {
+        enableBodyScroll(scrollable);
+        clearAllBodyScrollLocks();
+      };
+    },
+    [open],
+  );
 
   if (!open) {
     return null;
@@ -99,9 +113,9 @@ const Modal = ({ open, onCloseRequest, changeHeader, children }) => {
 
   return (
     <Portal>
-      <Dimmer onClick={onClick} />
-      <Wrapper>
-        <ChildrenContent ref={childrenRef}>
+      <Dimmer ref={dimmerRef} onClick={onClick} />
+      <Wrapper ref={contentRef}>
+        <ChildrenContent>
           <CloseButton onClick={onClick}>
             <CrossIcon style={{ width: 18, height: 18 }} />
           </CloseButton>
