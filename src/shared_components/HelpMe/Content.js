@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Loader } from 'semantic-ui-react';
+import LoadingDots from 'shared_components/LoadingDots';
 import { H2, H5, PSmall, P } from 'libs/commonStyles';
 import { primary, textDark, error } from 'libs/colors';
 import ImgurAvatar from 'assets/no-avatar.png';
@@ -20,6 +21,8 @@ import CurrencyDropdownContent from './CurrencyDropdownContent';
 const Wrapper = styled.div`
   max-width: 815px;
   margin: 10px 15px;
+  display: flex;
+  flex-direction: column;
   ${media.minSmall} {
     margin: 20px 35px;
   }
@@ -112,6 +115,7 @@ const Required = styled.span`
 
 const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user, defaultLocation }) => {
   const [asked, setAsked] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState({});
   const [address, setAddress] = useState(defaultLocation && defaultLocation.formattedAddress);
   const [{ adults, children, infants }, setGuests] = useState({
@@ -161,10 +165,13 @@ const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user, defaultLocat
       return;
     }
     try {
+      setSaving(true);
       await apiClient.bookings.premiumHelp(data);
       analytics.planning.brief.complete();
       setAsked(true);
+      setSaving(false);
     } catch (e) {
+      setSaving(false);
       if (e.response.data.message == 'invalid email') {
         setErrors({
           email: true,
@@ -177,6 +184,14 @@ const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user, defaultLocat
     return (
       <Wrapper>
         <Thanks>We have just sent you an email, please check your inbox.</Thanks>
+      </Wrapper>
+    );
+  }
+
+  if (saving) {
+    return (
+      <Wrapper>
+        <LoadingDots />
       </Wrapper>
     );
   }

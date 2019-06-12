@@ -103,7 +103,7 @@ export default withRouter(props => {
   return (
     <>
       {isModal && <Route path={process.env.PUBLIC_URL + TRIPS_CREATE} component={TripCreator} />}
-      {isModal && <Route path={process.env.PUBLIC_URL + HELP} component={Help} />}
+      {isModal && <Route exact path={process.env.PUBLIC_URL + HELP} component={Help} />}
       {isModal && <Route path={process.env.PUBLIC_URL + TRAVEL_QUOTE} component={TripQuote} />}
       <ScrollToTop /*dontScroll={isModal}*/>
         <Switch location={currentLocation}>
