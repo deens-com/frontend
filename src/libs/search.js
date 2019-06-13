@@ -118,7 +118,7 @@ export const getParamsToSave = (searchParams, currentSavedParams) => {
 };
 
 export const mapUrlToProps = location => {
-  if (location.pathname !== '/search') {
+  if (!/^\/search\//.test(location.pathname)) {
     return {};
   }
 
