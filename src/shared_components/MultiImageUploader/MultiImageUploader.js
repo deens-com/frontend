@@ -16,7 +16,6 @@ import { getImageUrlFromMedia } from 'libs/media';
 import Button from 'shared_components/Button';
 
 const allowedExtensions = ['jpeg', 'jpg', 'gif', 'png'];
-const i18nLocale = 'en-us';
 
 const Wrapper = styled.div`
   background-color: #f8f8f8;
@@ -204,7 +203,7 @@ export default class MultiImageUploader extends Component {
     const files = this.props.initialUploadedFiles.map((element, i) => ({
       id: i,
       hero: element.hero,
-      name: element.names[i18nLocale],
+      name: element.names,
       thumbnailUrl: getImageUrlFromMedia(element, 'thumbnail'),
     }));
     const isHero = files.find(elem => elem.hero);

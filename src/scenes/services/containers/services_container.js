@@ -57,6 +57,7 @@ class ServicesContainer extends Component {
     } else {
       let helmet;
       const { service } = this.props;
+      console.log(service);
       if (service._id) {
         const locationObject = service.originalLocation || service.location;
         const location = locationObject ? locationObject.city || locationObject.state : '';

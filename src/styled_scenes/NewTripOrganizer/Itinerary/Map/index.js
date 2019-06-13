@@ -105,10 +105,9 @@ function uniqServicesFilter(markers) {
 }
 
 const isAccommodation = service =>
-  service.categories.find(category => category.names['en-us'] === 'Accommodation');
-const isActivity = service =>
-  service.categories.find(category => category.names['en-us'] === 'Activity');
-const isFood = service => service.categories.find(category => category.names['en-us'] === 'Food');
+  service.categories.find(category => category.names === 'Accommodation');
+const isActivity = service => service.categories.find(category => category.names === 'Activity');
+const isFood = service => service.categories.find(category => category.names === 'Food');
 
 const getLocationMarker = (location, key) => ({
   key,

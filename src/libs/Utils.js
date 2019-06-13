@@ -296,8 +296,8 @@ export function generateServiceSlug(service) {
 
 export function parseTagsText(tags) {
   return tags.map(tag => {
-    const tagName = tag.names['en-us'].charAt(0).toUpperCase() + tag.names['en-us'].substr(1);
-    return { text: tagName, value: tag.names['en-us'], _id: tag._id, count: tag.count };
+    const tagName = tag.names.charAt(0).toUpperCase() + tag.names.substr(1);
+    return { text: tagName, value: tag.names, _id: tag._id, count: tag.count };
   });
 }
 

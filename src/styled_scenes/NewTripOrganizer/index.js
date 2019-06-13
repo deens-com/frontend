@@ -95,8 +95,8 @@ function createStateBasedOnTrip(props) {
     tripData: {
       duration: props.trip.duration,
       startDate: props.startDate,
-      title: props.trip.title['en-us'],
-      description: props.trip.description ? props.trip.description['en-us'] : '',
+      title: props.trip.title,
+      description: props.trip.description || '',
       location: props.trip.location,
       adultCount: props.trip.adultCount || props.adults || 2,
       childrenCount: props.trip.childrenCount || props.children || 0,
@@ -147,7 +147,6 @@ function formatMedia(url) {
 }
 
 function makeTransportationState(transportation) {
-  return { toService: [], fromService: [] };
   return {
     toService: transportation.reduce(
       (prevObj, transport) =>
