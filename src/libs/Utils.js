@@ -348,3 +348,5 @@ export const isIosDevice =
   window.navigator &&
   window.navigator.platform &&
   /iP(ad|hone|od)/.test(window.navigator.platform);
+
+export const isSearchPage = pathname => /^\/search\//.test(pathname);

@@ -154,6 +154,9 @@ export default ({
       updateSearchParams(
         {
           address,
+          city: data.city,
+          countryCode: data.countryCode,
+          state: data.state,
           lat: result.geometry.location.lat(),
           lng: result.geometry.location.lng(),
         },

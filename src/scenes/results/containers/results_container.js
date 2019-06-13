@@ -15,7 +15,7 @@ class ResultsContainer extends Component {
   }
 
   retryFetch = () => {
-    this.props.fetchResults(this.props.searchParams);
+    this.props.updateSearchParams(this.props.urlSearchParams, null, null, true);
   };
 
   hasToLoadTripYet = () =>
