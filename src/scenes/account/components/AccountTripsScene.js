@@ -24,9 +24,9 @@ class AccountTripsScene extends Component {
     const index = this.state.trips.findIndex(trip => trip._id === id);
     const tripToDelete = this.state.trips[index];
     this.setState(prevState => ({
-      trips: prevState.filter(trip => trip._id !== id),
+      trips: prevState.trips.filter(trip => trip._id !== id),
     }));
-    apiClient.trips.delete(this.props.trip._id).catch(() => {
+    apiClient.trips.delete(id).catch(() => {
       this.setState(prevState => ({
         trips: [...prevState.trips.slice(0, index), tripToDelete, ...prevState.trips.slice(index)],
       }));

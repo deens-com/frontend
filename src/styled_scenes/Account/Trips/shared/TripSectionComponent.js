@@ -13,7 +13,6 @@ import LocationCart from './Carts/Location';
 import { Loader } from 'semantic-ui-react';
 import InfiniteScroll from 'react-infinite-scroller';
 import urls from 'libs/urlGenerator';
-import apiClient from 'libs/apiClient';
 
 const get_label_color = status => {
   switch (status) {
@@ -45,7 +44,8 @@ const InlineH2 = styled.h2`
 `;
 
 const TripTitleRow = styled.span`
-  vertical-align: middle;
+  display: flex;
+  align-items: center;
   a:not(:first-child) {
     margin-left: 24px;
   }
@@ -89,7 +89,7 @@ class Trip extends React.PureComponent {
             <InlineH2>{trip.title}</InlineH2>
           </Link>
           {!trip.bookingStatus ? (
-            <>
+            <span style={{ display: 'flex', alignItems: 'center', marginLeft: '10px' }}>
               <Button
                 as={Link}
                 basic
@@ -115,11 +115,11 @@ class Trip extends React.PureComponent {
                     key: 'delete',
                     content: 'Delete',
                     negative: true,
-                    onClick: this.props.onDelete,
+                    onClick: () => this.props.onDelete(this.props.trip._id),
                   },
                 ]}
               />
-            </>
+            </span>
           ) : null}
         </TripTitleRow>
         {trip.startDate && <ColoredText>{getFormattedTripDates(trip)}</ColoredText>}
@@ -162,7 +162,7 @@ class TripSectionComponent extends React.PureComponent {
           }
         >
           {this.props.trips.map(trip => (
-            <Trip key={trip._id} trip={trip} />
+            <Trip onDelete={this.props.onDelete} key={trip._id} trip={trip} />
           ))}
         </InfiniteScroll>
       </section>
