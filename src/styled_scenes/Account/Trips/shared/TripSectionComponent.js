@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { Modal } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button, Divider, Icon, Label } from 'semantic-ui-react';
 
+import TrashCan from 'shared_components/icons/TrashCan';
+import { error } from 'libs/colors';
 import { SectionContent } from 'shared_components/layout/Page';
 import { getFormattedTripDates, generateTripSlug } from 'libs/Utils';
 import Carousel from './Carousel';
 import LocationCart from './Carts/Location';
 import { Loader } from 'semantic-ui-react';
-import I18nText from 'shared_components/I18nText';
 import InfiniteScroll from 'react-infinite-scroller';
 import urls from 'libs/urlGenerator';
+import apiClient from 'libs/apiClient';
 
 const get_label_color = status => {
   switch (status) {
@@ -57,6 +59,16 @@ const LoaderWrapper = styled.div`
   margin-top: 100px;
 `;
 
+const DeleteTrip = styled.div`
+  margin-left: 8px;
+  cursor: pointer;
+  > svg {
+    fill: ${error} !important;
+    height: 0.8em;
+    width: 0.8em;
+  }
+`;
+
 const renderService = (service, index) => (
   <LocationCart item={service.service} index={index} key={service._id} />
 );
@@ -74,22 +86,40 @@ class Trip extends React.PureComponent {
               id: trip._id,
             })}
           >
-            <InlineH2>
-              <I18nText data={trip.title} />
-            </InlineH2>
+            <InlineH2>{trip.title}</InlineH2>
           </Link>
           {!trip.bookingStatus ? (
-            <Button
-              as={Link}
-              basic
-              icon
-              labelPosition="left"
-              size="tiny"
-              to={urls.trip.organize(trip._id)}
-            >
-              <Icon name="edit" />
-              Edit
-            </Button>
+            <>
+              <Button
+                as={Link}
+                basic
+                icon
+                labelPosition="left"
+                size="tiny"
+                to={urls.trip.organize(trip._id)}
+              >
+                <Icon name="edit" />
+                Edit
+              </Button>
+              <Modal
+                trigger={
+                  <DeleteTrip>
+                    <TrashCan />
+                  </DeleteTrip>
+                }
+                header="Delete trip"
+                content="Are you sure you want to delete this trip?"
+                actions={[
+                  'Keep trip',
+                  {
+                    key: 'delete',
+                    content: 'Delete',
+                    negative: true,
+                    onClick: this.props.onDelete,
+                  },
+                ]}
+              />
+            </>
           ) : null}
         </TripTitleRow>
         {trip.startDate && <ColoredText>{getFormattedTripDates(trip)}</ColoredText>}

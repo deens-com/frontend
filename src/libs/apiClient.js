@@ -37,6 +37,7 @@ export default {
   trips: {
     get: params => get('/trips')(params),
     post: post('/trips'),
+    delete: id => deleteEndpoint(`/trips/${id}`),
     getById: (params, id) => get(`/trips/${id}`)(params),
     copy: {
       post: id => post(`/trips/${id}/copy`)(),
