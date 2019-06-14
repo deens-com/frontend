@@ -90,7 +90,10 @@ const addServiceToTrip = ({ trip, day }) => async (dispatch, getState) => {
   }
 };
 
-const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (dispatch, getState) => {
+const createNewTrip = ({ tripLocation, redirectToCreatedTrip } = {}) => async (
+  dispatch,
+  getState,
+) => {
   const state = getState();
   const { service } = state.services;
   if (!service) {
@@ -106,6 +109,7 @@ const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (dispatch, getSt
       baseCurrency: service.baseCurrency,
       services: [{ service: service._id, day: 1 }],
       duration: service.duration,
+      location: tripLocation,
     };
     dispatch({
       type: 'TRIP_CREATING',
@@ -124,8 +128,8 @@ const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (dispatch, getSt
   }
 };
 
-const onBookNowClick = () => async (dispatch, getState) => {
-  createNewTrip({ redirectToCreatedTrip: true })(dispatch, getState);
+const onBookNowClick = location => async (dispatch, getState) => {
+  createNewTrip({ tripLocation: location, redirectToCreatedTrip: true })(dispatch, getState);
 };
 
 /**

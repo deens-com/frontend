@@ -60,7 +60,7 @@ function ServiceActionButtons(props) {
         icon
         labelPosition="right"
         color="blue"
-        onClick={props.onBookNowClick}
+        onClick={() => props.onBookNowClick(props.service.originalLocation)}
         target="_blank"
         rel="noopener noreferrer"
         as="button"
@@ -109,6 +109,7 @@ function ServiceActionButtons(props) {
 }
 
 ServiceActionButtons.propTypes = {
+  service: PropTypes.object.isRequired,
   myUnpurchasedTrips: PropTypes.array,
   onAddServiceToTrip: PropTypes.func.isRequired,
   onAddServiceToNewTrip: PropTypes.func.isRequired,
