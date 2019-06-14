@@ -98,10 +98,10 @@ const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (dispatch, getSt
     return;
   }
   try {
-    const newTripTitle = { 'en-us': `Trip to ${service.location}` };
+    const newTripTitle = { en: `Trip to ${service.location}` };
     const serviceGroup = {
       title: newTripTitle,
-      description: { 'en-us': service.description },
+      description: { en: service.description },
       basePrice: service.basePrice,
       baseCurrency: service.baseCurrency,
       services: [{ service: service._id, day: 1 }],

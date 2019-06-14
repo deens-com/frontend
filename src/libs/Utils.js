@@ -158,8 +158,8 @@ export function getFormattedTripDates(trip) {
   // add trip duration minutes to generate endDate
   const endDate = new Date(startDate.getTime() + trip.duration * 60000);
   const localStringOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-  const startDateStr = startDate.toLocaleString('en-us', localStringOptions);
-  const endDateStr = endDate.toLocaleString('en-us', localStringOptions);
+  const startDateStr = startDate.toLocaleString('en', localStringOptions);
+  const endDateStr = endDate.toLocaleString('en', localStringOptions);
   return `${startDateStr} - ${endDateStr}`;
 }
 

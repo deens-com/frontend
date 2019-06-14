@@ -70,14 +70,14 @@ const mapImage = (image, i) => {
     type: 'image',
     hero: Boolean(image.hero),
     names: {
-      'en-us': `Image ${i}`,
+      en: `Image ${i}`,
     },
     files: generateFiles(url),
   };
 };
 
 const createService = (values, custom) => {
-  const i18nLocale = 'en-us';
+  const i18nLocale = 'en';
   return {
     isCustom: Boolean(custom),
     categories: [
@@ -312,7 +312,7 @@ export const statuses = {
 };
 
 const createServiceFromUrl = data => {
-  const i18nLocale = 'en-us';
+  const i18nLocale = 'en';
 
   return {
     ...data,

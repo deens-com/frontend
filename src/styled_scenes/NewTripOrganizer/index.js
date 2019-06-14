@@ -20,7 +20,7 @@ import urls from 'libs/urlGenerator';
 
 function addLang(text) {
   return {
-    'en-us': text,
+    en: text,
   };
 }
 
@@ -132,7 +132,7 @@ function formatMedia(url) {
       type: 'image',
       hero: true,
       names: {
-        'en-us': 'Trip image',
+        en: 'Trip image',
       },
       files: {
         original: {

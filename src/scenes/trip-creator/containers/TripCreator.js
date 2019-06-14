@@ -29,7 +29,7 @@ class TripCreatorContainer extends Component {
         duration: 1,
         media: [],
         services: [],
-        title: { 'en-us': 'My Trip' },
+        title: { en: 'My Trip' },
         userStartLocation: location,
         location,
       })
