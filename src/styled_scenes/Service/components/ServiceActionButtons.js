@@ -109,6 +109,7 @@ function ServiceActionButtons(props) {
 }
 
 ServiceActionButtons.propTypes = {
+  service: PropTypes.object.isRequired,
   myUnpurchasedTrips: PropTypes.array,
   onAddServiceToTrip: PropTypes.func.isRequired,
   onAddServiceToNewTrip: PropTypes.func.isRequired,
