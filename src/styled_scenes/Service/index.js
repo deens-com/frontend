@@ -253,6 +253,7 @@ class Service extends Component {
                 onAddServiceToTrip={this.props.onAddServiceToTrip}
                 onAddServiceToNewTrip={this.props.onAddServiceToNewTrip}
                 serviceRecentlyAddedToTrip={this.props.serviceRecentlyAddedToTrip}
+                service={this.props.service}
                 serviceAlreadyAddedToTrip={this.props.serviceAlreadyAddedToTrip}
                 onBookNowClick={this.props.onBookNowClick}
                 externalCheckoutUrl={
