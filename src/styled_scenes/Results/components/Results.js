@@ -258,7 +258,12 @@ class Results extends Component {
           {this.props.isLoadingResults ? (
             <LoaderWithMargin>
               <Loader active inline="centered" size="massive">
-                Loading Results
+                <div style={{ lineHeight: '2em' }}>
+                  Please wait while we search across the top travel websites for the best{' '}
+                  {this.props.searchParams.type} prices.
+                  <br />
+                  This may take a few seconds.
+                </div>
               </Loader>
             </LoaderWithMargin>
           ) : (
