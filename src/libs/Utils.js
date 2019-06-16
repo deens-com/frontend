@@ -79,7 +79,7 @@ export const getISODateString = date => {
 
 export const formatYYYYMMDD = date => {
   const forSureDate = new Date(date);
-  let month = '' + forSureDate.getMonth() + 1;
+  let month = '' + (forSureDate.getMonth() + 1);
   let day = '' + forSureDate.getDate();
   const year = '' + forSureDate.getFullYear();
   if (month.length < 2) month = '0' + month;
