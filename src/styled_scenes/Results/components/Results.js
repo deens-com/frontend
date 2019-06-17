@@ -166,6 +166,7 @@ class Results extends Component {
       baseCurrency: service.baseCurrency,
       services: [{ service: service._id, day: 1 }],
       duration: service.duration,
+      location: service.originalLocation,
     };
     const newTrip = (await apiClient.trips.post(serviceGroup)).data;
     this.showAddedToDays([1], service, newTrip);
