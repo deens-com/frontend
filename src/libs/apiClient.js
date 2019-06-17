@@ -53,13 +53,12 @@ export default {
       delete: id => deleteEndpoint(`/hearts/trips/${id}`)(),
     },
     availability: {
-      get: (id, { bookingDate, adultCount, infantCount, childrenCount, peopleCount }) =>
-        get(`/availabilities/trips/${id}`)({
+      get: (id, { bookingDate, adultCount, infantCount, childrenCount }) =>
+        get(`/availabilities/trips/${id}/auto-update`)({
           bookingDate,
           adultCount,
           infantCount,
           childrenCount,
-          peopleCount,
         }),
       anonymous: {
         post: body => post(`/trips/anonymous-availability`)(body),
