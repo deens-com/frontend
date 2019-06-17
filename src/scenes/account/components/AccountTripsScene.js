@@ -20,6 +20,19 @@ class AccountTripsScene extends Component {
     };
   }
 
+  onDelete = id => {
+    const index = this.state.trips.findIndex(trip => trip._id === id);
+    const tripToDelete = this.state.trips[index];
+    this.setState(prevState => ({
+      trips: prevState.trips.filter(trip => trip._id !== id),
+    }));
+    apiClient.trips.delete(id).catch(() => {
+      this.setState(prevState => ({
+        trips: [...prevState.trips.slice(0, index), tripToDelete, ...prevState.trips.slice(index)],
+      }));
+    });
+  };
+
   loadTrips = () => {
     if (this.state.isLoading) {
       return;
@@ -60,6 +73,7 @@ class AccountTripsScene extends Component {
               trips={this.state.trips}
               totalTrips={this.state.count}
               fetchTrips={this.loadTrips}
+              onDelete={this.onDelete}
             />
           </Grid.Column>
         </Grid>
