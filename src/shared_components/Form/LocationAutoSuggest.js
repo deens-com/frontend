@@ -25,6 +25,7 @@ const Wrapper = styled.div`
   flex-grow: 1;
   width: 0;
   cursor: text;
+  display: flex;
   input {
     font-weight: bold;
     &::placeholder {
@@ -116,6 +117,12 @@ const GoButton = styled.span`
   border-radius: 2px 2px 2px 0;
   margin-left: 10px;
 `;
+/*
+position: absolute;
+  background: white;
+  right: 0;
+  top: 0;
+  */
 
 /**
  * A more advanced version of LocationControl
@@ -377,21 +384,21 @@ export default class SemanticLocationControl extends Component {
                           {!this.state.isOpen && (
                             <span style={{ fontWeight: 700 }}>{this.state.address}</span>
                           )}
-                          {!this.state.isOpen &&
-                            this.state.address &&
-                            this.props.showGoButton && (
-                              <GoButton
-                                onClick={e => {
-                                  e.stopPropagation();
-                                  this.props.updateSearchParams({});
-                                }}
-                              >
-                                Go
-                              </GoButton>
-                            )}
                         </>
                       )}
                     </div>
+                    {!this.state.isOpen &&
+                      this.state.address &&
+                      this.props.showGoButton && (
+                        <GoButton
+                          onClick={e => {
+                            e.stopPropagation();
+                            this.props.updateSearchParams({});
+                          }}
+                        >
+                          Go
+                        </GoButton>
+                      )}
                   </Wrapper>
                   {this.state.isOpen &&
                     Boolean(this.state.address) && (
