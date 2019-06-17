@@ -90,6 +90,9 @@ const Divider = styled.span`
 `;
 
 const NavLink = styled(Link)`
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
   ${navItemStyle} margin: 0 8px;
   ${navItemStyle} p {
     color: ${colors.primary};

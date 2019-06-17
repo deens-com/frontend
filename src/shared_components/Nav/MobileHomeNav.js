@@ -19,6 +19,7 @@ const Wrap = styled.div`
   align-items: center;
   position: relative;
   margin-left: auto;
+  max-width: 200px;
 `;
 
 const Menu = styled.ul`
@@ -124,7 +125,10 @@ class MobileHomeNav extends Component {
     return (
       <>
         {this.props.latestTrip && (
-          <Link to={urls.trip.organize(this.props.latestTrip._id)} style={{ color: 'inherit' }}>
+          <Link
+            style={{ height: '1.2em', overflow: 'hidden', color: 'inherit' }}
+            to={urls.trip.organize(this.props.latestTrip._id)}
+          >
             <I18nText data={this.props.latestTrip.title} />
           </Link>
         )}
