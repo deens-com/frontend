@@ -108,7 +108,7 @@ const MapOverlay = styled.div`
 const TopGrid = styled.div`
   display: grid;
   row-gap: 15px;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   margin: 0 15px;
   ${props => props.showingMobile && 'grid-template-columns: 1fr;'} ${media.minMedium} {
     grid-template-columns: auto 1fr;
@@ -130,9 +130,13 @@ const RightColumn = styled.div`
   justify-self: flex-end;
   display: flex;
   align-items: center;
-  ${props => props.showingMobile && 'display: none;'} ${media.minMedium} {
+  position: absolute;
+  right: 15px;
+  ${media.minMedium} {
     grid-template-columns: auto 1fr;
     display: flex;
+    position: relative;
+    right: auto;
   }
 `;
 
@@ -456,7 +460,7 @@ class ResultsScene extends Component {
               onMobileToggle={this.onMobileFiltersToggle}
             />
           </FiltersWrapper>
-          <RightColumn showingMobile={showingFiltersMobile}>
+          <RightColumn>
             <MapToggle style={{ marginRight: '10px' }}>
               <Checkbox
                 color="green"
