@@ -101,11 +101,12 @@ const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (dispatch, getSt
     const newTripTitle = { en: `Trip to ${service.location}` };
     const serviceGroup = {
       title: newTripTitle,
-      description: { en: service.description },
+      ...(service.description && { description: { en: service.description } }),
       basePrice: service.basePrice,
       baseCurrency: service.baseCurrency,
       services: [{ service: service._id, day: 1 }],
       duration: service.duration,
+      location: service.originalLocation,
     };
     dispatch({
       type: 'TRIP_CREATING',
@@ -116,7 +117,7 @@ const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (dispatch, getSt
       setAddedToTripMessage(formattedTrip)(dispatch);
       dispatch(tripCreated({ trip: formattedTrip }));
       if (redirectToCreatedTrip) {
-        history.push(urls.trip.organize(newTrip.data._id));
+        history.push(urls.trip.checkout(newTrip.data._id));
       }
     }
   } catch (error) {

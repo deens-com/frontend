@@ -78,6 +78,7 @@ const mapImage = (image, i) => {
 
 const createService = (values, custom) => {
   const i18nLocale = 'en';
+  console.log(values.subtitle);
   return {
     isCustom: Boolean(custom),
     categories: [
@@ -316,15 +317,16 @@ const createServiceFromUrl = data => {
 
   return {
     ...data,
-    title: {
+    title: data.title,
+    description: data.description,
+    /*{
       [i18nLocale]: data.title,
     },
-    subtitle: {
-      [i18nLocale]: '',
-    },
-    description: {
-      [i18nLocale]: data.description,
-    },
+    ...(data.description && {
+      description: {
+        [i18nLocale]: data.description,
+      },
+    }),*/
     media: data.images.map((image, i) => ({
       type: 'image',
       hero: i === 0,
