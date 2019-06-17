@@ -107,5 +107,17 @@ export function setLastSearchParams(params) {
 }
 
 export function getLastSearchParams() {
-  return JSON.parse(localStorage.getItem(lastSearchKey));
+  const params = JSON.parse(localStorage.getItem(lastSearchKey));
+  if (!params) {
+    return null;
+  }
+  if (!params.locationSearchType) {
+    delete params.lat;
+    delete params.lng;
+    delete params.countryCode;
+    delete params.state;
+    delete params.city;
+    delete params.address;
+  }
+  return params;
 }

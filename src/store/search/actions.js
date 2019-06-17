@@ -9,6 +9,7 @@ import {
   getParamsToSave,
   prefetchWithNewParams,
 } from 'libs/search';
+import { removeMultiParams } from 'libs/location';
 import { setLastSearchParams, getLastSearchParams } from 'libs/localStorage';
 import { removeMultipleLocations } from 'libs/search';
 import urls from 'libs/urlGenerator';
@@ -83,20 +84,23 @@ const updateSearchParams = (searchParams, state, customPage, noPushUrl, noFetch)
   if (!params.type) {
     params = { ...params, type: getState().search.searchQuery.type || 'trip' };
   }
-  params = removeMultipleLocations(getSearchParams({ ...params, ...searchParams, page }));
 
-  if (params.lat && params.lng) {
-    delete params.city;
-    delete params.state;
-    delete params.countryCode;
-  }
+  let reqParams = params;
+  const { type: searchForType, ...urlParams } = getSearchParams({ ...params, page });
+
+  reqParams = {
+    ...reqParams,
+    ...removeMultiParams(reqParams),
+  };
+
+  reqParams = removeMultipleLocations(getSearchParams({ ...reqParams, page }));
 
   if (!noFetch) {
-    dispatch(fetchResults(params));
+    dispatch(fetchResults(reqParams));
   }
 
   if (!noPushUrl) {
-    history.push(urls.search(params.type, params), state);
+    history.push(urls.search(searchForType, urlParams), state);
   }
 
   prefetchWithNewParams(paramsToSave, savedParams);

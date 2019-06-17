@@ -1,7 +1,7 @@
 import queryString from 'query-string';
 import apiClient from 'libs/apiClient';
 import { isEqual } from 'lodash';
-import { formatYYYYMMDD } from 'libs/Utils';
+import { formatYYYYMMDD, isSearchPage } from 'libs/Utils';
 
 export function getAddress(params) {
   if (params.text) {
@@ -44,7 +44,29 @@ const parseArrayOrNumber = field => {
   return field.sort();
 };
 
-export const getSearchParams = searchParams => {
+export const selectLocationSearchType = params => {
+  if (params.locationSearchType) {
+    return params.locationSearchType;
+  }
+  if (usingLatAndLng(params)) {
+    return 'latlng';
+  }
+  if (usingBoundingBox(params)) {
+    return 'bounds';
+  }
+  if (usingCountryCode(params)) {
+    return 'placeData';
+  }
+  return undefined;
+};
+
+export const getSearchParams = params => {
+  const locationSearchType = selectLocationSearchType(params);
+  let searchParams = params;
+  if (locationSearchType === 'bounds') {
+    const { lat, lng, city, state, countryCode, ...restParams } = params;
+    searchParams = restParams;
+  }
   return {
     // does not properly parse '+'.
     type: searchParams.type,
@@ -71,6 +93,7 @@ export const getSearchParams = searchParams => {
     text: searchParams.text || undefined,
     page: searchParams.page || 1,
     limit: searchParams.limit || 25,
+    locationSearchType,
   };
 };
 
@@ -86,6 +109,7 @@ const paramsToSaveKeys = [
   'address',
   'startDate',
   'endDate',
+  'locationSearchType',
 ];
 
 export const getParamsToSave = (searchParams, currentSavedParams) => {
@@ -111,6 +135,9 @@ export const getParamsToSave = (searchParams, currentSavedParams) => {
 
   paramsToSaveKeys.forEach(param => {
     if (param in searchParams) {
+      if (param === 'locationSearchType' && searchParams[param] === 'bounds') {
+        return;
+      }
       paramsToSave[param] = searchParams[param];
     }
   });
@@ -118,13 +145,15 @@ export const getParamsToSave = (searchParams, currentSavedParams) => {
 };
 
 export const mapUrlToProps = location => {
-  if (!/^\/search\//.test(location.pathname)) {
+  if (!isSearchPage(location.pathname)) {
     return {};
   }
 
   const searchParams = queryString.parse(location.search);
-
-  return getSearchParams(searchParams);
+  return getSearchParams({
+    ...searchParams,
+    type: location.pathname.substring(location.pathname.lastIndexOf('/') + 1),
+  });
 };
 
 // If there is some processing required, just add the field here
@@ -175,16 +204,11 @@ export const removeMultipleLocations = params => {
 };
 
 export const getLocationParams = params => ({
-  ...(params.city || params.countryCode
-    ? {
-        city: params.city,
-        state: params.state,
-        countryCode: params.countryCode,
-      }
-    : {
-        lat: params.lat,
-        lng: params.lng,
-      }),
+  city: params.city,
+  state: params.state,
+  countryCode: params.countryCode,
+  lat: params.lat,
+  lng: params.lng,
 });
 
 const GUESTS = 'guests';

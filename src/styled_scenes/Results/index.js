@@ -411,6 +411,7 @@ class ResultsScene extends Component {
       topRightLng: northEastLng,
       bottomLeftLat: southWestLat,
       bottomLeftLng: southWestLng,
+      locationSearchType: 'bounds',
     });
   };
 
