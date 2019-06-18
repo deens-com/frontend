@@ -9,6 +9,7 @@ import DatesFilter from './Dates';
 import PriceRangeFilter from './PriceRange';
 import PriceTagsFilter from './PriceTags';
 import TagsFilter from './Tags';
+import TextFilter from './Text';
 import { isMatch } from 'lodash';
 import { media } from 'libs/styled';
 import FiltersIcon from 'shared_components/icons/FiltersIcon';
@@ -74,7 +75,8 @@ const Filters = ({
     const keepPage = isMatch(searchParams, params);
     updateSearchParams(params, undefined, keepPage ? searchParams.page : undefined);
   };
-  const filters = filtersByType[searchParams.type];
+  const [showOnlyText, setShowOnlyText] = useState(false);
+  const filters = showOnlyText ? [availableFilters.text] : filtersByType[searchParams.type];
 
   if (!filters) {
     return null;
@@ -148,6 +150,14 @@ const Filters = ({
         <TagsFilter
           selectedTags={searchParams.tags && searchParams.tags.map(tag => ({ value: tag }))}
           onApply={search}
+        />
+      )}
+      {filters.includes(availableFilters.text) && (
+        <TextFilter
+          text={searchParams.text}
+          onApply={search}
+          onChange={setShowOnlyText}
+          big={showOnlyText}
         />
       )}
     </Wrapper>
