@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import tripActions from 'store/trips/actions';
 import searchActions from 'store/search/actions';
+import * as sessionActions from 'store/session/actions';
 import { debounce } from 'lodash';
 
 import history from 'main/history';
@@ -503,6 +504,7 @@ class ResultsScene extends Component {
               goBackToTrip={this.goBackToTrip}
               updateSearchParams={props.updateSearchParams}
               userTrips={this.props.userTrips}
+              getCurrentUserTrip={this.props.getCurrentUserTrip}
             />
           </ServicesWrapper>
           <MapPlaceholder ref={this.mapPlaceholderRef} />
@@ -567,6 +569,7 @@ const mapDispatchToProps = dispatch => {
     {
       fetchUserTrips: tripActions.fetchUserTrips,
       updateSearchParams: searchActions.updateSearchParams,
+      getCurrentUserTrip: sessionActions.getCurrentUserTrip,
     },
     dispatch,
   );

@@ -169,6 +169,7 @@ class Results extends Component {
       location: service.originalLocation,
     };
     const newTrip = (await apiClient.trips.post(serviceGroup)).data;
+    this.props.getCurrentUserTrip();
     this.showAddedToDays([1], service, newTrip);
   };
 
