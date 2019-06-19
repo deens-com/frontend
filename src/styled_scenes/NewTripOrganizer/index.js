@@ -474,6 +474,8 @@ class TripOrganizer extends React.Component {
     this.props.updateSearchParams(
       {
         type,
+        countryCode: location.countryCode,
+        locationSearchType: 'latlng',
         lat: coord && coord.lat,
         lng: coord && coord.lng,
         adults: tripData.adultCount,
