@@ -54,7 +54,7 @@ const PriceRange = ({ text, onChange, onApply, big }) => {
       <InlineInput
         customWrapper={big ? BigWrapper : Wrapper}
         autoselect
-        placeholder="Search by text"
+        placeholder="Keywords"
         hideIcon
         onFocusChange={onChange}
         onChanged={value => {
