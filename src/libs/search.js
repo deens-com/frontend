@@ -244,11 +244,15 @@ export const prefetchWithNewParams = (newParams, oldParams) => {
   }
   if ((newParams.city && newParams.countryCode) || (newParams.lat && newParams.lng)) {
     if (newParams.startDate) {
+      const { lat, lng } = getLocationParams(newParams);
       const body = {
         adultCount: newParams.adults || 2,
         childrenCount: newParams.children || 0,
         infantCount: newParams.infants || 0,
-        location: getLocationParams(newParams),
+        location: {
+          lat,
+          lng,
+        },
         dates: [formatYYYYMMDD(newParams.startDate)],
       };
       apiClient.services.search.prefetch(body);
