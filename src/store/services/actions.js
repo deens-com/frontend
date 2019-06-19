@@ -3,6 +3,7 @@ import axios from 'libs/axios';
 import fetch_helpers, { parseTags } from 'libs/fetch_helpers';
 import * as tripUtils from 'libs/trips';
 import urls from 'libs/urlGenerator';
+import { getCurrentUserTrip } from 'store/session/actions';
 
 const trips_fetched = trips => {
   return {
@@ -115,6 +116,7 @@ const createNewTrip = ({ tripLocation, redirectToCreatedTrip } = {}) => async (
       type: 'TRIP_CREATING',
     });
     const newTrip = await axios.post(`/trips`, serviceGroup);
+    dispatch(getCurrentUserTrip());
     if (newTrip) {
       const formattedTrip = fetch_helpers.buildServicesJson([newTrip.data])[0];
       setAddedToTripMessage(formattedTrip)(dispatch);

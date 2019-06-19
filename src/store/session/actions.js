@@ -189,6 +189,7 @@ export const logOut = () => dispatch => {
   removeSession();
   dispatch(sessionsFetched({ session: {} })); // why this???
   dispatch(changeCurrentUserTrip(null));
+  dispatch(getCurrentUser());
   history.push('/');
 };
 
