@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useLayoutEffect, useEffect, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { isIosDevice } from 'libs/Utils';
@@ -9,6 +9,7 @@ import TextArea from 'shared_components/TextArea';
 
 const Text = styled.div`
   display: inline-flex;
+  vertical-align: middle;
   cursor: text;
   align-items: center;
   white-space: ${props => (props.wrapLines ? 'pre-wrap' : 'normal')};
@@ -64,19 +65,46 @@ const Textarea = styled(TextArea)`
 
 const InlineInput = ({
   children,
+  customWrapper,
   textPrefix,
   placeholder,
   onChanged,
   inputTextColor,
   disallowEmptySubmit,
   useTextarea,
-  autoexpandTextarea,
+  autoexpand,
   inputPadding,
   iconColor,
+  onFocusChange,
+  hideIcon,
+  autoselect,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const onStartEditing = () => setIsEditing(true);
   const inputEl = useRef(null);
+  const render = element => {
+    if (customWrapper) {
+      const Wrap = customWrapper;
+      return <Wrap onClick={onStartEditing}>{element}</Wrap>;
+    }
+    return element;
+  };
+
+  useEffect(
+    () => {
+      onFocusChange(isEditing);
+    },
+    [isEditing, onFocusChange],
+  );
+
+  useLayoutEffect(
+    () => {
+      if (isEditing && inputEl.current && autoselect) {
+        inputEl.current.select();
+      }
+    },
+    [isEditing, autoselect],
+  );
 
   const onKeyPress = useCallback(
     event => {
@@ -139,64 +167,72 @@ const InlineInput = ({
   if (isEditing) {
     const defaultValue = typeof children === 'number' ? children : children || ''; // this is to support 0 as children
     if (useTextarea) {
-      return (
+      return render(
         <Textarea
           padding={inputPadding}
           inputTextColor={inputTextColor}
           ref={inputEl}
           autoFocus
           defaultValue={defaultValue}
-          autoexpand={autoexpandTextarea}
-        />
+          autoexpand={autoexpand}
+        />,
       );
     }
-    return (
+    return render(
       <Input
         padding={inputPadding}
         inputTextColor={inputTextColor}
         ref={inputEl}
         autoFocus
         defaultValue={defaultValue}
-      />
+      />,
     );
   }
 
   const child = typeof children === 'number' ? children : children || placeholder; // this is to support 0 as children
 
-  return (
+  return render(
     <Text
       iconColor={iconColor}
       margin={inputPadding}
       wrapLines={useTextarea}
       onClick={onStartEditing}
     >
-      <P>{textPrefix}</P>
+      {textPrefix && <P>{textPrefix}</P>}
       {child}
-      <PencilIcon />
-    </Text>
+      {!hideIcon && <PencilIcon />}
+    </Text>,
   );
 };
 
 InlineInput.propTypes = {
   onChanged: PropTypes.func.isRequired,
+  customWrapper: PropTypes.any,
+  onFocusChange: PropTypes.func,
   children: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   placeholder: PropTypes.string,
   inputTextColor: PropTypes.string,
   textPrefix: PropTypes.string,
   disallowEmptySubmit: PropTypes.bool,
+  hideIcon: PropTypes.bool,
   useTextarea: PropTypes.bool,
-  autoexpandTextarea: PropTypes.bool,
+  autoexpand: PropTypes.bool,
+  autoselect: PropTypes.bool,
   inputPadding: PropTypes.string,
 };
 
 InlineInput.defaultProps = {
+  customWrapper: null,
+  onFocusChange: () => {},
   children: '',
   placeholder: '',
   inputTextColor: '',
   textPrefix: '',
   disallowEmptySubmit: false,
+  hideIcon: false,
   useTextarea: false,
-  autoexpandTextarea: false,
+  autoexpand: false,
+  autoselect: false,
   inputPadding: '0 5px',
 };
 

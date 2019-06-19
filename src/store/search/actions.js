@@ -40,18 +40,6 @@ const fetchResults = searchQuery =>
       ...(searchForTrips ? { include: ['owner', 'tags'] } : {}),
     };
 
-    if (!searchForTrips) {
-      if (params.text) {
-        return {
-          results: [],
-          count: 0,
-          minPrice: null,
-          maxPrice: null,
-          tags: [],
-          extraData: null,
-        };
-      }
-    }
     const results = await (searchForTrips
       ? api.trips.search.get(params)
       : api.services.search.get(params));

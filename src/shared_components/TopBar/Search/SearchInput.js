@@ -77,6 +77,7 @@ export default class DesktopSearchInput extends Component {
       inFocus: false,
       serviceType: props.searchParams.type || 'trip',
       params: {},
+      text: props.searchParams.text || undefined,
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -149,7 +150,7 @@ export default class DesktopSearchInput extends Component {
     const params = {
       ...this.props.searchParams,
       ...this.state.params,
-      text: this.state.text,
+      text: undefined,
       type: serviceType,
       priceLevel: undefined,
       priceStart: undefined,
