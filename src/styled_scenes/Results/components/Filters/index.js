@@ -21,6 +21,7 @@ const Wrapper = styled.div`
   flex-grow: 1;
   display: block;
   margin-right: 15px;
+  margin-top: -10px;
   > div:not(:last-child) {
     margin-right: 15px;
   }
@@ -29,7 +30,7 @@ const Wrapper = styled.div`
     ${media.minSmall} {
       display: inline-block;
     }
-    margin-bottom: 10px;
+    margin-top: 10px;
   }
 `;
 
@@ -68,6 +69,7 @@ const Filters = ({
   minPossiblePrice,
   maxPossiblePrice,
   updateSearchParams,
+  onMobileToggle,
 }) => {
   const [showingMobile, setShowingMobile] = useState(false);
   const search = params => {
@@ -80,6 +82,14 @@ const Filters = ({
     return null;
   }
 
+  const handleMobileToggle = () => {
+    const newValue = !showingMobile;
+    if (onMobileToggle) {
+      onMobileToggle(newValue);
+    }
+    setShowingMobile(newValue);
+  };
+
   return (
     <Wrapper showingMobile={showingMobile}>
       {backToTrip && (
@@ -90,11 +100,7 @@ const Filters = ({
       )}
 
       <FilterIconWrapper showingMobile={showingMobile}>
-        <span
-          onClick={() => {
-            setShowingMobile(!showingMobile);
-          }}
-        >
+        <span onClick={handleMobileToggle}>
           <FiltersIcon />
         </span>
       </FilterIconWrapper>
