@@ -40,18 +40,6 @@ const fetchResults = searchQuery =>
       ...(searchForTrips ? { include: ['owner', 'tags'] } : {}),
     };
 
-    if (!searchForTrips) {
-      if (params.text) {
-        return {
-          results: [],
-          count: 0,
-          minPrice: null,
-          maxPrice: null,
-          tags: [],
-          extraData: null,
-        };
-      }
-    }
     const results = await (searchForTrips
       ? api.trips.search.get(params)
       : api.services.search.get(params));
@@ -107,7 +95,10 @@ const updateSearchParams = (searchParams, state, customPage, noPushUrl, noFetch)
   setLastSearchParams(paramsToSave);
   dispatch({
     type: types.updateQueryParams,
-    payload: params,
+    payload: {
+      type: searchForType,
+      ...urlParams,
+    },
   });
 };
 

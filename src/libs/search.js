@@ -4,7 +4,7 @@ import { isEqual } from 'lodash';
 import { formatYYYYMMDD, isSearchPage } from 'libs/Utils';
 
 export function getAddress(params) {
-  if (params.text) {
+  if (params.text && (params.type === 'trip' || !params.type)) {
     return params.text;
   }
   if (params.address) {
@@ -218,6 +218,7 @@ const PRICE_RANGE_ONLY_MAX = 'priceRangeOnlyMax';
 const TAGS = 'tags';
 const SINGLE_DATE = 'singleDate';
 const PRICE_TAGS = 'priceTags';
+const TEXT = 'text';
 
 export const availableFilters = {
   guests: GUESTS,
@@ -227,13 +228,14 @@ export const availableFilters = {
   tags: TAGS,
   singleDate: SINGLE_DATE,
   priceTags: PRICE_TAGS,
+  text: TEXT,
 };
 
 export const filtersByType = {
   trip: [GUESTS, DATES, PRICE_RANGE, TAGS],
-  accommodation: [GUESTS, DATES, PRICE_RANGE],
-  activity: [GUESTS, SINGLE_DATE, PRICE_RANGE_ONLY_MAX, TAGS],
-  food: [GUESTS, PRICE_TAGS, TAGS],
+  accommodation: [GUESTS, DATES, PRICE_RANGE, TEXT],
+  activity: [GUESTS, SINGLE_DATE, PRICE_RANGE_ONLY_MAX, TAGS, TEXT],
+  food: [GUESTS, PRICE_TAGS, TAGS, TEXT],
 };
 
 export const prefetchWithNewParams = (newParams, oldParams) => {
@@ -242,11 +244,15 @@ export const prefetchWithNewParams = (newParams, oldParams) => {
   }
   if ((newParams.city && newParams.countryCode) || (newParams.lat && newParams.lng)) {
     if (newParams.startDate) {
+      const { lat, lng } = getLocationParams(newParams);
       const body = {
         adultCount: newParams.adults || 2,
         childrenCount: newParams.children || 0,
         infantCount: newParams.infants || 0,
-        location: getLocationParams(newParams),
+        location: {
+          lat,
+          lng,
+        },
         dates: [formatYYYYMMDD(newParams.startDate)],
       };
       apiClient.services.search.prefetch(body);

@@ -10,7 +10,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import tripActions from 'store/trips/actions';
 import searchActions from 'store/search/actions';
+import * as sessionActions from 'store/session/actions';
 import { debounce } from 'lodash';
+import pluralize from 'pluralize';
+import Button from 'shared_components/Button';
 
 import history from 'main/history';
 // COMPONENTS
@@ -27,7 +30,7 @@ import { waitUntilMapsLoaded } from 'libs/Utils';
 // STYLES
 import { PageContent } from './../../shared_components/layout/Page';
 import { primary, textLight } from 'libs/colors';
-import { P } from 'libs/commonStyles';
+import { P, PStrong } from 'libs/commonStyles';
 import Sort from './components/Sort';
 import HelpMe from 'shared_components/HelpMe';
 import { usingBoundingBox } from 'libs/search';
@@ -56,6 +59,15 @@ const MapWrapper = styled.div`
     font-size: 52px;
     text-align: center;
     max-width: 400px;
+  }
+`;
+
+const FiltersWrapper = styled.div`
+  margin-top: 10px;
+  align-self: center;
+  ${media.minMedium} {
+    margin-top: 0;
+    align-self: flex-start;
   }
 `;
 
@@ -94,20 +106,47 @@ const MapOverlay = styled.div`
   pointer-events: none;
 `;
 
-const TopFiltersWrapper = styled.div``;
+const TopGrid = styled.div`
+  display: grid;
+  row-gap: 15px;
+  grid-template-columns: 1fr;
+  margin: 0 15px;
+  ${props => props.showingMobile && 'grid-template-columns: 1fr;'} ${media.minMedium} {
+    grid-template-columns: auto 1fr;
+  }
+`;
+
+const SortWrapper = styled.div`
+  justify-self: flex-start;
+  align-self: flex-start;
+  display: none;
+  ${props => props.showingMobile && 'display: block;'} ${media.minMedium} {
+    justify-self: flex-end;
+    display: block;
+  }
+`;
 
 const RightColumn = styled.div`
   align-self: flex-start;
-  flex-direction: column;
-  > *:first-child {
-    margin-bottom: 10px;
+  justify-self: flex-end;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  right: 15px;
+  ${media.minMedium} {
+    grid-template-columns: auto 1fr;
+    display: flex;
+    position: relative;
+    right: auto;
   }
 `;
 
 const AddingServiceTopBar = styled.div`
-  display: flex;
-  align-items: center;
-  margin: 10px 15px;
+  display: none;
+  align-items: flex-start;
+  ${media.minMedium} {
+    display: flex;
+  }
 `;
 
 const CreateService = styled.span`
@@ -124,29 +163,12 @@ const MapToggle = styled.div`
   cursor: pointer;
 `;
 
-const TopFilters = styled.div`
-  display: flex;
-  margin: 0 15px;
-  align-items: center;
-`;
-
 const ByYelp = styled.div`
   display: flex;
-  align-items: center;
-  margin: -10px 15px;
-  > p {
-    margin-top: 10px;
-  }
-  img {
-    width: 100px;
-  }
-`;
-
-const FirstLineRightColumn = styled.div`
-  display: flex;
-  align-items: center;
-  > *:not(:first-child) {
-    margin-left: 10px;
+  align-items: flex-start;
+  margin-bottom: -10px;
+  ${props => props.showingMobile && 'display: none;'} ${media.minMedium} {
+    display: flex;
   }
 `;
 
@@ -176,6 +198,7 @@ class ResultsScene extends Component {
       markers: [],
       showMap: true,
       searchByMoving: true,
+      showingFiltersMobile: false,
     };
     this.mapRef = React.createRef();
     this.mapPlaceholderRef = React.createRef();
@@ -254,6 +277,12 @@ class ResultsScene extends Component {
       window.removeEventListener('scroll', this.resizeHandler);
     }
   }
+
+  onMobileFiltersToggle = value => {
+    this.setState({
+      showingFiltersMobile: value,
+    });
+  };
 
   toggleMap = () => {
     this.setState(prevState => {
@@ -417,81 +446,102 @@ class ResultsScene extends Component {
 
   render() {
     const { props } = this;
-    const { center, zoom, markers } = this.state;
+    const { center, zoom, markers, showingFiltersMobile } = this.state;
     const type = props.searchParams.type;
     return (
       <React.Fragment>
-        <TopFiltersWrapper>
-          <TopFilters>
+        <TopGrid showingMobile={showingFiltersMobile}>
+          <FiltersWrapper>
             <Filters
               backToTrip={props.routeState && props.routeState.tripId}
               searchParams={props.searchParams}
               updateSearchParams={props.updateSearchParams}
               minPossiblePrice={props.minPossiblePrice}
               maxPossiblePrice={props.maxPossiblePrice}
+              onMobileToggle={this.onMobileFiltersToggle}
             />
-            <RightColumn>
-              <FirstLineRightColumn>
-                <HelpMe isLoadingUser={false} session={this.props.session} buttonSize="small" />
-                <MapToggle>
-                  <Checkbox
-                    color="green"
-                    toggle
-                    checked={this.state.showMap}
-                    onClick={this.toggleMap}
-                  />{' '}
-                  &nbsp;&nbsp;
-                  <P onClick={this.toggleMap}>Show Map</P>
-                </MapToggle>
-              </FirstLineRightColumn>
-              <Sort
-                searchParams={this.props.searchParams}
-                updateSearchParams={props.updateSearchParams}
-              />
-            </RightColumn>
-          </TopFilters>
-        </TopFiltersWrapper>
-        {props.routeState &&
-          Boolean(props.routeState.tripId) && (
-            <AddingServiceTopBar>
-              <P>
-                {Boolean(props.count) && (
-                  <strong>
-                    {props.count >= 1000
-                      ? `More than ${props.count} found.`
-                      : `${props.count} found.`}
-                  </strong>
-                )}{' '}
-                <span>Still not satisfied?</span>{' '}
-                {type !== 'trip' ? (
-                  <CreateService onClick={this.createExternalService}>
-                    Add {type !== 'food' ? addPrefixArticle(type) : type}
-                  </CreateService>
-                ) : (
-                  <CreateService onClick={this.createExternalService}>
-                    Create your own trip
-                  </CreateService>
-                )}
-              </P>
-              {this.state.modalOpen && (
-                <CreateServiceModal
-                  day={props.routeState.day}
-                  trip={props.trip}
-                  goBackToTrip={this.goBackToTrip}
-                  open={this.state.modalOpen}
-                  closeModal={this.closeExternalServiceModal}
-                />
+          </FiltersWrapper>
+          <RightColumn>
+            <MapToggle style={{ marginRight: '10px' }}>
+              <Checkbox
+                color="green"
+                toggle
+                checked={this.state.showMap}
+                onClick={this.toggleMap}
+              />{' '}
+              &nbsp;&nbsp;
+              <P onClick={this.toggleMap}>Show Map</P>
+            </MapToggle>
+            {props.routeState && props.routeState.tripId ? (
+              <HelpMe isLoadingUser={false} session={this.props.session} buttonSize="small" />
+            ) : (
+              <Button
+                type="link"
+                theme="primaryFilled"
+                size="small"
+                href={{
+                  pathname: '/new/trip',
+                  state: {
+                    modal: true,
+                  },
+                }}
+              >
+                <PStrong>Create Trip</PStrong>
+              </Button>
+            )}
+          </RightColumn>
+          <AddingServiceTopBar>
+            <P>
+              {Boolean(props.count) && (
+                <strong>
+                  {props.count >= 1000
+                    ? `More than ${props.count} ${pluralize(
+                        type !== 'food' ? type : 'restaurant',
+                      )} found.`
+                    : `${props.count} ${pluralize(type !== 'food' ? type : 'restaurant')} found.`}
+                </strong>
+              )}{' '}
+              <span>Still not satisfied?</span>{' '}
+              {type !== 'trip' ? (
+                <CreateService onClick={this.createExternalService}>
+                  Add {addPrefixArticle(type !== 'food' ? type : 'restaurant')}
+                </CreateService>
+              ) : (
+                <CreateService onClick={this.createExternalService}>
+                  Create your own trip
+                </CreateService>
               )}
-            </AddingServiceTopBar>
+            </P>
+            {this.state.modalOpen && (
+              <CreateServiceModal
+                day={props.routeState.day}
+                trip={props.trip}
+                goBackToTrip={this.goBackToTrip}
+                open={this.state.modalOpen}
+                closeModal={this.closeExternalServiceModal}
+              />
+            )}
+          </AddingServiceTopBar>
+          <SortWrapper showingMobile={showingFiltersMobile}>
+            <Sort
+              searchParams={this.props.searchParams}
+              updateSearchParams={props.updateSearchParams}
+            />
+          </SortWrapper>
+          {type === 'food' && (
+            <ByYelp showingMobile={showingFiltersMobile}>
+              <P style={{ marginBottom: 0 }}>Restaurants provided by</P>
+              <a
+                style={{ marginTop: '-25px', marginLeft: '-10px' }}
+                href="https://yelp.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img style={{ width: '100px' }} src={yelpLogo} alt="Yelp" />
+              </a>
+            </ByYelp>
           )}
-        {type === 'food' && (
-          <ByYelp>
-            <P>Restaurants provided by</P>
-            <a href="https://yelp.com" target="_blank" rel="noopener noreferrer">
-              <img src={yelpLogo} alt="Yelp" />
-            </a>
-          </ByYelp>
-        )}
+        </TopGrid>
         <PageContent flex>
           <ServicesWrapper>
             <Results
@@ -503,6 +553,7 @@ class ResultsScene extends Component {
               goBackToTrip={this.goBackToTrip}
               updateSearchParams={props.updateSearchParams}
               userTrips={this.props.userTrips}
+              getCurrentUserTrip={this.props.getCurrentUserTrip}
             />
           </ServicesWrapper>
           <MapPlaceholder ref={this.mapPlaceholderRef} />
@@ -567,6 +618,7 @@ const mapDispatchToProps = dispatch => {
     {
       fetchUserTrips: tripActions.fetchUserTrips,
       updateSearchParams: searchActions.updateSearchParams,
+      getCurrentUserTrip: sessionActions.getCurrentUserTrip,
     },
     dispatch,
   );

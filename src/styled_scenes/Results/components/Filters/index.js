@@ -9,6 +9,7 @@ import DatesFilter from './Dates';
 import PriceRangeFilter from './PriceRange';
 import PriceTagsFilter from './PriceTags';
 import TagsFilter from './Tags';
+import TextFilter from './Text';
 import { isMatch } from 'lodash';
 import { media } from 'libs/styled';
 import FiltersIcon from 'shared_components/icons/FiltersIcon';
@@ -21,6 +22,7 @@ const Wrapper = styled.div`
   flex-grow: 1;
   display: block;
   margin-right: 15px;
+  margin-top: -10px;
   > div:not(:last-child) {
     margin-right: 15px;
   }
@@ -29,7 +31,7 @@ const Wrapper = styled.div`
     ${media.minSmall} {
       display: inline-block;
     }
-    margin-bottom: 10px;
+    margin-top: 10px;
   }
 `;
 
@@ -68,17 +70,27 @@ const Filters = ({
   minPossiblePrice,
   maxPossiblePrice,
   updateSearchParams,
+  onMobileToggle,
 }) => {
   const [showingMobile, setShowingMobile] = useState(false);
   const search = params => {
     const keepPage = isMatch(searchParams, params);
     updateSearchParams(params, undefined, keepPage ? searchParams.page : undefined);
   };
-  const filters = filtersByType[searchParams.type];
+  const [showOnlyText, setShowOnlyText] = useState(false);
+  const filters = showOnlyText ? [availableFilters.text] : filtersByType[searchParams.type];
 
   if (!filters) {
     return null;
   }
+
+  const handleMobileToggle = () => {
+    const newValue = !showingMobile;
+    if (onMobileToggle) {
+      onMobileToggle(newValue);
+    }
+    setShowingMobile(newValue);
+  };
 
   return (
     <Wrapper showingMobile={showingMobile}>
@@ -90,11 +102,7 @@ const Filters = ({
       )}
 
       <FilterIconWrapper showingMobile={showingMobile}>
-        <span
-          onClick={() => {
-            setShowingMobile(!showingMobile);
-          }}
-        >
+        <span onClick={handleMobileToggle}>
           <FiltersIcon />
         </span>
       </FilterIconWrapper>
@@ -148,6 +156,14 @@ const Filters = ({
         <TagsFilter
           selectedTags={searchParams.tags && searchParams.tags.map(tag => ({ value: tag }))}
           onApply={search}
+        />
+      )}
+      {filters.includes(availableFilters.text) && (
+        <TextFilter
+          text={searchParams.text}
+          onApply={search}
+          onChange={setShowOnlyText}
+          big={showOnlyText}
         />
       )}
     </Wrapper>

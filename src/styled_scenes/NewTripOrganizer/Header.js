@@ -98,7 +98,7 @@ const Header = ({
               inputTextColor={textDark}
               onChanged={onEditDescription}
               useTextarea
-              autoexpandTextarea
+              autoexpand
             >
               {description}
             </InlineInput>

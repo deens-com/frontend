@@ -166,8 +166,10 @@ class Results extends Component {
       baseCurrency: service.baseCurrency,
       services: [{ service: service._id, day: 1 }],
       duration: service.duration,
+      location: service.originalLocation,
     };
     const newTrip = (await apiClient.trips.post(serviceGroup)).data;
+    this.props.getCurrentUserTrip();
     this.showAddedToDays([1], service, newTrip);
   };
 
@@ -258,7 +260,12 @@ class Results extends Component {
           {this.props.isLoadingResults ? (
             <LoaderWithMargin>
               <Loader active inline="centered" size="massive">
-                Loading Results
+                <div style={{ lineHeight: '2em' }}>
+                  Please wait while we search across the top travel websites for the best{' '}
+                  {this.props.searchParams.type} prices.
+                  <br />
+                  This may take a few seconds.
+                </div>
               </Loader>
             </LoaderWithMargin>
           ) : (
