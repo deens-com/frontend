@@ -7,6 +7,7 @@ export const keys = {
   stripeIntegration: 'stripe-integration',
   cryptoCurrencies: 'disable-crypto-currencies',
   gdprDismissed: 'gdpr-dismissed',
+  lang: 'lang',
 };
 
 const convertToBool = stringBool => stringBool === 'true';
@@ -33,3 +34,11 @@ export const dismissGDPRBanner = () => {
 };
 
 export const isGDPRDismissed = () => convertToBool(Cookies.get(keys.gdprDismissed));
+
+export const setLang = language => {
+  Cookies.set(keys.lang, language);
+};
+
+export const getLang = () => {
+  return Cookies.get(keys.lang) || 'en';
+};
