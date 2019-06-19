@@ -91,7 +91,7 @@ const addServiceToTrip = ({ trip, day }) => async (dispatch, getState) => {
   }
 };
 
-const createNewTrip = ({ tripLocation, redirectToCreatedTrip } = {}) => async (
+const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (
   dispatch,
   getState,
 ) => {

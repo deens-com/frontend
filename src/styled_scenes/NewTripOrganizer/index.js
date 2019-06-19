@@ -163,7 +163,7 @@ function makeTransportationState(transportation) {
   };
 }
 
-function addAvailabilityData(services, availability) {
+function addAvailabilityData(services, availability, updatedTrip) {
   const availabilityById = availability.reduce(
     (prevObj, service) => ({
       ...prevObj,
@@ -172,10 +172,19 @@ function addAvailabilityData(services, availability) {
     {},
   );
 
+  const selectedOptionsById = updatedTrip.services.reduce(
+    (prevObj, service) => ({
+      ...prevObj,
+      [service._id]: service.selectedOption,
+    }),
+    {},
+  );
+
   return mapServicesByDay(
     mapDaysToServices(services).map(service => ({
       ...service,
       availability: availabilityById[service._id],
+      selectedOption: selectedOptionsById[service._id],
     })),
   );
 }
@@ -446,7 +455,11 @@ class TripOrganizer extends React.Component {
       if (checkingTime === prevState.isCheckingAvailability) {
         return {
           isCheckingAvailability: 0,
-          services: addAvailabilityData(prevState.services, response.data),
+          services: addAvailabilityData(
+            prevState.services,
+            response.data.availabilities,
+            response.data.trip,
+          ),
         };
       }
       return {};
