@@ -148,7 +148,7 @@ export default class Share extends React.Component {
           type: 'image',
           hero: true,
           names: {
-            'en-us': 'Trip image',
+            en: 'Trip image',
           },
           files: {
             original: {
@@ -181,10 +181,10 @@ export default class Share extends React.Component {
     this.setState({ isSaving: true }, async () => {
       const trip = {
         title: {
-          'en-us': title,
+          en: title,
         },
         description: {
-          'en-us': description,
+          en: description,
         },
         location: this.state.location,
         media: this.state.media,

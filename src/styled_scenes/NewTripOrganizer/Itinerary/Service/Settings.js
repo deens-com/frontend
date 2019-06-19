@@ -32,7 +32,7 @@ const ServiceSettings = ({ removeService, service }) => {
         <TrashCan />
         <P>Delete</P>
       </DeleteService>
-      {service.service.categories.find(category => category.names['en-us'] === 'Accommodation') && (
+      {service.service.categories.find(category => category.names === 'Accommodation') && (
         <DatePicker>
           <DateSelector service={service} />
         </DatePicker>

@@ -20,7 +20,7 @@ import urls from 'libs/urlGenerator';
 
 function addLang(text) {
   return {
-    'en-us': text,
+    en: text,
   };
 }
 
@@ -95,8 +95,8 @@ function createStateBasedOnTrip(props) {
     tripData: {
       duration: props.trip.duration,
       startDate: props.startDate,
-      title: props.trip.title['en-us'],
-      description: props.trip.description ? props.trip.description['en-us'] : '',
+      title: props.trip.title,
+      description: props.trip.description || '',
       location: props.trip.location,
       adultCount: props.trip.adultCount || props.adults || 2,
       childrenCount: props.trip.childrenCount || props.children || 0,
@@ -132,7 +132,7 @@ function formatMedia(url) {
       type: 'image',
       hero: true,
       names: {
-        'en-us': 'Trip image',
+        en: 'Trip image',
       },
       files: {
         original: {
@@ -147,7 +147,6 @@ function formatMedia(url) {
 }
 
 function makeTransportationState(transportation) {
-  return { toService: [], fromService: [] };
   return {
     toService: transportation.reduce(
       (prevObj, transport) =>
@@ -475,6 +474,8 @@ class TripOrganizer extends React.Component {
     this.props.updateSearchParams(
       {
         type,
+        countryCode: location.countryCode,
+        locationSearchType: 'latlng',
         lat: coord && coord.lat,
         lng: coord && coord.lng,
         adults: tripData.adultCount,
@@ -1194,6 +1195,7 @@ class TripOrganizer extends React.Component {
           isCheckingAvailability={Boolean(isCheckingAvailability)}
           recentlyDeletedService={lastRemovedService}
           undoRemoveService={this.undoRemoveService}
+          canShare={this.props.trip.parents.length === 0}
         />
       </TripContext.Provider>
     );

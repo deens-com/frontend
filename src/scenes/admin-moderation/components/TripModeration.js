@@ -31,7 +31,7 @@ class TripModeration extends React.Component {
   static propTypes = {
     trip: PropTypes.shape({
       _id: PropTypes.string.isRequired,
-      title: PropTypes.shape({ 'en-us': PropTypes.string.isRequired }),
+      title: PropTypes.string.isRequired,
     }),
   };
 

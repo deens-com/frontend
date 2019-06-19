@@ -6,8 +6,7 @@ import React, { Component } from 'react';
 import LocationAutoSuggest from 'shared_components/Form/LocationAutoSuggest';
 import styled from 'styled-components';
 import CrossIcon from 'shared_components/icons/CrossIcon';
-import history from './../../../main/history';
-import urls from 'libs/urlGenerator';
+import { isSearchPage } from 'libs/Utils';
 
 const Form = styled.form`
   display: flex;
@@ -121,7 +120,7 @@ export default class DesktopSearchInput extends Component {
       mode: 'text',
     });
     this.inputRef.current.onReset();
-    history.push(this.props.updateSearchParams());
+    this.props.updateSearchParams({});
   }
 
   handleSearchSubmit() {
@@ -175,8 +174,8 @@ export default class DesktopSearchInput extends Component {
           handleServiceTypeChange={this.handleServiceTypeChange}
           serviceType={this.props.searchParams.type}
           hasSearchedText={Boolean(this.state.text)}
-          isInResultsPage={windowLocation.pathname === '/search'}
-          showGoButton={windowLocation.pathname !== '/search'}
+          isInResultsPage={isSearchPage(windowLocation.pathname)}
+          showGoButton={!isSearchPage(windowLocation.pathname)}
           updateSearchParams={this.props.updateSearchParams}
         />
         {isMobile && (

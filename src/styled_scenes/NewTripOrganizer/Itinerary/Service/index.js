@@ -248,7 +248,7 @@ const Service = ({
                   <Drag style={{ width: '18px', height: '18px' }} />
                 </div>,
               )}
-              <ServiceIcon type={data.service.categories[0].names['en-us']} />
+              <ServiceIcon type={data.service.categories[0].names} />
               <Popup
                 trigger={
                   <span style={{ cursor: 'pointer', marginLeft: '15px' }}>
@@ -290,7 +290,7 @@ const Service = ({
                         <p>${data.service.basePrice}</p>
                       )}
                     </PriceNumber>
-                    <PXSmall>{getPriceText(data.service.categories[0].names['en-us'])}</PXSmall>
+                    <PXSmall>{getPriceText(data.service.categories[0].names)}</PXSmall>
                   </Price>
                   <StarsWrapper>
                     {data.service.privacy === 'public' &&

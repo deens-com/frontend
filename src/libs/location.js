@@ -57,7 +57,31 @@ export const getSearchParams = (address, googleMapsResult) => {
   const countryCode = getAddressComponent(addressComponents, 'country', 'short_name');
   const lat = geometry.location.lat();
   const lng = geometry.location.lng();
+  const locationSearchType =
+    (!addressComponents[0].types.includes('locality') && city) ||
+    (!city && state && !addressComponents[0].types.includes('administrative_area_level_1'))
+      ? 'latlng'
+      : 'placeData';
+  return {
+    city,
+    state,
+    countryCode,
+    address,
+    lat,
+    lng,
+    locationSearchType,
+  };
+};
 
+export const removeMultiParams = ({
+  city,
+  state,
+  countryCode,
+  lat,
+  lng,
+  address,
+  locationSearchType,
+}) => {
   const allUndefined = {
     city: undefined,
     state: undefined,
@@ -67,16 +91,15 @@ export const getSearchParams = (address, googleMapsResult) => {
     address: undefined,
   };
 
-  if (
-    (!addressComponents[0].types.includes('locality') && city) ||
-    (!city && state && !addressComponents[0].types.includes('administrative_area_level_1'))
-  ) {
+  if (locationSearchType === 'latlng') {
     return { ...allUndefined, lat, lng, address };
-  } else if (city || state || countryCode) {
+  } else if (locationSearchType === 'placeData') {
     return { ...allUndefined, city, state, countryCode, address };
-  } else {
-    throw new Error('we should have never reached here');
   }
+  return {
+    ...allUndefined,
+    locationSearchType: undefined,
+  };
 };
 
 function getAddressComponent(addressComponents, componentName, property) {

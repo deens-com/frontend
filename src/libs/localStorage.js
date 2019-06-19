@@ -65,33 +65,6 @@ export function isTripSaved() {
   return Boolean(trip && trip.services && trip.services.length > 0);
 }
 
-export function loadTrip(withFullServices = true) {
-  const localStorageTrip = localStorage.getItem(tripKey);
-  if (localStorageTrip) {
-    const trip = JSON.parse(localStorageTrip);
-    removeUselessFields(trip);
-
-    return {
-      ...trip,
-      services: withFullServices
-        ? trip.services
-        : trip.services.map(service => ({
-            ...service,
-            service: service.service._id,
-          })),
-    };
-  }
-  return {
-    title: {
-      'en-us': 'My Trip',
-    },
-    services: [],
-    media: [],
-    totalPrice: 0,
-    duration: 1,
-  };
-}
-
 export function addFavoriteTrip(id) {
   const savedTrips = localStorage.getItem(favoriteTripsKey);
   if (savedTrips) {
@@ -134,5 +107,17 @@ export function setLastSearchParams(params) {
 }
 
 export function getLastSearchParams() {
-  return JSON.parse(localStorage.getItem(lastSearchKey));
+  const params = JSON.parse(localStorage.getItem(lastSearchKey));
+  if (!params) {
+    return null;
+  }
+  if (!params.locationSearchType) {
+    delete params.lat;
+    delete params.lng;
+    delete params.countryCode;
+    delete params.state;
+    delete params.city;
+    delete params.address;
+  }
+  return params;
 }

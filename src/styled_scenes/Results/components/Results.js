@@ -159,7 +159,7 @@ class Results extends Component {
   };
 
   addToNewTrip = async service => {
-    const newTripTitle = { 'en-us': `Trip to ${service.location}` };
+    const newTripTitle = { en: `Trip to ${service.location}` };
     const serviceGroup = {
       title: newTripTitle,
       basePrice: service.basePrice,

@@ -16,17 +16,16 @@ const generateFiles = url => ({
 export const parseLocation = location =>
   location
     ? `${location.city ? location.city : ''}${
-        location.country ? ', ' + location.country.names['en-us'] : ''
+        location.country ? ', ' + location.country.names : ''
       }`
     : '';
 
 export const parseTags = tags =>
   tags.map(tag => {
-    const i18nLocale = 'en-us';
     const tagBg = tagsColorMatcher(I18nText.translate(tag.names));
     return {
       id: tag._id,
-      label: tag.names[i18nLocale].charAt(0).toUpperCase() + tag.names[i18nLocale].slice(1),
+      label: tag.names.charAt(0).toUpperCase() + tag.names.slice(1),
       hoverBg: tagBg,
       background: tagBg,
     };
@@ -71,14 +70,15 @@ const mapImage = (image, i) => {
     type: 'image',
     hero: Boolean(image.hero),
     names: {
-      'en-us': `Image ${i}`,
+      en: `Image ${i}`,
     },
     files: generateFiles(url),
   };
 };
 
 const createService = (values, custom) => {
-  const i18nLocale = 'en-us';
+  const i18nLocale = 'en';
+  console.log(values.subtitle);
   return {
     isCustom: Boolean(custom),
     categories: [
@@ -159,21 +159,12 @@ const createService = (values, custom) => {
   };
 };
 
-const buildServiceForView = service => {
-  const i18nLocale = 'en-us';
+const buildServiceForView = serv => {
+  let service = serv;
 
   try {
-    service.title = service.title[i18nLocale];
-    service.subtitle = service.subtitle[i18nLocale];
-    service.description = service.description[i18nLocale];
     service.objectId = service._id;
-    service.ratings = service.ratings;
-    service.duration = service.duration;
     service.refundType = 'none';
-    if (service.rules && service.rules.length) {
-      const rules = service.rules.map(rule => rule[i18nLocale]);
-      service.rules = rules;
-    }
     if (service.periods && service.periods[0]) {
       service.dayList = Object.keys(service.periods[0].daysOfWeek).filter(
         k => service.periods[0].daysOfWeek[k],
@@ -196,8 +187,8 @@ const buildServiceForView = service => {
       }
     }
     if (service.instructions) {
-      service.start = service.instructions.start && service.instructions.start[i18nLocale];
-      service.end = service.instructions.end && service.instructions.end[i18nLocale];
+      service.start = service.instructions.start && service.instructions.start;
+      service.end = service.instructions.end && service.instructions.end;
     }
     if (service.links) {
       service.facebook = service.links.facebook;
@@ -207,9 +198,8 @@ const buildServiceForView = service => {
     if (service.location) {
       service.formattedAddress = service.location.formattedAddress;
     }
-    service.externalUrl = service.externalUrl && service.externalUrl[i18nLocale];
     if (service.categories && service.categories.length) {
-      const categories = service.categories.map(category => category.names[i18nLocale]);
+      const categories = service.categories.map(category => category.names);
       service.category = categories[0];
     }
   } catch (error) {
@@ -221,22 +211,13 @@ const buildServiceForView = service => {
 const normalizeServiceToPatch = createService;
 
 const buildServicesJson = (services, shouldParseTags = true) => {
-  const i18nLocale = 'en-us';
   return services.map(service => {
     try {
-      service.excerpt = service.description ? service.description[i18nLocale] : '';
+      service.excerpt = service.description || '';
       service.description = service.excerpt;
-      service.title = service.title[i18nLocale];
-      service.subtitle = service.subtitle ? service.subtitle[i18nLocale] : '';
-      service.startInstructions =
-        service.instructions && service.instructions.start
-          ? service.instructions.start[i18nLocale]
-          : '';
-      service.endInstructions =
-        service.instructions && service.instructions.end
-          ? service.instructions.end[i18nLocale]
-          : '';
-      service.rules = service.rules && service.rules.map(rule => rule[i18nLocale]);
+      service.subtitle = service.subtitle || '';
+      service.startInstructions = (service.instructions && service.instructions.start) || '';
+      service.endInstructions = (service.instructions && service.instructions.end) || '';
       service.name = service.title;
       service.objectId = service._id;
       service.geo = {
@@ -249,12 +230,9 @@ const buildServicesJson = (services, shouldParseTags = true) => {
       service.longitude = (service.location && service.location.longitude) || 1;
       // const country =
       //   service.location && service.location.country && service.location.country.names[i18nLocale];
-      service.type = service.categories && service.categories[0].names[i18nLocale];
+      service.type = service.categories && service.categories[0].names;
       service.originalLocation = service.location;
       service.location = parseLocation(service.location);
-      service.ratings = service.ratings;
-      service.slots = service.slots;
-      service.basePrice = service.basePrice;
       service.openingTime =
         (service.periods && service.periods[0] && service.periods[0].startTime) || '00';
       service.closingTime =
@@ -335,19 +313,20 @@ export const statuses = {
 };
 
 const createServiceFromUrl = data => {
-  const i18nLocale = 'en-us';
+  const i18nLocale = 'en';
 
   return {
     ...data,
-    title: {
+    title: data.title,
+    description: data.description,
+    /*{
       [i18nLocale]: data.title,
     },
-    subtitle: {
-      [i18nLocale]: '',
-    },
-    description: {
-      [i18nLocale]: data.description,
-    },
+    ...(data.description && {
+      description: {
+        [i18nLocale]: data.description,
+      },
+    }),*/
     media: data.images.map((image, i) => ({
       type: 'image',
       hero: i === 0,

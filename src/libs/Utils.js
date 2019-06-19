@@ -158,8 +158,8 @@ export function getFormattedTripDates(trip) {
   // add trip duration minutes to generate endDate
   const endDate = new Date(startDate.getTime() + trip.duration * 60000);
   const localStringOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-  const startDateStr = startDate.toLocaleString('en-us', localStringOptions);
-  const endDateStr = endDate.toLocaleString('en-us', localStringOptions);
+  const startDateStr = startDate.toLocaleString('en', localStringOptions);
+  const endDateStr = endDate.toLocaleString('en', localStringOptions);
   return `${startDateStr} - ${endDateStr}`;
 }
 
@@ -296,8 +296,8 @@ export function generateServiceSlug(service) {
 
 export function parseTagsText(tags) {
   return tags.map(tag => {
-    const tagName = tag.names['en-us'].charAt(0).toUpperCase() + tag.names['en-us'].substr(1);
-    return { text: tagName, value: tag.names['en-us'], _id: tag._id, count: tag.count };
+    const tagName = tag.names.charAt(0).toUpperCase() + tag.names.substr(1);
+    return { text: tagName, value: tag.names, _id: tag._id, count: tag.count };
   });
 }
 
@@ -348,3 +348,5 @@ export const isIosDevice =
   window.navigator &&
   window.navigator.platform &&
   /iP(ad|hone|od)/.test(window.navigator.platform);
+
+export const isSearchPage = pathname => /^\/search\//.test(pathname);

@@ -96,19 +96,19 @@ const selectIconAndColorFromService = service => {
     return {};
   }
 
-  if (service.service.categories.find(category => category.names['en-us'] === 'Accommodation')) {
+  if (service.service.categories.find(category => category.names === 'Accommodation')) {
     return {
       Icon: Accommodation,
       color: accommodation,
     };
   }
-  if (service.service.categories.find(category => category.names['en-us'] === 'Activity')) {
+  if (service.service.categories.find(category => category.names === 'Activity')) {
     return {
       Icon: Activity,
       color: activity,
     };
   }
-  if (service.service.categories.find(category => category.names['en-us'] === 'Food')) {
+  if (service.service.categories.find(category => category.names === 'Food')) {
     return {
       Icon: Food,
       color: food,

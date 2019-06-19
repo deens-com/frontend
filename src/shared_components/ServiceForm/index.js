@@ -402,7 +402,7 @@ class ServiceForm extends Component {
                 <Dropdown
                   name="tags"
                   options={this.props.serviceFormTagsOptions.map(tag => {
-                    return { text: tag.names['en-us'], value: tag._id };
+                    return { text: tag.names, value: tag._id };
                   })}
                   placeholder="Add tags"
                   search

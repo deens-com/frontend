@@ -152,6 +152,7 @@ export default class HomeSearch extends Component {
       countryCode: this.state.countryCode,
       type: this.state.serviceType,
       text: this.state.text,
+      locationSearchType: this.state.locationSearchType,
     };
 
     if (this.props.toggleSearch) {
