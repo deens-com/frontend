@@ -1195,6 +1195,7 @@ class TripOrganizer extends React.Component {
           isCheckingAvailability={Boolean(isCheckingAvailability)}
           recentlyDeletedService={lastRemovedService}
           undoRemoveService={this.undoRemoveService}
+          canShare={this.props.trip.parents.length === 0}
         />
       </TripContext.Provider>
     );
