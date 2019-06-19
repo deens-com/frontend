@@ -107,7 +107,10 @@ const updateSearchParams = (searchParams, state, customPage, noPushUrl, noFetch)
   setLastSearchParams(paramsToSave);
   dispatch({
     type: types.updateQueryParams,
-    payload: params,
+    payload: {
+      type: searchForType,
+      ...urlParams,
+    },
   });
 };
 
