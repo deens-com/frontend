@@ -86,6 +86,13 @@ const PostContent = styled.div`
   display: flex;
   min-height: 300px;
 
+  h2,
+  h3,
+  h4,
+  h5 {
+    padding: 10px 0;
+  }
+
   h2 {
     color: ${secondary};
   }
@@ -111,6 +118,7 @@ const PostContent = styled.div`
     margin-left: 50px;
     list-style: none;
     counter-reset: li;
+    margin: 10px 30px !important;
 
     > li {
       counter-increment: li;
@@ -124,6 +132,7 @@ const PostContent = styled.div`
       display: inline-block;
       width: 1em;
       margin-left: -1em;
+      margin-right: 3px;
     }
   }
 
@@ -142,7 +151,20 @@ const PostContent = styled.div`
       display: inline-block;
       width: 1em;
       margin-left: -1em;
+      margin-right: 3px;
     }
+  }
+
+  p {
+    margin: 5px 0 10px;
+  }
+
+  strong {
+    font-weight: bold;
+  }
+
+  br {
+    line-height: 2;
   }
 `;
 
