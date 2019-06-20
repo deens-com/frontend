@@ -501,16 +501,20 @@ class ResultsScene extends Component {
                     : `${props.count} ${pluralize(type !== 'food' ? type : 'restaurant')} found.`}
                 </strong>
               )}{' '}
-              <span>Still not satisfied?</span>{' '}
-              {type !== 'trip' ? (
-                <CreateService onClick={this.createExternalService}>
-                  Add {addPrefixArticle(type !== 'food' ? type : 'restaurant')}
-                </CreateService>
-              ) : (
-                <CreateService onClick={this.createExternalService}>
-                  Create your own trip
-                </CreateService>
-              )}
+              {props.routeState && props.routeState.tripId ? (
+                <>
+                  <span>Still not satisfied?</span>{' '}
+                  {type !== 'trip' ? (
+                    <CreateService onClick={this.createExternalService}>
+                      Add {addPrefixArticle(type !== 'food' ? type : 'restaurant')}
+                    </CreateService>
+                  ) : (
+                    <CreateService onClick={this.createExternalService}>
+                      Create your own trip
+                    </CreateService>
+                  )}
+                </>
+              ) : null}
             </P>
             {this.state.modalOpen && (
               <CreateServiceModal
