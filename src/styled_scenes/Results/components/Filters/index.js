@@ -9,6 +9,7 @@ import DatesFilter from './Dates';
 import PriceRangeFilter from './PriceRange';
 import PriceTagsFilter from './PriceTags';
 import TagsFilter from './Tags';
+import DurationFilter from './Duration';
 import TextFilter from './Text';
 import { isMatch } from 'lodash';
 import { media } from 'libs/styled';
@@ -157,6 +158,9 @@ const Filters = ({
           selectedTags={searchParams.tags && searchParams.tags.map(tag => ({ value: tag }))}
           onApply={search}
         />
+      )}
+      {filters.includes(availableFilters.duration) && (
+        <DurationFilter duration={searchParams.duration} onApply={search} />
       )}
       {filters.includes(availableFilters.text) && (
         <TextFilter
