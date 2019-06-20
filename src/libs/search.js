@@ -92,6 +92,8 @@ export const getSearchParams = params => {
     countryCode: searchParams.countryCode || undefined,
     text: searchParams.text || undefined,
     duration: Number(searchParams.duration) || undefined,
+    ratingStart: Number(searchParams.ratingStart) || undefined,
+    ratingEnd: Number(searchParams.ratingEnd) || undefined,
     page: searchParams.page || 1,
     limit: searchParams.limit || 25,
     locationSearchType,
@@ -221,6 +223,7 @@ const SINGLE_DATE = 'singleDate';
 const PRICE_TAGS = 'priceTags';
 const TEXT = 'text';
 const DURATION = 'duration';
+const RATING = 'rating';
 
 export const availableFilters = {
   guests: GUESTS,
@@ -232,11 +235,12 @@ export const availableFilters = {
   priceTags: PRICE_TAGS,
   text: TEXT,
   duration: DURATION,
+  rating: RATING,
 };
 
 export const filtersByType = {
   trip: [GUESTS, DATES, PRICE_RANGE, TAGS],
-  accommodation: [GUESTS, DATES, PRICE_RANGE, TEXT],
+  accommodation: [GUESTS, DATES, PRICE_RANGE, TEXT, RATING],
   activity: [GUESTS, SINGLE_DATE, PRICE_RANGE_ONLY_MAX, TAGS, TEXT, DURATION],
   food: [GUESTS, PRICE_TAGS, TAGS, TEXT],
 };

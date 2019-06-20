@@ -80,7 +80,7 @@ const ResultItem = styled.div`
 const LoaderWithMargin = styled.section`
   margin-top: 40px;
   > div {
-    z-index: 1;
+    z-index: 1 !important;
   }
 `;
 

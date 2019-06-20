@@ -63,15 +63,11 @@ const Duration = ({ duration, onApply }) => {
 
 Duration.propTypes = {
   onApply: PropTypes.func.isRequired,
-  adults: PropTypes.number,
-  children: PropTypes.number,
-  infants: PropTypes.number,
+  duration: PropTypes.number,
 };
 
 Duration.defaultProps = {
-  adults: 2,
-  children: 0,
-  infants: 0,
+  duration: null,
 };
 
 export default Duration;
