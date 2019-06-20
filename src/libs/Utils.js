@@ -1,5 +1,7 @@
 import I18nText from 'shared_components/I18nText';
 import tagsData from './../data/tags';
+import { getLang } from 'libs/cookies';
+
 export const serverBaseURL = () => {
   if (process.env.REACT_APP_NODE_ENV === 'production') {
     return process.env.SERVER_BASE_URL || 'https://api.deens.com';
@@ -350,3 +352,13 @@ export const isIosDevice =
   /iP(ad|hone|od)/.test(window.navigator.platform);
 
 export const isSearchPage = pathname => /^\/search\//.test(pathname);
+
+export const getBrowserLanguage = () => navigator.language.split('-')[0];
+
+export const getUserLanguage = () => {
+  const cookieLang = getLang();
+  if (cookieLang) {
+    return cookieLang;
+  }
+  return getBrowserLanguage();
+};

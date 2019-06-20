@@ -1,7 +1,11 @@
 import { createBrowserHistory, createLocation } from 'history';
+import { getUserLanguage } from 'libs/Utils';
+
+const lang = getUserLanguage();
 
 const browserHistory = createBrowserHistory({
   /* pass a configuration object here if needed */
+  basename: `/${lang === 'en' ? '' : lang}`,
 });
 
 const createNewFn = target => (to, state, ...args) => {

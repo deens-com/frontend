@@ -26,6 +26,7 @@ import CreateServiceModal from './components/CreateServiceModal';
 import { media } from '../../libs/styled';
 import { waitUntilMapsLoaded } from 'libs/Utils';
 // import { foodList } from "../../data/food";
+import { Trans } from '@lingui/macro';
 
 // STYLES
 import { PageContent } from './../../shared_components/layout/Page';
@@ -486,7 +487,9 @@ class ResultsScene extends Component {
                   },
                 }}
               >
-                <PStrong>Create Trip</PStrong>
+                <PStrong>
+                  <Trans>Create Trip</Trans>
+                </PStrong>
               </Button>
             )}
           </RightColumn>
@@ -514,7 +517,7 @@ class ResultsScene extends Component {
             </P>
             {this.state.modalOpen && (
               <CreateServiceModal
-                day={props.routeState.day}
+                day={props.routeState && props.routeState.day}
                 trip={props.trip}
                 goBackToTrip={this.goBackToTrip}
                 open={this.state.modalOpen}

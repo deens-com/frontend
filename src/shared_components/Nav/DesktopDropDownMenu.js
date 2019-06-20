@@ -10,6 +10,7 @@ import Button from '../Button';
 
 import { PStrong } from 'libs/commonStyles';
 import ImgurAvatar from './../../assets/no-avatar.png';
+import { Trans } from '@lingui/macro';
 // STYLES
 const Wrap = styled.div`
   align-items: center;
@@ -99,7 +100,9 @@ export default class DesktopDropDownMenu extends Component {
             },
           }}
         >
-          <PStrong>Create Trip</PStrong>
+          <PStrong>
+            <Trans>Create Trip</Trans>
+          </PStrong>
         </Button>
         <Suspense fallback={this.trigger()}>
           <DesktopLoggedInDropDownMenu {...this.props} trigger={this.trigger} />

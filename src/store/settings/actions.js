@@ -1,4 +1,4 @@
-import { dismissGDPRBanner } from 'libs/feature-flags';
+import { dismissGDPRBanner } from 'libs/cookies';
 
 export const types = {
   DISMISS_GDPR: 'DISMISS_GDPR',

@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import DesktopDropDownMenu from './DesktopDropDownMenu';
 // import CurrencySelector from '../Currency/Selector';
 import I18nText from 'shared_components/I18nText';
+import { Trans } from '@lingui/macro';
 
 // ACTIONS/CONFIG
 import { sizes } from '../../libs/styled';
@@ -163,7 +164,9 @@ const TopBarDesktopNav = function TopBarDesktopNav({
                     },
                   }}
                 >
-                  <PStrong>Create Trip</PStrong>
+                  <PStrong>
+                    <Trans>Create Trip</Trans>
+                  </PStrong>
                 </NavLink>
               </>
             )}

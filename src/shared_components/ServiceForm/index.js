@@ -10,15 +10,14 @@ import { parseLocationData } from 'libs/location';
 import { secondary } from 'libs/colors';
 import history from './../../main/history';
 import { checkRequiredFields } from 'libs/Utils';
-import i18n from './../../libs/i18n';
 import MultiImageUploader from 'shared_components/MultiImageUploader/MultiImageUploader';
 import DateInput from '../Form/DateInput';
 import DurationInput from './DurationInput';
 
 const serviceCategories = [
-  { label: i18n.t('places.singular'), value: 'Accommodation' },
-  { label: i18n.t('activities.singular'), value: 'Activity' },
-  { label: i18n.t('foods.singular'), value: 'Food' },
+  { label: 'Accommodation', value: 'Accommodation' },
+  { label: 'Activity', value: 'Activity' },
+  { label: 'Food', value: 'Food' },
 ];
 
 const serviceTypeDropdownOptions = serviceCategories.map(text => ({
