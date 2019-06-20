@@ -91,10 +91,7 @@ const addServiceToTrip = ({ trip, day }) => async (dispatch, getState) => {
   }
 };
 
-const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (
-  dispatch,
-  getState,
-) => {
+const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (dispatch, getState) => {
   const state = getState();
   const { service } = state.services;
   if (!service) {
@@ -130,8 +127,8 @@ const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (
   }
 };
 
-const onBookNowClick = location => async (dispatch, getState) => {
-  createNewTrip({ tripLocation: location, redirectToCreatedTrip: true })(dispatch, getState);
+const onBookNowClick = () => async (dispatch, getState) => {
+  createNewTrip({ redirectToCreatedTrip: true })(dispatch, getState);
 };
 
 /**
