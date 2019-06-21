@@ -85,9 +85,8 @@ const updateSearchParams = (parameters, state, customPage, noChangeUrl, noFetch)
         ? undefined
         : endDate,
   };
-  console.log(startDate, searchParams.startDate);
+
   if (startDate !== searchParams.startDate || endDate !== searchParams.endDate) {
-    console.log('aadsad');
     noPushUrl = false;
   }
 
