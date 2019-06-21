@@ -100,6 +100,7 @@ export default withRouter(props => {
 
   const previousLocation = locationQueue[locationQueue.length - 1];
   const currentLocation = isModal ? previousLocation : location;
+  console.log('no', props.location);
   return (
     <>
       {isModal && <Route path={process.env.PUBLIC_URL + TRIPS_CREATE} component={TripCreator} />}

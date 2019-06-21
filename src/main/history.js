@@ -8,6 +8,8 @@ const browserHistory = createBrowserHistory({
   basename: `/${lang === 'en' ? '' : lang}`,
 });
 
+console.log('sds', `/${lang === 'en' ? '' : lang}`);
+
 const createNewFn = target => (to, state, ...args) => {
   if (!state && typeof to !== 'object') {
     return target(to, state, ...args);

@@ -4,7 +4,7 @@ import queryString from 'query-string';
 import Cookies from 'js-cookie';
 import store from './store';
 import history from 'main/history';
-import { Router } from 'react-router-dom';
+import { Router, BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { getCurrentUser, getFavoriteTrips } from 'store/session/actions';
 import Routes from './router';
@@ -12,6 +12,7 @@ import Skeleton from './skeleton';
 import { createGlobalStyle } from 'styled-components';
 import { I18nProvider } from '@lingui/react';
 import { getUserLanguage } from 'libs/Utils';
+import LanguageRedirect from './router/LanguageRedirect';
 import catalogEn from 'locales/en/messages.js';
 import catalogFr from 'locales/fr/messages.js';
 
@@ -133,6 +134,9 @@ class App extends React.Component {
         <Provider store={store}>
           <I18nProvider language={getUserLanguage()} catalogs={catalogs}>
             <React.Fragment>
+              <BrowserRouter forceRefresh>
+                <LanguageRedirect path={`${process.env.PUBLIC_URL}/:lang`} />
+              </BrowserRouter>
               <Router history={history}>
                 <Skeleton>
                   <Routes />
