@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import * as colors from 'libs/colors';
 import { H6, P, PSmall } from 'libs/commonStyles';
 import { PageWrapper } from 'shared_components/layout/Page';
+import { languages, getUserLanguage } from 'libs/language';
 
 const Wrapper = styled.div`
   background-color: ${colors.backgroundDark};
@@ -52,6 +53,13 @@ export default ({ marginBottom = 0 }) => (
   <Wrapper marginBottom={marginBottom}>
     <PageWrapper>
       <ColumnWrapper>
+        <Column>
+          <H6>Preferences</H6>
+          <div>
+            <span>Language</span>
+            <span>{languages[getUserLanguage()] || languages['en']}</span>
+          </div>
+        </Column>
         <Column>
           <H6>Network</H6>
           <LinkElement>

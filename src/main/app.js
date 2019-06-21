@@ -11,7 +11,7 @@ import Routes from './router';
 import Skeleton from './skeleton';
 import { createGlobalStyle } from 'styled-components';
 import { I18nProvider } from '@lingui/react';
-import { getUserLanguage } from 'libs/Utils';
+import { getUserLanguage } from 'libs/language';
 import LanguageRedirect from './router/LanguageRedirect';
 import catalogEn from 'locales/en/messages.js';
 import catalogFr from 'locales/fr/messages.js';

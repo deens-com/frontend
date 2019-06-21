@@ -1,5 +1,5 @@
 import { createBrowserHistory, createLocation } from 'history';
-import { getUserLanguage } from 'libs/Utils';
+import { getUserLanguage } from 'libs/language';
 
 const lang = getUserLanguage();
 

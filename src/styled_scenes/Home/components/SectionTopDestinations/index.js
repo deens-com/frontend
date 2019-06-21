@@ -70,6 +70,7 @@ const NewYorkLink = styled(FlexLink)`
 `;
 
 const LondonLink = styled.div`
+  cursor: pointer;
   ${media.minSmall} {
     grid-column: 2;
     grid-row: 2;
@@ -77,6 +78,7 @@ const LondonLink = styled.div`
 `;
 
 const SFLink = styled.div`
+  cursor: pointer;
   ${media.minSmall} {
     grid-column: 2;
     grid-row: 1;
