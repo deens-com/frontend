@@ -8,6 +8,7 @@ import Settings from 'shared_components/icons/Settings';
 import Walk from 'assets/walk.svg';
 import Bike from 'assets/bike.svg';
 import Car from 'assets/car.svg';
+import Train from 'assets/train.svg';
 import SadFace from 'assets/sad-face.svg';
 import transportIcon from 'assets/service-icons/transport.svg';
 import { getKmFromMeters } from 'libs/Utils';
@@ -16,6 +17,7 @@ import TextDivisor from 'shared_components/TextDivisor';
 import CarIcon from 'shared_components/icons/Car';
 import WalkIcon from 'shared_components/icons/Walk';
 import BikeIcon from 'shared_components/icons/Bike';
+import TrainIcon from 'shared_components/icons/Train';
 
 import { TripContext } from '../';
 
@@ -121,6 +123,8 @@ function getIconAndText(data) {
       return { text: 'Drive your car', icon: Car };
     case 'bicycle':
       return { text: 'Ride a bike', icon: Bike };
+    case 'public-transit':
+      return { text: 'Public transport', icon: Train };
     default:
       return notFound;
   }
@@ -225,6 +229,12 @@ const Transportation = ({
                       onClick={() => onTransportSelect('walking')}
                     >
                       <WalkIcon />
+                    </TransportSelect>
+                    <TransportSelect
+                      selected={selected === 'public-transit'}
+                      onClick={() => onTransportSelect('public-transit')}
+                    >
+                      <TrainIcon />
                     </TransportSelect>
                   </TransportOptions>
                 </div>
