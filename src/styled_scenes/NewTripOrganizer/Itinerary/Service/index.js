@@ -5,7 +5,11 @@ import I18nText from 'shared_components/I18nText';
 import { DragSource, DropTarget } from 'react-dnd';
 import { Popup } from 'semantic-ui-react';
 import { types } from '../../constants';
-import { P, PSmallStrong, PXSmall } from 'libs/commonStyles';
+import { PXSmall } from 'libs/commonStyles';
+import { Link } from 'react-router-dom';
+import { generateServiceSlug } from 'libs/Utils';
+import urls from 'libs/urlGenerator';
+import { getFirstCategoryLowerCase } from 'libs/categories';
 import {
   textLight,
   primary,
@@ -272,7 +276,15 @@ const Service = ({
                       {I18nText.translate(data.service.title)}
                     </InlineInput>
                   ) : (
-                    I18nText.translate(data.service.title)
+                    <Link
+                      to={urls.service.view({
+                        id: data.service._id,
+                        slug: generateServiceSlug(data.service),
+                        category: getFirstCategoryLowerCase(data.service.categories),
+                      })}
+                    >
+                      {I18nText.translate(data.service.title)}
+                    </Link>
                   )}
                 </ServiceTitle>
                 <RatingAndPrice>

@@ -78,7 +78,7 @@ const mapImage = (image, i) => {
 
 const createService = (values, custom) => {
   const i18nLocale = 'en';
-  console.log(values.subtitle);
+
   return {
     isCustom: Boolean(custom),
     categories: [
