@@ -13,6 +13,7 @@ import { removeMultiParams } from 'libs/location';
 import { setLastSearchParams, getLastSearchParams } from 'libs/localStorage';
 import { removeMultipleLocations } from 'libs/search';
 import urls from 'libs/urlGenerator';
+import moment from 'moment';
 
 const SEARCH = 'SEARCH';
 const UPDATE_QUERY_PARAMS = 'UPDATE_QUERY_PARAMS';
@@ -61,10 +62,35 @@ const fetchResults = searchQuery =>
     };
   });
 
-const updateSearchParams = (searchParams, state, customPage, noPushUrl, noFetch) => (
+const updateSearchParams = (parameters, state, customPage, noChangeUrl, noFetch) => (
   dispatch,
   getState,
 ) => {
+  let noPushUrl = noChangeUrl;
+  const { startDate, endDate } = parameters;
+  const searchParams = {
+    ...parameters,
+    startDate:
+      startDate &&
+      moment()
+        .endOf('day')
+        .isAfter(startDate)
+        ? undefined
+        : startDate,
+    endDate:
+      endDate &&
+      moment()
+        .endOf('day')
+        .isAfter(endDate)
+        ? undefined
+        : endDate,
+  };
+  console.log(startDate, searchParams.startDate);
+  if (startDate !== searchParams.startDate || endDate !== searchParams.endDate) {
+    console.log('aadsad');
+    noPushUrl = false;
+  }
+
   const savedParams = getLastSearchParams();
   const paramsToSave = getParamsToSave(searchParams, savedParams);
   const page = customPage || (searchParams.page ? 1 : undefined);
