@@ -1,6 +1,6 @@
 // NPM
 import React, { Component } from 'react';
-//import Media from 'react-media';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import GoogleMapReact from 'google-map-react';
 import { Checkbox } from 'semantic-ui-react';
@@ -501,7 +501,7 @@ class ResultsScene extends Component {
                     : `${props.count} ${pluralize(type !== 'food' ? type : 'restaurant')} found.`}
                 </strong>
               )}{' '}
-              {props.routeState && props.routeState.tripId ? (
+              {(props.routeState && props.routeState.tripId) || type === 'trip' ? (
                 <>
                   <span>Still not satisfied?</span>{' '}
                   {type !== 'trip' ? (
@@ -509,9 +509,16 @@ class ResultsScene extends Component {
                       Add {addPrefixArticle(type !== 'food' ? type : 'restaurant')}
                     </CreateService>
                   ) : (
-                    <CreateService onClick={this.createExternalService}>
+                    <Link
+                      to={{
+                        pathname: '/new/trip',
+                        state: {
+                          modal: true,
+                        },
+                      }}
+                    >
                       Create your own trip
-                    </CreateService>
+                    </Link>
                   )}
                 </>
               ) : null}
