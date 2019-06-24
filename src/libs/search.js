@@ -161,9 +161,10 @@ export const mapUrlToProps = location => {
 
 // If there is some processing required, just add the field here
 // otherwise, the same object will be passed to the request
-export const mapDataToQuery = ({ type, ...searchParams }) => ({
+export const mapDataToQuery = ({ type, duration, ...searchParams }) => ({
   address: undefined,
   category: type.charAt(0).toUpperCase() + type.substr(1),
+  activityDurationSlab: duration,
   ...searchParams,
 });
 

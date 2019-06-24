@@ -884,7 +884,7 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.2.0", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.2":
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.2.0", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.2", "@babel/runtime@^7.4.4":
   version "7.4.5"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.4.5.tgz#582bb531f5f9dc67d2fcb682979894f75e253f12"
   integrity sha512-TuI4qpWZP6lGOGIuGWtp9sPluqYICmbk8T/1vpSysqJxRPkudh/ofFWyqdcMsDf2s7KvDL4/YHgKyvcS3g9CJQ==
@@ -2148,11 +2148,6 @@ atob@^2.1.1:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
-
-autobind-decorator@^1.3.4:
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/autobind-decorator/-/autobind-decorator-1.4.3.tgz#4c96ffa77b10622ede24f110f5dbbf56691417d1"
-  integrity sha1-TJb/p3sQYi7eJPEQ9du/VmkUF9E=
 
 autoprefixer@^9.4.9:
   version "9.5.1"
@@ -3772,6 +3767,11 @@ cypress@^3.1.5:
     tmp "0.1.0"
     url "0.11.0"
     yauzl "2.10.0"
+
+d3-array@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/d3-array/-/d3-array-1.2.4.tgz#635ce4d5eea759f6f605863dbcfc30edc737f71f"
+  integrity sha512-KHW6M86R+FUPYGb3R5XiYjXPq7VzwxZ22buHhAEVG5ztoEcZZMLov530mmccaqA1GghZArjQV46fuc8kUqhhHw==
 
 damerau-levenshtein@^1.0.4:
   version "1.0.5"
@@ -10017,6 +10017,16 @@ react-coinbase-commerce@^1.3.1:
   resolved "https://registry.yarnpkg.com/react-coinbase-commerce/-/react-coinbase-commerce-1.3.1.tgz#2cd53607dd43973f3fe7199eb19888305105bd4a"
   integrity sha512-R1BO60tba/c1iiRgSyhflJYWIkvQWgIVfKXOniYkBXEe/DyX3BOF537lFJdCdE9dBcRqjE+/IN6beRkkULfKmQ==
 
+react-compound-slider@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-compound-slider/-/react-compound-slider-2.0.0.tgz#ea0e5d26b61ced4856cfef3e5e73f2787f5e27ed"
+  integrity sha512-VA3128tThUm+DJticmVZTQPB8U1weiTXyyPb+cnpULkw2sfy8Cap5Hi/28mDxhyo/ZvfG6DEPGNiyB7iLzTGGA==
+  dependencies:
+    "@babel/runtime" "^7.4.4"
+    d3-array "^1.2.4"
+    prop-types "^15.7.2"
+    warning "^3.0.0"
+
 react-dates@^20.1.0:
   version "20.2.0"
   resolved "https://registry.yarnpkg.com/react-dates/-/react-dates-20.2.0.tgz#0ecd6d19bd94b49382604bebbc85d2c916d0d929"
@@ -10174,14 +10184,6 @@ react-infinite-scroller@^1.2.4:
   resolved "https://registry.yarnpkg.com/react-infinite-scroller/-/react-infinite-scroller-1.2.4.tgz#f67eaec4940a4ce6417bebdd6e3433bfc38826e9"
   integrity sha512-/oOa0QhZjXPqaD6sictN2edFMsd3kkMiE19Vcz5JDgHpzEJVqYcmq+V3mkwO88087kvKGe1URNksHEOt839Ubw==
   dependencies:
-    prop-types "^15.5.8"
-
-react-input-range@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/react-input-range/-/react-input-range-1.3.0.tgz#f96d001631ab817417f1e26d8f9f9684b4827f59"
-  integrity sha1-+W0AFjGrgXQX8eJtj5+WhLSCf1k=
-  dependencies:
-    autobind-decorator "^1.3.4"
     prop-types "^15.5.8"
 
 react-is@^16.6.0, react-is@^16.6.3, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4, react-is@^16.8.6:

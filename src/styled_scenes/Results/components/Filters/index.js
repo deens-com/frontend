@@ -10,7 +10,7 @@ import PriceRangeFilter from './PriceRange';
 import PriceTagsFilter from './PriceTags';
 import TagsFilter from './Tags';
 import DurationFilter from './Duration';
-import RatingFilter from './Rating';
+import StarRangeFilter from './StarRange';
 import TextFilter from './Text';
 import { isMatch } from 'lodash';
 import { media } from 'libs/styled';
@@ -161,7 +161,7 @@ const Filters = ({
         />
       )}
       {filters.includes(availableFilters.rating) && (
-        <RatingFilter
+        <StarRangeFilter
           ratingStart={searchParams.ratingStart}
           ratingEnd={searchParams.ratingEnd}
           onApply={search}
