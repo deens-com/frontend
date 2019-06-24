@@ -40,5 +40,5 @@ export const setLang = language => {
 };
 
 export const getLang = () => {
-  return Cookies.get(keys.lang) || 'en';
+  return Cookies.get(keys.lang);
 };

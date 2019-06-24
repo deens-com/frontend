@@ -1,5 +1,5 @@
 import { types } from './actions';
-import { isGDPRDismissed } from 'libs/feature-flags';
+// import { isGDPRDismissed } from 'libs/cookies';
 
 const initialState = {
   gdprDismissed: true, //isGDPRDismissed(),

@@ -10,6 +10,7 @@ import ImgurAvatar from 'assets/no-avatar.png';
 import { primary, secondary } from 'libs/colors';
 import Account from 'shared_components/icons/AccountCircle';
 import urls from 'libs/urlGenerator';
+import { Trans } from '@lingui/macro';
 
 const Wrap = styled.div`
   justify-self: flex-end;
@@ -145,7 +146,7 @@ class MobileHomeNav extends Component {
                 }}
                 onClick={this.onOptionClick}
               >
-                Create Trip
+                <Trans>Create Trip</Trans>
               </MenuLink>
             </li>
             <li style={{ color: secondary }}>

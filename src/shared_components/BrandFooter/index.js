@@ -9,6 +9,10 @@ import { Link } from 'react-router-dom';
 import * as colors from 'libs/colors';
 import { H6, P, PSmall } from 'libs/commonStyles';
 import { PageWrapper } from 'shared_components/layout/Page';
+import { languages, availableLanguages, getUserLanguage } from 'libs/language';
+import { setLang } from 'libs/cookies';
+import { Dropdown } from 'semantic-ui-react';
+import { media } from 'libs/styled';
 
 const Wrapper = styled.div`
   background-color: ${colors.backgroundDark};
@@ -19,6 +23,10 @@ const Wrapper = styled.div`
 
 const ColumnWrapper = styled.footer`
   display: flex;
+  flex-direction: column;
+  ${media.minSmall} {
+    flex-direction: row;
+  }
 `;
 
 const Column = styled.div`
@@ -35,10 +43,17 @@ const Column = styled.div`
   > p:last-child {
     margin-bottom: 0;
   }
+
+  margin-bottom: 25px;
+  margin-left: 25px;
+  ${media.minSmall} {
+    margin-bottom: 0;
+    margin-left: 0;
+  }
 `;
 
 const LinkElement = styled(P)`
-  > a {
+  > * {
     color: ${colors.primary};
   }
 `;
@@ -48,10 +63,39 @@ const Copyright = styled(PSmall)`
   margin-top: 25px;
 `;
 
+const OptionSelector = styled.span`
+  border-radius: 5px 5px 5px 0;
+  color: white;
+  background-color: ${colors.primary};
+  margin-left: 10px;
+  padding: 5px;
+`;
+
 export default ({ marginBottom = 0 }) => (
   <Wrapper marginBottom={marginBottom}>
     <PageWrapper>
       <ColumnWrapper>
+        <Column>
+          <H6>Preferences</H6>
+          <LinkElement>
+            <span>Language</span>
+            <Dropdown
+              icon={null}
+              basic
+              trigger={
+                <OptionSelector>{languages[getUserLanguage()] || languages['en']}</OptionSelector>
+              }
+              defaultValue={getUserLanguage()}
+              options={availableLanguages.map(lang => {
+                return { text: languages[lang], value: lang };
+              })}
+              onChange={(_, data) => {
+                setLang(data.value);
+                window.location.reload(true);
+              }}
+            />
+          </LinkElement>
+        </Column>
         <Column>
           <H6>Network</H6>
           <LinkElement>

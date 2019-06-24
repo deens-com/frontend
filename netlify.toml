@@ -1,7 +1,6 @@
 [build]
   command = "yarn build"
   publish = "build"
-  functions = "functions"
 
 [context.production]
   command = "yarn build && ./production-deploy.sh"

@@ -8,6 +8,7 @@ import ScrollToTop from '../middlewares/ScrollToTop';
 
 import PrivateRoute from './PrivateRoute';
 import OnlyPublicRoute from './OnlyPublicRoute';
+import LanguageMetaUpdater from './LanguageMetaUpdater';
 
 import TripCreator from 'scenes/trip-creator';
 import TripQuote from 'scenes/trip-quote';
@@ -100,8 +101,10 @@ export default withRouter(props => {
 
   const previousLocation = locationQueue[locationQueue.length - 1];
   const currentLocation = isModal ? previousLocation : location;
+
   return (
     <>
+      <Route path={`${process.env.PUBLIC_URL}/`} component={LanguageMetaUpdater} />
       {isModal && <Route path={process.env.PUBLIC_URL + TRIPS_CREATE} component={TripCreator} />}
       {isModal && <Route exact path={process.env.PUBLIC_URL + HELP} component={Help} />}
       {isModal && <Route path={process.env.PUBLIC_URL + TRAVEL_QUOTE} component={TripQuote} />}

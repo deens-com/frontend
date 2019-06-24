@@ -88,7 +88,7 @@ const MobileWorldWrapper = styled.div`
   }
 `;
 
-const world = <img data-src="world.png" alt="Customizable holidays" className="lazyload" />;
+const world = <img data-src="/world.png" alt="Customizable holidays" className="lazyload" />;
 
 const Content = React.lazy(() => import('./Content'));
 

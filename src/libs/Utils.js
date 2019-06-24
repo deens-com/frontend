@@ -1,5 +1,6 @@
 import I18nText from 'shared_components/I18nText';
 import tagsData from './../data/tags';
+
 export const serverBaseURL = () => {
   if (process.env.REACT_APP_NODE_ENV === 'production') {
     return process.env.SERVER_BASE_URL || 'https://api.deens.com';
