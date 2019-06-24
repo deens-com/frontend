@@ -7,7 +7,7 @@ export const keys = {
   stripeIntegration: 'stripe-integration',
   cryptoCurrencies: 'disable-crypto-currencies',
   gdprDismissed: 'gdpr-dismissed',
-  lang: 'lang',
+  lang: 'language',
 };
 
 const convertToBool = stringBool => stringBool === 'true';
