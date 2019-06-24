@@ -11,7 +11,20 @@ export const getUserLanguage = () => {
 };
 
 export const languages = {
+  cs: 'Čeština',
+  da: 'Dansk',
+  de: 'Deutsch',
   en: 'English',
-  fr: 'French',
-  sp: 'Spanish',
+  es: 'Español',
+  fr: 'Français',
+  it: 'Italiano',
+  ja: '日本語',
+  nl: 'Nederlands',
+  pl: 'Polski',
+  pt: 'Português',
+  sv: 'Svenska',
+  tr: 'Türkçe',
+  zh: '繁體中文',
 };
+
+export const availableLanguages = Object.keys(languages).sort();
