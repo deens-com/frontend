@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Dropdown from 'shared_components/Dropdown';
-import { Slider, Handles, Rail } from 'react-compound-slider';
+import { Slider, Handles, Rail, Ticks, Tracks } from 'react-compound-slider';
 import Handle from './Handle';
-import { primary } from 'libs/colors';
+import { primary, disabled } from 'libs/colors';
 import Star from 'shared_components/icons/Star';
 
 const Content = styled.div`
@@ -16,7 +16,7 @@ const Content = styled.div`
 const StarsWrapper = styled.div`
   position: relative;
   display: flex;
-  margin-left: 20px;
+  margin-left: 12px;
   svg {
     color: ${primary};
   }
@@ -30,19 +30,28 @@ const sliderStyle = {
 
 const railStyle = {
   position: 'absolute',
-  height: '100%',
+  height: 'calc(100% + 16px)',
+  marginTop: '-8px',
+  paddingBottom: '8px',
   width: 10,
   borderRadius: 5,
-  backgroundColor: '#8B9CB6',
+  backgroundColor: disabled,
   transform: 'translate(-50%, 0%)',
 };
 
-const MAX_PRICE = 5;
-const MIN_PRICE = 1;
+const MAX_STARS = 5;
+const MIN_STARS = 1;
+
+const renderTrigger = (start, end) => {
+  if (start === end) {
+    return `${start} Rating stars`;
+  }
+  return `${start} to ${end} Rating stars`;
+};
 
 const StarRange = ({ ratingStart, ratingEnd, onApply }) => {
-  const defaultMin = MIN_PRICE;
-  const defaultMax = MAX_PRICE;
+  const defaultMin = MIN_STARS;
+  const defaultMax = MAX_STARS;
   const [values, setValues] = useState({
     min: ratingStart || defaultMin,
     max: ratingEnd || defaultMax,
@@ -63,14 +72,14 @@ const StarRange = ({ ratingStart, ratingEnd, onApply }) => {
   };
 
   return (
-    <Dropdown onClose={onClose} trigger={`${ratingStart} - ${ratingEnd} stars`}>
+    <Dropdown onClose={onClose} trigger={renderTrigger(ratingStart, ratingEnd)}>
       <Content>
         <Slider
           vertical
           domain={[defaultMin, defaultMax]}
           values={[values.min, values.max]}
           step={1}
-          onChange={onChange}
+          onUpdate={onChange}
           rootStyle={sliderStyle}
         >
           <Rail>{({ getRailProps }) => <div style={railStyle} {...getRailProps()} />}</Rail>
@@ -78,19 +87,56 @@ const StarRange = ({ ratingStart, ratingEnd, onApply }) => {
             {({ handles, getHandleProps }) => (
               <div>
                 {handles.map(handle => (
-                  <Handle key={handle.id} handle={handle} getHandleProps={getHandleProps}>
-                    <StarsWrapper>
-                      {[...new Array(handle.value)].map((_, i) => (
-                        <span key={i}>
-                          <Star />
-                        </span>
-                      ))}
-                    </StarsWrapper>
-                  </Handle>
+                  <Handle key={handle.id} handle={handle} getHandleProps={getHandleProps} />
                 ))}
               </div>
             )}
           </Handles>
+          <Tracks left={false} right={false}>
+            {({ tracks, getTrackProps }) => (
+              <div>
+                {tracks.map(({ id, source, target }) => (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      backgroundColor: '#8B9CB6',
+                      top: `${source.percent}%`,
+                      width: 10,
+                      transform: 'translate(-50%, 0%)',
+                      height: `${target.percent - source.percent}%`,
+                      borderRadius: 5,
+                    }}
+                    {...getTrackProps()}
+                  />
+                ))}
+              </div>
+            )}
+          </Tracks>
+          <Ticks count={5}>
+            {({ ticks }) => (
+              <div style={{ height: 100 }}>
+                {ticks.map(tick => (
+                  <StarsWrapper
+                    style={{ position: 'absolute', top: `calc(${tick.percent}% - 8px)` }}
+                  >
+                    {[...new Array(tick.value)].map((_, i) => (
+                      <span key={i}>
+                        <Star
+                          style={
+                            tick.value < values.min || tick.value > values.max
+                              ? {
+                                  color: disabled,
+                                }
+                              : null
+                          }
+                        />
+                      </span>
+                    ))}
+                  </StarsWrapper>
+                ))}
+              </div>
+            )}
+          </Ticks>
         </Slider>
       </Content>
     </Dropdown>

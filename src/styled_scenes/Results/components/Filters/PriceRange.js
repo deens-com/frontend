@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Dropdown from 'shared_components/Dropdown';
-import { Slider, Handles, Rail } from 'react-compound-slider';
+import { Slider, Handles, Rail, Tracks } from 'react-compound-slider';
+import { disabled } from 'libs/colors';
 
 import { P } from 'libs/commonStyles';
 
@@ -34,7 +35,7 @@ const railStyle = {
   width: '100%',
   height: 10,
   borderRadius: 5,
-  backgroundColor: '#8B9CB6',
+  backgroundColor: disabled,
 };
 
 const MAX_PRICE = 500;
@@ -135,6 +136,25 @@ const PriceRange = ({
               </div>
             )}
           </Handles>
+          <Tracks left={onlyMax} right={false}>
+            {({ tracks, getTrackProps }) => (
+              <div>
+                {tracks.map(({ id, source, target }) => (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      backgroundColor: '#8B9CB6',
+                      left: `${source.percent}%`,
+                      height: 10,
+                      width: `${target.percent - source.percent}%`,
+                      borderRadius: 5,
+                    }}
+                    {...getTrackProps()}
+                  />
+                ))}
+              </div>
+            )}
+          </Tracks>
         </Slider>
         <PerDay>
           {showTotalPrice && (

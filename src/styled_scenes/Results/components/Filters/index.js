@@ -77,7 +77,14 @@ const Filters = ({
   const [showingMobile, setShowingMobile] = useState(false);
   const search = params => {
     const keepPage = isMatch(searchParams, params);
-    updateSearchParams(params, undefined, keepPage ? searchParams.page : undefined);
+    updateSearchParams(
+      {
+        ...searchParams,
+        ...params,
+      },
+      undefined,
+      keepPage ? searchParams.page : undefined,
+    );
   };
   const [showOnlyText, setShowOnlyText] = useState(false);
   const filters = showOnlyText ? [availableFilters.text] : filtersByType[searchParams.type];
