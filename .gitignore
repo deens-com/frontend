@@ -26,3 +26,6 @@ src/vendor/components/
 report.html
 
 sitemap-files.zip
+
+src/locales/_build/
+src/locales/**/*.js
