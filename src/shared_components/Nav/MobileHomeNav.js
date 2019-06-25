@@ -146,7 +146,7 @@ class MobileHomeNav extends Component {
                 }}
                 onClick={this.onOptionClick}
               >
-                <Trans>Create Trip</Trans>
+                <Trans>create-trip</Trans>
               </MenuLink>
             </li>
             <li style={{ color: secondary }}>

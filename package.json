@@ -100,6 +100,7 @@
     "@babel/core": "^7.4.5",
     "@babel/polyfill": "^7.2.5",
     "@lingui/cli": "^2.8.3",
+    "@lingui/loader": "^2.8.3",
     "@lingui/macro": "^2.8.3",
     "@rescripts/cli": "^0.0.10",
     "@rescripts/rescript-use-babel-config": "^0.0.8",

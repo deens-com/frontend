@@ -488,7 +488,7 @@ class ResultsScene extends Component {
                 }}
               >
                 <PStrong>
-                  <Trans>Create Trip</Trans>
+                  <Trans>create-trip</Trans>
                 </PStrong>
               </Button>
             )}

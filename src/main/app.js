@@ -110,6 +110,9 @@ const GlobalStyles = createGlobalStyle`
 `;
 
 class App extends React.Component {
+  state = {
+    catalogs: {},
+  };
   checkForReferrerAndSet = () => {
     const cookieReferrerId = 'deens_referrer_id';
     const params = queryString.parse(history.location.search);
@@ -124,9 +127,25 @@ class App extends React.Component {
       getFavoriteTrips()(store.dispatch, store.getState);
     });
     this.checkForReferrerAndSet();
+    this.loadLocale();
+  }
+
+  async loadLocale() {
+    const catalog = await import(/* webpackChunkName: "i18n-[index]" */ `@lingui/loader!locales/${getUserLanguage()}/messages.json`);
+
+    this.setState(state => ({
+      catalogs: {
+        ...state.catalogs,
+        [getUserLanguage()]: catalog,
+      },
+    }));
   }
 
   render() {
+    if (!catalogs[getUserLanguage()]) {
+      return null;
+    }
+
     return (
       <HelmetProvider>
         <GlobalStyles />

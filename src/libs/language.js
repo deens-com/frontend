@@ -31,7 +31,7 @@ const getRouteLanguage = () => {
 const getBrowserLanguage = () =>
   navigator.language ? navigator.language.split('-')[0] : getRouteLanguage();
 
-export const getUserLanguage = () => {
+const userLanguage = (() => {
   const cookieLang = getLang();
   if (cookieLang) {
     return cookieLang;
@@ -41,4 +41,6 @@ export const getUserLanguage = () => {
     return 'en';
   }
   return lang;
-};
+})();
+
+export const getUserLanguage = () => userLanguage;

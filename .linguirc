@@ -2,5 +2,6 @@
   "localeDir": "src/locales/",
   "srcPathDirs": ["src/"],
   "format": "minimal",
-  "sourceLocale": "en"
+  "sourceLocale": "en",
+  "fallbackLocale": "en"
 }

@@ -165,7 +165,7 @@ const TopBarDesktopNav = function TopBarDesktopNav({
                   }}
                 >
                   <PStrong>
-                    <Trans>Create Trip</Trans>
+                    <Trans>create-trip</Trans>
                   </PStrong>
                 </NavLink>
               </>
