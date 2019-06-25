@@ -78,9 +78,9 @@
   "scripts": {
     "start": "cross-env HTTPS=true rescripts start",
     "now-start": "serve ./build --single",
-    "build": "REACT_APP_NODE_ENV=production rescripts build",
-    "now-build": "REACT_APP_NODE_ENV=staging rescripts build",
-    "build:staging": "REACT_APP_NODE_ENV=staging rescripts build",
+    "build": "yarn extract && yarn compile && REACT_APP_NODE_ENV=production rescripts build",
+    "now-build": "yarn extract && yarn compile && REACT_APP_NODE_ENV=staging rescripts build",
+    "build:staging": "yarn extract && yarn compile && REACT_APP_NODE_ENV=staging rescripts build",
     "postbuild": "mkdir -p build/.circleci && cp -r .circleci/* build/.circleci/",
     "test": "rescripts test --env=jsdom",
     "eject": "react-scripts eject",
