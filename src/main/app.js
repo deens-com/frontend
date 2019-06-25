@@ -12,7 +12,6 @@ import Skeleton from './skeleton';
 import { createGlobalStyle } from 'styled-components';
 import { I18nProvider } from '@lingui/react';
 import { getUserLanguage } from 'libs/language';
-import LanguageRedirect from './router/LanguageRedirect';
 import catalogEn from 'locales/en/messages.js';
 import catalogFr from 'locales/fr/messages.js';
 
@@ -134,9 +133,6 @@ class App extends React.Component {
         <Provider store={store}>
           <I18nProvider language={getUserLanguage()} catalogs={catalogs}>
             <React.Fragment>
-              <BrowserRouter forceRefresh>
-                <LanguageRedirect path={`${process.env.PUBLIC_URL}/:lang`} />
-              </BrowserRouter>
               <Router history={history}>
                 <Skeleton>
                   <Routes />

@@ -63,12 +63,13 @@ const Copyright = styled(PSmall)`
   margin-top: 25px;
 `;
 
-const OptionSelector = styled.span`
+const OptionSelector = styled.select`
   border-radius: 5px 5px 5px 0;
   color: white;
   background-color: ${colors.primary};
   margin-left: 10px;
   padding: 5px;
+  outline: none;
 `;
 
 export default ({ marginBottom = 0 }) => (
@@ -79,22 +80,19 @@ export default ({ marginBottom = 0 }) => (
           <H6>Preferences</H6>
           <LinkElement>
             <span>Language</span>
-            <Dropdown
-              icon={null}
-              basic
-              scrolling
-              trigger={
-                <OptionSelector>{languages[getUserLanguage()] || languages['en']}</OptionSelector>
-              }
+            <OptionSelector
               defaultValue={getUserLanguage()}
-              options={availableLanguages.map(lang => {
-                return { text: languages[lang], value: lang };
-              })}
-              onChange={(_, data) => {
-                setLang(data.value);
-                window.location.reload(true);
+              onChange={e => {
+                if (e.target && e.target.value) {
+                  setLang(e.target.value);
+                  window.location.reload(true);
+                }
               }}
-            />
+            >
+              {availableLanguages.map(lang => {
+                return <option value={lang}>{languages[lang]}</option>;
+              })}
+            </OptionSelector>
           </LinkElement>
         </Column>
         <Column>
