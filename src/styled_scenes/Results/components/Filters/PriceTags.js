@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Dropdown from 'shared_components/Dropdown';
-import 'react-input-range/lib/css/index.css';
 
 import { primary, textLight } from 'libs/colors';
 
