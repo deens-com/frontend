@@ -82,6 +82,7 @@ export default ({ marginBottom = 0 }) => (
             <Dropdown
               icon={null}
               basic
+              scrolling
               trigger={
                 <OptionSelector>{languages[getUserLanguage()] || languages['en']}</OptionSelector>
               }
