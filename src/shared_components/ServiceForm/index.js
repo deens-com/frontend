@@ -166,10 +166,6 @@ class ServiceForm extends Component {
         setFieldValue('formattedAddress', currentResult.formatted_address);
 
         const { country, countryCode, city, postalCode, state } = parseLocationData(currentResult);
-        if (!city) {
-          setFieldError('latlong', 'The location needs to be more specific');
-          return;
-        }
         setFieldValue('country', country);
         setFieldValue('countryCode', countryCode);
         setFieldValue('city', city);
