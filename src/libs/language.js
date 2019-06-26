@@ -1,4 +1,4 @@
-import { getLang } from 'libs/cookies';
+import { getLang, setLang } from 'libs/cookies';
 
 export const languages = {
   cs: 'Čeština',
@@ -38,8 +38,10 @@ const userLanguage = (() => {
   }
   const lang = getBrowserLanguage();
   if (!(lang in languages)) {
+    setLang('en');
     return 'en';
   }
+  setLang(lang);
   return lang;
 })();
 

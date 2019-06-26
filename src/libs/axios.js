@@ -4,18 +4,25 @@ import { getSession } from './user-session';
 
 const axiosInstance = axios.create({
   baseURL: serverBaseURL,
+  //withCredentials: true,
 });
 
 // Add a request interceptor to inject Parse sessionToken if it exists
-axiosInstance.interceptors.request.use(config => {
-  // auth0
-  const user = getSession();
-  if (user && user.accessToken) {
-    config.headers.Authorization = `Bearer ${user.accessToken}`;
-  }
+axiosInstance.interceptors.request.use(
+  config => {
+    // auth0
+    const user = getSession();
+    if (user && user.accessToken) {
+      config.headers.Authorization = `Bearer ${user.accessToken}`;
+    }
 
-  return config;
-});
+    return config;
+  },
+  config => {
+    config.withCredentials = true;
+    return config;
+  },
+);
 
 export default axiosInstance;
 
