@@ -8,6 +8,7 @@ import Settings from 'shared_components/icons/Settings';
 import Walk from 'assets/walk.svg';
 import Bike from 'assets/bike.svg';
 import Car from 'assets/car.svg';
+import Train from 'assets/train.svg';
 import SadFace from 'assets/sad-face.svg';
 import transportIcon from 'assets/service-icons/transport.svg';
 import { getKmFromMeters } from 'libs/Utils';
@@ -16,6 +17,7 @@ import TextDivisor from 'shared_components/TextDivisor';
 import CarIcon from 'shared_components/icons/Car';
 import WalkIcon from 'shared_components/icons/Walk';
 import BikeIcon from 'shared_components/icons/Bike';
+import TrainIcon from 'shared_components/icons/Train';
 
 import { TripContext } from '../';
 
@@ -107,6 +109,27 @@ const Icon = styled.img`
   margin: 30px auto 25px;
 `;
 
+const TransportSteps = styled.ol`
+  padding: 15px;
+  padding-bottom: 5px;
+  list-style: none;
+  counter-reset: li;
+  > li {
+    margin-bottom: 5px;
+    counter-increment: li;
+    &::before {
+      content: counter(li);
+      color: ${primary};
+      display: inline-block;
+      width: 1.5em;
+      margin-left: -2em;
+      margin-right: 0.5em;
+      text-align: right;
+      direction: rtl;
+    }
+  }
+`;
+
 function getIconAndText(data) {
   const notFound = { text: 'Oops! We could not find a route', icon: SadFace };
 
@@ -121,6 +144,8 @@ function getIconAndText(data) {
       return { text: 'Drive your car', icon: Car };
     case 'bicycle':
       return { text: 'Ride a bike', icon: Bike };
+    case 'public-transit':
+      return { text: 'Public transport', icon: Train };
     default:
       return notFound;
   }
@@ -136,6 +161,17 @@ const renderTime = time => {
   }
 
   return `${time.minutes}mn`;
+};
+
+const renderSteps = data => {
+  if (!data || !data.route || !data.route.steps) {
+    return null;
+  }
+  return (
+    <TransportSteps>
+      {data.route.steps.map(step => console.log(step) || <li key={step.key}>{step.text}</li>)}
+    </TransportSteps>
+  );
 };
 
 const Transportation = ({
@@ -157,7 +193,7 @@ const Transportation = ({
   const distance = getKmFromMeters(data && data.route && data.route.distanceInMeters);
   const time = secondsToHoursAndMinutes(data && data.route && data.route.baseTimeInSeconds);
   const selected = data && data.route && data.route.transportMode;
-
+  console.log(data);
   const showTooltip = () => {
     if (isLoading) {
       return;
@@ -226,6 +262,12 @@ const Transportation = ({
                     >
                       <WalkIcon />
                     </TransportSelect>
+                    <TransportSelect
+                      selected={selected === 'public-transit'}
+                      onClick={() => onTransportSelect('public-transit')}
+                    >
+                      <TrainIcon />
+                    </TransportSelect>
                   </TransportOptions>
                 </div>
               }
@@ -243,7 +285,19 @@ const Transportation = ({
               <>
                 <Icon src={icon} />
                 <BottomText centered={!data || !data.route}>
-                  <P>{text}</P>
+                  <P>
+                    {selected === 'public-transit' ? (
+                      <Popup
+                        position="bottom center"
+                        trigger={<span style={{ cursor: 'pointer', color: primary }}>{text}</span>}
+                        on="click"
+                      >
+                        {renderSteps(data)}
+                      </Popup>
+                    ) : (
+                      text
+                    )}
+                  </P>
                   {data &&
                     data.route && (
                       <TimeAndDistance>
