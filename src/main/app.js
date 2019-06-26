@@ -4,7 +4,7 @@ import queryString from 'query-string';
 import Cookies from 'js-cookie';
 import store from './store';
 import history from 'main/history';
-import { Router, BrowserRouter } from 'react-router-dom';
+import { Router } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { getCurrentUser, getFavoriteTrips } from 'store/session/actions';
 import Routes from './router';
@@ -12,10 +12,6 @@ import Skeleton from './skeleton';
 import { createGlobalStyle } from 'styled-components';
 import { I18nProvider } from '@lingui/react';
 import { getUserLanguage } from 'libs/language';
-import catalogEn from 'locales/en/messages.js';
-import catalogFr from 'locales/fr/messages.js';
-
-const catalogs = { fr: catalogFr, en: catalogEn };
 
 const GlobalStyles = createGlobalStyle`
   * {
@@ -131,7 +127,8 @@ class App extends React.Component {
   }
 
   async loadLocale() {
-    const catalog = await import(/* webpackChunkName: "i18n-[index]" */ `@lingui/loader!locales/${getUserLanguage()}/messages.json`);
+    const lang = getUserLanguage();
+    const catalog = await import(/* webpackChunkName: "i18n-[index]" */ `@lingui/loader!locales/${lang}/messages.json`);
 
     this.setState(state => ({
       catalogs: {
@@ -142,7 +139,7 @@ class App extends React.Component {
   }
 
   render() {
-    if (!catalogs[getUserLanguage()]) {
+    if (!this.state.catalogs[getUserLanguage()]) {
       return null;
     }
 
@@ -150,7 +147,7 @@ class App extends React.Component {
       <HelmetProvider>
         <GlobalStyles />
         <Provider store={store}>
-          <I18nProvider language={getUserLanguage()} catalogs={catalogs}>
+          <I18nProvider language={getUserLanguage()} catalogs={this.state.catalogs}>
             <React.Fragment>
               <Router history={history}>
                 <Skeleton>
