@@ -50,7 +50,7 @@ const Account = asyncCommonHOCs(
   React.lazy(() => import(/* webpackChunkName: "account" */ 'scenes/account/account')),
 );
 const Blog = asyncCommonHOCs(
-  React.lazy(() => import(/* webpackChunkName: "blog" */ 'scenes/blog')),
+  React.lazy(() => import(/* webpackChunkName: "external-content" */ 'scenes/blog')),
 );
 const Notfound = asyncCommonHOCs(
   React.lazy(() => import(/* webpackChunkName: "not-found" */ 'styled_scenes/NotFound')),
