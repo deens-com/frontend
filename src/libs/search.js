@@ -96,6 +96,7 @@ export const getSearchParams = params => {
     ratingEnd: Number(searchParams.ratingEnd) || undefined,
     page: searchParams.page || 1,
     limit: searchParams.limit || 25,
+    accommodationStars: searchParams.accommodationStars || undefined,
     locationSearchType,
   };
 };
@@ -225,6 +226,7 @@ const PRICE_TAGS = 'priceTags';
 const TEXT = 'text';
 const DURATION = 'duration';
 const RATING = 'rating';
+const STARS = 'stars';
 
 export const availableFilters = {
   guests: GUESTS,
@@ -237,11 +239,12 @@ export const availableFilters = {
   text: TEXT,
   duration: DURATION,
   rating: RATING,
+  stars: STARS,
 };
 
 export const filtersByType = {
   trip: [GUESTS, DATES, PRICE_RANGE, TAGS],
-  accommodation: [GUESTS, DATES, PRICE_RANGE, TEXT, RATING],
+  accommodation: [GUESTS, DATES, PRICE_RANGE, TEXT, STARS, RATING],
   activity: [GUESTS, SINGLE_DATE, PRICE_RANGE_ONLY_MAX, TAGS, TEXT, DURATION],
   food: [GUESTS, PRICE_TAGS, TAGS, TEXT],
 };

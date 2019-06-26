@@ -49,7 +49,7 @@ const renderTrigger = (start, end) => {
   return `${start} to ${end} Rating stars`;
 };
 
-const StarRange = ({ ratingStart, ratingEnd, onApply }) => {
+const Rating = ({ ratingStart, ratingEnd, onApply }) => {
   const defaultMin = MIN_STARS;
   const defaultMax = MAX_STARS;
   const [values, setValues] = useState({
@@ -143,18 +143,15 @@ const StarRange = ({ ratingStart, ratingEnd, onApply }) => {
   );
 };
 
-StarRange.propTypes = {
+Rating.propTypes = {
   onApply: PropTypes.func.isRequired,
   ratingStart: PropTypes.number,
   ratingEnd: PropTypes.number,
-  numberOfPeople: PropTypes.number,
-  onlyMax: PropTypes.bool,
 };
 
-StarRange.defaultProps = {
+Rating.defaultProps = {
   ratingStart: 1,
   ratingEnd: 5,
-  onlyMax: false,
 };
 
-export default StarRange;
+export default Rating;
