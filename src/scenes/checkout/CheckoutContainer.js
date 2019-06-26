@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
 import axios from 'libs/axios';
-import { Loader, Dimmer } from 'semantic-ui-react';
+import { Loader, Dimmer, Modal } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { media } from 'libs/styled';
 import { generateTripSlug } from 'libs/Utils';
@@ -253,7 +253,7 @@ class CheckoutContainer extends React.Component {
   }
 
   componentDidUpdate() {
-    if (this.props.trip) {
+    if (this.props.trip && !this.state.errorMsg) {
       if (this.props.trip && this.props.trip.owner !== this.props.session._id) {
         if (this.props.trip.privacy === 'public') {
           history.replace(
@@ -276,19 +276,32 @@ class CheckoutContainer extends React.Component {
         );
         return;
       }
-      if (!this.props.trip.startDate || !this.props.trip.adultCount) {
-        this.goToTripOrganizer();
+      if (!this.props.trip.startDate) {
+        this.setState({
+          errorMsg: 'You need to select a date',
+        });
+        return;
+      }
+
+      if (!this.props.trip.adultCount) {
+        this.setState({
+          errorMsg: 'Your trip should have at least one adult',
+        });
         return;
       }
 
       if (this.props.trip.services.length === 0) {
-        this.goToTripOrganizer();
+        this.setState({
+          errorMsg: 'You need to add at least one service to book a trip',
+        });
         return;
       }
 
       if (this.props.availability) {
         if (this.props.availability.some(service => !service.isAvailable)) {
-          this.goToTripOrganizer();
+          this.setState({
+            errorMsg: 'Some of the services are not available in the selected dates',
+          });
           return;
         }
       } else if (!this.props.isCheckingAvailability) {
@@ -448,12 +461,25 @@ class CheckoutContainer extends React.Component {
 
   render() {
     const { trip, isLoading } = this.props;
-    const { days, step, expireDate, timedOut } = this.state;
+    const { days, step, expireDate, timedOut, errorMsg } = this.state;
     const numberOfGuests = this.calculateGuests();
+
     return isLoading || !trip ? (
       <Loader inline="centered" active />
     ) : (
       <React.Fragment>
+        <Modal
+          open={Boolean(errorMsg)}
+          content={errorMsg}
+          size="mini"
+          actions={[
+            {
+              key: 'trip',
+              content: 'Go back to trip designer',
+              onClick: this.goToTripOrganizer,
+            },
+          ]}
+        />
         <Wrapper>
           <Top>
             {step < 4 && (
