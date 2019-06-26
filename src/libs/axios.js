@@ -1,28 +1,22 @@
 import axios from 'axios';
 import { serverBaseURL } from './config';
 import { getSession } from './user-session';
+import { getUserLanguage } from './language';
 
 const axiosInstance = axios.create({
   baseURL: serverBaseURL,
-  //withCredentials: true,
 });
 
 // Add a request interceptor to inject Parse sessionToken if it exists
-axiosInstance.interceptors.request.use(
-  config => {
-    // auth0
-    const user = getSession();
-    if (user && user.accessToken) {
-      config.headers.Authorization = `Bearer ${user.accessToken}`;
-    }
-
-    return config;
-  },
-  config => {
-    config.withCredentials = true;
-    return config;
-  },
-);
+axiosInstance.interceptors.request.use(config => {
+  // auth0
+  const user = getSession();
+  if (user && user.accessToken) {
+    config.headers.Authorization = `Bearer ${user.accessToken}`;
+  }
+  config.headers['X-Language'] = getUserLanguage();
+  return config;
+});
 
 export default axiosInstance;
 
