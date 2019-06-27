@@ -7,7 +7,7 @@ document.documentElement.setAttribute('lang', getUserLanguage());
 
 const LanguageMetaUpdater = ({ location }) => (
   <Helmet>
-    {availableLanguages.map(lang => {
+    {/*availableLanguages.map(lang => {
       if (lang !== 'en') {
         return (
           <link
@@ -21,7 +21,7 @@ const LanguageMetaUpdater = ({ location }) => (
       return (
         <link rel="alternate" href={`${websiteUrl}${location.pathname}`} hreflang="x-default" />
       );
-    })}
+    })*/}
     <meta http-equiv="content-language" content={getUserLanguage()} />
     <meta name="Language" content={getUserLanguage()} />
   </Helmet>
