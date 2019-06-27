@@ -66,6 +66,8 @@ const updateSearchParams = (parameters, state, customPage, noChangeUrl, noFetch)
   dispatch,
   getState,
 ) => {
+  //debugger;
+  //console.log('arru', parameters)
   let noPushUrl = noChangeUrl;
   const { startDate, endDate } = parameters;
   const searchParams = {

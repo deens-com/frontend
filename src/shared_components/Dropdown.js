@@ -49,11 +49,6 @@ const Dropdown = ({ open, children, trigger, onClose, onOpen, maxHeight, error }
 
   useEffect(
     () => {
-      if (open) {
-        onOpen();
-      } else {
-        onClose();
-      }
       setOpen(open);
     },
     [open],
