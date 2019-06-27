@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import GoogleMapReact from 'google-map-react';
+import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { Checkbox } from 'semantic-ui-react';
 import { getCenterAndZoom, getCenterFromBounds } from 'libs/location';
 import yelpLogo from 'assets/yelp/logo.png';
@@ -200,6 +201,7 @@ class ResultsScene extends Component {
       showMap: true,
       searchByMoving: true,
       showingFiltersMobile: false,
+      updatingCenter: false, // used to get lat/lng and update if no results yet
     };
     this.mapRef = React.createRef();
     this.mapPlaceholderRef = React.createRef();
@@ -230,6 +232,24 @@ class ResultsScene extends Component {
     return getCenterAndZoom(markers, center);
   };
 
+  updateCenter = async (formattedAddress, countryCode, state, city) => {
+    this.setState({
+      updatingCenter: true,
+    });
+    const cityStr = city ? `${city}, ` : '';
+    const stateStr = state ? `${state}, ` : '';
+    const address = formattedAddress || `${cityStr}${stateStr}${countryCode}`;
+
+    await waitUntilMapsLoaded();
+    const results = await geocodeByAddress(address);
+    const center = await getLatLng(results[0]);
+    if (this.state.updatingCenter) {
+      this.setState({
+        center,
+      });
+    }
+  };
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.isBehindModal) {
       return;
@@ -237,6 +257,35 @@ class ResultsScene extends Component {
     if (nextProps.searchExtraData) {
       return;
     }
+
+    if (nextProps.searchParams.locationSearchType === 'placeData') {
+      if (
+        nextProps.searchParams.countryCode !== this.props.searchParams.countryCode ||
+        nextProps.searchParams.state !== this.props.searchParams.state ||
+        nextProps.searchParams.city !== this.props.searchParams.city
+      ) {
+        this.updateCenter(
+          nextProps.searchParams.address,
+          nextProps.searchParams.countryCode,
+          nextProps.searchParams.state,
+          nextProps.searchParams.city,
+        );
+      }
+    }
+    if (nextProps.searchParams.locationSearchType === 'latlng') {
+      if (
+        nextProps.searchParams.lat !== this.props.searchParams.lat ||
+        nextProps.searchParams.lng !== this.props.searchParams.lng
+      ) {
+        this.setState({
+          center: {
+            lat: nextProps.searchParams.lat,
+            lng: nextProps.searchParams.lng,
+          },
+        });
+      }
+    }
+
     const hasLocationsChanged =
       nextProps.service_data.map(item => item._id).join(',') !==
       this.props.service_data.map(item => item._id).join(',');
@@ -249,7 +298,7 @@ class ResultsScene extends Component {
       }
       if (!usingBoundingBox(nextProps.searchParams)) {
         const { center, zoom } = this.getCenterAndZoom(newMarkers, nextProps);
-        this.setState({ center, zoom, markers: newMarkers });
+        this.setState({ center, zoom, markers: newMarkers, updatingCenter: false });
       } else {
         this.setState({ markers: newMarkers });
       }
@@ -262,10 +311,22 @@ class ResultsScene extends Component {
       getCenterFromBounds(this.props.searchParams).then(({ center, zoom }) =>
         this.setState({ center, zoom, markers: [] }),
       );
-    } /* else {
-      const { center } = this.getCenterAndZoom([], this.props);
-      this.setState({ center, markers: [] });
-    }*/
+    } else if (this.props.searchParams.locationSearchType === 'placeData') {
+      this.updateCenter(
+        this.props.searchParams.address,
+        this.props.countryCode,
+        this.props.state,
+        this.props.city,
+      );
+    } else if (this.props.searchParams.locationSearchType === 'latlng') {
+      this.setState({
+        center: {
+          lat: this.props.lat,
+          lng: this.props.lng,
+        },
+      });
+    }
+
     if (this.state.showMap) {
       window.addEventListener('scroll', this.handleScroll);
       window.addEventListener('scroll', this.resizeHandler);
@@ -437,6 +498,7 @@ class ResultsScene extends Component {
 
   searchByBounds = (northEastLat, northEastLng, southWestLat, southWestLng) => {
     this.props.updateSearchParams({
+      ...this.props.searchParams,
       topRightLat: northEastLat,
       topRightLng: northEastLng,
       bottomLeftLat: southWestLat,
