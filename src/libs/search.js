@@ -96,7 +96,7 @@ export const getSearchParams = params => {
     ratingEnd: Number(searchParams.ratingEnd) || undefined,
     page: searchParams.page || 1,
     limit: searchParams.limit || 25,
-    accommodationStars: searchParams.accommodationStars || undefined,
+    accommodationStars: parseArrayOrNumber(searchParams.accommodationStars) || undefined,
     locationSearchType,
   };
 };
