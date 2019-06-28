@@ -40,7 +40,6 @@ const Row = styled.tr`
 
 const ServiceInformation = ({ service, updateSearchParams }) => {
   if (!service || !service.ratings) return null;
-  console.log(extractPrice(service.basePrice), service.basePrice);
   return (
     <Table>
       <tbody>
@@ -60,7 +59,9 @@ const ServiceInformation = ({ service, updateSearchParams }) => {
         <Row>
           <td>
             {extractPricePer(service.basePrice) === PRICE_PER_SESSION
-              ? 'Price Per Session'
+              ? service.type !== 'Accommodation'
+                ? 'Price Per Session'
+                : 'Price Per Night'
               : 'Price Per Adult'}
           </td>
           <td>
