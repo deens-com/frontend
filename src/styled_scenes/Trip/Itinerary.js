@@ -227,7 +227,8 @@ class Itinerary extends Component {
     const price = getPriceFromServiceOption(
       service.basePrice,
       bookedInformationPrice,
-      getPeopleCount(this.props.trip),
+      this.props.trip.adultCount,
+      this.props.trip.childrenCount,
     );
 
     return <ServicePrice>${price.toFixed(2)}</ServicePrice>;

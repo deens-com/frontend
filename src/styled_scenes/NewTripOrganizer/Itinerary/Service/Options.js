@@ -195,7 +195,8 @@ const ServiceOptions = ({ selectOption, serviceData, options }) => {
                                     getPriceFromServiceOption(
                                       service.basePrice,
                                       option.price,
-                                      tripData.adults + tripData.infants + tripData.children,
+                                      tripData.adults,
+                                      tripData.children,
                                     ),
                                     option.otherAttributes.availabilityCode.code,
                                   )
@@ -206,7 +207,8 @@ const ServiceOptions = ({ selectOption, serviceData, options }) => {
                                     getPriceFromServiceOption(
                                       service.basePrice,
                                       null,
-                                      tripData.adults + tripData.infants + tripData.children,
+                                      tripData.adults,
+                                      tripData.children,
                                     ),
                                     option.otherAttributes.availabilityCode.code,
                                   )}

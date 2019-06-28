@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import UserAvatar from 'shared_components/UserAvatar';
-import { padStart } from 'libs/Utils';
+import { padStart, extractPrice, extractPricePer, PRICE_PER_SESSION } from 'libs/Utils';
 import PriceTag from 'shared_components/Currency/PriceTag';
 import Rating from 'shared_components/Rating';
 import { Link } from 'react-router-dom';
@@ -40,6 +40,7 @@ const Row = styled.tr`
 
 const ServiceInformation = ({ service, updateSearchParams }) => {
   if (!service || !service.ratings) return null;
+  console.log(extractPrice(service.basePrice), service.basePrice);
   return (
     <Table>
       <tbody>
@@ -57,9 +58,13 @@ const ServiceInformation = ({ service, updateSearchParams }) => {
           </td>
         </Row>
         <Row>
-          <td>Price Per Session</td>
           <td>
-            <PriceTag price={service.basePrice} />
+            {extractPricePer(service.basePrice) === PRICE_PER_SESSION
+              ? 'Price Per Session'
+              : 'Price Per Adult'}
+          </td>
+          <td>
+            <PriceTag price={extractPrice(service.basePrice)} />
           </td>
         </Row>
         <Row>
