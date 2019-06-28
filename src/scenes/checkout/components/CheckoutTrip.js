@@ -7,7 +7,7 @@ import mapServicesToDays from '../../../styled_scenes/Trip/mapServicesToDays';
 import I18nText from 'shared_components/I18nText';
 import MapMarker from 'shared_components/icons/MapMarker';
 import { minutesToHoursOrDays, calculateCancellationCharge } from 'libs/trips';
-import { getPriceFromServiceOption, getPeopleCount } from 'libs/Utils';
+import { getPriceFromServiceOption, getPeopleCount, extractPrice } from 'libs/Utils';
 import { getCategory } from 'libs/categories';
 import Category from 'shared_components/Category';
 import Button from 'shared_components/Button';
@@ -109,9 +109,10 @@ function getPrice(trip, service) {
     ? getPriceFromServiceOption(
         service.service.basePrice,
         service.selectedOption.price,
-        getPeopleCount(trip),
+        trip.adultCount,
+        trip.childrenCount,
       )
-    : service.service.basePrice;
+    : extractPrice(service.service.basePrice);
 }
 
 export class CheckoutTrip extends React.Component {
@@ -237,7 +238,8 @@ export class CheckoutTrip extends React.Component {
                               getPriceFromServiceOption(
                                 service.basePrice,
                                 service.selectedOption.price,
-                                this.props.numberOfPeople,
+                                trip.adultCount,
+                                trip.childrenCount,
                               ),
                             )
                           : this.renderCancellationPolicy(
@@ -247,7 +249,8 @@ export class CheckoutTrip extends React.Component {
                               getPriceFromServiceOption(
                                 service.basePrice,
                                 null,
-                                this.props.numberOfPeople,
+                                trip.adultCount,
+                                trip.childrenCount,
                               ),
                             )}
                       </CancellationPolicy>
