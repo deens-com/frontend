@@ -10,7 +10,6 @@ import TripCard from 'shared_components/Carts/Trip';
 import PaginationWrap from 'shared_components/PaginationWrap';
 import Button from 'shared_components/Button';
 import ReactPaginate from 'react-paginate';
-import { media } from '../../../libs/styled';
 import { Loader } from 'semantic-ui-react';
 import moment from 'moment';
 import { minutesToDays } from 'styled_scenes/Trip/mapServicesToDays';
@@ -80,6 +79,9 @@ const ResultItem = styled.div`
 
 const LoaderWithMargin = styled.section`
   margin-top: 40px;
+  > div {
+    z-index: 1 !important;
+  }
 `;
 
 const NotFound = styled.div`

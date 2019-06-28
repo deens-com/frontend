@@ -9,6 +9,9 @@ import DatesFilter from './Dates';
 import PriceRangeFilter from './PriceRange';
 import PriceTagsFilter from './PriceTags';
 import TagsFilter from './Tags';
+import DurationFilter from './Duration';
+//import RatingFilter from './Rating';
+import StarsFilter from './Stars';
 import TextFilter from './Text';
 import { isMatch } from 'lodash';
 import { media } from 'libs/styled';
@@ -75,7 +78,14 @@ const Filters = ({
   const [showingMobile, setShowingMobile] = useState(false);
   const search = params => {
     const keepPage = isMatch(searchParams, params);
-    updateSearchParams(params, undefined, keepPage ? searchParams.page : undefined);
+    updateSearchParams(
+      {
+        ...searchParams,
+        ...params,
+      },
+      undefined,
+      keepPage ? searchParams.page : undefined,
+    );
   };
   const [showOnlyText, setShowOnlyText] = useState(false);
   const filters = showOnlyText ? [availableFilters.text] : filtersByType[searchParams.type];
@@ -157,6 +167,19 @@ const Filters = ({
           selectedTags={searchParams.tags && searchParams.tags.map(tag => ({ value: tag }))}
           onApply={search}
         />
+      )}
+      {filters.includes(availableFilters.stars) && (
+        <StarsFilter accommodationStars={searchParams.accommodationStars} onApply={search} />
+      )}
+      {/*filters.includes(availableFilters.rating) && (
+        <RatingFilter
+          ratingStart={searchParams.ratingStart}
+          ratingEnd={searchParams.ratingEnd}
+          onApply={search}
+        />
+      )*/}
+      {filters.includes(availableFilters.duration) && (
+        <DurationFilter duration={searchParams.duration} onApply={search} />
       )}
       {filters.includes(availableFilters.text) && (
         <TextFilter

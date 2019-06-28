@@ -2,27 +2,14 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Dropdown from 'shared_components/Dropdown';
-import Range from 'react-input-range';
-import 'react-input-range/lib/css/index.css';
+import { Slider, Handles, Rail, Tracks } from 'react-compound-slider';
+import { disabled } from 'libs/colors';
 
-import { primary } from 'libs/colors';
 import { P } from 'libs/commonStyles';
 
 const Content = styled.div`
   padding: 25px;
-
-  .input-range__slider {
-    background: ${primary};
-    border-color: ${primary};
-  }
-
-  .input-range__track--active {
-    background: ${primary};
-  }
-
-  .input-range__label-container {
-    display: none;
-  }
+  width: 250px;
 `;
 
 const PerDay = styled(P)`
@@ -36,6 +23,20 @@ const PerDay = styled(P)`
     font-size: 14px;
   }
 `;
+
+const sliderStyle = {
+  position: 'relative',
+  width: '200px',
+  height: 30,
+};
+
+const railStyle = {
+  position: 'absolute',
+  width: '100%',
+  height: 10,
+  borderRadius: 5,
+  backgroundColor: disabled,
+};
 
 const MAX_PRICE = 500;
 const MIN_PRICE = 0;
@@ -64,15 +65,18 @@ const PriceRange = ({
 
       setValues({ min: min || defaultMin, max: max || defaultMax });
     },
-    [defaultMin, defaultMax],
+    [defaultMin, defaultMax, minPrice, maxPrice],
   );
 
   const onChange = newValues => {
     if (onlyMax) {
-      setValues({ ...values, max: newValues });
+      setValues({ ...values, max: newValues[0] });
       return;
     }
-    setValues(newValues);
+    setValues({
+      min: newValues[0],
+      max: newValues[1],
+    });
   };
 
   const renderTrigger = () => {
@@ -96,14 +100,62 @@ const PriceRange = ({
 
   return (
     <Dropdown onClose={onClose} trigger={renderTrigger()}>
-      <Content style={{ width: '250px' }}>
-        <Range
-          maxValue={defaultMax}
-          minValue={defaultMin}
-          value={onlyMax ? values.max : values}
-          onChange={onChange}
-          formatLabel={value => `$${value}`}
-        />
+      <Content>
+        <Slider
+          domain={[defaultMin, defaultMax]}
+          values={onlyMax ? [values.max] : [values.min, values.max]}
+          step={1}
+          onUpdate={onChange}
+          rootStyle={sliderStyle}
+        >
+          <Rail>{({ getRailProps }) => <div style={railStyle} {...getRailProps()} />}</Rail>
+          <Handles>
+            {({ handles, getHandleProps }) => (
+              <div>
+                {handles.map(handle => (
+                  <div
+                    style={{
+                      left: `${handle.percent}%`,
+                      position: 'absolute',
+                      marginLeft: -8,
+                      marginTop: -3,
+                      zIndex: 2,
+                      width: 16,
+                      height: 16,
+                      border: 0,
+                      textAlign: 'center',
+                      cursor: 'pointer',
+                      borderRadius: '50%',
+                      backgroundColor: '#2C4870',
+                      color: '#333',
+                    }}
+                    key={handle.id}
+                    {...getHandleProps(handle.id)}
+                  />
+                ))}
+              </div>
+            )}
+          </Handles>
+          <Tracks left={onlyMax} right={false}>
+            {({ tracks, getTrackProps }) => (
+              <div>
+                {tracks.map(({ id, source, target }) => (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      backgroundColor: '#8B9CB6',
+                      left: `${source.percent}%`,
+                      height: 10,
+                      width: `${target.percent - source.percent}%`,
+                      borderRadius: 5,
+                    }}
+                    {...getTrackProps()}
+                  />
+                ))}
+              </div>
+            )}
+          </Tracks>
+        </Slider>
         <PerDay>
           {showTotalPrice && (
             <span>

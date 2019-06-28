@@ -44,8 +44,16 @@ const Content = styled.div`
   `};
 `;
 
-const Dropdown = ({ children, trigger, onClose, onOpen, maxHeight, error }) => {
-  const [isOpen, setOpen] = useState(false);
+const Dropdown = ({ open, children, trigger, onClose, onOpen, maxHeight, error }) => {
+  const [isOpen, setOpen] = useState(open || false);
+
+  useEffect(
+    () => {
+      setOpen(open);
+    },
+    [open],
+  );
+
   const toggleOpen = useCallback(
     () => {
       if (isOpen) {
@@ -53,9 +61,11 @@ const Dropdown = ({ children, trigger, onClose, onOpen, maxHeight, error }) => {
       } else {
         onOpen();
       }
-      setOpen(!isOpen);
+      if (typeof open !== 'boolean') {
+        setOpen(!isOpen);
+      }
     },
-    [isOpen, onClose, onOpen],
+    [isOpen, onClose, onOpen, open],
   );
 
   const contentRef = useRef(null);
@@ -65,7 +75,9 @@ const Dropdown = ({ children, trigger, onClose, onOpen, maxHeight, error }) => {
     e.preventDefault();
     if (!contentRef.current.contains(e.target) && !buttonRef.current.contains(e.target)) {
       onClose();
-      setOpen(false);
+      if (typeof open !== 'boolean') {
+        setOpen(false);
+      }
     }
   };
 

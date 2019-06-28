@@ -157,6 +157,10 @@ export default class DesktopSearchInput extends Component {
       priceEnd: undefined,
       tags: undefined,
       sortBy: undefined,
+      accommodationStars: undefined,
+      duration: undefined,
+      ratingStart: undefined,
+      ratingEnd: undefined,
     };
     this.props.updateSearchParams(params);
   };

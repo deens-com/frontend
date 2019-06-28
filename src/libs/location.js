@@ -73,15 +73,9 @@ export const getSearchParams = (address, googleMapsResult) => {
   };
 };
 
-export const removeMultiParams = ({
-  city,
-  state,
-  countryCode,
-  lat,
-  lng,
-  address,
-  locationSearchType,
-}) => {
+export const removeMultiParams = args => {
+  const { city, state, countryCode, lat, lng, address, locationSearchType } = args;
+
   const allUndefined = {
     city: undefined,
     state: undefined,
@@ -92,8 +86,22 @@ export const removeMultiParams = ({
   };
 
   if (locationSearchType === 'latlng') {
+    if (!lat || !lng) {
+      // instead of doing this we should check in the actions file and redirect the user
+      return removeMultiParams({
+        ...args,
+        locationSearchType: 'placeData',
+      });
+    }
     return { ...allUndefined, lat, lng, address };
-  } else if (locationSearchType === 'placeData') {
+  }
+  if (locationSearchType === 'placeData') {
+    if (!countryCode) {
+      return removeMultiParams({
+        ...args,
+        locationSearchType: 'latlng',
+      });
+    }
     return { ...allUndefined, city, state, countryCode, address };
   }
   return {

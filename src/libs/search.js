@@ -91,8 +91,12 @@ export const getSearchParams = params => {
     state: searchParams.state || undefined,
     countryCode: searchParams.countryCode || undefined,
     text: searchParams.text || undefined,
+    duration: Number(searchParams.duration) || undefined,
+    ratingStart: Number(searchParams.ratingStart) || undefined,
+    ratingEnd: Number(searchParams.ratingEnd) || undefined,
     page: searchParams.page || 1,
     limit: searchParams.limit || 25,
+    accommodationStars: parseArrayOrNumber(searchParams.accommodationStars) || undefined,
     locationSearchType,
   };
 };
@@ -158,9 +162,10 @@ export const mapUrlToProps = location => {
 
 // If there is some processing required, just add the field here
 // otherwise, the same object will be passed to the request
-export const mapDataToQuery = ({ type, ...searchParams }) => ({
+export const mapDataToQuery = ({ type, duration, ...searchParams }) => ({
   address: undefined,
   category: type.charAt(0).toUpperCase() + type.substr(1),
+  activityDurationSlab: duration,
   ...searchParams,
 });
 
@@ -219,6 +224,9 @@ const TAGS = 'tags';
 const SINGLE_DATE = 'singleDate';
 const PRICE_TAGS = 'priceTags';
 const TEXT = 'text';
+const DURATION = 'duration';
+const RATING = 'rating';
+const STARS = 'stars';
 
 export const availableFilters = {
   guests: GUESTS,
@@ -229,12 +237,15 @@ export const availableFilters = {
   singleDate: SINGLE_DATE,
   priceTags: PRICE_TAGS,
   text: TEXT,
+  duration: DURATION,
+  rating: RATING,
+  stars: STARS,
 };
 
 export const filtersByType = {
   trip: [GUESTS, DATES, PRICE_RANGE, TAGS],
-  accommodation: [GUESTS, DATES, PRICE_RANGE, TEXT],
-  activity: [GUESTS, SINGLE_DATE, PRICE_RANGE_ONLY_MAX, TAGS, TEXT],
+  accommodation: [GUESTS, DATES, PRICE_RANGE, TEXT, STARS, RATING],
+  activity: [GUESTS, SINGLE_DATE, PRICE_RANGE_ONLY_MAX, TAGS, TEXT, DURATION],
   food: [GUESTS, PRICE_TAGS, TAGS, TEXT],
 };
 
