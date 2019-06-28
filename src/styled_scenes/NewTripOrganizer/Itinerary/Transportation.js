@@ -169,7 +169,9 @@ const renderSteps = data => {
   }
   return (
     <TransportSteps>
-      {data.route.steps.map(step => console.log(step) || <li key={step.key}>{step.text}</li>)}
+      {data.route.steps.map(step => (
+        <li key={step.key}>{step.text}</li>
+      ))}
     </TransportSteps>
   );
 };
@@ -193,7 +195,6 @@ const Transportation = ({
   const distance = getKmFromMeters(data && data.route && data.route.distanceInMeters);
   const time = secondsToHoursAndMinutes(data && data.route && data.route.baseTimeInSeconds);
   const selected = data && data.route && data.route.transportMode;
-  console.log(data);
   const showTooltip = () => {
     if (isLoading) {
       return;

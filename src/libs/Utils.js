@@ -218,6 +218,8 @@ export function getPriceFromServiceOption(basePrice, price, adultCount = 1, chil
 export const PRICE_PER_SESSION = 'per-session';
 export const PRICE_PER_PERSON = 'per-head';
 
+export const pricePerList = [PRICE_PER_SESSION, PRICE_PER_PERSON];
+
 export function extractPrice(price, adultCount = 1, childCount) {
   if (typeof price === 'number') {
     return price;
