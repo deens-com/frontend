@@ -8,7 +8,7 @@ import TripComponent from 'styled_scenes/Trip';
 import NotFound from 'styled_scenes/NotFound';
 import actions from 'store/trips/actions';
 import searchActions from 'store/search/actions';
-import { getPriceFromServiceOption, getPeopleCount } from 'libs/Utils';
+import { getPriceFromServiceOption } from 'libs/Utils';
 import { Helmet } from 'react-helmet-async';
 import { websiteUrl } from 'libs/config';
 import I18nText from 'shared_components/I18nText';
@@ -26,7 +26,8 @@ function getBookedInformation(trip) {
     const price = getPriceFromServiceOption(
       service.service.basePrice,
       service.selectedOption.price,
-      getPeopleCount(trip),
+      trip.adultCount,
+      trip.childrenCount,
     );
 
     if (!prev[service.day]) {

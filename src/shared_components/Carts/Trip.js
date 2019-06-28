@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
-import { buildImgUrl } from 'libs/Utils';
+import { buildImgUrl, extractPrice, extractPricePer, PRICE_PER_SESSION } from 'libs/Utils';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { addFavoriteTrip, removeFavoriteTrip } from 'store/session/actions';
@@ -388,17 +388,23 @@ class TripCart extends Component {
     if (this.props.type === 'accommodation') {
       return (
         <Price>
-          ${this.props.item.basePrice} <PriceText>per night</PriceText>
+          ${extractPrice(this.props.item.basePrice, this.props.adults, this.props.children)}{' '}
+          <PriceText>
+            {extractPricePer(this.props.item.basePrice) === PRICE_PER_SESSION
+              ? 'per night'
+              : 'for all guests'}
+          </PriceText>
         </Price>
       );
     }
     if (this.props.type === 'activity') {
       return (
         <Price>
-          ${this.props.item.basePrice}{' '}
+          ${extractPrice(this.props.item.basePrice, this.props.adults, this.props.children)}{' '}
           <PriceText>
-            {this.props.numberOfGuests > 1
-              ? `for ${this.props.numberOfGuests} people`
+            {this.props.adults + this.props.children > 1 ||
+            extractPricePer(this.props.item.basePrice) === PRICE_PER_SESSION
+              ? `for ${this.props.adults + this.props.children} people`
               : 'per person'}
           </PriceText>
         </Price>

@@ -1,4 +1,4 @@
-import { formatYYYYMMDD } from 'libs/Utils';
+import { extractPrice } from 'libs/Utils';
 import I18nText from 'shared_components/I18nText';
 
 export function getServiceJsonLdData(service, canonicalUrl) {
@@ -76,7 +76,7 @@ function getActivityJsonLd(service, canonicalUrl) {
   structuredData.offers = {
     '@type': 'Offer',
     url: canonicalUrl,
-    price: service.basePrice,
+    price: extractPrice(service.basePrice),
     priceCurrency: 'USD',
     priceValidUntil: getPriceValidUntil(),
     availability: 'http://schema.org/InStock',
