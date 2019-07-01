@@ -2962,6 +2962,11 @@ chrome-trace-event@^1.0.0:
   dependencies:
     tslib "^1.9.0"
 
+chunk-list-webpack-plugin@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/chunk-list-webpack-plugin/-/chunk-list-webpack-plugin-0.2.0.tgz#7428eb5d3acfaf3c743935a6aec630c8cd313172"
+  integrity sha512-T6s10OaRc7bbBo88bJWay4My+IwO2dISmKiG13El4zxLEbXA0Zg8OBlhJalOB9SDL3ZkWnYJ4oTU1J4ruJd/hA==
+
 ci-info@^1.5.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-1.6.0.tgz#2ca20dbb9ceb32d4524a683303313f0304b1e497"

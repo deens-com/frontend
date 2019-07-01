@@ -6,6 +6,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const WebpackModules = require('webpack-modules');
 const PreloadWebpackPlugin = require('preload-webpack-plugin');
+const ChunkListWebpackPlugin = require('chunk-list-webpack-plugin');
 
 const logConfig = config => {
   console.log(util.inspect(config, null, 20, true));
@@ -62,6 +63,7 @@ const addWebpackPlugins = config => {
     }),
     config,
   );
+  config = appendWebpackPlugin(new ChunkListWebpackPlugin({}), config);
   return config;
 };
 
