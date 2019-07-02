@@ -26,6 +26,7 @@ import { PageContent } from '../../shared_components/layout/Page';
 import ServiceTags from './components/ServiceTags';
 import ServiceInformation from './components/ServiceInformation';
 import ServiceActionButtons from './components/ServiceActionButtons';
+import { googleMapsKey } from 'libs/config';
 
 import { waitUntilMapsLoaded, generateTripSlug } from 'libs/Utils';
 import api from 'libs/apiClient';
@@ -272,7 +273,7 @@ class Service extends Component {
                       lng: longitude,
                     }}
                     defaultZoom={11}
-                    bootstrapURLKeys={{ key: 'AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc' }}
+                    bootstrapURLKeys={{ key: googleMapsKey }}
                     googleMapLoader={waitUntilMapsLoaded}
                   >
                     <MapMaker lat={latitude} lng={longitude} scale={1} color="#65AFBB" />

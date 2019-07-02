@@ -40,3 +40,7 @@ export const websiteUrl =
 export const prismicUrl = 'https://please.prismic.io/api/v2';
 
 export const shouldTrack = isProd || process.env.REACT_APP_FORCE_TRACKING || true;
+
+export const googleMapsKey = isProd
+  ? 'AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc'
+  : 'AIzaSyCbwWr-8oBQ3Jujx3cQ2Za7iCGiRwQS2XM';

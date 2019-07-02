@@ -12,6 +12,7 @@ import Filters from './Filters';
 import { generateDaysArray } from '../';
 import { getCenterAndZoom } from 'libs/location';
 import { media } from 'libs/styled';
+import { googleMapsKey } from 'libs/config';
 
 const topMargin = 0;
 const topOffset = 60 + 65; // when do we fix the map?
@@ -313,7 +314,7 @@ const Map = ({ showingMap, servicesByDay, numberOfDays }) => {
           center={center}
           zoom={zoom}
           bootstrapURLKeys={{
-            key: 'AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc',
+            key: googleMapsKey,
           }}
           googleMapLoader={waitUntilMapsLoaded}
           options={

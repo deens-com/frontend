@@ -1,3 +1,5 @@
+import { googleMapsKey } from 'libs/config';
+
 const initSegment = function() {
   var analytics = (window.analytics = window.analytics || []);
   if (analytics.initialize) return;
@@ -76,8 +78,7 @@ function initGoogleMaps() {
   var script = document.createElement('script');
   script.type = 'text/javascript';
   script.async = true;
-  script.src =
-    'https://maps.googleapis.com/maps/api/js?key=AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc&libraries=places&language=en';
+  script.src = `https://maps.googleapis.com/maps/api/js?key=${googleMapsKey}&libraries=places&language=en`;
   // Insert our script next to the first script element.
   var first = document.getElementsByTagName('script')[0];
   first.parentNode.insertBefore(script, first);

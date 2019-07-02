@@ -37,6 +37,7 @@ import Sort from './components/Sort';
 import HelpMe from 'shared_components/HelpMe';
 import { usingBoundingBox } from 'libs/search';
 import urls from 'libs/urlGenerator';
+import { googleMapsKey } from 'libs/config';
 
 import addPrefixArticle from 'indefinite';
 
@@ -651,7 +652,7 @@ class ResultsScene extends Component {
               center={center}
               zoom={zoom}
               bootstrapURLKeys={{
-                key: 'AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc',
+                key: googleMapsKey,
               }}
               googleMapLoader={waitUntilMapsLoaded}
               onDrag={this.onDragMap}
