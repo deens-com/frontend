@@ -31,6 +31,16 @@ const Fields = styled.div`
 
 const Card = styled.div`
   grid-column: 2 / 3;
+  position: relative;
+`;
+
+const LoaderWrapper = styled.div`
+  position: absolute;
+  margin-top: 80px;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
 `;
 
 const Description = styled.div`
@@ -77,6 +87,7 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
   const [editedTrip, setTrip] = useState(trip);
   const [suggestedTags, setSuggestedTags] = useState([]);
   const [imgSize, setImgSize] = useState({});
+  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -162,9 +173,9 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
     const file = e.currentTarget.files[0];
     if (!file) return;
 
-    //(true);
+    setIsUploading(true);
     await uploadImage(file);
-    //setIsUploading(false);
+    setIsUploading(false);
   };
 
   const uploadImage = async file => {
@@ -278,6 +289,11 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
           />
         </Fields>
         <Card>
+          {isUploading && (
+            <LoaderWrapper>
+              <Loader active size="medium" />
+            </LoaderWrapper>
+          )}
           <TripCard
             item={editedTrip}
             isPlaceholder={false}
