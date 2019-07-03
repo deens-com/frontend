@@ -8,6 +8,7 @@ import { bindActionCreators } from 'redux';
 import { addFavoriteTrip, removeFavoriteTrip } from 'store/session/actions';
 import searchActions from 'store/search/actions';
 import CssOnlyTruncate from 'shared_components/CssOnlyTruncate';
+import Pencil from 'shared_components/icons/PencilIcon';
 
 // COMPONENTS
 import Thumb from './components/Thumb';
@@ -28,6 +29,9 @@ import Stars from 'shared_components/Rating/Stars';
 import { Link } from 'react-router-dom';
 import ImgurAvatar from 'assets/no-avatar.png';
 import Rating from 'shared_components/Rating';
+import Camera from 'shared_components/icons/Camera';
+import InlineInput from 'shared_components/InlineInput';
+import TagSelector from 'shared_components/TagSelector';
 
 const Wrap = styled.div`
   display: inline-block;
@@ -189,6 +193,7 @@ const Tag = styled(PXSmall)`
 `;
 
 const TagLink = styled.span`
+  display: inline-block;
   cursor: pointer;
   position: relative;
   z-index: 1;
@@ -223,6 +228,7 @@ const HeartWrapper = styled.div`
     stroke: white;
     stroke-width: 2px;
     cursor: pointer;
+    ${props => props.editMode && 'cursor: initial;'};
   }
 `;
 
@@ -244,6 +250,17 @@ const SecondLinePlaceholder = styled.div`
   width: 30%;
   height: 18px;
   border-radius: 5px 5px 5px 0;
+`;
+
+const AddImage = styled.div`
+  border-radius: 3px;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.33);
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+  padding: 5px 8px;
+  cursor: pointer;
 `;
 
 export function formatLocation(location) {
@@ -279,6 +296,9 @@ class TripCart extends Component {
 
   toggleFavorite = event => {
     event.preventDefault();
+    if (this.props.editMode) {
+      return;
+    }
     //event.stopPropagation();
     const tripId = this.props.item._id;
     if (this.props.favoriteTrips[tripId]) {
@@ -301,14 +321,54 @@ class TripCart extends Component {
     return this.props.item.checkoutOptions && this.props.item.checkoutOptions.payAt === 'please';
   };
 
+  enableEditTagsMode = () => {
+    this.setState({
+      isEditingTags: true,
+    });
+  };
+
+  disableEditTagsMode = () => {
+    this.setState({
+      isEditingTags: false,
+    });
+  };
+
+  renderTitle() {
+    const { isPlaceholder, editMode } = this.props;
+    if (editMode) {
+      return (
+        <Title>
+          <InlineInput
+            iconColor={colors.primary}
+            useTextarea
+            autoexpand
+            preventLineBreak
+            onChanged={this.props.onTitleChange}
+          >
+            {this.props.item.title}
+          </InlineInput>
+        </Title>
+      );
+    }
+    return (
+      <Title>
+        <CssOnlyTruncate>
+          {!isPlaceholder && <I18nText data={this.props.item.title} />}
+        </CssOnlyTruncate>
+      </Title>
+    );
+  }
+
   renderThumb() {
-    const { isPlaceholder, hideAuthor, type } = this.props;
+    const { isPlaceholder, hideAuthor, editMode, type } = this.props;
     const owner = isPlaceholder ? {} : this.props.item.owner;
     const avatar =
       owner && owner.profilePicture
         ? buildImgUrl(owner.profilePicture, { width: 33, height: 33 })
         : ImgurAvatar;
     const isFavorite = isPlaceholder ? false : this.props.favoriteTrips[this.props.item._id];
+
+    const mustHideAuthor = hideAuthor || editMode;
 
     return (
       <Thumb
@@ -318,15 +378,21 @@ class TripCart extends Component {
       >
         {type === 'trip' && (
           <>
-            <HeartWrapper filled={isFavorite}>
+            <HeartWrapper editMode={editMode} filled={isFavorite}>
               <Heart style={{ height: '24px', width: '21px' }} onClick={this.toggleFavorite} />
             </HeartWrapper>
-            {hideAuthor ? null : (
+            {mustHideAuthor ? null : (
               <Author to={urls.user.view(owner.username)}>
                 {isPlaceholder ? (
                   <ImagePlaceholder />
                 ) : (
-                  <img className="lazyload" data-src={avatar} height="33px" width="33px" />
+                  <img
+                    className="lazyload"
+                    alt={this.props.item.title}
+                    data-src={avatar}
+                    height="33px"
+                    width="33px"
+                  />
                 )}
                 <Stars
                   length={3}
@@ -337,13 +403,25 @@ class TripCart extends Component {
                 {owner.level === 'pro' && <AuthorPro>PRO</AuthorPro>}
               </Author>
             )}
+            {editMode && (
+              <>
+                <label htmlFor="cover-image">
+                  <AddImage>
+                    <Camera style={{ height: '1.3em', width: '1.3em', color: 'white' }} />
+                  </AddImage>
+                </label>
+                <input
+                  id="cover-image"
+                  accept=".jpg, .jpeg, .png"
+                  type="file"
+                  style={{ display: 'none' }}
+                  onChange={this.props.onFileSelect}
+                />
+              </>
+            )}
           </>
         )}
-        <Title>
-          <CssOnlyTruncate>
-            {!isPlaceholder && <I18nText data={this.props.item.title} />}
-          </CssOnlyTruncate>
-        </Title>
+        {this.renderTitle()}
       </Thumb>
     );
   }
@@ -353,16 +431,40 @@ class TripCart extends Component {
       return;
     }
 
-    return this.props.item.tags.map(tag => (
-      <TagLink
-        onClick={() => this.props.updateSearchParams({ tags: I18nText.translate(tag.names) })}
-        key={I18nText.translate(tag.names)}
-      >
-        <Tag>
-          <I18nText data={tag.names} />
-        </Tag>
-      </TagLink>
-    ));
+    if (this.props.editMode && this.state.isEditingTags) {
+      return (
+        <TagSelector
+          onBlur={this.disableEditTagsMode}
+          onChange={this.props.onTagsChange}
+          selectedTags={this.props.item.tags}
+          suggestedTags={this.props.suggestedTags}
+        />
+      );
+    }
+
+    return (
+      <span>
+        {this.props.item.tags.map(tag => (
+          <TagLink
+            onClick={() => this.props.updateSearchParams({ tags: I18nText.translate(tag.names) })}
+            key={I18nText.translate(tag.names)}
+          >
+            <Tag>
+              <I18nText data={tag.names} />
+            </Tag>
+          </TagLink>
+        ))}
+        {this.props.editMode && (
+          <span
+            style={{ verticalAlign: 'middle', display: 'inline-flex', cursor: 'pointer' }}
+            onClick={this.enableEditTagsMode}
+          >
+            {this.props.item.tags.length === 0 && <P>Select tags</P>}
+            <Pencil style={{ alignSelf: 'center', marginLeft: '5px', color: colors.primary }} />
+          </span>
+        )}
+      </span>
+    );
   }
 
   renderPrice() {
@@ -507,12 +609,13 @@ class TripCart extends Component {
   };
 
   renderCard() {
-    const { isPlaceholder, item } = this.props;
+    const { isPlaceholder, editMode, item } = this.props;
     const linkUrl = this.getLink();
     return (
       <Wrap isPlaceholder={isPlaceholder}>
         <Cart column className="card-animate">
-          {!isPlaceholder && <LinkWrapper title={item && translate(item.title)} to={linkUrl} />}
+          {!isPlaceholder &&
+            !editMode && <LinkWrapper title={item && translate(item.title)} to={linkUrl} />}
           {this.renderThumb()}
           <ContentWrap>{this.renderContent()}</ContentWrap>
         </Cart>
@@ -564,7 +667,12 @@ TripCart.propTypes = {
   hideAuthor: PropTypes.bool,
   isPlaceholder: PropTypes.bool,
   showTags: PropTypes.bool,
+  editMode: PropTypes.bool,
+  suggestedTags: PropTypes.array,
   type: PropTypes.oneOf(['trip', 'accommodation', 'activity', 'food']),
+  onTitleChange: PropTypes.func,
+  onTagsChange: PropTypes.func,
+  onFileSelect: PropTypes.func,
 };
 
 // Default props
@@ -574,5 +682,8 @@ TripCart.defaultProps = {
   href: '/',
   isPlaceholder: true,
   showTags: true,
+  suggestedTags: [],
   type: 'trip',
+  onTitleChange: () => {},
+  onTagsChange: () => {},
 };

@@ -20,6 +20,8 @@ class TripShareContainer extends Component {
         tripId={this.props.match.params.id}
         session={this.props.session}
         isLoading={this.props.isLoading}
+        patchTrip={this.props.patchTrip}
+        isPatchingTrip={this.props.isPatchingTrip}
       />
     );
   }
@@ -31,6 +33,7 @@ const mapStateToProps = state => {
     trip: state.trips.trip,
     error: state.trips.error,
     isLoading: state.trips.isLoading,
+    isPatchingTrip: state.trips.isPatchingTrip,
   };
 };
 

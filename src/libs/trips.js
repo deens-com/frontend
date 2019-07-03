@@ -4,6 +4,10 @@ import { parseLocationData } from 'libs/location';
 import ObjectID from 'bson-objectid';
 import { geocodeByPlaceId } from 'libs/placesAutocomplete';
 
+export const PRIVACY_PUBLIC = 'public';
+export const PRIVACY_PRIVATE = 'private';
+export const PRIVACY_FRIENDS = 'unlisted';
+
 export const patchTrip = async (id, data) => {
   return axios.patch(`/trips/${id}`, {
     ...data,
@@ -119,3 +123,23 @@ export const calculateCancellationCharge = (policy, price) => {
 
   return (price - policy.refundAmount).toFixed(2);
 };
+
+export function formatMedia(url) {
+  return [
+    {
+      type: 'image',
+      hero: true,
+      names: {
+        en: 'Trip image',
+      },
+      files: {
+        original: {
+          url,
+        },
+        hero: {
+          url,
+        },
+      },
+    },
+  ];
+}
