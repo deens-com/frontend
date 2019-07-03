@@ -3,54 +3,16 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import Dropdown from 'shared_components/Dropdown';
-import TextArea from './TextArea';
-import { P, PSmall, PXSmall } from 'libs/commonStyles';
-import { primary } from 'libs/colors';
-import { uniqBy } from 'lodash';
-import AccountSettingsComponent from 'scenes/account/components/AccountSettings';
+import { P } from 'libs/commonStyles';
+import TagSelector from 'shared_components/TagSelector';
 
 const Content = styled.div`
   padding: 15px;
 `;
 
-const Suggestions = styled.div`
-  margin-top: 10px;
-`;
-
-const SuggestedTag = styled(PXSmall)`
-  border-radius: 2px 2px 2px 0;
-  border: 1px solid ${primary};
-  display: inline-block;
-  margin-right: 5px;
-  padding: 0 3px;
-  color: ${primary};
-  cursor: pointer;
-`;
-
 const Tags = ({ selectedTags, suggestedTags, onApply }) => {
   const [tags, setTags] = useState(selectedTags);
   const [isOpen, setIsOpen] = useState(false);
-
-  useEffect(
-    () => {
-      if (!isOpen) {
-        setTags(selectedTags);
-      }
-    },
-    [selectedTags],
-  );
-
-  const addTag = tag => {
-    setTags(uniqBy([...tags, tag], tag => tag.value));
-  };
-
-  const removeTag = tagToRemove => {
-    setTags(tags.filter(tag => tag.value !== tagToRemove.value));
-  };
-
-  const filteredTags = suggestedTags.filter(
-    tag => !tags.find(selected => selected.value === tag.value),
-  );
 
   const onClose = () => {
     setIsOpen(false);
@@ -81,20 +43,13 @@ const Tags = ({ selectedTags, suggestedTags, onApply }) => {
     <Dropdown onClose={onClose} onOpen={onOpen} trigger={renderTag()}>
       <Content>
         <P>Add tags</P>
-        <TextArea
-          selectedTags={tags}
-          suggestedTags={filteredTags}
-          addTag={addTag}
-          removeTag={removeTag}
-        />
-        <Suggestions>
-          <PSmall>Suggestions</PSmall>
-          {filteredTags.slice(0, 20).map(tag => (
-            <SuggestedTag key={tag.value} onClick={() => addTag(tag)}>
-              {tag.value} {tag.count && `(${tag.count})`}
-            </SuggestedTag>
-          ))}
-        </Suggestions>
+        {isOpen && (
+          <TagSelector
+            selectedTags={selectedTags}
+            suggestedTags={suggestedTags}
+            onChange={setTags}
+          />
+        )}
       </Content>
     </Dropdown>
   );

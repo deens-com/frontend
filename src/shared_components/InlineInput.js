@@ -19,6 +19,7 @@ const Text = styled.div`
   }
   > svg {
     margin-left: 15px;
+    flex-shrink: 0;
     ${props =>
       props.iconColor &&
       `
@@ -78,6 +79,7 @@ const InlineInput = ({
   onFocusChange,
   hideIcon,
   autoselect,
+  preventLineBreak,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const onStartEditing = () => setIsEditing(true);
@@ -112,14 +114,14 @@ const InlineInput = ({
         setIsEditing(false);
       }
 
-      if (event.keyCode === 13 && !useTextarea) {
+      if (event.keyCode === 13 && (!useTextarea || preventLineBreak)) {
         setIsEditing(false);
         if (event.target.value !== '' || !disallowEmptySubmit) {
           onChanged(event.target.value);
         }
       }
     },
-    [onChanged, disallowEmptySubmit, useTextarea],
+    [onChanged, disallowEmptySubmit, useTextarea, preventLineBreak],
   );
 
   const onMouseDown = useCallback(
@@ -218,6 +220,7 @@ InlineInput.propTypes = {
   useTextarea: PropTypes.bool,
   autoexpand: PropTypes.bool,
   autoselect: PropTypes.bool,
+  preventLineBreak: PropTypes.bool,
   inputPadding: PropTypes.string,
 };
 
@@ -233,6 +236,7 @@ InlineInput.defaultProps = {
   useTextarea: false,
   autoexpand: false,
   autoselect: false,
+  preventLineBreak: false,
   inputPadding: '0 5px',
 };
 

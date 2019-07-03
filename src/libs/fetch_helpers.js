@@ -22,12 +22,16 @@ export const parseLocation = location =>
 
 export const parseTags = tags =>
   tags.map(tag => {
+    // we need to review this
     const tagBg = tagsColorMatcher(I18nText.translate(tag.names));
     return {
       id: tag._id,
+      _id: tag._id,
       label: tag.names.charAt(0).toUpperCase() + tag.names.slice(1),
       hoverBg: tagBg,
       background: tagBg,
+      names: tag.names,
+      value: tag.names,
     };
   });
 

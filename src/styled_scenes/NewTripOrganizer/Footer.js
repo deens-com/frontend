@@ -192,7 +192,7 @@ const Footer = ({
         </Button>
         {canShare && (
           <Button id="shareButton" size="small" type="button" theme="tertiary" onClick={share} bold>
-            Share and earn rewards
+            Share your Trip
           </Button>
         )}
         <SaveText>{saveButtonText(isSaving)}</SaveText>
