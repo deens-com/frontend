@@ -138,9 +138,10 @@ const patchTripStart = () => {
   };
 };
 
-const patchTripSuccess = () => {
+const patchTripSuccess = trip => {
   return {
     type: types.PATCH_TRIP_SUCCESS,
+    payload: trip,
   };
 };
 
@@ -240,11 +241,17 @@ const selectOption = (serviceId, optionCode) => async dispatch => {
   );
 };
 
-const patchTrip = trip => async dispatch => {
+const patchTrip = (id, data) => async dispatch => {
   dispatch(patchTripStart());
   try {
-    await axios.post(`/trips/${trip._id}`, trip);
-    dispatch(patchTripSuccess());
+    await apiClient.trips.patch(id, data);
+    const patchedTrip = await apiClient.trips.getById({ include: 'tags' }, id);
+    dispatch(
+      patchTripSuccess({
+        ...patchedTrip.data,
+        tags: parseTags(patchedTrip.data.tags),
+      }),
+    );
   } catch (e) {
     dispatch(patchTripError(e));
   }

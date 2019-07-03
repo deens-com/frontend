@@ -147,6 +147,32 @@ export default function services(state = initialState, action = {}) {
       };
     }
 
+    case types.PATCH_TRIP_START: {
+      return {
+        ...state,
+        error: null,
+        isPatchingTrip: true,
+      };
+    }
+
+    case types.PATCH_TRIP_ERROR: {
+      return {
+        ...state,
+        trip: null,
+        error: action.payload,
+        isPatchingTrip: false,
+      };
+    }
+
+    case types.PATCH_TRIP_SUCCESS: {
+      return {
+        ...state,
+        trip: action.payload,
+        error: null,
+        isPatchingTrip: false,
+      };
+    }
+
     case types.RESET_TRIP: {
       return {
         ...initialState,
