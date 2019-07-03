@@ -50,7 +50,7 @@ const initSegment = function() {
     analytics._loadOptions = options;
   };
   analytics.SNIPPET_VERSION = '4.1.0';
-  const environment = '%REACT_APP_NODE_ENV%';
+  const environment = process.env.REACT_APP_NODE_ENV;
   if (environment === 'production') {
     analytics.load('EeTG9XHL50pFZXCYUOyBaZjtqkXDS4o3');
   } else {
@@ -64,7 +64,7 @@ function initOneSignal() {
   script.src = 'https://cdn.onesignal.com/sdks/OneSignalSDK.js';
   var first = document.getElementsByTagName('script')[0];
   first.parentNode.insertBefore(script, first);
-  const environment = '%REACT_APP_NODE_ENV%';
+  const environment = process.env.REACT_APP_NODE_ENV;
   if (environment === 'production') {
     var OneSignal = window.OneSignal || [];
     OneSignal.push(function() {
