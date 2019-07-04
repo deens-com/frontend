@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import { getImageUrlFromMedia } from 'libs/media';
 import { H2, P } from 'libs/commonStyles';
 import CopyToClipboard from 'shared_components/icons/CopyToClipboard';
@@ -36,6 +35,7 @@ const Copy = styled.div`
   margin-bottom: 40px;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
 `;
 
 const Input = styled.input`
@@ -66,7 +66,7 @@ const ShareData = ({ trip, title, small }) => {
     id: trip._id,
   })}`;
   return (
-    <div style={{ textAlign: 'center', flex: 1 }}>
+    <div style={{ textAlign: 'center', flex: 1, maxWidth: '100%' }}>
       <H2>{title}</H2>
       <Copy>
         <Input small={small} ref={inputRef} value={tripUrl} />

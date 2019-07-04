@@ -4,10 +4,12 @@ import styled from 'styled-components';
 import { H4, P } from 'libs/commonStyles';
 import { disabled } from 'libs/colors';
 import { PRIVACY_FRIENDS, PRIVACY_PUBLIC, PRIVACY_PRIVATE } from 'libs/trips';
+import { media } from 'libs/styled';
 
 const OptionBox = styled.div`
-  width: 150px;
-  height: 150px;
+  width: 75px;
+  height: 75px;
+  padding: 10px;
   border-radius: 10px 10px 10px 0;
   box-shadow: 3px 3px 6px 0 rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(0, 0, 0, 0.25);
@@ -25,6 +27,18 @@ const OptionBox = styled.div`
       fill: ${disabled};
     }
   `};
+  ${media.minSmall} {
+    width: 150px;
+    height: 150px;
+  }
+`;
+
+const OptionDesc = styled.p`
+  display: none;
+  ${media.minSmall} {
+    margin-top: 10px;
+    display: block;
+  }
 `;
 
 const Options = styled.div`
@@ -42,15 +56,24 @@ const Option = styled.div`
   text-align: center;
 `;
 
+const CheckSvg = styled.svg`
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 20px;
+  height: 20px;
+  border-radius: 30px;
+  background: white;
+  ${media.minSmall} {
+    top: 10px;
+    right: 10px;
+    width: 31px;
+    height: 31px;
+  }
+`;
+
 const CheckIcon = (
-  <svg
-    style={{ position: 'absolute', top: '10px', right: '10px' }}
-    width="31"
-    height="31"
-    viewBox="0 0 31 31"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <CheckSvg viewBox="0 0 31 31" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
       d="M11.801 11.5475C11.6221 11.3571 11.4064 11.2044 11.1667 11.0985C10.927 10.9926 10.6683 10.9357 10.4059 10.9311C10.1435 10.9265 9.88294 10.9744 9.63964 11.0718C9.39633 11.1693 9.17532 11.3143 8.98978 11.4983C8.80423 11.6823 8.65796 11.9014 8.55969 12.1427C8.46142 12.3839 8.41316 12.6423 8.41778 12.9025C8.42241 13.1626 8.47984 13.4192 8.58663 13.6569C8.69343 13.8945 8.8474 14.1084 9.03938 14.2858L14.2499 19.4525C14.431 19.6327 14.6461 19.7758 14.8831 19.8734C15.12 19.971 15.3741 20.0212 15.6307 20.0212C15.8873 20.0212 16.1413 19.971 16.3783 19.8734C16.6152 19.7758 16.8304 19.6327 17.0115 19.4525L30.0378 6.5358C30.3829 6.16852 30.5708 5.68273 30.5619 5.18079C30.5529 4.67884 30.3479 4.19993 29.9899 3.84495C29.6319 3.48996 29.1489 3.28662 28.6427 3.27777C28.1365 3.26891 27.6466 3.45523 27.2762 3.79747L15.6307 15.3424L11.801 11.5475Z"
       fill="#00A566"
@@ -59,7 +82,7 @@ const CheckIcon = (
       d="M28.9152 15.5517C28.5799 15.4837 28.2344 15.482 27.8984 15.5465C27.5624 15.611 27.2426 15.7405 26.9571 15.9277C26.6716 16.1148 26.4261 16.3558 26.2346 16.6371C26.0431 16.9183 25.9093 17.2342 25.841 17.5667C25.4285 19.5689 24.4265 21.4049 22.9618 22.8425C21.4971 24.2801 19.6354 25.2547 17.612 25.6433C15.5887 26.0318 13.4947 25.8167 11.5946 25.0252C9.69456 24.2337 8.07385 22.9013 6.9374 21.1965C5.80095 19.4918 5.19978 17.4911 5.20992 15.4476C5.22005 13.404 5.84103 11.4094 6.99434 9.71574C8.14764 8.02213 9.78149 6.70563 11.6893 5.9327C13.5971 5.15976 15.6932 4.96511 17.7126 5.37334C18.3901 5.51036 19.0947 5.37492 19.6715 4.99679C20.2482 4.61866 20.6499 4.02883 20.7881 3.35704C20.9263 2.68526 20.7897 1.98656 20.4083 1.41464C20.027 0.842729 19.4322 0.444449 18.7547 0.30742C17.7254 0.102288 16.6782 -0.000692547 15.6284 3.50486e-06C12.6708 0.000602088 9.77406 0.833189 7.27463 2.40106C4.77519 3.96894 2.77563 6.20776 1.50816 8.8575C0.240691 11.5072 -0.242661 14.4592 0.11424 17.3704C0.47114 20.2817 1.65365 23.0328 3.52442 25.3043C5.39519 27.5757 7.87746 29.2743 10.6829 30.2028C13.4884 31.1312 16.5019 31.2514 19.3735 30.5493C22.2451 29.8473 24.8569 28.3518 26.9056 26.2367C28.9543 24.1215 30.3558 21.4734 30.9473 18.6C31.0158 18.2675 31.0175 17.9249 30.9525 17.5918C30.8874 17.2586 30.7568 16.9415 30.5681 16.6584C30.3794 16.3753 30.1363 16.1319 29.8527 15.942C29.5691 15.7521 29.2505 15.6195 28.9152 15.5517Z"
       fill="#ECECEC"
     />
-  </svg>
+  </CheckSvg>
 );
 
 const OptionSelector = ({ trip, onSelect, optionSelected }) => {
@@ -88,7 +111,7 @@ const OptionSelector = ({ trip, onSelect, optionSelected }) => {
           </svg>
         </OptionBox>
         <H4>Private</H4>
-        <P style={{ marginTop: '10px' }}>I don't want to share my trip</P>
+        <OptionDesc>I don't want to share my trip</OptionDesc>
       </Option>
       <Option>
         <OptionBox onClick={() => onSelect(PRIVACY_FRIENDS)} isLoading={!trip}>
@@ -133,7 +156,7 @@ const OptionSelector = ({ trip, onSelect, optionSelected }) => {
           </svg>
         </OptionBox>
         <H4>Friends & Family</H4>
-        <P style={{ marginTop: '10px' }}>We’ll give you a link that you can share with them</P>
+        <OptionDesc>We’ll give you a link that you can share with them</OptionDesc>
       </Option>
       <Option>
         <OptionBox onClick={() => onSelect(PRIVACY_PUBLIC)} isLoading={!trip}>
@@ -198,7 +221,7 @@ const OptionSelector = ({ trip, onSelect, optionSelected }) => {
           </svg>
         </OptionBox>
         <H4>Public</H4>
-        <P style={{ marginTop: '10px' }}>Publish your trip on deens.com</P>
+        <OptionDesc>Publish your trip on deens.com</OptionDesc>
       </Option>
     </Options>
   );
