@@ -47,7 +47,7 @@ const FieldValidator = ({ validatorFunction, title, recommended, dependesOn }) =
 FieldValidator.propTypes = {
   validatorFunction: PropTypes.func.isRequired, // returns [state, text]. state: -1=red 0=yellow 1=green
   title: PropTypes.string.isRequired,
-  recommended: PropTypes.string.isRequired,
+  recommended: PropTypes.node.isRequired,
   dependesOn: PropTypes.any,
 };
 
