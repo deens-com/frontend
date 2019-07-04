@@ -159,7 +159,10 @@ const OptionSelector = ({ trip, onSelect, optionSelected }) => {
         <OptionDesc>We’ll give you a link that you can share with them</OptionDesc>
       </Option>
       <Option>
-        <OptionBox onClick={() => onSelect(PRIVACY_PUBLIC)} isLoading={!trip}>
+        <OptionBox
+          onClick={() => onSelect(PRIVACY_PUBLIC)}
+          isLoading={!trip || trip.parents.length !== 0}
+        >
           {optionSelected === PRIVACY_PUBLIC && CheckIcon}
           <svg
             width="112"
@@ -221,7 +224,11 @@ const OptionSelector = ({ trip, onSelect, optionSelected }) => {
           </svg>
         </OptionBox>
         <H4>Public</H4>
-        <OptionDesc>Publish your trip on deens.com</OptionDesc>
+        <OptionDesc>
+          {trip && trip.parents.length !== 0
+            ? 'You cannot publish your trip because you copied an existing trip.'
+            : 'Publish your trip on deens.com'}
+        </OptionDesc>
       </Option>
     </Options>
   );
