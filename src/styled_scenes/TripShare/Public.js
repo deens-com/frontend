@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { H2, H3, P, PStrong } from 'libs/commonStyles';
 import TripCard from 'shared_components/Carts/Trip';
 import InlineInput from 'shared_components/InlineInput';
-import { primary, disabled } from 'libs/colors';
+import { primary, disabled, error } from 'libs/colors';
 import apiClient from 'libs/apiClient';
 import ShareData from './ShareData';
 import Button from 'shared_components/Button';
@@ -19,18 +19,23 @@ import step3 from './3.png';
 
 const TripEdit = styled.div`
   display: grid;
-  grid-gap: 10px;
+  column-gap: 10px;
+  row-gap: 0;
   grid-template-columns: 190px 285px 1fr;
+  grid-template-rows: 1fr fit-content(60px);
   margin-top: 20px;
+  margin-bottom: 25px;
   text-align: left;
 `;
 
 const Fields = styled.div`
   grid-column: 1 / 2;
+  grid-row: 1 / 2;
 `;
 
 const Card = styled.div`
   grid-column: 2 / 3;
+  grid-row: 1 / 2;
   position: relative;
 `;
 
@@ -45,7 +50,16 @@ const LoaderWrapper = styled.div`
 
 const Description = styled.div`
   grid-column: 3 / 4;
+  grid-row: 1 / 3;
   font-size: 16px;
+`;
+
+const Errors = styled.div`
+  grid-column: 1 / 3;
+  grid-row: 2 / 3;
+  color: ${error};
+  text-align: center;
+  font-weight: bold;
 `;
 
 const Steps = styled.div`
@@ -140,9 +154,12 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
   );
 
   const onTagsChange = tags => {
-    patchTrip(trip._id, {
-      tags: tags.map(tag => tag._id),
-    });
+    if (validateTags(tags)[0] !== -1) {
+      patchTrip(trip._id, {
+        tags: tags.map(tag => tag._id),
+      });
+    }
+
     setTrip({
       ...editedTrip,
       tags,
@@ -150,9 +167,12 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
   };
 
   const onTitleChange = title => {
-    patchTrip(trip._id, {
-      title: addLang(title),
-    });
+    if (validateTitle(title)[0] !== -1) {
+      patchTrip(trip._id, {
+        title: addLang(title),
+      });
+    }
+
     setTrip({
       ...editedTrip,
       title,
@@ -160,9 +180,12 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
   };
 
   const onDescriptionChange = description => {
-    patchTrip(trip._id, {
-      description: addLang(description),
-    });
+    if (validateDescription(description)[0] !== -1) {
+      patchTrip(trip._id, {
+        description: addLang(description),
+      });
+    }
+
     setTrip({
       ...editedTrip,
       description,
@@ -183,38 +206,57 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
 
     const url = uploadedFile.data.url;
     const newMedia = formatMedia(url);
-    patchTrip(trip._id, {
-      media: newMedia,
-    });
 
-    setTrip({
-      ...editedTrip,
-      media: newMedia,
-    });
+    const img = new Image();
+    img.onload = function() {
+      setImgSize({
+        width: img.width,
+        height: img.height,
+      });
+
+      if (
+        validateMedia({
+          width: img.width,
+          height: img.height,
+        })[0] !== -1
+      ) {
+        patchTrip(trip._id, {
+          media: newMedia,
+        });
+      }
+
+      setTrip({
+        ...editedTrip,
+        media: newMedia,
+      });
+    };
+    img.src = url;
   };
 
-  const validateTitle = () => {
-    if (editedTrip.title.length < 5) {
-      return [-1, `${editedTrip.title.length}/5 characters`];
+  const validateTitle = titleToValid => {
+    const title = typeof titleToValid !== 'undefined' ? titleToValid : editedTrip.title;
+    if (title.length < 5) {
+      return [-1, `${title.length}/5 characters`, 'your title is too short'];
     }
-    if (editedTrip.title.length > 60) {
-      return [-1, `${editedTrip.title.length}/60 characters`];
+    if (title.length > 60) {
+      return [-1, `${title.length}/60 characters`, 'your title is too long'];
     }
-    const text = `${editedTrip.title.length} characters`;
-    if (editedTrip.title.length >= 40 && editedTrip.title.length <= 45) {
+    const text = `${title.length} characters`;
+    if (title.length >= 40 && title.length <= 45) {
       return [1, text];
     }
     return [0, text];
   };
 
-  const validateDescription = () => {
-    const desc = editedTrip.description || '';
-    const words = (desc.trim().match(/ /g) || []).length;
+  const validateDescription = descToValid => {
+    const description = typeof descToValid !== 'undefined' ? descToValid : editedTrip.description;
+    const desc = description || '';
+    const words = (desc.trim().match(/ /g) || []).length + 1;
     if (words < 30) {
-      return [-1, `${words}/30 words`];
+      return [-1, `${words}/30 words`, 'your description is too short'];
     }
     if (words > 500) {
-      return [-1, `${words}/500 words`];
+      return [-1, `${words}/500 words`, 'your description is too long'];
     }
     const text = `${words} words`;
     if (words >= 150 && words <= 200) {
@@ -223,39 +265,47 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
     return [0, text];
   };
 
-  const validateTags = () => {
-    if (editedTrip.tags.length < 1) {
-      return [-1, 'No tags'];
+  const validateTags = tagsToValid => {
+    const tags = typeof tagsToValid !== 'undefined' ? tagsToValid : editedTrip.tags;
+    if (tags.length < 1) {
+      return [-1, 'No tags', 'your need to add some tags'];
     }
-    if (editedTrip.tags.length > 8) {
-      return [-1, `${editedTrip.tags.length}/8 tags`];
+    if (tags.length > 8) {
+      return [-1, `${tags.length}/8 tags`, 'you can only add 8 tags'];
     }
-    if (editedTrip.tags.length === 4 || editedTrip.tags.length === 5) {
-      return [1, `${editedTrip.tags.length} tags`];
+    if (tags.length === 4 || tags.length === 5) {
+      return [1, `${tags.length} tags`];
     }
-    return [0, `${editedTrip.tags.length} tags`];
+    return [0, `${tags.length} tags`];
   };
 
-  const validateMedia = () => {
-    if (!imgSize.width || editedTrip.media.length === 0 || !editedTrip.media[0].files) {
+  const validateMedia = imgSizeToValid => {
+    const size = typeof imgSizeToValid !== 'undefined' ? imgSizeToValid : imgSize;
+    if (!size.width || editedTrip.media.length === 0 || !editedTrip.media[0].files) {
       return [-1, 'None'];
     }
-    const size = `${imgSize.width}x${imgSize.height}`;
-    if (
-      imgSize.width < 1280 ||
-      imgSize.width > 3840 ||
-      imgSize.height < 720 ||
-      imgSize.height > 2160
-    ) {
-      return [-1, size];
+    const sizeText = `${size.width}x${size.height}`;
+    if (size.width < 1280 || size.width > 3840 || size.height < 720 || size.height > 2160) {
+      return [
+        -1,
+        sizeText,
+        'your image size is outside of the limits. It must be between 1280x720 and 3840x2160.',
+      ];
     }
-    return [1, size];
+    return [1, sizeText];
   };
 
-  const isAllValid = () => {
-    const validations = [validateTitle(), validateDescription(), validateMedia(), validateTags()];
-    return !validations.some(validation => validation[0] === -1);
+  const getErrors = () => {
+    const validations = [
+      { name: 'title', val: validateTitle() },
+      { name: 'description', val: validateDescription() },
+      { name: 'tags', val: validateTags() },
+      { name: 'media', val: validateMedia() },
+    ];
+    return validations.filter(validation => validation.val[0] === -1);
   };
+
+  const errors = getErrors();
 
   return (
     <div style={{ textAlign: 'center' }}>
@@ -305,6 +355,19 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
             onFileSelect={onFileSelect}
           />
         </Card>
+        {trip.privacy === PRIVACY_PUBLIC &&
+          errors.length > 0 &&
+          !isPatchingTrip && (
+            <Errors>
+              Sorry,{' '}
+              {errors
+                .map(err => {
+                  return err.val[2] || '';
+                })
+                .join(', ')}
+              .
+            </Errors>
+          )}
         <Description>
           <InlineInput
             iconColor={primary}
@@ -344,7 +407,7 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
                 </StepText>
               </Step>
               <Step>
-                <img src={step2} alt="You get paid" />
+                <img src={step3} alt="You get paid" />
                 <StepNumber>
                   <H3 style={{ marginTop: '-3px' }}>3</H3>
                 </StepNumber>
@@ -361,7 +424,7 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
         </div>
       ) : (
         <Button
-          disabled={isPatchingTrip || !isAllValid()}
+          disabled={isPatchingTrip || errors.length > 0}
           theme="primaryFilled"
           onClick={publishTrip}
         >
