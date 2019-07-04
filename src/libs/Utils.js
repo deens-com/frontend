@@ -374,3 +374,11 @@ export const isIosDevice =
   /iP(ad|hone|od)/.test(window.navigator.platform);
 
 export const isSearchPage = pathname => /^\/search\//.test(pathname);
+
+export const waitForAddThis = async () => {
+  if (window.addthis && window.addthis.layers && window.addthis.layers.refresh) {
+    return window.addthis;
+  }
+  await new Promise(resolve => setTimeout(resolve, 50));
+  return waitForAddThis();
+};

@@ -151,7 +151,7 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
 
   const onTitleChange = title => {
     patchTrip(trip._id, {
-      title: addLang(editedTrip.title),
+      title: addLang(title),
     });
     setTrip({
       ...editedTrip,
@@ -161,7 +161,7 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
 
   const onDescriptionChange = description => {
     patchTrip(trip._id, {
-      description: addLang(editedTrip.description),
+      description: addLang(description),
     });
     setTrip({
       ...editedTrip,

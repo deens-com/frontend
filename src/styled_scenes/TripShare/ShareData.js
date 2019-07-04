@@ -1,10 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { getImageUrlFromMedia } from 'libs/media';
 import { H2, P } from 'libs/commonStyles';
 import CopyToClipboard from 'shared_components/icons/CopyToClipboard';
 import { Popup } from 'semantic-ui-react';
-import { generateTripSlug } from 'libs/Utils';
+import { generateTripSlug, waitForAddThis } from 'libs/Utils';
 import urls from 'libs/urlGenerator';
 import { websiteUrl } from 'libs/config';
 
@@ -30,6 +31,7 @@ const CopyIcon = styled.div`
 const Copy = styled.div`
   display: flex;
   margin-top: 50px;
+  margin-bottom: 40px;
   align-items: center;
   justify-content: center;
 `;
@@ -51,18 +53,21 @@ const ShareData = ({ trip, title, small }) => {
     setCopiedToClipboard(true);
     setTimeout(() => setCopiedToClipboard(false), 2000);
   };
+  useEffect(() => {
+    waitForAddThis().then(() => {
+      window.addthis.layers.refresh();
+    });
+  }, []);
+
+  const tripUrl = `${websiteUrl}${urls.trip.view({
+    slug: generateTripSlug(trip),
+    id: trip._id,
+  })}`;
   return (
     <div style={{ textAlign: 'center', flex: 1 }}>
       <H2>{title}</H2>
       <Copy>
-        <Input
-          small={small}
-          ref={inputRef}
-          value={`${websiteUrl}${urls.trip.view({
-            slug: generateTripSlug(trip),
-            id: trip._id,
-          })}`}
-        />
+        <Input small={small} ref={inputRef} value={tripUrl} />
         <Popup
           trigger={
             <CopyIcon>
@@ -84,11 +89,14 @@ const ShareData = ({ trip, title, small }) => {
           onOpen={onCopy}
         />
       </Copy>
+      <H2>Spread the word!</H2>
       <div
-        data-url="https://www.addthis.com/examples/share-buttons/inline/"
-        data-title="TRIP TITLE"
-        data-description="TRIP DESCRIPTION"
-        data-media="https://www.addthis.com/examples/share-buttons/inline/"
+        style={{ marginTop: '25px', textAlign: 'left' }}
+        className="addthis_inline_share_toolbox"
+        data-url={tripUrl}
+        data-title={trip.title}
+        data-description={trip.description}
+        data-media={getImageUrlFromMedia(trip.media)}
       />
     </div>
   );
