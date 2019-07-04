@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { media } from 'libs/styled';
-//import axios from 'libs/axios';
 import { Loader, Dimmer } from 'semantic-ui-react';
 import styled from 'styled-components';
 import urls from 'libs/urlGenerator';
@@ -11,6 +10,7 @@ import ShareData from './ShareData';
 import Public from './Public';
 import BrandFooter from 'shared_components/BrandFooter';
 import { PRIVACY_FRIENDS, PRIVACY_PUBLIC } from 'libs/trips';
+import BackArrow from 'shared_components/icons/BackArrow';
 
 const PageContent = styled.div`
   max-width: 1050px;
@@ -24,8 +24,12 @@ const PageContent = styled.div`
 const BackButton = styled(Link)`
   position: relative;
   font-size: 14px;
-  top: 30px;
+  top: -10px;
   color: #097da8;
+  display: flex;
+  ${media.minSmall} {
+    top: 30px;
+  }
 `;
 
 const Title = styled(H2)`
@@ -73,7 +77,8 @@ export default ({ tripId, trip, patchTrip, isPatchingTrip }) => {
         <Dimmer active={isSaving} page>
           <Loader size="massive" />
         </Dimmer>
-        <BackButton to={urls.trip.organize(tripId)} replace>
+        <BackButton to={urls.trip.organize(tripId)}>
+          <BackArrow style={{ width: '1.5em', height: '1.5em', marginRight: '5px' }} />
           Back to trip
         </BackButton>
         <Content>
