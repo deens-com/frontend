@@ -61,6 +61,10 @@ export default ({ tripId, trip, patchTrip, isPatchingTrip }) => {
   const onSelectOption = option => {
     if (option !== PRIVACY_PUBLIC) {
       changePrivacy(option);
+    } else {
+      if (trip.parents.length !== 0) {
+        return;
+      }
     }
     setOption(option);
   };
