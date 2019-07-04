@@ -135,7 +135,6 @@ const Footer = ({
   share,
   isCheckingAvailability,
   isLoadingPrice,
-  canShare,
 }) => {
   const [position, setPosition] = useState('fixed');
 
@@ -190,11 +189,9 @@ const Footer = ({
         >
           Book
         </Button>
-        {canShare && (
-          <Button id="shareButton" size="small" type="button" theme="tertiary" onClick={share} bold>
-            Share your Trip
-          </Button>
-        )}
+        <Button id="shareButton" size="small" type="button" theme="tertiary" onClick={share} bold>
+          Share your Trip
+        </Button>
         <SaveText>{saveButtonText(isSaving)}</SaveText>
         <CheckingAvailability checking={isCheckingAvailability}>
           <P>Checking availability</P>
