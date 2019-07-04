@@ -16,27 +16,47 @@ import { PRIVACY_PUBLIC } from 'libs/trips';
 import step1 from './1.png';
 import step2 from './2.png';
 import step3 from './3.png';
+import { media } from 'libs/styled';
 
 const TripEdit = styled.div`
-  display: grid;
-  column-gap: 10px;
-  row-gap: 0;
-  grid-template-columns: 190px 285px 1fr;
-  grid-template-rows: 1fr fit-content(60px);
   margin-top: 20px;
   margin-bottom: 25px;
   text-align: left;
+  display: flex;
+  flex-direction: column;
+  ${media.minSmall} {
+    display: grid;
+    column-gap: 10px;
+    row-gap: 0;
+    grid-template-columns: 190px 285px 1fr;
+    grid-template-rows: 1fr fit-content(60px);
+  }
+`;
+
+const Title = styled(H2)`
+  display: none;
+  ${media.minSmall} {
+    display: block;
+  }
 `;
 
 const Fields = styled.div`
-  grid-column: 1 / 2;
-  grid-row: 1 / 2;
+  order: 3;
+  margin: auto;
+  margin-top: 40px;
+  ${media.minSmall} {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    margin: 0;
+  }
 `;
 
 const Card = styled.div`
-  grid-column: 2 / 3;
-  grid-row: 1 / 2;
   position: relative;
+  ${media.minSmall} {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+  }
 `;
 
 const LoaderWrapper = styled.div`
@@ -49,9 +69,11 @@ const LoaderWrapper = styled.div`
 `;
 
 const Description = styled.div`
-  grid-column: 3 / 4;
-  grid-row: 1 / 3;
   font-size: 16px;
+  ${media.minSmall} {
+    grid-column: 3 / 4;
+    grid-row: 1 / 3;
+  }
 `;
 
 const Errors = styled.div`
@@ -89,6 +111,15 @@ const StepNumber = styled.div`
 
 const StepText = styled.div`
   margin-top: 10px;
+`;
+
+const EarnMoney = styled.div`
+  border-left: 1px solid ${disabled};
+  padding-left: 25px;
+  display: none;
+  ${media.minSmall} {
+    display: block;
+  }
 `;
 
 function addLang(text) {
@@ -313,7 +344,7 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
         when={trip.privacy !== PRIVACY_PUBLIC}
         message={`Your trip is not published yet. Are you sure you want to leave?`}
       />
-      <H2>Please review your trip</H2>
+      <Title>Please review your trip</Title>
       <TripEdit>
         <Fields>
           <FieldValidator
@@ -383,7 +414,7 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
       {trip.privacy === PRIVACY_PUBLIC && !isPatchingTrip ? (
         <div style={{ display: 'flex' }}>
           <ShareData small title="Your trip is published!" trip={trip} />
-          <div style={{ borderLeft: `1px solid ${disabled}`, paddingLeft: '25px' }}>
+          <EarnMoney>
             <H2>Earn money creating trips for travelers</H2>
             <Steps>
               <Step>
@@ -420,7 +451,7 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
             <Button theme="primaryFilled" type="link" href="/earn-money">
               Learn More
             </Button>
-          </div>
+          </EarnMoney>
         </div>
       ) : (
         <Button
