@@ -17,6 +17,7 @@ import step1 from './1.png';
 import step2 from './2.png';
 import step3 from './3.png';
 import { media } from 'libs/styled';
+import { Popup } from 'semantic-ui-react';
 
 const TripEdit = styled.div`
   margin-top: 20px;
@@ -367,6 +368,7 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
             title="Tags"
             validatorFunction={validateTags}
             recommended="Ideally 4-5 & fast booking"
+            //recommended={<span>Ideally 4-5 & <Popup position="bottom center" trigger={<span style={{cursor: 'pointer', color: primary}}>fast booking</span>}>If at least half of the services in your trip are bookable in Deens. <a href="" target="_blank" rel="noopener noreferrer">Read more</a></Popup></span>}
           />
         </Fields>
         <Card>
