@@ -367,8 +367,17 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
           <FieldValidator
             title="Tags"
             validatorFunction={validateTags}
-            recommended="Ideally 4-5 & fast booking"
-            //recommended={<span>Ideally 4-5 & <Popup position="bottom center" trigger={<span style={{cursor: 'pointer', color: primary}}>fast booking</span>}>If at least half of the services in your trip are bookable in Deens. <a href="" target="_blank" rel="noopener noreferrer">Read more</a></Popup></span>}
+            recommended={
+              <span>
+                Ideally 4-5 &{' '}
+                <Popup
+                  position="bottom center"
+                  trigger={<span style={{ cursor: 'pointer', color: primary }}>fast booking</span>}
+                >
+                  If at least half of the services in your trip are bookable in Deens.
+                </Popup>
+              </span>
+            }
           />
         </Fields>
         <Card>
