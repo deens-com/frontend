@@ -31,6 +31,7 @@ class TripCreatorContainer extends Component {
         services: [],
         title: { en: 'My Trip' },
         userStartLocation: location,
+        userEndLocation: location,
         location,
       })
       .then(response => {
