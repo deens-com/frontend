@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { isIosDevice } from 'libs/Utils';
@@ -11,6 +11,7 @@ const Text = styled.div`
   vertical-align: middle;
   cursor: text;
   align-items: center;
+  width: 100%;
   white-space: ${props => (props.wrapLines ? 'pre-wrap' : 'normal')};
   > p {
     line-height: 22px;
@@ -39,6 +40,7 @@ const Input = styled.p`
   outline: none;
   padding: ${props => props.padding || '5px'};
   line-height: 22px;
+  overflow: hidden;
   &:focus {
     border: 1px solid ${primary};
   }
@@ -47,6 +49,7 @@ const Input = styled.p`
 const InlineInput = ({
   children,
   customWrapper,
+  wrapperStyle,
   textPrefix,
   placeholder,
   onChanged,
@@ -65,23 +68,19 @@ const InlineInput = ({
   const inputEl = useRef(null);
   const textRef = useRef(null);
   const enableEdit = () => {
-    if (!isEditing) {
-      textRef.current.focus();
-      const sel = window.getSelection();
-      const range = sel.getRangeAt(0);
-      const text = textRef.current.childNodes[0];
-      range.setStart(text, text.length);
-    }
     setIsEditing(true);
   };
   const disableEdit = () => {
     setIsEditing(false);
-    textRef.current.blur();
   };
   const render = element => {
     if (customWrapper) {
       const Wrap = customWrapper;
-      return <Wrap onClick={enableEdit}>{element}</Wrap>;
+      return (
+        <Wrap style={wrapperStyle} onClick={enableEdit}>
+          {element}
+        </Wrap>
+      );
     }
     return element;
   };
@@ -100,13 +99,39 @@ const InlineInput = ({
     [isEditing, onFocusChange],
   );
 
-  useLayoutEffect(
+  useEffect(
     () => {
-      if (isEditing && textRef.current && autoselect) {
-        textRef.current.select();
+      if (!textRef.current) {
+        return;
+      }
+      if (isEditing) {
+        textRef.current.focus();
+        const sel = window.getSelection();
+        const range = sel.getRangeAt(0);
+        const text = textRef.current.childNodes[0];
+        if (text) {
+          if (autoselect) {
+            range.setStart(text, 0);
+            range.setEnd(text, text.length);
+          } else {
+            range.setStart(text, text.length);
+          }
+        }
+      } else {
+        textRef.current.blur();
+        if (!useTextarea) {
+          // beautiful hack to fix keyword search
+          const prevWhiteSpace = textRef.current.style.whiteSpace;
+          textRef.current.style.height = '1em';
+          textRef.current.style.whiteSpace = 'initial';
+          setTimeout(() => {
+            textRef.current.style.whiteSpace = prevWhiteSpace;
+            textRef.current.style.height = 'auto';
+          }, 0);
+        }
       }
     },
-    [isEditing, autoselect],
+    [isEditing, autoselect, useTextarea],
   );
 
   const onKeyPress = useCallback(
@@ -183,7 +208,7 @@ const InlineInput = ({
     [isEditing, onMouseDown, onKeyPress],
   );
 
-  const child = typeof children === 'number' ? children : children || placeholder; // this is to support 0 as children
+  const child = typeof children === 'number' ? children : children || ''; // this is to support 0 as children
 
   return render(
     <Text
@@ -198,7 +223,16 @@ const InlineInput = ({
       ref={inputEl}
     >
       {textPrefix && <P>{textPrefix}</P>}
-      <Input padding={inputPadding} ref={textRef} contentEditable={true}>
+      {!child && !isEditing && <span style={{ position: 'relative' }}>{placeholder}</span>}
+      <Input
+        style={{
+          whiteSpace: useTextarea ? 'pre-wrap' : 'nowrap',
+          textOverflow: isEditing ? 'initial' : 'ellipsis',
+        }}
+        padding={inputPadding}
+        ref={textRef}
+        contentEditable={true}
+      >
         {child}
       </Input>
       {!hideIcon && <PencilIcon />}
