@@ -157,6 +157,11 @@ export default {
         },
       });
     },
+    s3: {
+      sign: {
+        get: fileNames => get('/media/s3/sign')({ fileNames }),
+      },
+    },
   },
   moderation: {
     getAllPending() {
