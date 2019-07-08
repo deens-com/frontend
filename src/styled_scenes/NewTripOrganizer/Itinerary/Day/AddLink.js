@@ -39,10 +39,7 @@ const AddCustomServiceModal = ({ close, setServiceData }) => {
   const ref = useRef(null);
   const [isFetching, setIsFetching] = useState(false);
   const [error, setError] = useState('');
-  let geocoder;
-  useEffect(() => {
-    geocoder = new window.google.maps.Geocoder();
-  }, []);
+  let geocoder = useRef(new window.google.maps.Geocoder());
 
   const fetchUrlData = async () => {
     const url = ref.current.value;
@@ -56,7 +53,7 @@ const AddCustomServiceModal = ({ close, setServiceData }) => {
           lng: parseFloat(metadata.location.longitude),
         };
 
-        geocoder.geocode({ location: latlng }, (results, status) => {
+        geocoder.current.geocode({ location: latlng }, (results, status) => {
           if (status === 'OK') {
             if (results[0]) {
               setServiceData(

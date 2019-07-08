@@ -68,7 +68,7 @@
     "redux-devtools-extension": "^2.13.2",
     "redux-thunk": "^2.2.0",
     "semantic-ui-css": "2.3.1",
-    "semantic-ui-react": "https://github.com/fcmatteo/Semantic-UI-React.git",
+    "semantic-ui-react": "^0.87.2",
     "serve": "^9.1.0",
     "slick-carousel": "^1.8.1",
     "styled-components": "^4.2.0",

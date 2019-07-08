@@ -339,6 +339,7 @@ const createServiceFromUrl = data => {
         [i18nLocale]: data.description,
       },
     }),*/
+    basePrice: data.price,
     media: data.images.map((image, i) => ({
       type: 'image',
       hero: i === 0,
