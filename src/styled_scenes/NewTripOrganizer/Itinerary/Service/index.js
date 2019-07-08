@@ -7,7 +7,7 @@ import { Popup } from 'semantic-ui-react';
 import { types } from '../../constants';
 import { PXSmall } from 'libs/commonStyles';
 import { Link } from 'react-router-dom';
-import { generateServiceSlug } from 'libs/Utils';
+import { generateServiceSlug, extractPrice } from 'libs/Utils';
 import urls from 'libs/urlGenerator';
 import { getFirstCategoryLowerCase } from 'libs/categories';
 import {
@@ -222,6 +222,7 @@ const Service = ({
     removeService,
     changeServiceTitle,
     changeServicePrice,
+    tripData,
   } = useContext(TripContext);
   const fastBookable =
     data.service.checkoutOptions && data.service.checkoutOptions.payAt === 'please';
@@ -296,10 +297,21 @@ const Service = ({
                           inputTextColor={textDark}
                           onChanged={setServicePrice}
                         >
-                          {data.service.basePrice}
+                          {extractPrice(
+                            data.service.basePrice,
+                            tripData.adultCount,
+                            tripData.childrenCount,
+                          )}
                         </InlineInput>
                       ) : (
-                        <p>${data.service.basePrice}</p>
+                        <p>
+                          $
+                          {extractPrice(
+                            data.service.basePrice,
+                            tripData.adultCount,
+                            tripData.childrenCount,
+                          )}
+                        </p>
                       )}
                     </PriceNumber>
                     <PXSmall>{getPriceText(data.service.categories[0].names)}</PXSmall>

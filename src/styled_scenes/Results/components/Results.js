@@ -164,7 +164,6 @@ class Results extends Component {
     const newTripTitle = { en: `Trip to ${service.location}` };
     const serviceGroup = {
       title: newTripTitle,
-      basePrice: service.basePrice,
       baseCurrency: service.baseCurrency,
       services: [{ service: service._id, day: 1 }],
       duration: service.duration,
@@ -299,10 +298,8 @@ class Results extends Component {
                       isTrip={!(result.categories && result.categories.length)}
                       isPlaceholder={false}
                       type={this.props.searchParams.type}
-                      numberOfGuests={
-                        (this.props.searchParams.adults || 2) +
-                        (this.props.searchParams.children || 0)
-                      }
+                      adults={this.props.searchParams.adults || 2}
+                      children={this.props.searchParams.children || 0}
                     />
                   </ResultItem>
                 ))}

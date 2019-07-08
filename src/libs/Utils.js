@@ -194,9 +194,10 @@ export function getFromCoordinates(coordinates) {
  * @param {Object} price An object with operator and value
  * @returns {Number} The resulting price
  */
-export function getPriceFromServiceOption(base, price, peopleCount = 1) {
+export function getPriceFromServiceOption(basePrice, price, adultCount = 1, childCount = 0) {
+  const base = extractPrice(basePrice);
   if (!price) {
-    return base * peopleCount;
+    return base;
   }
 
   if (typeof price === 'number') {
@@ -212,6 +213,28 @@ export function getPriceFromServiceOption(base, price, peopleCount = 1) {
   }
 
   return Number(price.value);
+}
+
+export const PRICE_PER_SESSION = 'per-session';
+export const PRICE_PER_PERSON = 'per-head';
+
+export const pricePerList = [PRICE_PER_SESSION, PRICE_PER_PERSON];
+
+export function extractPrice(price, adultCount = 1, childCount) {
+  if (typeof price === 'number') {
+    return price;
+  }
+  if (price.payPer === PRICE_PER_SESSION) {
+    return price.perSession;
+  }
+  if (price.payPer === PRICE_PER_PERSON) {
+    return price.perAdult * adultCount + price.perChild * childCount;
+  }
+  return 0;
+}
+
+export function extractPricePer(price) {
+  return price.payPer;
 }
 
 export function getPeopleCount(trip) {
