@@ -76,6 +76,8 @@ const mapImage = (image, i) => {
   };
 };
 
+const formatBasePrice = (value, pricePer) => {};
+
 const createService = (values, custom) => {
   const i18nLocale = 'en';
 
@@ -91,7 +93,13 @@ const createService = (values, custom) => {
     tags: values.tags,
     ...(values.subtitle && { subtitle: { [i18nLocale]: values.subtitle } }),
     title: { [i18nLocale]: values.title },
-    basePrice: values.basePrice,
+    basePrice: {
+      perSession: values.perSession,
+      payPer: values.payPer,
+      perAdult: values.perAdult,
+      perChild: values.perChild,
+      priceType: 'normal',
+    },
     location: {
       line1: formatAddressLine(values.location) || values.formattedAddress,
       line2: '',

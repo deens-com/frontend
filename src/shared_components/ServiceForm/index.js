@@ -9,7 +9,7 @@ import HelpTooltip from 'shared_components/HelpTooltip';
 import { parseLocationData } from 'libs/location';
 import { secondary } from 'libs/colors';
 import history from './../../main/history';
-import { checkRequiredFields } from 'libs/Utils';
+import { checkRequiredFields, pricePerList, PRICE_PER_SESSION, extractPricePer } from 'libs/Utils';
 import MultiImageUploader from 'shared_components/MultiImageUploader/MultiImageUploader';
 import DateInput from '../Form/DateInput';
 import DurationInput from './DurationInput';
@@ -30,6 +30,11 @@ const hours = Array.from({ length: 24 }, (v, k) => k);
 const hoursDropdownOptions = hours.map(h => ({
   value: h,
   text: h.toString().padStart(2, '0') + ':00',
+}));
+
+const pricePer = pricePerList.map(pp => ({
+  value: pp,
+  text: pp === PRICE_PER_SESSION ? 'Per Session' : 'Per Person',
 }));
 
 const weekDays = [
@@ -92,6 +97,17 @@ const CancelButton = styled.span`
 const facebookUrl = /^(?:(?:https?):\/\/)?(?:www.)?((facebook\.com)|(fb\.me))\/(#?\/?[a-zA-Z0-9#]+)+\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/;
 const twitterUrl = /^(?:(?:https?):\/\/)?(?:www.)?((twitter\.com))\/(#?\/?[a-zA-Z0-9#]+)+\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/;
 const websiteUrl = /^(?:(?:https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/;
+
+const getPricePerSessionText = category => {
+  switch (category) {
+    case 'Food':
+      return 'Average Price Per Session';
+    case 'Accommodation':
+      return 'Price Per Night';
+    default:
+      return 'Price Per Session';
+  }
+};
 
 class ServiceForm extends Component {
   constructor(props) {
@@ -435,19 +451,68 @@ class ServiceForm extends Component {
             </React.Fragment>
           )}
 
-          {/* Price */}
+          {/* Price Per */}
           <Form.Field>
-            <label>
-              {values.category === 'Food' ? 'Average Price per person' : 'Price'} ($ USD)
-            </label>
-            <Form.Input
-              name="basePrice"
-              value={values.basePrice}
-              error={!!(touched.basePrice && errors.basePrice)}
-              {...defaultProps}
+            <Form.Dropdown
+              name="payPer"
+              label="Price Per"
+              selection
+              defaultValue={PRICE_PER_SESSION}
+              value={values.payPer}
+              options={pricePer}
+              onChange={this.onDropDownChange}
+              error={!!(touched.payPer && errors.payPer)}
             />
-            {touched.basePrice && errors.basePrice && <ErrorMsg>{errors.basePrice}</ErrorMsg>}
+            {touched.payPer && errors.payPer && <ErrorMsg>{errors.payPer}</ErrorMsg>}
           </Form.Field>
+
+          {values.payPer === PRICE_PER_SESSION ? (
+            <>
+              {/* Price Per Session */}
+              <Form.Field>
+                <label>{getPricePerSessionText(values.category)} ($ USD)</label>
+                <Form.Input
+                  name="perSession"
+                  value={values.perSession}
+                  error={!!(touched.perSession && errors.perSession)}
+                  {...defaultProps}
+                />
+                {touched.perSession &&
+                  errors.perSession && <ErrorMsg>{errors.perSession}</ErrorMsg>}
+              </Form.Field>
+            </>
+          ) : (
+            <>
+              {/* Price Per Adult */}
+              <Form.Field>
+                <label>
+                  {values.category === 'Food' ? 'Average Price Per Adult' : 'Price Per Adult'} ($
+                  USD)
+                </label>
+                <Form.Input
+                  name="perAdult"
+                  value={values.perAdult}
+                  error={!!(touched.perAdult && errors.perAdult)}
+                  {...defaultProps}
+                />
+                {touched.perAdult && errors.perAdult && <ErrorMsg>{errors.perAdult}</ErrorMsg>}
+              </Form.Field>
+              {/* Price Per Child */}
+              <Form.Field>
+                <label>
+                  {values.category === 'Food' ? 'Average Price Per Child' : 'Price Per Child'} ($
+                  USD)
+                </label>
+                <Form.Input
+                  name="perChild"
+                  value={values.perChild}
+                  error={!!(touched.perChild && errors.perChild)}
+                  {...defaultProps}
+                />
+                {touched.perChild && errors.perChild && <ErrorMsg>{errors.perChild}</ErrorMsg>}
+              </Form.Field>
+            </>
+          )}
 
           {!creatingFromLink && (
             <React.Fragment>
@@ -746,7 +811,7 @@ function validate(values) {
 
   const errors = checkRequiredFields(values, requiredFields);
 
-  const numericFields = ['basePrice', 'slots', 'duration'];
+  const numericFields = ['slots', 'duration'];
 
   for (const field of numericFields) {
     if (!errors[field] && isNaN(values[field])) {
@@ -829,7 +894,11 @@ export default withFormik({
     facebook: (service && service.facebook) || '',
     twitter: (service && service.twitter) || '',
     website: (service && service.website) || '',
-    basePrice: service && service.basePrice != null ? service.basePrice : '',
+    payPer:
+      (service && service.basePrice && extractPricePer(service.basePrice)) || PRICE_PER_SESSION,
+    perSession: service && service.basePrice && service.basePrice.perSession,
+    perAdult: service && service.basePrice && service.basePrice.perAdult,
+    perChild: service && service.basePrice && service.basePrice.perChild,
     acceptETH: (service && service.acceptETH) || false,
     availableDays: (service && service.dayList) || [],
     startDate: (service && service.startDate) || '',
@@ -878,8 +947,17 @@ export default withFormik({
   validate,
   validateOnChange: false,
   handleSubmit: (values, { props }) => {
-    if (!values.basePrice) {
-      values.basePrice = '0';
+    if (values.payPer === PRICE_PER_SESSION) {
+      if (!values.perSession) {
+        values.perSession = '0';
+      }
+    } else {
+      if (!values.perChild) {
+        values.perChild = '0';
+      }
+      if (!values.perAdult) {
+        values.perAdult = '0';
+      }
     }
     props.onSubmit(values);
   },

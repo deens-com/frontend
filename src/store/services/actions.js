@@ -103,7 +103,6 @@ const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (dispatch, getSt
     const serviceGroup = {
       title: newTripTitle,
       ...(service.description && { description: { en: service.description } }),
-      basePrice: service.basePrice,
       baseCurrency: service.baseCurrency,
       services: [{ service: service._id, day: 1 }],
       duration: service.duration,
