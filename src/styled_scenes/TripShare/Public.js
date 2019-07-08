@@ -229,15 +229,12 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
     if (!file) return;
 
     setIsUploading(true);
-    uploadTripImage(file);
     await uploadImage(file);
     setIsUploading(false);
   };
 
   const uploadImage = async file => {
-    const uploadedFile = await apiClient.media.post(file);
-
-    const url = uploadedFile.data.url;
+    const url = await uploadTripImage(file);
     const newMedia = formatMedia(url);
 
     const img = new Image();
