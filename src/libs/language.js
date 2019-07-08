@@ -18,6 +18,14 @@ export const languages = {
   zh: '繁體中文',
 };
 
+const prismicLanguages = {
+  en: 'en-us',
+  es: 'es-ar',
+  fr: 'fr-fr',
+};
+
+export const mapLangToPrismicLang = lang => prismicLanguages[lang] || 'en-us';
+
 export const availableLanguages = Object.keys(languages).sort();
 
 const getRouteLanguage = () => {

@@ -16,6 +16,7 @@ import { Helmet } from 'react-helmet-async';
 import Notfound from 'styled_scenes/NotFound';
 import { websiteUrl, prismicUrl } from 'libs/config';
 import { primary, secondary, tertiary } from 'libs/colors';
+import { mapLangToPrismicLang, getUserLanguage } from 'libs/language';
 
 function serializer(type, element, content, children, index) {
   switch (type) {
@@ -198,10 +199,15 @@ class BlogPost extends React.Component {
     });
     prismic.getApi(prismicUrl).then(async api => {
       try {
-        const article = await api.getByUID(
+        let article = await api.getByUID(
           this.props.type || 'article',
           this.props.match.params.slug,
+          { lang: `${mapLangToPrismicLang(getUserLanguage())}` },
         );
+
+        if (!article) {
+          article = await api.getByUID(this.props.type || 'article', this.props.match.params.slug);
+        }
 
         this.setState({
           article: article.data,
