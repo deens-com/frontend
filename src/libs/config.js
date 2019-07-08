@@ -41,6 +41,6 @@ export const prismicUrl = 'https://please.prismic.io/api/v2';
 
 export const shouldTrack = isProd || process.env.REACT_APP_FORCE_TRACKING || true;
 
-export const googleMapsKey = isProd
-  ? 'AIzaSyCvuPE6LYcQLyoDWfNY6tgOe-FVws-f-yA'
-  : 'AIzaSyCbwWr-8oBQ3Jujx3cQ2Za7iCGiRwQS2XM';
+export const googleMapsKey =
+  process.env.REACT_APP_MAPS_KEY ||
+  (isProd ? 'AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc' : 'AIzaSyBShyKgITRWFNyy37m2imU3P2Xj2y0I5dM');

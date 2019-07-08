@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import { textLight, primary, primaryDisabled } from 'libs/colors';
 
 function search(items, text) {
+  const lowercaseText = text.toLowerCase();
   return items.filter(function(item) {
-    return text.split(' ').every(function(el) {
+    return lowercaseText.split(' ').every(function(el) {
       return item.value.indexOf(el) > -1;
     });
   });
