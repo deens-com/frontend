@@ -143,3 +143,8 @@ export function formatMedia(url) {
     },
   ];
 }
+
+export async function uploadTripImage(file) {
+  const signed = await apiClient.media.s3.sign.get([file.name]);
+  console.log(signed.data);
+}

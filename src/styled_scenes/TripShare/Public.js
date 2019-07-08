@@ -9,7 +9,7 @@ import { primary, disabled, error } from 'libs/colors';
 import apiClient from 'libs/apiClient';
 import ShareData from './ShareData';
 import Button from 'shared_components/Button';
-import { formatMedia } from 'libs/trips';
+import { formatMedia, uploadTripImage } from 'libs/trips';
 import FieldValidator from './FieldValidator';
 import { Loader } from 'semantic-ui-react';
 import { PRIVACY_PUBLIC } from 'libs/trips';
@@ -229,6 +229,7 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
     if (!file) return;
 
     setIsUploading(true);
+    uploadTripImage(file);
     await uploadImage(file);
     setIsUploading(false);
   };
@@ -319,6 +320,9 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
     const sizeText = `${size.width}x${size.height}`;
     if (size.width < 1280 || size.height < 720) {
       return [-1, sizeText, 'your image has to be bigger than 1280x720.'];
+    }
+    if (size.width > 3840 || size.height > 2160) {
+      return [0, sizeText];
     }
     return [1, sizeText];
   };
