@@ -9,7 +9,13 @@ import HelpTooltip from 'shared_components/HelpTooltip';
 import { parseLocationData } from 'libs/location';
 import { secondary } from 'libs/colors';
 import history from './../../main/history';
-import { checkRequiredFields, pricePerList, PRICE_PER_SESSION, extractPricePer } from 'libs/Utils';
+import {
+  checkRequiredFields,
+  pricePerList,
+  PRICE_PER_SESSION,
+  extractPricePer,
+  PRICE_PER_PERSON,
+} from 'libs/Utils';
 import MultiImageUploader from 'shared_components/MultiImageUploader/MultiImageUploader';
 import DateInput from '../Form/DateInput';
 import DurationInput from './DurationInput';
@@ -101,11 +107,18 @@ const websiteUrl = /^(?:(?:https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/
 const getPricePerSessionText = category => {
   switch (category) {
     case 'Food':
-      return 'Average Price Per Session';
-    case 'Accommodation':
-      return 'Price Per Night';
+      return `Average Price ${getPerSessionText(category)}`;
     default:
-      return 'Price Per Session';
+      return `Price ${getPerSessionText(category)}`;
+  }
+};
+
+const getPerSessionText = category => {
+  switch (category) {
+    case 'Accommodation':
+      return 'Per Night';
+    default:
+      return 'Per Session';
   }
 };
 
@@ -459,7 +472,10 @@ class ServiceForm extends Component {
               selection
               defaultValue={PRICE_PER_SESSION}
               value={values.payPer}
-              options={pricePer}
+              options={pricePerList.map(pp => ({
+                value: pp,
+                text: pp === PRICE_PER_SESSION ? getPerSessionText(values.category) : 'Per Person',
+              }))}
               onChange={this.onDropDownChange}
               error={!!(touched.payPer && errors.payPer)}
             />
@@ -895,7 +911,7 @@ export default withFormik({
     twitter: (service && service.twitter) || '',
     website: (service && service.website) || '',
     payPer:
-      (service && service.basePrice && extractPricePer(service.basePrice)) || PRICE_PER_SESSION,
+      (service && service.basePrice && extractPricePer(service.basePrice)) || PRICE_PER_PERSON,
     perSession: service && service.basePrice && service.basePrice.perSession,
     perAdult: service && service.basePrice && service.basePrice.perAdult,
     perChild: service && service.basePrice && service.basePrice.perChild,

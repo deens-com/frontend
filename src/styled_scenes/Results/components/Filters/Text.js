@@ -15,20 +15,9 @@ const Wrapper = styled.div`
   cursor: pointer;
   vertical-align: top;
   width: auto;
-  & > div {
-    display: inline-block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    width: 100px;
-  }
   & > * {
     cursor: pointer;
   }
-`;
-
-const BigWrapper = styled(Wrapper)`
-  width: 300px;
 `;
 
 const IconWrapper = styled.div`
@@ -52,7 +41,8 @@ const PriceRange = ({ text, onChange, onApply, big }) => {
           </IconWrapper>
         )}
       <InlineInput
-        customWrapper={big ? BigWrapper : Wrapper}
+        customWrapper={Wrapper}
+        wrapperStyle={{ width: big ? '300px' : 'auto', maxWidth: big ? '300px' : '150px' }}
         autoselect
         placeholder="Keywords"
         hideIcon
