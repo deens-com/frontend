@@ -68,6 +68,14 @@ const InlineInput = ({
   const inputEl = useRef(null);
   const textRef = useRef(null);
   const enableEdit = () => {
+    if (!isEditing) {
+      textRef.current.focus();
+      const sel = window.getSelection();
+      const range = sel.getRangeAt(0);
+      const text = textRef.current.childNodes[0];
+      range.setStart(text, text.length);
+    }
+
     setIsEditing(true);
   };
   const disableEdit = () => {

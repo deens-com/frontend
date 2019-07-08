@@ -1,5 +1,6 @@
 import axios from 'libs/axios';
 import apiClient from 'libs/apiClient';
+import rawAxios from 'axios';
 import { parseLocationData } from 'libs/location';
 import ObjectID from 'bson-objectid';
 import { geocodeByPlaceId } from 'libs/placesAutocomplete';
@@ -142,4 +143,20 @@ export function formatMedia(url) {
       },
     },
   ];
+}
+
+export async function uploadTripImage(file) {
+  const signed = await apiClient.media.s3.sign.get([file.name]);
+  let formData = new FormData();
+  Object.keys(signed.data[0].post.fields).forEach(key => {
+    formData.append(key, signed.data[0].post.fields[key]);
+  });
+  formData.append('file', file);
+
+  try {
+    await rawAxios.post(signed.data[0].post.url, formData);
+  } catch (e) {
+    console.log(e);
+  }
+  return signed.data[0].fileUrl;
 }

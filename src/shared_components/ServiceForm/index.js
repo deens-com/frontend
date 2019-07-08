@@ -38,6 +38,11 @@ const hoursDropdownOptions = hours.map(h => ({
   text: h.toString().padStart(2, '0') + ':00',
 }));
 
+const pricePer = pricePerList.map(pp => ({
+  value: pp,
+  text: pp === PRICE_PER_SESSION ? 'Per Session' : 'Per Person',
+}));
+
 const weekDays = [
   { text: 'Monday', value: 'monday' },
   { text: 'Tuesday', value: 'tuesday' },

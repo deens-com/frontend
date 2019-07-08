@@ -9,7 +9,7 @@ import { primary, disabled, error } from 'libs/colors';
 import apiClient from 'libs/apiClient';
 import ShareData from './ShareData';
 import Button from 'shared_components/Button';
-import { formatMedia } from 'libs/trips';
+import { formatMedia, uploadTripImage } from 'libs/trips';
 import FieldValidator from './FieldValidator';
 import { Loader } from 'semantic-ui-react';
 import { PRIVACY_PUBLIC } from 'libs/trips';
@@ -234,9 +234,7 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
   };
 
   const uploadImage = async file => {
-    const uploadedFile = await apiClient.media.post(file);
-
-    const url = uploadedFile.data.url;
+    const url = await uploadTripImage(file);
     const newMedia = formatMedia(url);
 
     const img = new Image();
@@ -317,12 +315,11 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
       return [-1, 'None'];
     }
     const sizeText = `${size.width}x${size.height}`;
-    if (size.width < 1280 || size.width > 3840 || size.height < 720 || size.height > 2160) {
-      return [
-        -1,
-        sizeText,
-        'your image size is outside of the limits. It must be between 1280x720 and 3840x2160.',
-      ];
+    if (size.width < 1280 || size.height < 720) {
+      return [-1, sizeText, 'your image has to be bigger than 1280x720.'];
+    }
+    if (size.width > 3840 || size.height > 2160) {
+      return [0, sizeText];
     }
     return [1, sizeText];
   };
