@@ -73,7 +73,9 @@ const InlineInput = ({
       const sel = window.getSelection();
       const range = sel.getRangeAt(0);
       const text = textRef.current.childNodes[0];
-      range.setStart(text, text.length);
+      if (text) {
+        range.setStart(text, text.length);
+      }
     }
     setIsEditing(true);
   };
