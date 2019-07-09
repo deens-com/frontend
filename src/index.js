@@ -20,6 +20,9 @@ import(/* webpackChunkName: "sentry" */ '@sentry/browser').then(Sentry => {
           environment,
         });
       } else {
+        if (process.env.REACT_APP_DISABLE_SENTRY) {
+          return;
+        }
         // staging
         Sentry.init({
           dsn: 'https://fd51482cf40f43fca379bc14417b6f2b@sentry.io/1220761',

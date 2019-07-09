@@ -83,10 +83,20 @@ function initGoogleMaps() {
   var first = document.getElementsByTagName('script')[0];
   first.parentNode.insertBefore(script, first);
 }
+function initAddThis() {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.async = true;
+  script.src = '//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5c9cfeb8a3f6273d';
+  var first = document.getElementsByTagName('script')[0];
+  first.parentNode.insertBefore(script, first);
+}
+
 const initLibsScript = function() {
   initGoogleMaps();
   initSegment();
   initOneSignal();
+  initAddThis();
 };
 
 window.addEventListener('load', initLibsScript);

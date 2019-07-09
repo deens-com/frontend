@@ -19,7 +19,9 @@ export const transport = '#00E2F0';
 // System
 export const error = '#F65353';
 export const warning = '#FEF1AC';
+export const secondaryWarning = '#D4B200';
 export const valid = '#BEF3C8';
+export const secondaryValid = '#00A566';
 export const disabled = '#C4C4C4';
 export const boxStroke = '#F4F4F4';
 

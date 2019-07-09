@@ -13,7 +13,7 @@ import { mapServicesByDay, mapDaysToServices } from '../Trip/mapServicesToDays';
 import Options from './Options';
 import WarningLogin from './WarningLogin';
 import I18nText from 'shared_components/I18nText';
-import { addServiceRequest } from 'libs/trips';
+import { addServiceRequest, formatMedia } from 'libs/trips';
 import analytics from 'libs/analytics';
 import withTouchHandler from 'shared_components/withTouchHandler';
 import urls from 'libs/urlGenerator';
@@ -124,26 +124,6 @@ function createStateBasedOnTrip(props) {
     // this is for allowing to undo
     lastRemovedService: null,
   };
-}
-
-function formatMedia(url) {
-  return [
-    {
-      type: 'image',
-      hero: true,
-      names: {
-        en: 'Trip image',
-      },
-      files: {
-        original: {
-          url,
-        },
-        hero: {
-          url,
-        },
-      },
-    },
-  ];
 }
 
 function makeTransportationState(transportation) {
@@ -1208,7 +1188,6 @@ class TripOrganizer extends React.Component {
           isCheckingAvailability={Boolean(isCheckingAvailability)}
           recentlyDeletedService={lastRemovedService}
           undoRemoveService={this.undoRemoveService}
-          canShare={this.props.trip.parents.length === 0}
         />
       </TripContext.Provider>
     );

@@ -1,8 +1,13 @@
 import axios from 'libs/axios';
 import apiClient from 'libs/apiClient';
+import rawAxios from 'axios';
 import { parseLocationData } from 'libs/location';
 import ObjectID from 'bson-objectid';
 import { geocodeByPlaceId } from 'libs/placesAutocomplete';
+
+export const PRIVACY_PUBLIC = 'public';
+export const PRIVACY_PRIVATE = 'private';
+export const PRIVACY_FRIENDS = 'unlisted';
 
 export const patchTrip = async (id, data) => {
   return axios.patch(`/trips/${id}`, {
@@ -119,3 +124,39 @@ export const calculateCancellationCharge = (policy, price) => {
 
   return (price - policy.refundAmount).toFixed(2);
 };
+
+export function formatMedia(url) {
+  return [
+    {
+      type: 'image',
+      hero: true,
+      names: {
+        en: 'Trip image',
+      },
+      files: {
+        original: {
+          url,
+        },
+        hero: {
+          url,
+        },
+      },
+    },
+  ];
+}
+
+export async function uploadTripImage(file) {
+  const signed = await apiClient.media.s3.sign.get([file.name]);
+  let formData = new FormData();
+  Object.keys(signed.data[0].post.fields).forEach(key => {
+    formData.append(key, signed.data[0].post.fields[key]);
+  });
+  formData.append('file', file);
+
+  try {
+    await rawAxios.post(signed.data[0].post.url, formData);
+  } catch (e) {
+    console.log(e);
+  }
+  return signed.data[0].fileUrl;
+}

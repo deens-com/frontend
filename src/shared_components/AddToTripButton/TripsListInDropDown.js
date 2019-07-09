@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import placeholder from 'assets/placeholder350x350.svg';
 import I18nText from 'shared_components/I18nText';
 import { minutesToDays } from 'libs/Utils';
+import Modal from 'shared_components/Modal';
 
 const getTripImage = trip => {
   if (trip.picture && trip.picture.url) return trip.picture.url;
@@ -87,13 +88,14 @@ class TripsListInDropDown extends React.Component {
         </List.Item>,
       );
     }
+
     return (
       <Popup
         key={trip._id}
-        position="right center"
         open={this.state.selectedTrip === trip._id}
         trigger={item}
         keepInViewPort
+        style={{ overflowY: 'scroll', maxHeight: 300 }}
       >
         <div ref={this.props.daysRef}>
           <Popup.Header>Select Day</Popup.Header>

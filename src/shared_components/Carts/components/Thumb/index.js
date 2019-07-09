@@ -82,11 +82,7 @@ export default class CartThumb extends Component {
         {isPlaceholder || !url ? (
           <ThumbPlaceholder />
         ) : (
-          <Thumb
-            className="lazyload"
-            data-src={buildImgUrl(url, { width: 400, height: 300 })}
-            width="100%"
-          />
+          <Thumb src={buildImgUrl(url, { width: 400, height: 300 })} width="100%" />
         )}
         {this.props.children}
       </Wrap>

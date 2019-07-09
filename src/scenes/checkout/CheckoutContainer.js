@@ -26,6 +26,7 @@ import ReprovisionModal from './components/ReprovisionModal';
 import history from 'main/history';
 import analytics from 'libs/analytics';
 import urls from 'libs/urlGenerator';
+import { PRIVACY_PUBLIC } from 'libs/trips';
 
 function formatDate(date, days) {
   const startDate = moment(date);
@@ -255,7 +256,7 @@ class CheckoutContainer extends React.Component {
   componentDidUpdate() {
     if (this.props.trip && !this.state.errorMsg) {
       if (this.props.trip && this.props.trip.owner !== this.props.session._id) {
-        if (this.props.trip.privacy === 'public') {
+        if (this.props.trip.privacy === PRIVACY_PUBLIC) {
           history.replace(
             urls.trip.view({
               slug: generateTripSlug(this.props.trip),
