@@ -132,8 +132,10 @@ const InlineInput = ({
           textRef.current.style.height = '1em';
           textRef.current.style.whiteSpace = 'initial';
           setTimeout(() => {
-            textRef.current.style.whiteSpace = prevWhiteSpace;
-            textRef.current.style.height = 'auto';
+            if (textRef.current) {
+              textRef.current.style.whiteSpace = prevWhiteSpace;
+              textRef.current.style.height = 'auto';
+            }
           }, 0);
         }
       }

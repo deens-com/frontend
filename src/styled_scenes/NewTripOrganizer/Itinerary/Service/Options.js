@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import I18nText from 'shared_components/I18nText';
 import { Modal, Popup } from 'semantic-ui-react';
 import { P, PStrong, PSmallStrong, PXSmall, H2SubtitleStrong } from 'libs/commonStyles';
-import { getPriceFromServiceOption } from 'libs/Utils';
+import { getPriceFromServiceOption, extractPrice } from 'libs/Utils';
 import { textLight, primary, secondary, secondaryContrast, error } from 'libs/colors';
 import { minutesToHoursOrDays, calculateCancellationCharge } from 'libs/trips';
 import Button from 'shared_components/Button';
@@ -176,7 +176,7 @@ const ServiceOptions = ({ selectOption, serviceData, options }) => {
                         key={option.otherAttributes.availabilityCode.code}
                       >
                         <RoomType>
-                          <I18nText data={option.roomType} />
+                          <I18nText data={option.title} />
                         </RoomType>
                         <MealType>
                           <I18nText data={option.mealType} />
@@ -216,7 +216,7 @@ const ServiceOptions = ({ selectOption, serviceData, options }) => {
                           }
                           position="top center"
                         />
-                        <Price>${option.price}</Price>
+                        <Price>${extractPrice(option.price)}</Price>
                         <ButtonWrapper>
                           {selectedOption === option.otherAttributes.availabilityCode.code ? (
                             <PStrong>Selected</PStrong>
@@ -284,7 +284,7 @@ ServiceOptions.propTypes = {
   }).isRequired,
   options: PropTypes.arrayOf(
     PropTypes.shape({
-      price: PropTypes.number.isRequired,
+      price: PropTypes.object.isRequired,
       roomType: PropTypes.object,
       mealType: PropTypes.object,
     }),
