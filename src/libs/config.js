@@ -43,4 +43,4 @@ export const shouldTrack = isProd || process.env.REACT_APP_FORCE_TRACKING || tru
 
 export const googleMapsKey =
   process.env.REACT_APP_MAPS_KEY ||
-  (isProd ? 'AIzaSyBzMYIINQ6uNANLfPeuZn5ZJlz-8pmPjvc' : 'AIzaSyBShyKgITRWFNyy37m2imU3P2Xj2y0I5dM');
+  (isProd ? 'AIzaSyCvuPE6LYcQLyoDWfNY6tgOe-FVws-f-yA' : 'AIzaSyBShyKgITRWFNyy37m2imU3P2Xj2y0I5dM');
