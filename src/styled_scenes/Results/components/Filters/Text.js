@@ -41,6 +41,7 @@ const PriceRange = ({ text, onChange, onApply, big }) => {
           </IconWrapper>
         )}
       <InlineInput
+        hideOverflow
         customWrapper={Wrapper}
         wrapperStyle={{ width: big ? '300px' : 'auto', maxWidth: big ? '300px' : '150px' }}
         autoselect

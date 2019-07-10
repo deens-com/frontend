@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Prompt } from 'react-router-dom';
 import styled from 'styled-components';
-import { isIosDevice } from 'libs/Utils';
 import { H2, H3, P, PStrong } from 'libs/commonStyles';
 import TripCard from 'shared_components/Carts/Trip';
 import InlineInput from 'shared_components/InlineInput';
@@ -18,7 +17,7 @@ import step1 from './1.png';
 import step2 from './2.png';
 import step3 from './3.png';
 import { media } from 'libs/styled';
-import { Popup } from 'semantic-ui-react';
+import Popup from 'shared_components/Popup';
 
 const TripEdit = styled.div`
   margin-top: 20px;
@@ -370,16 +369,6 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
                 Ideally 4-5 &{' '}
                 <Popup
                   position="bottom center"
-                  onOpen={() => {
-                    if (isIosDevice) {
-                      document.body.style.cursor = 'pointer';
-                    }
-                  }}
-                  onClose={() => {
-                    if (isIosDevice) {
-                      document.body.style.cursor = 'initial';
-                    }
-                  }}
                   trigger={<span style={{ cursor: 'pointer', color: primary }}>fast booking</span>}
                 >
                   If at least half of the services in your trip are bookable in Deens.

@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Image, List, Popup } from 'semantic-ui-react';
+import { Image, List } from 'semantic-ui-react';
+import Popup from 'shared_components/Popup';
 import moment from 'moment';
 import styled from 'styled-components';
 import placeholder from 'assets/placeholder350x350.svg';
 import I18nText from 'shared_components/I18nText';
 import { minutesToDays } from 'libs/Utils';
-import Modal from 'shared_components/Modal';
 
 const getTripImage = trip => {
   if (trip.picture && trip.picture.url) return trip.picture.url;

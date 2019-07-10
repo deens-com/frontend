@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import moment from 'moment';
-import { Popup } from 'semantic-ui-react';
+import Popup from 'shared_components/Popup';
 import mapServicesToDays from '../../../styled_scenes/Trip/mapServicesToDays';
 import I18nText from 'shared_components/I18nText';
 import MapMarker from 'shared_components/icons/MapMarker';

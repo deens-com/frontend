@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Popup, Modal } from 'semantic-ui-react';
+import { Modal } from 'semantic-ui-react';
+import Popup from 'shared_components/Popup';
 import Activity from 'shared_components/icons/RunningPerson';
 import Food from 'shared_components/icons/SilverWare';
 import Accommodation from 'shared_components/icons/Bed';

@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Popup } from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
+import Popup from 'shared_components/Popup';
 
 import TripsListInDropDown from './TripsListInDropDown';
-import SingleTripDropdown from './SingleTripDropdown';
 import CustomColorSemanticButton from 'shared_components/CustomColorSemanticButton';
 
 export default class AddToTripButton extends React.Component {

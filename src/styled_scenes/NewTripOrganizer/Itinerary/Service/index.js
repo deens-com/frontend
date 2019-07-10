@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import I18nText from 'shared_components/I18nText';
 import { DragSource, DropTarget } from 'react-dnd';
-import { Popup } from 'semantic-ui-react';
+import Popup from 'shared_components/Popup';
 import { types } from '../../constants';
 import { PXSmall } from 'libs/commonStyles';
 import { Link } from 'react-router-dom';

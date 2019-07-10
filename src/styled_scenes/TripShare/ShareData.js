@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { getImageUrlFromMedia } from 'libs/media';
 import { H2, P } from 'libs/commonStyles';
 import CopyToClipboard from 'shared_components/icons/CopyToClipboard';
-import { Popup } from 'semantic-ui-react';
+import Popup from 'shared_components/Popup';
 import { generateTripSlug, waitForAddThis } from 'libs/Utils';
 import urls from 'libs/urlGenerator';
 import { websiteUrl } from 'libs/config';

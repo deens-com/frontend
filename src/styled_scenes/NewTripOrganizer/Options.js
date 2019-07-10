@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import moment from 'moment';
-import { Popup } from 'semantic-ui-react';
+import Popup from 'shared_components/Popup';
 import DateSelector from './DateSelector';
 import HelpMe from 'shared_components/HelpMe';
 import { minutesToDays } from 'libs/Utils';
