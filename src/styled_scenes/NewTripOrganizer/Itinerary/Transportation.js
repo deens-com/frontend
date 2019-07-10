@@ -1,16 +1,14 @@
 import React, { useContext, useState } from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Loader, Popup } from 'semantic-ui-react';
 import { P, PSmall } from 'libs/commonStyles';
-import { primary, secondary, primaryHover, disabled, tertiaryContrast } from 'libs/colors';
+import { primary, secondary, primaryHover, disabled, backgroundLight } from 'libs/colors';
 import Settings from 'shared_components/icons/Settings';
 import Walk from 'assets/walk.svg';
 import Bike from 'assets/bike.svg';
 import Car from 'assets/car.svg';
 import Train from 'assets/train.svg';
 import SadFace from 'assets/sad-face.svg';
-import transportIcon from 'assets/service-icons/transport.svg';
 import { getKmFromMeters } from 'libs/Utils';
 import { secondsToHoursAndMinutes } from 'libs/trips';
 import TextDivisor from 'shared_components/TextDivisor';
@@ -233,12 +231,21 @@ const Transportation = ({
     <>
       <div>
         <TransportBox>
-          <Options isLoading={isLoading}>
-            <img alt="Transportation" src={transportIcon} />
+          <TransportContent>
             <Popup
               trigger={
-                <span>
-                  <Settings style={{ width: '20px', height: '20px' }} />
+                <span
+                  style={{
+                    borderRadius: '0 0 0 5px',
+                    backgroundColor: backgroundLight,
+                    padding: '3px',
+                    position: 'absolute',
+                    right: 0,
+                    top: 0,
+                    cursor: 'pointer',
+                  }}
+                >
+                  <Settings style={{ color: primary, width: '14px', height: '14px' }} />
                 </span>
               }
               content={
@@ -278,8 +285,6 @@ const Transportation = ({
               onClose={hideTooltip}
               hideOnScroll
             />
-          </Options>
-          <TransportContent>
             {isLoading ? (
               <Loader active />
             ) : (

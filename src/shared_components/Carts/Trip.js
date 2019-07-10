@@ -9,6 +9,8 @@ import { addFavoriteTrip, removeFavoriteTrip } from 'store/session/actions';
 import searchActions from 'store/search/actions';
 import CssOnlyTruncate from 'shared_components/CssOnlyTruncate';
 import Pencil from 'shared_components/icons/PencilIcon';
+import Star from 'shared_components/icons/Star';
+import CartSpeed from 'shared_components/icons/CartSpeed';
 
 // COMPONENTS
 import Thumb from './components/Thumb';
@@ -21,7 +23,7 @@ import { generateTripSlug, generateServiceSlug } from 'libs/Utils';
 import { getImageUrlFromMedia } from 'libs/media';
 import Heart from 'shared_components/icons/Heart';
 import I18nText, { translate } from 'shared_components/I18nText';
-import { H6, P, PStrong, PSmall, PXSmall } from 'libs/commonStyles';
+import { H6, P, PSmallStrong, PStrong, PSmall, PXSmall } from 'libs/commonStyles';
 import * as colors from 'libs/colors';
 import { duration } from 'libs/trips';
 import urls from 'libs/urlGenerator';
@@ -88,6 +90,8 @@ const Title = styled(H6)`
   width: 100%;
   background-color: rgba(255, 255, 255, 0.9);
   border-radius: 0 0 15px 0;
+  z-index: 1;
+  pointer-events: none;
   a {
     color: inherit;
   }
@@ -117,27 +121,15 @@ const Dot = styled.span`
   }
 `;
 
-const Author = styled(Link)`
-  border-radius: 5px 5px 5px 0;
-  > img {
-    border-radius: 4px 4px 0 0;
-    height: 33px;
-    width: 33px;
-  }
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  border: 1px solid white;
-  background-color: white;
-  box-shadow: 0 0 1px;
-  z-index: 1;
-`;
-
-const AuthorPro = styled.p`
-  color: ${colors.primary};
-  font-weight: bold;
-  font-size: 10px;
-  text-align: center;
+const AuthorPro = styled(PSmallStrong)`
+  background-color: ${colors.backgroundLight};
+  border-radius: 3px;
+  color: ${colors.tertiary};
+  padding: 0 5px;
+  display: inline-block;
+  height: 18px;
+  vertical-align: bottom;
+  margin-right: 5px;
 `;
 
 const Price = styled(PStrong)`
@@ -205,12 +197,22 @@ const TagLink = styled.span`
   }
 `;
 
-const BookableTag = styled(Tag)`
-  background-color: ${colors.secondary};
-  border: 1px solid ${colors.secondary};
-  color: ${colors.textLight};
-  margin-bottom: 5px;
-  margin-right: 3px;
+const BookableTag = styled(PSmallStrong)`
+  background-color: ${colors.backgroundLight};
+  border-radius: 3px;
+  color: ${colors.textDark};
+  padding: 0 5px;
+  display: inline-block;
+  height: 18px;
+  vertical-align: bottom;
+  line-height: 16px;
+`;
+
+const AboveTitle = styled.div`
+  right: 5px;
+  top: -30px;
+  position: absolute;
+  text-align: right;
 `;
 
 const TagsLine = styled.div`
@@ -226,7 +228,7 @@ const HeartWrapper = styled.div`
   > svg {
     color: ${props => (props.filled ? colors.secondary : 'rgba(217,117,110,0.3)')};
     stroke: white;
-    stroke-width: 2px;
+    stroke-width: 1px;
     cursor: pointer;
     ${props => props.editMode && 'cursor: initial;'};
   }
@@ -333,11 +335,36 @@ class TripCart extends Component {
     });
   };
 
+  renderAboveTitle() {
+    const { isPlaceholder } = this.props;
+    const owner = isPlaceholder ? {} : this.props.item.owner;
+    return (
+      <AboveTitle>
+        {owner && owner.level === 'pro' && <AuthorPro>PRO</AuthorPro>}
+        {this.isFastBookable() && (
+          <BookableTag>
+            <CartSpeed
+              style={{
+                color: colors.tertiary,
+                display: 'inline-block',
+                width: 12,
+                height: 12,
+                verticalAlign: 'middle',
+              }}
+            />
+            <span style={{ verticalAlign: 'middle', marginLeft: '5px' }}>fast booking</span>
+          </BookableTag>
+        )}
+      </AboveTitle>
+    );
+  }
+
   renderTitle() {
-    const { isPlaceholder, editMode } = this.props;
+    const { isPlaceholder, editMode, item } = this.props;
     if (editMode) {
       return (
         <Title>
+          {this.renderAboveTitle()}
           <InlineInput
             iconColor={colors.primary}
             useTextarea
@@ -352,23 +379,37 @@ class TripCart extends Component {
     }
     return (
       <Title>
+        {this.renderAboveTitle()}
         <CssOnlyTruncate>
-          {!isPlaceholder && <I18nText data={this.props.item.title} />}
+          {!isPlaceholder && (
+            <>
+              {item.ratings &&
+                this.props.type === 'accommodation' && (
+                  <>
+                    <span style={{ fontWeight: 'bold', color: colors.tertiary }}>
+                      {item.ratings.average}
+                    </span>
+                    <Star
+                      style={{
+                        display: 'inline-block',
+                        marginRight: '5px',
+                        paddingTop: '3px',
+                        color: colors.tertiary,
+                      }}
+                    />
+                  </>
+                )}
+              <I18nText data={this.props.item.title} />
+            </>
+          )}
         </CssOnlyTruncate>
       </Title>
     );
   }
 
   renderThumb() {
-    const { isPlaceholder, hideAuthor, editMode, type } = this.props;
-    const owner = isPlaceholder ? {} : this.props.item.owner;
-    const avatar =
-      owner && owner.profilePicture
-        ? buildImgUrl(owner.profilePicture, { width: 33, height: 33 })
-        : ImgurAvatar;
+    const { isPlaceholder, editMode, type } = this.props;
     const isFavorite = isPlaceholder ? false : this.props.favoriteTrips[this.props.item._id];
-
-    const mustHideAuthor = hideAuthor || editMode;
 
     return (
       <Thumb
@@ -381,28 +422,6 @@ class TripCart extends Component {
             <HeartWrapper editMode={editMode} filled={isFavorite}>
               <Heart style={{ height: '24px', width: '21px' }} onClick={this.toggleFavorite} />
             </HeartWrapper>
-            {mustHideAuthor ? null : (
-              <Author to={urls.user.view(owner.username)}>
-                {isPlaceholder ? (
-                  <ImagePlaceholder />
-                ) : (
-                  <img
-                    className="lazyload"
-                    alt={this.props.item.title}
-                    data-src={avatar}
-                    height="33px"
-                    width="33px"
-                  />
-                )}
-                <Stars
-                  length={3}
-                  rating={((isPlaceholder || !owner.rating ? 0 : owner.rating.average) * 3) / 5}
-                  width={8.25}
-                  height={18}
-                />
-                {owner.level === 'pro' && <AuthorPro>PRO</AuthorPro>}
-              </Author>
-            )}
             {editMode && (
               <>
                 <label htmlFor="cover-image">
@@ -534,7 +553,7 @@ class TripCart extends Component {
         <Rating
           rating={this.props.item.ratings.average}
           count={this.props.item.ratings.count}
-          starsType={this.props.type === 'food' ? 'yelp' : 'golden'}
+          starsType={this.props.type === 'food' ? 'yelp' : 'logo'}
         />
       </RatingWrapper>
     );
@@ -579,10 +598,7 @@ class TripCart extends Component {
             </PSmall>
           </Location>
         </SecondLine>
-        <TagsLine>
-          {this.isFastBookable() && <BookableTag>Fast Booking</BookableTag>}
-          {this.renderTags()}
-        </TagsLine>
+        <TagsLine>{this.renderTags()}</TagsLine>
       </>
     );
   }
@@ -664,7 +680,6 @@ TripCart.propTypes = {
   }),
   withTooltip: PropTypes.bool,
   href: PropTypes.string,
-  hideAuthor: PropTypes.bool,
   isPlaceholder: PropTypes.bool,
   showTags: PropTypes.bool,
   editMode: PropTypes.bool,
@@ -678,7 +693,6 @@ TripCart.propTypes = {
 // Default props
 TripCart.defaultProps = {
   withTooltip: false,
-  hideAuthor: false,
   href: '/',
   isPlaceholder: true,
   showTags: true,

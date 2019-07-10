@@ -12,6 +12,7 @@ const Wrap = styled.div`
     props.withTooltip &&
     css`
       &:after {
+        border-radius: 17px 17px 17px 0;
         content: '';
         position: absolute;
         top: 0;

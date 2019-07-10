@@ -22,7 +22,7 @@ const size = {
     iconSize: '12px',
   },
   small: {
-    padding: '6px 18px',
+    padding: '6px 8px',
     fontSize: '16px',
     iconSize: '12px',
   },
@@ -163,7 +163,7 @@ function calculateBorderRadius(props) {
   if (props.borderRadius) {
     return props.borderRadius;
   }
-  return props.round ? '25px' : '5px 5px 5px 0';
+  return props.round ? '25px' : '5px';
 }
 
 export const Wrap = styled.div`

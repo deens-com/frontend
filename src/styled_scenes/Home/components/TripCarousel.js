@@ -9,14 +9,14 @@ const Center = styled.div`
 
 const placeholderTrips = [{ _id: 0 }, { _id: 1 }, { _id: 2 }, { _id: 3 }];
 
-const TripCarousel = ({ trips, hideAuthor, isLoading }) => {
+const TripCarousel = ({ trips, isLoading }) => {
   const tripsToShow = isLoading ? placeholderTrips : trips;
   return (
     <Carousel sm_slides_nb={1} md_slides_nb={2} lg_slides_nb={3} xl_slides_nb={4}>
       {tripsToShow &&
         tripsToShow.map(item => (
           <Center key={item._id}>
-            <LocationCart hideAuthor={hideAuthor} item={item} isPlaceholder={isLoading} />
+            <LocationCart item={item} isPlaceholder={isLoading} />
           </Center>
         ))}
     </Carousel>
