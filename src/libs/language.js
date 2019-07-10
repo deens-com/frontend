@@ -19,9 +19,21 @@ export const languages = {
 };
 
 const prismicLanguages = {
+  cs: 'cs-cz',
+  da: 'da-dk',
+  de: 'de-de',
   en: 'en-us',
   es: 'es-ar',
+  fi: 'fi',
   fr: 'fr-fr',
+  it: 'it-it',
+  ja: 'ja-jp',
+  nl: 'nl-nl',
+  pl: 'pl',
+  pt: 'pt-pt',
+  sv: 'sv-se',
+  tr: 'tr',
+  zh: 'zh-cn',
 };
 
 export const mapLangToPrismicLang = lang => prismicLanguages[lang] || 'en-us';
