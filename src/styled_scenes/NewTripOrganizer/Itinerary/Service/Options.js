@@ -9,6 +9,7 @@ import { getPriceFromServiceOption, extractPrice } from 'libs/Utils';
 import { textLight, primary, secondary, secondaryContrast, error } from 'libs/colors';
 import { minutesToHoursOrDays, calculateCancellationCharge } from 'libs/trips';
 import Button from 'shared_components/Button';
+import { media } from 'libs/styled';
 import { TripContext } from '../../';
 
 const OptionsBox = styled.div`
@@ -47,15 +48,22 @@ const Options = styled.div`
 const Option = styled.div`
   display: flex;
   background-color: ${props => (props.selected ? secondary : 'white')};
-  flex-direction: row;
   border-radius: 5px 5px 5px 0;
-  align-items: center;
   margin-bottom: 14px;
-  align-items: center;
   box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.1), 0px 0px 4px rgba(0, 0, 0, 0.1);
   padding: 8px;
+  flex-direction: column;
+  align-items: flex-start;
+  ${media.minSmall} {
+    flex-direction: row;
+    align-items: center;
+  }
   > * {
-    width: 20%;
+    flex: 1;
+    margin-bottom: 10px;
+    ${media.minSmall} {
+      margin: 0;
+    }
   }
 `;
 
@@ -91,7 +99,7 @@ const ButtonWrapper = styled.div`
   min-height: 38px;
   display: flex;
   justify-content: flex-end;
-  align-items: center;
+  align-self: center;
 `;
 
 const SelectedOption = styled(PXSmall)`
