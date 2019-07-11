@@ -18,7 +18,7 @@ const Wrap = styled.div`
         top: 0;
         left: 0;
         display: block;
-        height: 100%;
+        height: calc(100% - 5px);
         width: 100%;
         background: linear-gradient(
           to bottom,

@@ -63,7 +63,7 @@ const Wrap = styled.div`
         top: 0;
         transform: translateX(100%);
         width: 100%;
-        height: 100%;
+        height: calc(100% - 5px);
         position: absolute;
         z-index: 1;
         animation: slide 1s infinite;
@@ -384,6 +384,7 @@ class TripCart extends Component {
           {!isPlaceholder && (
             <>
               {item.ratings &&
+                item.ratings.average > 0 &&
                 this.props.type === 'accommodation' && (
                   <>
                     <span style={{ fontWeight: 'bold', color: colors.tertiary }}>

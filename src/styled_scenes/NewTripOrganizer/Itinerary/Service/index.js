@@ -132,18 +132,15 @@ const PriceNumber = styled.div`
 `;
 
 const ServiceData = styled.div`
-  padding: 8px 6px;
   color: ${textDark};
   position: absolute;
   bottom: 0;
-  background-color: rgba(255, 255, 255, 0.9);
   width: 100%;
 `;
 
-const ServiceTitle = styled.div`
-  font-size: 15px;
-  margin-bottom: 9px;
-  line-height: 1.25em;
+const ServiceTitle = styled(P)`
+  padding: 8px 6px 0;
+  background-color: rgba(255, 255, 255, 0.9);
 `;
 
 const Price = styled.div`
@@ -153,12 +150,15 @@ const Price = styled.div`
 const RatingAndPrice = styled.div`
   display: flex;
   align-items: flex-end;
+  background: ${backgroundDark};
+  padding: 8px 6px;
 `;
 
 const StarsWrapper = styled.div`
   > div {
     margin-bottom: 5px;
   }
+  text-align: center;
 `;
 
 const Reviews = styled(PXSmall)`
@@ -286,7 +286,7 @@ const Service = ({
                 hideOnScroll
               />
               <ServiceData>
-                <P>
+                <ServiceTitle>
                   {data.service.ratings &&
                     getFirstCategoryLowerCase(data.service.categories) === 'accommodation' && (
                       <>
@@ -310,7 +310,7 @@ const Service = ({
                   ) : (
                     I18nText.translate(data.service.title)
                   )}
-                </P>
+                </ServiceTitle>
                 <RatingAndPrice>
                   <Price>
                     <PriceNumber>
@@ -360,6 +360,7 @@ const Service = ({
                       data.service.ratings.count > 0 && (
                         <Reviews>
                           <Link
+                            style={{ color: primary }}
                             to={urls.service.view({
                               id: data.service._id,
                               slug: generateServiceSlug(data.service),
