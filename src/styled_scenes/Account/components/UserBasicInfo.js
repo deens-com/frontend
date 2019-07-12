@@ -98,10 +98,6 @@ class UserBasicInfo extends Component {
   onFileSelect = e => {
     const file = e.currentTarget.files[0];
     if (!file) return;
-    if (file.size > 3000000) {
-      this.setState({ pictureUploadError: 'File size should not exceed 3 Mb' });
-      return;
-    }
     this.props.update_user_avatar(file);
   };
 
