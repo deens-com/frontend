@@ -96,7 +96,7 @@ export const removeMultiParams = args => {
     return { ...allUndefined, lat, lng, address };
   }
   if (locationSearchType === 'placeData') {
-    if (!countryCode) {
+    if (!countryCode && lat && lng) {
       return removeMultiParams({
         ...args,
         locationSearchType: 'latlng',
