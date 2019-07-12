@@ -65,6 +65,7 @@ export default function session(state = initialState, action = {}) {
       return {
         ...state,
         updateError: action.payload,
+        isUploadingAvatar: false,
       };
     case sessions_actions.types.BASE_CURRENCY_SET:
       return {

@@ -799,18 +799,24 @@ class TripOrganizer extends React.Component {
   };
 
   uploadImage = async file => {
-    const url = await signAndUploadImage(file);
-
-    this.setState(
-      {
-        image: url,
-      },
-      () => {
-        this.saveTrip({
-          media: formatMedia(url),
-        });
-      },
-    );
+    try {
+      const url = await signAndUploadImage(file);
+      this.setState(
+        {
+          image: url,
+          imageError: null,
+        },
+        () => {
+          this.saveTrip({
+            media: formatMedia(url),
+          });
+        },
+      );
+    } catch (e) {
+      this.setState({
+        imageError: e.message,
+      });
+    }
   };
 
   editTitle = title => {

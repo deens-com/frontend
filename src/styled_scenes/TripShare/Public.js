@@ -134,6 +134,7 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
   const [suggestedTags, setSuggestedTags] = useState([]);
   const [imgSize, setImgSize] = useState({});
   const [isUploading, setIsUploading] = useState(false);
+  const [imageError, setImageError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -234,33 +235,38 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
   };
 
   const uploadImage = async file => {
-    const url = await signAndUploadImage(file);
-    const newMedia = formatMedia(url);
+    try {
+      setImageError(null);
+      const url = await signAndUploadImage(file);
+      const newMedia = formatMedia(url);
 
-    const img = new Image();
-    img.onload = function() {
-      setImgSize({
-        width: img.width,
-        height: img.height,
-      });
-
-      if (
-        validateMedia({
+      const img = new Image();
+      img.onload = function() {
+        setImgSize({
           width: img.width,
           height: img.height,
-        })[0] !== -1
-      ) {
-        patchTrip(trip._id, {
+        });
+
+        if (
+          validateMedia({
+            width: img.width,
+            height: img.height,
+          })[0] !== -1
+        ) {
+          patchTrip(trip._id, {
+            media: newMedia,
+          });
+        }
+
+        setTrip({
+          ...editedTrip,
           media: newMedia,
         });
-      }
-
-      setTrip({
-        ...editedTrip,
-        media: newMedia,
-      });
-    };
-    img.src = url;
+      };
+      img.src = url;
+    } catch (e) {
+      setImageError(e.message);
+    }
   };
 
   const validateTitle = titleToValid => {
@@ -407,6 +413,7 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
               .
             </Errors>
           )}
+        {imageError && !isPatchingTrip && <Errors>{imageError}</Errors>}
         <Description>
           <InlineInput
             iconColor={primary}

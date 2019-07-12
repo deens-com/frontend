@@ -4,7 +4,7 @@ import fetch_helpers from 'libs/fetch_helpers';
 import analytics from 'libs/analytics';
 import { serverBaseURL } from 'libs/config';
 import apiClient from 'libs/apiClient';
-import { signAndUploadImage } from 'libs/trips';
+import { signAndUploadImage, MEDIA_IMAGE } from 'libs/trips';
 import {
   addFavoriteTrip as addFavoriteTripLocally,
   removeFavoriteTrip as removeFavoriteTripLocally,
@@ -226,7 +226,7 @@ export const update_user_avatar = file => {
       try {
         dispatch({ type: 'AVATAR_UPLOAD_START' });
 
-        const uploadedFile = await signAndUploadImage(file);
+        const uploadedFile = await signAndUploadImage(file, MEDIA_IMAGE);
         if (uploadedFile) {
           const updatedUser = await apiClient.users.me.patch({
             profilePicture: uploadedFile,
@@ -239,9 +239,7 @@ export const update_user_avatar = file => {
           }
         }
       } catch (error) {
-        dispatch(
-          displayUpdateError({ code: 422, error: 'There was an error while uploading the file' }),
-        );
+        dispatch(displayUpdateError({ code: 422, error: error.message }));
       }
     }
   };
