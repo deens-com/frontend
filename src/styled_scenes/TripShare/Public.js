@@ -9,7 +9,7 @@ import { primary, disabled, error } from 'libs/colors';
 import apiClient from 'libs/apiClient';
 import ShareData from './ShareData';
 import Button from 'shared_components/Button';
-import { formatMedia, uploadTripImage } from 'libs/trips';
+import { formatMedia, signAndUploadImage } from 'libs/trips';
 import FieldValidator from './FieldValidator';
 import { Loader } from 'semantic-ui-react';
 import { PRIVACY_PUBLIC } from 'libs/trips';
@@ -234,7 +234,7 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
   };
 
   const uploadImage = async file => {
-    const url = await uploadTripImage(file);
+    const url = await signAndUploadImage(file);
     const newMedia = formatMedia(url);
 
     const img = new Image();

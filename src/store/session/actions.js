@@ -4,6 +4,7 @@ import fetch_helpers from 'libs/fetch_helpers';
 import analytics from 'libs/analytics';
 import { serverBaseURL } from 'libs/config';
 import apiClient from 'libs/apiClient';
+import { signAndUploadImage } from 'libs/trips';
 import {
   addFavoriteTrip as addFavoriteTripLocally,
   removeFavoriteTrip as removeFavoriteTripLocally,
@@ -225,14 +226,13 @@ export const update_user_avatar = file => {
       try {
         dispatch({ type: 'AVATAR_UPLOAD_START' });
 
-        const uploadedFile = await apiClient.media.post(file);
+        const uploadedFile = await signAndUploadImage(file);
         if (uploadedFile) {
-          const pictureUrl = uploadedFile.data.url;
-          const updatedUser = apiClient.users.me.patch({
-            profilePicture: pictureUrl,
+          const updatedUser = await apiClient.users.me.patch({
+            profilePicture: uploadedFile,
           });
 
-          if (updatedUser) {
+          if (updatedUser.data) {
             dispatch(sessionsFetched({ session: updatedUser.data }));
             dispatch(displayUpdateError({}));
             dispatch({ type: 'AVATAR_UPLOAD_FINISH' });

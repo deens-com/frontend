@@ -145,7 +145,7 @@ export function formatMedia(url) {
   ];
 }
 
-export async function uploadTripImage(file) {
+export async function signAndUploadImage(file) {
   const signed = await apiClient.media.s3.sign.get([file.name]);
   let formData = new FormData();
   Object.keys(signed.data[0].post.fields).forEach(key => {
