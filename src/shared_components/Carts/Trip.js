@@ -383,12 +383,12 @@ class TripCart extends Component {
         <CssOnlyTruncate>
           {!isPlaceholder && (
             <>
-              {item.ratings &&
-                item.ratings.average > 0 &&
-                this.props.type === 'accommodation' && (
+              {this.props.type === 'accommodation' &&
+                item.accommodationProps &&
+                item.accommodationProps.stars && (
                   <>
                     <span style={{ fontWeight: 'bold', color: colors.tertiary }}>
-                      {item.ratings.average}
+                      {item.accommodationProps.stars}
                     </span>
                     <Star
                       style={{

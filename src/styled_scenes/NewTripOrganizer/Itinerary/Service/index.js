@@ -287,8 +287,9 @@ const Service = ({
               />
               <ServiceData>
                 <ServiceTitle>
-                  {data.service.ratings &&
-                    getFirstCategoryLowerCase(data.service.categories) === 'accommodation' && (
+                  {getFirstCategoryLowerCase(data.service.categories) === 'accommodation' &&
+                    data.service.accommodationProps &&
+                    data.service.accommodationProps.stars && (
                       <>
                         <span style={{ fontWeight: 'bold', color: tertiary }}>
                           {data.service.ratings.average}
