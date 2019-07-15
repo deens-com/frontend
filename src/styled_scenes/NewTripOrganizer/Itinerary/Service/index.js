@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import I18nText from 'shared_components/I18nText';
 import { DragSource, DropTarget } from 'react-dnd';
+import { Link } from 'react-router-dom';
 import Popup from 'shared_components/Popup';
 import { types } from '../../constants';
-import { PXSmall } from 'libs/commonStyles';
-import { Link } from 'react-router-dom';
+import { PXSmall, P, PStrong } from 'libs/commonStyles';
+import { getFirstCategoryLowerCase } from 'libs/categories';
+import Star from 'shared_components/icons/Star';
 import { generateServiceSlug, extractPrice } from 'libs/Utils';
 import urls from 'libs/urlGenerator';
-import { getFirstCategoryLowerCase } from 'libs/categories';
 import {
   textLight,
   primary,
@@ -20,6 +21,9 @@ import {
   food,
   accommodation,
   secondary,
+  backgroundDark,
+  backgroundLight,
+  tertiary,
 } from 'libs/colors';
 import Drag from 'shared_components/icons/Drag';
 import Stars from 'shared_components/Rating/Stars';
@@ -128,18 +132,15 @@ const PriceNumber = styled.div`
 `;
 
 const ServiceData = styled.div`
-  padding: 8px 6px;
   color: ${textDark};
   position: absolute;
   bottom: 0;
-  background-color: rgba(255, 255, 255, 0.9);
   width: 100%;
 `;
 
-const ServiceTitle = styled.div`
-  font-size: 15px;
-  margin-bottom: 9px;
-  line-height: 1.25em;
+const ServiceTitle = styled(P)`
+  padding: 8px 6px 0;
+  background-color: rgba(255, 255, 255, 0.9);
 `;
 
 const Price = styled.div`
@@ -149,23 +150,20 @@ const Price = styled.div`
 const RatingAndPrice = styled.div`
   display: flex;
   align-items: flex-end;
+  background: ${backgroundDark};
+  padding: 8px 6px;
 `;
 
 const StarsWrapper = styled.div`
   > div {
     margin-bottom: 5px;
   }
+  text-align: center;
 `;
 
-const BookableTag = styled(PXSmall)`
+const Reviews = styled(PXSmall)`
   display: inline-block;
-  background-color: ${secondary};
-  border: 1px solid ${secondary};
-  color: ${textLight};
-  border-radius: 2px 2px 2px 0;
-  padding: 1px 1px;
-  margin-bottom: 5px;
-  margin-right: 3px;
+  color: ${primary};
 `;
 
 const ServiceSettingsButton = styled.div`
@@ -197,10 +195,10 @@ function getPriceText(type) {
 }
 
 const ServiceIcon = ({ type }) => {
-  if (type === 'Food') {
+  if (type === 'food') {
     return <Food style={{ color: food }} />;
   }
-  if (type === 'Accommodation') {
+  if (type === 'accommodation') {
     return <Accommodation style={{ color: accommodation }} />;
   }
 
@@ -247,17 +245,39 @@ const Service = ({
           <DraggingBox />
         ) : (
           <Wrapper>
-            <ServiceSettingsButton>
+            <ServiceBox
+              isNotAvailable={!isCheckingAvailability && !isAvailable}
+              img={getImageUrlFromMedia(data.service.media)}
+            >
               {connectDragSource(
-                <div style={{ cursor: 'grabbing' }}>
-                  <Drag style={{ width: '18px', height: '18px' }} />
+                <div
+                  style={{
+                    background: backgroundDark,
+                    padding: '5px',
+                    position: 'absolute',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    cursor: 'grab',
+                    borderRadius: '0 0 3px 3px',
+                  }}
+                >
+                  <Drag style={{ width: '30px', height: 'auto' }} />
                 </div>,
               )}
-              <ServiceIcon type={data.service.categories[0].names} />
               <Popup
                 trigger={
-                  <span style={{ cursor: 'pointer', marginLeft: '15px' }}>
-                    <Settings style={{ color: primary, width: '20px', height: '20px' }} />
+                  <span
+                    style={{
+                      borderRadius: '0 0 0 5px',
+                      backgroundColor: backgroundLight,
+                      padding: '3px',
+                      position: 'absolute',
+                      right: 0,
+                      top: 0,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <Settings style={{ color: primary, width: '14px', height: '14px' }} />
                   </span>
                 }
                 content={<ServiceSettings removeService={removeService} service={data} />}
@@ -265,27 +285,31 @@ const Service = ({
                 position="bottom center"
                 hideOnScroll
               />
-            </ServiceSettingsButton>
-            <ServiceBox
-              isNotAvailable={!isCheckingAvailability && !isAvailable}
-              img={getImageUrlFromMedia(data.service.media)}
-            >
               <ServiceData>
                 <ServiceTitle>
+                  {getFirstCategoryLowerCase(data.service.categories) === 'accommodation' &&
+                    data.service.accommodationProps &&
+                    data.service.accommodationProps.stars && (
+                      <>
+                        <span style={{ fontWeight: 'bold', color: tertiary }}>
+                          {data.service.ratings.average}
+                        </span>
+                        <Star
+                          style={{
+                            display: 'inline-block',
+                            marginRight: '5px',
+                            paddingTop: '3px',
+                            color: tertiary,
+                          }}
+                        />
+                      </>
+                    )}
                   {data.service.privacy === 'private' ? (
                     <InlineInput disallowEmptySubmit onChanged={setServiceTitle}>
                       {I18nText.translate(data.service.title)}
                     </InlineInput>
                   ) : (
-                    <Link
-                      to={urls.service.view({
-                        id: data.service._id,
-                        slug: generateServiceSlug(data.service),
-                        category: getFirstCategoryLowerCase(data.service.categories),
-                      })}
-                    >
-                      {I18nText.translate(data.service.title)}
-                    </Link>
+                    I18nText.translate(data.service.title)
                   )}
                 </ServiceTitle>
                 <RatingAndPrice>
@@ -314,14 +338,40 @@ const Service = ({
                         </p>
                       )}
                     </PriceNumber>
-                    <PXSmall>{getPriceText(data.service.categories[0].names)}</PXSmall>
+                    <PXSmall style={{ display: 'inline-block', verticalAlign: 'middle' }}>
+                      {getPriceText(data.service.categories[0].names)}
+                    </PXSmall>
+                    <span
+                      style={{
+                        display: 'inline-block',
+                        verticalAlign: 'middle',
+                        marginLeft: '5px',
+                      }}
+                    >
+                      <ServiceIcon type={getFirstCategoryLowerCase(data.service.categories)} />
+                    </span>
                   </Price>
                   <StarsWrapper>
                     {data.service.privacy === 'public' &&
-                      data.service.ratings && (
-                        <Stars rating={data.service.ratings.average} type="golden" />
+                      data.service.ratings &&
+                      data.service.ratings.count > 0 && (
+                        <Stars useLogo rating={data.service.ratings.average} />
                       )}
-                    {fastBookable && <BookableTag>Fast Booking</BookableTag>}
+                    {data.service.ratings &&
+                      data.service.ratings.count > 0 && (
+                        <Reviews>
+                          <Link
+                            style={{ color: primary }}
+                            to={urls.service.view({
+                              id: data.service._id,
+                              slug: generateServiceSlug(data.service),
+                              category: getFirstCategoryLowerCase(data.service.categories),
+                            })}
+                          >
+                            {data.service.ratings.count} reviews
+                          </Link>
+                        </Reviews>
+                      )}
                   </StarsWrapper>
                 </RatingAndPrice>
               </ServiceData>

@@ -30,7 +30,7 @@ const Count = styled.span`
 export default function Rating({ rating, count, marginBottom, starsType }) {
   return (
     <Wrapper marginBottom={marginBottom}>
-      <Stars rating={rating} type={starsType} />
+      <Stars useLogo={starsType === 'logo'} rating={rating} type={starsType} />
       {count > 1 && <Count>({count})</Count>}
     </Wrapper>
   );
@@ -38,7 +38,7 @@ export default function Rating({ rating, count, marginBottom, starsType }) {
 
 // Props Validation
 Rating.propTypes = {
-  starsType: PropTypes.oneOf(['default', 'golden', 'yelp']),
+  starsType: PropTypes.oneOf(['default', 'golden', 'yelp', 'logo']),
 };
 
 Rating.defaultProps = {

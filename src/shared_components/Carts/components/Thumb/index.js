@@ -12,12 +12,13 @@ const Wrap = styled.div`
     props.withTooltip &&
     css`
       &:after {
+        border-radius: 17px 17px 17px 0;
         content: '';
         position: absolute;
         top: 0;
         left: 0;
         display: block;
-        height: 100%;
+        height: calc(100% - 5px);
         width: 100%;
         background: linear-gradient(
           to bottom,

@@ -125,7 +125,7 @@ export default class FeaturedTripCreator extends React.Component {
                 itemKey="trips"
                 showLoader={false}
                 render={({ items, isLoading }) => (
-                  <TripCarousel isLoading={isLoading} hideAuthor trips={items} />
+                  <TripCarousel isLoading={isLoading} trips={items} />
                 )}
               />
             </SectionContent>

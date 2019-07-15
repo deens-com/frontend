@@ -9,17 +9,18 @@ const Drag = SvgWithProps(({ onClick, ariaHidden, focusable, role, style }) => (
     role={role}
     style={style}
     onClick={onClick}
-    viewBox="0 0 18 18"
+    viewBox="0 0 18 5"
   >
-    <circle cx="16" cy="16" r="2" fill="black" fillOpacity="0.15" />
-    <circle cx="16" cy="9" r="2" fill="black" fillOpacity="0.15" />
-    <circle cx="16" cy="2" r="2" fill="black" fillOpacity="0.15" />
-    <circle cx="9" cy="16" r="2" fill="black" fillOpacity="0.15" />
-    <circle cx="9" cy="9" r="2" fill="black" fillOpacity="0.15" />
-    <circle cx="9" cy="2" r="2" fill="black" fillOpacity="0.15" />
-    <circle cx="2" cy="16" r="2" fill="black" fillOpacity="0.15" />
-    <circle cx="2" cy="9" r="2" fill="black" fillOpacity="0.15" />
-    <circle cx="2" cy="2" r="2" fill="black" fillOpacity="0.15" />
+    <circle cx="17" cy="4" r="1" fill="black" fillOpacity="0.15" />
+    <circle cx="17" cy="1" r="1" fill="black" fillOpacity="0.15" />
+    <circle cx="13" cy="4" r="1" fill="black" fillOpacity="0.15" />
+    <circle cx="13" cy="1" r="1" fill="black" fillOpacity="0.15" />
+    <circle cx="9" cy="4" r="1" fill="black" fillOpacity="0.15" />
+    <circle cx="9" cy="1" r="1" fill="black" fillOpacity="0.15" />
+    <circle cx="5" cy="4" r="1" fill="black" fillOpacity="0.15" />
+    <circle cx="5" cy="1" r="1" fill="black" fillOpacity="0.15" />
+    <circle cx="1" cy="4" r="1" fill="black" fillOpacity="0.15" />
+    <circle cx="1" cy="1" r="1" fill="black" fillOpacity="0.15" />
   </svg>
 ));
 
