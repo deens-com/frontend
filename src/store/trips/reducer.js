@@ -21,6 +21,7 @@ const initialState = {
   },
   isCloning: false,
   bookingStatus: null,
+  withAllTheIncludes: false,
 };
 
 export default function services(state = initialState, action = {}) {
@@ -58,6 +59,7 @@ export default function services(state = initialState, action = {}) {
       return {
         ...state,
         isLoading: true,
+        withAllTheIncludes: false,
         error: null,
         trip: null,
       };
@@ -67,6 +69,7 @@ export default function services(state = initialState, action = {}) {
         ...state,
         trip: action.payload,
         isLoading: false,
+        withAllTheIncludes: true,
         error: null,
       };
     }
@@ -152,6 +155,7 @@ export default function services(state = initialState, action = {}) {
         ...state,
         error: null,
         isPatchingTrip: true,
+        withAllTheIncludes: false,
       };
     }
 

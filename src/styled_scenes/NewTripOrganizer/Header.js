@@ -69,9 +69,6 @@ const Header = ({
   const onFileSelect = async e => {
     const file = e.currentTarget.files[0];
     if (!file) return;
-    if (file.size > 3000000) {
-      return;
-    }
 
     setIsUploading(true);
     await onImageUpload(file);

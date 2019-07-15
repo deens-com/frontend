@@ -145,8 +145,31 @@ export function formatMedia(url) {
   ];
 }
 
-export async function uploadTripImage(file) {
+export const MEDIA_IMAGE = 'image';
+export const MEDIA_VIDEO = 'video';
+export const MEDIA_ALL = 'all';
+//const mediaTypes = [MEDIA_IMAGE, MEDIA_VIDEO, MEDIA_ALL]
+
+const mediaExtensions = {
+  [MEDIA_IMAGE]: ['gif', 'jpeg', 'jpg', 'png'],
+  [MEDIA_VIDEO]: ['mp4', 'mov'],
+};
+
+export async function signAndUploadImage(file, allow = MEDIA_ALL) {
+  const allowedExtensions =
+    allow === MEDIA_ALL
+      ? [...mediaExtensions[MEDIA_IMAGE], ...mediaExtensions[MEDIA_VIDEO]]
+      : mediaExtensions[allow];
+  const fileExtension = file.name.split('.').pop();
+
+  if (!allowedExtensions.includes(fileExtension)) {
+    throw new Error(
+      `File type is wrong. You can select any of the following: ${allowedExtensions.join(', ')}`,
+    );
+  }
+
   const signed = await apiClient.media.s3.sign.get([file.name]);
+
   let formData = new FormData();
   Object.keys(signed.data[0].post.fields).forEach(key => {
     formData.append(key, signed.data[0].post.fields[key]);

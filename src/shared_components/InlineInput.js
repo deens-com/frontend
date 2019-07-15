@@ -11,7 +11,6 @@ const Text = styled.div`
   vertical-align: middle;
   cursor: text;
   align-items: center;
-  width: 100%;
   white-space: ${props => (props.wrapLines ? 'pre-wrap' : 'normal')};
   > p {
     line-height: 22px;
@@ -30,7 +29,6 @@ const Text = styled.div`
 const Input = styled.p`
   color: ${props => props.inputTextColor || 'inherit'};
   max-width: 80vw;
-  width: 100%;
   font-size: inherit;
   font-family: inherit;
   font-weight: inherit;
@@ -62,6 +60,7 @@ const InlineInput = ({
   onFocusChange,
   hideIcon,
   autoselect,
+  hideOverflow,
   preventLineBreak,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -225,6 +224,9 @@ const InlineInput = ({
     <Text
       iconColor={iconColor}
       wrapLines={useTextarea}
+      style={{
+        width: hideOverflow ? '100%' : 'auto',
+      }}
       onMouseDown={event => {
         if (textRef.current && !textRef.current.contains(event.target)) {
           event.preventDefault();
@@ -266,6 +268,7 @@ InlineInput.propTypes = {
   autoselect: PropTypes.bool,
   preventLineBreak: PropTypes.bool,
   inputPadding: PropTypes.string,
+  hideOverflow: PropTypes.bool,
 };
 
 InlineInput.defaultProps = {
@@ -282,6 +285,7 @@ InlineInput.defaultProps = {
   autoselect: false,
   preventLineBreak: false,
   inputPadding: '0 5px',
+  hideOverflow: false,
 };
 
 export default InlineInput;

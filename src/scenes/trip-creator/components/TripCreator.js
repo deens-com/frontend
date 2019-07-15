@@ -4,7 +4,7 @@ import { geocodeByAddress } from 'libs/placesAutocomplete';
 import styled from 'styled-components';
 import { getLocationParams, hasLocationParams } from 'libs/search';
 import LocationAutoSuggest from 'shared_components/Form/LocationAutoSuggest';
-import { Popup } from 'semantic-ui-react';
+import Popup from 'shared_components/Popup';
 import { parseLocationData } from 'libs/location';
 import SearchIcon from 'shared_components/icons/SearchIcon';
 import { placeholderMixin, media } from 'libs/styled';

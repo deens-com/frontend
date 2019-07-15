@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
-import { Loader, Popup } from 'semantic-ui-react';
+import { Loader } from 'semantic-ui-react';
+import Popup from 'shared_components/Popup';
 import { P, PSmall } from 'libs/commonStyles';
 import { primary, secondary, primaryHover, disabled, backgroundLight } from 'libs/colors';
 import Settings from 'shared_components/icons/Settings';

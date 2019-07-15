@@ -9,7 +9,7 @@ import { primary, disabled, error } from 'libs/colors';
 import apiClient from 'libs/apiClient';
 import ShareData from './ShareData';
 import Button from 'shared_components/Button';
-import { formatMedia, uploadTripImage } from 'libs/trips';
+import { formatMedia, signAndUploadImage } from 'libs/trips';
 import FieldValidator from './FieldValidator';
 import { Loader } from 'semantic-ui-react';
 import { PRIVACY_PUBLIC } from 'libs/trips';
@@ -17,7 +17,7 @@ import step1 from './1.png';
 import step2 from './2.png';
 import step3 from './3.png';
 import { media } from 'libs/styled';
-import { Popup } from 'semantic-ui-react';
+import Popup from 'shared_components/Popup';
 
 const TripEdit = styled.div`
   margin-top: 20px;
@@ -134,6 +134,7 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
   const [suggestedTags, setSuggestedTags] = useState([]);
   const [imgSize, setImgSize] = useState({});
   const [isUploading, setIsUploading] = useState(false);
+  const [imageError, setImageError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -234,33 +235,38 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
   };
 
   const uploadImage = async file => {
-    const url = await uploadTripImage(file);
-    const newMedia = formatMedia(url);
+    try {
+      setImageError(null);
+      const url = await signAndUploadImage(file);
+      const newMedia = formatMedia(url);
 
-    const img = new Image();
-    img.onload = function() {
-      setImgSize({
-        width: img.width,
-        height: img.height,
-      });
-
-      if (
-        validateMedia({
+      const img = new Image();
+      img.onload = function() {
+        setImgSize({
           width: img.width,
           height: img.height,
-        })[0] !== -1
-      ) {
-        patchTrip(trip._id, {
+        });
+
+        if (
+          validateMedia({
+            width: img.width,
+            height: img.height,
+          })[0] !== -1
+        ) {
+          patchTrip(trip._id, {
+            media: newMedia,
+          });
+        }
+
+        setTrip({
+          ...editedTrip,
           media: newMedia,
         });
-      }
-
-      setTrip({
-        ...editedTrip,
-        media: newMedia,
-      });
-    };
-    img.src = url;
+      };
+      img.src = url;
+    } catch (e) {
+      setImageError(e.message);
+    }
   };
 
   const validateTitle = titleToValid => {
@@ -407,6 +413,7 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
               .
             </Errors>
           )}
+        {imageError && !isPatchingTrip && <Errors>{imageError}</Errors>}
         <Description>
           <InlineInput
             iconColor={primary}

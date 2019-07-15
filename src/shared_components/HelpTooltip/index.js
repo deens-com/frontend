@@ -1,5 +1,5 @@
 import React from 'react';
-import { Popup } from 'semantic-ui-react';
+import Popup from 'shared_components/Popup';
 import QuestionMarkIcon from 'shared_components/icons/QuestionMarkIcon';
 
 const iconStyle = {

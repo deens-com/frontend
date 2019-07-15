@@ -62,7 +62,7 @@ class TripOrganizerContainer extends Component {
   }
 
   renderContent() {
-    if (!this.props.trip || this.props.isLoading) {
+    if (!this.props.trip || !this.props.withAllTheIncludes || this.props.isLoading) {
       return <Loader size="massive" active />;
     }
 
@@ -125,6 +125,7 @@ const mapStateToProps = (state, props) => {
     error: state.trips.error,
     isLoading: state.trips.isLoading,
     owner: state.trips.owner,
+    withAllTheIncludes: state.trips.withAllTheIncludes,
     adults: state.search.searchQuery.adults,
     children: state.search.searchQuery.children,
     infants: state.search.searchQuery.infants,

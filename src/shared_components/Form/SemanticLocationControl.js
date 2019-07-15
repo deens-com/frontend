@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import PlacesAutocomplete from 'shared_components/PlacesAutocomplete';
-import { Form, List, Popup } from 'semantic-ui-react';
+import { Form, List } from 'semantic-ui-react';
+import Popup from 'shared_components/Popup';
 import Input from 'shared_components/StyledInput';
 import MapMarker from 'shared_components/icons/MapMarker';
 

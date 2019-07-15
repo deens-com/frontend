@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import I18nText from 'shared_components/I18nText';
 import { DragSource, DropTarget } from 'react-dnd';
 import { Link } from 'react-router-dom';
-import { Popup } from 'semantic-ui-react';
+import Popup from 'shared_components/Popup';
 import { types } from '../../constants';
 import { PXSmall, P, PStrong } from 'libs/commonStyles';
 import { getFirstCategoryLowerCase } from 'libs/categories';

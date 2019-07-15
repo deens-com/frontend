@@ -17,6 +17,7 @@ import { addServiceRequest, formatMedia } from 'libs/trips';
 import analytics from 'libs/analytics';
 import withTouchHandler from 'shared_components/withTouchHandler';
 import urls from 'libs/urlGenerator';
+import { signAndUploadImage } from 'libs/trips';
 
 function addLang(text) {
   return {
@@ -798,19 +799,24 @@ class TripOrganizer extends React.Component {
   };
 
   uploadImage = async file => {
-    const uploadedFile = await apiClient.media.post(file);
-
-    const url = uploadedFile.data.url;
-    this.setState(
-      {
-        image: url,
-      },
-      () => {
-        this.saveTrip({
-          media: formatMedia(url),
-        });
-      },
-    );
+    try {
+      const url = await signAndUploadImage(file);
+      this.setState(
+        {
+          image: url,
+          imageError: null,
+        },
+        () => {
+          this.saveTrip({
+            media: formatMedia(url),
+          });
+        },
+      );
+    } catch (e) {
+      this.setState({
+        imageError: e.message,
+      });
+    }
   };
 
   editTitle = title => {

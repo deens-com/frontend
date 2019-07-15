@@ -55,14 +55,14 @@ export default ({ tripId, trip, patchTrip, isPatchingTrip }) => {
         setOption(trip.privacy);
       }
     },
-    [trip],
+    [trip, optionSelected],
   );
 
   const onSelectOption = option => {
     if (option !== PRIVACY_PUBLIC) {
       changePrivacy(option);
     } else {
-      if (trip.parents.length !== 0) {
+      if (!trip || trip.parents.length !== 0) {
         return;
       }
     }
@@ -88,9 +88,10 @@ export default ({ tripId, trip, patchTrip, isPatchingTrip }) => {
         <Content>
           <Title>How would you like to share your trip?</Title>
           <Options trip={trip} onSelect={onSelectOption} optionSelected={optionSelected} />
-          {optionSelected === PRIVACY_FRIENDS && (
-            <ShareData title="Here is a short link to your trip" trip={trip} />
-          )}
+          {trip &&
+            optionSelected === PRIVACY_FRIENDS && (
+              <ShareData title="Here is a short link to your trip" trip={trip} />
+            )}
           {trip &&
             optionSelected === PRIVACY_PUBLIC && (
               <Public

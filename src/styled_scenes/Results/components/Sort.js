@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Popup } from 'semantic-ui-react';
+import Popup from 'shared_components/Popup';
 import { P } from 'libs/commonStyles';
 import { disabled, primary } from 'libs/colors';
 
