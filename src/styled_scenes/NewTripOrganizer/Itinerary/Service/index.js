@@ -214,6 +214,7 @@ const Service = ({
   isDragging,
   connectDropTarget,
   selectOption,
+  servicesByDay,
 }) => {
   const {
     isCheckingAvailability,
@@ -280,7 +281,13 @@ const Service = ({
                     <Settings style={{ color: primary, width: '14px', height: '14px' }} />
                   </span>
                 }
-                content={<ServiceSettings removeService={removeService} service={data} />}
+                content={
+                  <ServiceSettings
+                    servicesByDay={servicesByDay}
+                    removeService={removeService}
+                    service={data}
+                  />
+                }
                 on="click"
                 position="bottom center"
                 hideOnScroll

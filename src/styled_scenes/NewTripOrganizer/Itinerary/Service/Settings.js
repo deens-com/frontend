@@ -25,7 +25,7 @@ const DatePicker = styled.div`
   border-top: 1px solid rgba(0, 0, 0, 0.07);
 `;
 
-const ServiceSettings = ({ removeService, service }) => {
+const ServiceSettings = ({ servicesByDay, removeService, service }) => {
   return (
     <div>
       <DeleteService onClick={() => removeService(service._id)}>
@@ -34,7 +34,7 @@ const ServiceSettings = ({ removeService, service }) => {
       </DeleteService>
       {service.service.categories.find(category => category.names === 'Accommodation') && (
         <DatePicker>
-          <DateSelector service={service} />
+          <DateSelector servicesByDay={servicesByDay} service={service} />
         </DatePicker>
       )}
     </div>

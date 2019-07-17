@@ -121,7 +121,7 @@ const Options = ({
 }) => {
   const [isLoadingUser, setLoadingUser] = useState(true);
   const [user, setUser] = useState(null);
-  const { session, tripId } = useContext(TripContext);
+  const { tripId } = useContext(TripContext);
 
   useEffect(() => {
     async function getParentOwner() {
@@ -193,7 +193,6 @@ const Options = ({
           isLoadingUser={isLoadingUser}
           user={user}
           tripId={tripId}
-          session={session}
         />
         <Toggle onSwitch={changeShowTransport}>
           <PSmall>Add Transports</PSmall>

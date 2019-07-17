@@ -18,6 +18,9 @@ axiosInstance.interceptors.request.use(config => {
   return config;
 });
 
+axiosInstance.isCancel = axios.isCancel;
+
 export default axiosInstance;
 
 export const getAuthHeader = () => `Bearer ${getSession().accessToken}`;
+export const CancelToken = axios.CancelToken;
