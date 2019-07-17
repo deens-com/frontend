@@ -292,7 +292,7 @@ const Service = ({
                     data.service.accommodationProps.stars && (
                       <>
                         <span style={{ fontWeight: 'bold', color: tertiary }}>
-                          {data.service.ratings.average}
+                          {data.service.accommodationProps.stars}
                         </span>
                         <Star
                           style={{

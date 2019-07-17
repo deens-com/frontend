@@ -92,6 +92,8 @@ const Title = styled(H6)`
   border-radius: 0 0 15px 0;
   z-index: 1;
   pointer-events: none;
+  line-height: 1.3em;
+  padding-bottom: 10px;
   a {
     color: inherit;
   }
@@ -385,7 +387,7 @@ class TripCart extends Component {
             <>
               {this.props.type === 'accommodation' &&
                 item.accommodationProps &&
-                item.accommodationProps.stars && (
+                Boolean(item.accommodationProps.stars) && (
                   <>
                     <span style={{ fontWeight: 'bold', color: colors.tertiary }}>
                       {item.accommodationProps.stars}
