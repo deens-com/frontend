@@ -101,7 +101,9 @@ export default ({ marginBottom = 0 }) => (
             <a
               target="_blank"
               rel="noopener noreferrer"
-              href={`https://deens.com/${getUserLanguage()}/blog/`}
+              href={`https://deens.com/${
+                getUserLanguage() === 'en' ? '' : `${getUserLanguage()}/`
+              }blog/`}
             >
               Our Blog
             </a>
