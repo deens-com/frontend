@@ -159,7 +159,7 @@ export default {
     },
     s3: {
       sign: {
-        get: fileNames => get('/media/s3/sign')({ fileNames }),
+        post: fileNames => post('/media/s3/sign')({ fileNames }),
       },
     },
   },

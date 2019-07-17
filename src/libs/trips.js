@@ -168,7 +168,7 @@ export async function signAndUploadImage(file, allow = MEDIA_ALL) {
     );
   }
 
-  const signed = await apiClient.media.s3.sign.get([file.name]);
+  const signed = await apiClient.media.s3.sign.post([file.name]);
 
   let formData = new FormData();
   Object.keys(signed.data[0].post.fields).forEach(key => {

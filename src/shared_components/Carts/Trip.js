@@ -91,7 +91,6 @@ const Title = styled(H6)`
   background-color: rgba(255, 255, 255, 0.9);
   border-radius: 0 0 15px 0;
   z-index: 1;
-  pointer-events: none;
   line-height: 1.3em;
   padding-bottom: 10px;
   a {
