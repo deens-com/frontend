@@ -178,18 +178,16 @@ const renderSteps = data => {
 const Transportation = ({
   children,
   serviceId,
-  toService,
-  fromService,
   selectTransport,
   isFirst,
   isLast,
-  overrideData,
+  currentTransport,
 }) => {
   const context = useContext(TripContext);
   const isLoading = context.isLoadingTransportation;
   const showingTransports = context.showingTransports;
   const [isShowingTooltip, setShowingTooltip] = useState(false);
-  const data = overrideData ? overrideData : toService[serviceId];
+  const data = currentTransport;
   const { text, icon } = getIconAndText(data);
   const distance = getKmFromMeters(data && data.route && data.route.distanceInMeters);
   const time = secondsToHoursAndMinutes(data && data.route && data.route.baseTimeInSeconds);
@@ -217,12 +215,11 @@ const Transportation = ({
     if (selected === selectedTransport) {
       return;
     }
-    const serviceDictionary = isLast ? fromService : toService;
 
     selectTransport(
       selectedTransport,
-      isFirst ? undefined : serviceDictionary[serviceId].fromServiceOrgId,
-      isLast ? undefined : serviceId,
+      currentTransport.fromServiceOrgId,
+      currentTransport.toServiceOrgId,
       position,
     );
     hideTooltip();

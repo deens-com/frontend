@@ -16,6 +16,9 @@ export const paramsSerializer = params => {
 };
 
 const handleError = e => {
+  if (axios.isCancel(e)) {
+    throw e;
+  }
   if (
     e.response === undefined ||
     e.code === 'ECONNABORTED' ||
@@ -26,7 +29,8 @@ const handleError = e => {
   throw e;
 };
 
-const get = url => params => axios.get(url, { params, paramsSerializer }).catch(handleError);
+const get = url => (params, moreOptions) =>
+  axios.get(url, { params, paramsSerializer, ...moreOptions }).catch(handleError);
 const post = url => body => axios.post(url, body).catch(handleError);
 const deleteEndpoint = url => body => axios.delete(url, body).catch(handleError);
 const patch = url => body => axios.patch(url, body).catch(handleError);
@@ -35,7 +39,7 @@ const patch = url => body => axios.patch(url, body).catch(handleError);
 // GET endpoint are called like xxx.get(params, ...urlParams) where params are the query params
 export default {
   trips: {
-    get: params => get('/trips')(params),
+    get: (params, moreOptions) => get('/trips')(params, moreOptions),
     post: post('/trips'),
     delete: id => deleteEndpoint(`/trips/${id}`)(),
     getById: (params, id) => get(`/trips/${id}`)(params),
@@ -53,13 +57,16 @@ export default {
       delete: id => deleteEndpoint(`/hearts/trips/${id}`)(),
     },
     availability: {
-      get: (id, { bookingDate, adultCount, infantCount, childrenCount }) =>
-        get(`/availabilities/trips/${id}/auto-update`)({
-          bookingDate,
-          adultCount,
-          infantCount,
-          childrenCount,
-        }),
+      get: (id, { bookingDate, adultCount, infantCount, childrenCount }, moreOptions) =>
+        get(`/availabilities/trips/${id}/auto-update`)(
+          {
+            bookingDate,
+            adultCount,
+            infantCount,
+            childrenCount,
+          },
+          moreOptions,
+        ),
       anonymous: {
         post: body => post(`/trips/anonymous-availability`)(body),
       },

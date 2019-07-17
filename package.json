@@ -31,6 +31,7 @@
     "lodash": "^4.17.11",
     "memoize-one": "^5.0.4",
     "moment": "^2.22.1",
+    "normalizr": "^3.4.0",
     "now": "^12.1.12",
     "pluralize": "^7.0.0",
     "preload-webpack-plugin": "^3.0.0-beta.3",
