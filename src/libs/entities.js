@@ -6,12 +6,6 @@ export const user = new schema.Entity('users', {}, { idAttribute });
 
 export const tag = new schema.Entity('tags', {}, { idAttribute });
 
-export const availability = new schema.Entity(
-  'availabilities',
-  {},
-  { idAttribute: 'serviceOrganizationId' },
-);
-
 export const service = new schema.Entity(
   'services',
   {
@@ -21,10 +15,17 @@ export const service = new schema.Entity(
   { idAttribute },
 );
 
+export const selectedOption = new schema.Entity(
+  'selectedOptions',
+  {},
+  { idAttribute: 'availabilityCode' },
+);
+
 export const inDayService = new schema.Entity(
   'inDayServices',
   {
     service,
+    selectedOption,
   },
   { idAttribute },
 );
@@ -32,14 +33,20 @@ export const inDayService = new schema.Entity(
 export const tripTransport = new schema.Entity(
   'tripTransports',
   {},
-  { idAttribute: value => `${value.fromServiceOrgId}-${value.toServiceOrgId}` },
+  {
+    idAttribute: value => {
+      return (
+        `${value.toServiceOrgId || value.toServiceOrganizationId}` ||
+        `last:${value.fromServiceOrgId || value.fromServiceOrganizationId}`
+      );
+    },
+  },
 );
 
 export const trip = new schema.Entity(
   'trips',
   {
     services: [inDayService],
-    transports: [tripTransport],
     tags: [tag],
   },
   { idAttribute },

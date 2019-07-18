@@ -9,7 +9,7 @@ import Map from './Map';
 import EmptyDay from './Day/EmptyDay';
 import { media } from 'libs/styled';
 
-export function generateDaysArray(numberOfDays, inDayServices, prevDays = []) {
+export function generateDaysArray(numberOfDays, services, inDayServices, prevDays = []) {
   const days = [];
 
   for (let i = 0; i < numberOfDays; i++) {
@@ -17,8 +17,9 @@ export function generateDaysArray(numberOfDays, inDayServices, prevDays = []) {
     days.push({ services: [], key });
   }
 
-  if (inDayServices) {
-    Object.entries(inDayServices).forEach(([id, service]) => {
+  if (services) {
+    services.forEach(serviceId => {
+      const service = inDayServices[serviceId];
       const i = service.day - 1;
       if (days[i]) {
         days[i] = {
@@ -48,9 +49,12 @@ const Days = styled.div`
   flex: 1;
 `;
 
-const denormalizeServices = (trip, services, inDayServices) => {
+const denormalizeServices = (trip, services, inDayServices, selectedOptions) => {
   return trip.services.map(sId => ({
     ...inDayServices[sId],
+    ...(inDayServices[sId].selectedOption
+      ? { selectedOption: selectedOptions[inDayServices[sId].selectedOption] }
+      : {}),
     service: services[inDayServices[sId].service],
   }));
 };
@@ -70,28 +74,29 @@ const Itinerary = ({
   trip,
   inDayServices,
   transports,
+  selectedOptions,
 }) => {
   const numberOfDays = minutesToDays(trip.duration);
-  const [days, setDays] = useState(() => generateDaysArray(numberOfDays, inDayServices));
+  const [days, setDays] = useState(() =>
+    generateDaysArray(numberOfDays, trip.services, inDayServices),
+  );
   const [dragging, setDragging] = useState(null);
   const [servicesByDay, setServicesByDay] = useState(() =>
-    denormalizeServices(trip, services, inDayServices),
+    denormalizeServices(trip, services, inDayServices, selectedOptions),
   );
 
   useEffect(
     () => {
-      setServicesByDay(denormalizeServices(trip, services, inDayServices));
+      setServicesByDay(denormalizeServices(trip, services, inDayServices, selectedOptions));
     },
-    [trip, services, inDayServices],
+    [trip, services, inDayServices, selectedOptions],
   );
 
   useEffect(
     () => {
-      if (numberOfDays !== days.length) {
-        setDays(generateDaysArray(numberOfDays, inDayServices, days));
-      }
+      setDays(prevDays => generateDaysArray(numberOfDays, trip.services, inDayServices, prevDays));
     },
-    [numberOfDays, inDayServices, days],
+    [numberOfDays, trip.services, inDayServices],
   );
 
   const startDragging = useCallback((day, id, position) => {
@@ -144,6 +149,7 @@ const Itinerary = ({
             trip={trip}
             transports={transports}
             servicesByDay={servicesByDay}
+            selectedOptions={selectedOptions}
           />
         ))}
         <EmptyDay addNewDay={addNewDay} day={days.length + 1} tripStartDate={trip.startDate} />

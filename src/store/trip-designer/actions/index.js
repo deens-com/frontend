@@ -17,6 +17,7 @@ const types = {
   PATCH_TRIP_START: 'TD_PATCH_TRIP_START',
   PATCH_TRIP_SUCCESS: 'TD_PATCH_TRIP_SUCCESS',
   PATCH_TRIP_ERROR: 'TD_PATCH_TRIP_ERROR',
+  UPDATE_TRIP_ENTITIES: 'UPDATE_TRIP_ENTITIES',
 };
 
 function addLang(text) {
@@ -95,12 +96,14 @@ const checkAvailability = () => async (dispatch, getState) => {
       cancelToken: new CancelToken(c => (cancelAvailability = c)),
     });
 
-    dispatch({ type: types.CHECK_AVAILABILITY_SUCCESS, data: response.data });
+    const tripNormalized = normalize(response.data.trip, tripEntity);
+    dispatch({ type: types.UPDATE_TRIP_ENTITIES, payload: tripNormalized });
+    dispatch({ type: types.CHECK_AVAILABILITY_SUCCESS, payload: response.data.availabilities });
   } catch (e) {
     if (axios.isCancel(e)) {
       return;
     }
-    dispatch({ type: types.CHECK_AVAILABILITY_ERROR, data: e.response && e.response.data });
+    dispatch({ type: types.CHECK_AVAILABILITY_ERROR, payload: e.response ? e.response.data : e });
   }
 };
 
@@ -136,9 +139,9 @@ const editTrip = newData => async (dispatch, getState) => {
     });
     // END this should be done in the backend
     const normalized = normalize(responseData, tripEntity);
-    // should I update services too?
-    console.log(normalized.entities.trips[trip._id]);
-    dispatch({ type: types.PATCH_TRIP_SUCCESS, payload: normalized.entities.trips[trip._id] });
+
+    dispatch({ type: types.UPDATE_TRIP_ENTITIES, payload: normalized });
+    dispatch({ type: types.PATCH_TRIP_SUCCESS, payload: normalized });
   } catch (e) {
     dispatch({ type: types.PATCH_TRIP_ERROR, error: e.response && e.response.data, payload: trip });
   }

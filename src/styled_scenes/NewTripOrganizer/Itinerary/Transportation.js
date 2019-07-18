@@ -215,11 +215,11 @@ const Transportation = ({
     if (selected === selectedTransport) {
       return;
     }
-
+    console.log('current', currentTransport);
     selectTransport(
       selectedTransport,
-      currentTransport.fromServiceOrgId,
-      currentTransport.toServiceOrgId,
+      currentTransport.fromServiceOrgId || currentTransport.fromServiceOrganizationId,
+      currentTransport.toServiceOrgId || currentTransport.toServiceOrganizationId,
       position,
     );
     hideTooltip();

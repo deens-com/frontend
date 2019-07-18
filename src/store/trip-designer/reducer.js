@@ -1,16 +1,4 @@
 import actions from './actions';
-import { minutesToDays } from 'libs/Utils';
-
-function generateDaysData(trip) {
-  const days = minutesToDays(trip.duration);
-  let daysData = {};
-  for (let i = 1; i <= days; i++) {
-    daysData[i] = {
-      notes: trip.notes ? trip.notes[i] : undefined,
-    };
-  }
-  return daysData;
-}
 
 const initialState = {
   trip: {
@@ -20,7 +8,7 @@ const initialState = {
   },
   availabilities: {
     isLoading: false,
-    data: null,
+    data: {},
     error: null,
   },
   transports: {},
@@ -31,11 +19,10 @@ const initialState = {
   // this booleans are numbers so we can make many requests.
   // probably it would be better to have timestamps to avoid race conditions
   isSaving: 0,
-  isCheckingAvailability: false,
   isLoadingTransportation: 0,
   isLoadingPrice: 0,
   // this is for allowing to undo
-  lastRemovedService: null,
+  lastRemovedService: [],
 };
 
 export default function tripDesigner(state = initialState, action = {}) {
@@ -63,7 +50,7 @@ export default function tripDesigner(state = initialState, action = {}) {
         availabilities: {
           isLoading: true,
           error: null,
-          data: null,
+          data: {},
         },
       };
     case actions.types.CHECK_AVAILABILITY_SUCCESS:
@@ -79,7 +66,13 @@ export default function tripDesigner(state = initialState, action = {}) {
         availabilities: {
           isLoading: false,
           error: null,
-          data: action.payload && action.payload.availabilities,
+          data: action.payload.reduce(
+            (prev, current) => ({
+              ...prev,
+              [current.serviceOrganizationId]: current,
+            }),
+            {},
+          ),
         },
       };
     case actions.types.CHECK_AVAILABILITY_ERROR:
@@ -88,7 +81,7 @@ export default function tripDesigner(state = initialState, action = {}) {
         availabilities: {
           isLoading: false,
           error: action.payload && action.payload.message,
-          data: null,
+          data: {},
         },
       };
     case actions.types.FETCH_TRIP_START:
@@ -125,6 +118,7 @@ export default function tripDesigner(state = initialState, action = {}) {
       return {
         ...state,
         trip: {
+          ...state.trip,
           data: action.payload,
         },
       };
@@ -132,14 +126,85 @@ export default function tripDesigner(state = initialState, action = {}) {
       return {
         ...state,
         trip: {
-          data: action.payload,
+          ...state.trip,
+          data: action.payload.entities.trips[action.payload.result],
         },
       };
     case actions.types.PATCH_TRIP_ERROR:
       return {
         ...state,
         trip: {
+          ...state.trip,
           error: action.error && action.error.message,
+          data: action.payload,
+        },
+      };
+    case actions.types.REMOVE_SERVICES_START:
+      return {
+        ...state,
+        trip: {
+          ...state.trip,
+          data: {
+            ...state.trip.data,
+            services: state.trip.data.services.filter(sId => !action.payload.includes(sId)),
+          },
+        },
+      };
+    case actions.types.UNDO_REMOVE_SERVICE:
+      return {
+        ...state,
+        trip: {
+          ...state.trip,
+          data: {
+            ...state.trip.data,
+            services: [
+              ...state.trip.data.services.slice(
+                0,
+                state.lastRemovedService[state.lastRemovedService.length - 1].position,
+              ),
+              state.lastRemovedService[state.lastRemovedService.length - 1].id,
+              ...state.trip.data.services.slice(
+                state.lastRemovedService[state.lastRemovedService.length - 1].position,
+                state.trip.data.services.length,
+              ),
+            ],
+          },
+        },
+        lastRemovedService: state.lastRemovedService.slice(0, state.lastRemovedService.length - 1),
+      };
+    case actions.types.REMOVE_SERVICE_START:
+      return {
+        ...state,
+        trip: {
+          ...state.trip,
+          data: {
+            ...state.trip.data,
+            services: state.trip.data.services.filter(sId => action.payload !== sId),
+          },
+        },
+        lastRemovedService: [
+          ...state.lastRemovedService,
+          { id: action.payload, position: state.trip.data.services.indexOf(action.payload) },
+        ],
+      };
+    case actions.types.REMOVE_SERVICE_SUCCESS:
+      return {
+        ...state,
+        trip: {
+          ...state.trip,
+          data: action.payload.trip,
+        },
+        lastRemovedService: state.lastRemovedService.filter(
+          s => s.id !== action.payload.removedService,
+        ),
+      };
+    case actions.types.SELECT_SERVICE_OPTION_SUCCESS:
+    case actions.types.REMOVE_SERVICES_SUCCESS:
+    case actions.types.SERVICE_MOVE_SUCCESS:
+      return {
+        ...state,
+        trip: {
+          ...state.trip,
           data: action.payload,
         },
       };

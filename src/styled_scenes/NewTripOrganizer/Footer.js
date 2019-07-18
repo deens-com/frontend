@@ -207,9 +207,9 @@ const Footer = ({
             <I18nText
               data={
                 recentlyDeletedService &&
+                recentlyDeletedService &&
                 recentlyDeletedService.service &&
-                recentlyDeletedService.service.service &&
-                recentlyDeletedService.service.service.title
+                recentlyDeletedService.service.title
               }
             />
           </P>

@@ -9,7 +9,7 @@ import { types } from '../../constants';
 import { PXSmall, P, PStrong } from 'libs/commonStyles';
 import { getFirstCategoryLowerCase } from 'libs/categories';
 import Star from 'shared_components/icons/Star';
-import { generateServiceSlug, extractPrice } from 'libs/Utils';
+import { generateServiceSlug, extractPrice, getPriceFromServiceOption } from 'libs/Utils';
 import urls from 'libs/urlGenerator';
 import {
   textLight,
@@ -215,6 +215,7 @@ const Service = ({
   connectDropTarget,
   selectOption,
   servicesByDay,
+  selectedOptions,
 }) => {
   const {
     isCheckingAvailability,
@@ -328,8 +329,10 @@ const Service = ({
                           inputTextColor={textDark}
                           onChanged={setServicePrice}
                         >
-                          {extractPrice(
+                          {getPriceFromServiceOption(
                             data.service.basePrice,
+                            selectedOptions[data.selectedOption] &&
+                              selectedOptions[data.selectedOption].price,
                             tripData.adultCount,
                             tripData.childrenCount,
                           )}
@@ -337,8 +340,10 @@ const Service = ({
                       ) : (
                         <p>
                           $
-                          {extractPrice(
+                          {getPriceFromServiceOption(
                             data.service.basePrice,
+                            selectedOptions[data.selectedOption] &&
+                              selectedOptions[data.selectedOption].price,
                             tripData.adultCount,
                             tripData.childrenCount,
                           )}
