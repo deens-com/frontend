@@ -5,11 +5,13 @@ const initialState = {
   tags: {},
   inDayServices: {}, // should this be here?
   availabilities: {},
+  selectedOptions: {},
 };
 
 export default function entities(state = initialState, action = {}) {
   switch (action.type) {
     case tripDesignerActions.types.FETCH_TRIP_SUCCESS:
+    case tripDesignerActions.types.UPDATE_TRIP_ENTITIES:
       return {
         ...state,
         services: {
@@ -21,8 +23,27 @@ export default function entities(state = initialState, action = {}) {
           ...action.payload.entities.tags,
         },
         inDayServices: {
-          ...state.tags,
+          ...state.inDayServices,
           ...action.payload.entities.inDayServices,
+        },
+        selectedOptions: {
+          ...state.selectedOptions,
+          ...action.payload.entities.selectedOptions,
+        },
+      };
+    case tripDesignerActions.types.REMOVE_SERVICES_START:
+      return {
+        ...state,
+        inDayServices: {
+          ...Object.entries(state.inDayServices).reduce((prev, [key, value]) => {
+            if (!action.payload.includes(key)) {
+              return {
+                ...prev,
+                [key]: value,
+              };
+            }
+            return prev;
+          }, {}),
         },
       };
     default:

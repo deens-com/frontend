@@ -195,24 +195,11 @@ export function getFromCoordinates(coordinates) {
  * @returns {Number} The resulting price
  */
 export function getPriceFromServiceOption(basePrice, price, adultCount = 1, childCount = 0) {
-  const base = extractPrice(basePrice);
   if (!price) {
-    return base;
+    return extractPrice(basePrice, adultCount, childCount);
   }
 
-  if (typeof price === 'number') {
-    return price;
-  }
-
-  if (price.operator === '+') {
-    return price.value + base;
-  }
-
-  if (price.operator === '*') {
-    return price.value * base;
-  }
-
-  return Number(price.value);
+  return extractPrice(price, adultCount, childCount);
 }
 
 export const PRICE_PER_SESSION = 'per-session';

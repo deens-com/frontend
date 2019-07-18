@@ -24,47 +24,6 @@ function addLang(text) {
   };
 }
 
-function removeDayAndGenerateData(data, dayToRemove) {
-  let newData = {};
-  Object.keys(data).forEach(key => {
-    if (key < dayToRemove) {
-      newData[key] = data[key];
-      return;
-    }
-    if (key === dayToRemove) {
-      return;
-    }
-    if (key > dayToRemove) {
-      newData[key - 1] = data[key];
-      return;
-    }
-  });
-  return newData;
-}
-
-function addDayAndGenerateData(data, addAfter) {
-  if (!addAfter) {
-    return data;
-  }
-  let newData = {};
-  Object.keys(data).forEach(key => {
-    if (key < addAfter) {
-      newData[key] = data[key];
-      return;
-    }
-    if (key === addAfter) {
-      newData[key] = data[key];
-      newData[key + 1] = {};
-      return;
-    }
-    if (key > addAfter) {
-      newData[key + 1] = data[key];
-      return;
-    }
-  });
-  return newData;
-}
-
 function parseDaysDataToSave(data) {
   let notes = {};
   Object.keys(data).forEach(key => {
@@ -75,32 +34,6 @@ function parseDaysDataToSave(data) {
   return {
     notes,
   };
-}
-
-function addAvailabilityData(services, availability, updatedTrip) {
-  const availabilityById = availability.reduce(
-    (prevObj, service) => ({
-      ...prevObj,
-      [service.serviceOrganizationId]: service,
-    }),
-    {},
-  );
-
-  const selectedOptionsById = updatedTrip.services.reduce(
-    (prevObj, service) => ({
-      ...prevObj,
-      [service._id]: service.selectedOption,
-    }),
-    {},
-  );
-
-  return mapServicesByDay(
-    mapDaysToServices(services).map(service => ({
-      ...service,
-      availability: availabilityById[service._id],
-      selectedOption: selectedOptionsById[service._id],
-    })),
-  );
 }
 
 export const TripContext = React.createContext();
@@ -152,12 +85,8 @@ class TripOrganizer extends React.Component {
     }));
   };
 
-  removeIsLoadingPrice = totalPrice => {
+  removeIsLoadingPrice = () => {
     this.setState(prevState => ({
-      tripData: {
-        ...prevState.tripData,
-        totalPrice,
-      },
       isLoadingPrice: prevState.isLoadingPrice - 1,
     }));
   };
@@ -168,7 +97,7 @@ class TripOrganizer extends React.Component {
 
     const trip = (await apiClient.trips.patch(this.props.tripId, dataToSave)).data;
 
-    this.removeIsLoadingPrice(trip.totalPrice);
+    this.removeIsLoadingPrice();
     this.removeIsSaving();
   };
 
@@ -189,7 +118,7 @@ class TripOrganizer extends React.Component {
 
     this.removeIsSaving();
     if (!dontCheck) {
-      this.removeIsLoadingPrice(trip.totalPrice);
+      this.removeIsLoadingPrice();
       this.props.checkAvailability();
     }
     this.props.getTransportation();
@@ -212,29 +141,11 @@ class TripOrganizer extends React.Component {
     this.addIsSaving();
     this.addIsLoadingPrice();
 
-    const trip = (await apiClient.trips.serviceOrganizations.delete(
-      this.props.tripId,
-      serviceOrgIds,
-    )).data;
+    await this.props.removeServices(serviceOrgIds);
 
-    this.removeIsLoadingPrice(trip.totalPrice);
+    this.removeIsLoadingPrice();
     this.removeIsSaving();
     this.props.getTransportation();
-  };
-
-  saveAvailabilityCode = async (serviceOrgId, availabilityCode) => {
-    this.addIsSaving();
-    this.addIsLoadingPrice();
-
-    const trip = (await apiClient.trips.serviceOrganizations.availabilityCode.post(
-      this.props.tripId,
-      [{ serviceOrgId, availabilityCode }],
-    )).data;
-
-    this.removeIsLoadingPrice(trip.totalPrice);
-    this.removeIsSaving();
-
-    return trip;
   };
 
   prefetchSearchResults = async onlyLastDay => {
@@ -311,13 +222,6 @@ class TripOrganizer extends React.Component {
     const data = { bookingDate, adultCount, childrenCount, infantCount, peopleCount };
 
     return apiClient.trips.availability.get(this.props.tripId, data);
-  };
-
-  startCheckingAvailability = () => {
-    // this is for set the checking state before we save the trip
-    this.setState({
-      isCheckingAvailability: 1,
-    });
   };
   // SINGLE ACTIONS
 
@@ -489,51 +393,19 @@ class TripOrganizer extends React.Component {
     );
   };
 
-  removeDay = (day, changeDuration = true) => {
-    const removedServices = [];
-    this.setState(
-      prevState => {
-        const duration = changeDuration
-          ? prevState.tripData.duration - 60 * 24
-          : prevState.tripData.duration;
-        const services = mapServicesByDay(
-          mapDaysToServices(prevState.services)
-            .filter(service => {
-              if (service.day === day) {
-                removedServices.push(service._id);
-              }
-              return service.day !== day;
-            })
-            .map(service => {
-              if (service.day > day) {
-                return {
-                  ...service,
-                  day: service.day - 1,
-                };
-              }
-              return service;
-            }),
-        );
-
-        return {
-          services,
-          tripData: {
-            ...prevState.tripData,
-            duration: duration >= 1 ? duration : 60 * 24,
-          },
-          daysData: removeDayAndGenerateData(prevState.daysData, day),
-        };
-      },
-      async () => {
-        await this.saveRemovedServices(removedServices);
-        this.saveTrip({
-          duration: this.state.tripData.duration,
-        });
-        this.prefetchSearchResults();
-        this.saveDaysData();
-        this.saveRearrangeServices();
-      },
+  removeDay = async day => {
+    if (this.props.trip.notes[day]) {
+      this.props.editTrip({
+        notes: {
+          ...this.props.trip.notes,
+          [day]: undefined,
+        },
+      });
+    }
+    await this.props.removeServices(
+      this.props.trip.services.filter(id => this.props.inDayServices[id].day === day),
     );
+    this.prefetchSearchResults();
   };
 
   addService = async (serviceToAdd, day) => {
@@ -556,68 +428,7 @@ class TripOrganizer extends React.Component {
   };
 
   removeService = serviceOrgId => {
-    let removedService;
-    this.setState(
-      prevState => {
-        const services = mapServicesByDay(
-          mapDaysToServices(prevState.services).filter((service, i) => {
-            if (service._id === serviceOrgId) {
-              removedService = { service, position: i };
-              return false;
-            }
-            return true;
-          }),
-        );
-        return {
-          services,
-          lastRemovedService: removedService,
-        };
-      },
-      () => {
-        this.prefetchSearchResults();
-        this.waitAndRemoveService(removedService.service._id);
-      },
-    );
-  };
-
-  waitAndRemoveService = id => {
-    setTimeout(async () => {
-      if (!this._isMounted) {
-        // this is not the best solution but it's quick and works properly
-        await this.saveRemovedServices([id]);
-        return;
-      }
-      this.setState(
-        prevState => {
-          if (!prevState.lastRemovedService) {
-            return;
-          }
-          if (prevState.lastRemovedService.service._id !== id) {
-            return;
-          }
-          return {
-            lastRemovedService: null,
-          };
-        },
-        async () => {
-          await this.saveRemovedServices([id]);
-        },
-      );
-    }, 5000);
-  };
-
-  undoRemoveService = () => {
-    this.setState(prevState => {
-      const services = mapDaysToServices(prevState.services);
-      return {
-        lastRemovedService: null,
-        services: mapServicesByDay([
-          ...services.slice(0, prevState.lastRemovedService.position),
-          prevState.lastRemovedService.service,
-          ...services.slice(prevState.lastRemovedService.position),
-        ]),
-      };
-    });
+    this.props.removeService(serviceOrgId);
   };
 
   addNewDay = () => {
@@ -674,8 +485,9 @@ class TripOrganizer extends React.Component {
   };
 
   changeServiceDays = async (service, startDay, endDay) => {
-    const instances = Object.entries(this.props.inDayServices).map(([key, value]) => value);
-    console.log(instances, instances[0]);
+    const instances = Object.values(this.props.inDayServices)
+      .filter(s => s.service === service.service._id)
+      .sort((a, b) => a.day - b.day);
     let groups = [];
     let currentGroupIndex = -1;
     let currentDay = instances[0].day - 1;
@@ -717,10 +529,12 @@ class TripOrganizer extends React.Component {
       serviceDays.add(i);
     }
 
-    this.props.moveServices({
+    await this.props.moveServices({
       days: [...serviceDays],
       serviceId: service.service._id,
     });
+
+    this.props.getTransportation();
   };
 
   modifyService = (serviceId, day, data) => {
@@ -755,64 +569,14 @@ class TripOrganizer extends React.Component {
       childrenCount: data.children,
       infantCount: data.infants,
     };
-    this.saveTrip(newData);
-    this.setState(
-      prevState => ({
-        tripData: {
-          ...prevState.tripData,
-          ...newData,
-        },
-      }),
-      async () => {
-        this.prefetchSearchResults();
-        this.startCheckingAvailability();
-        await this.props.checkAvailability();
-      },
-    );
+    await this.props.editTrip(newData);
+    await this.props.checkAvailability();
   };
 
   selectOption = (service, option) => {
-    this.setState(
-      prevState => {
-        return {
-          services: {
-            ...prevState.services,
-            [service.day]: prevState.services[service.day].map(
-              currentService =>
-                service._id !== currentService._id
-                  ? currentService
-                  : {
-                      ...currentService,
-                      selectedOption: option,
-                    },
-            ),
-          },
-        };
-      },
-      async () => {
-        const servicesWithSelectedOptions = (await this.saveAvailabilityCode(
-          service._id,
-          option.otherAttributes.availabilityCode.code,
-        )).services.filter(service => Boolean(service.selectedOption));
-
-        this.setState(prevState => ({
-          services: mapServicesByDay(
-            mapDaysToServices(prevState.services).map(serv => {
-              if (serv.service._id !== service.service._id) {
-                return serv;
-              }
-              const selected = servicesWithSelectedOptions.find(
-                withOption => withOption._id === serv._id,
-              );
-              return {
-                ...serv,
-                selectedOption: selected && selected.selectedOption,
-              };
-            }),
-          ),
-        }));
-      },
-    );
+    this.addIsLoadingPrice();
+    this.props.selectOption(service, option);
+    this.removeIsLoadingPrice();
   };
 
   changeInitialLocation = location => {
@@ -886,16 +650,10 @@ class TripOrganizer extends React.Component {
       inDayServices,
       transports,
       isLoadingTransportation,
-    } = this.props;
-    const {
-      draggingDay,
-      services,
-      image,
-      showingTransports,
-      isCheckingAvailability,
       lastRemovedService,
-      headerHeight,
-    } = this.state;
+      isCheckingAvailability,
+    } = this.props;
+    const { draggingDay, services, image, showingTransports, headerHeight } = this.state;
 
     return (
       <TripContext.Provider
@@ -917,6 +675,7 @@ class TripOrganizer extends React.Component {
           changeStartDate: this.changeStartDate,
           session: this.props.session,
           headerHeight,
+          availabilities: this.props.availabilities,
         }}
       >
         <Header
@@ -955,6 +714,7 @@ class TripOrganizer extends React.Component {
           showingMap={this.state.showingMap}
           saveDayNote={this.changeDayNote}
           transports={transports}
+          selectedOptions={this.props.selectedOptions}
         />
         <Footer
           price={trip.totalPrice.toFixed(2)}
@@ -963,8 +723,18 @@ class TripOrganizer extends React.Component {
           share={this.share}
           isSaving={Boolean(this.state.isSaving)}
           isCheckingAvailability={Boolean(isCheckingAvailability)}
-          recentlyDeletedService={lastRemovedService}
-          undoRemoveService={this.undoRemoveService}
+          recentlyDeletedService={
+            lastRemovedService.length
+              ? {
+                  ...inDayServices[lastRemovedService[lastRemovedService.length - 1].id],
+                  service:
+                    servicesProps[
+                      inDayServices[lastRemovedService[lastRemovedService.length - 1].id].service
+                    ],
+                }
+              : null
+          }
+          undoRemoveService={this.props.undoRemoveService}
         />
       </TripContext.Provider>
     );

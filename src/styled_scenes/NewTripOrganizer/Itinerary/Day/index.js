@@ -123,6 +123,7 @@ const Day = ({
   changeDragging,
   endDragging,
   connectDropServiceTarget,
+  selectedOptions,
   connectDropDayTarget,
   connectDragDayPreview,
   connectDragDaySource,
@@ -154,8 +155,9 @@ const Day = ({
     removeDay(day);
   };
 
-  const { tripData, changeInitialLocation, changeFinalLocation } = useContext(TripContext);
-  let previousService;
+  const { tripData, changeInitialLocation, changeFinalLocation, availabilities } = useContext(
+    TripContext,
+  );
   return (
     <>
       <div>
@@ -210,9 +212,14 @@ const Day = ({
                   </Location>
                 )}
                 {dayServices.map((data, index) => {
-                  const transportKey = `${previousService}-${data._id}`;
-                  previousService = data._id;
+                  if (!inDayServices[data._id]) {
+                    // this is because effect run after render
+                    // so days may be outdated.
+                    // bad and quick solution after 3 days of refactor
+                    return null;
+                  }
                   const isLast = index + 1 === services.length && isLastDay;
+                  const transportKey = isLast ? `last:${data._id}` : `${data._id}`;
                   return (
                     <React.Fragment key={data._id}>
                       <Transportation
@@ -229,8 +236,10 @@ const Day = ({
                           draggingState={draggingState}
                           changeServicePosition={changeServicePosition}
                           servicesByDay={servicesByDay}
+                          selectedOptions={selectedOptions}
                           data={{
                             ...inDayServices[data._id],
+                            availability: availabilities[data._id],
                             service: services[inDayServices[data._id].service],
                           }}
                           index={index}

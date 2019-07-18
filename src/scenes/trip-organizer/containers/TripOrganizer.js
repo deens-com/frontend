@@ -88,6 +88,7 @@ class TripOrganizerContainer extends Component {
         session={this.props.session}
         // new actions, better if explicit
         checkAvailability={this.props.checkAvailability}
+        isCheckingAvailability={this.props.isCheckingAvailability}
         getTransportation={this.props.getTransportation}
         selectTransport={this.props.selectTransport}
         services={this.props.services}
@@ -96,6 +97,13 @@ class TripOrganizerContainer extends Component {
         isLoadingTransportation={this.props.isLoadingTransportation}
         editTrip={this.props.editTrip}
         moveServices={this.props.moveServices}
+        availabilities={this.props.availabilities}
+        selectedOptions={this.props.selectedOptions}
+        selectOption={this.props.selectOption}
+        removeServices={this.props.removeServices}
+        removeService={this.props.removeService}
+        undoRemoveService={this.props.undoRemoveService}
+        lastRemovedService={this.props.lastRemovedService}
       />
     );
   }
@@ -129,8 +137,12 @@ const mapStateToProps = (state, props) => {
     gdprHeight: state.settings.gdprHeight,
     services: state.entities.services,
     inDayServices: state.entities.inDayServices,
+    selectedOptions: state.entities.selectedOptions,
     transports: state.tripDesigner.transports,
+    availabilities: state.tripDesigner.availabilities.data,
+    isCheckingAvailability: state.tripDesigner.availabilities.isLoading,
     isLoadingTransportation: state.tripDesigner.isLoadingTransportation,
+    lastRemovedService: state.tripDesigner.lastRemovedService,
   };
 };
 
@@ -148,6 +160,10 @@ const mapDispatchToProps = dispatch =>
       fetchTrip: tripDesignerActions.fetchTrip,
       editTrip: tripDesignerActions.editTrip,
       moveServices: tripDesignerActions.moveServices,
+      selectOption: tripDesignerActions.selectOption,
+      removeServices: tripDesignerActions.removeServices,
+      removeService: tripDesignerActions.removeService,
+      undoRemoveService: tripDesignerActions.undoRemoveService,
     },
     dispatch,
   );
