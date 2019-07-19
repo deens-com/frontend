@@ -8,6 +8,8 @@ import checkout from 'store/checkout/reducer';
 import account from 'store/account/reducer';
 import session from 'store/session/reducer';
 import header from 'store/header/reducer';
+import tripDesigner from 'store/trip-designer/reducer';
+import entities from 'store/entities/reducer';
 
 const allReducers = combineReducers({
   search,
@@ -19,6 +21,8 @@ const allReducers = combineReducers({
   session,
   account,
   header,
+  tripDesigner,
+  entities,
 });
 
 export default allReducers;

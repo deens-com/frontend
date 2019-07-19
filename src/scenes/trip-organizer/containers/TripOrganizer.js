@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 import actions from 'store/trips/actions';
+import tripDesignerActions from 'store/trip-designer/actions';
 import styled from 'styled-components';
 import searchActions from 'store/search/actions';
 import { changeCurrentUserTrip } from 'store/session/actions';
@@ -62,7 +63,7 @@ class TripOrganizerContainer extends Component {
   }
 
   renderContent() {
-    if (!this.props.trip || !this.props.withAllTheIncludes || this.props.isLoading) {
+    if (!this.props.trip || this.props.isLoading) {
       return <Loader size="massive" active />;
     }
 
@@ -85,6 +86,24 @@ class TripOrganizerContainer extends Component {
         }
         changeCurrentUserTrip={this.props.changeCurrentUserTrip}
         session={this.props.session}
+        // new actions, better if explicit
+        checkAvailability={this.props.checkAvailability}
+        isCheckingAvailability={this.props.isCheckingAvailability}
+        getTransportation={this.props.getTransportation}
+        selectTransport={this.props.selectTransport}
+        services={this.props.services}
+        inDayServices={this.props.inDayServices}
+        transports={this.props.transports}
+        isLoadingTransportation={this.props.isLoadingTransportation}
+        editTrip={this.props.editTrip}
+        moveServices={this.props.moveServices}
+        availabilities={this.props.availabilities}
+        selectedOptions={this.props.selectedOptions}
+        selectOption={this.props.selectOption}
+        removeServices={this.props.removeServices}
+        removeService={this.props.removeService}
+        undoRemoveService={this.props.undoRemoveService}
+        lastRemovedService={this.props.lastRemovedService}
       />
     );
   }
@@ -93,6 +112,7 @@ class TripOrganizerContainer extends Component {
     if (this.props.error) {
       return <NotFound />;
     }
+
     return (
       <Wrapper>
         <ContentWrapper>{this.renderContent()}</ContentWrapper>
@@ -103,36 +123,26 @@ class TripOrganizerContainer extends Component {
 }
 
 const mapStateToProps = (state, props) => {
-  const trip = state.trips.trip;
-
-  let startDate = moment(state.search.searchQuery.startDate || undefined);
-  const tomorrow = moment()
-    .add(1, 'days')
-    .startOf('day');
-
-  if (!startDate || startDate.startOf('day').valueOf() < tomorrow.valueOf()) {
-    if (!trip) {
-      startDate = tomorrow;
-    } else {
-      const tripDate = moment(trip.startDate).startOf('day');
-      startDate = tripDate.diff(tomorrow, 'days') >= 0 ? tripDate : tomorrow;
-    }
-  }
-
   return {
     session: state.session.session,
-    trip,
-    error: state.trips.error,
-    isLoading: state.trips.isLoading,
+    trip: state.tripDesigner.trip.data,
+    isLoading: state.tripDesigner.trip.isLoading,
+    error: state.tripDesigner.trip.error,
     owner: state.trips.owner,
-    withAllTheIncludes: state.trips.withAllTheIncludes,
     adults: state.search.searchQuery.adults,
     children: state.search.searchQuery.children,
     infants: state.search.searchQuery.infants,
-    startDate: startDate.toJSON(),
     endDate: state.search.searchQuery.end_date,
     isGDPRDismissed: state.settings.gdprDismissed,
     gdprHeight: state.settings.gdprHeight,
+    services: state.entities.services,
+    inDayServices: state.entities.inDayServices,
+    selectedOptions: state.entities.selectedOptions,
+    transports: state.tripDesigner.transports,
+    availabilities: state.tripDesigner.availabilities.data,
+    isCheckingAvailability: state.tripDesigner.availabilities.isLoading,
+    isLoadingTransportation: state.tripDesigner.isLoadingTransportation,
+    lastRemovedService: state.tripDesigner.lastRemovedService,
   };
 };
 
@@ -144,6 +154,16 @@ const mapDispatchToProps = dispatch =>
       changeHeader: headerActions.changeHeader,
       changeCurrentUserTrip: changeCurrentUserTrip,
       updateSearchParams: searchActions.updateSearchParams,
+      checkAvailability: tripDesignerActions.checkAvailability,
+      getTransportation: tripDesignerActions.getTransportation,
+      selectTransport: tripDesignerActions.selectTransport,
+      fetchTrip: tripDesignerActions.fetchTrip,
+      editTrip: tripDesignerActions.editTrip,
+      moveServices: tripDesignerActions.moveServices,
+      selectOption: tripDesignerActions.selectOption,
+      removeServices: tripDesignerActions.removeServices,
+      removeService: tripDesignerActions.removeService,
+      undoRemoveService: tripDesignerActions.undoRemoveService,
     },
     dispatch,
   );

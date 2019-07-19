@@ -115,7 +115,6 @@ const Day = ({
   id,
   removeDay,
   goToAddService,
-  tripStartDate,
   isNotDraggingAnyDay,
   isDraggingThisDay,
   changeServicePosition,
@@ -124,37 +123,41 @@ const Day = ({
   changeDragging,
   endDragging,
   connectDropServiceTarget,
+  selectedOptions,
   connectDropDayTarget,
   connectDragDayPreview,
   connectDragDaySource,
   selectOption,
   selectTransport,
-  fromService,
-  toService,
   isLastDay,
   saveDayNote,
-  dayMetadata,
+  trip,
+  dayServices,
+  inDayServices,
+  servicesByDay,
+  transports,
 }) => {
   const onAddService = useCallback(
     type => {
       goToAddService(day, type);
     },
-    [day],
+    [goToAddService, day],
   );
 
   const saveNote = useCallback(
     note => {
       saveDayNote(note, day);
     },
-    [day],
+    [saveDayNote, day],
   );
 
   const onDelete = () => {
     removeDay(day);
   };
 
-  const { tripData, changeInitialLocation, changeFinalLocation } = useContext(TripContext);
-
+  const { tripData, changeInitialLocation, changeFinalLocation, availabilities } = useContext(
+    TripContext,
+  );
   return (
     <>
       <div>
@@ -166,7 +169,7 @@ const Day = ({
           ) : (
             <DraggableDay>
               <TitleWrapper>
-                <DayTitle day={day} tripStartDate={tripStartDate} />
+                <DayTitle day={day} tripStartDate={trip.startDate} />
                 <Modal
                   trigger={
                     <DeleteDay>
@@ -192,7 +195,7 @@ const Day = ({
             onChanged={saveNote}
             placeholder="Add some notes"
           >
-            {dayMetadata && dayMetadata.notes && I18nText.translate(dayMetadata.notes)}
+            {trip.notes && trip.notes[day] && I18nText.translate(trip.notes[day])}
           </InlineInput>
         </Note>
         {connectDropServiceTarget(
@@ -208,41 +211,55 @@ const Day = ({
                     />
                   </Location>
                 )}
-                {services.map((data, index) => (
-                  <React.Fragment key={data._id}>
-                    <Transportation
-                      selectTransport={selectTransport}
-                      serviceId={data._id}
-                      toService={toService}
-                      fromService={fromService}
-                      isFirst={index === 0 && day === 1}
-                    >
-                      <Service
-                        startDraggingService={startDragging}
-                        changeDraggingService={changeDragging}
-                        endDraggingService={endDragging}
-                        draggingState={draggingState}
-                        changeServicePosition={changeServicePosition}
-                        data={data}
-                        index={index}
-                        selectOption={selectOption}
-                      />
-                    </Transportation>
-                    {isLastDay &&
-                      index + 1 === services.length && (
+                {dayServices.map((data, index) => {
+                  if (!inDayServices[data._id]) {
+                    // this is because effect run after render
+                    // so days may be outdated.
+                    // bad and quick solution after 3 days of refactor
+                    return null;
+                  }
+                  const isLast = index + 1 === services.length && isLastDay;
+                  const transportKey = isLast ? `last:${data._id}` : `${data._id}`;
+                  return (
+                    <React.Fragment key={data._id}>
+                      <Transportation
+                        selectTransport={selectTransport}
+                        serviceId={data._id}
+                        transports={transports}
+                        isFirst={index === 0 && day === 1}
+                        currentTransport={transports[transportKey]}
+                      >
+                        <Service
+                          startDraggingService={startDragging}
+                          changeDraggingService={changeDragging}
+                          endDraggingService={endDragging}
+                          draggingState={draggingState}
+                          changeServicePosition={changeServicePosition}
+                          servicesByDay={servicesByDay}
+                          selectedOptions={selectedOptions}
+                          data={{
+                            ...inDayServices[data._id],
+                            availability: availabilities[data._id],
+                            service: services[inDayServices[data._id].service],
+                          }}
+                          index={index}
+                          selectOption={selectOption}
+                        />
+                      </Transportation>
+                      {isLast && (
                         <Transportation
                           key={data._id}
                           selectTransport={selectTransport}
                           serviceId={data._id}
-                          toService={toService}
-                          fromService={fromService}
-                          overrideData={fromService[data._id]}
+                          transports={transports}
                           isFirst={index === 0 && day === 1}
-                          isLast={index + 1 === services.length && isLastDay}
+                          isLast={isLast}
+                          currentTransport={transports[`${data._id}-undefined`]}
                         />
                       )}
-                  </React.Fragment>
-                ))}
+                    </React.Fragment>
+                  );
+                })}
                 {isLastDay && (
                   <Location>
                     <img alt="End location" src={locationFinishIcon} />
@@ -264,8 +281,11 @@ const Day = ({
 };
 
 Day.propTypes = {
-  services: PropTypes.array.isRequired,
-  tripStartDate: PropTypes.string.isRequired,
+  services: PropTypes.objectOf(
+    PropTypes.shape({
+      service: PropTypes.object, //we should create proptypes for services
+    }),
+  ).isRequired,
   day: PropTypes.number.isRequired,
   id: PropTypes.string.isRequired,
   removeDay: PropTypes.func.isRequired,
@@ -290,6 +310,16 @@ Day.propTypes = {
   isLastDay: PropTypes.bool.isRequired,
   saveDayNote: PropTypes.func.isRequired,
   dayMetadata: PropTypes.object,
+  dayServices: PropTypes.array,
+  trip: PropTypes.shape({
+    startDate: PropTypes.string,
+    duration: PropTypes.number,
+    services: PropTypes.arrayOf(
+      PropTypes.shape({
+        service: PropTypes.object, //we should create proptypes for services
+      }),
+    ),
+  }),
 };
 
 const serviceDragAndDrop = {

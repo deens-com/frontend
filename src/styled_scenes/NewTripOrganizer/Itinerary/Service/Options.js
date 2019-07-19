@@ -135,14 +135,12 @@ const renderCancellationPolicy = (policies, price, key) => {
 
 const ServiceOptions = ({ selectOption, serviceData, options }) => {
   const tripData = useContext(TripContext).tripData;
-  const [selectedOption, setSelectedOption] = useState(
-    serviceData.selectedOption && serviceData.selectedOption.availabilityCode,
-  );
+  const [selectedOption, setSelectedOption] = useState(serviceData.selectedOption);
   const [isModalOpen, setModalOpen] = useState(false);
 
   useEffect(
     () => {
-      setSelectedOption(serviceData.selectedOption && serviceData.selectedOption.availabilityCode);
+      setSelectedOption(serviceData.selectedOption);
     },
     [serviceData.selectedOption],
   );

@@ -9,7 +9,7 @@ import { types } from '../../constants';
 import { PXSmall, P, PStrong } from 'libs/commonStyles';
 import { getFirstCategoryLowerCase } from 'libs/categories';
 import Star from 'shared_components/icons/Star';
-import { generateServiceSlug, extractPrice } from 'libs/Utils';
+import { generateServiceSlug, extractPrice, getPriceFromServiceOption } from 'libs/Utils';
 import urls from 'libs/urlGenerator';
 import {
   textLight,
@@ -214,6 +214,8 @@ const Service = ({
   isDragging,
   connectDropTarget,
   selectOption,
+  servicesByDay,
+  selectedOptions,
 }) => {
   const {
     isCheckingAvailability,
@@ -280,7 +282,13 @@ const Service = ({
                     <Settings style={{ color: primary, width: '14px', height: '14px' }} />
                   </span>
                 }
-                content={<ServiceSettings removeService={removeService} service={data} />}
+                content={
+                  <ServiceSettings
+                    servicesByDay={servicesByDay}
+                    removeService={removeService}
+                    service={data}
+                  />
+                }
                 on="click"
                 position="bottom center"
                 hideOnScroll
@@ -321,8 +329,10 @@ const Service = ({
                           inputTextColor={textDark}
                           onChanged={setServicePrice}
                         >
-                          {extractPrice(
+                          {getPriceFromServiceOption(
                             data.service.basePrice,
+                            selectedOptions[data.selectedOption] &&
+                              selectedOptions[data.selectedOption].price,
                             tripData.adultCount,
                             tripData.childrenCount,
                           )}
@@ -330,8 +340,10 @@ const Service = ({
                       ) : (
                         <p>
                           $
-                          {extractPrice(
+                          {getPriceFromServiceOption(
                             data.service.basePrice,
+                            selectedOptions[data.selectedOption] &&
+                              selectedOptions[data.selectedOption].price,
                             tripData.adultCount,
                             tripData.childrenCount,
                           )}

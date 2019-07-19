@@ -3,7 +3,7 @@ import history from 'main/history';
 import Button from 'shared_components/Button';
 import analytics from 'libs/analytics';
 
-export default ({ tripId, session, tripParent, isLoadingUser, user, buttonSize }) => {
+export default ({ tripId, tripParent, isLoadingUser, user, buttonSize }) => {
   return (
     <Button
       onClick={() => {

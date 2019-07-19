@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useMemo, useEffect, useContext, useCallback } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import GoogleMapReact from 'google-map-react';
 import { waitUntilMapsLoaded } from 'libs/Utils';
-import { mapDaysToServices } from 'styled_scenes/Trip/mapServicesToDays';
 import { getFromCoordinates } from 'libs/Utils';
 import { TripContext } from '../../';
 import { throttle } from 'lodash';
@@ -115,7 +114,7 @@ const getLocationMarker = (location, key) => ({
   ...getFromCoordinates(location),
 });
 
-const Map = ({ showingMap, servicesByDay, numberOfDays }) => {
+const Map = ({ showingMap, numberOfDays, services }) => {
   const { tripData, headerHeight } = useContext(TripContext);
 
   const [startLocation, setStartLocation] = useState(
@@ -131,7 +130,6 @@ const Map = ({ showingMap, servicesByDay, numberOfDays }) => {
 
   const [position, setPosition] = useState('relative');
   //const [services, setServices] = useState(mapDaysToServices(servicesByDay));
-  const services = mapDaysToServices(servicesByDay);
 
   const mapStartLocation = getFromCoordinates(
     startLocation || (services[0] && services[0].service.location.geo.coordinates),
@@ -140,17 +138,24 @@ const Map = ({ showingMap, servicesByDay, numberOfDays }) => {
     lng: 4.9449656,
   };
 
-  const servicesToMarkers = services.map(service => ({
-    ...getFromCoordinates(service.service.location.geo.coordinates),
-    key: service.service._id,
-    service,
-  }));
+  const servicesToMarkers = useMemo(
+    () =>
+      services.map(service => ({
+        ...getFromCoordinates(service.service.location.geo.coordinates),
+        key: service.service._id,
+        service,
+      })),
+    [services],
+  );
 
-  const getMarkers = (uniqueServices = true) => [
-    ...(startLocation ? [getLocationMarker(startLocation, 'startLocation')] : []),
-    ...(uniqueServices ? uniqServicesFilter(servicesToMarkers) : servicesToMarkers),
-    ...(endLocation ? [getLocationMarker(startLocation, 'endLocation')] : []),
-  ];
+  const getMarkers = useCallback(
+    (uniqueServices = true) => [
+      ...(startLocation ? [getLocationMarker(startLocation, 'startLocation')] : []),
+      ...(uniqueServices ? uniqServicesFilter(servicesToMarkers) : servicesToMarkers),
+      ...(endLocation ? [getLocationMarker(startLocation, 'endLocation')] : []),
+    ],
+    [servicesToMarkers, startLocation, endLocation],
+  );
 
   const [markers, setMarkers] = useState(getMarkers());
 
@@ -161,19 +166,19 @@ const Map = ({ showingMap, servicesByDay, numberOfDays }) => {
     getCenterAndZoom(markers, mapStartLocation, 4, getMapSize()).center,
   );
 
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState(() => ({
     accommodation: true,
     activity: true,
     food: true,
     days: generateDaysArray(numberOfDays).map(_ => true),
-  });
+  }));
 
   useEffect(
     () => {
-      setFilters({
-        ...filters,
+      setFilters(prev => ({
+        ...prev,
         days: generateDaysArray(numberOfDays).map(_ => true),
-      });
+      }));
     },
     [numberOfDays],
   );
@@ -209,7 +214,7 @@ const Map = ({ showingMap, servicesByDay, numberOfDays }) => {
         ),
       );
     },
-    [filters],
+    [filters, getMarkers],
   );
 
   useEffect(
@@ -256,7 +261,7 @@ const Map = ({ showingMap, servicesByDay, numberOfDays }) => {
     () => {
       setMarkers(getMarkers());
     },
-    [servicesByDay],
+    [getMarkers],
   );
 
   useEffect(

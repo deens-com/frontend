@@ -1,5 +1,5 @@
 import 'react-dates.css';
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import moment from 'moment';
@@ -19,43 +19,49 @@ const Text = styled(PSmall)`
   text-align: center;
 `;
 
-const ServiceSettings = ({ service }) => {
+const ServiceSettings = ({ service, servicesByDay }) => {
   const [serviceStartDate, setServiceStartDate] = useState(null);
   const [serviceEndDate, setServiceEndDate] = useState(null);
   const [focusedInput, setFocusedInput] = useState(START_DATE);
-  const { tripData, servicesByDay, changeServiceDays } = useContext(TripContext);
+  const { tripData, changeServiceDays } = useContext(TripContext);
   const numberOfDays = minutesToDays(tripData.duration);
-  const tripStartDate = moment(tripData.startDate);
+  const tripStartDate = useMemo(() => moment(tripData.startDate), [tripData.startDate]);
   const tripEndDate = tripStartDate.clone().add(numberOfDays, 'days');
 
-  useEffect(() => {
-    let foundAll = false;
-    let currentDay = service.day;
-    while (!foundAll && currentDay < numberOfDays) {
-      currentDay = currentDay + 1;
-      if (
-        !servicesByDay[currentDay] ||
-        !servicesByDay[currentDay].find(s => s.service._id === service.service._id)
-      ) {
-        foundAll = true;
-        currentDay = currentDay - 1;
-      }
-    }
-    let previousDay = service.day;
-    foundAll = false;
-    while (!foundAll && previousDay > 0) {
-      previousDay = previousDay - 1;
-      if (
-        !servicesByDay[previousDay] ||
-        !servicesByDay[previousDay].find(s => s.service._id === service.service._id)
-      ) {
-        foundAll = true;
-        previousDay = previousDay - 1;
-      }
-    }
-    setServiceStartDate(tripStartDate.clone().add(previousDay + 1, 'days'));
-    setServiceEndDate(tripStartDate.clone().add(currentDay, 'days'));
-  }, []);
+  useEffect(
+    () => {
+      // do this when we fetch the trip and have key/value being
+      // key: service organization id
+      // value: array of service organization ids within their group
+      // probably could be done with web workers when this is merged
+      // https://github.com/facebook/create-react-app/pull/5886
+      let currentDay = -1;
+      let setNumber = -1;
+      let currentGroup; // the group our service belongs to
+      const sets = []; // each set represent a group of subsequent instances of this service
+      const currentId = service.service._id;
+      servicesByDay.forEach(s => {
+        if (s.service._id === currentId) {
+          if (s.day === currentDay + 1) {
+            currentDay = s.day;
+            sets[setNumber] = [...sets[setNumber], s.day];
+          } else {
+            setNumber = setNumber + 1;
+            sets[setNumber] = [s.day];
+            currentDay = s.day;
+          }
+          if (s._id === service._id) {
+            currentGroup = setNumber;
+          }
+        }
+      });
+      setServiceStartDate(tripStartDate.clone().add(sets[currentGroup][0] - 1, 'days'));
+      setServiceEndDate(
+        tripStartDate.clone().add(sets[currentGroup][sets[currentGroup].length - 1], 'days'),
+      );
+    },
+    [servicesByDay, tripStartDate, service.service._id, service._id],
+  );
 
   const onDatesChange = ({ startDate, endDate }) => {
     if (focusedInput === START_DATE) {
