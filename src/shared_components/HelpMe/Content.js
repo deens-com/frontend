@@ -16,6 +16,10 @@ import currencies from 'data/currencies.json';
 import { media } from 'libs/styled';
 import apiClient from 'libs/apiClient';
 
+// i18n
+import { Trans, t } from '@lingui/macro';
+import { I18n } from '@lingui/react';
+
 import CurrencyDropdownContent from './CurrencyDropdownContent';
 
 const Wrapper = styled.div`
@@ -183,7 +187,9 @@ const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user, defaultLocat
   if (asked) {
     return (
       <Wrapper>
-        <Thanks>We have just sent you an email, please check your inbox.</Thanks>
+        <Thanks>
+          <Trans>We have just sent you an email, please check your inbox.</Trans>
+        </Thanks>
       </Wrapper>
     );
   }
@@ -214,8 +220,10 @@ const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user, defaultLocat
             </UserContent>
           </User>
           <WillContact>
-            We will contact <strong>{user.username}</strong> or find an similar travel planner for a
-            quote.
+            <Trans>
+              We will contact <strong>{user.username}</strong> or find a similar travel planner for
+              a quote.
+            </Trans>
           </WillContact>
         </>
       ) : (
@@ -229,14 +237,18 @@ const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user, defaultLocat
           <FormField>
             <Label>What is your destination?</Label>
             <Description>Leave blank if you don't know</Description>
-            <SemanticLocationControl
-              onChange={address => setAddress(address)}
-              useStyledInput
-              inputProps={{
-                placeholder: 'Type a city or country',
-              }}
-              defaultAddress={address}
-            />
+            <I18n>
+              {({ i18n }) => (
+                <SemanticLocationControl
+                  onChange={address => setAddress(address)}
+                  useStyledInput
+                  inputProps={{
+                    placeholder: i18n._(t`Type a city or country`),
+                  }}
+                  defaultAddress={address}
+                />
+              )}
+            </I18n>
           </FormField>
         </FormLine>
         <FormHalfLine>

@@ -28,6 +28,10 @@ import analytics from 'libs/analytics';
 import urls from 'libs/urlGenerator';
 import { PRIVACY_PUBLIC } from 'libs/trips';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans } from '@lingui/macro';
+
 function formatDate(date, days) {
   const startDate = moment(date);
   const endDate = moment(startDate)
@@ -489,19 +493,21 @@ class CheckoutContainer extends React.Component {
                   <BackIcon>
                     <LeftArrow />
                   </BackIcon>
-                  <span>Back to customization</span>
+                  <span>
+                    <Trans>Back to customization</Trans>
+                  </span>
                 </BackButton>
                 <Steps>
                   <Step active={step === 1}>
-                    <span>1</span> Review Booking
+                    <span>1</span> <Trans>Review Booking</Trans>
                   </Step>
                   <StepSeparator />
                   <Step active={step === 2}>
-                    <span>2</span> Guest Details
+                    <span>2</span> <Trans>Guest Details</Trans>
                   </Step>
                   <StepSeparator />
                   <Step active={step === 3}>
-                    <span>3</span> Payment
+                    <span>3</span> <Trans>Payment</Trans>
                   </Step>
                 </Steps>
               </React.Fragment>
@@ -524,8 +530,12 @@ class CheckoutContainer extends React.Component {
               </SummaryData>
               <TotalPriceWrapper>
                 <TotalPrice>
-                  <PriceLine>Total Price Booked Items ${trip.bookablePrice.toFixed(2)}</PriceLine>
-                  <Taxes>* all taxes and fees are included</Taxes>
+                  <PriceLine>
+                    <Trans>Total Price of booked items</Trans> ${trip.bookablePrice.toFixed(2)}
+                  </PriceLine>
+                  <Taxes>
+                    * <Trans>taxes and fees are included</Trans>
+                  </Taxes>
                 </TotalPrice>
               </TotalPriceWrapper>
             </Summary>
@@ -557,7 +567,7 @@ class CheckoutContainer extends React.Component {
               size="small"
               bold
             >
-              Next
+              <Trans>Next</Trans>
             </Button>
           </Footer>
         )}

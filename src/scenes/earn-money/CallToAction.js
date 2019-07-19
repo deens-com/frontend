@@ -4,6 +4,10 @@ import { Link } from 'react-router-dom';
 
 import Button from '../../shared_components/Button';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans } from '@lingui/macro';
+
 const Container = styled.div`
   margin-top: 32px;
   a {
@@ -26,7 +30,10 @@ const LoggedOut = ({ text }) => (
       {text}
     </Button>
     <SignUpContainer>
-      Don't have an account yet? <SignUp to="/register">Sign up</SignUp>
+      <Trans>Don't have an account yet?</Trans>{' '}
+      <SignUp to="/register">
+        <Trans>Sign up</Trans>
+      </SignUp>
     </SignUpContainer>
   </Container>
 );

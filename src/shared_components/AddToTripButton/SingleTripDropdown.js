@@ -1,6 +1,9 @@
 import React from 'react';
 import { List } from 'semantic-ui-react';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 class SingleTripDropdown extends React.Component {
   render() {
     const dayCount = Math.ceil(this.props.trip.duration / 1440);
@@ -11,7 +14,7 @@ class SingleTripDropdown extends React.Component {
           key={i}
           onClick={() => this.props.onSelect({ trip: this.props.trip, day: i + 1 })}
         >
-          Day {i + 1}
+          <Trans>Day {i + 1}</Trans>
         </List.Item>,
       );
     }

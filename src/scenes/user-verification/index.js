@@ -9,6 +9,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import headerActions from 'store/header/actions';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans } from '@lingui/macro';
+
 const Wrapper = styled.div`
   flex: 1;
   order: -1;
@@ -63,9 +67,11 @@ const TripCreator = props => {
                 <CheckIcon style={{ width: 72, height: 72 }} />
               </IconWrapper>
               <Title>Thank you!</Title>
-              <FirstLine>Your account has been verified.</FirstLine>
+              <FirstLine>
+                <Trans>Your account has been verified.</Trans>
+              </FirstLine>
               <Button type="link" href="/login" theme="textLightGreen">
-                Login to continue
+                <Trans>Login to continue</Trans>
               </Button>
             </React.Fragment>
           ) : params.message ? (
@@ -75,7 +81,9 @@ const TripCreator = props => {
           ) : (
             <>
               <Title>Expired link</Title>
-              <FirstLine>Your link has expired.</FirstLine>
+              <FirstLine>
+                <Trans>Your link has expired.</Trans>
+              </FirstLine>
             </>
           )}
         </Wrapper>

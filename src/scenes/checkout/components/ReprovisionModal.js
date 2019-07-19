@@ -1,21 +1,29 @@
 import React, { Component } from 'react';
 import { Button, Modal } from 'semantic-ui-react';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans } from '@lingui/macro';
+
 class ReprovisionModal extends Component {
   render() {
     return (
       <div>
         <Modal open closeOnEscape={false} closeOnDimmerClick={false} onClose={this.close}>
-          <Modal.Header>Time out</Modal.Header>
+          <Modal.Header>
+            <Trans>Time out</Trans>
+          </Modal.Header>
           <Modal.Content>
             <p>
-              Your time has expired. You can still continue booking but prices may change. Please
-              check the price before paying.
+              <Trans>
+                Your time has expired. You can still continue booking but prices may change. Please
+                check the price before paying.
+              </Trans>
             </p>
           </Modal.Content>
           <Modal.Actions>
             <Button onClick={this.props.cancelClick} negative>
-              Go back to trip organizer
+              <Trans>Go back to your trip</Trans>
             </Button>
             <Button
               onClick={this.props.okClick}

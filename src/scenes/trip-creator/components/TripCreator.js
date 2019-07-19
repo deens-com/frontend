@@ -12,6 +12,10 @@ import { primary, primaryDisabled, tertiary } from 'libs/colors';
 import BriefcaseHeart from 'shared_components/icons/BriefcaseHeart';
 import history from 'main/history';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans, t } from '@lingui/macro';
+
 const TypeIcon = styled.div`
   align-items: center;
   border-radius: 50%;
@@ -178,19 +182,25 @@ export default ({
   const OptionWithPopup =
     !hasDefaultLocation && !address
       ? ({ children, onClick, style }) => (
-          <Popup
-            content="Please select a location"
-            position="bottom center"
-            trigger={<Option style={style}>{children}</Option>}
-            on="hover"
-          />
+          <I18n>
+            {({ i18n }) => (
+              <Popup
+                content={i18n._(t`Please select a location`)}
+                position="bottom center"
+                trigger={<Option style={style}>{children}</Option>}
+                on="hover"
+              />
+            )}
+          </I18n>
         )
       : Option;
 
   const locationToUse = address;
   const selectAddress = (
     <div style={{ maxWidth: '400px', margin: 'auto', marginBottom: '25px', textAlign: 'center' }}>
-      <H2Subtitle style={{ marginBottom: '30px' }}>Where do you want to go?</H2Subtitle>
+      <H2Subtitle style={{ marginBottom: '30px' }}>
+        <Trans>Where do you want to go?</Trans>
+      </H2Subtitle>
       <SearchBg style={{ zIndex: 1 }}>
         <LeftIcon />
         <LocationAutoSuggest
@@ -217,8 +227,12 @@ export default ({
               color={primary}
             />
             <Text>
-              <PStrong style={{ marginBottom: '0' }}>FREE</PStrong>
-              <P>Find and customize trips already created by locals</P>
+              <PStrong style={{ marginBottom: '0', textTransform: 'uppercase' }}>
+                <Trans>Free</Trans>
+              </PStrong>
+              <P>
+                <Trans>Find and customize trips already created by locals</Trans>
+              </P>
             </Text>
           </OptionWithPopup>
           <OptionWithPopup
@@ -239,8 +253,12 @@ export default ({
               color={primaryDisabled}
             />
             <Text>
-              <PStrong style={{ marginBottom: '0' }}>FREE</PStrong>
-              <P>Start from scratch with an empty trip</P>
+              <PStrong style={{ marginBottom: '0', textTransform: 'uppercase' }}>
+                <Trans>Free</Trans>
+              </PStrong>
+              <P>
+                <Trans>Start from scratch with an empty trip</Trans>
+              </P>
             </Text>
           </OptionWithPopup>
           <OptionWithPopup
@@ -270,8 +288,12 @@ export default ({
               color={tertiary}
             />
             <Text>
-              <PStrong style={{ marginBottom: '0', color: tertiary }}>PREMIUM</PStrong>
-              <P>Brief a local travel planner to organize your ideal trip</P>
+              <PStrong style={{ marginBottom: '0', color: tertiary, textTransform: 'uppercase' }}>
+                <Trans>Premium</Trans>
+              </PStrong>
+              <P>
+                <Trans>Brief a local travel planner to organize your ideal trip</Trans>
+              </P>
             </Text>
           </OptionWithPopup>
         </Options>

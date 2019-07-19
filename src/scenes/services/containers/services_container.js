@@ -82,7 +82,7 @@ class ServicesContainer extends Component {
         helmet = (
           <Helmet>
             {this.props.slug && !shouldRedirect ? <link rel="canonical" href={url} /> : null}
-            <title>{title} | Deens.com</title>
+            <title>{title} | Deens</title>
             <meta name="description" content={description} />
             <meta property="og:url" content={url} />
             <meta property="og:title" content={title} />
