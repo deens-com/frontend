@@ -5,6 +5,10 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import welcomeImage from '../../../assets/login/login.svg';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans } from '@lingui/macro';
+
 const StaticFooter = styled.footer`
   position: static;
   bottom: 0px;
@@ -61,7 +65,9 @@ const RegistrationsComponent = props => {
             <Grid.Row columns={2}>
               <Grid.Column textAlign="center" floated="left">
                 <img src={welcomeImage} alt="welcomeImage" className="login-img" />
-                <div className="login-img-content">Plan your next trip with us!</div>
+                <div className="login-img-content">
+                  <Trans>Plan your next trip with us!</Trans>
+                </div>
               </Grid.Column>
               <Grid.Column width="6" floated="right">
                 {props.message && (
@@ -69,7 +75,9 @@ const RegistrationsComponent = props => {
                     {props.message}
                   </Message>
                 )}
-                <div className="login-header">Create your new account</div>
+                <div className="login-header">
+                  <Trans>Create an account</Trans>
+                </div>
                 <br />
                 {Object.keys(props.stateErrors).length !== 0 && (
                   <Message style={{ color: 'red', whiteSpace: 'pre-line' }}>
@@ -128,12 +136,12 @@ const RegistrationsComponent = props => {
                     size="large"
                     onClick={props.onSubmitRegistration}
                   >
-                    Register
+                    <Trans>Register</Trans>
                   </Button>
                 </Form>
 
                 <div className="login-q-text">
-                  Already have an account ?&nbsp;&nbsp;
+                  <Trans>Already have an account ?</Trans>
                   <Link
                     to={{
                       pathname: '/login',
@@ -144,7 +152,7 @@ const RegistrationsComponent = props => {
                       },
                     }}
                   >
-                    Sign In
+                    <Trans>Sign in</Trans>
                   </Link>
                 </div>
               </Grid.Column>

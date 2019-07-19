@@ -5,6 +5,10 @@ import copy from 'copy-to-clipboard';
 import { websiteUrl } from 'libs/config';
 import StyledInput from 'shared_components/StyledInput';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans } from '@lingui/macro';
+
 const Wrapper = styled.div`
   text-align: center;
 `;
@@ -47,7 +51,7 @@ export default class ReferAFriend extends React.Component {
     return (
       <Wrapper>
         <Referral>
-          Your referral code:
+          <Trans>Your referral code</Trans>:
           <CopyButton>
             <InputWrap>
               <StyledInput value={this.props.userProfile.myReferralCode} />
@@ -59,8 +63,10 @@ export default class ReferAFriend extends React.Component {
         </Referral>
         {this.props.userProfile.referralInfo && (
           <small>
-            There are {this.props.userProfile.referralInfo.usersWhoSignedUp} users that signed up
-            with your referral code.
+            <Trans>
+              {this.props.userProfile.referralInfo.usersWhoSignedUp} users signed up with your
+              referral code.
+            </Trans>
           </small>
         )}
       </Wrapper>

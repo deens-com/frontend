@@ -149,7 +149,9 @@ const TopBarDesktopNav = function TopBarDesktopNav({
               </>
             )}
             <NavLink activeclassname="is-active" to="/earn-money">
-              <PStrong style={{ color: colors.secondary }}>Earn Money</PStrong>
+              <PStrong style={{ color: colors.secondary }}>
+                <Trans>Earn Money</Trans>
+              </PStrong>
             </NavLink>
             {!session.username && (
               <>
@@ -165,7 +167,7 @@ const TopBarDesktopNav = function TopBarDesktopNav({
                   }}
                 >
                   <PStrong>
-                    <Trans>create-trip</Trans>
+                    <Trans>Create Trip</Trans>
                   </PStrong>
                 </NavLink>
               </>

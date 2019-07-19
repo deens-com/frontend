@@ -14,6 +14,9 @@ import { setLang } from 'libs/cookies';
 import { Dropdown } from 'semantic-ui-react';
 import { media } from 'libs/styled';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const Wrapper = styled.div`
   background-color: ${colors.backgroundDark};
   padding-top: 35px;
@@ -77,9 +80,13 @@ export default ({ marginBottom = 0 }) => (
     <PageWrapper>
       <ColumnWrapper>
         <Column>
-          <H6>Preferences</H6>
+          <H6>
+            <Trans>Preferences</Trans>
+          </H6>
           <LinkElement>
-            <span>Language</span>
+            <span>
+              <Trans>Language</Trans>
+            </span>
             <OptionSelector
               defaultValue={getUserLanguage()}
               onChange={e => {
@@ -96,7 +103,9 @@ export default ({ marginBottom = 0 }) => (
           </LinkElement>
         </Column>
         <Column>
-          <H6>Network</H6>
+          <H6>
+            <Trans>Network</Trans>
+          </H6>
           <LinkElement>
             <a
               target="_blank"
@@ -105,48 +114,58 @@ export default ({ marginBottom = 0 }) => (
                 getUserLanguage() === 'en' ? '' : `${getUserLanguage()}/`
               }blog/`}
             >
-              Our Blog
+              <Trans>Our Blog</Trans>
             </a>
           </LinkElement>
           <LinkElement>
-            <Link to="/about/partners">Partners</Link>
+            <Link to="/about/partners">
+              <Trans>Partners</Trans>
+            </Link>
           </LinkElement>
           <LinkElement>
-            <Link to="/about/press">Press</Link>
+            <Link to="/about/press">
+              <Trans>Press</Trans>
+            </Link>
           </LinkElement>
         </Column>
         <Column>
-          <H6>Legal</H6>
+          <H6>
+            <Trans>Legal</Trans>
+          </H6>
           <LinkElement>
             <Link rel="nofollow" to="/legal/cookies">
-              Use of Cookies
+              <Trans>Use of Cookies</Trans>
             </Link>
           </LinkElement>
           <LinkElement>
             <Link rel="nofollow" to="/legal/terms">
-              Terms & Conditions
+              <Trans>Terms & Conditions</Trans>
             </Link>
           </LinkElement>
           <LinkElement>
             <Link rel="nofollow" to="/legal/privacy">
-              Privacy Policy
+              <Trans>Privacy Policy</Trans>
             </Link>
           </LinkElement>
         </Column>
         <Column>
-          <H6>Contact</H6>
+          <H6>
+            <Trans>Contact</Trans>
+          </H6>
           <LinkElement>
             <a
               target="_blank"
               rel="noopener noreferrer nofollow"
               href="https://pleaseassist.freshdesk.com/support/home"
             >
-              Help Center
+              <Trans>Help Center</Trans>
             </a>
           </LinkElement>
         </Column>
       </ColumnWrapper>
-      <Copyright>© 2019 Deens.com. All rights reserved.</Copyright>
+      <Copyright>
+        © 2019 Deens.com. <Trans>All rights reserved</Trans>.
+      </Copyright>
     </PageWrapper>
   </Wrapper>
 );

@@ -11,6 +11,10 @@ import BrandFooter from 'shared_components/BrandFooter';
 import { sizes, media } from 'libs/styled';
 import { H2Subtitle } from 'libs/commonStyles';
 
+// i18n
+import I18nText from 'shared_components/I18nText';
+import { Trans } from '@lingui/macro';
+
 // STYLES
 import { textDark, secondary, primary } from 'libs/colors';
 import LoadingDots from 'shared_components/LoadingDots';
@@ -99,10 +103,14 @@ const HomeComponent = props => {
       <PageTop>
         <div>
           <HomeTagLine>
-            <Secondary>Customizable</Secondary> holidays created by locals for{' '}
-            <Secondary>FREE</Secondary>
+            <Trans>
+              <Secondary>Customizable</Secondary> travels created by locals for
+              <Secondary>free</Secondary>
+            </Trans>
           </HomeTagLine>
-          <HomeTagSubtitle>Where do you want to go?</HomeTagSubtitle>
+          <HomeTagSubtitle>
+            <Trans>Where do you want to go?</Trans>
+          </HomeTagSubtitle>
           <HomeSearch
             savedAddress={props.savedAddress}
             updateSearchParams={props.updateSearchParams}
@@ -130,7 +138,7 @@ const HomeComponent = props => {
                 onClick={() => setHasToLoadContent(true)}
                 style={{ textAlign: 'center', cursor: 'pointer', color: primary }}
               >
-                Travel Inspiration
+                <Trans>Travel Inspiration</Trans>
               </div>
             )
           }

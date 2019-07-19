@@ -4,6 +4,10 @@ import Button from 'shared_components/Button';
 import CheckIcon from 'shared_components/icons/CheckIcon';
 import CheckoutTrip from './CheckoutTrip';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans } from '@lingui/macro';
+
 const Wrapper = styled.div`
   flex: 1;
   order: -1;
@@ -74,16 +78,23 @@ const BookingDone = ({ number, onChange, trip }) => {
           <CheckIcon style={{ width: 72, height: 72 }} />
         </IconWrapper>
         <Title>Your booking on Deens is complete!</Title>
-        <FirstLine>All the details will be sent to your email.</FirstLine>
-        <SecondLine>Thank you for booking with Deens.com.</SecondLine>
+        <FirstLine>
+          <Trans>All the details will be sent to your email.</Trans>
+        </FirstLine>
+        <SecondLine>
+          <Trans>Thank you for booking with Deens.com.</Trans>
+        </SecondLine>
         <Button type="link" href="/my/trips" theme="textLightGreen">
-          View your booking
+          <Trans>View your booking</Trans>
         </Button>
       </Wrapper>
       {needToBookExternalServices && (
         <React.Fragment>
           <NeedToPaySentence>
-            <strong>However</strong>, the following services still need to be booked separately:
+            <Trans>
+              <strong>However</strong>, the following services still need to be booked separately
+            </Trans>
+            :
           </NeedToPaySentence>
           <CheckoutTrip trip={trip} onlyExternalServices showTitle={false} />
         </React.Fragment>

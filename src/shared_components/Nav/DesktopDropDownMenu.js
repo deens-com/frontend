@@ -101,7 +101,7 @@ export default class DesktopDropDownMenu extends Component {
           }}
         >
           <PStrong>
-            <Trans>create-trip</Trans>
+            <Trans>Create Trip</Trans>
           </PStrong>
         </Button>
         <Suspense fallback={this.trigger()}>

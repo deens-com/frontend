@@ -9,6 +9,10 @@ import fetchHelperFactory, { defaultState } from 'libs/fetchHelper';
 import headerActions from 'store/header/actions';
 import searchActions from 'store/search/actions';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans } from '@lingui/macro';
+
 class HomeContainer extends Component {
   constructor(props) {
     super(props);

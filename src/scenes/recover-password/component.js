@@ -5,6 +5,10 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import welcomeImage from 'assets/login/login.svg';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans } from '@lingui/macro';
+
 const StaticFooter = styled.footer`
   position: static;
   bottom: 0px;
@@ -69,12 +73,14 @@ const RecoverPassword = props => {
             <Grid.Row columns={2}>
               <Grid.Column textAlign="center" floated="left">
                 <img src={welcomeImage} alt="welcomeImage" className="login-img" />
-                <div className="login-img-content">Plan your next trip with us!</div>
+                <div className="login-img-content">
+                  <Trans>Plan your next trip with us!</Trans>
+                </div>
               </Grid.Column>
               <Grid.Column width="6" floated="right">
                 {props.recovered ? (
                   <RecoveredBox>
-                    Please check your email to recover your password: {props.email}
+                    <Trans>Please check your email to recover your password</Trans>: {props.email}
                   </RecoveredBox>
                 ) : (
                   <React.Fragment>
@@ -83,7 +89,9 @@ const RecoverPassword = props => {
                         {props.message}
                       </Message>
                     )}
-                    <div className="login-header">Recover your password</div>
+                    <div className="login-header">
+                      <Trans>Recover your password</Trans>
+                    </div>
                     <br />
                     {Object.keys(props.stateErrors).length !== 0 && (
                       <Message style={{ color: 'red', whiteSpace: 'pre-line' }}>
@@ -113,12 +121,12 @@ const RecoverPassword = props => {
                         size="large"
                         onClick={props.onSubmit}
                       >
-                        Recover password
+                        <Trans>Recover password</Trans>
                       </Button>
                     </Form>
 
                     <div className="login-q-text">
-                      Don't have an account?&nbsp;&nbsp;
+                      <Trans>Don't have an account yet?</Trans>
                       <Link
                         to={{
                           pathname: '/register',
@@ -130,7 +138,7 @@ const RecoverPassword = props => {
                         }}
                         replace
                       >
-                        Sign Up
+                        <Trans>Sign up</Trans>
                       </Link>
                     </div>
                   </React.Fragment>

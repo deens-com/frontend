@@ -6,6 +6,9 @@ import Popup from 'shared_components/Popup';
 import TripsListInDropDown from './TripsListInDropDown';
 import CustomColorSemanticButton from 'shared_components/CustomColorSemanticButton';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 export default class AddToTripButton extends React.Component {
   constructor(props) {
     super(props);
@@ -60,7 +63,7 @@ export default class AddToTripButton extends React.Component {
         whiteText
         onClick={this.handleClose}
       >
-        Add to trip
+        <Trans>Add to trip</Trans>
         <Icon name="angle down" />
       </CustomColorSemanticButton>
     );

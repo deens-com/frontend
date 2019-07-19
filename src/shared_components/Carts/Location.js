@@ -20,6 +20,9 @@ import { translate } from 'shared_components/I18nText';
 import { Cart } from './styles';
 import { cardConfig } from 'libs/config';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const ContentWrap = styled.div`
   padding: 20px;
 `;
@@ -112,7 +115,7 @@ function getSmartContractBookingStatus(reservation) {
     if (transactionStatus === 1) {
       return wrapInRopstenLink(
         <SemanticLabelFixed color="green">
-          Confirmed <Icon name="external" />
+          <Trans>Confirmed</Trans> <Icon name="external" />
         </SemanticLabelFixed>,
         reservation,
       );
@@ -120,7 +123,7 @@ function getSmartContractBookingStatus(reservation) {
     if (transactionStatus === 0) {
       return wrapInRopstenLink(
         <SemanticLabelFixed color="red">
-          Unconfirmed <Icon name="external" />
+          <Trans>Unconfirmed</Trans> <Icon name="external" />
         </SemanticLabelFixed>,
         reservation,
       );
@@ -128,13 +131,17 @@ function getSmartContractBookingStatus(reservation) {
     if (!transactionStatus) {
       return wrapInRopstenLink(
         <SemanticLabelFixed color="blue">
-          Processing <Icon name="external" />
+          <Trans>Processing</Trans> <Icon name="external" />
         </SemanticLabelFixed>,
         reservation,
       );
     }
   }
-  return <SemanticLabelFixed color="green">Confirmed</SemanticLabelFixed>;
+  return (
+    <SemanticLabelFixed color="green">
+      <Trans>Confirmed</Trans>
+    </SemanticLabelFixed>
+  );
 }
 
 export default class LocationCart extends Component {
@@ -159,7 +166,9 @@ export default class LocationCart extends Component {
             rating={this.props.item.ratings.average}
             count={this.props.item.ratings.count}
           />
-          <Label>Starting from</Label>
+          <Label>
+            <Trans>Starting from</Trans>
+          </Label>
           <PriceTag price={this.props.item.price} />
         </ContentWrap>
       </RelativeCard>

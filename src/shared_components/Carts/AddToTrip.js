@@ -5,6 +5,9 @@ import Button from 'shared_components/Button';
 import AddToTripButton from 'shared_components/AddToTripButton';
 import { primary } from 'libs/colors';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const AddButton = styled.div`
   position: absolute;
   right: 20px;
@@ -76,7 +79,9 @@ export default class AddToTrip extends Component {
   render() {
     const button = (
       <Button theme="fillLightGreen" onClick={this.props.data ? this.buttonClick : () => {}}>
-        <strong>Add to trip</strong>
+        <strong>
+          <Trans>Add to trip</Trans>
+        </strong>
       </Button>
     );
     return (

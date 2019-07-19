@@ -10,6 +10,10 @@ import Modal from 'shared_components/Modal';
 import icon from './icon.svg';
 import history from 'main/history';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans } from '@lingui/macro';
+
 const Options = styled.div`
   display: flex;
   max-width: 740px;
@@ -65,8 +69,12 @@ export default ({ savedSearchQuery, session, routeState }) => {
           >
             <img src={icon} alt="help icon" />
             <Text>
-              <PStrong style={{ marginBottom: '0' }}>SUPPORT CENTER</PStrong>
-              <P>Find out how to make the most of the trip planner</P>
+              <PStrong style={{ marginBottom: '0', textTransform: 'uppercase' }}>
+                <Trans>Support Center</Trans>
+              </PStrong>
+              <P>
+                <Trans>Find out how to make the most of the trip planner</Trans>
+              </P>
             </Text>
           </Option>
           <Option
@@ -98,9 +106,13 @@ export default ({ savedSearchQuery, session, routeState }) => {
               color={tertiary}
             />
             <Text>
-              <PStrong style={{ marginBottom: '0', color: tertiary }}>PREMIUM</PStrong>
+              <PStrong style={{ marginBottom: '0', color: tertiary, textTransform: 'uppercase' }}>
+                <Trans>Premium</Trans>
+              </PStrong>
               <P>
-                Take the hassle away and get a travel planner to organize your ideal trip for you
+                <Trans>
+                  Take the hassle away and get a travel planner to organize your ideal trip for you
+                </Trans>
               </P>
             </Text>
           </Option>

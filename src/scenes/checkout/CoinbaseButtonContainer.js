@@ -7,6 +7,10 @@ import 'react-coinbase-commerce/dist/coinbase-commerce-button.css';
 import axios from 'libs/axios';
 import history from 'main/history';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans } from '@lingui/macro';
+
 const buttonStates = {
   ready: 'ready',
   loading: 'loading',
@@ -78,7 +82,9 @@ class CoinbaseButtonContainer extends Component {
             this.state.buttonState === buttonStates.error
           }
         >
-          <strong>Pay with Cryptocurrency</strong>
+          <strong>
+            <Trans>Pay with Cryptocurrency</Trans>
+          </strong>
         </Button>
         <CoinbaseCommerceButton
           style={displayNone}
@@ -89,8 +95,8 @@ class CoinbaseButtonContainer extends Component {
           onModalClosed={this.onModalClosed}
         />
         <Text>
-          *Currencies accepted:{' '}
-          <strong>Bitcoin (BTC), Ethereum (ETH), Litecoin (LTC), Bitcoin Cash (BCH)</strong>
+          * <Trans>Currencies accepted</Trans>:
+          <strong> Bitcoin (BTC), Ethereum (ETH), Litecoin (LTC), Bitcoin Cash (BCH)</strong>
         </Text>
       </Wrap>
     );
