@@ -14,6 +14,9 @@ import 'react-dates/lib/css/_datepicker.css';
 import { DayPickerRangeController } from 'react-dates';
 import { START_DATE } from 'react-dates/constants';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const now = moment().add(1, 'days');
 const isDayBlocked = date => date.valueOf() <= now.valueOf();
 
@@ -83,7 +86,9 @@ const DateSelector = ({ close }) => {
   return (
     <Wrapper>
       <SelectDays>
-        <NumberOfDays>Number of days: </NumberOfDays>
+        <NumberOfDays>
+          <Trans>Number of days:</Trans>
+        </NumberOfDays>
         <IconButton disabled={numberOfDays < 2} left onClick={removeDay}>
           <MinusIcon style={{ width: 24, height: 24 }} />
         </IconButton>

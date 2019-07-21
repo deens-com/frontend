@@ -104,7 +104,7 @@ const HomeComponent = props => {
         <div>
           <HomeTagLine>
             <Trans>
-              <Secondary>Customizable</Secondary> travels created by locals for
+              <Secondary>Customizable</Secondary> travels created by locals for{' '}
               <Secondary>free</Secondary>
             </Trans>
           </HomeTagLine>

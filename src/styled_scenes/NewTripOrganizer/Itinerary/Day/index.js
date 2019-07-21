@@ -19,6 +19,10 @@ import { TripContext } from '../..';
 import { media } from 'libs/styled';
 import I18nText from 'shared_components/I18nText';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans, t } from '@lingui/macro';
+
 const DraggableDay = styled.div`
   background-color: white;
   display: inline-block;
@@ -164,39 +168,54 @@ const Day = ({
         <div>
           {isDraggingThisDay ? (
             <DraggingBox>
-              <H2>Day {day}</H2>
+              <H2>
+                <Trans>Day</Trans> {day}
+              </H2>
             </DraggingBox>
           ) : (
             <DraggableDay>
               <TitleWrapper>
                 <DayTitle day={day} tripStartDate={trip.startDate} />
-                <Modal
-                  trigger={
-                    <DeleteDay>
-                      <TrashCan />
-                    </DeleteDay>
-                  }
-                  header="Delete day"
-                  content="Are you sure you want to delete this day?"
-                  actions={[
-                    'Keep day',
-                    { key: 'delete', content: 'Delete', negative: true, onClick: onDelete },
-                  ]}
-                />
+                <I18n>
+                  {({ i18n }) => (
+                    <Modal
+                      trigger={
+                        <DeleteDay>
+                          <TrashCan />
+                        </DeleteDay>
+                      }
+                      header={i18n._(t`Delete day`)}
+                      content={i18n._(t`Are you sure you want to delete this day?`)}
+                      actions={[
+                        i18n._(t`Keep day`),
+                        {
+                          key: 'delete',
+                          content: i18n._(t`Delete`),
+                          negative: true,
+                          onClick: onDelete,
+                        },
+                      ]}
+                    />
+                  )}
+                </I18n>
               </TitleWrapper>
             </DraggableDay>
           )}
         </div>
         <Note>
-          <InlineInput
-            iconColor={primary}
-            useTextarea
-            autoexpand
-            onChanged={saveNote}
-            placeholder="Add some notes"
-          >
-            {trip.notes && trip.notes[day] && I18nText.translate(trip.notes[day])}
-          </InlineInput>
+          <I18n>
+            {({ i18n }) => (
+              <InlineInput
+                iconColor={primary}
+                useTextarea
+                autoexpand
+                onChanged={saveNote}
+                placeholder={i18n._(t`Add some notes`)}
+              >
+                {trip.notes && trip.notes[day] && I18nText.translate(trip.notes[day])}
+              </InlineInput>
+            )}
+          </I18n>
         </Note>
         {connectDropServiceTarget(
           <div>

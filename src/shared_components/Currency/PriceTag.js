@@ -6,6 +6,9 @@ import { bindActionCreators } from 'redux';
 import { fiatCurrencies } from 'data/nav';
 import { keyBy } from 'libs/normalizer';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 // COMPONENTS
 
 // ACTIONS/CONFIG
@@ -61,7 +64,12 @@ class PriceTag extends Component {
             {symbol}
             {convertedPrice}
           </Price>
-          {this.props.unit !== 'hidden' && <Unit> / person</Unit>}
+          {this.props.unit !== 'hidden' && (
+            <Unit>
+              {' '}
+              <Trans>per person</Trans>
+            </Unit>
+          )}
         </PriceWrap>
       );
     }

@@ -10,6 +10,9 @@ import { parseLocationDataAndCoordinates } from 'libs/location';
 import apiClient from 'libs/apiClient';
 import './CreateServiceModal.css';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const Wrapper = styled.div``;
 const PasteUrlMessage = styled.div`
   font-weight: bold;
@@ -137,12 +140,16 @@ export default class CreateServiceModal extends React.Component {
     return (
       <div>
         <PasteUrlMessage>
-          Copy/Paste here the link to the service you want to add in your trip
+          <Trans>Copy/Paste here the link to the service you want to add in your trip</Trans>
         </PasteUrlMessage>
         <Input innerRef={this.inputRef} />
         <Buttons>
-          <Button onClick={this.fetchUrlData}>Next</Button>
-          <CancelButton onClick={this.props.closeModal}>Cancel</CancelButton>
+          <Button onClick={this.fetchUrlData}>
+            <Trans>Next</Trans>
+          </Button>
+          <CancelButton onClick={this.props.closeModal}>
+            <Trans>Cancel</Trans>
+          </CancelButton>
         </Buttons>
       </div>
     );
@@ -186,7 +193,9 @@ export default class CreateServiceModal extends React.Component {
           open={this.props.open}
           onClose={this.props.closeModal}
         >
-          <Modal.Header>Add a service from another website</Modal.Header>
+          <Modal.Header>
+            <Trans>Add a service from another website</Trans>
+          </Modal.Header>
           <Modal.Content>
             <Dimmer.Dimmable>
               <Dimmer

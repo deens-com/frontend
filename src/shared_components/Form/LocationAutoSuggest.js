@@ -21,6 +21,10 @@ import Food from 'shared_components/icons/SilverWare';
 import Accommodation from 'shared_components/icons/Bed';
 import ReactResizeDetector from 'react-resize-detector';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans, t } from '@lingui/macro';
+
 const Wrapper = styled.div`
   flex-grow: 1;
   width: 0;
@@ -342,44 +346,53 @@ export default class SemanticLocationControl extends Component {
                           </ExternalText>
                         )}
                       {useStyledInput ? (
-                        <StyledInput
-                          {...getInputProps({
-                            ...inputProps,
-                            placeholder: inputProps.placeholder || 'Enter location ...',
-                          })}
-                          leftContent={<MapMarker style={{ fill: '#6E7885' }} />}
-                          onFocus={this.handleOpen}
-                          onBlur={this.handleClose}
-                          onKeyDown={event => this.handleKeyDown(event, suggestions[0])}
-                          onKeyUp={this.props.onKeyUp}
-                          name="search"
-                          innerRef={this.handleInputRef}
-                        />
-                      ) : (
-                        <>
-                          <Ref innerRef={this.handleInputRef}>
-                            <FormInput
-                              icon="map pin"
-                              iconPosition="left"
-                              type="text"
+                        <I18n>
+                          {({ i18n }) => (
+                            <StyledInput
                               {...getInputProps({
                                 ...inputProps,
-                                placeholder: inputProps.placeholder || 'Enter location ...',
+                                placeholder: inputProps.placeholder || i18n._(t`Enter location...`),
                               })}
-                              style={{
-                                ...inputStyles,
-                                display:
-                                  this.state.isOpen || !this.state.address
-                                    ? 'inline-block'
-                                    : 'none',
-                              }}
+                              leftContent={<MapMarker style={{ fill: '#6E7885' }} />}
                               onFocus={this.handleOpen}
                               onBlur={this.handleClose}
                               onKeyDown={event => this.handleKeyDown(event, suggestions[0])}
                               onKeyUp={this.props.onKeyUp}
-                              autoFocus={autoFocus}
                               name="search"
+                              innerRef={this.handleInputRef}
                             />
+                          )}
+                        </I18n>
+                      ) : (
+                        <>
+                          <Ref innerRef={this.handleInputRef}>
+                            <I18n>
+                              {({ i18n }) => (
+                                <FormInput
+                                  icon="map pin"
+                                  iconPosition="left"
+                                  type="text"
+                                  {...getInputProps({
+                                    ...inputProps,
+                                    placeholder:
+                                      inputProps.placeholder || i18n._(t`Enter location...`),
+                                  })}
+                                  style={{
+                                    ...inputStyles,
+                                    display:
+                                      this.state.isOpen || !this.state.address
+                                        ? 'inline-block'
+                                        : 'none',
+                                  }}
+                                  onFocus={this.handleOpen}
+                                  onBlur={this.handleClose}
+                                  onKeyDown={event => this.handleKeyDown(event, suggestions[0])}
+                                  onKeyUp={this.props.onKeyUp}
+                                  autoFocus={autoFocus}
+                                  name="search"
+                                />
+                              )}
+                            </I18n>
                           </Ref>
                           {!this.state.isOpen && (
                             <span style={{ fontWeight: 700 }}>{this.state.address}</span>
@@ -413,7 +426,9 @@ export default class SemanticLocationControl extends Component {
                             <GreyIcon name="search" />
                             &nbsp;
                             <p>
-                              Search for <strong>"{this.state.address}"</strong> in trips
+                              <Trans>
+                                Search for <strong>"{this.state.address}"</strong> in trips
+                              </Trans>
                             </p>
                           </ListSpan>
                         </ListItem>

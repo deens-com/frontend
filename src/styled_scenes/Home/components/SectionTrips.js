@@ -14,6 +14,9 @@ import TripCarousel from './TripCarousel';
 // STYLES
 import { PageWrapper, SectionWrap, SectionContent } from '../../../shared_components/layout/Page';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const Subtitle = styled(H3)`
   font-weight: lighter;
   margin-top: 0;
@@ -44,12 +47,18 @@ export default class HomeSectionTrips extends React.PureComponent {
         <PageWrapper>
           <SectionWrap>
             <SectionHeader>
-              <H2>Featured Trips</H2>
+              <H2>
+                <Trans>Featured Trips</Trans>
+              </H2>
               <Subtitle>
-                Explore the best trips created by locals. They are{' '}
-                <strong>100% customizable</strong> and <strong>we don’t charge you extra!</strong>
+                <Trans>
+                  Explore the best trips created by locals. They are{' '}
+                  <strong>100% customizable</strong> and <strong>we don’t charge you extra!</strong>
+                </Trans>
               </Subtitle>
-              <SubtitleMobile>100% customizable trips created by locals</SubtitleMobile>
+              <SubtitleMobile>
+                <Trans>100% customizable trips created by locals</Trans>
+              </SubtitleMobile>
             </SectionHeader>
           </SectionWrap>
         </PageWrapper>

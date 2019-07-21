@@ -21,6 +21,10 @@ import urls from 'libs/urlGenerator';
 
 import 'react-dates.css';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans, t } from '@lingui/macro';
+
 const Wrapper = styled.div`
   flex-grow: 1;
   display: block;
@@ -107,7 +111,9 @@ const Filters = ({
       {backToTrip && (
         <BackToTrip to={urls.trip.organize(backToTrip)}>
           <BackArrow />
-          <P>Back to trip</P>
+          <P>
+            <Trans>Back to trip</Trans>
+          </P>
         </BackToTrip>
       )}
 

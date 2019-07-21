@@ -7,6 +7,9 @@ import { primary, error } from 'libs/colors';
 import { P } from 'libs/commonStyles';
 import PencilIcon from 'shared_components/icons/PencilIcon';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const Wrapper = styled.div`
   margin: 0 !important;
   input {
@@ -75,7 +78,14 @@ export default ({ location, onChange, isFinal }) => {
         />
       ) : (
         <NotEditing onClick={() => setEditing(true)}>
-          <P>{place || `Please select ${isFinal ? 'a final' : 'an initial'} location`}</P>
+          <P>
+            {place || (
+              <Trans>
+                Please select ${isFinal ? <Trans>a final</Trans> : <Trans>an initial</Trans>}{' '}
+                location
+              </Trans>
+            )}
+          </P>
           <PencilIcon />
         </NotEditing>
       )}

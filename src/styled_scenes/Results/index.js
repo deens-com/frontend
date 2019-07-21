@@ -27,7 +27,6 @@ import CreateServiceModal from './components/CreateServiceModal';
 import { media } from '../../libs/styled';
 import { waitUntilMapsLoaded } from 'libs/Utils';
 // import { foodList } from "../../data/food";
-import { Trans } from '@lingui/macro';
 
 // STYLES
 import { PageContent } from './../../shared_components/layout/Page';
@@ -39,7 +38,9 @@ import { usingBoundingBox } from 'libs/search';
 import urls from 'libs/urlGenerator';
 import { googleMapsKey } from 'libs/config';
 
-import addPrefixArticle from 'indefinite';
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans, t } from '@lingui/macro';
 
 const mapHeight = 'calc(100vh - 66px)';
 
@@ -512,6 +513,7 @@ class ResultsScene extends Component {
     const { props } = this;
     const { center, zoom, markers, showingFiltersMobile } = this.state;
     const type = props.searchParams.type;
+
     return (
       <React.Fragment>
         <TopGrid showingMobile={showingFiltersMobile}>
@@ -534,45 +536,77 @@ class ResultsScene extends Component {
                 onClick={this.toggleMap}
               />{' '}
               &nbsp;&nbsp;
-              <P onClick={this.toggleMap}>Show Map</P>
+              <P onClick={this.toggleMap}>
+                <Trans>Map</Trans>
+              </P>
             </MapToggle>
-            {props.routeState && props.routeState.tripId ? (
-              <HelpMe isLoadingUser={false} session={this.props.session} buttonSize="small" />
-            ) : (
-              <Button
-                type="link"
-                theme="primaryFilled"
-                size="small"
-                href={{
-                  pathname: '/new/trip',
-                  state: {
-                    modal: true,
-                  },
-                }}
-              >
-                <PStrong>
-                  <Trans>Create Trip</Trans>
-                </PStrong>
-              </Button>
-            )}
+            <HelpMe isLoadingUser={false} session={this.props.session} buttonSize="small" />
           </RightColumn>
           <AddingServiceTopBar>
             <P>
               {Boolean(props.count) && (
                 <strong>
-                  {props.count >= 1000
-                    ? `More than ${props.count} ${pluralize(
-                        type !== 'food' ? type : 'restaurant',
-                      )} found.`
-                    : `${props.count} ${pluralize(type !== 'food' ? type : 'restaurant')} found.`}
+                  {props.count >= 1000 ? <Trans>More than</Trans> : ''} {props.count}{' '}
+                  {props.count == 1 ? (
+                    <Trans>
+                      {type === 'food' ? (
+                        <Trans>restaurant</Trans>
+                      ) : type === 'activity' ? (
+                        <Trans>activity</Trans>
+                      ) : type === 'trip' ? (
+                        <Trans>trip</Trans>
+                      ) : type === 'accommodation' ? (
+                        <Trans>accommodation</Trans>
+                      ) : type === 'transport' ? (
+                        <Trans>transport</Trans>
+                      ) : (
+                        { type }
+                      )}{' '}
+                      found.
+                    </Trans>
+                  ) : (
+                    <Trans>
+                      {type === 'food' ? (
+                        <Trans>restaurants</Trans>
+                      ) : type === 'activity' ? (
+                        <Trans>activities</Trans>
+                      ) : type === 'trip' ? (
+                        <Trans>trips</Trans>
+                      ) : type === 'accommodation' ? (
+                        <Trans>accommodations</Trans>
+                      ) : type === 'transport' ? (
+                        <Trans>transports</Trans>
+                      ) : (
+                        { type }
+                      )}{' '}
+                      found.
+                    </Trans>
+                  )}
                 </strong>
               )}{' '}
               {(props.routeState && props.routeState.tripId) || type === 'trip' ? (
                 <>
-                  <span>Still not satisfied?</span>{' '}
+                  <span>
+                    <Trans>Not what you're looking for?</Trans>
+                  </span>{' '}
                   {type !== 'trip' ? (
                     <CreateService onClick={this.createExternalService}>
-                      Add {addPrefixArticle(type !== 'food' ? type : 'restaurant')}
+                      <Trans>
+                        Add{' '}
+                        {type === 'food' ? (
+                          <Trans>a place to eat</Trans>
+                        ) : type === 'activity' ? (
+                          <Trans>an activity</Trans>
+                        ) : type === 'trip' ? (
+                          <Trans>a trip</Trans>
+                        ) : type === 'accommodation' ? (
+                          <Trans>an accommodation</Trans>
+                        ) : type === 'transport' ? (
+                          <Trans>a transport</Trans>
+                        ) : (
+                          { type }
+                        )}
+                      </Trans>
                     </CreateService>
                   ) : (
                     <Link
@@ -583,7 +617,7 @@ class ResultsScene extends Component {
                         },
                       }}
                     >
-                      Create your own trip
+                      <Trans>Create your own trip</Trans>
                     </Link>
                   )}
                 </>
@@ -607,7 +641,9 @@ class ResultsScene extends Component {
           </SortWrapper>
           {type === 'food' && (
             <ByYelp showingMobile={showingFiltersMobile}>
-              <P style={{ marginBottom: 0 }}>Restaurants provided by</P>
+              <P style={{ marginBottom: 0 }}>
+                <Trans>Restaurants provided by</Trans>
+              </P>
               <a
                 style={{ marginTop: '-25px', marginLeft: '-10px' }}
                 href="https://yelp.com"
@@ -636,11 +672,15 @@ class ResultsScene extends Component {
           <MapPlaceholder ref={this.mapPlaceholderRef} />
           <MapWrapper ref={this.mapRef} showing={this.state.showMap}>
             <MapOptions>
-              <Checkbox
-                onChange={this.onToggleSearchByMoving}
-                label="Search as I move the map"
-                checked={this.state.searchByMoving}
-              />
+              <I18n>
+                {({ i18n }) => (
+                  <Checkbox
+                    onChange={this.onToggleSearchByMoving}
+                    label={i18n._(t`Search as I move the map`)}
+                    checked={this.state.searchByMoving}
+                  />
+                )}
+              </I18n>
             </MapOptions>
             {this.props.searchExtraData && (
               <MapOverlay>

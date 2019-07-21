@@ -26,6 +26,9 @@ import mapServicesToDays from './mapServicesToDays';
 import analytics from 'libs/analytics';
 import urls from 'libs/urlGenerator';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const getCityCount = services => {
   const cities = new Set();
   services.forEach(data => cities.add(data.service.location.city));
@@ -229,12 +232,12 @@ export default class Trip extends Component {
       return (
         <Sentence>
           <SentenceText>
-            <span>Your trip booked for </span>
-            <strong>{formattedStartDate && formattedStartDate + ' - ' + formattedEndDate}</strong>
-            <span> for </span>
-            <strong>
-              {this.props.adults + this.props.children + this.props.infants + ' Guests'}
-            </strong>
+            <Trans>
+              Your trip booked from <strong>{formattedStartDate && formattedStartDate}</strong> to{' '}
+              <strong>{formattedEndDate}</strong>
+              (' ') for{' '}
+              <strong>{this.props.adults + this.props.children + this.props.infants} Guests</strong>
+            </Trans>
           </SentenceText>
         </Sentence>
       );
@@ -243,18 +246,24 @@ export default class Trip extends Component {
     return (
       <Sentence>
         <SentenceText>
-          <b>I want this trip between</b>
+          <b>
+            <Trans>I want this trip between</Trans>
+          </b>
         </SentenceText>
         <EditableElement>
           <Popup
             trigger={
               <p>
-                {(formattedStartDate && formattedStartDate + ' / ' + formattedEndDate) || 'Dates'}
+                {(formattedStartDate && formattedStartDate + ' / ' + formattedEndDate) || (
+                  <Trans>Dates</Trans>
+                )}
               </p>
             }
             content={
               <PopupContent>
-                <p>Select Starting Day</p>
+                <p>
+                  <Trans>Select Starting Day</Trans>
+                </p>
                 <DayPickerRangeController
                   initialVisibleMonth={() => startDate || moment()}
                   onDatesChange={this.handleDatesChange}
@@ -289,12 +298,16 @@ export default class Trip extends Component {
             onOpen={this.handleDatePopupOpen}
           />
         </EditableElement>
-        <SentenceText> for</SentenceText>
+        <SentenceText>
+          {' '}
+          <Trans>for</Trans>
+        </SentenceText>
         <EditableElement>
           <Popup
             trigger={
               <span>
-                {this.props.adults + this.props.children + this.props.infants + ' Guests'}
+                {this.props.adults + this.props.children + this.props.infants + ' '}
+                <Trans>Guests</Trans>
               </span>
             }
             content={

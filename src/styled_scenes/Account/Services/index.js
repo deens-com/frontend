@@ -7,6 +7,9 @@ import { SectionWrap } from './../../../shared_components/layout/Page';
 import UserBasicInfo from './../components/UserBasicInfo';
 import ServicesList from './ServicesList';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const Title = styled.h1`
   float: left;
 `;
@@ -20,10 +23,12 @@ const AccountServicesScene = props => {
         </SectionWrap>
       </Grid.Column>
       <Grid.Column mobile={16} tablet={11} computer={12}>
-        <Title>My Services</Title>
+        <Title>
+          <Trans>My Services</Trans>
+        </Title>
         <Link to="/services/new">
           <Button color="teal" style={{ float: 'right' }}>
-            Add Service
+            <Trans>Add Service</Trans>
           </Button>
         </Link>
         <ServicesList {...props} />

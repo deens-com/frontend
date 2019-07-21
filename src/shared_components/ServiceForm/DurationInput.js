@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Dropdown, Form } from 'semantic-ui-react';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const MAX_MINUTES = 60;
 const MAX_HOURS = 24;
 
@@ -81,7 +84,9 @@ export default class DurationInput extends Component {
 
     return (
       <Form.Field required>
-        <label>Duration</label>
+        <label>
+          <Trans>Duration</Trans>
+        </label>
         <Form.Group>
           <Form.Input
             name="duration"

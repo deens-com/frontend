@@ -11,6 +11,9 @@ import I18nText from 'shared_components/I18nText';
 import { P } from 'libs/commonStyles';
 import { textDark } from 'libs/colors';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const Wrapper = styled.div`
   position: relative;
   bottom: 50px;
@@ -133,11 +136,11 @@ const selectIconAndColorFromType = type => {
 
 const getText = (type, service) => {
   if (type === 'initial') {
-    return 'Start of the trip';
+    return <Trans>Start of the trip</Trans>;
   }
 
   if (type === 'finish') {
-    return 'End of the trip';
+    return <Trans>End of the trip</Trans>;
   }
   return I18nText.translate(service.service.title);
 };

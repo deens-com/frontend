@@ -7,6 +7,10 @@ import InlineInput from 'shared_components/InlineInput';
 import { Loader } from 'semantic-ui-react';
 import ReactResizeDetector from 'react-resize-detector';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans, t } from '@lingui/macro';
+
 const Wrapper = styled.header`
   background: url('${props => props.image}');
   background-size:cover;
@@ -90,15 +94,19 @@ const Header = ({
             </InlineInput>
           </Title>
           <Description>
-            <InlineInput
-              placeholder="Add a description or some notes"
-              inputTextColor={textDark}
-              onChanged={onEditDescription}
-              useTextarea
-              autoexpand
-            >
-              {description}
-            </InlineInput>
+            <I18n>
+              {({ i18n }) => (
+                <InlineInput
+                  placeholder={i18n._(t`Add a description or some notes`)}
+                  inputTextColor={textDark}
+                  onChanged={onEditDescription}
+                  useTextarea
+                  autoexpand
+                >
+                  {description}
+                </InlineInput>
+              )}
+            </I18n>
           </Description>
           <More>
             {isUploading ? (

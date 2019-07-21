@@ -21,6 +21,9 @@ import Rating from 'shared_components/Rating';
 
 import mapServicesToDays from './mapServicesToDays';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const Wrapper = styled.div`
   margin: 40px auto 0;
   text-align: center;
@@ -192,11 +195,20 @@ class Itinerary extends Component {
         return null;
       }
 
-      return <BookingId>Booking ID: {service.reservation.bookingId}</BookingId>;
+      return (
+        <BookingId>
+          <Trans>Booking ID</Trans>: {service.reservation.bookingId}
+        </BookingId>
+      );
     }
 
     if (this.props.isCheckingAvailability) {
-      return <CheckingAvailability>Checking availability...</CheckingAvailability>;
+      return (
+        <CheckingAvailability>
+          <Trans>Checking availability</Trans>
+          ...
+        </CheckingAvailability>
+      );
     }
 
     if (!this.props.startDate || !this.props.numberOfPeople || !this.props.availability) {
@@ -210,7 +222,7 @@ class Itinerary extends Component {
 
     return (
       <Availability available={isAvailable}>
-        {isAvailable ? 'Available' : 'Unavailable'}
+        {isAvailable ? <Trans>Available</Trans> : <Trans>Unavailable</Trans>}
       </Availability>
     );
   };

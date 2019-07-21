@@ -5,6 +5,9 @@ import Button from 'shared_components/Button';
 import HelpMe from 'shared_components/HelpMe';
 import { throttle } from 'lodash';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const bottomOffset = 245;
 
 const Wrapper = styled.div`
@@ -84,7 +87,12 @@ const FixedFooter = ({ trip, owner, session, booked, price, peopleNumber, onCust
       <Wrapper position={position}>
         <Text>
           <Sentence>
-            {booked ? 'Paid' : 'Estimated'} price for {peopleNumber} people:
+            {booked ? (
+              <Trans>Paid price for {peopleNumber} people</Trans>
+            ) : (
+              <Trans>Estimated price for {peopleNumber} people</Trans>
+            )}
+            :
           </Sentence>{' '}
           ${price}
         </Text>
@@ -97,7 +105,7 @@ const FixedFooter = ({ trip, owner, session, booked, price, peopleNumber, onCust
         />
         <div style={{ marginLeft: '15px' }} id="customizeButton">
           <Button theme="fillLightGreen" size="medium" onClick={onCustomizeClick}>
-            {booked ? 'Copy this trip' : 'Customize this trip'}
+            {booked ? <Trans>Duplicate trip</Trans> : <Trans>Customize trip</Trans>}
           </Button>
         </div>
       </Wrapper>

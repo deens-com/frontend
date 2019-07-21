@@ -19,6 +19,10 @@ import step3 from './3.png';
 import { media } from 'libs/styled';
 import Popup from 'shared_components/Popup';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans, t } from '@lingui/macro';
+
 const TripEdit = styled.div`
   margin-top: 20px;
   margin-bottom: 25px;
@@ -175,7 +179,7 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
     () => {
       const checkBeforeUnload = event => {
         if (trip.privacy !== PRIVACY_PUBLIC) {
-          event.returnValue = `Are you sure you want to leave?`;
+          event.returnValue = <Trans>Are you sure you want to leave?</Trans>;
         }
       };
       window.addEventListener('beforeunload', checkBeforeUnload);
@@ -272,12 +276,26 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
   const validateTitle = titleToValid => {
     const title = typeof titleToValid !== 'undefined' ? titleToValid : editedTrip.title;
     if (title.length < 5) {
-      return [-1, `${title.length}/5 characters`, 'your title is too short'];
+      return [
+        -1,
+        <Trans>
+          {title.length}
+          /5 characters
+        </Trans>,
+        <Trans>your title is too short</Trans>,
+      ];
     }
     if (title.length > 60) {
-      return [-1, `${title.length}/60 characters`, 'your title is too long'];
+      return [
+        -1,
+        <Trans>
+          {title.length}
+          /60 characters
+        </Trans>,
+        <Trans>your title is too long</Trans>,
+      ];
     }
-    const text = `${title.length} characters`;
+    const text = <Trans>{title.length} characters</Trans>;
     if (title.length >= 40 && title.length <= 45) {
       return [1, text];
     }
@@ -289,12 +307,26 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
     const desc = description || '';
     const words = (desc.trim().match(/ /g) || []).length + 1;
     if (words < 30) {
-      return [-1, `${words}/30 words`, 'your description is too short'];
+      return [
+        -1,
+        <Trans>
+          {words}
+          /30 words
+        </Trans>,
+        <Trans>your description is too short</Trans>,
+      ];
     }
     if (words > 500) {
-      return [-1, `${words}/500 words`, 'your description is too long'];
+      return [
+        -1,
+        <Trans>
+          {words}
+          /500 words
+        </Trans>,
+        <Trans>your description is too long</Trans>,
+      ];
     }
-    const text = `${words} words`;
+    const text = <Trans>{words} words</Trans>;
     if (words >= 150 && words <= 200) {
       return [1, text];
     }
@@ -304,25 +336,32 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
   const validateTags = tagsToValid => {
     const tags = typeof tagsToValid !== 'undefined' ? tagsToValid : editedTrip.tags;
     if (tags.length < 1) {
-      return [-1, 'No tags', 'your need to add some tags'];
+      return [-1, <Trans>No tags</Trans>, <Trans>you need to add some tags</Trans>];
     }
     if (tags.length > 8) {
-      return [-1, `${tags.length}/8 tags`, 'you can only add 8 tags'];
+      return [
+        -1,
+        <Trans>
+          {tags.length}
+          /8 tags
+        </Trans>,
+        <Trans>you can only add 8 tags</Trans>,
+      ];
     }
     if (tags.length === 4 || tags.length === 5) {
-      return [1, `${tags.length} tags`];
+      return [1, <Trans>{tags.length} tags</Trans>];
     }
-    return [0, `${tags.length} tags`];
+    return [0, <Trans>{tags.length} tags</Trans>];
   };
 
   const validateMedia = imgSizeToValid => {
     const size = typeof imgSizeToValid !== 'undefined' ? imgSizeToValid : imgSize;
     if (!size.width || editedTrip.media.length === 0 || !editedTrip.media[0].files) {
-      return [-1, 'None'];
+      return [-1, <Trans>None</Trans>];
     }
     const sizeText = `${size.width}x${size.height}`;
     if (size.width < 1280 || size.height < 720) {
-      return [-1, sizeText, 'your image has to be bigger than 1280x720.'];
+      return [-1, sizeText, <Trans>your image has to be bigger than 1280x720.</Trans>];
     }
     if (size.width > 3840 || size.height > 2160) {
       return [0, sizeText];
@@ -346,43 +385,61 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
     <div style={{ textAlign: 'center' }}>
       <Prompt
         when={trip.privacy !== PRIVACY_PUBLIC}
-        message={`Your trip is not published yet. Are you sure you want to leave?`}
+        message={
+          <span>
+            <Trans>Your trip is not published yet</Trans>{' '}
+            <Trans>Are you sure you want to leave?</Trans>
+          </span>
+        }
       />
-      <Title>Please review your trip</Title>
+      <Title>
+        <Trans>Please review your trip</Trans>
+      </Title>
       <TripEdit>
-        <Fields>
-          <FieldValidator
-            title="Title"
-            validatorFunction={validateTitle}
-            recommended="Ideally 40-45 characters"
-          />
-          <FieldValidator
-            title="Description"
-            validatorFunction={validateDescription}
-            recommended="Ideally 150-200 words"
-          />
-          <FieldValidator
-            title="Media"
-            validatorFunction={validateMedia}
-            dependesOn={imgSize}
-            recommended="Ideally 1920x1080 px"
-          />
-          <FieldValidator
-            title="Tags"
-            validatorFunction={validateTags}
-            recommended={
-              <span>
-                Ideally 4-5 &{' '}
-                <Popup
-                  position="bottom center"
-                  trigger={<span style={{ cursor: 'pointer', color: primary }}>fast booking</span>}
-                >
-                  If at least half of the services in your trip are bookable in Deens.
-                </Popup>
-              </span>
-            }
-          />
-        </Fields>
+        <I18n>
+          {({ i18n }) => (
+            <Fields>
+              <FieldValidator
+                title={i18n._(t`Title`)}
+                validatorFunction={validateTitle}
+                recommended={i18n._(t`Ideally 40-45 characters`)}
+              />
+              <FieldValidator
+                title={i18n._(t`Description`)}
+                validatorFunction={validateDescription}
+                recommended={i18n._(t`Ideally 150-200 words`)}
+              />
+              <FieldValidator
+                title={i18n._(t`Media`)}
+                validatorFunction={validateMedia}
+                dependesOn={imgSize}
+                recommended={i18n._(t`Ideally 1920x1080 px`)}
+              />
+              <FieldValidator
+                title={i18n._(t`Tags`)}
+                validatorFunction={validateTags}
+                recommended={
+                  <span>
+                    <Trans>Ideally 4-5</Trans> &{' '}
+                    <Popup
+                      position="bottom center"
+                      trigger={
+                        <span style={{ cursor: 'pointer', color: primary }}>
+                          <Trans>fast booking</Trans>
+                        </span>
+                      }
+                    >
+                      <Trans>
+                        If at least half of the services in your trip are bookable in Deens.
+                      </Trans>
+                    </Popup>
+                  </span>
+                }
+              />
+            </Fields>
+          )}
+        </I18n>
+
         <Card>
           {isUploading && (
             <LoaderWrapper>
@@ -404,7 +461,7 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
           errors.length > 0 &&
           !isPatchingTrip && (
             <Errors>
-              Sorry,{' '}
+              <Trans>Sorry,</Trans>{' '}
               {errors
                 .map(err => {
                   return err.val[2] || '';
@@ -415,22 +472,28 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
           )}
         {imageError && !isPatchingTrip && <Errors>{imageError}</Errors>}
         <Description>
-          <InlineInput
-            iconColor={primary}
-            useTextarea
-            autoexpand
-            onChanged={onDescriptionChange}
-            placeholder="Write a description"
-          >
-            {editedTrip.description}
-          </InlineInput>
+          <I18n>
+            {({ i18n }) => (
+              <InlineInput
+                iconColor={primary}
+                useTextarea
+                autoexpand
+                onChanged={onDescriptionChange}
+                placeholder={i18n._(t`Write a description`)}
+              >
+                {editedTrip.description}
+              </InlineInput>
+            )}
+          </I18n>
         </Description>
       </TripEdit>
       {trip.privacy === PRIVACY_PUBLIC && !isPatchingTrip ? (
         <div style={{ display: 'flex' }}>
           <ShareData small title="Your trip is published!" trip={trip} />
           <EarnMoney>
-            <H2>Earn money creating trips for travelers</H2>
+            <H2>
+              <Trans>Earn money creating trips for travelers</Trans>
+            </H2>
             <Steps>
               <Step>
                 <img src={step1} alt="Traveler asks for help" />
@@ -438,8 +501,12 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
                   <H3 style={{ marginTop: '-3px' }}>1</H3>
                 </StepNumber>
                 <StepText>
-                  <PStrong>Traveler</PStrong>
-                  <P>Asks for help</P>
+                  <PStrong>
+                    <Trans>Traveler</Trans>
+                  </PStrong>
+                  <P>
+                    <Trans>Asks for help</Trans>
+                  </P>
                 </StepText>
               </Step>
               <Step>
@@ -448,8 +515,12 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
                   <H3 style={{ marginTop: '-3px' }}>2</H3>
                 </StepNumber>
                 <StepText>
-                  <PStrong>You</PStrong>
-                  <P>Plan their trip</P>
+                  <PStrong>
+                    <Trans>You</Trans>
+                  </PStrong>
+                  <P>
+                    <Trans>Plan their trip</Trans>
+                  </P>
                 </StepText>
               </Step>
               <Step>
@@ -458,13 +529,17 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
                   <H3 style={{ marginTop: '-3px' }}>3</H3>
                 </StepNumber>
                 <StepText>
-                  <PStrong>You</PStrong>
-                  <P>Get paid</P>
+                  <PStrong>
+                    <Trans>You</Trans>
+                  </PStrong>
+                  <P>
+                    <Trans>Get paid</Trans>
+                  </P>
                 </StepText>
               </Step>
             </Steps>
             <Button theme="primaryFilled" type="link" href="/earn-money">
-              Learn More
+              <Trans>Learn More</Trans>
             </Button>
           </EarnMoney>
         </div>
@@ -474,7 +549,11 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
           theme="primaryFilled"
           onClick={publishTrip}
         >
-          {isPatchingTrip ? <Loader size="tiny" active inline="centered" /> : 'Publish my trip'}
+          {isPatchingTrip ? (
+            <Loader size="tiny" active inline="centered" />
+          ) : (
+            <Trans>Publish my trip</Trans>
+          )}
         </Button>
       )}
     </div>

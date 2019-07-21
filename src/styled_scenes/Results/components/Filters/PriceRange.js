@@ -7,6 +7,10 @@ import { disabled } from 'libs/colors';
 
 import { P } from 'libs/commonStyles';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans, t } from '@lingui/macro';
+
 const Content = styled.div`
   padding: 25px;
   width: 250px;
@@ -81,12 +85,18 @@ const PriceRange = ({
 
   const renderTrigger = () => {
     if (!values.min && !maxPrice) {
-      return 'Select price';
+      return <Trans>Select price</Trans>;
     }
     const isMaxPrice = maxPrice === defaultMax || !maxPrice;
-    return `$${values.min || defaultMin} to $${maxPrice || defaultMax}${
-      isMaxPrice ? '+' : ''
-    } ${pricePer}`;
+    return (
+      <span>
+        <Trans>
+          ${values.min || defaultMin} to ${maxPrice || defaultMax}
+        </Trans>
+        {isMaxPrice ? '+ ' : ' '}
+        {pricePer === 'per person' ? <Trans>per person</Trans> : <Trans>per day</Trans>}
+      </span>
+    );
   };
 
   const onClose = () => {
@@ -159,13 +169,19 @@ const PriceRange = ({
         <PerDay>
           {showTotalPrice && (
             <span>
-              ${values.min * numberOfPeople} to ${values.max * numberOfPeople}
-              {values.max === defaultMax ? '+' : ''} for {numberOfPeople} people
+              <Trans>
+                ${values.min * numberOfPeople} to ${values.max * numberOfPeople}
+              </Trans>
+              {values.max === defaultMax ? '+' : ''} <Trans>for {numberOfPeople} people</Trans>
             </span>
           )}
           <span>
-            {showTotalPrice && '('}${values.min} to ${values.max}
-            {values.max === defaultMax ? '+' : ''} {pricePer}
+            {showTotalPrice && '('}
+            <Trans>
+              ${values.min} to ${values.max}
+            </Trans>
+            {values.max === defaultMax ? '+' : ''}{' '}
+            {pricePer === 'per person' ? <Trans>per person</Trans> : <Trans>per day</Trans>}
             {showTotalPrice && ')'}
           </span>
         </PerDay>

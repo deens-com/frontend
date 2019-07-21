@@ -9,6 +9,9 @@ import I18nText from 'shared_components/I18nText';
 import AddToTripButton from 'shared_components/AddToTripButton';
 import urls from 'libs/urlGenerator';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const GridContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -65,7 +68,7 @@ function ServiceActionButtons(props) {
         rel="noopener noreferrer"
         as="button"
       >
-        Book Now
+        <Trans>Book Now</Trans>
         <Icon name="shop" />
       </Button>
       {props.externalUrl && (
@@ -77,19 +80,19 @@ function ServiceActionButtons(props) {
           as="a"
           href={props.externalUrl}
         >
-          Read More
+          <Trans>Read More</Trans>
           <Icon name="world" />
         </Button>
       )}
       <ErrorMsgDiv>
         {props.serviceRecentlyAddedToTrip && (
           <SuccessMessage to={urls.trip.organize(props.serviceRecentlyAddedToTrip._id)}>
-            Added to{' '}
+            <Trans>Added to</Trans>{' '}
             <b>
               {props.isLoggedIn ? (
                 <I18nText data={props.serviceRecentlyAddedToTrip.title} />
               ) : (
-                'trip'
+                <Trans>trip</Trans>
               )}
             </b>
             <Icon name="check circle outline" />
@@ -97,7 +100,7 @@ function ServiceActionButtons(props) {
         )}
         {props.serviceAlreadyAddedToTrip && (
           <WarningMessage to={urls.trip.organize(props.serviceAlreadyAddedToTrip._id)}>
-            Already added to{' '}
+            <Trans>Already added to</Trans>{' '}
             <b>
               <I18nText data={props.serviceAlreadyAddedToTrip.title} />
             </b>

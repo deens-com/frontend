@@ -6,6 +6,9 @@ import { disabled } from 'libs/colors';
 import { PRIVACY_FRIENDS, PRIVACY_PUBLIC, PRIVACY_PRIVATE } from 'libs/trips';
 import { media } from 'libs/styled';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const OptionBox = styled.div`
   width: 75px;
   height: 75px;
@@ -110,8 +113,12 @@ const OptionSelector = ({ trip, onSelect, optionSelected }) => {
             />
           </svg>
         </OptionBox>
-        <H4>Private</H4>
-        <OptionDesc>I don't want to share my trip</OptionDesc>
+        <H4>
+          <Trans>Private</Trans>
+        </H4>
+        <OptionDesc>
+          <Trans>I don't want to share my trip</Trans>
+        </OptionDesc>
       </Option>
       <Option>
         <OptionBox onClick={() => onSelect(PRIVACY_FRIENDS)} isLoading={!trip}>
@@ -155,8 +162,12 @@ const OptionSelector = ({ trip, onSelect, optionSelected }) => {
             />
           </svg>
         </OptionBox>
-        <H4>Friends & Family</H4>
-        <OptionDesc>We’ll give you a link that you can share with them</OptionDesc>
+        <H4>
+          <Trans>Friends & Family</Trans>
+        </H4>
+        <OptionDesc>
+          <Trans>We’ll give you a link that you can share with them</Trans>
+        </OptionDesc>
       </Option>
       <Option>
         <OptionBox
@@ -223,11 +234,15 @@ const OptionSelector = ({ trip, onSelect, optionSelected }) => {
             />
           </svg>
         </OptionBox>
-        <H4>Public</H4>
+        <H4>
+          <Trans>Public</Trans>
+        </H4>
         <OptionDesc>
-          {trip && trip.parents.length !== 0
-            ? 'You cannot publish your trip because you copied an existing trip.'
-            : 'Publish your trip on deens.com'}
+          {trip && trip.parents.length !== 0 ? (
+            <Trans>You cannot publish your trip because it was copied from another trip</Trans>
+          ) : (
+            <Trans>Publish your trip on Deens</Trans>
+          )}
         </OptionDesc>
       </Option>
     </Options>

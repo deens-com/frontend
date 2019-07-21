@@ -9,6 +9,9 @@ import { parseLocationDataAndCoordinates } from 'libs/location';
 import * as colors from 'libs/colors';
 import apiClient from 'libs/apiClient';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const { error: errorColor } = colors;
 
 const PasteUrlMessage = styled.div`
@@ -84,20 +87,26 @@ const AddCustomServiceModal = ({ close, setServiceData }) => {
 
   return (
     <>
-      <Modal.Header>Add a link to create a service</Modal.Header>
+      <Modal.Header>
+        <Trans>Add a link to create a service</Trans>
+      </Modal.Header>
       <Modal.Content>
         <Dimmer.Dimmable>
           <Dimmer inverted active={isFetching}>
             <Loader />
           </Dimmer>
           <PasteUrlMessage>
-            Copy/Paste here the link to the service you want to add in your trip
+            <Trans>Copy/Paste here the link to the service you want to add in your trip</Trans>
           </PasteUrlMessage>
           <Input innerRef={ref} />
           {error && <ErrorMsg>{error}</ErrorMsg>}
           <Buttons>
-            <Button onClick={fetchUrlData}>Next</Button>
-            <CancelButton onClick={close}>Cancel</CancelButton>
+            <Button onClick={fetchUrlData}>
+              <Trans>Next</Trans>
+            </Button>
+            <CancelButton onClick={close}>
+              <Trans>Cancel</Trans>
+            </CancelButton>
           </Buttons>
         </Dimmer.Dimmable>
       </Modal.Content>

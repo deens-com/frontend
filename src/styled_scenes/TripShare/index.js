@@ -12,6 +12,10 @@ import BrandFooter from 'shared_components/BrandFooter';
 import { PRIVACY_FRIENDS, PRIVACY_PUBLIC } from 'libs/trips';
 import BackArrow from 'shared_components/icons/BackArrow';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans, t } from '@lingui/macro';
+
 const PageContent = styled.div`
   max-width: 1050px;
   margin: 0 20px 20px;
@@ -83,14 +87,20 @@ export default ({ tripId, trip, patchTrip, isPatchingTrip }) => {
         </Dimmer>
         <BackButton to={urls.trip.organize(tripId)}>
           <BackArrow style={{ width: '1.5em', height: '1.5em', marginRight: '5px' }} />
-          Back to trip
+          <Trans>Back to trip</Trans>
         </BackButton>
         <Content>
-          <Title>How would you like to share your trip?</Title>
+          <Title>
+            <Trans>Share your trip</Trans>
+          </Title>
           <Options trip={trip} onSelect={onSelectOption} optionSelected={optionSelected} />
           {trip &&
             optionSelected === PRIVACY_FRIENDS && (
-              <ShareData title="Here is a short link to your trip" trip={trip} />
+              <I18n>
+                {({ i18n }) => (
+                  <ShareData title={i18n._(t`Here is a short link to your trip`)} trip={trip} />
+                )}
+              </I18n>
             )}
           {trip &&
             optionSelected === PRIVACY_PUBLIC && (

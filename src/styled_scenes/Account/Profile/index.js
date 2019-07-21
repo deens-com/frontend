@@ -5,6 +5,9 @@ import { SectionWrap } from './../../../shared_components/layout/Page';
 import UserBasicInfo from './../components/UserBasicInfo';
 import { Loader } from 'semantic-ui-react';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const HorizontalSpan = styled.span`
   display: flex;
   flexdirection: row;
@@ -55,12 +58,16 @@ class AccountProfileScene extends Component {
             <Message icon>
               <Icon name="circle notched" loading />
               <Message.Content>
-                <Message.Header>Just one second</Message.Header>
-                Avatar is being uploaded.
+                <Message.Header>
+                  <Trans>Please wait</Trans>
+                </Message.Header>
+                <Trans>Your avatar is being uploaded.</Trans>
               </Message.Content>
             </Message>
           )}
-          <h2>Profile</h2>
+          <h2>
+            <Trans>Profile</Trans>
+          </h2>
           {this.props.editUserError ? (
             <h6 style={{ color: 'red' }}>{this.props.editUserError.error}</h6>
           ) : null}
@@ -70,7 +77,9 @@ class AccountProfileScene extends Component {
           ) : (
             <>
               <HorizontalSpan>
-                <BoldH4>Bio :</BoldH4>
+                <BoldH4>
+                  <Trans>Biography:</Trans>
+                </BoldH4>
                 {this.state.isBiographyEditable ? (
                   <Input
                     style={{ minWidth: '35em' }}
@@ -87,13 +96,17 @@ class AccountProfileScene extends Component {
                   </p>
                 )}
                 {this.state.isBiographyEditable ? (
-                  <Button onClick={() => this.toggleEdition('biography')}>Save</Button>
+                  <Button onClick={() => this.toggleEdition('biography')}>
+                    <Trans>Save</Trans>
+                  </Button>
                 ) : (
                   <Icon onClick={() => this.toggleEdition('biography')} name="pencil" />
                 )}
               </HorizontalSpan>
               <HorizontalSpan>
-                <BoldH4>Email :</BoldH4>
+                <BoldH4>
+                  <Trans>Email:</Trans>
+                </BoldH4>
                 <p>
                   &nbsp;
                   {this.props.user_profile.email}

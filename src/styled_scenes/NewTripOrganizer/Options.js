@@ -16,6 +16,9 @@ import analytics from 'libs/analytics';
 import { media } from 'libs/styled';
 import { TripContext } from './index';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const Wrapper = styled.div`
   display: flex;
   padding: 20px 40px 10px;
@@ -165,7 +168,9 @@ const Options = ({
           onApply={onChangeGuests}
           renderTrigger={({ triggerPopup }) => (
             <FakeDropdown onClick={triggerPopup}>
-              <PStrong>{adults + children + infants} Guests</PStrong>
+              <PStrong>
+                {adults + children + infants} <Trans>Guests</Trans>
+              </PStrong>
               <DropArrow />
             </FakeDropdown>
           )}
@@ -179,7 +184,8 @@ const Options = ({
             onClose={closeDate}
             trigger={
               <DepartureDate>
-                Start: <DateP>{formattedStartDate}</DateP> End: <DateP>{formattedEndDate}</DateP>
+                <Trans>Start:</Trans> <DateP>{formattedStartDate}</DateP> <Trans>End:</Trans>{' '}
+                <DateP>{formattedEndDate}</DateP>
               </DepartureDate>
             }
             content={<DateSelector close={closeDate} />}
@@ -195,10 +201,14 @@ const Options = ({
           tripId={tripId}
         />
         <Toggle onSwitch={changeShowTransport}>
-          <PSmall>Add Transports</PSmall>
+          <PSmall>
+            <Trans>Transports</Trans>
+          </PSmall>
         </Toggle>
         <Toggle onSwitch={changeShowMap}>
-          <PSmall>Show map</PSmall>
+          <PSmall>
+            <Trans>Map</Trans>
+          </PSmall>
         </Toggle>
       </RightSide>
     </Wrapper>

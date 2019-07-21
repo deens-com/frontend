@@ -1,4 +1,8 @@
+import React, { Component } from 'react';
 import moment from 'moment';
+
+// i18n
+import { Trans } from '@lingui/macro';
 
 export function minutesToDays(duration) {
   return Math.ceil(duration / (60 * 24)); // Duration is in minutes
@@ -32,8 +36,8 @@ export function getDayDate(dayNumber, date, short) {
 
 export function dayTitles(dayNumber, date) {
   return {
-    title: date ? getDayDate(dayNumber, date, false) : `Day ${dayNumber}`,
-    shortTitle: date ? getDayDate(dayNumber, date, true) : `Day ${dayNumber}`,
+    title: date ? getDayDate(dayNumber, date, false) : <Trans>Day {dayNumber}</Trans>,
+    shortTitle: date ? getDayDate(dayNumber, date, true) : <Trans>Day {dayNumber}</Trans>,
   };
 }
 

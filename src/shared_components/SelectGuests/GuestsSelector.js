@@ -6,6 +6,9 @@ import MinusIcon from 'shared_components/icons/MinusIcon';
 import { primary } from 'libs/colors';
 import { isIosDevice } from 'libs/Utils';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const SelectorWrapper = styled.div`
   position: ${props => (props.relative ? 'relative' : 'absolute')};
   background-color: white;
@@ -199,9 +202,9 @@ export default class GuestsSelector extends React.Component {
       <SelectorWrapper relative={relative} ref={this.wrapperRef}>
         <Row>
           <LeftColumn>
-            Adults
+            <Trans>Adults</Trans>
             <br />
-            (Ages > 13)
+            <Trans>(Ages > 13)</Trans>
           </LeftColumn>
           <RightColumn>
             <IconButton disabled={adults <= 1} onClick={this.removeAdult}>
@@ -215,9 +218,9 @@ export default class GuestsSelector extends React.Component {
         </Row>
         <Row>
           <LeftColumn>
-            Children
+            <Trans>Children</Trans>
             <br />
-            (Ages 2-12)
+            <Trans>(Ages 2-12)</Trans>
           </LeftColumn>
           <RightColumn>
             <IconButton disabled={children === 0} onClick={this.removeChild}>
@@ -231,9 +234,9 @@ export default class GuestsSelector extends React.Component {
         </Row>
         <Row>
           <LeftColumn>
-            Infants
+            <Trans>Infants</Trans>
             <br />
-            (Under 2)
+            <Trans>(Under 2)</Trans>
           </LeftColumn>
           <RightColumn>
             <IconButton disabled={infants === 0} onClick={this.removeInfant}>
@@ -245,7 +248,11 @@ export default class GuestsSelector extends React.Component {
             </IconButton>
           </RightColumn>
         </Row>
-        {showApplyButton && <ApplyButton onClick={this.applyChanges}>Apply</ApplyButton>}
+        {showApplyButton && (
+          <ApplyButton onClick={this.applyChanges}>
+            <Trans>Apply</Trans>
+          </ApplyButton>
+        )}
       </SelectorWrapper>
     );
   }
