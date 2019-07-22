@@ -203,14 +203,14 @@ class TripOrganizer extends React.Component {
   // SINGLE ACTIONS
 
   goToAddService = (day, type = 'accommodation') => {
-    const { trip } = this.props;
-    const { services, tripData } = this.state;
-
+    const { inDayServices } = this.props;
     let location;
-    if (services[day]) {
-      location = services[day][services[day].length - 1].service.location;
+    const servicesInCurrentDay = Object.values(inDayServices).filter(s => s.day === day);
+    if (servicesInCurrentDay) {
+      location = this.props.services[servicesInCurrentDay[servicesInCurrentDay.length - 1].service]
+        .location;
     } else {
-      location = tripData.userStartLocation;
+      location = this.props.trip.userStartLocation;
     }
 
     const coord = location && location.geo && getFromCoordinates(location.geo.coordinates);
@@ -225,16 +225,16 @@ class TripOrganizer extends React.Component {
         locationSearchType: 'latlng',
         lat: coord && coord.lat,
         lng: coord && coord.lng,
-        adults: tripData.adultCount,
-        children: tripData.childrenCount,
-        infants: tripData.infantCount,
+        adults: this.props.adults,
+        children: this.props.children,
+        infants: this.props.infants,
         address,
-        startDate: moment(tripData.startDate)
+        startDate: moment(this.props.startDate)
           .add(day - 1, 'days')
           .valueOf(),
         endDate:
           type === 'accommodation'
-            ? moment(tripData.startDate)
+            ? moment(this.props.startDate)
                 .add(day, 'days')
                 .valueOf()
             : undefined,
@@ -242,8 +242,8 @@ class TripOrganizer extends React.Component {
       {
         tripId: this.props.tripId,
         day,
-        duration: this.state.tripData.duration,
-        startDate: this.state.tripData.startDate.valueOf(),
+        duration: this.props.trip.duration,
+        startDate: this.props.startDate,
       },
     );
   };
