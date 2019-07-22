@@ -72,13 +72,16 @@ const serviceTarget = {
     }
     if (monitor.getItem().id !== props.data._id) {
       props.changeServicePosition(
+        monitor.getItem().id,
         props.draggingState.day,
-        props.draggingState.position,
+        props.data._id,
         props.data.day,
-        props.index,
       );
       props.changeDraggingService(props.data.day, props.index);
     }
+  },
+  drop(props, monitor, component) {
+    props.onServiceDrop();
   },
 };
 
@@ -426,6 +429,7 @@ Service.propTypes = {
   changeDraggingService: PropTypes.func.isRequired,
   endDraggingService: PropTypes.func.isRequired,
   selectOption: PropTypes.func.isRequired,
+  onServiceDrop: PropTypes.func.isRequired,
 };
 
 export default DropTarget(types.SERVICE, serviceTarget, connectTarget)(

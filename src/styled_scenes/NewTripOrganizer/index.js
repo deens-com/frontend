@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import history from 'main/history';
 import apiClient from 'libs/apiClient';
-import arrayMove from 'array-move';
 import Itinerary from './Itinerary';
 import { getFromCoordinates, minutesToDays, daysToMinutes } from 'libs/Utils';
 import Header from './Header';
@@ -125,30 +124,8 @@ class TripOrganizer extends React.Component {
     this.removeIsLoadingTransports();
   };
 
-  saveDaysData = async () => {
-    this.addIsSaving();
-    const dataToSave = parseDaysDataToSave(this.state.daysData);
-
-    await apiClient.trips.patch(this.props.tripId, dataToSave);
-
-    this.removeIsSaving();
-  };
-
-  saveRemovedServices = async (serviceOrgIds = []) => {
-    if (serviceOrgIds.length === 0) {
-      return;
-    }
-    this.addIsSaving();
-    this.addIsLoadingPrice();
-
-    await this.props.removeServices(serviceOrgIds);
-
-    this.removeIsLoadingPrice();
-    this.removeIsSaving();
-    this.props.getTransportation();
-  };
-
   prefetchSearchResults = async onlyLastDay => {
+    // TO DO
     return;
     const startLocation = getFromCoordinates(
       this.props.trip.userStartLocation && this.props.trip.userStartLocation.geo.coordinates,
@@ -273,6 +250,7 @@ class TripOrganizer extends React.Component {
 
   changeDayPosition = (currentDay, nextDay) => {
     // IF WE USE THIS FUNCTION AGAIN REMEMBER TO HANDLE `daysData`
+    return;
     this.setState(
       prevState => {
         const diff = nextDay - currentDay;
@@ -311,68 +289,23 @@ class TripOrganizer extends React.Component {
     );
   };
 
-  changeServicePosition = (currentDay, currentPosition, nextDay, nextPosition) => {
-    const saveTrip = () => {
-      this.saveRearrangeServices(currentDay === nextDay);
-    };
-
-    if (currentDay === nextDay) {
-      this.setState(prevState => {
-        return {
-          services: {
-            ...prevState.services,
-            [currentDay]: arrayMove(prevState.services[currentDay], currentPosition, nextPosition),
-          },
-        };
-      }, saveTrip);
-      return;
-    }
-
-    this.setState(prevState => {
-      const previousDay = prevState.services[currentDay].filter(
-        (_, index) => index !== currentPosition,
-      );
-      const newDay = prevState.services[nextDay] || [];
-      return {
-        services: {
-          ...prevState.services,
-          [currentDay]: previousDay,
-          [nextDay]: [
-            ...newDay.slice(0, nextPosition),
-            {
-              ...prevState.services[currentDay][currentPosition],
-              day: Number(nextDay),
-            },
-            ...newDay.slice(nextPosition),
-          ],
-        },
-      };
-    }, saveTrip);
+  changeServicePosition = (id, currentDay, idAfter, nextDay) => {
+    this.props.temporalRearrange(id, currentDay, idAfter, nextDay);
   };
 
   changeTripDuration = daysDuration => {
-    const currentDuration = minutesToDays(this.state.tripData.duration);
-    this.setState(
-      prevState => ({
-        tripData: {
-          ...prevState.tripData,
-          duration: daysToMinutes(daysDuration),
-        },
-      }),
-      () => {
-        let diff = currentDuration - daysDuration;
-        while (diff > 0) {
-          this.removeDay(daysDuration + diff, false);
-          diff--;
-        }
-        if (currentDuration < daysDuration) {
-          this.prefetchSearchResults(true);
-        }
-        this.saveTrip({
-          duration: this.state.tripData.duration,
-        });
-      },
-    );
+    const currentDuration = minutesToDays(this.props.trip.duration);
+    let diff = currentDuration - daysDuration;
+    if (diff < 0) {
+      this.props.editTrip({
+        duration: daysDuration * 60 * 24,
+      });
+      return;
+    }
+    while (diff > 0) {
+      this.removeDay(daysDuration + diff, false);
+      diff--;
+    }
   };
 
   changeStartDate = async date => {
@@ -383,18 +316,7 @@ class TripOrganizer extends React.Component {
   };
 
   removeDay = async day => {
-    if (this.props.trip.notes[day]) {
-      this.props.editTrip({
-        notes: {
-          ...this.props.trip.notes,
-          [day]: undefined,
-        },
-      });
-    }
-    await this.props.removeServices(
-      this.props.trip.services.filter(id => this.props.inDayServices[id].day === day),
-    );
-    this.prefetchSearchResults();
+    this.props.removeDay(day);
   };
 
   addService = async (serviceToAdd, day) => {
@@ -435,17 +357,9 @@ class TripOrganizer extends React.Component {
   uploadImage = async file => {
     try {
       const url = await signAndUploadImage(file);
-      this.setState(
-        {
-          image: url,
-          imageError: null,
-        },
-        () => {
-          this.saveTrip({
-            media: formatMedia(url),
-          });
-        },
-      );
+      this.props.editTrip({
+        media: formatMedia(url),
+      });
     } catch (e) {
       this.setState({
         imageError: e.message,
@@ -570,7 +484,7 @@ class TripOrganizer extends React.Component {
 
   changeInitialLocation = location => {
     this.changeLocation(location, 'userStartLocation');
-    if (!this.state.tripData.userEndLocation) {
+    if (!this.props.trip.userEndLocation) {
       this.changeLocation(location, 'userEndLocation', true);
     }
   };
@@ -586,26 +500,9 @@ class TripOrganizer extends React.Component {
   };
 
   changeLocation = (location, key, dontSave = false) => {
-    this.setState(
-      prevState => ({
-        tripData: {
-          ...prevState.tripData,
-          [key]: location,
-        },
-      }),
-      async () => {
-        if (dontSave) {
-          return;
-        }
-        if (key === 'userStartLocation') {
-          this.prefetchSearchResults();
-        }
-        await this.saveTrip({
-          [key]: location,
-        });
-        await this.props.getTransportation();
-      },
-    );
+    this.props.editTrip({
+      [key]: location,
+    });
   };
 
   changeShowTransport = value => {
@@ -704,6 +601,7 @@ class TripOrganizer extends React.Component {
           saveDayNote={this.changeDayNote}
           transports={transports}
           selectedOptions={this.props.selectedOptions}
+          onServiceDrop={this.props.saveTemporalRearrangement}
         />
         <Footer
           price={trip.totalPrice.toFixed(2)}

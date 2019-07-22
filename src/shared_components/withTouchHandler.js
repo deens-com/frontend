@@ -1,10 +1,4 @@
 import { DragDropContext } from 'react-dnd';
-import TouchBackend from 'react-dnd-touch-backend';
+import Backend from 'react-dnd-html5-backend';
 
-const touchBackend = TouchBackend({
-  enableTouchEvents: true,
-  enableMouseEvents: true,
-  enableHoverOutsideTarget: true,
-});
-
-export default DragDropContext(touchBackend);
+export default DragDropContext(Backend);

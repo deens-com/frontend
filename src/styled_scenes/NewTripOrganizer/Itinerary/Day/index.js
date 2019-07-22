@@ -140,6 +140,7 @@ const Day = ({
   inDayServices,
   servicesByDay,
   transports,
+  onServiceDrop,
 }) => {
   const onAddService = useCallback(
     type => {
@@ -256,6 +257,7 @@ const Day = ({
                           changeServicePosition={changeServicePosition}
                           servicesByDay={servicesByDay}
                           selectedOptions={selectedOptions}
+                          onServiceDrop={onServiceDrop}
                           data={{
                             ...inDayServices[data._id],
                             availability: availabilities[data._id],

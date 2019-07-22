@@ -75,6 +75,7 @@ const Itinerary = ({
   inDayServices,
   transports,
   selectedOptions,
+  onServiceDrop,
 }) => {
   const numberOfDays = minutesToDays(trip.duration);
   const [days, setDays] = useState(() =>
@@ -150,6 +151,7 @@ const Itinerary = ({
             transports={transports}
             servicesByDay={servicesByDay}
             selectedOptions={selectedOptions}
+            onServiceDrop={onServiceDrop}
           />
         ))}
         <EmptyDay addNewDay={addNewDay} day={days.length + 1} tripStartDate={trip.startDate} />

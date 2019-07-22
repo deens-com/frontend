@@ -122,14 +122,6 @@ export default function tripDesigner(state = initialState, action = {}) {
           data: action.payload,
         },
       };
-    case actions.types.PATCH_TRIP_SUCCESS:
-      return {
-        ...state,
-        trip: {
-          ...state.trip,
-          data: action.payload.entities.trips[action.payload.result],
-        },
-      };
     case actions.types.PATCH_TRIP_ERROR:
       return {
         ...state,
@@ -197,6 +189,30 @@ export default function tripDesigner(state = initialState, action = {}) {
         lastRemovedService: state.lastRemovedService.filter(
           s => s.id !== action.payload.removedService,
         ),
+      };
+    case actions.types.REMOVE_DAY_START:
+      return {
+        ...state,
+        trip: {
+          ...state.trip,
+          data: {
+            ...state.trip.data,
+            services: action.payload.tripServices,
+            duration: action.payload.duration,
+            notes: action.payload.notes,
+          },
+        },
+      };
+    case actions.types.TEMPORAL_REARRANGE:
+      return {
+        ...state,
+        trip: {
+          ...state.trip,
+          data: {
+            ...state.trip.data,
+            services: action.payload.services,
+          },
+        },
       };
     case actions.types.SELECT_SERVICE_OPTION_SUCCESS:
     case actions.types.REMOVE_SERVICES_SUCCESS:

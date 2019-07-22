@@ -46,6 +46,20 @@ export default function entities(state = initialState, action = {}) {
           }, {}),
         },
       };
+    case tripDesignerActions.types.REMOVE_DAY_START:
+      return {
+        ...state,
+        inDayServices: {
+          ...state.inDayServices,
+          ...Object.entries(action.payload.inDayServices).reduce(
+            (prev, [key, value]) => ({
+              ...prev,
+              [key]: value,
+            }),
+            {},
+          ),
+        },
+      };
     default:
       return state;
   }
