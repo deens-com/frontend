@@ -54,7 +54,7 @@ const LogoLink = styled(Link)`
 export default function TopBarLogo({ menuIsOpened, toggleMenu, applyFixation }) {
   return (
     <Wrap>
-      <LogoLink to="/" aria-label="Deens homepage">
+      <LogoLink to="/" aria-label="Deens">
         <Logo />
       </LogoLink>
     </Wrap>

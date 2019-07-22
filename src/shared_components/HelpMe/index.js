@@ -3,6 +3,9 @@ import history from 'main/history';
 import Button from 'shared_components/Button';
 import analytics from 'libs/analytics';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 export default ({ tripId, tripParent, isLoadingUser, user, buttonSize }) => {
   return (
     <Button
@@ -21,7 +24,7 @@ export default ({ tripId, tripParent, isLoadingUser, user, buttonSize }) => {
       theme="fillLightGreen"
       size={buttonSize}
     >
-      Help me!
+      <Trans>Help me!</Trans>
     </Button>
   );
 };

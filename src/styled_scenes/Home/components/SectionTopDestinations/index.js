@@ -10,6 +10,9 @@ import { H1, H2 } from 'libs/commonStyles';
 // STYLES
 import { PageWrapper, SectionWrap, SectionHeader } from '../../../../shared_components/layout/Page';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const SectionContent = styled.div`
   display: grid;
   grid-gap: 10px;
@@ -163,7 +166,9 @@ export default function HomeSectionTopDestinations({ updateSearchParams }) {
     <PageWrapper>
       <SectionWrap>
         <SectionHeader>
-          <H2>Top Destinations</H2>
+          <H2>
+            <Trans>Top Destinations</Trans>
+          </H2>
         </SectionHeader>
         <SectionContent>
           <SydneyLink

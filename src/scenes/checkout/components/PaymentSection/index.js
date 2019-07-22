@@ -13,6 +13,10 @@ import PLSButton from './PLSButton';
 import Button from 'shared_components/Button';
 import urls from 'libs/urlGenerator';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans, t } from '@lingui/macro';
+
 import VisaLogo from '../logos/visa.svg';
 import MasterLogo from '../logos/mastercard.svg';
 import AmexLogo from '../logos/amex.svg';
@@ -172,7 +176,7 @@ export default class PaymentSection extends Component {
             theme="fillLightGreen"
             onClick={() => this.props.payWithPls(guests, trip._id)}
           >
-            Book $0.00 trip
+            <Trans>Book $0.00 trip</Trans>
           </Button>
         </PayZeroWrapper>
       );
@@ -181,7 +185,9 @@ export default class PaymentSection extends Component {
     return (
       <React.Fragment>
         <ChooseMethodTitle>
-          <span>Choose Payment Method</span>
+          <span>
+            <Trans>Choose Payment Method</Trans>
+          </span>
         </ChooseMethodTitle>
         <MainContent>
           <MethodSelector>
@@ -189,7 +195,9 @@ export default class PaymentSection extends Component {
               onClick={() => this.selectMethod(CREDIT_CARD_METHOD)}
               selected={this.state.paymentMethod === CREDIT_CARD_METHOD}
             >
-              <p>Credit Card</p>
+              <p>
+                <Trans>Credit Card</Trans>
+              </p>
               <CreditCardLogos>
                 <img src={VisaLogo} alt="Visa" />
                 <img src={MasterLogo} alt="MasterCard" />
@@ -203,7 +211,9 @@ export default class PaymentSection extends Component {
               onClick={() => this.selectMethod(CRYPTO_METHOD)}
               selected={this.state.paymentMethod === CRYPTO_METHOD}
             >
-              <p>Cryptocurrency</p>
+              <p>
+                <Trans>Cryptocurrency</Trans>
+              </p>
               <CryptoLogos>
                 <img src={BTCLogo} alt="Bitcoin" />
                 <img src={ETHLogo} alt="Ether" />
@@ -271,29 +281,33 @@ export default class PaymentSection extends Component {
           <Loader />
         </Dimmer>
         <Wrap>
-          <Modal
-            open={Boolean(error)}
-            content="There was an error with some of the services"
-            size="small"
-            actions={[
-              {
-                key: 'retry',
-                content: 'Retry',
-                onClick: getProvisionCodes,
-              },
-              {
-                key: 'trip',
-                content: 'Go to trip',
-                onClick: () =>
-                  history.replace(
-                    urls.trip.view({
-                      slug: generateTripSlug(trip),
-                      id: trip._id,
-                    }),
-                  ),
-              },
-            ]}
-          />
+          <i18n>
+            {({ i18n }) => (
+              <Modal
+                open={Boolean(error)}
+                content={i18n._(t`There was an error with some of the services`)}
+                size="small"
+                actions={[
+                  {
+                    key: 'retry',
+                    content: i18n._(t`Retry`),
+                    onClick: getProvisionCodes,
+                  },
+                  {
+                    key: 'trip',
+                    content: i18n._(t`Go to trip`),
+                    onClick: () =>
+                      history.replace(
+                        urls.trip.view({
+                          slug: generateTripSlug(trip),
+                          id: trip._id,
+                        }),
+                      ),
+                  },
+                ]}
+              />
+            )}
+          </i18n>
           {this.renderPayment()}
         </Wrap>
       </Dimmer.Dimmable>

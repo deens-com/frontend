@@ -15,6 +15,10 @@ import { serverBaseURL } from 'libs/config';
 import { getImageUrlFromMedia } from 'libs/media';
 import Button from 'shared_components/Button';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans, t } from '@lingui/macro';
+
 const allowedExtensions = ['jpeg', 'jpg', 'gif', 'png'];
 
 const Wrapper = styled.div`
@@ -222,7 +226,7 @@ export default class MultiImageUploader extends Component {
       <Wrapper>
         <FileInput multiple accept="image/*" uploader={this.uploader}>
           <Button theme="fillLightGreen" onClick={() => {}}>
-            Choose files
+            <Trans>Choose files</Trans>
           </Button>
         </FileInput>
         <Images>

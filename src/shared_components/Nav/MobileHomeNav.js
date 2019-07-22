@@ -111,15 +111,19 @@ class MobileHomeNav extends Component {
     );
     const sessionMenu = this.props.session.username ? (
       <li onClick={this.logout} style={{ padding: '8px 15px' }}>
-        Logout
+        <Trans>Logout</Trans>
       </li>
     ) : (
       <>
         <li>
-          <MenuLink to="/register">Signup</MenuLink>
+          <MenuLink to="/register">
+            <Trans>Sign up</Trans>
+          </MenuLink>
         </li>
         <li>
-          <MenuLink to="/login">Login</MenuLink>
+          <MenuLink to="/login">
+            <Trans>Login</Trans>
+          </MenuLink>
         </li>
       </>
     );
@@ -146,12 +150,12 @@ class MobileHomeNav extends Component {
                 }}
                 onClick={this.onOptionClick}
               >
-                <Trans>create-trip</Trans>
+                <Trans>Create Trip</Trans>
               </MenuLink>
             </li>
             <li style={{ color: secondary }}>
               <MenuLink onClick={this.onOptionClick} to="/earn-money">
-                Earn Money
+                <Trans>Earn Money</Trans>
               </MenuLink>
             </li>
             {this.props.session.username && (
@@ -159,12 +163,12 @@ class MobileHomeNav extends Component {
                 <Divider />
                 <li>
                   <MenuLink onClick={this.onOptionClick} to="/my/trips">
-                    My Trips
+                    <Trans>My Trips</Trans>
                   </MenuLink>
                 </li>
                 <li>
                   <MenuLink onClick={this.onOptionClick} to="/my/profile">
-                    Profile
+                    <Trans>Profile</Trans>
                   </MenuLink>
                 </li>
               </>

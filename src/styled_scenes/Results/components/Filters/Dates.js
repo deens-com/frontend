@@ -10,6 +10,9 @@ import { primary, textDark, backgroundDark } from 'libs/colors';
 import { P } from 'libs/commonStyles';
 import Dropdown from 'shared_components/Dropdown';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const now = moment().startOf('day');
 const isDayBlocked = date => date.valueOf() <= now.valueOf();
 
@@ -80,7 +83,9 @@ const DropdownContent = ({ startDate, endDate, onDateSelect, closeDropdown, isSi
 
   return (
     <ContentWrapper>
-      <DontKnow onClick={resetDates}>I don't know my dates yet</DontKnow>
+      <DontKnow onClick={resetDates}>
+        <Trans>I don't know my dates yet</Trans>
+      </DontKnow>
       <DayPickerRangeController
         initialVisibleMonth={() => selectedStartDate || moment()}
         onDatesChange={onDatesChange}
@@ -102,7 +107,11 @@ const Dates = ({ startDate, endDate, onDateSelect, isSingle }) => {
       if (startDate) {
         return <Trigger>{moment(startDate).format('MMM DD')}</Trigger>;
       }
-      return <Trigger>Select date</Trigger>;
+      return (
+        <Trigger>
+          <Trans>Select a date</Trans>
+        </Trigger>
+      );
     }
     if (startDate && endDate) {
       return (
@@ -113,7 +122,11 @@ const Dates = ({ startDate, endDate, onDateSelect, isSingle }) => {
         </Trigger>
       );
     }
-    return <Trigger>Select dates</Trigger>;
+    return (
+      <Trigger>
+        <Trans>Select dates</Trans>
+      </Trigger>
+    );
   };
   return (
     <Dropdown trigger={renderTrigger()}>

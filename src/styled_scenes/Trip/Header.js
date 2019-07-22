@@ -9,6 +9,9 @@ import { getHeroImageUrlFromMedia } from 'libs/media';
 import { buildImgUrl } from 'libs/Utils';
 import urls from 'libs/urlGenerator';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const Wrapper = styled.div`
   width: 100%;
   background-image: linear-gradient(0, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)),
@@ -77,7 +80,9 @@ const Header = ({ trip, owner, innerRef }) => {
               <Image src={ownerImage} circular width={45} height={45} />
             </Link>
           </AvatarWrapper>
-          <CreatedBy>Created by</CreatedBy>
+          <CreatedBy>
+            <Trans>Created by</Trans>{' '}
+          </CreatedBy>
           <Username>
             <Link to={urls.user.view(owner.username)}>{owner.username}</Link>
           </Username>

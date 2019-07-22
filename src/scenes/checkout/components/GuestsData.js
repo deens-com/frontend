@@ -4,6 +4,10 @@ import Input from 'shared_components/StyledInput';
 import { Dropdown } from 'semantic-ui-react';
 import { media } from 'libs/styled';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans, t } from '@lingui/macro';
+
 const Form = styled.form`
   label {
     font-weight: bold;
@@ -64,7 +68,9 @@ const GuestsData = ({ guests, onChange }) => {
   return (
     <Form>
       <Title>
-        <span>Guests Details</span>
+        <span>
+          <Trans>Guests Details</Trans>
+        </span>
       </Title>
       {guests.map((guest, i) => (
         <React.Fragment key={i}>
@@ -73,24 +79,32 @@ const GuestsData = ({ guests, onChange }) => {
           </Type>
           <Guest>
             <TitleSelection>
-              <label htmlFor="title">Title</label>
+              <label htmlFor="title">
+                <Trans>Title</Trans>
+              </label>
               <Input>
-                <Dropdown
-                  name="title"
-                  options={[
-                    { text: 'Mr.', value: 'Mr' },
-                    { text: 'Mrs.', value: 'Mrs' },
-                    { text: 'Miss.', value: 'Miss' },
-                  ]}
-                  guest={i}
-                  onChange={onChange}
-                  selection
-                  fluid
-                />
+                <I18n>
+                  {({ i18n }) => (
+                    <Dropdown
+                      name="title"
+                      options={[
+                        { text: i18n._(t`Mr.`), value: 'Mr' },
+                        { text: i18n._(t`Mrs.`), value: 'Mrs' },
+                        { text: i18n._(t`Miss`), value: 'Miss' },
+                      ]}
+                      guest={i}
+                      onChange={onChange}
+                      selection
+                      fluid
+                    />
+                  )}
+                </I18n>
               </Input>
             </TitleSelection>
             <Group>
-              <label htmlFor="firstName">First Name</label>
+              <label htmlFor="firstName">
+                <Trans>First Name</Trans>
+              </label>
               <Input
                 name="firstName"
                 onChange={event =>
@@ -99,7 +113,9 @@ const GuestsData = ({ guests, onChange }) => {
               />
             </Group>
             <Group>
-              <label htmlFor="lastName">Last Name</label>
+              <label htmlFor="lastName">
+                <Trans>Last Name</Trans>
+              </label>
               <Input
                 name="lastName"
                 onChange={event =>

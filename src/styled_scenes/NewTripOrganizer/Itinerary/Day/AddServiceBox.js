@@ -15,6 +15,9 @@ import { media } from 'libs/styled';
 
 import { primary, disabled, activity, accommodation, food, tertiary } from 'libs/colors';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const Box = styled.div`
   border-radius: 10px 10px 10px 0;
   margin-top: ${props => (props.lowMargin ? '20px' : '75px')};
@@ -115,24 +118,24 @@ const AddServiceBox = ({ day, goToAddService, lowMargin }) => {
           <Options>
             <li onClick={addAccommodation}>
               <Accommodation style={{ color: accommodation }} />
-              Accommodation
+              <Trans>Accommodation</Trans>
             </li>
             <li onClick={addFood}>
               <Food style={{ color: food }} />
-              Food
+              <Trans>Food</Trans>
             </li>
             <li onClick={addActivity}>
               <Activity style={{ color: activity }} />
-              Activity
+              <Trans>Activity</Trans>
             </li>
             <Divider />
             <li onClick={openCustomModal}>
               <Pen style={{ color: tertiary }} />
-              Custom
+              <Trans>Custom</Trans>
             </li>
             <li onClick={showAddLink}>
               <LinkIcon style={{ transform: 'rotate(-45deg)', color: tertiary }} />
-              Paste URL
+              <Trans>Paste URL</Trans>
             </li>
           </Options>
         }

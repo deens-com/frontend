@@ -2,6 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans, t } from '@lingui/macro';
+
 const Wrapper = styled.div`
   background-color: #4ac4a1;
   font-size: 18px;
@@ -58,7 +62,9 @@ export default class Countdown extends React.Component {
     const seconds = String(duration.seconds()).padStart(2, '0');
     return (
       <Wrapper>
-        <Text>Time to book</Text>
+        <Text>
+          <Trans>Time to book</Trans>
+        </Text>
         {minutes}:{seconds}
       </Wrapper>
     );

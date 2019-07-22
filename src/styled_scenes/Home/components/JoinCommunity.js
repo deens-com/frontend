@@ -9,6 +9,9 @@ import { PageWrapper } from 'shared_components/layout/Page';
 import { H2Subtitle, H3, P, PStrong } from 'libs/commonStyles';
 import { textDark } from 'libs/colors';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const Content = styled.div`
   display: flex;
   justify-content: space-around;
@@ -71,27 +74,41 @@ const ButtonWrapper = styled.div`
 export default ({ featuredTripCreator }) => (
   <PageWrapper>
     <Become>
-      Join our community like {featuredTripCreator} and share your knowledge of your local area
+      <Trans>
+        Join our community like {featuredTripCreator} and share your knowledge of your local area
+      </Trans>
     </Become>
     <Content>
       <Column>
-        <img src={map} alt="Find a Trip" />
-        <Title>Create a Trip</Title>
+        <img src={map} alt="Create a Trip" />
+        <Title>
+          <Trans>Create a Trip</Trans>
+        </Title>
         <Paragraph>
-          Leverage your knowledge of an area, promote your services, add any service from the web
+          <Trans>
+            Leverage your knowledge of an area, promote your services, add any service from the web
+          </Trans>
         </Paragraph>
       </Column>
       <Column>
-        <img src={customizeIcon} alt="Customize your Trip" />
-        <Title>Publish your Trip</Title>
-        <Paragraph>Add some notes to help travelers get the best out of your trip</Paragraph>
+        <img src={customizeIcon} alt="Publish your Trip" />
+        <Title>
+          <Trans>Publish your Trip</Trans>
+        </Title>
+        <Paragraph>
+          <Trans>Add some notes to help travelers get the best out of your trip</Trans>
+        </Paragraph>
       </Column>
       <Column>
-        <img src={earnMoney} alt="Book your Trip" />
-        <Title>Earn Money</Title>
+        <img src={earnMoney} alt="Earn Money" />
+        <Title>
+          <Trans>Earn Money</Trans>
+        </Title>
         <Paragraph>
-          When your trip is booked, we give you a percentage of what we earned and you also get some
-          rewards if the traveler is happy!
+          <Trans>
+            When your trip is booked, we give you a percentage of what we earned and you also get
+            some rewards if the traveler is happy!
+          </Trans>
         </Paragraph>
       </Column>
     </Content>
@@ -106,7 +123,9 @@ export default ({ featuredTripCreator }) => (
         }}
         theme="primaryFilled"
       >
-        <PStrong>Create a Trip & Start Earning</PStrong>
+        <PStrong>
+          <Trans>Create a Trip & Start Earning</Trans>
+        </PStrong>
       </Button>
     </ButtonWrapper>
   </PageWrapper>

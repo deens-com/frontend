@@ -5,6 +5,10 @@ import apiClient from 'libs/apiClient';
 import fetchHelpers from 'libs/fetch_helpers';
 import { TripContext } from '../../';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans, t } from '@lingui/macro';
+
 const AddCustomServiceModal = ({ day, close, service }) => {
   const { addService } = useContext(TripContext);
   const [creatingService, setCreatingService] = useState(false);
@@ -20,17 +24,23 @@ const AddCustomServiceModal = ({ day, close, service }) => {
 
   return (
     <>
-      <Modal.Header>Add a private service</Modal.Header>
+      <Modal.Header>
+        <Trans>Add a private service</Trans>
+      </Modal.Header>
       <Modal.Content>
-        <ServiceForm
-          onSubmit={createService}
-          submitInFlight={creatingService}
-          service={service}
-          serviceFormTagsOptions={[]}
-          submitButtonText="Create"
-          onCancel={close}
-          creatingFromLink
-        />
+        <I18n>
+          {({ i18n }) => (
+            <ServiceForm
+              onSubmit={createService}
+              submitInFlight={creatingService}
+              service={service}
+              serviceFormTagsOptions={[]}
+              submitButtonText={i18n._(t`Create`)}
+              onCancel={close}
+              creatingFromLink
+            />
+          )}
+        </I18n>
       </Modal.Content>
     </>
   );

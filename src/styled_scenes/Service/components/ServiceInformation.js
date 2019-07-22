@@ -11,6 +11,9 @@ import searchActions from 'store/search/actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const Table = styled.table`
   table-layout: fixed;
   width: 100%;
@@ -44,13 +47,17 @@ const ServiceInformation = ({ service, updateSearchParams }) => {
     <Table>
       <tbody>
         <Row>
-          <td>Host</td>
+          <td>
+            <Trans>Host</Trans>
+          </td>
           <td>
             <UserAvatar user={service.owner} />
           </td>
         </Row>
         <Row>
-          <td>Working Hours</td>
+          <td>
+            <Trans>Working Hours</Trans>
+          </td>
           <td>
             {' '}
             {`${padStart(service.openingTime, 2)}:00 - ${padStart(service.closingTime, 2)}:00`}{' '}
@@ -69,7 +76,9 @@ const ServiceInformation = ({ service, updateSearchParams }) => {
           </td>
         </Row>
         <Row>
-          <td>Location</td>
+          <td>
+            <Trans>Location</Trans>
+          </td>
           <td>
             <span
               style={{ cursor: 'pointer' }}
@@ -88,7 +97,9 @@ const ServiceInformation = ({ service, updateSearchParams }) => {
           </td>
         </Row>
         <Row>
-          <td>Rating</td>
+          <td>
+            <Trans>Rating</Trans>
+          </td>
           <td>
             <Rating rating={service.ratings.average} count={service.ratings.count} />
           </td>

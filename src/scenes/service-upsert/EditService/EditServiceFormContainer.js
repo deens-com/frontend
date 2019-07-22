@@ -12,6 +12,10 @@ import { generateServiceSlug } from 'libs/Utils';
 import { getFirstCategoryLowerCase } from 'libs/categories';
 import urls from 'libs/urlGenerator';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans } from '@lingui/macro';
+
 class EditServiceFormContainer extends Component {
   getServiceId = () => this.props.match.params.id;
 
@@ -45,8 +49,7 @@ class EditServiceFormContainer extends Component {
     return (
       <React.Fragment>
         <h2>
-          {' '}
-          Editing Service{' '}
+          <Trans>Edit Service</Trans>
           {service && (
             <Link
               to={urls.service.view({
@@ -57,7 +60,7 @@ class EditServiceFormContainer extends Component {
             >
               {service.name}
             </Link>
-          )}{' '}
+          )}
         </h2>
         <ServiceForm
           onSubmit={this.onSubmit}

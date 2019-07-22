@@ -35,6 +35,10 @@ import Camera from 'shared_components/icons/Camera';
 import InlineInput from 'shared_components/InlineInput';
 import TagSelector from 'shared_components/TagSelector';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans, t } from '@lingui/macro';
+
 const Wrap = styled.div`
   display: inline-block;
   min-width: 255px;
@@ -353,7 +357,9 @@ class TripCart extends Component {
                 verticalAlign: 'middle',
               }}
             />
-            <span style={{ verticalAlign: 'middle', marginLeft: '5px' }}>fast booking</span>
+            <span style={{ verticalAlign: 'middle', marginLeft: '5px' }}>
+              <Trans>fast booking</Trans>
+            </span>
           </BookableTag>
         )}
       </AboveTitle>
@@ -480,7 +486,11 @@ class TripCart extends Component {
             style={{ verticalAlign: 'middle', display: 'inline-flex', cursor: 'pointer' }}
             onClick={this.enableEditTagsMode}
           >
-            {this.props.item.tags.length === 0 && <P>Select tags</P>}
+            {this.props.item.tags.length === 0 && (
+              <P>
+                <Trans>Select tags</Trans>
+              </P>
+            )}
             <Pencil style={{ alignSelf: 'center', marginLeft: '5px', color: colors.primary }} />
           </span>
         )}
@@ -513,9 +523,13 @@ class TripCart extends Component {
         <Price>
           ${extractPrice(this.props.item.basePrice, this.props.adults, this.props.children)}{' '}
           <PriceText>
-            {extractPricePer(this.props.item.basePrice) === PRICE_PER_SESSION
-              ? 'per night'
-              : 'for all guests'}
+            <I18n>
+              {({ i18n }) =>
+                extractPricePer(this.props.item.basePrice) === PRICE_PER_SESSION
+                  ? i18n._(t`per night`)
+                  : i18n._(t`for all guests`)
+              }
+            </I18n>
           </PriceText>
         </Price>
       );
@@ -525,17 +539,24 @@ class TripCart extends Component {
         <Price>
           ${extractPrice(this.props.item.basePrice, this.props.adults, this.props.children)}{' '}
           <PriceText>
-            {this.props.adults + this.props.children > 1 ||
-            extractPricePer(this.props.item.basePrice) === PRICE_PER_SESSION
-              ? `for ${this.props.adults + this.props.children} people`
-              : 'per person'}
+            <I18n>
+              {({ i18n }) =>
+                this.props.adults + this.props.children > 1 ||
+                extractPricePer(this.props.item.basePrice) === PRICE_PER_SESSION
+                  ? i18n._(t`for ${this.props.adults + this.props.children} people`)
+                  : i18n._(t`per person`)
+              }
+            </I18n>
           </PriceText>
         </Price>
       );
     }
     return (
       <Price>
-        ${this.props.item.totalPricePerDay} <PriceText>per day</PriceText>
+        ${this.props.item.totalPricePerDay}{' '}
+        <PriceText>
+          <Trans>per day</Trans>
+        </PriceText>
       </Price>
     );
   }

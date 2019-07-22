@@ -11,6 +11,10 @@ import TopBar from '../../shared_components/TopBar';
 import NewServiceFormContainer from './NewService';
 import EditServiceContainer from './EditService';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans } from '@lingui/macro';
+
 const NewServiceScene = ({ location, changeHeader }) => {
   const isNewService = location.pathname === '/services/new';
   const isEditService = location.pathname.startsWith('/services/edit/');
@@ -23,7 +27,9 @@ const NewServiceScene = ({ location, changeHeader }) => {
       <Container text>
         {isNewService && (
           <React.Fragment>
-            <h2>Add a new service</h2>
+            <h2>
+              <Trans>Add a new service</Trans>
+            </h2>
             <NewServiceFormContainer />
           </React.Fragment>
         )}

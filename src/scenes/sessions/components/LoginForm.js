@@ -6,6 +6,10 @@ import BrandFooter from './../../../shared_components/BrandFooter';
 import { Link } from 'react-router-dom';
 import welcomeImage from '../../../assets/login/login.svg';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans } from '@lingui/macro';
+
 const displayErrorMessage = (isLoginError, message) => {
   return isLoginError ? <Message error header="Cannot login" content={message} /> : null;
 };
@@ -96,7 +100,9 @@ export default class LoginFormComponent extends Component {
               <Grid.Row columns={2}>
                 <Grid.Column textAlign="center" floated="left">
                   <img src={welcomeImage} alt="welcomeImage" className="login-img" />
-                  <div className="login-img-content">Plan your next trip with us!</div>
+                  <div className="login-img-content">
+                    <Trans>Plan your next trip with us!</Trans>
+                  </div>
                 </Grid.Column>
                 <Grid.Column width="6" floated="right">
                   {this.props.message && (
@@ -104,7 +110,9 @@ export default class LoginFormComponent extends Component {
                       {this.props.message}
                     </Message>
                   )}
-                  <div className="login-header">Log-in to your account</div>
+                  <div className="login-header">
+                    <Trans>Log-in to your account</Trans>
+                  </div>
                   <br />
                   <Form size="large" error={this.props.isLoginError()}>
                     <Form.Input
@@ -221,7 +229,7 @@ export default class LoginFormComponent extends Component {
                     </WithTopMargin> */}
 
                   <div className="login-q-text">
-                    Don't have an account?&nbsp;&nbsp;
+                    <Trans>Don't have an account yet?</Trans>
                     <Link
                       to={{
                         pathname: '/register',
@@ -233,7 +241,7 @@ export default class LoginFormComponent extends Component {
                       }}
                       replace
                     >
-                      Sign Up
+                      <Trans>Sign up</Trans>
                     </Link>
                   </div>
                   <RecoverPassword>
@@ -249,7 +257,7 @@ export default class LoginFormComponent extends Component {
                       replace
                       rel="nofollow"
                     >
-                      Forgot password
+                      <Trans>Forgot password</Trans>
                     </Link>
                   </RecoverPassword>
                 </Grid.Column>

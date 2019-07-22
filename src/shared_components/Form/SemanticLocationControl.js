@@ -6,6 +6,10 @@ import Popup from 'shared_components/Popup';
 import Input from 'shared_components/StyledInput';
 import MapMarker from 'shared_components/icons/MapMarker';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { t } from '@lingui/macro';
+
 /**
  * A more advanced version of LocationControl
  * In this component, `onChange` is called only when the user selects a dropdown from the list
@@ -96,33 +100,41 @@ export default class SemanticLocationControl extends Component {
             basic
             trigger={
               useStyledInput ? (
-                <Input
-                  {...getInputProps({
-                    ...inputProps,
-                    placeholder: inputProps.placeholder || 'Enter location ...',
-                  })}
-                  leftContent={<MapMarker style={{ fill: '#6E7885' }} />}
-                  onFocus={this.openMenu}
-                  onBlur={this.closeMenu}
-                  onKeyUp={this.props.onKeyUp}
-                  onKeyDown={event => this.handleKeyDown(event, suggestions[0])}
-                />
+                <I18n>
+                  {({ i18n }) => (
+                    <Input
+                      {...getInputProps({
+                        ...inputProps,
+                        placeholder: inputProps.placeholder || i18n._(t`Enter location...`),
+                      })}
+                      leftContent={<MapMarker style={{ fill: '#6E7885' }} />}
+                      onFocus={this.openMenu}
+                      onBlur={this.closeMenu}
+                      onKeyUp={this.props.onKeyUp}
+                      onKeyDown={event => this.handleKeyDown(event, suggestions[0])}
+                    />
+                  )}
+                </I18n>
               ) : (
-                <Form.Input
-                  icon="map pin"
-                  iconPosition="left"
-                  type="text"
-                  {...getInputProps({
-                    ...inputProps,
-                    placeholder: inputProps.placeholder || 'Enter location ...',
-                  })}
-                  style={inputStyles}
-                  onFocus={this.openMenu}
-                  onBlur={this.closeMenu}
-                  autoFocus={autoFocus}
-                  onKeyUp={this.props.onKeyUp}
-                  onKeyDown={event => this.handleKeyDown(event, suggestions[0])}
-                />
+                <I18n>
+                  {({ i18n }) => (
+                    <Form.Input
+                      icon="map pin"
+                      iconPosition="left"
+                      type="text"
+                      {...getInputProps({
+                        ...inputProps,
+                        placeholder: inputProps.placeholder || i18n._(t`Enter location...`),
+                      })}
+                      style={inputStyles}
+                      onFocus={this.openMenu}
+                      onBlur={this.closeMenu}
+                      autoFocus={autoFocus}
+                      onKeyUp={this.props.onKeyUp}
+                      onKeyDown={event => this.handleKeyDown(event, suggestions[0])}
+                    />
+                  )}
+                </I18n>
               )
             }
             open={suggestions.length > 0 && isOpen}

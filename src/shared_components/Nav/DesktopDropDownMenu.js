@@ -77,10 +77,10 @@ export default class DesktopDropDownMenu extends Component {
           href="/login"
           borderRadius="5px 0 0 0"
         >
-          Login
+          <Trans>Login</Trans>
         </Button>
         <Button borderRadius="0 5px 5px 0" type="link" size="small" href="/register">
-          Sign up
+          <Trans>Sign up</Trans>
         </Button>
       </Wrap>
     );
@@ -101,7 +101,7 @@ export default class DesktopDropDownMenu extends Component {
           }}
         >
           <PStrong>
-            <Trans>create-trip</Trans>
+            <Trans>Create Trip</Trans>
           </PStrong>
         </Button>
         <Suspense fallback={this.trigger()}>

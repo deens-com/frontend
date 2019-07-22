@@ -37,6 +37,9 @@ import Activity from 'shared_components/icons/RunningPerson';
 import Food from 'shared_components/icons/SilverWare';
 import Accommodation from 'shared_components/icons/Bed';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const serviceSource = {
   beginDrag(props) {
     props.startDraggingService(props.data.day, props.data._id, props.index);
@@ -186,12 +189,12 @@ const ServiceSettingsButton = styled.div`
 
 function getPriceText(type) {
   if (type === 'Food') {
-    return 'per meal';
+    return <Trans>per meal</Trans>;
   }
   if (type === 'Accommodation') {
-    return 'per night';
+    return <Trans>per night</Trans>;
   }
-  return 'per person';
+  return <Trans>per person</Trans>;
 }
 
 const ServiceIcon = ({ type }) => {
@@ -380,7 +383,7 @@ const Service = ({
                               category: getFirstCategoryLowerCase(data.service.categories),
                             })}
                           >
-                            {data.service.ratings.count} reviews
+                            {data.service.ratings.count} <Trans>reviews</Trans>
                           </Link>
                         </Reviews>
                       )}
@@ -390,7 +393,11 @@ const Service = ({
             </ServiceBox>
             {!isCheckingAvailability && (
               <>
-                {!isAvailable && <NotAvailable>Not available</NotAvailable>}
+                {!isAvailable && (
+                  <NotAvailable>
+                    <Trans>Not available</Trans>
+                  </NotAvailable>
+                )}
                 {options && (
                   <ServiceOptions
                     selectOption={selectOption}

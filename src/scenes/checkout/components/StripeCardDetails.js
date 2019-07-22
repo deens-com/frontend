@@ -4,6 +4,10 @@ import { CardNumberElement, CardExpiryElement, CardCVCElement } from 'react-stri
 import styled from 'styled-components';
 import { PaymentContextConsumer } from './Payment';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans } from '@lingui/macro';
+
 const Wrapper = styled.div`
   border-style: none;
   padding: 34px 5px;
@@ -148,10 +152,12 @@ class StripeCardDetails extends React.Component {
 
     return (
       <Wrapper>
-        <p>Enter card details</p>
+        <p>
+          <Trans>Enter card details</Trans>
+        </p>
         <CardInputWrapper>
           <Label>
-            Card Number
+            <Trans>Card Number</Trans>
             <Required>*</Required>
           </Label>
           <CardNumberElement
@@ -168,7 +174,7 @@ class StripeCardDetails extends React.Component {
         </CardInputWrapper>
         <CVCWrapper>
           <Label>
-            CVC
+            <Trans>CVC</Trans>
             <Required>*</Required>
           </Label>
           <CardCVCElement
@@ -185,7 +191,7 @@ class StripeCardDetails extends React.Component {
         </CVCWrapper>
         <ExpiryWrapper>
           <Label>
-            Expiry Date
+            <Trans>Expiration Date</Trans>
             <Required>*</Required>
           </Label>
           <CardExpiryElement
@@ -208,7 +214,9 @@ class StripeCardDetails extends React.Component {
         <PaymentContextConsumer>
           {({ onSubmitWithCardDetails, isPaymentProcessing }) => (
             <PayButton onClick={onSubmitWithCardDetails} disabled={isPaymentProcessing}>
-              <span>Pay</span>
+              <span>
+                <Trans>Pay</Trans>
+              </span>
               <AmountButton disabled={isPaymentProcessing}>
                 {symbol}
                 {amount}

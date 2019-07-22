@@ -23,6 +23,9 @@ import apiClient from 'libs/apiClient';
 import AddToTrip from 'shared_components/Carts/AddToTrip';
 import urls from 'libs/urlGenerator';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 function getDays(type, day, tripDate, duration, start, end) {
   // make unit tests!!!
   if (!start) {
@@ -212,7 +215,9 @@ class Results extends Component {
     if (this.props.searchParams.type !== 'trip' && !hasLocationParams(this.props.searchParams)) {
       return (
         <section>
-          <h4>Please select a location at the top search bar</h4>
+          <h4>
+            <Trans>Please specify a location in the top search bar</Trans>
+          </h4>
         </section>
       );
     }
@@ -222,10 +227,14 @@ class Results extends Component {
           {this.props.searchParams.type && this.props.searchParams.type === 'trip' ? (
             <NotFound>
               <img src={notFoundImg} alt="Not found" />
-              <h3>There are no trips available in the location selected.</h3>
+              <h3>
+                <Trans>There are no trips available in the location selected.</Trans>
+              </h3>
               <p>
-                Be the first to create a trip for {this.props.searchParams.address}, and share to
-                earn rewards!
+                <Trans>
+                  Be the first to create a trip for {this.props.searchParams.address}, and share it
+                  to earn rewards!
+                </Trans>
               </p>
               <Button
                 type="link"
@@ -236,12 +245,12 @@ class Results extends Component {
                   },
                 }}
               >
-                Create a trip
+                <Trans>Create a trip</Trans>
               </Button>
             </NotFound>
           ) : (
             <h4 style={{ textAlign: 'center', color: 'grey' }}>
-              There are no search results for given search criteria.
+              <Trans>Your search didn't return any results, please try to be less specific.</Trans>
             </h4>
           )}
           <br />
@@ -262,10 +271,11 @@ class Results extends Component {
             <LoaderWithMargin>
               <Loader active inline="centered" size="massive">
                 <div style={{ lineHeight: '2em' }}>
-                  Please wait while we search across the top travel websites for the best{' '}
-                  {this.props.searchParams.type} prices.
-                  <br />
-                  This may take a few seconds.
+                  <Trans>
+                    Please wait while we search across the top travel websites for the best prices.
+                    <br />
+                    This may take a few seconds.
+                  </Trans>
                 </div>
               </Loader>
             </LoaderWithMargin>
@@ -324,9 +334,16 @@ class Results extends Component {
         {this.state.addedToTrip && (
           <AddedToTrip>
             <P>
-              <strong>{this.state.addedToTrip.service.name}</strong> has been added to day
-              {this.state.addedToTrip.days.length > 1 ? 's' : ''}{' '}
-              {this.state.addedToTrip.days.join(', ')} of your trip{' '}
+              <strong>{this.state.addedToTrip.service.name}</strong>
+              {this.state.addedToTrip.days.length > 1 ? (
+                <Trans>
+                  has been added to days {this.state.addedToTrip.days.join(', ')} of your trip
+                </Trans>
+              ) : (
+                <Trans>
+                  has been added to day {this.state.addedToTrip.days.length} of your trip
+                </Trans>
+              )}
               <Link to={urls.trip.organize(this.state.addedToTrip.trip._id)}>
                 <I18nText data={this.state.addedToTrip.trip.title} />
               </Link>

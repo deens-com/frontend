@@ -5,6 +5,10 @@ import styled from 'styled-components';
 // COMPONENTS
 import SearchIcon from 'shared_components/icons/SearchIcon';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { t } from '@lingui/macro';
+
 // ACTIONS/CONFIG
 
 // STYLES
@@ -69,17 +73,21 @@ export default class DesktopSearch extends Component {
             </IconButton>
           </div>
 
-          <Suspense
-            fallback={
-              <input
-                type="text"
-                placeholder="Where would you like to go?"
-                style={{ ...suggestionStyle, border: 'none', outlineWidth: 0 }}
-              />
-            }
-          >
-            <SearchInput {...this.props} />
-          </Suspense>
+          <I18n>
+            {({ i18n }) => (
+              <Suspense
+                fallback={
+                  <input
+                    type="text"
+                    placeholder={i18n._(t`Where would you like to go?`)}
+                    style={{ ...suggestionStyle, border: 'none', outlineWidth: 0 }}
+                  />
+                }
+              >
+                <SearchInput {...this.props} />
+              </Suspense>
+            )}
+          </I18n>
         </Inner>
       </Wrapper>
     );

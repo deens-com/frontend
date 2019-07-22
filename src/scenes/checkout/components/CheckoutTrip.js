@@ -12,6 +12,10 @@ import { getCategory } from 'libs/categories';
 import Category from 'shared_components/Category';
 import Button from 'shared_components/Button';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans } from '@lingui/macro';
+
 const Day = styled.div`
   color: #3c434b;
   margin-bottom: 30px;
@@ -129,7 +133,11 @@ export class CheckoutTrip extends React.Component {
 
   renderCancellationPolicy = (policies, price) => {
     if (!policies || policies.length === 0) {
-      return <div>Non-refundable</div>;
+      return (
+        <div>
+          <Trans>Non-refundable</Trans>
+        </div>
+      );
     }
 
     return (
@@ -138,15 +146,17 @@ export class CheckoutTrip extends React.Component {
           const time = minutesToHoursOrDays(policy.duration);
           return (
             <Policy>
-              If you cancel{' '}
-              <CancellationHighlight>
-                {time.length} {time.unit}
-              </CancellationHighlight>{' '}
-              before check-in, you will be charged{' '}
-              <CancellationHighlight>
-                ${calculateCancellationCharge(policy, price)}
-              </CancellationHighlight>{' '}
-              of cancellation fee, to be deduced from refund amount.
+              <Trans>
+                If you cancel{' '}
+                <CancellationHighlight>
+                  {time.length} {time.unit}
+                </CancellationHighlight>{' '}
+                before check-in, you will be charged{' '}
+                <CancellationHighlight>
+                  ${calculateCancellationCharge(policy, price)}
+                </CancellationHighlight>{' '}
+                of cancellation fee, to be deduced from refund amount.
+              </Trans>
             </Policy>
           );
         })}
@@ -159,13 +169,17 @@ export class CheckoutTrip extends React.Component {
     if (this.props.onlyExternalServices && service.service.checkoutOptions.payAt !== 'please') {
       return (
         <div>
-          Average cost: <Price>${price.toFixed(2)} per person</Price>
+          <Trans>
+            Average cost: <Price>${price.toFixed(2)} per person</Price>
+          </Trans>
         </div>
       );
     }
     return (
       <Price>
-        ${price.toFixed(2)} for {getPeopleCount(trip)} people
+        <Trans>
+          ${price.toFixed(2)} for {getPeopleCount(trip)} people
+        </Trans>
       </Price>
     );
   };
@@ -177,7 +191,9 @@ export class CheckoutTrip extends React.Component {
       <React.Fragment>
         {showTitle && (
           <TripItineraryTitle>
-            <span>Trip Itinerary</span>
+            <span>
+              <Trans>Trip Itinerary</Trans>
+            </span>
           </TripItineraryTitle>
         )}
         {this.state.days.map((day, dayIndex) => (
@@ -217,7 +233,7 @@ export class CheckoutTrip extends React.Component {
                         noReferrer
                         href={service.service.checkoutOptions.checkoutURL}
                       >
-                        Book here
+                        <Trans>Book here</Trans>
                       </Button>
                     </ButtonWrapper>
                   )}
@@ -226,7 +242,9 @@ export class CheckoutTrip extends React.Component {
                   {this.renderPrice(trip, day, service)}
                   <Popup
                     trigger={
-                      <CancellationPolicyTrigger>Cancellation policy</CancellationPolicyTrigger>
+                      <CancellationPolicyTrigger>
+                        <Trans>Cancellation policy</Trans>
+                      </CancellationPolicyTrigger>
                     }
                     content={
                       <CancellationPolicy>

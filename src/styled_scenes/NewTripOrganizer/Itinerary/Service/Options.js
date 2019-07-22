@@ -12,6 +12,9 @@ import Button from 'shared_components/Button';
 import { media } from 'libs/styled';
 import { TripContext } from '../../';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const OptionsBox = styled.div`
   box-shadow: ${props => (props.hasSelectedOption ? '1px 1px 3px rgba(0, 0, 0, 0.3)' : 'none')};
   margin-top: -8px;
@@ -108,7 +111,11 @@ const SelectedOption = styled(PXSmall)`
 
 const renderCancellationPolicy = (policies, price, key) => {
   if (!policies || policies.length === 0) {
-    return <div>Non-refundable</div>;
+    return (
+      <div>
+        <Trans>Non-refundable</Trans>
+      </div>
+    );
   }
 
   return (
@@ -117,15 +124,15 @@ const renderCancellationPolicy = (policies, price, key) => {
         const time = minutesToHoursOrDays(policy.duration);
         return (
           <Policy key={key}>
-            If you cancel up to{' '}
+            <Trans>If you cancel up to</Trans>{' '}
             <CancellationHighlight>
               {time.length} {time.unit}
             </CancellationHighlight>{' '}
-            before check-in, you will be charged{' '}
+            <Trans>before check-in, you will be charged</Trans>{' '}
             <CancellationHighlight>
               ${calculateCancellationCharge(policy, price)}
             </CancellationHighlight>{' '}
-            of cancellation fee, to be deduced from refund amount.
+            <Trans>of cancellation fee, to be deduced from refund amount.</Trans>
           </Policy>
         );
       })}
@@ -156,7 +163,9 @@ const ServiceOptions = ({ selectOption, serviceData, options }) => {
         open={isModalOpen}
         trigger={
           <ChangeOptionsButton>
-            <PSmallStrong>{selectedOption ? 'Change Options' : 'Select Options'}</PSmallStrong>
+            <PSmallStrong>
+              {selectedOption ? <Trans>Change Options</Trans> : <Trans>Select Options</Trans>}
+            </PSmallStrong>
           </ChangeOptionsButton>
         }
         onOpen={() => setModalOpen(true)}
@@ -191,7 +200,7 @@ const ServiceOptions = ({ selectOption, serviceData, options }) => {
                         <Popup
                           trigger={
                             <CancellationPolicyTrigger>
-                              Cancellation policy
+                              <Trans>Cancellation policy</Trans>
                             </CancellationPolicyTrigger>
                           }
                           content={
@@ -226,7 +235,9 @@ const ServiceOptions = ({ selectOption, serviceData, options }) => {
                         <Price>${extractPrice(option.price)}</Price>
                         <ButtonWrapper>
                           {selectedOption === option.otherAttributes.availabilityCode.code ? (
-                            <PStrong>Selected</PStrong>
+                            <PStrong>
+                              <Trans>Selected</Trans>
+                            </PStrong>
                           ) : (
                             <Button
                               theme="primaryFilled"
@@ -234,7 +245,9 @@ const ServiceOptions = ({ selectOption, serviceData, options }) => {
                                 setSelectedOption(option.otherAttributes.availabilityCode.code);
                               }}
                             >
-                              <PStrong>Select</PStrong>
+                              <PStrong>
+                                <Trans>Select</Trans>
+                              </PStrong>
                             </Button>
                           )}
                         </ButtonWrapper>
@@ -254,7 +267,9 @@ const ServiceOptions = ({ selectOption, serviceData, options }) => {
                       selectOption(serviceData, fullSelectedOption);
                     }}
                   >
-                    <PStrong>Apply</PStrong>
+                    <PStrong>
+                      <Trans>Apply</Trans>
+                    </PStrong>
                   </Button>
                 </div>
               </ModalBody>

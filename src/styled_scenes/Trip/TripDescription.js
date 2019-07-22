@@ -13,6 +13,9 @@ import searchActions from 'store/search/actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const Wrapper = styled.div`
   margin: 40px 20px 0;
   text-align: center;
@@ -78,22 +81,26 @@ class TripDescription extends Component {
 
     return (
       <Wrapper>
-        <About>About this trip</About>
+        <About>
+          <Trans>About this trip</Trans>
+        </About>
         <TripData>
           <DataChunk>
             <Calendar />
-            <span>{minutesToDays(trip.duration)} Days</span>
+            <span>
+              <Trans>{minutesToDays(trip.duration)} Days</Trans>
+            </span>
           </DataChunk>
           <DataChunk>
             <Map />
             <span>
-              {countries} {countries === 1 ? 'Country' : 'Countries'}
+              {countries} {countries === 1 ? <Trans>Country</Trans> : <Trans>Countries</Trans>}
             </span>
           </DataChunk>
           <DataChunk>
             <MapMarker />
             <span>
-              {cities} {cities === 1 ? 'City' : 'Cities'}
+              {cities} {cities === 1 ? <Trans>City</Trans> : <Trans>Cities</Trans>}
             </span>
           </DataChunk>
         </TripData>

@@ -8,6 +8,9 @@ import placeholder from 'assets/placeholder350x350.svg';
 import I18nText from 'shared_components/I18nText';
 import { minutesToDays } from 'libs/Utils';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const getTripImage = trip => {
   if (trip.picture && trip.picture.url) return trip.picture.url;
   return placeholder;
@@ -84,7 +87,7 @@ class TripsListInDropDown extends React.Component {
     for (let i = 0; i < dayCountObj.count; i++) {
       dayItems.push(
         <List.Item key={i} onClick={this.onItemClick({ trip, day: i + 1 })}>
-          Day {i + 1}
+          <Trans>Day {i + 1}</Trans>
         </List.Item>,
       );
     }
@@ -98,7 +101,9 @@ class TripsListInDropDown extends React.Component {
         style={{ overflowY: 'scroll', maxHeight: 300 }}
       >
         <div ref={this.props.daysRef}>
-          <Popup.Header>Select Day</Popup.Header>
+          <Popup.Header>
+            <Trans>Select Day</Trans>
+          </Popup.Header>
           <Popup.Content>
             <List selection verticalAlign="middle" divided>
               {dayItems}
@@ -117,7 +122,9 @@ class TripsListInDropDown extends React.Component {
           <List.Item onClick={this.props.onNewTripClick}>
             <List.Icon name="add" />
             <List.Content>
-              <List.Header>Create a new Trip</List.Header>
+              <List.Header>
+                <Trans>Create Trip</Trans>
+              </List.Header>
             </List.Content>
           </List.Item>
         </List>

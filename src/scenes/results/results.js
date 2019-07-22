@@ -18,7 +18,7 @@ class Results extends React.Component {
 
     helmet = (
       <Helmet>
-        <title>{title} | Deens.com</title>
+        <title>{title} | Deens</title>
         <link rel="canonical" href={url} />
         <meta property="og:url" content={url} />
         <meta property="og:title" content={title} />

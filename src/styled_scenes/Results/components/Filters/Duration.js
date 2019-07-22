@@ -4,6 +4,9 @@ import styled from 'styled-components';
 import Dropdown from 'shared_components/Dropdown';
 import { disabled } from 'libs/colors';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const Content = styled.div`
   list-style: none;
   > li {
@@ -20,15 +23,15 @@ const Content = styled.div`
 const valueToLabel = value => {
   switch (value) {
     case 1:
-      return '0-2 hrs';
+      return <Trans>0-2 hrs</Trans>;
     case 2:
-      return '2-5 hrs';
+      return <Trans>2-5 hrs</Trans>;
     case 3:
-      return 'Full day';
+      return <Trans>Full day</Trans>;
     case 4:
-      return 'Multi-day';
+      return <Trans>Multi-day</Trans>;
     default:
-      return 'Duration';
+      return <Trans>Duration</Trans>;
   }
 };
 

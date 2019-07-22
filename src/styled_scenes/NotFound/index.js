@@ -16,6 +16,9 @@ import headerActions from 'store/header/actions';
 import { PageContent } from '../../shared_components/layout/Page';
 import styled from 'styled-components';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const FooterWrapper = styled.footer`
   position: fixed;
   bottom: 0px;
@@ -39,10 +42,10 @@ function NotFoundScene({ showScene, changeHeader }) {
           marginBottom: '15px',
         }}
       >
-        404. Not found!
+        <Trans>Page Not found</Trans>
       </h1>
       <p style={{ textAlign: 'center', marginBottom: '150px' }}>
-        We are sorry but we could not find the page you are looking for.
+        <Trans>We are sorry but we could not find the page you are looking for.</Trans>
       </p>
       <FooterWrapper>
         <Divider />

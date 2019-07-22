@@ -8,6 +8,10 @@ import UserBasicInfo from 'styled_scenes/Account/components/UserBasicInfo';
 import TripSectionComponent from 'styled_scenes/Account/Trips/shared/TripSectionComponent';
 import apiClient from 'libs/apiClient';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans } from '@lingui/macro';
+
 class AccountTripsScene extends Component {
   constructor(props) {
     super(props);
@@ -67,7 +71,9 @@ class AccountTripsScene extends Component {
             </SectionWrap>
           </Grid.Column>
           <Grid.Column mobile={16} tablet={11} computer={12}>
-            <h1>My Trips</h1>
+            <h1>
+              <Trans>My Trips</Trans>
+            </h1>
             <TripSectionComponent
               isLoadingTrips={this.state.isLoading}
               trips={this.state.trips}

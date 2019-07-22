@@ -6,6 +6,9 @@ import { uniqBy } from 'lodash';
 import { PSmall, PXSmall } from 'libs/commonStyles';
 import { primary } from 'libs/colors';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const Suggestions = styled.div`
   margin-top: 10px;
 `;
@@ -60,7 +63,9 @@ const TagSelector = ({ selectedTags, suggestedTags, onChange, onBlur }) => {
         onBlur={onBlur}
       />
       <Suggestions>
-        <PSmall>Suggestions</PSmall>
+        <PSmall>
+          <Trans>Suggestions</Trans>
+        </PSmall>
         {filteredTags.slice(0, 20).map(tag => (
           <SuggestedTag
             key={tag.value}

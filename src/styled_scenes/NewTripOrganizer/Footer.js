@@ -11,6 +11,9 @@ import I18nText from 'shared_components/I18nText';
 import { throttle } from 'lodash';
 import { media } from 'libs/styled';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const bottomOffset = 245;
 
 const Placeholder = styled.div`
@@ -176,7 +179,9 @@ const Footer = ({
           ) : (
             <PStrong>${price}</PStrong>
           )}{' '}
-          <TotalPriceText>Total price</TotalPriceText>
+          <TotalPriceText>
+            <Trans>Total price</Trans>
+          </TotalPriceText>
         </Price>
         <Button
           id="bookButton"
@@ -187,14 +192,16 @@ const Footer = ({
           data-testid="checkoutBookButton"
           bold
         >
-          Book
+          <Trans>Book</Trans>
         </Button>
         <Button id="shareButton" size="small" type="button" theme="tertiary" onClick={share} bold>
-          Share your Trip
+          <Trans>Share your Trip</Trans>
         </Button>
         <SaveText>{saveButtonText(isSaving)}</SaveText>
         <CheckingAvailability checking={isCheckingAvailability}>
-          <P>Checking availability</P>
+          <P>
+            <Trans>Checking availability</Trans>
+          </P>
           <LoadingDots />
         </CheckingAvailability>
         <UndoServiceDeletion
@@ -203,7 +210,7 @@ const Footer = ({
         >
           <UndoArrow />
           <P>
-            Undo removal of{' '}
+            <Trans>Undo removal of</Trans>{' '}
             <I18nText
               data={
                 recentlyDeletedService &&

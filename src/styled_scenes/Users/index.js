@@ -10,6 +10,10 @@ import Reviews from 'shared_components/Reviews';
 import ListsHandler from 'shared_components/ListsHandler';
 import api from 'libs/apiClient';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans, t } from '@lingui/macro';
+
 function mapReviewerIntoReview(items, data) {
   return items.map(item => {
     return {
@@ -36,7 +40,9 @@ const UserScene = ({ user = {}, tripsBooked = [], tripsAndServicesOffered = [] }
         </Grid.Column>
         <Grid.Column mobile={16} tablet={11} computer={12}>
           <StatusAndBio user={user} />
-          <Title>Reviews given to the user</Title>
+          <Title>
+            <Trans>Reviews given to the user</Trans>
+          </Title>
           {user &&
             user.username && (
               <ListsHandler
@@ -48,21 +54,34 @@ const UserScene = ({ user = {}, tripsBooked = [], tripsAndServicesOffered = [] }
                 haveIncludes={['user']}
                 mapIncludes={mapReviewerIntoReview}
                 render={({ items, fetchMore, totalCount, isLoading }) => (
-                  <Reviews
-                    reviews={items}
-                    fetchMore={fetchMore}
-                    totalCount={totalCount}
-                    isLoading={isLoading}
-                    emptyText="This user has not been rated yet."
-                    userKey="reviewer"
-                  />
+                  <I18n>
+                    {({ i18n }) => (
+                      <Reviews
+                        reviews={items}
+                        fetchMore={fetchMore}
+                        totalCount={totalCount}
+                        isLoading={isLoading}
+                        emptyText={i18n._(t`This user has not been rated yet.`)}
+                        userKey="reviewer"
+                      />
+                    )}
+                  </I18n>
                 )}
               />
             )}
           {tripsAndServicesOffered.length > 0 && (
-            <UsersTripsServices items={tripsAndServicesOffered} title="My trips and services" />
+            <I18n>
+              {({ i18n }) => (
+                <UsersTripsServices
+                  items={tripsAndServicesOffered}
+                  title={i18n._(t`My trips and services"`)}
+                />
+              )}
+            </I18n>
           )}
-          <Title>Reviews given by the user</Title>
+          <Title>
+            <Trans>Reviews given by the user</Trans>
+          </Title>
           {user &&
             user.username && (
               <ListsHandler
@@ -74,14 +93,18 @@ const UserScene = ({ user = {}, tripsBooked = [], tripsAndServicesOffered = [] }
                 haveIncludes={['service']}
                 /*showLoader={false}*/
                 render={({ items, fetchMore, totalCount, isLoading }) => (
-                  <Reviews
-                    reviews={items}
-                    fetchMore={fetchMore}
-                    totalCount={totalCount}
-                    isLoading={isLoading}
-                    emptyText="This user has not reviewed anything yet."
-                    showServiceInsteadOfUser
-                  />
+                  <I18n>
+                    {({ i18n }) => (
+                      <Reviews
+                        reviews={items}
+                        fetchMore={fetchMore}
+                        totalCount={totalCount}
+                        isLoading={isLoading}
+                        emptyText={i18n._(t`This user has not left any reviews yet`)}
+                        showServiceInsteadOfUser
+                      />
+                    )}
+                  </I18n>
                 )}
               />
             )}

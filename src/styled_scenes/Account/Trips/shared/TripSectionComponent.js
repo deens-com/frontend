@@ -14,6 +14,10 @@ import { Loader } from 'semantic-ui-react';
 import InfiniteScroll from 'react-infinite-scroller';
 import urls from 'libs/urlGenerator';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans, t } from '@lingui/macro';
+
 const get_label_color = status => {
   switch (status) {
     case 'public':
@@ -99,32 +103,48 @@ class Trip extends React.PureComponent {
                 to={urls.trip.organize(trip._id)}
               >
                 <Icon name="edit" />
-                Edit
+                <Trans>Edit</Trans>
               </Button>
-              <Modal
-                trigger={
-                  <DeleteTrip>
-                    <TrashCan />
-                  </DeleteTrip>
-                }
-                header="Delete trip"
-                content="Are you sure you want to delete this trip?"
-                actions={[
-                  'Keep trip',
-                  {
-                    key: 'delete',
-                    content: 'Delete',
-                    negative: true,
-                    onClick: () => this.props.onDelete(this.props.trip._id),
-                  },
-                ]}
-              />
+              <I18n>
+                {({ i18n }) => (
+                  <Modal
+                    trigger={
+                      <DeleteTrip>
+                        <TrashCan />
+                      </DeleteTrip>
+                    }
+                    header={i18n._(t`Delete trip`)}
+                    content={i18n._(t`Are you sure you want to delete this trip?`)}
+                    actions={[
+                      i18n._(t`Keep trip`),
+                      {
+                        key: 'delete',
+                        content: i18n._(t`Delete`),
+                        negative: true,
+                        onClick: () => this.props.onDelete(this.props.trip._id),
+                      },
+                    ]}
+                  />
+                )}
+              </I18n>
             </span>
           ) : null}
         </TripTitleRow>
         {trip.startDate && <ColoredText>{getFormattedTripDates(trip)}</ColoredText>}
-        <Label color={get_label_color(trip.status)}>Trip visibility: {trip.status}</Label>
-        {trip.bookingStatus === 'booked' ? <Label color="olive">Booked</Label> : null}
+        <Label color={get_label_color(trip.status)}>
+          {trip.privacy === 'private' ? (
+            <Trans>Private</Trans>
+          ) : trip.privacy === 'unlisted' ? (
+            <Trans>Shared</Trans>
+          ) : (
+            <Trans>Public</Trans>
+          )}
+        </Label>
+        {trip.bookingStatus === 'booked' ? (
+          <Label color="olive">
+            <Trans>Booked</Trans>
+          </Label>
+        ) : null}
         {trip.bookingStatus === 'cancelled-by-user' ? <Label color="red">Cancelled</Label> : null}
         <CarouselWrapper>
           <Carousel sm_slides_nb={1} md_slides_nb={2} lg_slides_nb={4} xl_slides_nb={4}>
@@ -132,7 +152,9 @@ class Trip extends React.PureComponent {
           </Carousel>
         </CarouselWrapper>
         {trip.services.length > 0 ? null : (
-          <EmptyServicesText>No scheduled services in this trip</EmptyServicesText>
+          <EmptyServicesText>
+            <Trans>This trip is empty</Trans>
+          </EmptyServicesText>
         )}
       </SectionContent>
     );
@@ -142,7 +164,11 @@ class Trip extends React.PureComponent {
 class TripSectionComponent extends React.PureComponent {
   render() {
     if (this.props.trips.length === 0 && !this.props.isLoading && this.props.totalTrips === 0) {
-      return <p>You don't have any trips.</p>;
+      return (
+        <p>
+          <Trans>You don't have any trips.</Trans>
+        </p>
+      );
     }
 
     return (
@@ -156,7 +182,7 @@ class TripSectionComponent extends React.PureComponent {
           loader={
             <LoaderWrapper key="loader">
               <Loader active inline="centered" size="big">
-                Loading
+                <Trans>Loading</Trans>
               </Loader>
             </LoaderWrapper>
           }

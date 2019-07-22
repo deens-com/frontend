@@ -6,6 +6,9 @@ import CircularProfilePic from './CircularProfilePic';
 import moment from 'moment';
 import ImgurAvatar from './../../../assets/no-avatar.png';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const BodyText = styled.p`
   font-weight: 500;
 `;
@@ -48,13 +51,17 @@ const UserBasicInfo = ({ user = {} }) => {
         <Grid.Row>
           <Grid.Column textAlign="center">
             <div>
-              <AttributeTitle>MEMBER SINCE</AttributeTitle>
+              <AttributeTitle>
+                <Trans>Member since</Trans>
+              </AttributeTitle>
               {user.createdAt && <BodyText>{formatDate(user.createdAt)}</BodyText>}
             </div>
           </Grid.Column>
           <Grid.Column textAlign="center">
             <div>
-              <AttributeTitle>USER LEVEL</AttributeTitle>
+              <AttributeTitle>
+                <Trans>User level</Trans>
+              </AttributeTitle>
               <BodyText>
                 <Icon fitted name="star" style={{ color: '#65AFBB' }} /> {userLevel}
               </BodyText>

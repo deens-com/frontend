@@ -31,6 +31,9 @@ import { googleMapsKey } from 'libs/config';
 import { waitUntilMapsLoaded, generateTripSlug } from 'libs/Utils';
 import api from 'libs/apiClient';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const DetailWrapper = styled.div`
   width: 100%;
   padding: 15px 15px 25px 15px;
@@ -213,29 +216,40 @@ class Service extends Component {
                     <DetailsLink
                       onClick={() => this.setState(({ moreDetails }) => ({ moreDetails: true }))}
                     >
-                      More...
+                      <Trans>More</Trans>
+                      ...
                     </DetailsLink>
                   </PreserveWhiteSpace>
                 )}
                 {((this.props.service.startInstructions &&
                   this.props.service.startInstructions !== 'none') ||
                   (this.props.service.endInstructions &&
-                    this.props.service.endInstructions !== 'none')) && <h4>Instructions : </h4>}
+                    this.props.service.endInstructions !== 'none')) && (
+                  <h4>
+                    <Trans>Instructions</Trans> :{' '}
+                  </h4>
+                )}
                 <ul>
                   {this.props.service.startInstructions &&
                     this.props.service.startInstructions !== 'none' && (
-                      <li>On arrival : {this.props.service.startInstructions}</li>
+                      <li>
+                        <Trans>On arrival</Trans> : {this.props.service.startInstructions}
+                      </li>
                     )}
                   {this.props.service.endInstructions &&
                     this.props.service.endInstructions !== 'none' && (
-                      <li>On departure : {this.props.service.endInstructions}</li>
+                      <li>
+                        <Trans>On departure</Trans> : {this.props.service.endInstructions}
+                      </li>
                     )}
                 </ul>
                 <br />
                 {this.props.service.rules &&
                   this.props.service.rules.length > 0 && (
                     <section>
-                      <h4>Rules : </h4>
+                      <h4>
+                        <Trans>Rules</Trans> :{' '}
+                      </h4>
                       <ul>
                         {this.props.service.rules &&
                           this.props.service.rules.map(rule => <li>{rule}</li>)}
@@ -287,7 +301,9 @@ class Service extends Component {
           </PageContent>
         </Container>
         <Container>
-          <ReviewsTitle>Reviews</ReviewsTitle>
+          <ReviewsTitle>
+            <Trans>Reviews</Trans>
+          </ReviewsTitle>
           {this.props.service &&
             this.props.service._id && (
               <ListsHandler
@@ -315,7 +331,9 @@ class Service extends Component {
                 <Badge>
                   <BadgeIcon />
                 </Badge>
-                <SelfAlignCenter>Part of trips</SelfAlignCenter>
+                <SelfAlignCenter>
+                  <Trans>Featured in these trips</Trans>
+                </SelfAlignCenter>
                 <CarouselColumnSpan>
                   <Row>
                     <Grid columns={4} doubling stackable>

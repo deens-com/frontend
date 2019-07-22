@@ -3,6 +3,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const Error = styled.div`
   cursor: ${props => (props.retry ? 'pointer' : 'auto')};
 `;
@@ -76,7 +79,8 @@ class ErrorHandler extends React.Component {
         onClick={this.handleClick}
         style={this.props.style}
       >
-        Something went wrong :( {retryFunction ? 'Please click here to try again.' : ''}
+        <Trans>Something went wrong</Trans> 😞{' '}
+        {retryFunction ? <Trans>Please click here to try again.</Trans> : ''}
       </Error>
     );
   }
