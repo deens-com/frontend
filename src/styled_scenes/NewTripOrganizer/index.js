@@ -53,13 +53,6 @@ class TripOrganizer extends React.Component {
     tripId: PropTypes.string,
   };
 
-  componentDidMount() {
-    this._isMounted = true;
-    this.props.checkAvailability();
-    this.props.getTransportation();
-    this.prefetchSearchResults();
-  }
-
   componentWillUnmount() {
     this._isMounted = false;
   }
@@ -213,7 +206,7 @@ class TripOrganizer extends React.Component {
     const { inDayServices } = this.props;
     let location;
     const servicesInCurrentDay = Object.values(inDayServices).filter(s => s.day === day);
-    if (servicesInCurrentDay) {
+    if (servicesInCurrentDay.length > 0) {
       location = this.props.services[servicesInCurrentDay[servicesInCurrentDay.length - 1].service]
         .location;
     } else {
