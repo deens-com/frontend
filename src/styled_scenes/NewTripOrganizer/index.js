@@ -193,10 +193,17 @@ class TripOrganizer extends React.Component {
   };
 
   requestAvailability = async () => {
-    const { startDate, adultCount, infantCount, childrenCount } = this.props.trip;
+    const { adults, children, infants } = this.props;
+    const { startDate } = this.props.trip;
     const bookingDate = moment(startDate).format('YYYY-MM-DD');
-    const peopleCount = adultCount + infantCount + childrenCount;
-    const data = { bookingDate, adultCount, childrenCount, infantCount, peopleCount };
+    const peopleCount = adults + infants + children;
+    const data = {
+      bookingDate,
+      adultCount: adults,
+      childrenCount: children,
+      infantCount: infants,
+      peopleCount,
+    };
 
     return apiClient.trips.availability.get(this.props.tripId, data);
   };
@@ -576,9 +583,9 @@ class TripOrganizer extends React.Component {
         {!this.props.session.username && <WarningLogin />}
         <Options
           onChangeGuests={this.changeGuests}
-          adults={trip.adultCount}
-          children={trip.childrenCount}
-          infants={trip.infantCount}
+          adults={this.props.adults}
+          children={this.props.children}
+          infants={this.props.infants}
           startDate={trip.startDate}
           duration={trip.duration}
           changeShowTransport={this.changeShowTransport}

@@ -72,9 +72,9 @@ class TripOrganizerContainer extends Component {
         trip={this.props.trip}
         tripId={this.props.match.params.id}
         startDate={moment(this.props.trip.startDate).toJSON()}
-        adults={this.props.trip.adultCount || 2}
-        children={this.props.trip.childrenCount || 0}
-        infants={this.props.trip.infantCount || 0}
+        adults={this.props.trip.adultCount || this.props.adults || 2}
+        children={this.props.trip.childrenCount || this.props.children || 0}
+        infants={this.props.trip.infantCount || this.props.infants || 0}
         changeDates={this.props.changeDates}
         updateSearchParams={this.props.updateSearchParams}
         history={this.props.history}
@@ -133,6 +133,9 @@ const mapStateToProps = (state, props) => {
     error: state.tripDesigner.trip.error,
     owner: state.trips.owner,
     endDate: state.search.searchQuery.end_date,
+    adults: state.search.searchQuery.adults,
+    children: state.search.searchQuery.children,
+    infants: state.search.searchQuery.infants,
     isGDPRDismissed: state.settings.gdprDismissed,
     gdprHeight: state.settings.gdprHeight,
     services: state.entities.services,
