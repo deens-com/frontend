@@ -6,13 +6,12 @@ import { DragSource, DropTarget } from 'react-dnd';
 import { Link } from 'react-router-dom';
 import Popup from 'shared_components/Popup';
 import { types } from '../../constants';
-import { PXSmall, P, PStrong } from 'libs/commonStyles';
+import { PXSmall, P } from 'libs/commonStyles';
 import { getFirstCategoryLowerCase } from 'libs/categories';
 import Star from 'shared_components/icons/Star';
-import { generateServiceSlug, extractPrice, getPriceFromServiceOption } from 'libs/Utils';
+import { generateServiceSlug, getPriceFromServiceOption } from 'libs/Utils';
 import urls from 'libs/urlGenerator';
 import {
-  textLight,
   primary,
   textDark,
   primaryHover,
@@ -20,7 +19,6 @@ import {
   activity,
   food,
   accommodation,
-  secondary,
   backgroundDark,
   backgroundLight,
   tertiary,
@@ -301,30 +299,38 @@ const Service = ({
               />
               <ServiceData>
                 <ServiceTitle>
-                  {getFirstCategoryLowerCase(data.service.categories) === 'accommodation' &&
-                    data.service.accommodationProps &&
-                    data.service.accommodationProps.stars && (
-                      <>
-                        <span style={{ fontWeight: 'bold', color: tertiary }}>
-                          {data.service.accommodationProps.stars}
-                        </span>
-                        <Star
-                          style={{
-                            display: 'inline-block',
-                            marginRight: '5px',
-                            paddingTop: '3px',
-                            color: tertiary,
-                          }}
-                        />
-                      </>
+                  <Link
+                    to={urls.service.view({
+                      id: data.service._id,
+                      slug: generateServiceSlug(data.service),
+                      category: getFirstCategoryLowerCase(data.service.categories),
+                    })}
+                  >
+                    {getFirstCategoryLowerCase(data.service.categories) === 'accommodation' &&
+                      data.service.accommodationProps &&
+                      data.service.accommodationProps.stars && (
+                        <>
+                          <span style={{ fontWeight: 'bold', color: tertiary }}>
+                            {data.service.accommodationProps.stars}
+                          </span>
+                          <Star
+                            style={{
+                              display: 'inline-block',
+                              marginRight: '5px',
+                              paddingTop: '3px',
+                              color: tertiary,
+                            }}
+                          />
+                        </>
+                      )}
+                    {data.service.privacy === 'private' ? (
+                      <InlineInput disallowEmptySubmit onChanged={setServiceTitle}>
+                        {I18nText.translate(data.service.title)}
+                      </InlineInput>
+                    ) : (
+                      I18nText.translate(data.service.title)
                     )}
-                  {data.service.privacy === 'private' ? (
-                    <InlineInput disallowEmptySubmit onChanged={setServiceTitle}>
-                      {I18nText.translate(data.service.title)}
-                    </InlineInput>
-                  ) : (
-                    I18nText.translate(data.service.title)
-                  )}
+                  </Link>
                 </ServiceTitle>
                 <RatingAndPrice>
                   <Price>
