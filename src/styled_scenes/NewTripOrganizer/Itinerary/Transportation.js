@@ -20,6 +20,9 @@ import TrainIcon from 'shared_components/icons/Train';
 
 import { TripContext } from '../';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const TransportBox = styled.div`
   display: flex;
   flex-direction: column;
@@ -248,7 +251,9 @@ const Transportation = ({
               }
               content={
                 <div>
-                  <P style={{ color: secondary }}>Change transport</P>
+                  <P style={{ color: secondary }}>
+                    <Trans>Change transport</Trans>
+                  </P>
                   <TransportOptions>
                     <TransportSelect
                       selected={selected === 'car'}
@@ -309,7 +314,7 @@ const Transportation = ({
                         <TextDivisor />
                         <PSmall>
                           {distance}
-                          km
+                          <Trans>km</Trans>
                         </PSmall>
                       </TimeAndDistance>
                     )}

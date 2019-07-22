@@ -10,6 +10,10 @@ import urls from 'libs/urlGenerator';
 import { websiteUrl } from 'libs/config';
 import { primary } from 'libs/colors';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans, t } from '@lingui/macro';
+
 const copyColor = '#656F76';
 
 const CopyIcon = styled.div`
@@ -70,26 +74,33 @@ const ShareData = ({ trip, title, small }) => {
       <H2>{title}</H2>
       <Copy>
         <Input small={small} ref={inputRef} value={tripUrl} />
-        <Popup
-          trigger={
-            <CopyIcon>
-              <CopyToClipboard
-                style={{
-                  width: small ? '1em' : '2em',
-                  height: small ? '1em' : '2em',
-                  transform: 'rotateY(180deg)',
-                }}
-              />
-              <P>Copy</P>
-            </CopyIcon>
-          }
-          content="Copied to clipboard"
-          inverted
-          on="click"
-          open={copiedToClipboard}
-          position="bottom center"
-          onOpen={onCopy}
-        />
+        <I18n>
+          {({ i18n }) => (
+            <Popup
+              trigger={
+                <CopyIcon>
+                  <CopyToClipboard
+                    style={{
+                      width: small ? '1em' : '2em',
+                      height: small ? '1em' : '2em',
+                      transform: 'rotateY(180deg)',
+                    }}
+                  />
+                  <P>
+                    <Trans>Copy</Trans>
+                  </P>
+                </CopyIcon>
+              }
+              content={i18n._(t`Copied to clipboard`)}
+              inverted
+              on="click"
+              open={copiedToClipboard}
+              position="bottom center"
+              onOpen={onCopy}
+            />
+          )}
+        </I18n>
+
         <a
           href={tripUrl}
           rel="noopener noreferrer"
@@ -125,10 +136,14 @@ const ShareData = ({ trip, title, small }) => {
               stroke-linejoin="round"
             />
           </svg>
-          <span>View</span>
+          <span>
+            <Trans>View</Trans>
+          </span>
         </a>
       </Copy>
-      <H2>Spread the word!</H2>
+      <H2>
+        <Trans>Spread the word!</Trans>
+      </H2>
       <div
         style={{ marginTop: '25px', textAlign: 'left' }}
         className="addthis_inline_share_toolbox"

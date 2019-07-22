@@ -6,6 +6,10 @@ import CrossIcon from 'shared_components/icons/CrossIcon';
 
 import { primary, secondary } from 'libs/colors';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { t } from '@lingui/macro';
+
 const Wrapper = styled.div`
   color: ${primary};
   border-radius: 5px 5px 5px 0;
@@ -40,20 +44,24 @@ const PriceRange = ({ text, onChange, onApply, big }) => {
             <CrossIcon />
           </IconWrapper>
         )}
-      <InlineInput
-        hideOverflow
-        customWrapper={Wrapper}
-        wrapperStyle={{ width: big ? '300px' : 'auto', maxWidth: big ? '300px' : '150px' }}
-        autoselect
-        placeholder="Keywords"
-        hideIcon
-        onFocusChange={onChange}
-        onChanged={value => {
-          onApply({ text: value });
-        }}
-      >
-        {text}
-      </InlineInput>
+      <I18n>
+        {({ i18n }) => (
+          <InlineInput
+            hideOverflow
+            customWrapper={Wrapper}
+            wrapperStyle={{ width: big ? '300px' : 'auto', maxWidth: big ? '300px' : '150px' }}
+            autoselect
+            placeholder={i18n._(t`Keywords`)}
+            hideIcon
+            onFocusChange={onChange}
+            onChanged={value => {
+              onApply({ text: value });
+            }}
+          >
+            {text}
+          </InlineInput>
+        )}
+      </I18n>
     </div>
   );
 };

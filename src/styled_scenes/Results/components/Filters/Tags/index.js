@@ -6,6 +6,9 @@ import Dropdown from 'shared_components/Dropdown';
 import { P } from 'libs/commonStyles';
 import TagSelector from 'shared_components/TagSelector';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const Content = styled.div`
   padding: 15px;
 `;
@@ -27,7 +30,7 @@ const Tags = ({ selectedTags, suggestedTags, onApply }) => {
 
   const renderTag = () => {
     if (tags.length === 0) {
-      return 'Tags';
+      return <Trans>Tags</Trans>;
     }
     if (tags.length <= 3) {
       return tags.map(tag => tag.value).join(', ');
@@ -42,7 +45,6 @@ const Tags = ({ selectedTags, suggestedTags, onApply }) => {
   return (
     <Dropdown onClose={onClose} onOpen={onOpen} trigger={renderTag()}>
       <Content>
-        <P>Add tags</P>
         {isOpen && (
           <TagSelector
             selectedTags={selectedTags}

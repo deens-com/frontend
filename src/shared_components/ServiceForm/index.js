@@ -20,6 +20,10 @@ import MultiImageUploader from 'shared_components/MultiImageUploader/MultiImageU
 import DateInput from '../Form/DateInput';
 import DurationInput from './DurationInput';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans, t } from '@lingui/macro';
+
 const serviceCategories = [
   { label: 'Accommodation', value: 'Accommodation' },
   { label: 'Activity', value: 'Activity' },
@@ -311,18 +315,22 @@ class ServiceForm extends Component {
             open={this.state.showGlobalError}
             onClose={this.handleModalClose}
           >
-            <Modal.Header>There was an issue with creating your service</Modal.Header>
+            <Modal.Header>
+              <Trans>There was an issue creating your service</Trans>
+            </Modal.Header>
             <Modal.Content>{globalError.message}</Modal.Content>
             <Modal.Actions>
               <Button color="red" onClick={this.handleModalClose}>
-                Close
+                <Trans>Close</Trans>
               </Button>
             </Modal.Actions>
           </Modal>
 
           {/* Type of service */}
           <Form.Field required>
-            <label>Type of service</label>
+            <label>
+              <Trans>Type of service</Trans>
+            </label>
             <Dropdown
               name="category"
               placeholder="Type of service"
@@ -338,12 +346,18 @@ class ServiceForm extends Component {
           {/* Location search */}
           <Form.Field required>
             <LabelWithIcon>
-              <span>Location</span>
+              <span>
+                <Trans>Location</Trans>
+              </span>
               <Icon>
-                <HelpTooltip
-                  style={{ width: 16, height: 16 }}
-                  content="Please state your service location"
-                />
+                <I18n>
+                  {({ i18n }) => (
+                    <HelpTooltip
+                      style={{ width: 16, height: 16 }}
+                      content={i18n._(t`Please specify your service location`)}
+                    />
+                  )}
+                </I18n>
               </Icon>
             </LabelWithIcon>
             <SemanticLocationControl
@@ -356,14 +370,21 @@ class ServiceForm extends Component {
 
           {/* Title */}
           <Form.Field required>
-            <label>Title</label>
-            <Form.Input
-              name="title"
-              placeholder="Title"
-              value={values.title}
-              error={!!(touched.title && errors.title)}
-              {...defaultProps}
-            />
+            <label>
+              <Trans>Title</Trans>
+            </label>
+            <I18n>
+              {({ i18n }) => (
+                <Form.Input
+                  name="title"
+                  placeholder={i18n._(t`Title`)}
+                  value={values.title}
+                  error={!!(touched.title && errors.title)}
+                  {...defaultProps}
+                />
+              )}
+            </I18n>
+
             {touched.title && errors.title && <ErrorMsg>{errors.title}</ErrorMsg>}
           </Form.Field>
 
@@ -380,6 +401,7 @@ class ServiceForm extends Component {
                     />
                   </Icon>
                 </LabelWithIcon>
+
                 <Form.Input
                   name="subtitle"
                   placeholder="Sub-title"
@@ -466,19 +488,27 @@ class ServiceForm extends Component {
 
           {/* Price Per */}
           <Form.Field>
-            <Form.Dropdown
-              name="payPer"
-              label="Price Per"
-              selection
-              defaultValue={PRICE_PER_SESSION}
-              value={values.payPer}
-              options={pricePerList.map(pp => ({
-                value: pp,
-                text: pp === PRICE_PER_SESSION ? getPerSessionText(values.category) : 'Per Person',
-              }))}
-              onChange={this.onDropDownChange}
-              error={!!(touched.payPer && errors.payPer)}
-            />
+            <I18n>
+              {({ i18n }) => (
+                <Form.Dropdown
+                  name="payPer"
+                  label={i18n._(t`Price Per`)}
+                  selection
+                  defaultValue={PRICE_PER_SESSION}
+                  value={values.payPer}
+                  options={pricePerList.map(pp => ({
+                    value: pp,
+                    text:
+                      pp === PRICE_PER_SESSION
+                        ? getPerSessionText(values.category)
+                        : i18n._(t`Per Person`),
+                  }))}
+                  onChange={this.onDropDownChange}
+                  error={!!(touched.payPer && errors.payPer)}
+                />
+              )}
+            </I18n>
+
             {touched.payPer && errors.payPer && <ErrorMsg>{errors.payPer}</ErrorMsg>}
           </Form.Field>
 
@@ -502,8 +532,12 @@ class ServiceForm extends Component {
               {/* Price Per Adult */}
               <Form.Field>
                 <label>
-                  {values.category === 'Food' ? 'Average Price Per Adult' : 'Price Per Adult'} ($
-                  USD)
+                  {values.category === 'Food' ? (
+                    <Trans>Average Price Per Adult</Trans>
+                  ) : (
+                    <Trans>Price Per Adult</Trans>
+                  )}{' '}
+                  ($ USD)
                 </label>
                 <Form.Input
                   name="perAdult"
@@ -516,8 +550,12 @@ class ServiceForm extends Component {
               {/* Price Per Child */}
               <Form.Field>
                 <label>
-                  {values.category === 'Food' ? 'Average Price Per Child' : 'Price Per Child'} ($
-                  USD)
+                  {values.category === 'Food' ? (
+                    <Trans>Average Price Per Child</Trans>
+                  ) : (
+                    <Trans>Price Per Child</Trans>
+                  )}{' '}
+                  ($ USD)
                 </label>
                 <Form.Input
                   name="perChild"

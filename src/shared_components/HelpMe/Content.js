@@ -228,15 +228,21 @@ const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user, defaultLocat
         </>
       ) : (
         <WillContact>
-          We will contact a travel planner for your destination and will come back to you in no time
-          with a quote.
+          <Trans>
+            We will contact a travel planner for your destination and will come back to you in no
+            time with a quote.
+          </Trans>
         </WillContact>
       )}
       <Form>
         <FormLine>
           <FormField>
-            <Label>What is your destination?</Label>
-            <Description>Leave blank if you don't know</Description>
+            <Label>
+              <Trans>What is your destination?</Trans>
+            </Label>
+            <Description>
+              <Trans>Leave blank if you don't know</Trans>
+            </Description>
             <I18n>
               {({ i18n }) => (
                 <SemanticLocationControl
@@ -253,7 +259,7 @@ const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user, defaultLocat
         </FormLine>
         <FormHalfLine>
           <Label>
-            How many travelers?
+            <Trans>How many travelers?</Trans>
             <Required>*</Required>
           </Label>
           <Dropdown error={errors.guests} trigger={`${guests} Guest${guests > 1 ? 's' : ''}`}>
@@ -268,7 +274,7 @@ const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user, defaultLocat
         </FormHalfLine>
         <FormHalfLine>
           <Label>
-            What is your budget?
+            <Trans>What is your budget?</Trans>
             <Required>*</Required>
           </Label>
           <Budget>
@@ -283,7 +289,7 @@ const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user, defaultLocat
             <FormLine>
               <FormField>
                 <Label>
-                  Your Email
+                  <Trans>Your Email</Trans>
                   <Required>*</Required>
                 </Label>
                 <Input error={errors.email} innerRef={email} />
@@ -293,12 +299,14 @@ const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user, defaultLocat
         )}
         <ButtonWrapper>
           <Button onClick={askForQuote} theme="fillLightGreen">
-            Next
+            <Trans>Next</Trans>
           </Button>
         </ButtonWrapper>
         {errors &&
           Object.keys(errors).length > 0 && (
-            <span style={{ color: error }}>Please fill all the fields</span>
+            <span style={{ color: error }}>
+              <Trans>Please fill all the fields</Trans>
+            </span>
           )}
       </Form>
     </Wrapper>

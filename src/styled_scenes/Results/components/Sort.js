@@ -5,6 +5,9 @@ import Popup from 'shared_components/Popup';
 import { P } from 'libs/commonStyles';
 import { disabled, primary } from 'libs/colors';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const options = ['relevance:desc', 'rating:desc', 'price:desc', 'price:asc'];
 const tripOptions = options;
 const accommodationOptions = options;
@@ -37,13 +40,29 @@ const PopupContent = styled.ul`
 function sortByToComponent(by) {
   switch (by) {
     case 'rating:desc':
-      return <span key={by}>Rating</span>;
+      return (
+        <span key={by}>
+          <Trans>Rating</Trans>
+        </span>
+      );
     case 'price:desc':
-      return <span key={by}>↓ Price</span>;
+      return (
+        <span key={by}>
+          ↓ <Trans>Price</Trans>
+        </span>
+      );
     case 'price:asc':
-      return <span key={by}>↑ Price</span>;
+      return (
+        <span key={by}>
+          ↑ <Trans>Price</Trans>
+        </span>
+      );
     default:
-      return <span key={by}>Relevance</span>;
+      return (
+        <span key={by}>
+          <Trans>Relevance</Trans>
+        </span>
+      );
   }
 }
 
@@ -73,7 +92,11 @@ const Sort = ({ searchParams, updateSearchParams }) => {
 
   return (
     <Popup
-      trigger={<SortBy>Sort by {sortByToComponent(searchParams.sortBy)}</SortBy>}
+      trigger={
+        <SortBy>
+          <Trans>Sort by</Trans> {sortByToComponent(searchParams.sortBy)}
+        </SortBy>
+      }
       on="click"
       open={isOpen}
       onOpen={() => setIsOpen(true)}

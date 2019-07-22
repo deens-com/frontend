@@ -6,6 +6,9 @@ import { P } from 'libs/commonStyles';
 import { primary, error } from 'libs/colors';
 import DateSelector from './DateSelector';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const DeleteService = styled.div`
   color: ${primary};
   display: flex;
@@ -30,7 +33,9 @@ const ServiceSettings = ({ servicesByDay, removeService, service }) => {
     <div>
       <DeleteService onClick={() => removeService(service._id)}>
         <TrashCan />
-        <P>Delete</P>
+        <P>
+          <Trans>Delete</Trans>
+        </P>
       </DeleteService>
       {service.service.categories.find(category => category.names === 'Accommodation') && (
         <DatePicker>

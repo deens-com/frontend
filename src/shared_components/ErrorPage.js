@@ -6,6 +6,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import headerActions from 'store/header/actions';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const Title = styled.h1`
   text-align: center;
   padding-top: 100px;
@@ -27,8 +30,10 @@ const ErrorPage = ({ changeHeader }) => {
   return (
     <PageContent>
       <PageContainer>
-        <Title>Something went wrong :-(</Title>
-        <p>We are sorry about this, our engineers have been informed about it.</p>
+        <Title>Something went wrong 😞</Title>
+        <p>
+          <Trans>We are sorry about this, our engineers have been informed about it.</Trans>
+        </p>
       </PageContainer>
       <BrandFooter />
     </PageContent>

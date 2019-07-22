@@ -14,6 +14,9 @@ import LoadingDots from 'shared_components/LoadingDots';
 import Media from 'react-media';
 import urls from 'libs/urlGenerator';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const featuredTripCreator = 'beabatravel';
 
 const JoinCommunity = React.lazy(() => import('./JoinCommunity'));
@@ -92,7 +95,9 @@ export default class FeaturedTripCreator extends React.Component {
       <React.Fragment>
         <PageWrapper>
           <SectionHeader>
-            <H2>Featured Trip Creator From Our Community</H2>
+            <H2>
+              <Trans>Featured Trip Creator From Our Community</Trans>
+            </H2>
           </SectionHeader>
         </PageWrapper>
         <PageWrapper>
@@ -107,12 +112,17 @@ export default class FeaturedTripCreator extends React.Component {
                 <Link to={urls.user.view(featuredTripCreator)}>{featuredTripCreator}</Link>
               </H3>
               <P>
-                Béatrice was born and raised in Paris, France. She was a lawyer before she decided
-                to travel the world with her family. Béatrice has lived in many countries and
-                currently resides in Thailand. Her trips have been created from her own travels and
-                experiences and have inspired many other travelers on <Deens>Deens</Deens>.
+                <Trans>
+                  Béatrice was born and raised in Paris, France. She was a lawyer before she decided
+                  to travel the world with her family. Béatrice has lived in many countries and
+                  currently resides in Thailand. Her trips have been created from her own travels
+                  and experiences and have inspired many other travelers on <Deens>Deens</Deens>.
+                </Trans>
               </P>
-              <TripsBy>Trips by {featuredTripCreator}</TripsBy>
+              <TripsBy>
+                <Trans>Trips by </Trans>
+                {featuredTripCreator}
+              </TripsBy>
             </TripCreatorData>
           </TripCreator>
         </PageWrapper>

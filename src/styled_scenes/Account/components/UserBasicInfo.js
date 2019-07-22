@@ -12,6 +12,9 @@ import ImgurAvatar from './../../../assets/no-avatar.png';
 import urls from 'libs/urlGenerator';
 import { websiteUrl, icoReady } from 'libs/config';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const AttributeTitle = styled.h6`
   font-size: 9px;
   color: #a3a9b2;
@@ -130,7 +133,7 @@ class UserBasicInfo extends Component {
             <CenteredDiv>
               <FileInputWrapper>
                 <Button circular className="btn-file-input">
-                  Update avatar
+                  <Trans>Update avatar</Trans>
                 </Button>
                 <input
                   type="file"
@@ -182,7 +185,9 @@ class UserBasicInfo extends Component {
                 </Grid.Column>*/}
               <Grid.Column textAlign="center">
                 <div>
-                  <AttributeTitle>RATING</AttributeTitle>
+                  <AttributeTitle>
+                    <Trans>Rating</Trans>
+                  </AttributeTitle>
                   <Stars rating={this.props.user_profile.rating} />
                 </div>
               </Grid.Column>
@@ -206,7 +211,7 @@ class UserBasicInfo extends Component {
                 <MenuIcon disabled name="angle right" circular />
                 <span>
                   <MenuIcon disabled name="plane" circular />
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; My Trips
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <Trans>My Trips</Trans>
                 </span>
               </Menu.Item>
             </Link>
@@ -216,7 +221,7 @@ class UserBasicInfo extends Component {
                 <MenuIcon disabled name="angle right" circular />
                 <span>
                   <MenuIcon disabled name="list" circular />
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; My Services
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <Trans>My Services</Trans>
                 </span>
               </Menu.Item>
             </Link>*/}
@@ -226,7 +231,7 @@ class UserBasicInfo extends Component {
                 <MenuIcon disabled name="angle right" circular />
                 <span>
                   <MenuIcon disabled name="user" circular />
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Profile
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <Trans>Profile</Trans>
                 </span>
               </Menu.Item>
             </Link>
@@ -236,7 +241,7 @@ class UserBasicInfo extends Component {
                 <MenuIcon disabled name="angle right" circular />
                 <span>
                   <MenuIcon disabled name="power" circular />
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Logout
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <Trans>Log out</Trans>
                 </span>
               </Menu.Item>
             </div>
@@ -245,7 +250,7 @@ class UserBasicInfo extends Component {
               <br />
               <br />
               <center>
-                Your referral code:
+                <Trans>Your referral code:</Trans>
                 <CopyButton>
                   <input value={this.props.user_profile.myReferralCode} />
                   <Button
@@ -261,8 +266,10 @@ class UserBasicInfo extends Component {
                 <br />
                 {this.props.user_profile.referralInfo && (
                   <small>
-                    There are {this.props.user_profile.referralInfo.usersWhoSignedUp} users that
-                    signed up with your referral code.
+                    <Trans>
+                      {this.props.user_profile.referralInfo.usersWhoSignedUp} users signed up with
+                      your referral code.
+                    </Trans>
                   </small>
                 )}
               </center>

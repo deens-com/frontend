@@ -13,6 +13,9 @@ import 'react-dates/lib/css/_datepicker.css';
 import { DayPickerRangeController } from 'react-dates';
 import { START_DATE, END_DATE } from 'react-dates/constants';
 
+// i18n
+import { Trans } from '@lingui/macro';
+
 const Text = styled(PSmall)`
   font-style: italic;
   color: ${tertiary};
@@ -105,7 +108,9 @@ const ServiceSettings = ({ service, servicesByDay }) => {
         hideKeyboardShortcutsPanel
         noBorder
       />
-      <Text>Select check-in and check-out</Text>
+      <Text>
+        <Trans>Select check-in and check-out</Trans>
+      </Text>
     </>
   );
 };

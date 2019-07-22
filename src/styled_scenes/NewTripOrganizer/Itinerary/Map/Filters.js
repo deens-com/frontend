@@ -7,6 +7,10 @@ import Activity from 'shared_components/icons/RunningPerson';
 import Food from 'shared_components/icons/SilverWare';
 import Accommodation from 'shared_components/icons/Bed';
 
+// i18n
+import { I18n } from '@lingui/react';
+import { Trans, t } from '@lingui/macro';
+
 const Wrapper = styled.div`
   position: absolute;
   display: flex;
@@ -156,11 +160,15 @@ const Filters = ({ setFilters, defaultFilters }) => {
       <FiltersContent show={isShowingFilters}>
         <FiltersType>
           <SelectAll>
-            <Checkbox
-              checked={accommodationState && activityState && foodState}
-              onChange={checkAllTypes}
-              label="Select all"
-            />
+            <I18n>
+              {({ i18n }) => (
+                <Checkbox
+                  checked={accommodationState && activityState && foodState}
+                  onChange={checkAllTypes}
+                  label={i18n._(t`Select all`)}
+                />
+              )}
+            </I18n>
           </SelectAll>
           <Checkbox
             checked={accommodationState}
@@ -169,7 +177,7 @@ const Filters = ({ setFilters, defaultFilters }) => {
               children: (
                 <CheckLabel color={accommodation}>
                   <Accommodation />
-                  Accommodations
+                  <Trans>Accommodations</Trans>
                 </CheckLabel>
               ),
             }}
@@ -181,7 +189,7 @@ const Filters = ({ setFilters, defaultFilters }) => {
               children: (
                 <CheckLabel color={activity}>
                   <Activity />
-                  Activities
+                  <Trans>Activities</Trans>
                 </CheckLabel>
               ),
             }}
@@ -193,7 +201,7 @@ const Filters = ({ setFilters, defaultFilters }) => {
               children: (
                 <CheckLabel color={food}>
                   <Food />
-                  Food
+                  <Trans>Food</Trans>
                 </CheckLabel>
               ),
             }}
@@ -211,7 +219,13 @@ const Filters = ({ setFilters, defaultFilters }) => {
             <Checkbox
               checked={day}
               onChange={(_, { checked }) => checkDay(i, checked)}
-              label={{ children: <CheckLabel color={food}>Day {i + 1}</CheckLabel> }}
+              label={{
+                children: (
+                  <CheckLabel color={food}>
+                    <Trans>Day</Trans> {i + 1}
+                  </CheckLabel>
+                ),
+              }}
             />
           ))}
         </FiltersDay>
