@@ -88,9 +88,10 @@ const checkAvailability = () => async (dispatch, getState) => {
   try {
     const trip = getState().tripDesigner.trip.data;
     const { startDate, adultCount, infantCount, childrenCount } = trip;
+    const adults = adultCount || 2;
     const bookingDate = moment(startDate).format('YYYY-MM-DD');
-    const peopleCount = adultCount + infantCount + childrenCount;
-    const data = { bookingDate, adultCount, childrenCount, infantCount, peopleCount };
+    const peopleCount = adults + infantCount + childrenCount;
+    const data = { bookingDate, adults, childrenCount, infantCount, peopleCount };
 
     const response = await apiClient.trips.availability.get(trip._id, data, {
       cancelToken: new CancelToken(c => (cancelAvailability = c)),
