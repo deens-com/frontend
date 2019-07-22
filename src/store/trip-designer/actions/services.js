@@ -31,18 +31,7 @@ export const moveServices = data => async (dispatch, getState) => {
     const trip = getState().tripDesigner.trip.data;
     const response = await apiClient.trips.serviceOrganizations.post(trip._id, data);
 
-    // START this should be done in the backend
-    let responseData = {
-      ...response.data,
-    };
-    Object.entries(responseData).forEach(([key, value]) => {
-      if (fieldsWithTranslation[key]) {
-        responseData[key] = responseData[key].en;
-      }
-    });
-    // END this should be done in the backend
-
-    const normalizedData = normalize(responseData, tripEntity);
+    const normalizedData = normalize(response.data, tripEntity);
     dispatch({
       type: types.UPDATE_TRIP_ENTITIES,
       payload: normalizedData,
@@ -75,18 +64,7 @@ export const selectOption = (service, option) => async (dispatch, getState) => {
       },
     ]);
 
-    // START this should be done in the backend
-    let responseData = {
-      ...response.data,
-    };
-    Object.entries(responseData).forEach(([key, value]) => {
-      if (fieldsWithTranslation[key]) {
-        responseData[key] = responseData[key].en;
-      }
-    });
-    // END this should be done in the backend
-
-    const normalizedData = normalize(responseData, tripEntity);
+    const normalizedData = normalize(response.data, tripEntity);
     dispatch({
       type: types.UPDATE_TRIP_ENTITIES,
       payload: normalizedData,
@@ -116,17 +94,8 @@ export const removeServices = (serviceOrgIds = []) => async (dispatch, getState)
     payload: serviceOrgIds,
   });
   const response = await apiClient.trips.serviceOrganizations.delete(trip._id, serviceOrgIds);
-  // START this should be done in the backend
-  let responseData = {
-    ...response.data,
-  };
-  Object.entries(responseData).forEach(([key, value]) => {
-    if (fieldsWithTranslation[key]) {
-      responseData[key] = responseData[key].en;
-    }
-  });
-  // END this should be done in the backend
-  const normalizedData = normalize(responseData, tripEntity);
+
+  const normalizedData = normalize(response.data, tripEntity);
   dispatch({
     type: types.UPDATE_TRIP_ENTITIES,
     payload: normalizedData,
@@ -152,17 +121,8 @@ export const removeService = serviceOrgId => async (dispatch, getState) => {
       return;
     }
     const response = await apiClient.trips.serviceOrganizations.delete(trip._id, [serviceOrgId]);
-    // START this should be done in the backend
-    let responseData = {
-      ...response.data,
-    };
-    Object.entries(responseData).forEach(([key, value]) => {
-      if (fieldsWithTranslation[key]) {
-        responseData[key] = responseData[key].en;
-      }
-    });
-    // END this should be done in the backend
-    const normalizedData = normalize(responseData, tripEntity);
+
+    const normalizedData = normalize(response.data, tripEntity);
     dispatch({
       type: types.UPDATE_TRIP_ENTITIES,
       payload: normalizedData,

@@ -216,7 +216,7 @@ class TripOrganizer extends React.Component {
   };
 
   requestAvailability = async () => {
-    const { startDate, adultCount, infantCount, childrenCount } = this.state.tripData;
+    const { startDate, adultCount, infantCount, childrenCount } = this.props.trip;
     const bookingDate = moment(startDate).format('YYYY-MM-DD');
     const peopleCount = adultCount + infantCount + childrenCount;
     const data = { bookingDate, adultCount, childrenCount, infantCount, peopleCount };
@@ -375,22 +375,11 @@ class TripOrganizer extends React.Component {
     );
   };
 
-  changeStartDate = date => {
-    this.setState(
-      prevState => ({
-        tripData: {
-          ...prevState.tripData,
-          startDate: date.toJSON(),
-        },
-      }),
-      () => {
-        this.prefetchSearchResults();
-        this.saveTrip({
-          startDate: this.state.tripData.startDate,
-        });
-        this.props.checkAvailability();
-      },
-    );
+  changeStartDate = async date => {
+    await this.props.editTrip({
+      startDate: date.toJSON(),
+    });
+    this.props.checkAvailability();
   };
 
   removeDay = async day => {

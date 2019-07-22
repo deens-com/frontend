@@ -127,18 +127,7 @@ const editTrip = newData => async (dispatch, getState) => {
 
   try {
     const response = await apiClient.trips.patch(trip._id, dataForRequest);
-
-    // START this should be done in the backend
-    let responseData = {
-      ...response.data,
-    };
-    Object.entries(responseData).forEach(([key, value]) => {
-      if (fieldsWithTranslation[key]) {
-        responseData[key] = responseData[key].en;
-      }
-    });
-    // END this should be done in the backend
-    const normalized = normalize(responseData, tripEntity);
+    const normalized = normalize(response.data, tripEntity);
 
     dispatch({ type: types.UPDATE_TRIP_ENTITIES, payload: normalized });
     dispatch({ type: types.PATCH_TRIP_SUCCESS, payload: normalized });
