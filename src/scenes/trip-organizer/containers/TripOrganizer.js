@@ -31,7 +31,9 @@ class TripOrganizerContainer extends Component {
   componentDidMount() {
     this.props.changeHeader({ noMargin: true, forceNotFixed: true });
     if (this.props.match.params.id) {
-      this.props.fetchTrip(this.props.match.params.id);
+      this.props.fetchTrip(this.props.match.params.id).then(() => {
+        this.props.checkAvailability();
+      });
       return;
     }
     history.replace('/new/trip', {
