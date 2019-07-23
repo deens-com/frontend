@@ -441,6 +441,7 @@ class TripOrganizer extends React.Component {
       serviceId: service.service._id,
     });
 
+    this.props.checkAvailability();
     this.props.getTransportation();
   };
 
