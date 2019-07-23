@@ -214,12 +214,13 @@ class TripOrganizer extends React.Component {
     const coord = location && location.geo && getFromCoordinates(location.geo.coordinates);
     const country = location && location.country && I18nText.translate(location.country.names);
     const address =
-      location && `${location.city || location.state}${country ? `, ${country}` : ''}`;
+      location &&
+      (location.address || `${location.city || location.state}${country ? `, ${country}` : ''}`);
 
     this.props.updateSearchParams(
       {
         type,
-        countryCode: location.countryCode,
+        countryCode: location && location.countryCode,
         locationSearchType: 'latlng',
         lat: coord && coord.lat,
         lng: coord && coord.lng,
