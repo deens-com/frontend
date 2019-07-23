@@ -209,19 +209,19 @@ export const pricePerList = [PRICE_PER_SESSION, PRICE_PER_PERSON];
 
 export function extractPrice(price, adultCount = 1, childCount) {
   if (typeof price === 'number') {
-    return price;
+    return price.toFixed(2);
   }
   if (price.payPer === PRICE_PER_SESSION) {
-    return price.perSession;
+    return price.perSession.toFixed(2);
   }
   if (price.payPer === PRICE_PER_PERSON) {
-    return price.perAdult * adultCount + price.perChild * childCount;
+    return (price.perAdult * adultCount + price.perChild * childCount).toFixed(2);
   }
   return 0;
 }
 
 export function extractPricePer(price) {
-  return price.payPer;
+  return price.payPer.toFixed(2);
 }
 
 export function getPeopleCount(trip) {
