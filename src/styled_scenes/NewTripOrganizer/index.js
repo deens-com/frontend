@@ -53,8 +53,8 @@ class TripOrganizer extends React.Component {
     tripId: PropTypes.string,
   };
 
-  componentWillUnmount() {
-    this._isMounted = false;
+  componentDidMount() {
+    this.prefetchSearchResults();
   }
 
   // GENERAL ACTIONS
@@ -118,8 +118,7 @@ class TripOrganizer extends React.Component {
   };
 
   prefetchSearchResults = async onlyLastDay => {
-    // TO DO
-    return;
+    const servicesByDay = mapServicesByDay(this.props.trip.services);
     const startLocation = getFromCoordinates(
       this.props.trip.userStartLocation && this.props.trip.userStartLocation.geo.coordinates,
     );
@@ -131,9 +130,9 @@ class TripOrganizer extends React.Component {
         .format('YYYY-MM-DD'),
     );
     const common = {
-      adultCount: this.props.trip.adultCount,
-      childrenCount: this.props.trip.childrenCount,
-      infantCount: this.props.trip.infantCount,
+      adultCount: this.props.adults,
+      childrenCount: this.props.children,
+      infantCount: this.props.infants,
       dates,
       location: startLocation
         ? {
@@ -145,11 +144,10 @@ class TripOrganizer extends React.Component {
 
     let alreadySentWithCommonLocation = false; // avoid sending more than once the same request
     for (let day = onlyLastDay ? days : 1; day <= days; day++) {
-      const useCustomLocation = this.state.services[day] && this.state.services[day].length > 0;
+      const useCustomLocation = servicesByDay[day] && servicesByDay[day].length > 0;
       const location = useCustomLocation
         ? getFromCoordinates(
-            this.state.services[day][this.state.services[day].length - 1].service.location.geo
-              .coordinates,
+            servicesByDay[day][servicesByDay[day].length - 1].service.location.geo.coordinates,
           )
         : common.location;
 
@@ -306,17 +304,22 @@ class TripOrganizer extends React.Component {
       this.removeDay(daysDuration + diff, false);
       diff--;
     }
+    if (currentDuration < daysDuration) {
+      this.prefetchSearchResults(true);
+    }
   };
 
   changeStartDate = async date => {
     await this.props.editTrip({
       startDate: date.toJSON(),
     });
+    this.prefetchSearchResults();
     this.props.checkAvailability();
   };
 
   removeDay = async day => {
-    this.props.removeDay(day);
+    await this.props.removeDay(day);
+    this.prefetchSearchResults();
   };
 
   addService = async (serviceToAdd, day) => {
@@ -338,8 +341,9 @@ class TripOrganizer extends React.Component {
     this.props.getTransportation();
   };
 
-  removeService = serviceOrgId => {
-    this.props.removeService(serviceOrgId);
+  removeService = async serviceOrgId => {
+    await this.props.removeService(serviceOrgId);
+    this.prefetchSearchResults();
   };
 
   addNewDay = () => {
@@ -473,6 +477,7 @@ class TripOrganizer extends React.Component {
       infantCount: data.infants,
     };
     await this.props.editTrip(newData);
+    this.prefetchSearchResults();
     await this.props.checkAvailability();
   };
 
@@ -503,6 +508,9 @@ class TripOrganizer extends React.Component {
     this.props.editTrip({
       [key]: location,
     });
+    if (key === 'userStartLocation') {
+      this.prefetchSearchResults();
+    }
   };
 
   changeShowTransport = value => {
