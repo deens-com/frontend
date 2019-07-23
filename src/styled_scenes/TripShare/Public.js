@@ -191,7 +191,7 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
   );
 
   const onTagsChange = tags => {
-    if (validateTags(tags)[0] !== -1) {
+    if (validateTags(tags)[0] !== -1 || trip.privacy !== PRIVACY_PUBLIC) {
       patchTrip(trip._id, {
         tags: tags.map(tag => tag._id),
       });
@@ -204,7 +204,7 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
   };
 
   const onTitleChange = title => {
-    if (validateTitle(title)[0] !== -1) {
+    if (validateTitle(title)[0] !== -1 || trip.privacy !== PRIVACY_PUBLIC) {
       patchTrip(trip._id, {
         title: addLang(title),
       });
@@ -217,7 +217,7 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
   };
 
   const onDescriptionChange = description => {
-    if (validateDescription(description)[0] !== -1) {
+    if (validateDescription(description)[0] !== -1 || trip.privacy !== PRIVACY_PUBLIC) {
       patchTrip(trip._id, {
         description: addLang(description),
       });
@@ -255,7 +255,8 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
           validateMedia({
             width: img.width,
             height: img.height,
-          })[0] !== -1
+          })[0] !== -1 ||
+          trip.privacy !== PRIVACY_PUBLIC
         ) {
           patchTrip(trip._id, {
             media: newMedia,
