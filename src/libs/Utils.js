@@ -221,7 +221,7 @@ export function extractPrice(price, adultCount = 1, childCount) {
 }
 
 export function extractPricePer(price) {
-  return price.payPer.toFixed(2);
+  return price.payPer;
 }
 
 export function getPeopleCount(trip) {
