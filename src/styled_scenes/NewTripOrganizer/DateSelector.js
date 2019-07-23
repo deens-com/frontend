@@ -17,8 +17,8 @@ import { START_DATE } from 'react-dates/constants';
 // i18n
 import { Trans } from '@lingui/macro';
 
-const now = moment().add(1, 'days');
-const isDayBlocked = date => date.valueOf() <= now.valueOf();
+const now = moment();
+const isDayBlocked = date => date.startOf('day').valueOf() < now.startOf('day').valueOf();
 
 const Wrapper = styled.div`
   .CalendarDay__selected_end {
