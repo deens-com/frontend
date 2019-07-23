@@ -243,7 +243,7 @@ class Itinerary extends Component {
       this.props.trip.childrenCount,
     );
 
-    return <ServicePrice>${price.toFixed(2)}</ServicePrice>;
+    return <ServicePrice>${price}</ServicePrice>;
   };
 
   renderDay = (day, index) => (

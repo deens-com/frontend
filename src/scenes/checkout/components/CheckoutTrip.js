@@ -170,7 +170,7 @@ export class CheckoutTrip extends React.Component {
       return (
         <div>
           <Trans>
-            Average cost: <Price>${price.toFixed(2)} per person</Price>
+            Average cost: <Price>${price} per person</Price>
           </Trans>
         </div>
       );
@@ -178,7 +178,7 @@ export class CheckoutTrip extends React.Component {
     return (
       <Price>
         <Trans>
-          ${price.toFixed(2)} for {getPeopleCount(trip)} people
+          ${price} for {getPeopleCount(trip)} people
         </Trans>
       </Price>
     );
