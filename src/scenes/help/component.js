@@ -94,7 +94,6 @@ export default ({ savedSearchQuery, session, routeState }) => {
                 ...routeState,
                 modal: true,
                 helpData: {
-                  ...routeState.helpData,
                   defaultLocation: location,
                 },
               });
