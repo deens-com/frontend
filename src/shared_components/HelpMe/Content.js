@@ -2,6 +2,8 @@ import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Loader } from 'semantic-ui-react';
 import LoadingDots from 'shared_components/LoadingDots';
+import { geocodeByPlaceId } from 'libs/placesAutocomplete';
+import { parseLocationData } from 'libs/location';
 import { H2, H5, PSmall, P } from 'libs/commonStyles';
 import { primary, textDark, error } from 'libs/colors';
 import ImgurAvatar from 'assets/no-avatar.png';
@@ -121,7 +123,7 @@ const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user, defaultLocat
   const [asked, setAsked] = useState(false);
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState({});
-  const [address, setAddress] = useState(defaultLocation && defaultLocation.formattedAddress);
+  const [address, setAddress] = useState(defaultLocation);
   const [{ adults, children, infants }, setGuests] = useState({
     adults: 0,
     children: 0,
@@ -246,7 +248,20 @@ const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user, defaultLocat
             <I18n>
               {({ i18n }) => (
                 <SemanticLocationControl
-                  onChange={address => setAddress(address)}
+                  onChange={(formattedAddress, placeId) => {
+                    geocodeByPlaceId(placeId).then(results => {
+                      const currentResult = results[0];
+                      const {
+                        countryCode,
+                        city,
+                        state,
+                        country,
+                        formattedAddress,
+                      } = parseLocationData(currentResult);
+
+                      setAddress({ formattedAddress, city, state, country, countryCode });
+                    });
+                  }}
                   useStyledInput
                   inputProps={{
                     placeholder: i18n._(t`Type a city or country`),
