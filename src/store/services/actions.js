@@ -107,6 +107,8 @@ const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (dispatch, getSt
       services: [{ service: service._id, day: 1 }],
       duration: service.duration,
       location: service.originalLocation,
+      userStartLocation: service.originalLocation,
+      userEndLocation: service.originalLocation,
     };
     dispatch({
       type: 'TRIP_CREATING',

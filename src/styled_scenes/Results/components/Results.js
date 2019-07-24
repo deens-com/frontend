@@ -171,6 +171,8 @@ class Results extends Component {
       services: [{ service: service._id, day: 1 }],
       duration: service.duration,
       location: service.originalLocation,
+      userStartLocation: service.originalLocation,
+      userEndLocation: service.originalLocation,
     };
     const newTrip = (await apiClient.trips.post(serviceGroup)).data;
     this.props.getCurrentUserTrip();
