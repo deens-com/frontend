@@ -306,7 +306,7 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
   const validateDescription = descToValid => {
     const description = typeof descToValid !== 'undefined' ? descToValid : editedTrip.description;
     const desc = description || '';
-    const words = (desc.trim().match(/ /g) || []).length + 1;
+    const words = (desc.trim().match(/ |\n/g) || []).length + 1;
     if (words < 30) {
       return [
         -1,
