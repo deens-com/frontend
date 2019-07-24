@@ -60,6 +60,33 @@ export default function entities(state = initialState, action = {}) {
           ),
         },
       };
+    case tripDesignerActions.ADD_CUSTOM_SERVICE_START:
+      return {
+        ...state,
+        services: {
+          ...state.services,
+          [action.payload._id]: action.payload,
+        },
+      };
+    case tripDesignerActions.types.ADD_CUSTOM_SERVICE_SUCCESS:
+      return {
+        ...state,
+        inDayServices: {
+          ...state.inDayServices,
+          [action.payload.newServiceOrganization._id]: action.payload.newServiceOrganization,
+        },
+      };
+    case tripDesignerActions.types.MODIFY_CUSTOM_SERVICE:
+      return {
+        ...state,
+        services: {
+          ...state.services,
+          [action.payload.id]: {
+            ...state.services[action.payload.id],
+            ...action.payload.data,
+          },
+        },
+      };
     default:
       return state;
   }

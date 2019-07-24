@@ -109,6 +109,8 @@ class TripOrganizerContainer extends Component {
         removeDay={this.props.removeDay}
         temporalRearrange={this.props.temporalRearrange}
         saveTemporalRearrangement={this.props.saveTemporalRearrangement}
+        addCustomService={this.props.addCustomService}
+        modifyCustomService={this.props.modifyCustomService}
       />
     );
   }
@@ -172,6 +174,8 @@ const mapDispatchToProps = dispatch =>
       removeDay: tripDesignerActions.removeDay,
       temporalRearrange: tripDesignerActions.temporalRearrange,
       saveTemporalRearrangement: tripDesignerActions.saveTemporalRearrangement,
+      addCustomService: tripDesignerActions.addCustomService,
+      modifyCustomService: tripDesignerActions.modifyCustomService,
     },
     dispatch,
   );

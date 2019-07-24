@@ -164,6 +164,14 @@ export default function tripDesigner(state = initialState, action = {}) {
         },
         lastRemovedService: state.lastRemovedService.slice(0, state.lastRemovedService.length - 1),
       };
+    case actions.types.ADD_CUSTOM_SERVICE_SUCCESS:
+      return {
+        ...state,
+        trip: {
+          ...state.trip,
+          data: action.payload.trip,
+        },
+      };
     case actions.types.REMOVE_SERVICE_START:
       return {
         ...state,

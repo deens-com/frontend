@@ -2,6 +2,7 @@ import apiClient from 'libs/apiClient';
 import arrayMove from 'array-move';
 import { normalize } from 'normalizr';
 import { trip as tripEntity } from 'libs/entities';
+import { addServiceRequest } from 'libs/trips';
 
 export const types = {
   SERVICE_MOVE_START: 'SERVICE_MOVE_START',
@@ -20,6 +21,9 @@ export const types = {
   TEMPORAL_REARRANGE: 'TEMPORAL_REARRANGE',
   UNDO_REMOVE_SERVICE: 'UNDO_REMOVE_SERVICE',
   UPDATE_TRIP_ENTITIES: 'UPDATE_TRIP_ENTITIES',
+  ADD_CUSTOM_SERVICE_START: 'ADD_CUSTOM_SERVICE_START',
+  ADD_CUSTOM_SERVICE_SUCCESS: 'ADD_CUSTOM_SERVICE_SUCCESS',
+  MODIFY_CUSTOM_SERVICE: 'MODIFY_CUSTOM_SERVICE',
 };
 
 const fieldsWithTranslation = {
@@ -271,4 +275,49 @@ export const saveTemporalRearrangement = () => async (dispatch, getState) => {
       service: inDayServices[sOrgId].service,
     })),
   );
+};
+
+export const addCustomService = (serviceToAdd, day) => async (dispatch, getState) => {
+  dispatch({
+    type: types.ADD_CUSTOM_SERVICE_START,
+    payload: serviceToAdd,
+  });
+
+  const trip = getState().tripDesigner.trip.data;
+
+  const response = await addServiceRequest(trip._id, day, serviceToAdd._id);
+
+  const normalizedData = normalize(response.data, tripEntity);
+  const updatedTrip = normalizedData.entities.trips[trip._id];
+
+  dispatch({
+    type: types.ADD_CUSTOM_SERVICE_SUCCESS,
+    payload: {
+      trip: updatedTrip,
+      newServiceOrganization: response.data.services.find(
+        s => s.day === day && s.service === serviceToAdd._id,
+      ),
+    },
+  });
+};
+
+export const modifyCustomService = (serviceId, data) => async (dispatch, getState) => {
+  dispatch({
+    type: types.MODIFY_CUSTOM_SERVICE,
+    payload: {
+      id: serviceId,
+      data,
+    },
+  });
+
+  const dataWithLanguage = data.title
+    ? {
+        ...data,
+        title: {
+          en: data.title,
+        },
+      }
+    : data;
+
+  apiClient.services.patch(serviceId, dataWithLanguage);
 };

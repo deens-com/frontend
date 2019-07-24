@@ -244,6 +244,23 @@ const Service = ({
     changeServiceTitle(data.service._id, data.day, title);
   };
 
+  const wrapTitle = content => {
+    if (data.service.privacy !== 'private') {
+      return (
+        <Link
+          to={urls.service.view({
+            id: data.service._id,
+            slug: generateServiceSlug(data.service),
+            category: getFirstCategoryLowerCase(data.service.categories),
+          })}
+        >
+          {content}
+        </Link>
+      );
+    }
+    return content;
+  };
+
   return connectDragPreview(
     connectDropTarget(
       <div>
@@ -299,38 +316,34 @@ const Service = ({
               />
               <ServiceData>
                 <ServiceTitle>
-                  <Link
-                    to={urls.service.view({
-                      id: data.service._id,
-                      slug: generateServiceSlug(data.service),
-                      category: getFirstCategoryLowerCase(data.service.categories),
-                    })}
-                  >
-                    {getFirstCategoryLowerCase(data.service.categories) === 'accommodation' &&
-                      data.service.accommodationProps &&
-                      data.service.accommodationProps.stars && (
-                        <>
-                          <span style={{ fontWeight: 'bold', color: tertiary }}>
-                            {data.service.accommodationProps.stars}
-                          </span>
-                          <Star
-                            style={{
-                              display: 'inline-block',
-                              marginRight: '5px',
-                              paddingTop: '3px',
-                              color: tertiary,
-                            }}
-                          />
-                        </>
+                  {wrapTitle(
+                    <>
+                      {getFirstCategoryLowerCase(data.service.categories) === 'accommodation' &&
+                        data.service.accommodationProps &&
+                        data.service.accommodationProps.stars && (
+                          <>
+                            <span style={{ fontWeight: 'bold', color: tertiary }}>
+                              {data.service.accommodationProps.stars}
+                            </span>
+                            <Star
+                              style={{
+                                display: 'inline-block',
+                                marginRight: '5px',
+                                paddingTop: '3px',
+                                color: tertiary,
+                              }}
+                            />
+                          </>
+                        )}
+                      {data.service.privacy === 'private' ? (
+                        <InlineInput disallowEmptySubmit onChanged={setServiceTitle}>
+                          {I18nText.translate(data.service.title)}
+                        </InlineInput>
+                      ) : (
+                        I18nText.translate(data.service.title)
                       )}
-                    {data.service.privacy === 'private' ? (
-                      <InlineInput disallowEmptySubmit onChanged={setServiceTitle}>
-                        {I18nText.translate(data.service.title)}
-                      </InlineInput>
-                    ) : (
-                      I18nText.translate(data.service.title)
-                    )}
-                  </Link>
+                    </>,
+                  )}
                 </ServiceTitle>
                 <RatingAndPrice>
                   <Price>

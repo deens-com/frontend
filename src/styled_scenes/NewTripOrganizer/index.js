@@ -11,7 +11,7 @@ import { mapServicesByDay, mapDaysToServices } from '../Trip/mapServicesToDays';
 import Options from './Options';
 import WarningLogin from './WarningLogin';
 import I18nText from 'shared_components/I18nText';
-import { addServiceRequest, formatMedia } from 'libs/trips';
+import { formatMedia } from 'libs/trips';
 import analytics from 'libs/analytics';
 import withTouchHandler from 'shared_components/withTouchHandler';
 import urls from 'libs/urlGenerator';
@@ -324,21 +324,7 @@ class TripOrganizer extends React.Component {
   };
 
   addService = async (serviceToAdd, day) => {
-    // THIS ONLY WORKS FOR RECENTLY CREATED SERVICES (CUSTOM SERVICES!)
-    // WE USE SERVICE ID INSTEAD OF SERVICE ORG ID TO IDENTIFY THE SERVICE
-    const trip = (await addServiceRequest(this.props.tripId, day, serviceToAdd._id)).data;
-    this.setState(prevState => ({
-      services: {
-        ...prevState.services,
-        [day]: [
-          ...(prevState.services[day] || []),
-          {
-            ...trip.services.find(service => service.service === serviceToAdd._id),
-            service: serviceToAdd,
-          },
-        ],
-      },
-    }));
+    await this.props.addCustomService(serviceToAdd, day);
     this.props.getTransportation();
   };
 
@@ -381,7 +367,7 @@ class TripOrganizer extends React.Component {
   };
 
   changeServiceTitle = (serviceId, day, title) => {
-    this.modifyService(serviceId, day, { title: addLang(title) });
+    this.modifyService(serviceId, { title });
   };
 
   changeServicePrice = (serviceId, day, price) => {
@@ -389,7 +375,7 @@ class TripOrganizer extends React.Component {
       return;
     }
 
-    this.modifyService(serviceId, day, { basePrice: Number(price) });
+    this.modifyService(serviceId, { basePrice: Number(price) });
   };
 
   changeServiceDays = async (service, startDay, endDay) => {
@@ -446,30 +432,8 @@ class TripOrganizer extends React.Component {
     this.props.getTransportation();
   };
 
-  modifyService = (serviceId, day, data) => {
-    this.setState(prevState => {
-      const services = prevState.services[day].map(service => {
-        if (service.service._id === serviceId) {
-          return {
-            ...service,
-            service: {
-              ...service.service,
-              ...data,
-            },
-          };
-        }
-        return service;
-      });
-
-      return {
-        services: {
-          ...prevState.services,
-          [day]: services,
-        },
-      };
-    });
-
-    apiClient.services.patch(serviceId, data);
+  modifyService = (serviceId, data) => {
+    this.props.modifyCustomService(serviceId, data);
   };
 
   changeGuests = async data => {
