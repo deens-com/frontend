@@ -158,6 +158,7 @@ const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user, defaultLocat
     const data = {
       email: session.email || email.current.value,
       location: address,
+      destination: address.formattedAddress,
       budget: budget.current.value,
       currency,
       adults,
