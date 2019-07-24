@@ -85,7 +85,7 @@ export const getCurrentUserTrip = () => async (dispatch, getState) => {
     if (!getState().session.session._id) {
       return;
     }
-    const response = await apiClient.trips.get({ limit: 1 });
+    const response = await apiClient.trips.get({ limit: 1, sortBy: 'updatedAt' });
     if (response.data.trips.length === 0) {
       return;
     }

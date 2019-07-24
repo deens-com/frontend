@@ -1,6 +1,7 @@
 import apiClient from 'libs/apiClient';
 import { normalize } from 'normalizr';
 import { trip as tripEntity } from 'libs/entities';
+import { types as sessionTypes } from 'store/session/actions';
 
 export const types = {
   FETCH_TRIP_START: 'FETCH_TRIP_DESIGNER_START',
@@ -24,6 +25,10 @@ export const fetchTrip = id => async dispatch => {
     dispatch({
       type: types.FETCH_TRIP_SUCCESS,
       payload: normalizedData,
+    });
+    dispatch({
+      type: sessionTypes.LOADED_LATEST_TRIP,
+      payload: normalizedData.entities.trips[normalizedData.result],
     });
   } catch (e) {
     if (e && !e.response) {
