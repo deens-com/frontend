@@ -185,7 +185,7 @@ class Itinerary extends Component {
     this.props.changeDates({ startDate: start, endDate: end });
   };
 
-  renderAvailability = (day, id) => {
+  renderAvailability = (day, id, orgId) => {
     if (this.props.bookedInformation) {
       const service = this.props.trip.services.find(
         service => service.day === day && service.service._id === id,
@@ -217,7 +217,7 @@ class Itinerary extends Component {
 
     const thisAvailability =
       this.props.availability &&
-      this.props.availability.find(elem => elem.day === day && elem.serviceId === id);
+      this.props.availability.find(elem => elem.serviceOrganizationId === orgId);
     const isAvailable = thisAvailability && thisAvailability.isAvailable;
 
     return (
@@ -274,7 +274,7 @@ class Itinerary extends Component {
                 name={dayData.service.categories[0].names}
                 fontSize="12px"
               />
-              {this.renderAvailability(day.day, dayData.service._id)}
+              {this.renderAvailability(day.day, dayData.service._id, dayData._id)}
             </CategoryWrapper>
             <ServiceTitle>
               <Link
