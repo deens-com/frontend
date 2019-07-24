@@ -152,7 +152,7 @@ const Map = ({ showingMap, numberOfDays, services }) => {
     (uniqueServices = true) => [
       ...(startLocation ? [getLocationMarker(startLocation, 'startLocation')] : []),
       ...(uniqueServices ? uniqServicesFilter(servicesToMarkers) : servicesToMarkers),
-      ...(endLocation ? [getLocationMarker(startLocation, 'endLocation')] : []),
+      ...(endLocation ? [getLocationMarker(endLocation, 'endLocation')] : []),
     ],
     [servicesToMarkers, startLocation, endLocation],
   );
