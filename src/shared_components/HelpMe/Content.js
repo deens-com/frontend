@@ -157,7 +157,7 @@ const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user, defaultLocat
     setErrors({});
     const data = {
       email: session.email || email.current.value,
-      destination: address,
+      location: address,
       budget: budget.current.value,
       currency,
       adults,
@@ -251,13 +251,9 @@ const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user, defaultLocat
                   onChange={(formattedAddress, placeId) => {
                     geocodeByPlaceId(placeId).then(results => {
                       const currentResult = results[0];
-                      const {
-                        countryCode,
-                        city,
-                        state,
-                        country,
-                        formattedAddress,
-                      } = parseLocationData(currentResult);
+                      const { countryCode, city, state, country } = parseLocationData(
+                        currentResult,
+                      );
 
                       setAddress({ formattedAddress, city, state, country, countryCode });
                     });
