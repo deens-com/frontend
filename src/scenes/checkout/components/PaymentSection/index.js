@@ -296,13 +296,7 @@ export default class PaymentSection extends Component {
                   {
                     key: 'trip',
                     content: i18n._(t`Go to trip`),
-                    onClick: () =>
-                      history.replace(
-                        urls.trip.view({
-                          slug: generateTripSlug(trip),
-                          id: trip._id,
-                        }),
-                      ),
+                    onClick: () => history.replace(urls.trip.organize(trip._id)),
                   },
                 ]}
               />
