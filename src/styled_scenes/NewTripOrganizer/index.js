@@ -54,6 +54,17 @@ class TripOrganizer extends React.Component {
   };
 
   componentDidMount() {
+    if (
+      !this.props.trip.adultCount ||
+      !this.props.trip.childrenCount ||
+      !this.props.trip.infantCount
+    ) {
+      this.props.editTrip({
+        adultCount: this.props.adults,
+        childrenCount: this.props.children,
+        infantCount: this.props.infants,
+      });
+    }
     this.prefetchSearchResults();
   }
 

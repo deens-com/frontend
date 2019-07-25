@@ -170,32 +170,14 @@ const Reviews = styled(PXSmall)`
   color: ${primary};
 `;
 
-const ServiceSettingsButton = styled.div`
-  display: flex;
-  align-items: center;
-  height: 35px;
-  border-radius: 5px 5px 0 0;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  border-bottom: 0;
-  box-shadow: 1px 1px rgba(0, 0, 0, 0.05);
-  background-color: white;
-  padding: 8px;
-  margin: auto;
-
-  > svg {
-    font-size: 24px;
-    margin-left: 15px;
-  }
-`;
-
-function getPriceText(type) {
+function getPriceText(type, numberOfPeople) {
   if (type === 'Food') {
     return <Trans>per meal</Trans>;
   }
   if (type === 'Accommodation') {
     return <Trans>per night</Trans>;
   }
-  return <Trans>per person</Trans>;
+  return <Trans>for {numberOfPeople} people</Trans>;
 }
 
 const ServiceIcon = ({ type }) => {
@@ -376,7 +358,10 @@ const Service = ({
                       )}
                     </PriceNumber>
                     <PXSmall style={{ display: 'inline-block', verticalAlign: 'middle' }}>
-                      {getPriceText(data.service.categories[0].names)}
+                      {getPriceText(
+                        data.service.categories[0].names,
+                        (tripData.adultCount || 0) + (tripData.childrenCount || 0),
+                      )}
                     </PXSmall>
                     <span
                       style={{
