@@ -158,7 +158,7 @@ export default class HomeSearch extends Component {
     if (this.props.toggleSearch) {
       this.props.toggleSearch();
     }
-    this.props.updateSearchParams(params);
+    this.props.updateSearchParams(params, null, null, null, true);
   }
 
   handleServiceTypeChange = serviceType => {

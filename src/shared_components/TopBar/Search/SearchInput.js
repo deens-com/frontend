@@ -143,7 +143,7 @@ export default class DesktopSearchInput extends Component {
       priceEnd: undefined,
     };
 
-    this.props.updateSearchParams(params);
+    this.props.updateSearchParams(params, null, null, null, true);
   }
 
   handleServiceTypeChange = serviceType => {
