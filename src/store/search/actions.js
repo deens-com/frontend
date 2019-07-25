@@ -62,11 +62,12 @@ const fetchResults = searchQuery =>
     };
   });
 
-const updateSearchParams = (parameters, state, customPage, noChangeUrl, noFetch) => (
+const updateSearchParams = (parameters, { newState, customPage, noChangeUrl, noFetch }) => (
   dispatch,
   getState,
 ) => {
   let noPushUrl = noChangeUrl;
+  const state = newState || (window.history.state && window.history.state.state);
   const { startDate, endDate } = parameters;
   const searchParams = {
     ...parameters,

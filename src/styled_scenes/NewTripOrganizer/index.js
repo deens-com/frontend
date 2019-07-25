@@ -252,10 +252,12 @@ class TripOrganizer extends React.Component {
             : undefined,
       },
       {
-        tripId: this.props.tripId,
-        day,
-        duration: this.props.trip.duration,
-        startDate: this.props.startDate,
+        newState: {
+          tripId: this.props.tripId,
+          day,
+          duration: this.props.trip.duration,
+          startDate: this.props.startDate,
+        },
       },
     );
   };

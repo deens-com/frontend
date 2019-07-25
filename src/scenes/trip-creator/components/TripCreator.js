@@ -164,10 +164,10 @@ export default ({
           lat: result.geometry.location.lat(),
           lng: result.geometry.location.lng(),
         },
-        null,
-        null,
-        true,
-        true,
+        {
+          noChangeUrl: true,
+          noFetch: true,
+        },
       );
 
       setAddress({

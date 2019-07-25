@@ -137,8 +137,10 @@ class Results extends Component {
       const selectedPage = item.selected + 1;
       this.props.updateSearchParams(
         { ...this.props.searchParams },
-        this.props.routeState,
-        selectedPage,
+        {
+          newState: this.props.routeState,
+          customPage: selectedPage,
+        },
       );
     }
   };

@@ -92,8 +92,7 @@ const Filters = ({
         ...searchParams,
         ...params,
       },
-      undefined,
-      keepPage ? searchParams.page : undefined,
+      { customPage: keepPage ? searchParams.page : undefined },
     );
   };
   const [showOnlyText, setShowOnlyText] = useState(false);

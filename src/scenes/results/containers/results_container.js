@@ -11,14 +11,14 @@ class ResultsContainer extends Component {
   componentDidMount() {
     this.props.changeHeader();
     const params = this.props.urlSearchParams;
-    this.props.updateSearchParams(params, null, null, true);
+    this.props.updateSearchParams(params, { noChangeUrl: true });
     if (this.props.routeState && this.props.routeState.tripId && !this.props.trip) {
       this.props.fetchTrip(this.props.routeState.tripId);
     }
   }
 
   retryFetch = () => {
-    this.props.updateSearchParams(this.props.urlSearchParams, null, null, true);
+    this.props.updateSearchParams(this.props.urlSearchParams, { noChangeUrl: true });
   };
 
   hasToLoadTripYet = () =>
