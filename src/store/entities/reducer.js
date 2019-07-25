@@ -60,7 +60,7 @@ export default function entities(state = initialState, action = {}) {
           ),
         },
       };
-    case tripDesignerActions.ADD_CUSTOM_SERVICE_START:
+    case tripDesignerActions.types.ADD_CUSTOM_SERVICE_START:
       return {
         ...state,
         services: {

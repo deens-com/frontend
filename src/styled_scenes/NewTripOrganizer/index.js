@@ -578,7 +578,7 @@ class TripOrganizer extends React.Component {
           onServiceDrop={this.props.saveTemporalRearrangement}
         />
         <Footer
-          price={trip.totalPrice.toFixed(2)}
+          price={trip.totalPrice && trip.totalPrice.toFixed(2)}
           isLoadingPrice={Boolean(this.state.isLoadingPrice)}
           book={this.book}
           share={this.share}
