@@ -139,8 +139,8 @@ const AddServiceBox = ({ day, goToAddService, lowMargin }) => {
             </li>
           </Options>
         }
-        position="bottom center"
-        verticalOffset={-100}
+        position="top center"
+        offset="0, -90px"
         on="click"
         open={isOpenPopup}
         onClose={closePopup}
