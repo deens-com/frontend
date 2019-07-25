@@ -146,16 +146,17 @@ const Filters = ({
           isSingle
         />
       )}
-      {filters.includes(availableFilters.priceRange) && (
-        <PriceRangeFilter
-          minPrice={searchParams.priceStart}
-          maxPrice={searchParams.priceEnd}
-          minPossiblePrice={minPossiblePrice}
-          maxPossiblePrice={maxPossiblePrice}
-          onApply={search}
-          numberOfPeople={(searchParams.adults || 2) + (searchParams.children || 0)}
-        />
-      )}
+      {filters.includes(availableFilters.priceRange) &&
+        minPossiblePrice !== maxPossiblePrice && (
+          <PriceRangeFilter
+            minPrice={searchParams.priceStart}
+            maxPrice={searchParams.priceEnd}
+            minPossiblePrice={minPossiblePrice}
+            maxPossiblePrice={maxPossiblePrice}
+            onApply={search}
+            numberOfPeople={(searchParams.adults || 2) + (searchParams.children || 0)}
+          />
+        )}
       {filters.includes(availableFilters.priceRangeOnlyMax) && (
         <PriceRangeFilter
           onlyMax

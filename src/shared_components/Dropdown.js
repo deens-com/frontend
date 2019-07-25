@@ -42,10 +42,10 @@ const Content = styled.div`
     `
     max-height: ${props.maxHeight}px;
     overflow-y: scroll;
-  `};
+  `} ${props => `max-width: ${props.maxWidth}px;`};
 `;
 
-const Dropdown = ({ open, children, trigger, onClose, onOpen, maxHeight, error }) => {
+const Dropdown = ({ open, children, trigger, onClose, onOpen, maxHeight, error, maxWidth }) => {
   const [isOpen, setOpen] = useState(open || false);
 
   useEffect(
@@ -122,7 +122,13 @@ const Dropdown = ({ open, children, trigger, onClose, onOpen, maxHeight, error }
         </Icon>
       </Button>
       <Portal>
-        <Content style={getDropdownStyle()} maxHeight={maxHeight} hide={!isOpen} ref={contentRef}>
+        <Content
+          maxWidth={maxWidth}
+          style={getDropdownStyle()}
+          maxHeight={maxHeight}
+          hide={!isOpen}
+          ref={contentRef}
+        >
           {isOpen && childrenWithProps}
         </Content>
       </Portal>
@@ -136,6 +142,7 @@ Dropdown.propTypes = {
   onClose: PropTypes.func,
   onOpen: PropTypes.func,
   maxHeight: PropTypes.number,
+  maxWidth: PropTypes.number,
   error: PropTypes.bool,
 };
 
@@ -143,6 +150,7 @@ Dropdown.defaultProps = {
   onClose: () => {},
   onOpen: () => {},
   maxHeight: null,
+  maxWidth: 250,
   error: false,
 };
 
