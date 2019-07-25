@@ -13,9 +13,11 @@ import WarningLogin from './WarningLogin';
 import I18nText from 'shared_components/I18nText';
 import { formatMedia } from 'libs/trips';
 import analytics from 'libs/analytics';
+import { error } from 'libs/colors';
 import withTouchHandler from 'shared_components/withTouchHandler';
 import urls from 'libs/urlGenerator';
 import { signAndUploadImage } from 'libs/trips';
+import { Trans } from '@lingui/macro';
 
 function addLang(text) {
   return {
@@ -570,6 +572,22 @@ class TripOrganizer extends React.Component {
           changeShowMap={this.changeShowMap}
           tripParents={this.props.trip.parents}
         />
+        {moment(this.props.trip.startDate).isBefore(moment(), 'day') && (
+          <div style={{ textAlign: 'center' }}>
+            <p
+              style={{
+                color: error,
+                padding: '5px 20px',
+                backgroundColor: `${error}50`,
+                border: `1px solid ${error}`,
+                display: 'inline-block',
+                borderRadius: '5px',
+              }}
+            >
+              <Trans>Your dates are in the past. Please change them.</Trans>
+            </p>
+          </div>
+        )}
         <Itinerary
           addNewDay={this.addNewDay}
           summaryView={draggingDay}
