@@ -263,7 +263,7 @@ const HelpMe = ({ tripId, session, tripParent, isLoadingUser, user, defaultLocat
                   inputProps={{
                     placeholder: i18n._(t`Type a city or country`),
                   }}
-                  defaultAddress={address}
+                  defaultAddress={address.formattedAddress}
                 />
               )}
             </I18n>

@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
+import Portal from 'shared_components/Portal';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { isIosDevice } from 'libs/Utils';
@@ -29,7 +30,7 @@ const Icon = styled.span`
 
 const Content = styled.div`
   position: absolute;
-  z-index: 3;
+  z-index: 11;
   background-color: white;
   top: 45px;
   left: 0;
@@ -101,6 +102,17 @@ const Dropdown = ({ open, children, trigger, onClose, onOpen, maxHeight, error }
     React.cloneElement(child, { closeDropdown: toggleOpen }),
   );
 
+  const getDropdownStyle = () => {
+    if (!buttonRef.current) {
+      return;
+    }
+    const { height, left, top } = buttonRef.current.getBoundingClientRect();
+    return {
+      top: top + height,
+      left,
+    };
+  };
+
   return (
     <Wrapper>
       <Button error={error} ref={buttonRef} onClick={toggleOpen}>
@@ -109,9 +121,11 @@ const Dropdown = ({ open, children, trigger, onClose, onOpen, maxHeight, error }
           <MenuDownArrow />
         </Icon>
       </Button>
-      <Content maxHeight={maxHeight} hide={!isOpen} ref={contentRef}>
-        {isOpen && childrenWithProps}
-      </Content>
+      <Portal>
+        <Content style={getDropdownStyle()} maxHeight={maxHeight} hide={!isOpen} ref={contentRef}>
+          {isOpen && childrenWithProps}
+        </Content>
+      </Portal>
     </Wrapper>
   );
 };

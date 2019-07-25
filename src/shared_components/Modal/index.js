@@ -40,8 +40,6 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   z-index: 10;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
   ${media.minMedium} {
     right: 0;
     margin: auto;
@@ -66,6 +64,8 @@ const ChildrenContent = styled.div`
   width: 100%;
   margin: auto;
   flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   ${media.minMedium} {
     border-radius: 10px;
     flex: 0;
