@@ -55,7 +55,7 @@ const PriceRange = ({ text, onChange, onApply, big }) => {
             hideIcon
             onFocusChange={onChange}
             onChanged={value => {
-              onApply({ text: value });
+              onApply({ text: value || undefined });
             }}
           >
             {text}

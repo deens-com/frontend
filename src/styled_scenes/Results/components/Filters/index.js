@@ -82,6 +82,11 @@ const Filters = ({
   const [showingMobile, setShowingMobile] = useState(false);
   const search = params => {
     const keepPage = isMatch(searchParams, params);
+
+    if (keepPage && (!searchParams.page || searchParams.page === 1)) {
+      return;
+    }
+
     updateSearchParams(
       {
         ...searchParams,
