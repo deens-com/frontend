@@ -207,7 +207,7 @@ export const PRICE_PER_PERSON = 'per-head';
 
 export const pricePerList = [PRICE_PER_SESSION, PRICE_PER_PERSON];
 
-export function extractPrice(price, adultCount = 1, childCount) {
+export function extractPrice(price, adultCount = 1, childCount = 0) {
   if (typeof price === 'number') {
     return price.toFixed(2);
   }
