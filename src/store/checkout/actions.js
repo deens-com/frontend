@@ -1,5 +1,6 @@
 import axios from 'libs/axios';
 import fetch_helpers from 'libs/fetch_helpers';
+import history from 'main/history';
 
 export const types = {
   MARK_TRIP_BOOKED_STATUS: 'MARK_TRIP_BOOKED_STATUS',
@@ -15,37 +16,34 @@ export const cleanPaymentStatus = () => dispatch => {
   });
 };
 
-export const chargeStripeToken = (token, guests, complete = () => {}) => async (
-  dispatch,
-  getState,
-) => {
-  if (!token || !token.id) return;
+export const chargeStripeToken = (guests, stripe) => async (dispatch, getState) => {
   const state = getState();
   const { trip } = state.trips;
   const currency = 'usd';
   const tripId = trip._id;
   try {
+    console.log(dispatch, types.MARK_TRIP_BOOKED_STATUS, statuses);
     dispatch({
       type: types.MARK_TRIP_BOOKED_STATUS,
       payload: statuses.STARTED,
     });
-    await axios({
+    const response = await axios({
       method: 'POST',
       url: `/payment/charge/${tripId}`,
       data: {
-        token: token.id,
         currency: currency.toLowerCase(),
         guests,
       },
     });
-    complete('success'); // instructs the browser to close the native loader
+    stripe.redirectToCheckout({
+      sessionId: response.data.sessionId,
+    });
     dispatch({
       type: types.MARK_TRIP_BOOKED_STATUS,
       payload: statuses.SUCCESS,
     });
   } catch (error) {
     console.error('charge failed', error.response ? error.response.data : error);
-    complete('fail');
     dispatch({
       type: types.PAYMENT_ERROR,
       payload: error.response.data,

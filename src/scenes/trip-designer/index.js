@@ -59,7 +59,7 @@ class TripDesigner extends Component {
       return <NotFound />;
     }
 
-    return <Wrapper>tabs</Wrapper>;
+    return null;
   }
 }
 

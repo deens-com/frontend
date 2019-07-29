@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { StripeProvider } from 'react-stripe-elements';
 
 // Copied from https://github.com/stripe/react-stripe-elements/issues/154#issuecomment-462554749
 export default class AsyncStripeProvider extends Component {
@@ -39,10 +38,6 @@ export default class AsyncStripeProvider extends Component {
   render() {
     const { stripe } = this.state;
 
-    return (
-      <StripeProvider stripe={stripe}>
-        <>{this.props.children}</>
-      </StripeProvider>
-    );
+    return React.cloneElement(this.props.children, { stripe });
   }
 }
