@@ -14,7 +14,6 @@ import { formatLocation } from 'shared_components/Carts/Trip';
 import MapMarker from 'shared_components/icons/MapMarker';
 import LeftArrow from 'shared_components/icons/LeftArrow';
 import PaymentContainer from './PaymentContainer';
-import BookingDone from './components/BookingDone';
 import CheckoutTrip from './components/CheckoutTrip';
 import * as actions from 'store/checkout/actions';
 import tripActions from 'store/trips/actions';
@@ -428,10 +427,6 @@ class CheckoutContainer extends React.Component {
   renderStep() {
     const { step, guests, loadingProvision, errorProvision } = this.state;
     const { trip } = this.props;
-
-    if (step === 4) {
-      return <BookingDone guests={guests} trip={trip} />;
-    }
 
     if (step === 3) {
       return (

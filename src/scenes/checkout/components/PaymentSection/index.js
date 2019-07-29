@@ -7,7 +7,6 @@ import history from 'main/history';
 import PriceTag from 'shared_components/Currency/PriceTag';
 import { media } from 'libs/styled';
 import { generateTripSlug } from 'libs/Utils';
-import StripeCardDetails from '../StripeCardDetails';
 import CoinbaseButtonContainer from '../../CoinbaseButtonContainer';
 import PLSButton from './PLSButton';
 import Button from 'shared_components/Button';
@@ -145,7 +144,6 @@ export default class PaymentSection extends Component {
     totalPrice: PropTypes.number.isRequired,
     onPaymentClick: PropTypes.func.isRequired,
     numberOfPerson: PropTypes.number.isRequired,
-    onStripeTokenReceived: PropTypes.func.isRequired,
     guests: PropTypes.array.isRequired,
     getProvisionCodes: PropTypes.func.isRequired,
   };
@@ -238,12 +236,15 @@ export default class PaymentSection extends Component {
                 return (
                   <React.Fragment>
                     {this.state.paymentMethod === CREDIT_CARD_METHOD && (
-                      <StripeCardDetails
-                        amount={amount}
-                        symbol={symbol}
-                        showOrInText={this.state.canMakeAutoPayment}
-                        paymentError={paymentError}
-                      />
+                      <div style={{ margin: 'auto' }}>
+                        <Button
+                          size="medium"
+                          theme="fillLightGreen"
+                          onClick={this.props.onPayWithCreditCard}
+                        >
+                          <Trans>Pay with credit card</Trans>
+                        </Button>
+                      </div>
                     )}
                     {this.state.paymentMethod === CRYPTO_METHOD && (
                       <ButtonWrapper>
@@ -274,14 +275,13 @@ export default class PaymentSection extends Component {
 
   render() {
     const { trip, error, getProvisionCodes, bookingStatus, isPaymentProcessing } = this.props;
-
     return (
       <Dimmer.Dimmable dimmed={isPaymentProcessing}>
         <Dimmer inverted active={isPaymentProcessing || bookingStatus === 'started'}>
           <Loader />
         </Dimmer>
         <Wrap>
-          <i18n>
+          <I18n>
             {({ i18n }) => (
               <Modal
                 open={Boolean(error)}
@@ -301,7 +301,7 @@ export default class PaymentSection extends Component {
                 ]}
               />
             )}
-          </i18n>
+          </I18n>
           {this.renderPayment()}
         </Wrap>
       </Dimmer.Dimmable>

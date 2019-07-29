@@ -1,5 +1,4 @@
 import React from 'react';
-import { Elements } from 'react-stripe-elements';
 import Payment from './components/Payment';
 import { stripeKey } from 'libs/config';
 import AsyncStripeProvider from './AsyncStripeProvider';
@@ -17,17 +16,15 @@ const Wrapper = ({ apiKey, children }) => {
 const PaymentContainer = props => {
   return (
     <Wrapper apiKey={stripeKey}>
-      <Elements>
-        <Payment
-          getProvisionCodes={props.getProvisionCodes}
-          error={props.error}
-          nextStep={props.nextStep}
-          guests={props.guests}
-          trip={props.trip}
-          finishPayment={props.finishPayment}
-          startPayment={props.startPayment}
-        />
-      </Elements>
+      <Payment
+        getProvisionCodes={props.getProvisionCodes}
+        error={props.error}
+        nextStep={props.nextStep}
+        guests={props.guests}
+        trip={props.trip}
+        finishPayment={props.finishPayment}
+        startPayment={props.startPayment}
+      />
     </Wrapper>
   );
 };
