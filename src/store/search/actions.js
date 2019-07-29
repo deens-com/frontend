@@ -62,7 +62,7 @@ const fetchResults = searchQuery =>
     };
   });
 
-const updateSearchParams = (parameters, { newState, customPage, noChangeUrl, noFetch }) => (
+const updateSearchParams = (parameters, { newState, customPage, noChangeUrl, noFetch } = {}) => (
   dispatch,
   getState,
 ) => {
