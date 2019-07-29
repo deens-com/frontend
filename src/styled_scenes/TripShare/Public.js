@@ -158,7 +158,7 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
   useEffect(
     () => {
       const getImgSize = () => {
-        if (!editedTrip.media || !editedTrip.media[0]) {
+        if (!someImg) {
           return {};
         }
         const img = new Image();
@@ -168,11 +168,11 @@ const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
             height: img.height,
           });
         };
-        img.src = editedTrip.media[0].files.original.url;
+        img.src = someImg.files.original.url;
       };
       getImgSize();
     },
-    [editedTrip.media, someImg],
+    [someImg],
   );
 
   useEffect(

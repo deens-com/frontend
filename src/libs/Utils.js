@@ -1,5 +1,6 @@
 import I18nText from 'shared_components/I18nText';
 import tagsData from './../data/tags';
+import { sizes } from 'libs/styled';
 
 export const serverBaseURL = () => {
   if (process.env.REACT_APP_NODE_ENV === 'production') {
@@ -369,3 +370,17 @@ export const waitForAddThis = async () => {
   await new Promise(resolve => setTimeout(resolve, 50));
   return waitForAddThis();
 };
+
+export const detectScreenSize = () =>
+  Object.entries(sizes)
+    .filter(([key, value]) => Boolean(window.matchMedia(`(min-width: ${value})`).matches))
+    .reduce(
+      ([maxKey, maxValue], [key, value]) => {
+        const current = parseInt(value);
+        if (current > maxValue) {
+          return [key, parseInt(value)];
+        }
+        return [maxKey, maxValue];
+      },
+      ['', -1],
+    )[0];

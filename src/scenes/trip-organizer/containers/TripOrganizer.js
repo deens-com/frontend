@@ -4,66 +4,14 @@ import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 import actions from 'store/trips/actions';
 import tripDesignerActions from 'store/trip-designer/actions';
-import styled from 'styled-components';
 import searchActions from 'store/search/actions';
 import { changeCurrentUserTrip } from 'store/session/actions';
 import moment from 'moment';
 import TripOrganizer from 'styled_scenes/NewTripOrganizer';
-import history from 'main/history';
 import { Loader } from 'semantic-ui-react';
-import { generateTripSlug } from 'libs/Utils';
 import headerActions from 'store/header/actions';
-import BrandFooter from 'shared_components/BrandFooter';
-import NotFound from 'styled_scenes/NotFound';
-import urls from 'libs/urlGenerator';
-
-const Wrapper = styled.div`
-  min-height: calc(100vh - 85px);
-  display: flex;
-  flex-direction: column;
-`;
-
-const ContentWrapper = styled.div`
-  flex-grow: 1;
-`;
 
 class TripOrganizerContainer extends Component {
-  componentDidMount() {
-    this.props.changeHeader({ noMargin: true, forceNotFixed: true });
-    if (this.props.match.params.id) {
-      this.props.fetchTrip(this.props.match.params.id).then(() => {
-        this.props.checkAvailability();
-      });
-      return;
-    }
-    history.replace('/new/trip', {
-      modal: true,
-    });
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.trip && !prevProps.trip) {
-      if (this.props.trip && this.props.trip.bookingStatus === 'booked') {
-        history.replace(
-          urls.trip.view({
-            slug: generateTripSlug(this.props.trip),
-            id: this.props.trip._id,
-          }),
-        );
-        return;
-      }
-      if (
-        this.props.match.params.id &&
-        this.props.trip &&
-        this.props.session._id &&
-        this.props.trip.owner !== this.props.session._id
-      ) {
-        history.replace('/');
-        return;
-      }
-    }
-  }
-
   renderContent() {
     if (!this.props.trip || this.props.isLoading) {
       return <Loader size="massive" active />;
@@ -116,16 +64,7 @@ class TripOrganizerContainer extends Component {
   }
 
   render() {
-    if (this.props.error) {
-      return <NotFound />;
-    }
-
-    return (
-      <Wrapper>
-        <ContentWrapper>{this.renderContent()}</ContentWrapper>
-        <BrandFooter />
-      </Wrapper>
-    );
+    return this.renderContent();
   }
 }
 

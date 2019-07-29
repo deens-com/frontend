@@ -35,8 +35,17 @@ const Input = styled.input`
   font-size: 14px;
 `;
 
-export default ({ error, leftContent, rightContent, children, innerRef, maxWidth, ...props }) => (
-  <Wrapper maxWidth={maxWidth} error={error}>
+export default ({
+  error,
+  wrapperStyle,
+  leftContent,
+  rightContent,
+  children,
+  innerRef,
+  maxWidth,
+  ...props
+}) => (
+  <Wrapper maxWidth={maxWidth} error={error} style={wrapperStyle}>
     {leftContent}
     {children || <Input ref={innerRef} {...props} />}
     {rightContent}
