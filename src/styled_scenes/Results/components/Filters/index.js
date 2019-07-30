@@ -10,7 +10,7 @@ import PriceRangeFilter from './PriceRange';
 import PriceTagsFilter from './PriceTags';
 import TagsFilter from './Tags';
 import DurationFilter from './Duration';
-//import RatingFilter from './Rating';
+import RatingFilter from './Rating';
 import StarsFilter from './Stars';
 import TextFilter from './Text';
 import { isMatch } from 'lodash';
@@ -182,13 +182,13 @@ const Filters = ({
       {filters.includes(availableFilters.stars) && (
         <StarsFilter accommodationStars={searchParams.accommodationStars} onApply={search} />
       )}
-      {/*filters.includes(availableFilters.rating) && (
+      {filters.includes(availableFilters.rating) && (
         <RatingFilter
           ratingStart={searchParams.ratingStart}
           ratingEnd={searchParams.ratingEnd}
           onApply={search}
         />
-      )*/}
+      )}
       {filters.includes(availableFilters.duration) && (
         <DurationFilter duration={searchParams.duration} onApply={search} />
       )}
