@@ -406,7 +406,7 @@ export default class SemanticLocationControl extends Component {
                         <GoButton
                           onClick={e => {
                             e.stopPropagation();
-                            this.props.updateSearchParams({}, { noFetch: true });
+                            this.props.updateSearchParams({ type: serviceType }, { noFetch: true });
                           }}
                         >
                           Go
