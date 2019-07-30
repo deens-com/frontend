@@ -123,7 +123,9 @@ const Itinerary = ({
   //<Droppable droppableId={itineraryDroppablePrefix} direction="vertical" type={types.DAY}>
   return (
     <Wrapper>
-      <Map numberOfDays={numberOfDays} showingMap={showingMap} services={servicesByDay} />
+      {window.google && (
+        <Map numberOfDays={numberOfDays} showingMap={showingMap} services={servicesByDay} />
+      )}
       <Days>
         {days.map((day, index) => (
           <Day

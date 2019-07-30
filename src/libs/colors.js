@@ -9,6 +9,7 @@ export const textDisabled = '#5A5A5A';
 export const textLight = '#FFFFFF';
 export const backgroundLight = '#FFFFFF';
 export const backgroundDark = '#F1F1F1';
+export const backgroundError = '#FFC4C4';
 
 // Types of services
 export const activity = '#FD00A4';

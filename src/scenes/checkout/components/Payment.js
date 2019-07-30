@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { injectStripe } from 'react-stripe-elements';
 
 import PaymentSection from './PaymentSection';
 import * as actions from 'store/checkout/actions';
@@ -23,10 +22,6 @@ class Payment extends React.Component {
     };
   }
 
-  onStripeTokenReceived = (token, complete) => {
-    this.props.chargeStripeToken(token, this.props.guests, complete);
-  };
-
   payWithPls = async (guests, tripId) => {
     this.props.startPayment();
     this.setState({ isPaymentProcessing: true, paymentError: null });
@@ -46,21 +41,13 @@ class Payment extends React.Component {
     }
   };
 
-  onSubmitWithCardDetails = async () => {
+  onPayWithCreditCard = async () => {
     this.props.startPayment();
     this.setState({ isPaymentProcessing: true, paymentError: null });
     try {
-      const { token, error } = await this.props.stripe.createToken({ name: this.props.username });
-      if (error) {
-        throw error;
-      }
-      this.onStripeTokenReceived(token, status => {
-        this.setState({ isPaymentProcessing: false });
-        this.props.finishPayment();
-        if (status === 'success') {
-          this.props.nextStep();
-        }
-      });
+      await this.props.chargeStripeToken(this.props.guests, this.props.stripe);
+      this.setState({ isPaymentProcessing: false });
+      this.props.finishPayment();
     } catch (error) {
       this.props.finishPayment();
       this.setState({
@@ -77,7 +64,6 @@ class Payment extends React.Component {
     return (
       <PaymentContext.Provider
         value={{
-          onSubmitWithCardDetails: this.onSubmitWithCardDetails,
           totalPrice: trip.bookablePrice,
           ...this.state,
         }}
@@ -88,12 +74,12 @@ class Payment extends React.Component {
           pricePerPerson={pricePerPerson}
           totalPrice={trip.bookablePrice}
           onPaymentClick={() => {}}
-          onStripeTokenReceived={this.onStripeTokenReceived}
           paymentError={this.props.paymentError || this.state.paymentError}
           guests={this.props.guests}
           showStripe={Boolean(this.props.stripe)}
           error={error}
           getProvisionCodes={getProvisionCodes}
+          onPayWithCreditCard={this.onPayWithCreditCard}
           payWithPls={this.payWithPls}
           bookingStatus={this.props.bookingStatus}
           isPaymentProcessing={this.state.isPaymentProcessing}
@@ -116,4 +102,4 @@ const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(injectStripe(Payment));
+)(Payment);
