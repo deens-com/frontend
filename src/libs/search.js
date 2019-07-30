@@ -243,10 +243,10 @@ export const availableFilters = {
 };
 
 export const filtersByType = {
-  trip: [GUESTS, DATES, PRICE_RANGE, TAGS],
+  trip: [GUESTS, DATES, PRICE_RANGE, TAGS, RATING],
   accommodation: [GUESTS, DATES, PRICE_RANGE, TEXT, STARS, RATING],
-  activity: [GUESTS, SINGLE_DATE, PRICE_RANGE_ONLY_MAX, TAGS, TEXT, DURATION],
-  food: [GUESTS, PRICE_TAGS, TAGS, TEXT],
+  activity: [GUESTS, SINGLE_DATE, PRICE_RANGE_ONLY_MAX, TAGS, TEXT, DURATION, RATING],
+  food: [GUESTS, PRICE_TAGS, TAGS, TEXT, RATING],
 };
 
 export const prefetchWithNewParams = (newParams, oldParams) => {
