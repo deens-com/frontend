@@ -12,7 +12,7 @@ import Tabs from './Tabs';
 
 class TripDesigner extends Component {
   componentDidMount() {
-    this.props.changeHeader({ noMargin: true, forceNotFixed: true });
+    this.props.changeHeader({ forceNotFixed: true });
     this.props.fetchTags();
     if (this.props.match.params.id) {
       this.props.fetchTrip(this.props.match.params.id).then(() => {
@@ -84,11 +84,11 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      changeHeader: headerActions.changeHeader,
       checkAvailability: tripDesignerActions.checkAvailability,
       getTransportation: tripDesignerActions.getTransportation,
       fetchTrip: tripDesignerActions.fetchTrip,
       fetchTags: tripDesignerActions.fetchTags,
+      changeHeader: headerActions.changeHeader,
     },
     dispatch,
   );

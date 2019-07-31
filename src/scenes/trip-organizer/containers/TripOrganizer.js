@@ -13,9 +13,6 @@ import headerActions from 'store/header/actions';
 import BrandFooter from 'shared_components/BrandFooter';
 
 class TripOrganizerContainer extends Component {
-  componentDidMount() {
-    this.props.changeHeader({});
-  }
   renderContent() {
     if (!this.props.trip || this.props.isLoading) {
       return <Loader size="massive" active />;
@@ -106,7 +103,6 @@ const mapDispatchToProps = dispatch =>
     {
       ...actions,
       changeDates: searchActions.patchSearchQuery,
-      changeHeader: headerActions.changeHeader,
       changeCurrentUserTrip: changeCurrentUserTrip,
       updateSearchParams: searchActions.updateSearchParams,
       checkAvailability: tripDesignerActions.checkAvailability,

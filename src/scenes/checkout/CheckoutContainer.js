@@ -253,7 +253,6 @@ class CheckoutContainer extends React.Component {
 
   componentDidMount() {
     this.props.cleanPaymentStatus();
-    this.props.changeHeader({ noSearch: true });
   }
 
   componentDidUpdate() {

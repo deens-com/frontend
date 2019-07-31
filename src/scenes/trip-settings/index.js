@@ -50,10 +50,6 @@ const MainContent = styled.div`
 `;
 
 class TripSettings extends Component {
-  componentDidMount() {
-    this.props.changeHeader({});
-  }
-
   state = {
     section: 'trip-settings',
     deletingTrip: false,
@@ -214,7 +210,6 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      changeHeader: headerActions.changeHeader,
       checkAvailability: tripDesignerActions.checkAvailability,
       getTransportation: tripDesignerActions.getTransportation,
       fetchTrip: tripDesignerActions.fetchTrip,

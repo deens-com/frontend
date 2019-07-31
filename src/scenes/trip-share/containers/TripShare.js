@@ -9,7 +9,6 @@ import TripShare from '../../../styled_scenes/TripShare';
 class TripShareContainer extends Component {
   constructor(props) {
     super(props);
-    props.changeHeader();
     props.fetchTrip(props.match.params.id);
   }
 
@@ -39,8 +38,7 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators({ ...actions, changeHeader: headerActions.changeHeader }, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 export default connect(
   mapStateToProps,

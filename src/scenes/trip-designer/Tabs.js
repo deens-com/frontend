@@ -11,13 +11,13 @@ import { extractPrice } from 'libs/Utils';
 import urls from 'libs/urlGenerator';
 
 const Wrapper = styled.nav`
-  position: fixed;
+  position: ${props => props.position};
   height: 55px;
   width: 100%;
   z-index: 10;
   display: flex;
   background: white;
-  top: 60px;
+  top: 0;
 `;
 
 const ElementBase = styled.div`
@@ -51,10 +51,35 @@ const SmallElement = styled(ElementBase)`
 `;
 
 export default ({ tripId, trip, isLoading, selected }) => {
+  const [position, setPosition] = useState('relative');
+  useEffect(
+    () => {
+      const handleScroll = () => {
+        const scrolled = window.scrollY;
+
+        if (scrolled >= 65 && position === 'relative') {
+          setPosition('fixed');
+          return;
+        }
+
+        if (scrolled < 65 && position === 'fixed') {
+          setPosition('relative');
+        }
+      };
+
+      const handleScrollThrottle = throttle(handleScroll, 10);
+
+      window.addEventListener('scroll', handleScrollThrottle);
+      return () => {
+        window.removeEventListener('scroll', handleScrollThrottle);
+      };
+    },
+    [position],
+  );
   return (
     <>
-      <Placeholder />
-      <Wrapper>
+      {position === 'fixed' && <Placeholder />}
+      <Wrapper position={position}>
         <SmallElement
           onClick={() => history.push(urls.trip.settings(tripId))}
           selected={selected === 'settings'}
