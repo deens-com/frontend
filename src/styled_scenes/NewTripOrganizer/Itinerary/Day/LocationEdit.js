@@ -81,7 +81,7 @@ export default ({ location, onChange, isFinal }) => {
           <P>
             {place || (
               <Trans>
-                Please select ${isFinal ? <Trans>a final</Trans> : <Trans>an initial</Trans>}{' '}
+                Please select {isFinal ? <Trans>a final</Trans> : <Trans>an initial</Trans>}{' '}
                 location
               </Trans>
             )}

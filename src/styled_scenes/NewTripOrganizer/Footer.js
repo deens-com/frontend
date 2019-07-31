@@ -170,34 +170,7 @@ const Footer = ({
 
   return (
     <>
-      <Wrapper position={position}>
-        <Price>
-          {isLoadingPrice ? (
-            <LoaderWrapper>
-              <Loader size="mini" inline="centered" active />
-            </LoaderWrapper>
-          ) : (
-            <PStrong>${price}</PStrong>
-          )}{' '}
-          <TotalPriceText>
-            <Trans>Total price</Trans>
-          </TotalPriceText>
-        </Price>
-        <Button
-          id="bookButton"
-          size="small"
-          type="button"
-          theme="fillLightGreen"
-          onClick={book}
-          data-testid="checkoutBookButton"
-          bold
-        >
-          <Trans>Book</Trans>
-        </Button>
-        <Button id="shareButton" size="small" type="button" theme="tertiary" onClick={share} bold>
-          <Trans>Share your Trip</Trans>
-        </Button>
-        <SaveText>{saveButtonText(isSaving)}</SaveText>
+      <div>
         <CheckingAvailability checking={isCheckingAvailability}>
           <P>
             <Trans>Checking availability</Trans>
@@ -221,8 +194,7 @@ const Footer = ({
             />
           </P>
         </UndoServiceDeletion>
-      </Wrapper>
-      {position === 'fixed' && <Placeholder />}
+      </div>
     </>
   );
 };

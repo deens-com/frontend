@@ -22,6 +22,7 @@ class TripShareContainer extends Component {
         isLoading={this.props.isLoading}
         patchTrip={this.props.patchTrip}
         isPatchingTrip={this.props.isPatchingTrip}
+        suggestedTags={this.props.suggestedTags}
       />
     );
   }
@@ -34,6 +35,7 @@ const mapStateToProps = state => {
     error: state.trips.error,
     isLoading: state.trips.isLoading,
     isPatchingTrip: state.trips.isPatchingTrip,
+    suggestedTags: state.tripDesigner.suggestedTags,
   };
 };
 

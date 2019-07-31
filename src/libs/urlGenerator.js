@@ -20,6 +20,12 @@ export default {
     checkout: id => {
       return `/designer/${id}/checkout`;
     },
+    settings: id => {
+      return `/designer/${id}/settings`;
+    },
+    preview: id => {
+      return `/designer/${id}/preview`;
+    },
   },
   user: {
     view: username => {

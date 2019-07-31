@@ -4,7 +4,7 @@ import { normalize } from 'normalizr';
 import * as fetchActions from './fetch';
 import * as servicesActions from './services';
 import axios, { CancelToken } from 'libs/axios';
-import { tripTransport, trip as tripEntity } from 'libs/entities';
+import { tripTransport, tag as tagEntity, trip as tripEntity } from 'libs/entities';
 
 const types = {
   ...fetchActions.types,
@@ -18,6 +18,11 @@ const types = {
   PATCH_TRIP_SUCCESS: 'TD_PATCH_TRIP_SUCCESS',
   PATCH_TRIP_ERROR: 'TD_PATCH_TRIP_ERROR',
   UPDATE_TRIP_ENTITIES: 'UPDATE_TRIP_ENTITIES',
+  DELETE_TRIP_START: 'DELETE_TRIP_START',
+  DELETE_TRIP_SUCCESS: 'DELETE_TRIP_SUCCESS',
+  DELETE_TRIP_ERROR: 'DELETE_TRIP_ERROR',
+  FETCH_TAGS_SUCCESS: 'FETCH_TAGS_SUCCESS',
+  FETCH_TAGS_ERROR: 'FETCH_TAGS_ERROR',
 };
 
 function addLang(text) {
@@ -42,7 +47,7 @@ const getTransportation = () => async (dispatch, getState) => {
     const transportation = await requestTransportation(trip._id);
     dispatch({
       type: types.LOAD_TRANSPORTS_SUCCESS,
-      payload: transportation.entities.tripTransports,
+      payload: transportation.entities.tripTransports || {},
     });
   } catch (e) {
     dispatch({ type: types.LOAD_TRANSPORTS_ERROR });
@@ -142,6 +147,40 @@ const editTrip = newData => async (dispatch, getState) => {
   }
 };
 
+const deleteTrip = newData => async (dispatch, getState) => {
+  const trip = getState().tripDesigner.trip.data;
+  dispatch({ type: types.DELETE_TRIP_START });
+  try {
+    const response = await apiClient.trips.delete(trip._id);
+    const normalized = normalize(response.data, tripEntity);
+    dispatch({ type: types.DELETE_TRIP_SUCCESS, payload: normalized });
+  } catch (e) {
+    dispatch({
+      type: types.DELETE_TRIP_ERROR,
+      error: e.response && e.response.data,
+      payload: trip,
+    });
+  }
+};
+
+const fetchTags = () => async (dispatch, getState) => {
+  try {
+    const tagsResponse = await apiClient.tags.get();
+    const tags = tagsResponse.data.map(tag => ({
+      ...tag,
+      value: tag.names,
+    }));
+    dispatch({ type: types.FETCH_TAGS_SUCCESS, payload: tags });
+  } catch (e) {
+    dispatch({ type: types.FETCH_TAGS_ERROR, error: e.response && e.response.data });
+  }
+};
+
+const addTagsToEntities = tags => dispatch => {
+  const normalized = normalize(tags, [tagEntity]);
+  dispatch({ type: types.UPDATE_TRIP_ENTITIES, payload: normalized });
+};
+
 export default {
   ...fetchActions,
   ...servicesActions,
@@ -150,4 +189,7 @@ export default {
   checkAvailability,
   selectTransport,
   editTrip,
+  deleteTrip,
+  fetchTags,
+  addTagsToEntities,
 };

@@ -465,6 +465,7 @@ class ServiceForm extends Component {
                 <label>Pictures (the first one you upload will be your main service picture)</label>
                 <MultiImageUploader
                   value={values.media}
+                  withHeroSelection
                   onUploadedFilesChanged={this.onUploadedFilesChanged}
                   initialUploadedFiles={values.media}
                   onStartedUpload={this.onStartedUpload}
