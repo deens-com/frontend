@@ -6,6 +6,7 @@ import { Slider, Handles, Rail, Ticks, Tracks } from 'react-compound-slider';
 import Handle from './Handle';
 import { primary, disabled } from 'libs/colors';
 import Star from 'shared_components/icons/Star';
+import Deens from 'shared_components/icons/Deens';
 
 const Content = styled.div`
   padding: 25px;
@@ -20,6 +21,16 @@ const StarsWrapper = styled.div`
   svg {
     color: ${primary};
   }
+`;
+
+const IconWrapper = styled.span`
+  ${props =>
+    props.disabled &&
+    `
+    > svg g:nth-child(3) {
+      display: none;
+    }
+  `};
 `;
 
 const sliderStyle = {
@@ -44,9 +55,9 @@ const MIN_STARS = 1;
 
 const renderTrigger = (start, end) => {
   if (start === end) {
-    return `${start} Rating stars`;
+    return `Rate: ${start}`;
   }
-  return `${start} to ${end} Rating stars`;
+  return `Rate: ${start} to ${end}`;
 };
 
 const Rating = ({ ratingStart, ratingEnd, onApply }) => {
@@ -120,17 +131,12 @@ const Rating = ({ ratingStart, ratingEnd, onApply }) => {
                     style={{ position: 'absolute', top: `calc(${tick.percent}% - 8px)` }}
                   >
                     {[...new Array(tick.value)].map((_, i) => (
-                      <span key={i}>
-                        <Star
-                          style={
-                            tick.value < values.min || tick.value > values.max
-                              ? {
-                                  color: disabled,
-                                }
-                              : null
-                          }
-                        />
-                      </span>
+                      <IconWrapper
+                        disabled={tick.value < values.min || tick.value > values.max}
+                        key={i}
+                      >
+                        <Deens />
+                      </IconWrapper>
                     ))}
                   </StarsWrapper>
                 ))}
