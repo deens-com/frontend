@@ -218,10 +218,10 @@ const checkAvailability = (id, startDate, peopleData, attempt = 1) => async disp
   }
 };
 
-const cloneTrip = (trip, userId) => async dispatch => {
+const cloneTrip = trip => async dispatch => {
   dispatch(cloneTripStart());
   try {
-    const newTrip = await apiClient.trips.copy.post(trip._id, !userId);
+    const newTrip = await apiClient.trips.copy.post(trip._id);
 
     const newId = newTrip.data._id;
     dispatch(cloneTripSuccess());

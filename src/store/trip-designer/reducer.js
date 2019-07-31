@@ -23,6 +23,7 @@ const initialState = {
   isLoadingPrice: 0,
   // this is for allowing to undo
   lastRemovedService: [],
+  suggestedTags: [],
 };
 
 export default function tripDesigner(state = initialState, action = {}) {
@@ -231,6 +232,11 @@ export default function tripDesigner(state = initialState, action = {}) {
           ...state.trip,
           data: action.payload,
         },
+      };
+    case actions.types.FETCH_TAGS_SUCCESS:
+      return {
+        ...state,
+        suggestedTags: action.payload,
       };
     default:
       return state;

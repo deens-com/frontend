@@ -43,7 +43,7 @@ const Title = styled(H2)`
 
 const Content = styled.div``;
 
-export default ({ tripId, trip, patchTrip, isPatchingTrip }) => {
+export default ({ tripId, trip, patchTrip, isPatchingTrip, suggestedTags }) => {
   const [isSaving, setIsSaving] = useState(false);
   const [optionSelected, setOption] = useState(trip && trip.privacy);
 
@@ -109,6 +109,7 @@ export default ({ tripId, trip, patchTrip, isPatchingTrip }) => {
                 patchTrip={patchTrip}
                 publishTrip={publishTrip}
                 trip={trip}
+                suggestedTags={suggestedTags}
               />
             )}
         </Content>

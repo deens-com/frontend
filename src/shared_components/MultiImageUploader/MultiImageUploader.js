@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { getAuthHeader } from 'libs/axios';
+import { getSession } from 'libs/user-session';
 import styled from 'styled-components';
 import FineUploaderTraditional from 'fine-uploader-wrappers';
 import Filename from 'react-fine-uploader/filename';
@@ -9,17 +10,46 @@ import Star from 'shared_components/icons/Star';
 import CancelButton from 'react-fine-uploader/cancel-button';
 import Filesize from 'react-fine-uploader/filesize';
 import DeleteButton from 'react-fine-uploader/delete-button';
+import ProgressBar from 'react-fine-uploader/progress-bar';
 import Thumbnail from 'react-fine-uploader/thumbnail';
 import FileInput from 'react-fine-uploader/file-input';
 import { serverBaseURL } from 'libs/config';
-import { getImageUrlFromMedia } from 'libs/media';
+import { getImageUrlFromFiles } from 'libs/media';
 import Button from 'shared_components/Button';
+import { mediaExtensions, MEDIA_IMAGE, MEDIA_VIDEO } from 'libs/trips';
 
 // i18n
 import { I18n } from '@lingui/react';
 import { Trans, t } from '@lingui/macro';
 
-const allowedExtensions = ['jpeg', 'jpg', 'gif', 'png'];
+const allowedExtensions = [...mediaExtensions[MEDIA_IMAGE], mediaExtensions[MEDIA_VIDEO]];
+
+const uploaderOptions = {
+  options: {
+    debug: false,
+    autoUpload: true,
+    chunking: {
+      enabled: false,
+    },
+    deleteFile: {
+      enabled: true,
+      endpoint: `${serverBaseURL}/media`,
+      customHeaders: {
+        Authorization: getSession() && getAuthHeader(),
+      },
+    },
+    request: {
+      endpoint: `${serverBaseURL}/media`,
+      customHeaders: {
+        Authorization: getSession() && getAuthHeader(),
+      },
+    },
+    validation: {
+      allowedExtensions,
+      sizeLimit: 5242880, // 5MB = 5 * 1024 * 1024
+    },
+  },
+};
 
 const Wrapper = styled.div`
   background-color: #f8f8f8;
@@ -80,6 +110,8 @@ const HeroFill = styled.div`
   cursor: pointer;
 `;
 
+const ProgressWrapper = styled.div``;
+
 const HeroBorder = styled.div`
   cursor: pointer;
   color: #097da8;
@@ -109,34 +141,11 @@ export default class MultiImageUploader extends Component {
       hero: hero ? hero.id : null,
     };
 
-    this.uploader = new FineUploaderTraditional({
-      options: {
-        debug: false,
-        autoUpload: true,
-        chunking: {
-          enabled: false,
-        },
-        deleteFile: {
-          enabled: true,
-          endpoint: `${serverBaseURL}/media`,
-          customHeaders: {
-            Authorization: getAuthHeader(),
-          },
-        },
-        request: {
-          endpoint: `${serverBaseURL}/media`,
-          customHeaders: {
-            Authorization: getAuthHeader(),
-          },
-        },
-        validation: {
-          allowedExtensions,
-          sizeLimit: 5242880, // 5MB = 5 * 1024 * 1024
-        },
-      },
-    });
+    this.uploader = this.addEventHandlers(new FineUploaderTraditional(uploaderOptions));
+  }
 
-    this.uploader.on('complete', (id, name, response) => {
+  addEventHandlers = uploader => {
+    uploader.on('complete', (id, name, response) => {
       this.setState(
         ({ submittedFiles }) => ({
           submittedFiles: submittedFiles.map(file => {
@@ -153,14 +162,14 @@ export default class MultiImageUploader extends Component {
       );
     });
 
-    this.uploader.on('submit', id => {
+    uploader.on('submit', id => {
       this.props.onStartedUpload(id);
     });
 
-    this.uploader.on('error', (id, name, errorReason) => {
+    uploader.on('error', (id, name, errorReason) => {
       if (errorReason.includes('invalid extension')) {
         alert(
-          `${name} file is not an supported image file.\nPlease use following file formats: ${allowedExtensions
+          `${name} file is not a supported image file.\nPlease use following file formats: ${allowedExtensions
             .map(ext => `.${ext}`)
             .join(', ')}`,
         );
@@ -169,7 +178,7 @@ export default class MultiImageUploader extends Component {
       }
     });
 
-    this.uploader.on('statusChange', (id, oldStatus, newStatus) => {
+    uploader.on('statusChange', (id, oldStatus, newStatus) => {
       const isInitial = oldStatus === null && newStatus === 'upload successful';
       if (newStatus === 'submitted' || isInitial) {
         this.setState(prevState => ({
@@ -178,21 +187,24 @@ export default class MultiImageUploader extends Component {
             {
               id,
               isInitial,
-              url: isInitial ? this.props.initialUploadedFiles[id].files.hero.url : null,
+              url: isInitial ? this.props.initialUploadedFiles[id].files.original.url : null,
             },
           ],
         }));
       }
       if (newStatus === 'canceled' || newStatus === 'deleting') {
+        const url = this.state.submittedFiles.find(file => file.id === id).url;
         this.setState(
           prevState => ({
             submittedFiles: prevState.submittedFiles.filter(file => file.id !== id),
           }),
-          () => this.props.onUploadedFilesChanged(this.state.submittedFiles, id, this.state.hero),
+          () =>
+            this.props.onUploadedFilesChanged(this.state.submittedFiles, id, this.state.hero, url),
         );
       }
     });
-  }
+    return uploader;
+  };
 
   selectHero = id => {
     this.setState(
@@ -204,11 +216,15 @@ export default class MultiImageUploader extends Component {
   };
 
   componentDidMount() {
+    this.uploadInitialFiles();
+  }
+
+  uploadInitialFiles() {
     const files = this.props.initialUploadedFiles.map((element, i) => ({
       id: i,
       hero: element.hero,
       name: element.names,
-      thumbnailUrl: getImageUrlFromMedia(element, 'thumbnail'),
+      thumbnailUrl: getImageUrlFromFiles(element.files, 'thumbnail'),
     }));
     const isHero = files.find(elem => elem.hero);
 
@@ -217,8 +233,30 @@ export default class MultiImageUploader extends Component {
         hero: isHero.id,
       });
     }
-
     this.uploader.methods.addInitialFiles(files);
+  }
+
+  componentDidUpdate(prevProps) {
+    const newFiles = this.props.initialUploadedFiles;
+    const oldFiles = prevProps.initialUploadedFiles;
+    /*if (newFiles.length === 0) {
+      this.setState({
+        submittedFiles: []
+      })
+      return
+    }*/
+    if (newFiles !== oldFiles) {
+      this.uploader = this.addEventHandlers(new FineUploaderTraditional(uploaderOptions));
+      this.setState(
+        {
+          submittedFiles: [],
+          hero: null,
+        },
+        () => {
+          this.uploadInitialFiles();
+        },
+      );
+    }
   }
 
   render() {
@@ -232,14 +270,19 @@ export default class MultiImageUploader extends Component {
         <Images>
           {this.state.submittedFiles.map(file => (
             <Image key={file.id}>
-              <SelectHeroButton onClick={() => this.selectHero(file.id)}>
-                <HeroBorder>
-                  <Star style={{ width: 29, height: 29 }} />
-                </HeroBorder>
-                <HeroFill hero={this.state.hero === file.id}>
-                  <Star style={{ width: 25, height: 25 }} />
-                </HeroFill>
-              </SelectHeroButton>
+              {this.props.withHeroSelection && (
+                <SelectHeroButton onClick={() => this.selectHero(file.id)}>
+                  <HeroBorder>
+                    <Star style={{ width: 29, height: 29 }} />
+                  </HeroBorder>
+                  <HeroFill hero={this.state.hero === file.id}>
+                    <Star style={{ width: 25, height: 25 }} />
+                  </HeroFill>
+                </SelectHeroButton>
+              )}
+              <ProgressWrapper>
+                <ProgressBar id={file.id} hideOnComplete uploader={this.uploader} />
+              </ProgressWrapper>
               <Thumbnail fromServer={file.isInitial} id={file.id} uploader={this.uploader} />
               <DataWrapper>
                 <Filename id={file.id} uploader={this.uploader} />

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { formatMedia, signAndUploadImage } from 'libs/trips';
+import { formatMedia, PRIVACY_PUBLIC } from 'libs/trips';
 import { primaryDisabled, backgroundError, error } from 'libs/colors';
 import useImageUploader from 'hooks/useImageUploader';
 import { Trans, t } from '@lingui/macro';
 import { I18n } from '@lingui/react';
+import { Loader } from 'semantic-ui-react';
+import { getHeroImage } from 'libs/media';
 import PlusIcon from 'shared_components/icons/PlusIcon';
 import Remove from 'shared_components/icons/Remove';
 
@@ -77,10 +79,25 @@ const AddButton = () => {
 
 const SingleImageUploader = ({ trip, editTrip }) => {
   const onImageUpload = (url, image) => {
-    editTrip();
+    const newMedia = formatMedia(url);
+    editTrip({
+      media: [
+        ...trip.media.map(m => ({
+          ...m,
+          hero: false,
+        })),
+        ...newMedia,
+      ],
+    });
   };
 
-  const coverImage = trip.media && (trip.media.find(media => media.hero) || trip.media[0]);
+  const removeImage = () => {
+    editTrip({
+      media: trip.media.filter(m => !m.hero),
+    });
+  };
+
+  const coverImage = getHeroImage(trip, true);
 
   const { imgSize, isUploading, imageError, onFileSelect } = useImageUploader(
     coverImage,
@@ -90,14 +107,25 @@ const SingleImageUploader = ({ trip, editTrip }) => {
   return coverImage ? (
     <ImageWrapper>
       <CoverImage src={coverImage.files.original.url} alt="Trip Cover" />
-      <RemoveIconWrapper>
-        <Remove style={{ width: '20px', height: '20px' }} />
-      </RemoveIconWrapper>
+      {!(trip.privacy === PRIVACY_PUBLIC) && (
+        <RemoveIconWrapper>
+          <Remove onClick={removeImage} style={{ width: '20px', height: '20px' }} />
+        </RemoveIconWrapper>
+      )}
     </ImageWrapper>
   ) : (
-    <Box>
-      <AddButton />
-    </Box>
+    <>
+      <label htmlFor="cover-image">
+        <Box>{isUploading ? <Loader inline="centered" active /> : <AddButton />}</Box>
+      </label>
+      <input
+        id="cover-image"
+        accept=".jpg, .jpeg, .png, .mp4, .mov"
+        type="file"
+        style={{ display: 'none' }}
+        onChange={onFileSelect}
+      />
+    </>
   );
 };
 

@@ -7,13 +7,22 @@ import { primary, disabled, backgroundDark } from 'libs/colors';
 import { detectScreenSize } from 'libs/Utils';
 import Icon from 'shared_components/icons/Menu';
 
+const Wrapper = styled.div`
+  ${media.minMediumPlus} {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+    border-right: 1px solid ${backgroundDark};
+  }
+  grid-row: 1 / 3;
+  grid-column: 1 / 3;
+  display: grid;
+`;
+
 const IconWrapper = styled.div`
   ${media.minMediumPlus} {
     display: none;
   }
-  grid-column: 1 / 2;
   grid-row: 1;
-  margin: auto;
   > svg {
     color: ${props => (props.isOpen ? disabled : primary)};
   }
@@ -48,11 +57,16 @@ const LinkList = styled.ul`
   color: ${primary};
   > li {
     margin-top: 10px;
+    p {
+      cursor: pointer;
+      zdisplay: inline;
+    }
   }
 `;
 
-export default ({ onChangeSection }) => {
+export default ({ numberOfDays, onChangeSection }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const days = [...new Array(numberOfDays)];
 
   const onChangeScreenSize = () => {
     const currentSize = detectScreenSize();
@@ -69,7 +83,7 @@ export default ({ onChangeSection }) => {
   };
 
   return (
-    <>
+    <Wrapper>
       <IconWrapper
         isOpen={isOpen}
         onClick={() => {
@@ -82,17 +96,25 @@ export default ({ onChangeSection }) => {
         <section>
           <H6>Trip</H6>
           <LinkList>
-            <li onClick={() => handleChangeSection('trip-settings')}>Trip Settings</li>
+            <li>
+              <p onClick={() => handleChangeSection('trip-settings')}>Trip Settings</p>
+            </li>
           </LinkList>
         </section>
         <section>
           <H6>Days</H6>
           <LinkList>
-            <li onClick={() => handleChangeSection('day-1')}>Day 1</li>
-            <li onClick={() => handleChangeSection('add-day')}>Add Day</li>
+            {days.map((_, i) => (
+              <li key={i}>
+                <p onClick={() => handleChangeSection(`day-${i + 1}`)}>Day {i + 1}</p>
+              </li>
+            ))}
+            <li>
+              <p onClick={() => handleChangeSection('add-day')}>Add Day</p>
+            </li>
           </LinkList>
         </section>
       </Nav>
-    </>
+    </Wrapper>
   );
 };

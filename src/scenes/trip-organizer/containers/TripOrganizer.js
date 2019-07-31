@@ -10,8 +10,12 @@ import moment from 'moment';
 import TripOrganizer from 'styled_scenes/NewTripOrganizer';
 import { Loader } from 'semantic-ui-react';
 import headerActions from 'store/header/actions';
+import BrandFooter from 'shared_components/BrandFooter';
 
 class TripOrganizerContainer extends Component {
+  componentDidMount() {
+    this.props.changeHeader({});
+  }
   renderContent() {
     if (!this.props.trip || this.props.isLoading) {
       return <Loader size="massive" active />;
@@ -64,7 +68,12 @@ class TripOrganizerContainer extends Component {
   }
 
   render() {
-    return this.renderContent();
+    return (
+      <>
+        {this.renderContent()}
+        <BrandFooter />
+      </>
+    );
   }
 }
 

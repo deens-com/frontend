@@ -169,6 +169,9 @@ export default {
         post: fileNames => post('/media/s3/sign')({ fileNames }),
       },
     },
+    trips: {
+      post: (params, id) => post(`/media/trips/${id}`)(params),
+    },
   },
   moderation: {
     getAllPending() {

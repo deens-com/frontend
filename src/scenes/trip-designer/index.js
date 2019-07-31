@@ -3,17 +3,17 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 import tripDesignerActions from 'store/trip-designer/actions';
-import styled from 'styled-components';
 import history from 'main/history';
 import { generateTripSlug } from 'libs/Utils';
 import headerActions from 'store/header/actions';
 import NotFound from 'styled_scenes/NotFound';
 import urls from 'libs/urlGenerator';
-const Wrapper = styled.div``;
+import Tabs from './Tabs';
 
 class TripDesigner extends Component {
   componentDidMount() {
     this.props.changeHeader({ noMargin: true, forceNotFixed: true });
+    this.props.fetchTags();
     if (this.props.match.params.id) {
       this.props.fetchTrip(this.props.match.params.id).then(() => {
         this.props.checkAvailability();
@@ -54,14 +54,32 @@ class TripDesigner extends Component {
     }
   }
 
+  getCurrentSection() {
+    return this.props.location.pathname.split('/')[3];
+  }
+
   render() {
     if (this.props.error) {
       return <NotFound />;
     }
 
-    return null;
+    return (
+      <Tabs
+        selected={this.getCurrentSection()}
+        trip={this.props.trip}
+        tripId={this.props.match.params.id}
+        isLoading={this.props.isLoading}
+      />
+    );
   }
 }
+
+const mapStateToProps = (state, props) => {
+  return {
+    trip: state.tripDesigner.trip.data,
+    isLoading: state.tripDesigner.trip.isLoading,
+  };
+};
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
@@ -70,11 +88,12 @@ const mapDispatchToProps = dispatch =>
       checkAvailability: tripDesignerActions.checkAvailability,
       getTransportation: tripDesignerActions.getTransportation,
       fetchTrip: tripDesignerActions.fetchTrip,
+      fetchTags: tripDesignerActions.fetchTags,
     },
     dispatch,
   );
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(withRouter(TripDesigner));

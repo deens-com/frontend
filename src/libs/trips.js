@@ -125,13 +125,13 @@ export const calculateCancellationCharge = (policy, price) => {
   return (price - policy.refundAmount).toFixed(2);
 };
 
-export function formatMedia(url) {
+export function formatMedia(url, text) {
   return [
     {
       type: 'image',
       hero: true,
       names: {
-        en: 'Trip image',
+        en: text || 'Trip image',
       },
       files: {
         original: {
@@ -150,7 +150,7 @@ export const MEDIA_VIDEO = 'video';
 export const MEDIA_ALL = 'all';
 //const mediaTypes = [MEDIA_IMAGE, MEDIA_VIDEO, MEDIA_ALL]
 
-const mediaExtensions = {
+export const mediaExtensions = {
   [MEDIA_IMAGE]: ['gif', 'jpeg', 'jpg', 'png'],
   [MEDIA_VIDEO]: ['mp4', 'mov'],
 };

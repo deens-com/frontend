@@ -133,25 +133,11 @@ function addLang(text) {
   };
 }
 
-const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip }) => {
+const Public = ({ trip, publishTrip, patchTrip, isPatchingTrip, suggestedTags }) => {
   const [editedTrip, setTrip] = useState(trip);
-  const [suggestedTags, setSuggestedTags] = useState([]);
   const [imgSize, setImgSize] = useState({});
   const [isUploading, setIsUploading] = useState(false);
   const [imageError, setImageError] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const tagsResponse = await apiClient.tags.get();
-      setSuggestedTags(
-        tagsResponse.data.map(tag => ({
-          ...tag,
-          value: tag.names,
-        })),
-      );
-    };
-    fetchData();
-  }, []);
 
   const someImg = editedTrip.media && editedTrip.media[0];
 
