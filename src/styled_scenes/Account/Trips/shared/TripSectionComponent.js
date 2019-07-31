@@ -3,6 +3,8 @@ import { Modal } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button, Divider, Icon, Label } from 'semantic-ui-react';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 import TrashCan from 'shared_components/icons/TrashCan';
 import { error } from 'libs/colors';
