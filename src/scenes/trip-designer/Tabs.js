@@ -14,7 +14,7 @@ const Wrapper = styled.nav`
   position: ${props => props.position};
   height: 55px;
   width: 100%;
-  z-index: 10;
+  z-index: 7;
   display: flex;
   background: white;
   top: 0;

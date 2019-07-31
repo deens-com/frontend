@@ -4,6 +4,8 @@ import fetch_helpers, { parseTags } from 'libs/fetch_helpers';
 import * as tripUtils from 'libs/trips';
 import urls from 'libs/urlGenerator';
 import { getCurrentUserTrip } from 'store/session/actions';
+import moment from 'moment';
+import apiClient from 'libs/apiClient';
 
 const trips_fetched = trips => {
   return {
@@ -100,20 +102,33 @@ const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (dispatch, getSt
   }
   try {
     const newTripTitle = { en: `Trip to ${service.location}` };
+    const startDate = state.search.searchQuery.startDate || moment().toJSON();
+    const endDate =
+      state.search.searchQuery.endDate ||
+      moment()
+        .add(1, 'days')
+        .toJSON();
+    const days = moment(endDate).diff(moment(startDate), 'days');
+    const duration = days * 60 * 24;
     const serviceGroup = {
       title: newTripTitle,
       ...(service.description && { description: { en: service.description } }),
       baseCurrency: service.baseCurrency,
-      services: [{ service: service._id, day: 1 }],
-      duration: service.duration,
+      services: [...new Array(days)].map((_, i) => ({ service: service._id, day: i + 1 })),
+      duration,
       location: service.originalLocation,
       userStartLocation: service.originalLocation,
       userEndLocation: service.originalLocation,
+      adultCount: Number(state.search.searchQuery.adults) || 2,
+      childrenCount: Number(state.search.searchQuery.children) || 0,
+      infantCount: Number(state.search.searchQuery.infants) || 0,
+      startDate,
+      endDate,
     };
     dispatch({
       type: 'TRIP_CREATING',
     });
-    const newTrip = await axios.post(`/trips`, serviceGroup);
+    const newTrip = await apiClient.trips.post(serviceGroup);
     dispatch(getCurrentUserTrip());
     if (newTrip) {
       const formattedTrip = fetch_helpers.buildServicesJson([newTrip.data])[0];

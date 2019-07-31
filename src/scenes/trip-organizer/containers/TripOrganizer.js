@@ -91,7 +91,6 @@ const mapStateToProps = (state, props) => {
     isLoading: state.tripDesigner.trip.isLoading,
     error: state.tripDesigner.trip.error,
     owner: state.trips.owner,
-    endDate: state.search.searchQuery.end_date,
     adults: state.search.searchQuery.adults,
     children: state.search.searchQuery.children,
     infants: state.search.searchQuery.infants,
