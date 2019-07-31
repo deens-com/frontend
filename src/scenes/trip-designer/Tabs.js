@@ -12,16 +12,12 @@ import urls from 'libs/urlGenerator';
 
 const Wrapper = styled.nav`
   position: fixed;
-  bottom: 0;
   height: 55px;
   width: 100%;
   z-index: 10;
   display: flex;
   background: white;
-  ${media.minMediumPlus} {
-    padding-right: 0;
-    top: 60px;
-  }
+  top: 60px;
 `;
 
 const ElementBase = styled.div`
@@ -33,20 +29,12 @@ const ElementBase = styled.div`
   ${props =>
     props.selected &&
     `
-    border-top: 2px solid ${primary};
-    ${media.minMediumPlus} {
-      border-top: 0;
-      border-bottom: 2px solid ${primary};
-    }
+    border-bottom: 2px solid ${primary};
   `};
 `;
 
 const Placeholder = styled.div`
-  display: none;
-  ${media.minMediumPlus} {
-    display: block;
-    margin-top: 55px;
-  }
+  margin-top: 30px;
 `;
 
 const Element = styled(ElementBase)`
@@ -63,31 +51,6 @@ const SmallElement = styled(ElementBase)`
 `;
 
 export default ({ tripId, trip, isLoading, selected }) => {
-  /*const [mobilePosition, setMobilePosition] = useState('relative');
-  useEffect(
-    () => {
-      const handleScroll = () => {
-        const scrolled = window.scrollY;
-
-        if (scrolled >= 65 && mobilePosition === 'relative') {
-          setMobilePosition('fixed');
-          return;
-        }
-
-        if (scrolled < 65 && mobilePosition === 'fixed') {
-          setMobilePosition('relative');
-        }
-      };
-
-      const handleScrollThrottle = throttle(handleScroll, 10);
-
-      window.addEventListener('scroll', handleScrollThrottle);
-      return () => {
-        window.removeEventListener('scroll', handleScrollThrottle);
-      };
-    },
-    [mobilePosition],
-  );*/
   return (
     <>
       <Placeholder />
