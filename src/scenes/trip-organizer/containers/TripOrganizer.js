@@ -9,23 +9,33 @@ import { changeCurrentUserTrip } from 'store/session/actions';
 import moment from 'moment';
 import TripOrganizer from 'styled_scenes/NewTripOrganizer';
 import { Loader } from 'semantic-ui-react';
-import headerActions from 'store/header/actions';
 import BrandFooter from 'shared_components/BrandFooter';
+
+function getPeopleValue(value, alternativeValue, defaultValue) {
+  if (value !== null && value !== undefined && value !== '') {
+    return Number(value);
+  }
+  if (alternativeValue !== null && alternativeValue !== undefined && alternativeValue !== '') {
+    return Number(alternativeValue);
+  }
+  return defaultValue;
+}
 
 class TripOrganizerContainer extends Component {
   renderContent() {
     if (!this.props.trip || this.props.isLoading) {
       return <Loader size="massive" active />;
     }
+    console.log(this.props.trip.childrenCount, this.props.children);
 
     return (
       <TripOrganizer
         trip={this.props.trip}
         tripId={this.props.match.params.id}
         startDate={moment(this.props.trip.startDate).toJSON()}
-        adults={this.props.trip.adultCount || this.props.adults || 2}
-        children={this.props.trip.childrenCount || this.props.children || 0}
-        infants={this.props.trip.infantCount || this.props.infants || 0}
+        adults={getPeopleValue(this.props.trip.adultCount, this.props.adults, 2)}
+        children={getPeopleValue(this.props.trip.childrenCount, this.props.children, 0)}
+        infants={getPeopleValue(this.props.trip.infantCount, this.props.infants, 0)}
         changeDates={this.props.changeDates}
         updateSearchParams={this.props.updateSearchParams}
         history={this.props.history}
