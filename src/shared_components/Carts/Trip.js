@@ -458,12 +458,14 @@ class TripCart extends Component {
       return;
     }
 
+    const itemTags = this.props.item.tags.filter(tag => tag.type === 'theme');
+
     if (this.props.editMode && this.state.isEditingTags) {
       return (
         <TagSelector
           onBlur={this.disableEditTagsMode}
           onChange={this.props.onTagsChange}
-          selectedTags={this.props.item.tags}
+          selectedTags={itemTags}
           suggestedTags={this.props.suggestedTags}
         />
       );
@@ -471,7 +473,7 @@ class TripCart extends Component {
 
     return (
       <span>
-        {this.props.item.tags.map(tag => (
+        {itemTags.map(tag => (
           <TagLink
             onClick={() => this.props.updateSearchParams({ tags: I18nText.translate(tag.names) })}
             key={I18nText.translate(tag.names)}
@@ -486,7 +488,7 @@ class TripCart extends Component {
             style={{ verticalAlign: 'middle', display: 'inline-flex', cursor: 'pointer' }}
             onClick={this.enableEditTagsMode}
           >
-            {this.props.item.tags.length === 0 && (
+            {itemTags.length === 0 && (
               <P>
                 <Trans>Select tags</Trans>
               </P>
