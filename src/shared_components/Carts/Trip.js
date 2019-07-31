@@ -222,7 +222,7 @@ const AboveTitle = styled.div`
 
 const TagsLine = styled.div`
   overflow: hidden;
-  min-height: calc(3.6em + 5px);
+  height: calc(3.6em + 5px);
 `;
 
 const HeartWrapper = styled.div`
