@@ -306,18 +306,15 @@ export const modifyCustomService = (serviceId, data) => async (dispatch, getStat
     type: types.MODIFY_CUSTOM_SERVICE,
     payload: {
       id: serviceId,
-      data,
+      data: {
+        ...data,
+        title: data.title.en,
+        categories: data.categories.map(cat => ({
+          names: cat.names.en,
+        })),
+      },
     },
   });
 
-  const dataWithLanguage = data.title
-    ? {
-        ...data,
-        title: {
-          en: data.title,
-        },
-      }
-    : data;
-
-  apiClient.services.patch(serviceId, dataWithLanguage);
+  return apiClient.services.patch(serviceId, data);
 };

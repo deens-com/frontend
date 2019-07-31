@@ -9,7 +9,7 @@ import { TripContext } from '../../';
 import { I18n } from '@lingui/react';
 import { Trans, t } from '@lingui/macro';
 
-const AddCustomServiceModal = ({ day, close, service }) => {
+const AddCustomServiceModal = ({ day, close, service, isEditing, editService }) => {
   const { addService } = useContext(TripContext);
   const [creatingService, setCreatingService] = useState(false);
 
@@ -18,6 +18,14 @@ const AddCustomServiceModal = ({ day, close, service }) => {
     const service = fetchHelpers.createService(values, true);
     const createdService = (await apiClient.services.post(service)).data;
     await addService(createdService, day);
+    close();
+    setCreatingService(false);
+  };
+
+  const onEditService = async values => {
+    setCreatingService(true);
+    const editedService = fetchHelpers.createService(values, true);
+    await editService(service._id, editedService);
     close();
     setCreatingService(false);
   };
@@ -31,7 +39,7 @@ const AddCustomServiceModal = ({ day, close, service }) => {
         <I18n>
           {({ i18n }) => (
             <ServiceForm
-              onSubmit={createService}
+              onSubmit={isEditing ? onEditService : createService}
               submitInFlight={creatingService}
               service={service}
               serviceFormTagsOptions={[]}

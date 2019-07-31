@@ -26,7 +26,6 @@ class TripOrganizerContainer extends Component {
     if (!this.props.trip || this.props.isLoading) {
       return <Loader size="massive" active />;
     }
-    console.log(this.props.trip.childrenCount, this.props.children);
 
     return (
       <TripOrganizer

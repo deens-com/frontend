@@ -218,7 +218,7 @@ const Transportation = ({
     if (selected === selectedTransport) {
       return;
     }
-    console.log('current', currentTransport);
+
     selectTransport(
       selectedTransport,
       currentTransport.fromServiceOrgId || currentTransport.fromServiceOrganizationId,

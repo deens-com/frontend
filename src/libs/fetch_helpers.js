@@ -98,10 +98,10 @@ const createService = (values, custom) => {
     ...(values.subtitle && { subtitle: { [i18nLocale]: values.subtitle } }),
     title: { [i18nLocale]: values.title },
     basePrice: {
-      perSession: values.perSession,
+      perSession: Number(values.perSession),
       payPer: values.payPer,
-      perAdult: values.perAdult,
-      perChild: values.perChild,
+      perAdult: Number(values.perAdult),
+      perChild: Number(values.perChild),
       priceType: 'normal',
     },
     location: {

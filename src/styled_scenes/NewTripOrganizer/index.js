@@ -4,7 +4,7 @@ import moment from 'moment';
 import history from 'main/history';
 import apiClient from 'libs/apiClient';
 import Itinerary from './Itinerary';
-import { getFromCoordinates, minutesToDays, daysToMinutes } from 'libs/Utils';
+import { getFromCoordinates, minutesToDays } from 'libs/Utils';
 import Header from './Header';
 import Footer from './Footer';
 import { mapServicesByDay, mapDaysToServices } from '../Trip/mapServicesToDays';
@@ -18,22 +18,13 @@ import withTouchHandler from 'shared_components/withTouchHandler';
 import urls from 'libs/urlGenerator';
 import { signAndUploadImage } from 'libs/trips';
 import { Trans } from '@lingui/macro';
+import AddCustomServiceModal from './Itinerary/Day/AddCustomServiceModal';
+import fetchHelpers from 'libs/fetch_helpers';
+import { Modal } from 'semantic-ui-react';
 
 function addLang(text) {
   return {
     en: text,
-  };
-}
-
-function parseDaysDataToSave(data) {
-  let notes = {};
-  Object.keys(data).forEach(key => {
-    if (data[key].notes) {
-      notes[key] = data[key].notes;
-    }
-  });
-  return {
-    notes,
   };
 }
 
@@ -46,6 +37,7 @@ class TripOrganizer extends React.Component {
       headerHeight: 0,
       showingTransports: false,
       showingMap: false,
+      isEditingService: null,
     };
   }
   static propTypes = {
@@ -262,47 +254,6 @@ class TripOrganizer extends React.Component {
     );
   };
 
-  changeDayPosition = (currentDay, nextDay) => {
-    // IF WE USE THIS FUNCTION AGAIN REMEMBER TO HANDLE `daysData`
-    return;
-    this.setState(
-      prevState => {
-        const diff = nextDay - currentDay;
-        return {
-          services: mapServicesByDay(
-            mapDaysToServices(prevState.services).map(service => {
-              if (service.day === currentDay) {
-                return {
-                  ...service,
-                  day: nextDay,
-                };
-              }
-              if (diff > 0) {
-                if (service.day > currentDay && service.day <= nextDay) {
-                  return {
-                    ...service,
-                    day: service.day - 1,
-                  };
-                }
-              } else {
-                if (service.day < currentDay && service.day >= nextDay) {
-                  return {
-                    ...service,
-                    day: service.day + 1,
-                  };
-                }
-              }
-              return service;
-            }),
-          ),
-        };
-      },
-      () => {
-        this.saveRearrangeServices();
-      },
-    );
-  };
-
   changeServicePosition = (id, currentDay, idAfter, nextDay) => {
     this.props.temporalRearrange(id, currentDay, idAfter, nextDay);
   };
@@ -348,6 +299,12 @@ class TripOrganizer extends React.Component {
     this.prefetchSearchResults();
   };
 
+  openEditService = async serviceId => {
+    this.setState({
+      isEditingService: serviceId,
+    });
+  };
+
   addNewDay = () => {
     this.props.editTrip({ duration: this.props.trip.duration + 60 * 24 });
   };
@@ -379,18 +336,6 @@ class TripOrganizer extends React.Component {
 
   editDescription = description => {
     this.props.editTrip({ description });
-  };
-
-  changeServiceTitle = (serviceId, day, title) => {
-    this.modifyService(serviceId, { title });
-  };
-
-  changeServicePrice = (serviceId, day, price) => {
-    if (!Number(price)) {
-      return;
-    }
-
-    this.modifyService(serviceId, { basePrice: Number(price) });
   };
 
   changeServiceDays = async (service, startDay, endDay) => {
@@ -542,6 +487,7 @@ class TripOrganizer extends React.Component {
           changeInitialLocation: this.changeInitialLocation,
           changeFinalLocation: this.changeFinalLocation,
           removeService: this.removeService,
+          openEditService: this.openEditService,
           addService: this.addService,
           changeServiceTitle: this.changeServiceTitle,
           changeServicePrice: this.changeServicePrice,
@@ -628,6 +574,22 @@ class TripOrganizer extends React.Component {
           }
           undoRemoveService={this.props.undoRemoveService}
         />
+        {this.state.isEditingService && (
+          <Modal
+            className="editServiceModal"
+            style={{ marginTop: '75px !important' }}
+            open
+            onClose={() => this.setState({ isEditingService: null })}
+            closeOnDimmerClick={false}
+          >
+            <AddCustomServiceModal
+              isEditing
+              close={() => this.setState({ isEditingService: null })}
+              service={fetchHelpers.buildServiceForView(servicesProps[this.state.isEditingService])}
+              editService={this.modifyService}
+            />
+          </Modal>
+        )}
       </TripContext.Provider>
     );
   }

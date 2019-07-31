@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import I18nText from 'shared_components/I18nText';
@@ -25,7 +25,6 @@ import {
 } from 'libs/colors';
 import Drag from 'shared_components/icons/Drag';
 import Stars from 'shared_components/Rating/Stars';
-import InlineInput from 'shared_components/InlineInput';
 import ServiceOptions from './Options';
 import ServiceSettings from './Settings';
 import { TripContext } from '../../';
@@ -206,6 +205,7 @@ const Service = ({
   const {
     isCheckingAvailability,
     removeService,
+    openEditService,
     changeServiceTitle,
     changeServicePrice,
     tripData,
@@ -242,6 +242,8 @@ const Service = ({
     }
     return content;
   };
+
+  const [isSettingsOpen, setSettingsOpen] = useState(false);
 
   return connectDragPreview(
     connectDropTarget(
@@ -289,9 +291,14 @@ const Service = ({
                   <ServiceSettings
                     servicesByDay={servicesByDay}
                     removeService={removeService}
+                    editService={openEditService}
                     service={data}
+                    close={() => setSettingsOpen(false)}
                   />
                 }
+                open={isSettingsOpen}
+                onClose={() => setSettingsOpen(false)}
+                onOpen={() => setSettingsOpen(true)}
                 on="click"
                 position="bottom center"
                 hideOnScroll
@@ -317,45 +324,23 @@ const Service = ({
                             />
                           </>
                         )}
-                      {data.service.privacy === 'private' ? (
-                        <InlineInput disallowEmptySubmit onChanged={setServiceTitle}>
-                          {I18nText.translate(data.service.title)}
-                        </InlineInput>
-                      ) : (
-                        I18nText.translate(data.service.title)
-                      )}
+                      {data.service.title}
                     </>,
                   )}
                 </ServiceTitle>
                 <RatingAndPrice>
                   <Price>
                     <PriceNumber>
-                      {data.service.privacy === 'private' ? (
-                        <InlineInput
-                          textPrefix="$"
-                          inputTextColor={textDark}
-                          onChanged={setServicePrice}
-                        >
-                          {getPriceFromServiceOption(
-                            data.service.basePrice,
-                            selectedOptions[data.selectedOption] &&
-                              selectedOptions[data.selectedOption].price,
-                            tripData.adultCount,
-                            tripData.childrenCount,
-                          )}
-                        </InlineInput>
-                      ) : (
-                        <p>
-                          $
-                          {getPriceFromServiceOption(
-                            data.service.basePrice,
-                            selectedOptions[data.selectedOption] &&
-                              selectedOptions[data.selectedOption].price,
-                            tripData.adultCount,
-                            tripData.childrenCount,
-                          )}
-                        </p>
-                      )}
+                      <p>
+                        $
+                        {getPriceFromServiceOption(
+                          data.service.basePrice,
+                          selectedOptions[data.selectedOption] &&
+                            selectedOptions[data.selectedOption].price,
+                          tripData.adultCount,
+                          tripData.childrenCount,
+                        )}
+                      </p>
                     </PriceNumber>
                     <PXSmall style={{ display: 'inline-block', verticalAlign: 'middle' }}>
                       {getPriceText(
