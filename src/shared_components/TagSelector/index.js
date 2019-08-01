@@ -23,25 +23,25 @@ const SuggestedTag = styled(PXSmall)`
   cursor: pointer;
 `;
 
-const TagSelector = ({ selectedTags, suggestedTags, onChange, onBlur }) => {
+const TagSelector = ({ selectedTags, suggestedTags, onChange, onBlur, valueKey = 'value' }) => {
   const [tags, setTags] = useState(selectedTags);
   const textareaRef = useRef(null);
 
   const addTag = tag => {
-    const newTags = uniqBy([...tags, tag], tag => tag.value);
+    const newTags = uniqBy([...tags, tag], tag => tag[valueKey]);
     setTags(newTags);
     textareaRef.current.focus();
     onChange(newTags);
   };
 
   const removeTag = tagToRemove => {
-    const newTags = tags.filter(tag => tag.value !== tagToRemove.value);
+    const newTags = tags.filter(tag => tag[valueKey] !== tagToRemove[valueKey]);
     setTags(newTags);
     onChange(newTags);
   };
 
   const filteredTags = suggestedTags.filter(
-    tag => !tags.find(selected => selected.value === tag.value),
+    tag => !tags.find(selected => selected[valueKey] === tag[valueKey]),
   );
 
   useEffect(
@@ -61,6 +61,7 @@ const TagSelector = ({ selectedTags, suggestedTags, onChange, onBlur }) => {
         autofocus
         textareaRef={textareaRef}
         onBlur={onBlur}
+        valueKey={valueKey}
       />
       <Suggestions>
         <PSmall>
@@ -68,14 +69,14 @@ const TagSelector = ({ selectedTags, suggestedTags, onChange, onBlur }) => {
         </PSmall>
         {filteredTags.slice(0, 20).map(tag => (
           <SuggestedTag
-            key={tag.value}
+            key={tag[valueKey]}
             onMouseDown={e => {
               e.preventDefault();
               e.stopPropagation();
               addTag(tag);
             }}
           >
-            {tag.value} {tag.count && `(${tag.count})`}
+            {tag[valueKey]} {tag.count && `(${tag.count})`}
           </SuggestedTag>
         ))}
       </Suggestions>

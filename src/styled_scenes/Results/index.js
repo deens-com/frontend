@@ -525,6 +525,8 @@ class ResultsScene extends Component {
               minPossiblePrice={props.minPossiblePrice}
               maxPossiblePrice={props.maxPossiblePrice}
               onMobileToggle={this.onMobileFiltersToggle}
+              availableAmenities={props.availableAmenities}
+              allAmenities={props.allAmenities}
             />
           </FiltersWrapper>
           <RightColumn>
@@ -727,6 +729,8 @@ const mapStateToProps = state => {
     searchExtraData: state.search.extraData,
     minPossiblePrice: state.search.minPrice,
     maxPossiblePrice: state.search.maxPrice,
+    allAmenities: state.entities.amenities,
+    availableAmenities: state.search.amenities,
   };
 };
 

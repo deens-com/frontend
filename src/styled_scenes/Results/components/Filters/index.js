@@ -78,6 +78,8 @@ const Filters = ({
   maxPossiblePrice,
   updateSearchParams,
   onMobileToggle,
+  availableAmenities,
+  allAmenities,
 }) => {
   const [showingMobile, setShowingMobile] = useState(false);
   const search = params => {
@@ -179,6 +181,18 @@ const Filters = ({
           onApply={search}
         />
       )}
+      {filters.includes(availableFilters.amenities) &&
+        allAmenities && (
+          <TagsFilter
+            selectedTags={
+              searchParams.accommodationAmenities &&
+              searchParams.accommodationAmenities.map(amenityId => allAmenities[amenityId])
+            }
+            customSuggestedTags={availableAmenities}
+            onApply={search}
+            isAmenitiesFilter
+          />
+        )}
       {filters.includes(availableFilters.stars) && (
         <StarsFilter accommodationStars={searchParams.accommodationStars} onApply={search} />
       )}

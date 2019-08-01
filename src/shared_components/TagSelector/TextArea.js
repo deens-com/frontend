@@ -68,6 +68,7 @@ export default ({
   autofocus,
   textareaRef,
   onBlur,
+  valueKey,
 }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [selectedResult, setSelectedResult] = useState(0);
@@ -157,14 +158,14 @@ export default ({
       }
     }
   };
-
+  console.log('fa', selectedTags);
   return (
     <Wrapper onMouseDown={focus}>
       <Selected>
         {selectedTags.map(tag => {
           return (
-            <SelectedTag onClick={() => removeTag(tag)} key={tag.value}>
-              {tag.value}
+            <SelectedTag onClick={() => removeTag(tag)} key={tag[valueKey]}>
+              {tag[valueKey]}
             </SelectedTag>
           );
         })}
@@ -182,10 +183,10 @@ export default ({
             {searchResults.slice(0, MAX_SUGGESTIONS).map((result, i) => (
               <Result
                 onClick={() => addTag(result)}
-                key={result.value}
+                key={result[valueKey]}
                 selected={selectedResult === i}
               >
-                {result.value} {result.count && `(${result.count})`}
+                {result[valueKey]} {result.count && `(${result.count})`}
               </Result>
             ))}
           </Results>

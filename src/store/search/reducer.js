@@ -64,6 +64,7 @@ export default function search(state = initialState, action = {}) {
         minPrice: action.payload.minPrice,
         maxPrice: action.payload.maxPrice,
         tagsOptions: action.payload.tags,
+        amenities: action.payload.amenities,
         extraData: action.payload.extraData,
       };
     case types.search.error:

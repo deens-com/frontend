@@ -13,14 +13,22 @@ const Content = styled.div`
   padding: 15px;
 `;
 
-const Tags = ({ selectedTags, suggestedTags, onApply }) => {
+const Tags = ({ selectedTags, suggestedTags, onApply, isAmenitiesFilter, customSuggestedTags }) => {
   const [tags, setTags] = useState(selectedTags);
   const [isOpen, setIsOpen] = useState(false);
 
+  const valueKey = isAmenitiesFilter ? 'names' : 'value';
+
   const onClose = () => {
     setIsOpen(false);
+    if (!isAmenitiesFilter) {
+      onApply({
+        tags: tags.length === 0 ? undefined : tags.map(tag => tag.value),
+      });
+      return;
+    }
     onApply({
-      tags: tags.length === 0 ? undefined : tags.map(tag => tag.value),
+      accommodationAmenities: tags.length === 0 ? undefined : tags.map(tag => tag._id),
     });
   };
 
@@ -33,12 +41,12 @@ const Tags = ({ selectedTags, suggestedTags, onApply }) => {
       return <Trans>Tags</Trans>;
     }
     if (tags.length <= 3) {
-      return tags.map(tag => tag.value).join(', ');
+      return tags.map(tag => tag[valueKey]).join(', ');
     }
 
     return `${tags
       .slice(0, 3)
-      .map(tag => tag.value)
+      .map(tag => tag[valueKey])
       .join(', ')}, +${tags.length - 3}`;
   };
 
@@ -48,8 +56,9 @@ const Tags = ({ selectedTags, suggestedTags, onApply }) => {
         {isOpen && (
           <TagSelector
             selectedTags={selectedTags}
-            suggestedTags={suggestedTags}
+            suggestedTags={customSuggestedTags || suggestedTags}
             onChange={setTags}
+            valueKey={valueKey}
           />
         )}
       </Content>
@@ -61,11 +70,14 @@ Tags.propTypes = {
   onApply: PropTypes.func.isRequired,
   selectedTags: PropTypes.arrayOf(PropTypes.string),
   suggestedTags: PropTypes.arrayOf(PropTypes.object),
+  customSuggestedTags: PropTypes.arrayOf(PropTypes.object),
+  isAmenitiesFilter: PropTypes.bool,
 };
 
 Tags.defaultProps = {
   selectedTags: [],
   suggestedTags: [],
+  isAmenitiesFilter: false,
 };
 
 const mapStateToProps = state => ({

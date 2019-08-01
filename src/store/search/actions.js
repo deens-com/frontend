@@ -59,6 +59,7 @@ const fetchResults = searchQuery =>
       maxPrice: results.data.maxPrice,
       minPrice: results.data.minPrice,
       tags,
+      amenities: results.data.amenities,
     };
   });
 

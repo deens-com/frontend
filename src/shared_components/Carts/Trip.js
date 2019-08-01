@@ -533,7 +533,6 @@ class TripCart extends Component {
       );
     }
     if (this.props.type === 'accommodation') {
-      console.log(this.props.numberOfDays);
       return (
         <Price>
           $

@@ -71,6 +71,7 @@ export const getSearchParams = params => {
     // does not properly parse '+'.
     type: searchParams.type,
     tags: parseArrayOrString(searchParams.tags),
+    accommodationAmenities: parseArrayOrString(searchParams.accommodationAmenities),
     lat: Number(searchParams.lat) || undefined,
     lng: Number(searchParams.lng) || undefined,
     topRightLat: Number(searchParams.topRightLat) || undefined,
@@ -227,6 +228,7 @@ const TEXT = 'text';
 const DURATION = 'duration';
 const RATING = 'rating';
 const STARS = 'stars';
+const AMENITIES = 'amenities';
 
 export const availableFilters = {
   guests: GUESTS,
@@ -240,11 +242,12 @@ export const availableFilters = {
   duration: DURATION,
   rating: RATING,
   stars: STARS,
+  amenities: AMENITIES,
 };
 
 export const filtersByType = {
   trip: [GUESTS, DATES, PRICE_RANGE, TAGS, RATING],
-  accommodation: [GUESTS, DATES, PRICE_RANGE, TEXT, STARS, RATING],
+  accommodation: [GUESTS, DATES, PRICE_RANGE, AMENITIES, TEXT, STARS, RATING],
   activity: [GUESTS, SINGLE_DATE, PRICE_RANGE_ONLY_MAX, TAGS, TEXT, DURATION],
   food: [GUESTS, PRICE_TAGS, TAGS, TEXT],
 };

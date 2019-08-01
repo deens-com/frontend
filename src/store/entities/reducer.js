@@ -99,6 +99,10 @@ export default function entities(state = initialState, action = {}) {
           ...state.tags,
           ...normalize(action.payload.tags, [tagEntity]).entities.tags,
         },
+        amenities: {
+          ...state.amenities,
+          ...normalize(action.payload.amenities, [tagEntity]).entities.tags,
+        },
       };
     default:
       return state;
