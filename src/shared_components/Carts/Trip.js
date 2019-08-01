@@ -458,7 +458,10 @@ class TripCart extends Component {
       return;
     }
 
-    const itemTags = this.props.item.tags.filter(tag => tag.type === 'theme');
+    const itemTags =
+      this.props.type === 'trip'
+        ? this.props.item.tags.filter(tag => tag.type === 'theme')
+        : this.props.item.tags.filter(tag => this.props.tagsEntities[tag._id].type === 'theme');
 
     if (this.props.editMode && this.state.isEditingTags) {
       return (

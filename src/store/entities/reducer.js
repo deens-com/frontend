@@ -1,4 +1,9 @@
 import tripDesignerActions from 'store/trip-designer/actions';
+import searchActions from 'store/search/actions';
+import { normalize } from 'normalizr';
+import { tag as tagEntity } from 'libs/entities';
+
+const searchTypes = searchActions.types;
 
 const initialState = {
   services: {},
@@ -85,6 +90,14 @@ export default function entities(state = initialState, action = {}) {
             ...state.services[action.payload.id],
             ...action.payload.data,
           },
+        },
+      };
+    case searchTypes.search.success:
+      return {
+        ...state,
+        tags: {
+          ...state.tags,
+          ...normalize(action.payload.tags, [tagEntity]).entities.tags,
         },
       };
     default:

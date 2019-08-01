@@ -309,7 +309,7 @@ export function generateServiceSlug(service) {
 export function parseTagsText(tags) {
   return tags.map(tag => {
     const tagName = tag.names.charAt(0).toUpperCase() + tag.names.substr(1);
-    return { text: tagName, value: tag.names, _id: tag._id, count: tag.count };
+    return { text: tagName, value: tag.names, _id: tag._id, count: tag.count, type: tag.type };
   });
 }
 

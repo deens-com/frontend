@@ -40,6 +40,7 @@ class ResultsContainer extends Component {
         retryFetch={this.retryFetch}
         count={this.props.count}
         isBehindModal={this.props.isBehindModal}
+        tagsEntities={this.props.tagsEntities}
       />
     );
   }
@@ -53,6 +54,7 @@ const mapStateToProps = state => {
     tagsOptions: state.search.tagsOptions,
     trip: state.trips.trip,
     searchParams: state.search.searchQuery,
+    tagsEntities: state.entities.tags,
   };
 };
 
