@@ -2,7 +2,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
-import { buildImgUrl, extractPrice, extractPricePer, PRICE_PER_SESSION } from 'libs/Utils';
+import {
+  buildImgUrl,
+  extractPrice,
+  extractPricePer,
+  PRICE_PER_SESSION,
+  getComputedPricePerDay,
+} from 'libs/Utils';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { addFavoriteTrip, removeFavoriteTrip } from 'store/session/actions';
@@ -527,10 +533,11 @@ class TripCart extends Component {
       );
     }
     if (this.props.type === 'accommodation') {
+      console.log(this.props.numberOfDays);
       return (
         <Price>
           $
-          {(this.props.item.computedPrice && this.props.item.computedPrice.toFixed(2)) ||
+          {getComputedPricePerDay(this.props.item.computedPrice, this.props.numberOfDays) ||
             extractPrice(this.props.item.basePrice, this.props.adults, this.props.children)}{' '}
           <PriceText>
             <I18n>

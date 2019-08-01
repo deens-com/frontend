@@ -308,6 +308,11 @@ class Results extends Component {
                       onLeave={onCardLeave}
                       withTooltip
                       withShadow
+                      numberOfDays={moment
+                        .duration(
+                          this.props.searchParams.endDate - this.props.searchParams.startDate,
+                        )
+                        .asDays()}
                       item={result}
                       isTrip={!(result.categories && result.categories.length)}
                       isPlaceholder={false}
