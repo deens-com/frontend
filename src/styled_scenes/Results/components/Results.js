@@ -314,7 +314,6 @@ class Results extends Component {
                       type={this.props.searchParams.type}
                       adults={this.props.searchParams.adults || 2}
                       children={this.props.searchParams.children || 0}
-                      tagsEntities={this.props.tagsEntities}
                     />
                   </ResultItem>
                 ))}

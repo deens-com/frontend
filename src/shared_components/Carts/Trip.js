@@ -461,7 +461,10 @@ class TripCart extends Component {
     const itemTags =
       this.props.type === 'trip'
         ? this.props.item.tags.filter(tag => tag.type === 'theme')
-        : this.props.item.tags.filter(tag => this.props.tagsEntities[tag._id].type === 'theme');
+        : this.props.item.tags.filter(
+            tag =>
+              this.props.tagsEntities[tag._id] && this.props.tagsEntities[tag._id].type === 'theme',
+          );
 
     if (this.props.editMode && this.state.isEditingTags) {
       return (
@@ -675,6 +678,7 @@ class TripCart extends Component {
 const mapStateToProps = state => {
   return {
     favoriteTrips: state.session.favoriteTrips,
+    tagsEntities: state.entities.tags,
   };
 };
 
