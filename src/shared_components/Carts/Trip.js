@@ -529,7 +529,9 @@ class TripCart extends Component {
     if (this.props.type === 'accommodation') {
       return (
         <Price>
-          ${extractPrice(this.props.item.basePrice, this.props.adults, this.props.children)}{' '}
+          $
+          {(this.props.item.computedPrice && this.props.item.computedPrice.toFixed(2)) ||
+            extractPrice(this.props.item.basePrice, this.props.adults, this.props.children)}{' '}
           <PriceText>
             <I18n>
               {({ i18n }) =>
