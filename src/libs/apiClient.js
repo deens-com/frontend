@@ -57,8 +57,12 @@ export default {
       delete: id => deleteEndpoint(`/hearts/trips/${id}`)(),
     },
     availability: {
-      get: (id, { bookingDate, adultCount, infantCount, childrenCount }, moreOptions) =>
-        get(`/availabilities/trips/${id}/auto-update`)(
+      get: (
+        id,
+        { bookingDate, adultCount, infantCount, childrenCount, autoUpdate = true },
+        moreOptions,
+      ) =>
+        get(`/availabilities/trips/${id}${autoUpdate ? '/auto-update' : ''}`)(
           {
             bookingDate,
             adultCount,

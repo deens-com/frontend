@@ -110,6 +110,9 @@ const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (dispatch, getSt
         .toJSON();
     const days = moment(endDate).diff(moment(startDate), 'days');
     const duration = days * 60 * 24;
+    const adultCount = Number(state.search.searchQuery.adults) || 2;
+    const childrenCount = Number(state.search.searchQuery.children) || 0;
+    const infantCount = Number(state.search.searchQuery.infants) || 0;
     const serviceGroup = {
       title: newTripTitle,
       ...(service.description && { description: { en: service.description } }),
@@ -119,9 +122,9 @@ const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (dispatch, getSt
       location: service.originalLocation,
       userStartLocation: service.originalLocation,
       userEndLocation: service.originalLocation,
-      adultCount: Number(state.search.searchQuery.adults) || 2,
-      childrenCount: Number(state.search.searchQuery.children) || 0,
-      infantCount: Number(state.search.searchQuery.infants) || 0,
+      adultCount,
+      childrenCount,
+      infantCount,
       startDate,
       endDate,
     };
@@ -132,9 +135,15 @@ const createNewTrip = ({ redirectToCreatedTrip } = {}) => async (dispatch, getSt
     dispatch(getCurrentUserTrip());
     if (newTrip) {
       const formattedTrip = fetch_helpers.buildServicesJson([newTrip.data])[0];
-      setAddedToTripMessage(formattedTrip)(dispatch);
-      dispatch(tripCreated({ trip: formattedTrip }));
       if (redirectToCreatedTrip) {
+        await apiClient.trips.availability.get(newTrip.data._id, {
+          bookingDate: moment(startDate).format('YYYY-MM-DD'),
+          adultCount,
+          childrenCount,
+          infantCount,
+        });
+        setAddedToTripMessage(formattedTrip)(dispatch);
+        dispatch(tripCreated({ trip: formattedTrip }));
         history.push(urls.trip.checkout(newTrip.data._id));
       }
     }
