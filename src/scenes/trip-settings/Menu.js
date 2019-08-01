@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import useResponsive from 'hooks/useResponsive';
 import { H6 } from 'libs/commonStyles';
 import { media } from 'libs/styled';
-import { primary, disabled, backgroundDark } from 'libs/colors';
+import { primary, primaryHover, disabled, backgroundDark } from 'libs/colors';
 import { detectScreenSize } from 'libs/Utils';
 import Icon from 'shared_components/icons/Menu';
 
@@ -54,17 +54,24 @@ const Nav = styled.div`
 
 const LinkList = styled.ul`
   list-style: none;
-  color: ${primary};
-  > li {
-    margin-top: 10px;
-    p {
-      cursor: pointer;
-      zdisplay: inline;
-    }
-  }
 `;
 
-export default ({ numberOfDays, onChangeSection }) => {
+const Li = styled.li`
+  color: ${primary};
+  margin-top: 10px;
+  p {
+    cursor: pointer;
+    zdisplay: inline;
+  }
+  ${props =>
+    props.selected &&
+    `
+    color: ${primaryHover};
+    list-style: disc;
+  `};
+`;
+
+export default ({ currentSection, numberOfDays, onChangeSection }) => {
   const [isOpen, setIsOpen] = useState(false);
   const days = [...new Array(numberOfDays)];
 
@@ -96,22 +103,22 @@ export default ({ numberOfDays, onChangeSection }) => {
         <section>
           <H6>Trip</H6>
           <LinkList>
-            <li>
+            <Li selected={currentSection === 'trip-settings'}>
               <p onClick={() => handleChangeSection('trip-settings')}>Trip Settings</p>
-            </li>
+            </Li>
           </LinkList>
         </section>
         <section>
           <H6>Days</H6>
           <LinkList>
             {days.map((_, i) => (
-              <li key={i}>
+              <Li key={i} selected={currentSection === `day-${i + 1}`}>
                 <p onClick={() => handleChangeSection(`day-${i + 1}`)}>Day {i + 1}</p>
-              </li>
+              </Li>
             ))}
-            <li>
+            <Li>
               <p onClick={() => handleChangeSection('add-day')}>Add Day</p>
-            </li>
+            </Li>
           </LinkList>
         </section>
       </Nav>

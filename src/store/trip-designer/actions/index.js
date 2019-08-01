@@ -23,6 +23,9 @@ const types = {
   DELETE_TRIP_ERROR: 'DELETE_TRIP_ERROR',
   FETCH_TAGS_SUCCESS: 'FETCH_TAGS_SUCCESS',
   FETCH_TAGS_ERROR: 'FETCH_TAGS_ERROR',
+  UPDATE_MEDIA_START: 'UPDATE_MEDIA_START',
+  UPDATE_MEDIA_SUCCESS: 'UPDATE_MEDIA_SUCCESS',
+  UPDATE_MEDIA_ERROR: 'UPDATE_MEDIA_ERROR',
 };
 
 function addLang(text) {
@@ -181,6 +184,30 @@ const addTagsToEntities = tags => dispatch => {
   dispatch({ type: types.UPDATE_TRIP_ENTITIES, payload: normalized });
 };
 
+const updateMedia = data => async (dispatch, getState) => {
+  const trip = getState().tripDesigner.trip.data;
+  dispatch({
+    type: types.UPDATE_MEDIA_START,
+    payload: [
+      ...trip.media,
+      {
+        ...data,
+        files: {
+          original: {
+            url: data.url,
+          },
+        },
+      },
+    ],
+  });
+  try {
+    const media = await apiClient.media.trips.post(data, trip._id);
+    dispatch({ type: types.UPDATE_MEDIA_SUCCESS, payload: media.data });
+  } catch (e) {
+    dispatch({ type: types.UPDATE_MEDIA_ERROR, payload: trip.data.media });
+  }
+};
+
 export default {
   ...fetchActions,
   ...servicesActions,
@@ -192,4 +219,5 @@ export default {
   deleteTrip,
   fetchTags,
   addTagsToEntities,
+  updateMedia,
 };

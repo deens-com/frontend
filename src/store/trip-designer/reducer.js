@@ -238,6 +238,19 @@ export default function tripDesigner(state = initialState, action = {}) {
         ...state,
         suggestedTags: action.payload,
       };
+    case actions.types.UPDATE_MEDIA_START:
+    case actions.types.UPDATE_MEDIA_SUCCESS:
+    case actions.types.UPDATE_MEDIA_ERROR:
+      return {
+        ...state,
+        trip: {
+          ...state.trip,
+          data: {
+            ...state.trip.data,
+            media: action.payload,
+          },
+        },
+      };
     default:
       return state;
   }

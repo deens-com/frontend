@@ -123,6 +123,7 @@ class TripSettings extends Component {
         editTrip={this.props.editTrip}
         trip={this.props.trip}
         day={this.getDay()}
+        updateMedia={this.props.updateMedia}
       />
     );
   }
@@ -149,7 +150,11 @@ class TripSettings extends Component {
                 <Trans>Day {this.getDay()}</Trans>
               )}
             </Title>
-            <Menu numberOfDays={numberOfDays} onChangeSection={this.setCurrentSection} />
+            <Menu
+              currentSection={this.state.section}
+              numberOfDays={numberOfDays}
+              onChangeSection={this.setCurrentSection}
+            />
             <MainContent>{this.renderSection()}</MainContent>
             <I18n>
               {({ i18n }) => (
@@ -218,6 +223,7 @@ const mapDispatchToProps = dispatch =>
       deleteTrip: tripDesignerActions.deleteTrip,
       cloneTrip: tripActions.cloneTrip,
       addTagsToEntities: tripDesignerActions.addTagsToEntities,
+      updateMedia: tripDesignerActions.updateMedia,
     },
     dispatch,
   );

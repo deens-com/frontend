@@ -32,7 +32,7 @@ function addLang(text) {
   };
 }
 
-const DaySettings = ({ editTrip, trip, day, deleteDay }) => {
+const DaySettings = ({ updateMedia, editTrip, trip, day, deleteDay }) => {
   const media = useMemo(() => trip.media.filter(media => media.day === day), [day, trip.media]);
   const [uploadingImages, setUploadingImages] = useState(0);
 
@@ -57,14 +57,11 @@ const DaySettings = ({ editTrip, trip, day, deleteDay }) => {
       return;
     }
 
-    await apiClient.media.trips.post(
-      {
-        url: newImg.url,
-        day,
-        hero: false,
-      },
-      trip._id,
-    );
+    await updateMedia({
+      url: newImg.url,
+      day,
+      hero: false,
+    });
   };
 
   const onStartedUpload = () => {
