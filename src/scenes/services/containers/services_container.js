@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ServiceComponent from '../components/Service';
 import serviceActions from 'store/services/actions';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import { bindActionCreators } from 'redux';
 import { withRouter, Redirect } from 'react-router-dom';
 import NotFoundScene from 'styled_scenes/NotFound';
@@ -139,6 +140,9 @@ const mapStateToProps = state => {
     isLoading: state.services.isUpdatingTrip || state.services.isCreatingTrip,
     serviceFetchError: state.services.serviceFetchError,
     slug: service._id && generateServiceSlug(service),
+    numberOfDays: moment
+      .duration(state.search.searchQuery.endDate - state.search.searchQuery.startDate)
+      .asDays(),
   };
 };
 

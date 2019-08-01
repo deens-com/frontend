@@ -294,7 +294,10 @@ class Service extends Component {
                   </GoogleMapReact>
                 </MapWrap>
                 <Contacts>
-                  <ServiceInformation service={this.props.service} />
+                  <ServiceInformation
+                    numberOfDays={this.props.numberOfDays}
+                    service={this.props.service}
+                  />
                 </Contacts>
               </ContactWrap>
             </DetailWrapper>
