@@ -247,7 +247,7 @@ export const availableFilters = {
 
 export const filtersByType = {
   trip: [GUESTS, DATES, PRICE_RANGE, TAGS, RATING],
-  accommodation: [GUESTS, DATES, PRICE_RANGE, AMENITIES, TEXT, STARS, RATING],
+  accommodation: [GUESTS, DATES, PRICE_RANGE, TAGS, AMENITIES, TEXT, STARS, RATING],
   activity: [GUESTS, SINGLE_DATE, PRICE_RANGE_ONLY_MAX, TAGS, TEXT, DURATION],
   food: [GUESTS, PRICE_TAGS, TAGS, TEXT],
 };
