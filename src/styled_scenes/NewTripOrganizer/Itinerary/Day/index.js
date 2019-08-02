@@ -78,6 +78,7 @@ const Services = styled.div`
   flex-wrap: wrap;
   margin-top: 0;
   justify-content: center;
+  flex-direction: column;
   > div {
     margin-right: 30px;
   }
@@ -93,8 +94,9 @@ const Services = styled.div`
       }
     }
   }
-  ${media.minSmall} {
+  ${media.minLargePlus} {
     justify-content: flex-start;
+    flex-direction: row;
   }
 `;
 

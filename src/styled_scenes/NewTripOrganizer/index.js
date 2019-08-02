@@ -35,7 +35,7 @@ class TripOrganizer extends React.Component {
     super(props);
     this.state = {
       headerHeight: 0,
-      showingTransports: false,
+      showingTransports: true,
       showingMap: false,
       isEditingService: null,
     };
@@ -516,15 +516,6 @@ class TripOrganizer extends React.Component {
           availabilities: this.props.availabilities,
         }}
       >
-        <Header
-          onEditTitle={this.editTitle}
-          onEditDescription={this.editDescription}
-          title={trip.title}
-          description={trip.description}
-          image={image}
-          onImageUpload={this.uploadImage}
-          onHeightChanged={this.onHeaderHeightChanged}
-        />
         {!this.props.session.username && <WarningLogin />}
         <Options
           onChangeGuests={this.changeGuests}
