@@ -12,6 +12,7 @@ import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import { DayPickerRangeController } from 'react-dates';
 import { START_DATE, END_DATE } from 'react-dates/constants';
+import DaySelector from './DaySelector';
 
 // i18n
 import { Trans } from '@lingui/macro';
@@ -22,14 +23,16 @@ const Text = styled(PSmall)`
   text-align: center;
 `;
 
-const ServiceSettings = ({ service, servicesByDay }) => {
+const DateSelector = ({ service, servicesByDay }) => {
   const [serviceStartDate, setServiceStartDate] = useState(null);
   const [serviceEndDate, setServiceEndDate] = useState(null);
   const [focusedInput, setFocusedInput] = useState(START_DATE);
-  const { tripData, changeServiceDays } = useContext(TripContext);
+  const { tripData, changeServiceDays, changeServiceDaysWithoutDate } = useContext(TripContext);
   const numberOfDays = minutesToDays(tripData.duration);
-  const tripStartDate = useMemo(() => moment(tripData.startDate), [tripData.startDate]);
-  const tripEndDate = tripStartDate.clone().add(numberOfDays, 'days');
+  const tripStartDate = useMemo(() => tripData.startDate && moment(tripData.startDate), [
+    tripData.startDate,
+  ]);
+  const tripEndDate = tripStartDate && tripStartDate.clone().add(numberOfDays, 'days');
 
   useEffect(
     () => {
@@ -58,10 +61,16 @@ const ServiceSettings = ({ service, servicesByDay }) => {
           }
         }
       });
-      setServiceStartDate(tripStartDate.clone().add(sets[currentGroup][0] - 1, 'days'));
-      setServiceEndDate(
-        tripStartDate.clone().add(sets[currentGroup][sets[currentGroup].length - 1], 'days'),
-      );
+
+      if (tripStartDate) {
+        setServiceStartDate(tripStartDate.clone().add(sets[currentGroup][0] - 1, 'days'));
+        setServiceEndDate(
+          tripStartDate.clone().add(sets[currentGroup][sets[currentGroup].length - 1], 'days'),
+        );
+      } else {
+        setServiceStartDate(sets[currentGroup][0]);
+        setServiceEndDate(sets[currentGroup][sets[currentGroup].length - 1] + 1);
+      }
     },
     [servicesByDay, tripStartDate, service.service._id, service._id],
   );
@@ -96,28 +105,39 @@ const ServiceSettings = ({ service, servicesByDay }) => {
 
   return (
     <>
-      <DayPickerRangeController
-        initialVisibleMonth={() => serviceStartDate || tripStartDate}
-        onDatesChange={onDatesChange}
-        onFocusChange={onFocusChange}
-        focusedInput={focusedInput}
-        startDate={serviceStartDate}
-        endDate={serviceEndDate}
-        isOutsideRange={isOutsideRange}
-        daySize={35}
-        hideKeyboardShortcutsPanel
-        noBorder
-      />
+      {tripStartDate && (
+        <DayPickerRangeController
+          initialVisibleMonth={() => serviceStartDate || tripStartDate}
+          onDatesChange={onDatesChange}
+          onFocusChange={onFocusChange}
+          focusedInput={focusedInput}
+          startDate={serviceStartDate}
+          endDate={serviceEndDate}
+          isOutsideRange={isOutsideRange}
+          daySize={35}
+          hideKeyboardShortcutsPanel
+          noBorder
+        />
+      )}
       <Text>
         <Trans>Select check-in and check-out</Trans>
       </Text>
+      {!tripStartDate && (
+        <DaySelector
+          service={service}
+          startDate={serviceStartDate}
+          endDate={serviceEndDate}
+          numberOfDays={numberOfDays}
+          changeServiceDays={changeServiceDaysWithoutDate}
+        />
+      )}
     </>
   );
 };
 
-ServiceSettings.propTypes = {
+DateSelector.propTypes = {
   removeService: PropTypes.func.isRequired,
   service: PropTypes.object.isRequired,
 };
 
-export default ServiceSettings;
+export default DateSelector;

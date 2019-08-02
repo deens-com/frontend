@@ -17,7 +17,11 @@ export default ({ day, tripStartDate }) => (
     <H2>
       <Trans>Day</Trans> {day}
     </H2>
-    <Divider>•</Divider>
-    <H2Subtitle>{getDayDate(day, tripStartDate)}</H2Subtitle>
+    {tripStartDate && (
+      <>
+        <Divider>•</Divider>
+        <H2Subtitle>{getDayDate(day, tripStartDate)}</H2Subtitle>
+      </>
+    )}
   </>
 );

@@ -62,7 +62,7 @@ const DateSelector = ({ close }) => {
   const focusedInput = START_DATE;
   const { tripData, changeTripDuration, changeStartDate } = useContext(TripContext);
   const numberOfDays = minutesToDays(tripData.duration);
-  const [startDate, setStartDate] = useState(moment(tripData.startDate));
+  const [startDate, setStartDate] = useState(tripData.startDate && moment(tripData.startDate));
 
   const removeDay = () => {
     if (numberOfDays < 2) {
@@ -98,17 +98,23 @@ const DateSelector = ({ close }) => {
         </IconButton>
       </SelectDays>
       <DayPickerRangeController
-        initialVisibleMonth={() => startDate}
+        initialVisibleMonth={() => startDate || moment()}
         onDatesChange={onDatesChange}
         onFocusChange={onFocusChange}
         focusedInput={focusedInput}
         startDate={startDate}
-        endDate={startDate.clone().add(numberOfDays - 1, 'days')}
+        endDate={startDate && startDate.clone().add(numberOfDays - 1, 'days')}
         isDayBlocked={isDayBlocked}
         daySize={35}
         hideKeyboardShortcutsPanel
         noBorder
       />
+      <div
+        style={{ cursor: 'pointer', color: primary }}
+        onClick={() => onDatesChange({ startDate: null })}
+      >
+        <Trans>I don't know my dates yet</Trans>
+      </div>
     </Wrapper>
   );
 };

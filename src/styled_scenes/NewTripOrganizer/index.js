@@ -278,7 +278,7 @@ class TripOrganizer extends React.Component {
 
   changeStartDate = async date => {
     await this.props.editTrip({
-      startDate: date.toJSON(),
+      startDate: date && date.toJSON(),
     });
     this.prefetchSearchResults();
     this.props.checkAvailability();
@@ -336,6 +336,22 @@ class TripOrganizer extends React.Component {
 
   editDescription = description => {
     this.props.editTrip({ description });
+  };
+
+  changeServiceDaysWithoutDate = async (service, startDay, endDay) => {
+    let serviceDays = new Set([]);
+
+    for (let i = startDay; i <= endDay; i++) {
+      serviceDays.add(i);
+    }
+
+    await this.props.moveServices({
+      days: [...serviceDays],
+      serviceId: service.service._id,
+    });
+
+    this.props.checkAvailability();
+    this.props.getTransportation();
   };
 
   changeServiceDays = async (service, startDay, endDay) => {
@@ -492,6 +508,7 @@ class TripOrganizer extends React.Component {
           changeServiceTitle: this.changeServiceTitle,
           changeServicePrice: this.changeServicePrice,
           changeServiceDays: this.changeServiceDays,
+          changeServiceDaysWithoutDate: this.changeServiceDaysWithoutDate,
           changeTripDuration: this.changeTripDuration,
           changeStartDate: this.changeStartDate,
           session: this.props.session,
