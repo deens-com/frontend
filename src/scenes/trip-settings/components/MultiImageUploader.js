@@ -11,6 +11,7 @@ import { getImageUrlFromFiles } from 'libs/media';
 const UploadedImage = styled.img`
   border-radius: 5px 5px 5px 0;
   margin-top: 10px;
+  margin-right: 15px;
   width: 85px;
   height: 100px;
   object-fit: cover;
@@ -19,7 +20,6 @@ const UploadedImage = styled.img`
 const ImageWrapper = styled.div`
   overflow: hidden;
   position: relative;
-  margin-right: 15px;
 `;
 
 const Box = styled.div`
@@ -62,11 +62,12 @@ const Wrapper = styled.div`
   position: relative;
   margin-top: 10px;
   display: flex;
+  flex-wrap: wrap;
 `;
 
 const RemoveIconWrapper = styled.span`
   position: absolute;
-  right: 0;
+  right: 10px;
   top: 5px;
   cursor: pointer;
   > svg {
