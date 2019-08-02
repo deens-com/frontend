@@ -1,20 +1,20 @@
 import { useState, useEffect } from 'react';
-import { formatMedia, signAndUploadImage } from 'libs/trips';
+import { signAndUploadImage } from 'libs/trips';
 
 // media: ONE media element
 // onImageUploaded(url: String, img: Image)
-export default function useImageUploader(media, onImageUploaded) {
+export default function useImageUploader(media, onImageUploaded, onImageFailed) {
   const [imgSize, setImgSize] = useState({});
-  const [isUploading, setIsUploading] = useState(false);
+  const [isUploading, setIsUploading] = useState(0);
   const [imageError, setImageError] = useState(null);
 
   const onFileSelect = async e => {
     const file = e.currentTarget.files[0];
     if (!file) return;
 
-    setIsUploading(true);
+    setIsUploading(u => u + 1);
     await uploadImage(file);
-    setIsUploading(false);
+    setIsUploading(u => u - 1);
   };
 
   const uploadImage = async file => {
@@ -29,7 +29,13 @@ export default function useImageUploader(media, onImageUploaded) {
           height: img.height,
         });
 
-        onImageUploaded(url, img);
+        if (url && img) {
+          onImageUploaded(url, img);
+        } else {
+          if (onImageFailed) {
+            onImageFailed();
+          }
+        }
       };
       img.src = url;
     } catch (e) {

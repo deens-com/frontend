@@ -1,12 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { formatMedia, signAndUploadImage } from 'libs/trips';
 import { primaryDisabled, backgroundError, error } from 'libs/colors';
 import useImageUploader from 'hooks/useImageUploader';
-import { Trans, t } from '@lingui/macro';
-import { I18n } from '@lingui/react';
+import { Loader } from 'semantic-ui-react';
 import PlusIcon from 'shared_components/icons/PlusIcon';
 import Remove from 'shared_components/icons/Remove';
+import { getImageUrlFromFiles } from 'libs/media';
+
+const UploadedImage = styled.img`
+  border-radius: 5px 5px 5px 0;
+  margin-top: 10px;
+  width: 85px;
+  height: 100px;
+  object-fit: cover;
+`;
+
+const ImageWrapper = styled.div`
+  overflow: hidden;
+  position: relative;
+  margin-right: 15px;
+`;
 
 const Box = styled.div`
   border-radius: 5px 5px 5px 0;
@@ -27,7 +41,7 @@ const Box = styled.div`
   transition: opacity 0.2s ease;
 `;
 
-const Button = styled.button`
+const Button = styled.div`
   width: 30px;
   height: 30px;
   border-radius: 3px 3px 3px 0;
@@ -36,6 +50,7 @@ const Button = styled.button`
   border: 0;
   outline: none;
   cursor: pointer;
+  display: flex;
   > svg {
     margin: auto;
     width: 18px !important;
@@ -43,20 +58,15 @@ const Button = styled.button`
   }
 `;
 
-const ImageWrapper = styled.div`
+const Wrapper = styled.div`
   position: relative;
   margin-top: 10px;
-`;
-
-const CoverImage = styled.img`
-  border-radius: 5px 5px 5px 0;
-  width: 100%;
-  object-fit: cover;
+  display: flex;
 `;
 
 const RemoveIconWrapper = styled.span`
   position: absolute;
-  right: 5px;
+  right: 0;
   top: 5px;
   cursor: pointer;
   > svg {
@@ -75,20 +85,59 @@ const AddButton = () => {
   );
 };
 
-const SingleImageUploader = ({ images, coverImage, editTrip }) => {
+const SingleImageUploader = ({
+  uploading,
+  media,
+  onUploadedFile,
+  onRemovedFile,
+  onStartedUpload,
+}) => {
   const onImageUpload = (url, image) => {
-    editTrip();
+    if (!url || !image) {
+      return;
+    }
+    onUploadedFile(url, image);
   };
 
-  const { imgSize, isUploading, imageError, onFileSelect } = useImageUploader(
-    coverImage,
-    onImageUpload,
-  );
+  const { onFileSelect } = useImageUploader(null, onImageUpload);
+
+  const onUpload = e => {
+    const file = e.currentTarget.files[0];
+    if (!file) return;
+    onStartedUpload();
+    onFileSelect(e);
+  };
+
+  const uploadingArray = useMemo(() => [...new Array(uploading)], [uploading]);
 
   return (
-    <Box>
-      <AddButton />
-    </Box>
+    <Wrapper>
+      {media.map((singleMedia, i) => (
+        <ImageWrapper>
+          <UploadedImage src={getImageUrlFromFiles(singleMedia.files, 'thumbnail')} />
+          <RemoveIconWrapper>
+            <Remove onClick={() => onRemovedFile(i)} style={{ width: '20px', height: '20px' }} />
+          </RemoveIconWrapper>
+        </ImageWrapper>
+      ))}
+      {uploadingArray.map(_ => (
+        <Box style={{ marginRight: 15 }}>
+          <Loader size="small" inline="centered" active />
+        </Box>
+      ))}
+      <label htmlFor="add-image">
+        <Box>
+          <AddButton />
+        </Box>
+      </label>
+      <input
+        id="add-image"
+        accept=".jpg, .jpeg, .png"
+        type="file"
+        style={{ display: 'none' }}
+        onChange={onUpload}
+      />
+    </Wrapper>
   );
 };
 

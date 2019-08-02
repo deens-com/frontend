@@ -158,7 +158,7 @@ export default ({
       }
     }
   };
-  console.log('fa', selectedTags);
+
   return (
     <Wrapper onMouseDown={focus}>
       <Selected>

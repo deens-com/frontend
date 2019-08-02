@@ -5,7 +5,7 @@ import SemanticLocationControl from 'shared_components/Form/SemanticLocationCont
 import { Trans, t } from '@lingui/macro';
 import { error, backgroundDark } from 'libs/colors';
 import InlineInput from 'shared_components/InlineInput';
-import MultiImageUploader from 'shared_components/MultiImageUploader/MultiImageUploader';
+import MultiImageUploader from './components/MultiImageUploader';
 import apiClient from 'libs/apiClient';
 
 const Label = styled.label``;
@@ -46,21 +46,20 @@ const DaySettings = ({ updateMedia, editTrip, trip, day, deleteDay }) => {
     });
   };
 
-  const onUploadedFilesChanged = async (mediaUrls, id, hero, url) => {
+  const onUploadedFile = async url => {
     setUploadingImages(num => num - 1);
-    const newImg = mediaUrls.find(img => img.id === id);
-
-    if (!newImg) {
-      await editTrip({
-        media: media.filter(file => file.files.original.url !== url),
-      });
-      return;
-    }
 
     await updateMedia({
-      url: newImg.url,
+      url: url,
       day,
       hero: false,
+      type: 'image',
+    });
+  };
+
+  const onRemovedFile = async index => {
+    await editTrip({
+      media: media.filter((_, i) => i !== index),
     });
   };
 
@@ -88,17 +87,16 @@ const DaySettings = ({ updateMedia, editTrip, trip, day, deleteDay }) => {
         </Label>
       </FormField>
       <FormField>
-        <Label>
-          <FieldName>
-            <Trans>Media</Trans>
-          </FieldName>
-          <MultiImageUploader
-            value={media}
-            onUploadedFilesChanged={onUploadedFilesChanged}
-            initialUploadedFiles={media || []}
-            onStartedUpload={onStartedUpload}
-          />
-        </Label>
+        <FieldName>
+          <Trans>Media</Trans>
+        </FieldName>
+        <MultiImageUploader
+          media={media}
+          onUploadedFile={onUploadedFile}
+          onRemovedFile={onRemovedFile}
+          onStartedUpload={onStartedUpload}
+          uploading={uploadingImages}
+        />
       </FormField>
       <FormField>
         <Label>

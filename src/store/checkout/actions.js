@@ -22,7 +22,6 @@ export const chargeStripeToken = (guests, stripe) => async (dispatch, getState) 
   const currency = 'usd';
   const tripId = trip._id;
   try {
-    console.log(dispatch, types.MARK_TRIP_BOOKED_STATUS, statuses);
     dispatch({
       type: types.MARK_TRIP_BOOKED_STATUS,
       payload: statuses.STARTED,

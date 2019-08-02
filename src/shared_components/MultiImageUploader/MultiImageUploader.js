@@ -22,7 +22,7 @@ import { mediaExtensions, MEDIA_IMAGE, MEDIA_VIDEO } from 'libs/trips';
 import { I18n } from '@lingui/react';
 import { Trans, t } from '@lingui/macro';
 
-const allowedExtensions = [...mediaExtensions[MEDIA_IMAGE], mediaExtensions[MEDIA_VIDEO]];
+const allowedExtensions = [...mediaExtensions[MEDIA_IMAGE], ...mediaExtensions[MEDIA_VIDEO]];
 
 const uploaderOptions = {
   options: {
@@ -37,6 +37,10 @@ const uploaderOptions = {
       customHeaders: {
         Authorization: getSession() && getAuthHeader(),
       },
+    },
+    signature: {
+      endpoint: `${serverBaseURL}/media/s3/sign`,
+      version: 4,
     },
     request: {
       endpoint: `${serverBaseURL}/media`,

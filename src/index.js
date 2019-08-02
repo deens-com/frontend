@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './main/app';
 import history from 'main/history';
-//import { unregister as unregisterServiceWorker } from './registerServiceWorker';
+//import registerServiceWorker from './registerServiceWorker';
 import { isProd, isStaging } from './libs/config';
 import 'semantic-ui-css/semantic.min.css';
 
@@ -52,7 +52,8 @@ if (rootElement.hasChildNodes()) {
 } else {
   ReactDOM.render(<App />, rootElement);
 }
-//unregisterServiceWorker();
+
+//registerServiceWorker();
 
 // Stolen from: https://stackoverflow.com/a/9870540/1115059
 function getQueryStringValue(key) {
