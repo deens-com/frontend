@@ -50,10 +50,16 @@ const MainContent = styled.div`
 `;
 
 class TripSettings extends Component {
-  state = {
-    section: 'trip-settings',
-    deletingTrip: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      section:
+        props.location && props.location.state && props.location.state.day
+          ? `day-${props.location.state.day}`
+          : 'trip-settings',
+      deletingTrip: false,
+    };
+  }
 
   setCurrentSection = newSection => {
     if (newSection === 'add-day') {

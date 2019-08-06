@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { minutesToDays } from 'libs/Utils';
@@ -86,6 +86,22 @@ const Itinerary = ({
     denormalizeServices(trip, services, inDayServices, selectedOptions),
   );
 
+  const serviceIdByDay = useMemo(
+    () => {
+      return trip.services.reduce((prevObj, serviceOrgId) => {
+        const service = inDayServices[serviceOrgId];
+        return {
+          ...prevObj,
+          [service.day]: {
+            ...prevObj[service.day],
+            [inDayServices[serviceOrgId].service]: true,
+          },
+        };
+      }, {});
+    },
+    [trip.services, inDayServices],
+  );
+
   useEffect(
     () => {
       setServicesByDay(denormalizeServices(trip, services, inDayServices, selectedOptions));
@@ -154,6 +170,7 @@ const Itinerary = ({
             servicesByDay={servicesByDay}
             selectedOptions={selectedOptions}
             onServiceDrop={onServiceDrop}
+            serviceIdByDay={serviceIdByDay}
           />
         ))}
         <EmptyDay addNewDay={addNewDay} day={days.length + 1} tripStartDate={trip.startDate} />

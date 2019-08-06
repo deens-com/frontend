@@ -7,6 +7,7 @@ const Wrapper = styled.div`
   position: relative;
   display: inline-block;
   margin-bottom: 25px;
+  width: 100%;
 `;
 
 const Overlay = styled.div`

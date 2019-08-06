@@ -7,6 +7,7 @@ import { error, backgroundDark } from 'libs/colors';
 import InlineInput from 'shared_components/InlineInput';
 import MultiImageUploader from './components/MultiImageUploader';
 import apiClient from 'libs/apiClient';
+import I18nText from 'shared_components/I18nText';
 
 const Label = styled.label``;
 
@@ -81,7 +82,7 @@ const DaySettings = ({ updateMedia, editTrip, trip, day, deleteDay }) => {
               onChanged={onChangeNote}
               placeholder={<Trans>Write a description for this day</Trans>}
             >
-              {trip.notes && trip.notes[day] && trip.notes[day].en}
+              {I18nText.translate(trip.notes && trip.notes[day])}
             </InlineInput>
           </div>
         </Label>

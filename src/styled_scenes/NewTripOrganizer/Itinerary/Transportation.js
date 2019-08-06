@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Loader } from 'semantic-ui-react';
 import Popup from 'shared_components/Popup';
 import { P, PSmall } from 'libs/commonStyles';
-import { primary, secondary, primaryHover, disabled, backgroundLight } from 'libs/colors';
+import { primary, secondary, primaryHover, backgroundDark, backgroundLight } from 'libs/colors';
 import Settings from 'shared_components/icons/Settings';
 import Walk from 'assets/walk.svg';
 import Bike from 'assets/bike.svg';
@@ -12,6 +12,7 @@ import Train from 'assets/train.svg';
 import SadFace from 'assets/sad-face.svg';
 import { getKmFromMeters } from 'libs/Utils';
 import { secondsToHoursAndMinutes } from 'libs/trips';
+import { media } from 'libs/styled';
 import TextDivisor from 'shared_components/TextDivisor';
 import CarIcon from 'shared_components/icons/Car';
 import WalkIcon from 'shared_components/icons/Walk';
@@ -27,7 +28,10 @@ const TransportBox = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-  margin-top: 40px;
+  margin-top: 20px;
+  ${media.minLargePlus} {
+    margin-top: 40px;
+  }
 `;
 
 // height: 225px;
@@ -35,18 +39,32 @@ const TransportContent = styled.div`
   background-size: cover;
   background-position: center;
   border-radius: 10px 10px 10px 0;
-  width: 130px;
-  height: 182px;
+  height: 50px;
   position: relative;
   overflow: hidden;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1), 0 0 1px rgba(0, 0, 0, 0.1);
   text-align: center;
-  padding: 0 4px;
+  padding: 5px 4px;
   z-index: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  ${media.minLargePlus} {
+    display: block;
+    width: 130px;
+    height: 182px;
+    padding: 0 4px;
+  }
 `;
 
 const BottomText = styled.div`
-  text-align: ${props => (props.centered ? 'centered' : 'left')};
+  display: flex;
+  align-items: center;
+  flex: 1;
+  ${media.minLargePlus} {
+    display: block;
+    text-align: ${props => (props.centered ? 'centered' : 'left')};
+  }
 `;
 
 const TransportOptions = styled.div`
@@ -82,22 +100,23 @@ const TransportSelect = styled.button`
   }
 `;
 
-const Options = styled.div`
-  position: relative;
+const IconSpan = styled.span`
+  border-radius: 0 0 0 5px;
+  background-color: ${backgroundLight};
+  padding: 3px 3px 3px 5px;
+  cursor: pointer;
   display: flex;
-  height: 35px;
-  border-radius: 5px 5px 0 0;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  border-bottom: 0;
-  box-shadow: 1px 0 rgba(0, 0, 0, 0.05);
-  background-color: white;
-  padding: 8px;
-  margin: 0 auto;
   align-items: center;
-  svg {
-    margin-left: 15px;
-    cursor: ${props => (props.isLoading ? 'initial' : 'pointer')};
-    color: ${props => (props.isLoading ? disabled : primary)};
+  margin-left: 10px;
+  border-left: 1px solid ${backgroundDark};
+  font-size: 18px;
+
+  ${media.minLargePlus} {
+    border-left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 14px;
   }
 `;
 
@@ -105,10 +124,17 @@ const TimeAndDistance = styled.div`
   display: flex;
   flex-wrap: wrap;
   font-style: italic;
+  margin-left: auto;
+  ${media.minLargePlus} {
+    margin-left: initial;
+  }
 `;
 
 const Icon = styled.img`
-  margin: 30px auto 25px;
+  margin: 5px 0;
+  ${media.minLargePlus} {
+    margin: 30px auto 25px;
+  }
 `;
 
 const TransportSteps = styled.ol`
@@ -141,7 +167,7 @@ function getIconAndText(data) {
 
   switch (data.route.transportMode) {
     case 'walking':
-      return { text: 'Go on foot', icon: Walk };
+      return { text: 'Walk', icon: Walk };
     case 'car':
       return { text: 'Drive your car', icon: Car };
     case 'bicycle':
@@ -233,21 +259,44 @@ const Transportation = ({
       <div>
         <TransportBox>
           <TransportContent>
+            {isLoading ? (
+              <Loader active />
+            ) : (
+              <>
+                <Icon src={icon} />
+                <BottomText centered={!data || !data.route}>
+                  <P style={{ marginRight: '5px' }}>
+                    {selected === 'public-transit' ? (
+                      <Popup
+                        position="bottom center"
+                        trigger={<span style={{ cursor: 'pointer', color: primary }}>{text}</span>}
+                        on="click"
+                      >
+                        {renderSteps(data)}
+                      </Popup>
+                    ) : (
+                      text
+                    )}
+                  </P>
+                  {data &&
+                    data.route && (
+                      <TimeAndDistance>
+                        <PSmall>{renderTime(time)}</PSmall>
+                        <TextDivisor />
+                        <PSmall>
+                          {distance}
+                          <Trans>km</Trans>
+                        </PSmall>
+                      </TimeAndDistance>
+                    )}
+                </BottomText>
+              </>
+            )}
             <Popup
               trigger={
-                <span
-                  style={{
-                    borderRadius: '0 0 0 5px',
-                    backgroundColor: backgroundLight,
-                    padding: '3px',
-                    position: 'absolute',
-                    right: 0,
-                    top: 0,
-                    cursor: 'pointer',
-                  }}
-                >
-                  <Settings style={{ color: primary, width: '14px', height: '14px' }} />
-                </span>
+                <IconSpan>
+                  <Settings style={{ color: primary }} />
+                </IconSpan>
               }
               content={
                 <div>
@@ -288,39 +337,6 @@ const Transportation = ({
               onClose={hideTooltip}
               hideOnScroll
             />
-            {isLoading ? (
-              <Loader active />
-            ) : (
-              <>
-                <Icon src={icon} />
-                <BottomText centered={!data || !data.route}>
-                  <P>
-                    {selected === 'public-transit' ? (
-                      <Popup
-                        position="bottom center"
-                        trigger={<span style={{ cursor: 'pointer', color: primary }}>{text}</span>}
-                        on="click"
-                      >
-                        {renderSteps(data)}
-                      </Popup>
-                    ) : (
-                      text
-                    )}
-                  </P>
-                  {data &&
-                    data.route && (
-                      <TimeAndDistance>
-                        <PSmall>{renderTime(time)}</PSmall>
-                        <TextDivisor />
-                        <PSmall>
-                          {distance}
-                          <Trans>km</Trans>
-                        </PSmall>
-                      </TimeAndDistance>
-                    )}
-                </BottomText>
-              </>
-            )}
           </TransportContent>
         </TransportBox>
       </div>

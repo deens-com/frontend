@@ -7,17 +7,17 @@ import Service from '../Service/index';
 import { types } from '../../constants';
 import { primary, primaryHover, error, textDisabled } from 'libs/colors';
 import { H2 } from 'libs/commonStyles';
-import TrashCan from 'shared_components/icons/TrashCan';
+import SettingsIcon from 'shared_components/icons/Settings';
 import locationIcon from 'assets/location.svg';
 import locationFinishIcon from 'assets/location-finish.svg';
 import Transportation from '../Transportation';
 import LocationEdit from './LocationEdit';
 import AddServiceBox from './AddServiceBox';
 import DayTitle from './DayTitle';
-import InlineInput from 'shared_components/InlineInput';
 import { TripContext } from '../..';
 import { media } from 'libs/styled';
 import I18nText from 'shared_components/I18nText';
+import DayNote from './DayNote';
 
 // i18n
 import { I18n } from '@lingui/react';
@@ -40,17 +40,29 @@ const Location = styled.div`
   background-size: cover;
   background-position: center;
   border-radius: 10px 10px 10px 0;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1), 0 0 1px rgba(0, 0, 0, 0.1);
-  width: 190px;
-  height: 260px;
-  margin: 40px 30px 0 0;
   position: relative;
   overflow: hidden;
   padding: 10px;
   text-align: center;
+  height: 50px;
+  display: flex;
+  align-items: center;
   > img {
-    margin: 50px auto 20px;
-    padding-left: 15px;
+    margin: 0 8px 0 0;
+    width: 30px;
+  }
+
+  ${media.minLargePlus} {
+    display: block;
+    margin: 40px 30px 0 0;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1), 0 0 1px rgba(0, 0, 0, 0.1);
+    width: 190px;
+    height: 225px;
+    > img {
+      width: auto;
+      margin: 50px auto 20px;
+      padding-left: 15px;
+    }
   }
 `;
 
@@ -78,46 +90,44 @@ const Services = styled.div`
   flex-wrap: wrap;
   margin-top: 0;
   justify-content: center;
-  > div {
-    margin-right: 30px;
-  }
-  > div {
-    &:first-child {
-      > div {
-        margin-left: 0;
-      }
-    }
-    &:last-child {
-      > div {
-        margin-right: 0;
-      }
-    }
-  }
-  ${media.minSmall} {
+  flex-direction: column;
+  ${media.minLargePlus} {
     justify-content: flex-start;
+    flex-direction: row;
+    > div {
+      margin-right: 30px;
+    }
+    > div {
+      &:first-child {
+        > div {
+          margin-left: 0;
+        }
+      }
+      &:last-child {
+        > div {
+          margin-right: 0;
+        }
+      }
+    }
   }
 `;
 
-const DeleteDay = styled.div`
+const DaySettings = styled.div`
   margin-left: 8px;
   cursor: pointer;
-  > svg {
-    fill: ${error} !important;
-    height: 0.8em;
-    width: 0.8em;
-  }
+  font-size: 18px;
+  color: ${primary} !important;
 `;
 
 const Note = styled.div`
   color: ${textDisabled};
-  max-width: 500px;
+  max-width: 700px;
 `;
 
 const Day = ({
   services,
   day,
   id,
-  removeDay,
   goToAddService,
   isNotDraggingAnyDay,
   isDraggingThisDay,
@@ -141,6 +151,7 @@ const Day = ({
   servicesByDay,
   transports,
   onServiceDrop,
+  serviceIdByDay,
 }) => {
   const onAddService = useCallback(
     type => {
@@ -149,20 +160,12 @@ const Day = ({
     [goToAddService, day],
   );
 
-  const saveNote = useCallback(
-    note => {
-      saveDayNote(note, day);
-    },
-    [saveDayNote, day],
-  );
+  const { tripData, goToSettings, availabilities } = useContext(TripContext);
 
-  const onDelete = () => {
-    removeDay(day);
+  const onGoToSettings = () => {
+    goToSettings(day);
   };
 
-  const { tripData, changeInitialLocation, changeFinalLocation, availabilities } = useContext(
-    TripContext,
-  );
   return (
     <>
       <div>
@@ -177,46 +180,15 @@ const Day = ({
             <DraggableDay>
               <TitleWrapper>
                 <DayTitle day={day} tripStartDate={trip.startDate} />
-                <I18n>
-                  {({ i18n }) => (
-                    <Modal
-                      trigger={
-                        <DeleteDay>
-                          <TrashCan />
-                        </DeleteDay>
-                      }
-                      header={i18n._(t`Delete day`)}
-                      content={i18n._(t`Are you sure you want to delete this day?`)}
-                      actions={[
-                        i18n._(t`Keep day`),
-                        {
-                          key: 'delete',
-                          content: i18n._(t`Delete`),
-                          negative: true,
-                          onClick: onDelete,
-                        },
-                      ]}
-                    />
-                  )}
-                </I18n>
+                <DaySettings onClick={onGoToSettings}>
+                  <SettingsIcon />
+                </DaySettings>
               </TitleWrapper>
             </DraggableDay>
           )}
         </div>
         <Note>
-          <I18n>
-            {({ i18n }) => (
-              <InlineInput
-                iconColor={primary}
-                useTextarea
-                autoexpand
-                onChanged={saveNote}
-                placeholder={i18n._(t`Add some notes`)}
-              >
-                {trip.notes && trip.notes[day] && I18nText.translate(trip.notes[day])}
-              </InlineInput>
-            )}
-          </I18n>
+          <DayNote note={I18nText.translate(trip.notes && trip.notes[day])} />
         </Note>
         {connectDropServiceTarget(
           <div>
@@ -225,10 +197,7 @@ const Day = ({
                 {day === 1 && (
                   <Location>
                     <img alt="Start location" src={locationIcon} />
-                    <LocationEdit
-                      onChange={changeInitialLocation}
-                      location={tripData.userStartLocation}
-                    />
+                    <LocationEdit tripId={tripData._id} location={tripData.userStartLocation} />
                   </Location>
                 )}
                 {dayServices.map((data, index) => {
@@ -255,9 +224,13 @@ const Day = ({
                           endDraggingService={endDragging}
                           draggingState={draggingState}
                           changeServicePosition={changeServicePosition}
+                          serviceIdByDay={serviceIdByDay}
                           servicesByDay={servicesByDay}
                           selectedOptions={selectedOptions}
                           onServiceDrop={onServiceDrop}
+                          isFirstOfDay={index === 0}
+                          isLastOfDay={index === dayServices.length - 1}
+                          isLastDay={isLastDay}
                           data={{
                             ...inDayServices[data._id],
                             availability: availabilities[data._id],
@@ -282,10 +255,10 @@ const Day = ({
                   );
                 })}
                 {isLastDay && (
-                  <Location>
+                  <Location style={{ marginTop: '20px' }}>
                     <img alt="End location" src={locationFinishIcon} />
                     <LocationEdit
-                      onChange={changeFinalLocation}
+                      tripId={tripData._id}
                       location={tripData.userEndLocation}
                       isFinal
                     />
@@ -309,7 +282,6 @@ Day.propTypes = {
   ).isRequired,
   day: PropTypes.number.isRequired,
   id: PropTypes.string.isRequired,
-  removeDay: PropTypes.func.isRequired,
   draggingState: PropTypes.shape({
     day: PropTypes.number.isRequired,
     id: PropTypes.string,

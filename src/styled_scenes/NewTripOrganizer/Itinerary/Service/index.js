@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import I18nText from 'shared_components/I18nText';
 import { DragSource, DropTarget } from 'react-dnd';
 import { Link } from 'react-router-dom';
 import Popup from 'shared_components/Popup';
@@ -11,6 +10,7 @@ import { getFirstCategoryLowerCase } from 'libs/categories';
 import Star from 'shared_components/icons/Star';
 import { generateServiceSlug, getPriceFromServiceOption } from 'libs/Utils';
 import urls from 'libs/urlGenerator';
+import { media } from 'libs/styled';
 import {
   primary,
   textDark,
@@ -33,6 +33,7 @@ import Settings from 'shared_components/icons/Settings';
 import Activity from 'shared_components/icons/RunningPerson';
 import Food from 'shared_components/icons/SilverWare';
 import Accommodation from 'shared_components/icons/Bed';
+import ArrowIcon from 'shared_components/icons/UpArrow';
 
 // i18n
 import { Trans } from '@lingui/macro';
@@ -44,6 +45,7 @@ const serviceSource = {
     return {
       id: props.data._id,
       day: props.data.day,
+      service: props.data.service && props.data.service._id,
     };
   },
   isDragging(props, monitor) {
@@ -65,6 +67,12 @@ function collect(connect, monitor) {
 const serviceTarget = {
   hover(props, monitor) {
     if (monitor.getItemType() !== types.SERVICE) {
+      return;
+    }
+    if (
+      props.data.day !== monitor.getItem().day &&
+      props.serviceIdByDay[props.data.day][monitor.getItem().service]
+    ) {
       return;
     }
     if (monitor.getItem().id !== props.data._id) {
@@ -92,8 +100,11 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-  width: 190px;
-  margin-top: 40px;
+  margin-top: 20px;
+  ${media.minLargePlus} {
+    width: 190px;
+    margin-top: 40px;
+  }
 `;
 
 const DraggingBox = styled.div`
@@ -105,21 +116,60 @@ const DraggingBox = styled.div`
   border-radius: 10px 10px 10px 0;
 `;
 
+const SettingsTrigger = styled.span`
+  cursor: pointer;
+  padding: 3px 5px;
+  color: ${primary};
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  border-left: 1px solid ${backgroundDark};
+  font-size: 18px;
+  flex-direction: column;
+  justify-content: center;
+  ${media.minLargePlus} {
+    border-radius: 0 0 0 5px;
+    background-color: ${backgroundLight};
+    position: absolute;
+    padding: 3px;
+    right: 0;
+    top: 0;
+    border-left: 0;
+    margin-left: 0;
+    font-size: 14px;
+    display: initial;
+  }
+`;
+
+const ServiceIconMobile = styled.span`
+  ${media.minLargePlus} {
+    display: none;
+  }
+`;
+
 const ServiceBox = styled.div`
-  background: ${props => (props.img ? `url(${props.img})` : 'gray')};
-  background-size: cover;
-  background-position: center;
+  background: white;
   border-radius: 10px 10px 10px 0;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-  width: 190px;
-  height: 225px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1), 0 0 1px rgba(0, 0, 0, 0.1);
   position: relative;
   overflow: hidden;
+  min-height: 50px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
   ${props =>
     props.isNotAvailable &&
     `
     border: 2px solid ${error};
   `};
+  ${media.minLargePlus} {
+    width: 190px;
+    height: 225px;
+    background: ${props => (props.img ? `url(${props.img})` : 'gray')};
+    background-size: cover;
+    background-position: center;
+    display: block;
+  }
 `;
 
 const NotAvailable = styled(PXSmall)`
@@ -132,29 +182,70 @@ const NotAvailable = styled(PXSmall)`
 const PriceNumber = styled.div`
   font-size: 14px;
   font-weight: 700;
+  display: inline-block;
+  ${media.minLargePlus} {
+    display: block;
+  }
+`;
+
+const DragWrapper = styled.div`
+  display: none;
+  ${media.minLargePlus} {
+    display: block;
+  }
 `;
 
 const ServiceData = styled.div`
   color: ${textDark};
-  position: absolute;
-  bottom: 0;
-  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  flex: 1;
+  ${media.minLargePlus} {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    flex: 0 1 auto;
+  }
 `;
 
 const ServiceTitle = styled(P)`
-  padding: 8px 6px 0;
   background-color: rgba(255, 255, 255, 0.9);
+  align-self: center;
+  ${media.minLargePlus} {
+    padding: 8px 6px 0;
+    align-self: center;
+  }
 `;
 
 const Price = styled.div`
+  text-align: right;
   flex-grow: 1;
+  ${media.minLargePlus} {
+    text-align: left;
+  }
 `;
 
 const RatingAndPrice = styled.div`
   display: flex;
   align-items: flex-end;
-  background: ${backgroundDark};
-  padding: 8px 6px;
+  flex-direction: column;
+  margin-left: auto;
+  ${media.minLargePlus} {
+    background: ${backgroundDark};
+    flex-direction: row;
+    padding: 8px 6px;
+    margin-left: 0;
+  }
+`;
+
+const ServiceIconWrapper = styled.span`
+  display: none;
+  vertical-align: middle;
+  margin-left: 5px;
+  ${media.minLargePlus} {
+    display: inline-block;
+  }
 `;
 
 const StarsWrapper = styled.div`
@@ -165,8 +256,25 @@ const StarsWrapper = styled.div`
 `;
 
 const Reviews = styled(PXSmall)`
-  display: inline-block;
+  display: none;
   color: ${primary};
+  ${media.minLargePlus} {
+    display: inline-block;
+  }
+`;
+
+const ArrowWrapper = styled.span`
+  cursor: pointer;
+`;
+
+const ArrowsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin: 0 5px;
+  ${media.minLargePlus} {
+    display: none;
+  }
 `;
 
 function getPriceText(type, numberOfPeople) {
@@ -201,6 +309,10 @@ const Service = ({
   selectOption,
   servicesByDay,
   selectedOptions,
+  serviceIdByDay,
+  isFirstOfDay,
+  isLastOfDay,
+  isLastDay,
 }) => {
   const {
     isCheckingAvailability,
@@ -209,6 +321,7 @@ const Service = ({
     changeServiceTitle,
     changeServicePrice,
     tripData,
+    moveServiceAndSave,
   } = useContext(TripContext);
   const fastBookable =
     data.service.checkoutOptions && data.service.checkoutOptions.payAt === 'please';
@@ -217,14 +330,6 @@ const Service = ({
     data.availability &&
     data.availability.groupedOptions &&
     data.availability.groupedOptions.options;
-
-  const setServicePrice = price => {
-    changeServicePrice(data.service._id, data.day, price);
-  };
-
-  const setServiceTitle = title => {
-    changeServiceTitle(data.service._id, data.day, title);
-  };
 
   const wrapTitle = content => {
     if (data.service.privacy !== 'private') {
@@ -245,6 +350,26 @@ const Service = ({
 
   const [isSettingsOpen, setSettingsOpen] = useState(false);
 
+  const moveServiceUp = () => {
+    if (isFirstOfDay) {
+      if (!(serviceIdByDay[data.day - 1] && serviceIdByDay[data.day - 1][data.service._id])) {
+        moveServiceAndSave(data._id, data.day, null, data.day - 1, 'up');
+      }
+      return;
+    }
+    moveServiceAndSave(data._id, data.day, null, data.day, 'up');
+  };
+
+  const moveServiceDown = () => {
+    if (isLastOfDay) {
+      if (!(serviceIdByDay[data.day + 1] && serviceIdByDay[data.day + 1][data.service._id])) {
+        moveServiceAndSave(data._id, data.day, null, data.day + 1, 'down');
+      }
+      return;
+    }
+    moveServiceAndSave(data._id, data.day, null, data.day, 'down');
+  };
+
   return connectDragPreview(
     connectDropTarget(
       <div>
@@ -256,53 +381,44 @@ const Service = ({
               isNotAvailable={!isCheckingAvailability && !isAvailable}
               img={getImageUrlFromMedia(data.service.media)}
             >
-              {connectDragSource(
-                <div
-                  style={{
-                    background: backgroundDark,
-                    padding: '5px',
-                    position: 'absolute',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    cursor: 'grab',
-                    borderRadius: '0 0 3px 3px',
-                  }}
-                >
-                  <Drag style={{ width: '30px', height: 'auto' }} />
-                </div>,
-              )}
-              <Popup
-                trigger={
-                  <span
+              <DragWrapper>
+                {connectDragSource(
+                  <div
                     style={{
-                      borderRadius: '0 0 0 5px',
-                      backgroundColor: backgroundLight,
-                      padding: '3px',
+                      background: backgroundDark,
+                      padding: '5px',
                       position: 'absolute',
-                      right: 0,
-                      top: 0,
-                      cursor: 'pointer',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      cursor: 'grab',
+                      borderRadius: '0 0 3px 3px',
                     }}
                   >
-                    <Settings style={{ color: primary, width: '14px', height: '14px' }} />
-                  </span>
-                }
-                content={
-                  <ServiceSettings
-                    servicesByDay={servicesByDay}
-                    removeService={removeService}
-                    editService={openEditService}
-                    service={data}
-                    close={() => setSettingsOpen(false)}
-                  />
-                }
-                open={isSettingsOpen}
-                onClose={() => setSettingsOpen(false)}
-                onOpen={() => setSettingsOpen(true)}
-                on="click"
-                position="bottom center"
-                hideOnScroll
-              />
+                    <Drag style={{ width: '30px', height: 'auto' }} />
+                  </div>,
+                )}
+              </DragWrapper>
+              <ArrowsWrapper>
+                {(!isFirstOfDay || data.day !== 1) && (
+                  <ArrowWrapper onClick={moveServiceUp}>
+                    <ArrowIcon
+                      style={{
+                        width: '18px',
+                      }}
+                    />
+                  </ArrowWrapper>
+                )}
+                {(!isLastOfDay || !isLastDay) && (
+                  <ArrowWrapper onClick={moveServiceDown}>
+                    <ArrowIcon
+                      style={{
+                        transform: 'rotate(180deg)',
+                        width: '19px',
+                      }}
+                    />
+                  </ArrowWrapper>
+                )}
+              </ArrowsWrapper>
               <ServiceData>
                 <ServiceTitle>
                   {wrapTitle(
@@ -341,22 +457,16 @@ const Service = ({
                           tripData.childrenCount,
                         )}
                       </p>
-                    </PriceNumber>
+                    </PriceNumber>{' '}
                     <PXSmall style={{ display: 'inline-block', verticalAlign: 'middle' }}>
                       {getPriceText(
                         data.service.categories[0].names,
                         (tripData.adultCount || 0) + (tripData.childrenCount || 0),
                       )}
                     </PXSmall>
-                    <span
-                      style={{
-                        display: 'inline-block',
-                        verticalAlign: 'middle',
-                        marginLeft: '5px',
-                      }}
-                    >
+                    <ServiceIconWrapper>
                       <ServiceIcon type={getFirstCategoryLowerCase(data.service.categories)} />
-                    </span>
+                    </ServiceIconWrapper>
                   </Price>
                   <StarsWrapper>
                     {data.service.privacy === 'public' &&
@@ -382,6 +492,31 @@ const Service = ({
                   </StarsWrapper>
                 </RatingAndPrice>
               </ServiceData>
+              <Popup
+                trigger={
+                  <SettingsTrigger>
+                    <ServiceIconMobile>
+                      <ServiceIcon type={getFirstCategoryLowerCase(data.service.categories)} />
+                    </ServiceIconMobile>
+                    <Settings />
+                  </SettingsTrigger>
+                }
+                content={
+                  <ServiceSettings
+                    servicesByDay={servicesByDay}
+                    removeService={removeService}
+                    editService={openEditService}
+                    service={data}
+                    close={() => setSettingsOpen(false)}
+                  />
+                }
+                open={isSettingsOpen}
+                onClose={() => setSettingsOpen(false)}
+                onOpen={() => setSettingsOpen(true)}
+                on="click"
+                position="bottom center"
+                hideOnScroll
+              />
             </ServiceBox>
             {!isCheckingAvailability && (
               <>
@@ -411,6 +546,7 @@ Service.propTypes = {
   index: PropTypes.number.isRequired,
   draggingState: PropTypes.shape({
     day: PropTypes.number.isRequired,
+    service: PropTypes.object,
     id: PropTypes.string,
     position: PropTypes.number,
   }),

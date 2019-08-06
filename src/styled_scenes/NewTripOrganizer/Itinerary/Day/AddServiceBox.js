@@ -20,9 +20,6 @@ import { Trans } from '@lingui/macro';
 
 const Box = styled.div`
   border-radius: 10px 10px 10px 0;
-  margin-top: ${props => (props.lowMargin ? '20px' : '75px')};
-  width: 190px;
-  height: 225px;
   position: relative;
   overflow: hidden;
   border: 1px dashed ${primary};
@@ -35,9 +32,14 @@ const Box = styled.div`
     opacity: 1;
   }
   transition: opacity 0.2s ease;
-  margin-right: 30px;
-  ${media.minSmall} {
-    margin-right: 0;
+  height: 50px;
+  width: auto;
+  margin-top: 20px;
+
+  ${media.minLargePlus} {
+    margin-top: ${props => (props.lowMargin ? '20px' : '40px')};
+    width: 190px;
+    height: 225px;
   }
 `;
 

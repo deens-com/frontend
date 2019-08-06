@@ -205,6 +205,12 @@ class TripOrganizer extends React.Component {
   };
   // SINGLE ACTIONS
 
+  goToSettings = day => {
+    history.push(urls.trip.settings(this.props.tripId), {
+      day,
+    });
+  };
+
   goToAddService = (day, type = 'accommodation') => {
     const { inDayServices } = this.props;
     let location;
@@ -477,6 +483,11 @@ class TripOrganizer extends React.Component {
     });
   };
 
+  moveServiceAndSave = (id, currentDay, idAfter, nextDay, moveTo) => {
+    this.props.temporalRearrange(id, currentDay, idAfter, nextDay, moveTo);
+    this.props.saveTemporalRearrangement();
+  };
+
   // RENDER
 
   render() {
@@ -514,17 +525,10 @@ class TripOrganizer extends React.Component {
           session: this.props.session,
           headerHeight,
           availabilities: this.props.availabilities,
+          goToSettings: this.goToSettings,
+          moveServiceAndSave: this.moveServiceAndSave,
         }}
       >
-        <Header
-          onEditTitle={this.editTitle}
-          onEditDescription={this.editDescription}
-          title={trip.title}
-          description={trip.description}
-          image={image}
-          onImageUpload={this.uploadImage}
-          onHeightChanged={this.onHeaderHeightChanged}
-        />
         {!this.props.session.username && <WarningLogin />}
         <Options
           onChangeGuests={this.changeGuests}
@@ -536,6 +540,7 @@ class TripOrganizer extends React.Component {
           changeShowTransport={this.changeShowTransport}
           changeShowMap={this.changeShowMap}
           tripParents={this.props.trip.parents}
+          showingMap={this.state.showingMap}
         />
         {moment(this.props.trip.startDate).isBefore(moment(), 'day') && (
           <div style={{ textAlign: 'center' }}>

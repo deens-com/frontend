@@ -24,7 +24,7 @@ function getPeopleValue(value, alternativeValue, defaultValue) {
 class TripOrganizerContainer extends Component {
   renderContent() {
     if (!this.props.trip || this.props.isLoading) {
-      return <Loader size="massive" active />;
+      return <Loader size="massive" active inline="centered" />;
     }
 
     return (
@@ -76,7 +76,7 @@ class TripOrganizerContainer extends Component {
   render() {
     return (
       <>
-        {this.renderContent()}
+        <div style={{ minHeight: '50vh' }}>{this.renderContent()}</div>
         <BrandFooter />
       </>
     );
