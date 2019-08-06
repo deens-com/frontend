@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import SemanticLocationControl from 'shared_components/Form/SemanticLocationControl';
-import { geocodeByPlaceId } from 'libs/placesAutocomplete';
-import { parseLocationData } from 'libs/location';
-import { primary, error } from 'libs/colors';
+import { Link } from 'react-router-dom';
+import { primary } from 'libs/colors';
 import { P } from 'libs/commonStyles';
-import PencilIcon from 'shared_components/icons/PencilIcon';
+import urls from 'libs/urlGenerator';
 
 // i18n
 import { Trans } from '@lingui/macro';
@@ -36,59 +34,23 @@ function getCityText({ formattedAddress, city, countryCode }) {
   return `${city}, ${countryCode}`;
 }
 
-export default ({ location, onChange, isFinal }) => {
-  const [isEditing, setEditing] = useState(false);
-  const [savingData, setSavingData] = useState(null);
-  const onLocationChange = (_, placeId) => {
-    geocodeByPlaceId(placeId).then(results => {
-      const currentResult = results[0];
-      const {
-        countryCode,
-        city,
-        postalCode: postcode,
-        state,
-        country,
-        formattedAddress,
-      } = parseLocationData(currentResult);
-
-      setSavingData(getCityText({ formattedAddress, city, state, country, countryCode }));
-
-      const { lat, lng } = currentResult.geometry.location;
-      const geo = {
-        type: 'Point',
-        coordinates: [lng(), lat()],
-      };
-      onChange({ countryCode, city, postcode, state, geo, formattedAddress });
-
-      setEditing(false);
-      setSavingData(null);
-    });
-  };
-
+export default ({ tripId, location, isFinal }) => {
   const place = getCityText(location || {});
 
   return (
     <Wrapper>
-      {isEditing ? (
-        <SemanticLocationControl
-          autoFocus
-          onBlur={() => setEditing(false)}
-          onChange={onLocationChange}
-          requireCity
-        />
-      ) : (
-        <NotEditing onClick={() => setEditing(true)}>
-          <P>
-            {place || (
-              <Trans>
+      <NotEditing>
+        <P>
+          {place || (
+            <Trans>
+              <Link to={urls.trip.settings(tripId)}>
                 Please select {isFinal ? <Trans>a final</Trans> : <Trans>an initial</Trans>}{' '}
                 location
-              </Trans>
-            )}
-          </P>
-          <PencilIcon />
-        </NotEditing>
-      )}
+              </Link>
+            </Trans>
+          )}
+        </P>
+      </NotEditing>
     </Wrapper>
   );
 };

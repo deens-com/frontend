@@ -12,10 +12,11 @@ import { generateDaysArray } from '../';
 import { getCenterAndZoom } from 'libs/location';
 import { media } from 'libs/styled';
 import { googleMapsKey } from 'libs/config';
+import { disabled } from 'libs/colors';
 
-const topMargin = 0;
-const topOffset = 60 + 65; // when do we fix the map?
-const bottomMargin = 70;
+const topMargin = 55;
+const topOffset = 55 + 65; // when do we fix the map?
+const bottomMargin = 0;
 const bottomOffset = 245;
 
 const getMapSize = () => {
@@ -36,9 +37,15 @@ const wrapperStyles = props => `
 
 const Wrapper = styled.div`
   ${wrapperStyles} z-index: 1;
+  background-color: ${disabled};
   order: 0;
+  position: fixed;
+  top: ${topMargin}px;
+  z-index: 2;
   width: 100vw;
-  ${media.minSmall} {
+  ${media.minLargePlus} {
+    top: auto;
+    position: relative;
     order: 1;
     width: 50vw;
     ${props =>

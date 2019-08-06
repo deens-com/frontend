@@ -28,7 +28,7 @@ const TransportBox = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-  margin-top: 15px;
+  margin-top: 20px;
   ${media.minLargePlus} {
     margin-top: 40px;
   }
@@ -39,7 +39,7 @@ const TransportContent = styled.div`
   background-size: cover;
   background-position: center;
   border-radius: 10px 10px 10px 0;
-  height: 40px;
+  height: 50px;
   position: relative;
   overflow: hidden;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1), 0 0 1px rgba(0, 0, 0, 0.1);
@@ -109,7 +109,7 @@ const IconSpan = styled.span`
   align-items: center;
   margin-left: 10px;
   border-left: 1px solid ${backgroundDark};
-  font-size: 16px;
+  font-size: 18px;
 
   ${media.minLargePlus} {
     border-left: 0;

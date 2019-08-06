@@ -27,7 +27,7 @@ const PageTop = styled.div`
   max-width: 1350px;
   display: flex;
   flex-direction: column;
-  margin-top: 75px;
+  margin-top: 40px;
   max-width: 1350px;
   ${media.minLarge} {
     flex-direction: row;

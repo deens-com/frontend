@@ -35,7 +35,7 @@ class TripOrganizer extends React.Component {
     super(props);
     this.state = {
       headerHeight: 0,
-      showingTransports: true,
+      showingTransports: false,
       showingMap: false,
       isEditingService: null,
     };
@@ -204,6 +204,12 @@ class TripOrganizer extends React.Component {
     return apiClient.trips.availability.get(this.props.tripId, data);
   };
   // SINGLE ACTIONS
+
+  goToSettings = day => {
+    history.push(urls.trip.settings(this.props.tripId), {
+      day,
+    });
+  };
 
   goToAddService = (day, type = 'accommodation') => {
     const { inDayServices } = this.props;
@@ -477,6 +483,11 @@ class TripOrganizer extends React.Component {
     });
   };
 
+  moveServiceAndSave = (id, currentDay, idAfter, nextDay, moveTo) => {
+    this.props.temporalRearrange(id, currentDay, idAfter, nextDay, moveTo);
+    this.props.saveTemporalRearrangement();
+  };
+
   // RENDER
 
   render() {
@@ -514,6 +525,8 @@ class TripOrganizer extends React.Component {
           session: this.props.session,
           headerHeight,
           availabilities: this.props.availabilities,
+          goToSettings: this.goToSettings,
+          moveServiceAndSave: this.moveServiceAndSave,
         }}
       >
         {!this.props.session.username && <WarningLogin />}
@@ -527,6 +540,7 @@ class TripOrganizer extends React.Component {
           changeShowTransport={this.changeShowTransport}
           changeShowMap={this.changeShowMap}
           tripParents={this.props.trip.parents}
+          showingMap={this.state.showingMap}
         />
         {moment(this.props.trip.startDate).isBefore(moment(), 'day') && (
           <div style={{ textAlign: 'center' }}>

@@ -233,14 +233,31 @@ export const removeDay = day => async (dispatch, getState) => {
   });
 };
 
-export const temporalRearrange = (id, currentDay, idAfter, nextDay) => (dispatch, getState) => {
+// moveTo is 'up' or 'down', to avoid calculating `idAfter`. it's used on mobile
+// if day change
+export const temporalRearrange = (id, currentDay, idAfter, nextDay, moveTo) => (
+  dispatch,
+  getState,
+) => {
   const trip = getState().tripDesigner.trip.data;
   const inDayServices = getState().entities.inDayServices;
+
+  const currentIndex = trip.services.indexOf(id);
+  let moveToIndex = currentIndex;
+  if (moveTo && nextDay === currentDay) {
+    // if we are moving the day up or down, but it's changing the day it keeps the position
+    // if not, it won't we (for example) last service of the previous day
+    moveToIndex = moveTo === 'up' ? currentIndex - 1 : currentIndex + 1;
+  }
 
   dispatch({
     type: types.TEMPORAL_REARRANGE,
     payload: {
-      services: arrayMove(trip.services, trip.services.indexOf(id), trip.services.indexOf(idAfter)),
+      services: arrayMove(
+        trip.services,
+        currentIndex,
+        moveTo ? moveToIndex : trip.services.indexOf(idAfter),
+      ),
     },
   });
 
