@@ -53,6 +53,7 @@ const fetchResults = searchQuery =>
     );
 
     return {
+      type: searchQuery.type,
       results: data,
       count: results.data.count,
       extraData: results.data.extraData,

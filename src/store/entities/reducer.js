@@ -93,6 +93,9 @@ export default function entities(state = initialState, action = {}) {
         },
       };
     case searchTypes.search.success:
+      if (action.payload.type === 'trip') {
+        return state;
+      }
       return {
         ...state,
         tags: {
