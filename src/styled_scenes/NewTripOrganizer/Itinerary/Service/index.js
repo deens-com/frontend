@@ -515,7 +515,6 @@ const Service = ({
                 onOpen={() => setSettingsOpen(true)}
                 on="click"
                 position="bottom center"
-                hideOnScroll
               />
             </ServiceBox>
             {!isCheckingAvailability && (
