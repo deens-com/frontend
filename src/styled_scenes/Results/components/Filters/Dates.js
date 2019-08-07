@@ -35,6 +35,7 @@ const DarkSpan = styled.span`
 const Trigger = styled(P)`
   color: ${primary};
   margin-bottom: 0;
+  font-size: 14px;
 `;
 
 const DropdownContent = ({ startDate, endDate, onDateSelect, closeDropdown, isSingle }) => {

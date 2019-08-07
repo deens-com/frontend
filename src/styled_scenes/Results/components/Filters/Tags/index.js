@@ -37,17 +37,16 @@ const Tags = ({ selectedTags, suggestedTags, onApply, isAmenitiesFilter, customS
   };
 
   const renderTag = () => {
+    const typeOfTags = isAmenitiesFilter ? <Trans>Amenities</Trans> : <Trans>Tags</Trans>;
     if (tags.length === 0) {
-      return isAmenitiesFilter ? <Trans>Amenities</Trans> : <Trans>Tags</Trans>;
-    }
-    if (tags.length <= 3) {
-      return tags.map(tag => tag[valueKey]).join(', ');
+      return typeOfTags;
     }
 
-    return `${tags
-      .slice(0, 3)
-      .map(tag => tag[valueKey])
-      .join(', ')}, +${tags.length - 3}`;
+    return (
+      <strong style={{ fontWeight: 'bold' }}>
+        {typeOfTags} ({tags.length})
+      </strong>
+    );
   };
 
   return (
