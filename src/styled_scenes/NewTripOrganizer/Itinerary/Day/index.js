@@ -254,8 +254,9 @@ const Day = ({
                     </React.Fragment>
                   );
                 })}
+                <AddServiceBox day={day} goToAddService={onAddService} />
                 {isLastDay && (
-                  <Location style={{ marginTop: '20px' }}>
+                  <Location>
                     <img alt="End location" src={locationFinishIcon} />
                     <LocationEdit
                       tripId={tripData._id}
@@ -264,7 +265,6 @@ const Day = ({
                     />
                   </Location>
                 )}
-                <AddServiceBox day={day} goToAddService={onAddService} />
               </Services>
             </ServicesWrapper>
           </div>,

@@ -13,7 +13,7 @@ import DurationFilter from './Duration';
 import RatingFilter from './Rating';
 import StarsFilter from './Stars';
 import TextFilter from './Text';
-import { isMatch } from 'lodash';
+import { isEqual } from 'lodash';
 import { media } from 'libs/styled';
 import FiltersIcon from 'shared_components/icons/FiltersIcon';
 import BackArrow from 'shared_components/icons/BackArrow';
@@ -22,7 +22,6 @@ import urls from 'libs/urlGenerator';
 import 'react-dates.css';
 
 // i18n
-import { I18n } from '@lingui/react';
 import { Trans, t } from '@lingui/macro';
 
 const Wrapper = styled.div`
@@ -83,7 +82,7 @@ const Filters = ({
 }) => {
   const [showingMobile, setShowingMobile] = useState(false);
   const search = params => {
-    const keepPage = isMatch(searchParams, params);
+    const keepPage = !Object.keys(params).some(key => !isEqual(searchParams[key], params[key]));
 
     if (keepPage && (!searchParams.page || searchParams.page === 1)) {
       return;
