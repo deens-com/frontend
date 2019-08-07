@@ -280,7 +280,7 @@ class Service extends Component {
                 isLoggedIn={this.props.isLoggedIn}
               />
               <ContactWrap>
-                <MapWrap>
+                {/*<MapWrap>
                   <GoogleMapReact
                     center={{
                       lat: latitude,
@@ -292,7 +292,7 @@ class Service extends Component {
                   >
                     <MapMaker lat={latitude} lng={longitude} scale={1} color="#65AFBB" />
                   </GoogleMapReact>
-                </MapWrap>
+                  </MapWrap>*/}
                 <Contacts>
                   <ServiceInformation
                     numberOfDays={this.props.numberOfDays}
