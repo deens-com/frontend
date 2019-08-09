@@ -489,20 +489,19 @@ export class CheckoutTrip extends React.Component {
                     )}
                   </Dates>
                   <Options>
-                    {serv.selectedOption &&
-                      selectedOptions[serv.selectedOption] && (
-                        <>
-                          <I18nText data={selectedOptions[serv.selectedOption].title} />
-                          {options && (
-                            <ServiceOptions
-                              selectOption={this.props.selectOption}
-                              options={options}
-                              serviceData={inDayService}
-                              trip={this.props.trip}
-                            />
-                          )}
-                        </>
-                      )}
+                    {selectedOptions[serv.selectedOption] && (
+                      <>
+                        <I18nText data={selectedOptions[serv.selectedOption].title} />
+                        {options && (
+                          <ServiceOptions
+                            selectOption={this.props.selectOption}
+                            options={options}
+                            serviceData={inDayService}
+                            trip={this.props.trip}
+                          />
+                        )}
+                      </>
+                    )}
                   </Options>
                   <Cancellation>
                     {this.renderCancellationPolicy(
