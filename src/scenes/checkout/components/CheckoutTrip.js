@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import moment from 'moment';
-import Popup from 'shared_components/Popup';
+import { Popup } from 'semantic-ui-react';
 import mapServicesToDays from '../../../styled_scenes/Trip/mapServicesToDays';
 import I18nText from 'shared_components/I18nText';
 import MapMarker from 'shared_components/icons/MapMarker';
@@ -19,8 +19,6 @@ import Note from 'shared_components/icons/Note';
 
 // i18n
 import { Trans } from '@lingui/macro';
-import { inDayService } from 'libs/entities';
-import { servicesVersion } from 'typescript';
 import { backgroundDark, tertiary } from 'libs/colors';
 import Button from 'shared_components/Button';
 
@@ -402,6 +400,23 @@ export class CheckoutTrip extends React.Component {
     );
   };
 
+  renderStatusCheckbox = serviceOrgId => {
+    const { inDayServices } = this.props;
+    return (
+      <Checkbox
+        checked={Boolean(inDayServices[serviceOrgId].externallyBooked)}
+        onChange={e => {
+          this.props.markAsBooked(serviceOrgId, !inDayServices[serviceOrgId].externallyBooked);
+        }}
+      />
+    );
+  };
+
+  renderNoteContent = serviceOrgId => {
+    const { inDayServices } = this.props;
+    return <div>{inDayServices[serviceOrgId].notes['en'] || ''}</div>;
+  };
+
   render() {
     const { trip, inDayServices, services, selectedOptions, availabilities } = this.props;
     const { externalServices, bookableServices, externalTotalPrice } = this.state;
@@ -450,9 +465,7 @@ export class CheckoutTrip extends React.Component {
               typeOfService === 'accommodation' ? serv.lastDay : serv.lastDay - 1,
               'days',
             );
-            /*if (!serv.selectedOption) {
-              return null
-            }*/
+
             return (
               <>
                 <Row key={`${serv.service}-${serv.firstDay}`}>
@@ -626,13 +639,15 @@ export class CheckoutTrip extends React.Component {
                     )}
                   </BookingInfo>
                   <Status>
-                    <Trans>
-                      <Checkbox onClick={() => this.props.markAsBooked(serv.serviceOrgId)} />
-                    </Trans>
+                    <Trans>{this.renderStatusCheckbox(serv.serviceOrgId)}</Trans>
                   </Status>
                   <Notes>
                     <Trans>
-                      <Note />
+                      <Popup
+                        trigger={<Note />}
+                        on="click"
+                        content={this.renderNoteContent(serv.serviceOrgId)}
+                      />
                     </Trans>
                   </Notes>
                   <LeftColumn>
@@ -650,7 +665,7 @@ export class CheckoutTrip extends React.Component {
                         serv.lastDay,
                       )}
                     </div>
-                    <Checkbox onClick={() => this.props.markAsBooked(serv.serviceOrgId)} />
+                    {this.renderStatusCheckbox(serv.serviceOrgId)}
                   </RightColumn>
                 </Row>
                 <BorderLine />

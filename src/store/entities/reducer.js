@@ -92,6 +92,17 @@ export default function entities(state = initialState, action = {}) {
           },
         },
       };
+    case tripDesignerActions.types.MARK_AS_BOOKED:
+      return {
+        ...state,
+        inDayServices: {
+          ...state.inDayServices,
+          [action.payload.id]: {
+            ...state.services[action.payload.id],
+            externallyBooked: action.payload.status,
+          },
+        },
+      };
     case searchTypes.search.success:
       if (action.payload.type === 'trip') {
         return state;

@@ -429,6 +429,7 @@ class CheckoutContainer extends React.Component {
         trip={trip}
         inDayServices={this.props.inDayServices}
         services={this.props.services}
+        markAsBooked={this.props.markAsBooked}
       />
     ) : (
       <GuestsData
@@ -566,6 +567,7 @@ const mapDispatchToProps = dispatch =>
       ...actions,
       changeHeader: headerActions.changeHeader,
       selectOption: tripDesignerActions.selectOption,
+      markAsBooked: tripDesignerActions.markAsBooked,
     },
     dispatch,
   );

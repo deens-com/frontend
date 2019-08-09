@@ -94,6 +94,15 @@ export default {
         post: (id, body) => post(`/trip-ops/${id}/service-organizations/availability-code`)(body),
       },
     },
+    services: {
+      book: {
+        post: (id, serviceOrgId) => post(`/trip-ops/${id}/services/${serviceOrgId}/mark/booked`)(),
+      },
+      unbook: {
+        post: (id, serviceOrgId) =>
+          post(`/trip-ops/${id}/services/${serviceOrgId}/mark/unbooked`)(),
+      },
+    },
   },
   services: {
     get: get('/services'),

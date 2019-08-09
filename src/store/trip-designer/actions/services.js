@@ -24,6 +24,7 @@ export const types = {
   ADD_CUSTOM_SERVICE_START: 'ADD_CUSTOM_SERVICE_START',
   ADD_CUSTOM_SERVICE_SUCCESS: 'ADD_CUSTOM_SERVICE_SUCCESS',
   MODIFY_CUSTOM_SERVICE: 'MODIFY_CUSTOM_SERVICE',
+  MARK_AS_BOOKED: 'MARK_AS_BOOKED',
 };
 
 const fieldsWithTranslation = {
@@ -334,4 +335,19 @@ export const modifyCustomService = (serviceId, data) => async (dispatch, getStat
   });
 
   return apiClient.services.patch(serviceId, data);
+};
+
+export const markAsBooked = (serviceOrgId, status) => async (dispatch, getState) => {
+  const trip = getState().tripDesigner.trip.data;
+  dispatch({
+    type: types.MARK_AS_BOOKED,
+    payload: {
+      id: serviceOrgId,
+      status,
+    },
+  });
+
+  return status
+    ? apiClient.trips.services.book.post(trip._id, serviceOrgId)
+    : apiClient.trips.services.unbook.post(trip._id, serviceOrgId);
 };
