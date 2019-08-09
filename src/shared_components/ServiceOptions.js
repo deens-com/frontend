@@ -6,35 +6,31 @@ import Popup from 'shared_components/Popup';
 import { Modal } from 'semantic-ui-react';
 import { P, PStrong, PSmallStrong, PXSmall, H2SubtitleStrong } from 'libs/commonStyles';
 import { getPriceFromServiceOption, extractPrice } from 'libs/Utils';
-import { textLight, primary, secondary, secondaryContrast, error } from 'libs/colors';
+import { textLight, primary, primaryHover, secondaryContrast, error } from 'libs/colors';
 import { minutesToHoursOrDays, calculateCancellationCharge } from 'libs/trips';
 import Button from 'shared_components/Button';
 import { media } from 'libs/styled';
-import { TripContext } from '../../';
 
 // i18n
 import { Trans } from '@lingui/macro';
 
 const OptionsBox = styled.div`
-  box-shadow: ${props => (props.hasSelectedOption ? '1px 1px 3px rgba(0, 0, 0, 0.3)' : 'none')};
-  margin-top: -8px;
-  padding: 8px 0 ${props => (props.hasSelectedOption ? '8px' : '0')};
+  display: inline-block;
+  margin-left: 5px;
+  ${media.minMedium} {
+    display: block;
+  }
 `;
 
 const ModalBody = styled.div`
   padding: 40px 25px;
 `;
 
-const ChangeOptionsButton = styled.button`
+const ChangeOptionsButton = styled.p`
   cursor: pointer;
   border: 0;
-  border-radius: 0 0 5px 0;
-  padding: 10px 6px;
-  background-color: ${primary};
-  color: ${textLight};
-  &:focus {
-    outline: 0;
-  }
+  background: white;
+  color: ${primary};
 `;
 
 const OptionDescription = styled.div`
@@ -50,7 +46,7 @@ const Options = styled.div`
 
 const Option = styled.div`
   display: flex;
-  background-color: ${props => (props.selected ? secondary : 'white')};
+  background-color: ${props => (props.selected ? primaryHover : 'white')};
   border-radius: 5px 5px 5px 0;
   margin-bottom: 14px;
   box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.1), 0px 0px 4px rgba(0, 0, 0, 0.1);
@@ -105,10 +101,6 @@ const ButtonWrapper = styled.div`
   align-self: center;
 `;
 
-const SelectedOption = styled(PXSmall)`
-  margin: 10px 5px;
-`;
-
 const renderCancellationPolicy = (policies, price, key) => {
   if (!policies || policies.length === 0) {
     return (
@@ -140,8 +132,7 @@ const renderCancellationPolicy = (policies, price, key) => {
   );
 };
 
-const ServiceOptions = ({ selectOption, serviceData, options }) => {
-  const tripData = useContext(TripContext).tripData;
+const ServiceOptions = ({ trip, selectOption, serviceData, options }) => {
   const [selectedOption, setSelectedOption] = useState(serviceData.selectedOption);
   const [isModalOpen, setModalOpen] = useState(false);
 
@@ -161,13 +152,7 @@ const ServiceOptions = ({ selectOption, serviceData, options }) => {
     <OptionsBox hasSelectedOption={Boolean(selectedOption)}>
       <Modal
         open={isModalOpen}
-        trigger={
-          <ChangeOptionsButton>
-            <PSmallStrong>
-              {selectedOption ? <Trans>Change Options</Trans> : <Trans>Select Options</Trans>}
-            </PSmallStrong>
-          </ChangeOptionsButton>
-        }
+        trigger={<ChangeOptionsButton>change</ChangeOptionsButton>}
         onOpen={() => setModalOpen(true)}
         onClose={() => {
           if (fullSelectedOption) {
@@ -211,8 +196,8 @@ const ServiceOptions = ({ selectOption, serviceData, options }) => {
                                     getPriceFromServiceOption(
                                       service.basePrice,
                                       option.price,
-                                      tripData.adults,
-                                      tripData.children,
+                                      trip.adultCount,
+                                      trip.childrenCount,
                                     ),
                                     option.otherAttributes.availabilityCode.code,
                                   )
@@ -223,8 +208,8 @@ const ServiceOptions = ({ selectOption, serviceData, options }) => {
                                     getPriceFromServiceOption(
                                       service.basePrice,
                                       null,
-                                      tripData.adults,
-                                      tripData.children,
+                                      trip.adultCount,
+                                      trip.childrenCount,
                                     ),
                                     option.otherAttributes.availabilityCode.code,
                                   )}
@@ -277,11 +262,6 @@ const ServiceOptions = ({ selectOption, serviceData, options }) => {
           </Modal.Content>
         </OptionDescription>
       </Modal>
-      {fullSelectedOption && (
-        <SelectedOption>
-          <I18nText data={fullSelectedOption.title} />
-        </SelectedOption>
-      )}
     </OptionsBox>
   );
 };

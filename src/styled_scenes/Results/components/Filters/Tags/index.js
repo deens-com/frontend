@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import Dropdown from 'shared_components/Dropdown';
-import { P } from 'libs/commonStyles';
 import TagSelector from 'shared_components/TagSelector';
 
 // i18n

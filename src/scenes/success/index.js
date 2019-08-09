@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 import history from 'main/history';
 import Button from 'shared_components/Button';
 import CheckIcon from 'shared_components/icons/CheckIcon';
-//import CheckoutTrip from 'scenes/checkout/components/CheckoutTrip';
 import urls from 'libs/urlGenerator';
 import headerActions from 'store/header/actions';
 import { generateTripSlug } from 'libs/Utils';

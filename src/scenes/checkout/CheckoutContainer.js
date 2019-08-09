@@ -5,23 +5,21 @@ import { bindActionCreators } from 'redux';
 import moment from 'moment';
 import axios from 'libs/axios';
 import { Loader, Dimmer, Modal } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
 import { media } from 'libs/styled';
 import { generateTripSlug } from 'libs/Utils';
 
 import I18nText from 'shared_components/I18nText';
 import { formatLocation } from 'shared_components/Carts/Trip';
 import MapMarker from 'shared_components/icons/MapMarker';
-import LeftArrow from 'shared_components/icons/LeftArrow';
 import PaymentContainer from './PaymentContainer';
 import CheckoutTrip from './components/CheckoutTrip';
 import * as actions from 'store/checkout/actions';
-import tripActions from 'store/trips/actions';
 import headerActions from 'store/header/actions';
 import Button from 'shared_components/Button';
 import GuestsData from './components/GuestsData';
 import Countdown from './components/Countdown';
 import ReprovisionModal from './components/ReprovisionModal';
+import tripDesignerActions from 'store/trip-designer/actions';
 import history from 'main/history';
 import analytics from 'libs/analytics';
 import urls from 'libs/urlGenerator';
@@ -40,7 +38,7 @@ function formatDate(date, days) {
 }
 
 const Wrapper = styled.div`
-  max-width: 700px;
+  max-width: 1150px;
   width: calc(100% - 30px);
   margin: 0 15px 70px;
   display: flex;
@@ -53,36 +51,6 @@ const Wrapper = styled.div`
 
 const Top = styled.div`
   margin-bottom: 35px;
-`;
-
-const BackButton = styled(Link)`
-  display: inline-flex;
-  position: relative;
-  top: -5px;
-  font-size: 14px;
-  color: #097da8;
-  vertical-align: middle;
-  > span {
-    display: flex;
-    align-items: center;
-    margin-left: 10px;
-  }
-  ${media.minSmall} {
-    left: -260px;
-    top: 20px;
-  }
-`;
-
-const BackIcon = styled.span`
-  background-color: #097da8;
-  color: white;
-  width: 35px;
-  height: 35px;
-  border-radius: 35px;
-  font-size: 24px;
-  > svg {
-    margin: auto;
-  }
 `;
 
 const Steps = styled.div`
@@ -228,8 +196,6 @@ class CheckoutContainer extends React.Component {
       isPaying: false,
     };
 
-    props.fetchTrip(this.tripId);
-
     if (props.trip && props.trip.id === this.tripId) {
       this.state = {
         ...this.state,
@@ -286,6 +252,13 @@ class CheckoutContainer extends React.Component {
         return;
       }
 
+      if (moment(this.props.trip.startDate).isSameOrBefore(moment(), 'day')) {
+        this.setState({
+          errorMsg: 'You need to select a date in the future',
+        });
+        return;
+      }
+
       if (!this.props.trip.adultCount) {
         this.setState({
           errorMsg: 'Your trip should have at least one adult',
@@ -300,19 +273,15 @@ class CheckoutContainer extends React.Component {
         return;
       }
 
-      if (this.props.availability) {
-        if (this.props.availability.some(service => !service.isAvailable)) {
+      if (Object.keys(this.props.availability) !== 0) {
+        if (
+          Object.keys(this.props.availability).some(id => !this.props.availability[id].isAvailable)
+        ) {
           this.setState({
             errorMsg: 'Some of the services are not available in the selected dates',
           });
           return;
         }
-      } else if (!this.props.isCheckingAvailability) {
-        this.props.checkAvailability(this.tripId, this.props.trip.startDate, {
-          adults: this.props.trip.adultCount,
-          children: this.props.trip.childrenCount,
-          infants: this.props.trip.infantCount,
-        });
       }
     }
   }
@@ -447,7 +416,15 @@ class CheckoutContainer extends React.Component {
     }
 
     return step === 1 ? (
-      <CheckoutTrip trip={trip} />
+      <CheckoutTrip
+        nextStep={this.nextStep}
+        selectOption={this.props.selectOption}
+        availabilities={this.props.availability}
+        selectedOptions={this.props.selectedOptions}
+        trip={trip}
+        inDayServices={this.props.inDayServices}
+        services={this.props.services}
+      />
     ) : (
       <GuestsData
         guests={this.state.guests}
@@ -481,59 +458,53 @@ class CheckoutContainer extends React.Component {
         />
         <Wrapper>
           <Top>
-            {step < 4 && (
-              <React.Fragment>
-                <BackButton to={urls.trip.organize(this.tripId)} replace>
-                  <BackIcon>
-                    <LeftArrow />
-                  </BackIcon>
-                  <span>
-                    <Trans>Back to customization</Trans>
-                  </span>
-                </BackButton>
-                <Steps>
-                  <Step active={step === 1}>
-                    <span>1</span> <Trans>Review Booking</Trans>
-                  </Step>
-                  <StepSeparator />
-                  <Step active={step === 2}>
-                    <span>2</span> <Trans>Guest Details</Trans>
-                  </Step>
-                  <StepSeparator />
-                  <Step active={step === 3}>
-                    <span>3</span> <Trans>Payment</Trans>
-                  </Step>
-                </Steps>
-              </React.Fragment>
-            )}
+            {step < 4 &&
+              step > 1 && (
+                <React.Fragment>
+                  <Steps>
+                    <Step active={step === 1}>
+                      <span>1</span> <Trans>Review Booking</Trans>
+                    </Step>
+                    <StepSeparator />
+                    <Step active={step === 2}>
+                      <span>2</span> <Trans>Guest Details</Trans>
+                    </Step>
+                    <StepSeparator />
+                    <Step active={step === 3}>
+                      <span>3</span> <Trans>Payment</Trans>
+                    </Step>
+                  </Steps>
+                </React.Fragment>
+              )}
           </Top>
-          {step < 4 && (
-            <Summary>
-              <SummaryData>
-                <Title>
-                  <I18nText data={trip.title} />
-                </Title>
-                <Location>
-                  <MapMarker style={{ fill: '#6E7885' }} />
-                  <span>{formatLocation(trip.location)}</span>
-                </Location>
-                <Dates>{formatDate(trip.startDate, days)}</Dates>
-                <Guests>
-                  {numberOfGuests} {numberOfGuests === 1 ? 'Guest' : 'Guests'}
-                </Guests>
-              </SummaryData>
-              <TotalPriceWrapper>
-                <TotalPrice>
-                  <PriceLine>
-                    <Trans>Total Price of booked items</Trans> ${trip.bookablePrice.toFixed(2)}
-                  </PriceLine>
-                  <Taxes>
-                    * <Trans>taxes and fees are included</Trans>
-                  </Taxes>
-                </TotalPrice>
-              </TotalPriceWrapper>
-            </Summary>
-          )}
+          {step < 4 &&
+            step > 1 && (
+              <Summary>
+                <SummaryData>
+                  <Title>
+                    <I18nText data={trip.title} />
+                  </Title>
+                  <Location>
+                    <MapMarker style={{ fill: '#6E7885' }} />
+                    <span>{formatLocation(trip.location)}</span>
+                  </Location>
+                  <Dates>{formatDate(trip.startDate, days)}</Dates>
+                  <Guests>
+                    {numberOfGuests} {numberOfGuests === 1 ? 'Guest' : 'Guests'}
+                  </Guests>
+                </SummaryData>
+                <TotalPriceWrapper>
+                  <TotalPrice>
+                    <PriceLine>
+                      <Trans>Total Price of booked items</Trans> ${trip.bookablePrice.toFixed(2)}
+                    </PriceLine>
+                    <Taxes>
+                      * <Trans>taxes and fees are included</Trans>
+                    </Taxes>
+                  </TotalPrice>
+                </TotalPriceWrapper>
+              </Summary>
+            )}
           {step === 3 &&
             expireDate && (
               <Countdown
@@ -552,41 +523,44 @@ class CheckoutContainer extends React.Component {
             )}
           {this.renderStep()}
         </Wrapper>
-        {step < 3 && (
-          <Footer>
-            <Button
-              disabled={this.state.nextDisabled}
-              theme="fillLightGreen"
-              onClick={this.nextStep}
-              size="small"
-              bold
-            >
-              <Trans>Next</Trans>
-            </Button>
-          </Footer>
-        )}
+        {step < 3 &&
+          step > 1 && (
+            <Footer>
+              <Button
+                disabled={this.state.nextDisabled}
+                theme="fillLightGreen"
+                onClick={this.nextStep}
+                size="small"
+                bold
+              >
+                <Trans>Next</Trans>
+              </Button>
+            </Footer>
+          )}
       </React.Fragment>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  trip: state.trips.trip,
-  isLoading: state.trips.isLoading,
+  trip: state.tripDesigner.trip.data,
+  isLoading: state.tripDesigner.trip.isLoading,
   session: state.session.session,
   isGDPRDismissed: state.settings.gdprDismissed,
   gdprHeight: state.settings.gdprHeight,
-  availability: state.trips.availability.data,
-  isCheckingAvailability: state.trips.availability.isChecking,
+  availability: state.tripDesigner.availabilities.data,
+  isCheckingAvailability: state.tripDesigner.availabilities.isLoading,
+  services: state.entities.services,
+  inDayServices: state.entities.inDayServices,
+  selectedOptions: state.entities.selectedOptions,
 });
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       ...actions,
-      fetchTrip: tripActions.fetchTrip,
-      checkAvailability: tripActions.checkAvailability,
       changeHeader: headerActions.changeHeader,
+      selectOption: tripDesignerActions.selectOption,
     },
     dispatch,
   );

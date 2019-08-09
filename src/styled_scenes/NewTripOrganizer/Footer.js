@@ -16,57 +16,6 @@ import { Trans } from '@lingui/macro';
 
 const bottomOffset = 245;
 
-const Placeholder = styled.div`
-  height: 70px;
-`;
-
-const Wrapper = styled.div`
-  position: ${props => props.position};
-  bottom: 0;
-  left: 0;
-  margin: auto;
-  height: 70px;
-  z-index: 5;
-  width: 100%;
-  background-color: white;
-  border-top: 1px solid rgba(0, 0, 0, 0.2);
-  padding: 25px 10px;
-  display: flex;
-  align-items: center;
-  > *:not(:first-child) {
-    margin-left: 20px;
-  }
-  ${media.minSmall} {
-    padding: 25px 40px;
-  }
-`;
-
-const TotalPriceText = styled(PSmall)`
-  display: none;
-  ${media.minSmall} {
-    display: inline-block;
-  }
-`;
-
-const Price = styled.div`
-  font-weight: bold;
-  font-size: 16px;
-  color: ${textDark};
-  display: flex;
-  align-items: center;
-  > p:first-child {
-    margin-right: 10px;
-  }
-`;
-
-const SaveText = styled(P)`
-  color: ${textDisabled};
-  display: none;
-  ${media.minSmall} {
-    display: inline-block;
-  }
-`;
-
 const CheckingAvailability = styled.div`
   width: auto;
   text-align: center;
@@ -74,8 +23,8 @@ const CheckingAvailability = styled.div`
   color: ${textDark};
   padding: 10px;
   right: 20px;
-  bottom: 94px;
-  position: absolute;
+  bottom: 25px;
+  position: fixed;
   margin-left: auto !important;
   margin-right: auto;
   background-color: #65afbb4c;
@@ -99,8 +48,8 @@ const UndoServiceDeletion = styled.div`
   padding: 10px;
   left: 50%;
   transform: translateX(-50%) scaleX(${props => (props.show ? 1 : 0)});
-  bottom: ${props => (props.show ? '94px' : '-10px')};
-  position: absolute;
+  bottom: ${props => (props.show ? '25px' : '-10px')};
+  position: fixed;
   background-color: #65afbb;
   border-bottom: 0;
   border-radius: 5px;

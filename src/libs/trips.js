@@ -117,6 +117,14 @@ export const secondsToHoursAndMinutes = seconds => {
   };
 };
 
+export const calculateCancellationReturn = (policy, price) => {
+  if (policy.refundType === 'percent') {
+    return ((price * policy.refundAmount) / 100).toFixed(2);
+  }
+
+  return policy.refundAmount.toFixed(2);
+};
+
 export const calculateCancellationCharge = (policy, price) => {
   if (policy.refundType === 'percent') {
     return price - ((price * policy.refundAmount) / 100).toFixed(2);

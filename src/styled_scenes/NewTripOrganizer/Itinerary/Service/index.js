@@ -16,24 +16,18 @@ import {
   textDark,
   primaryHover,
   error,
-  activity,
-  food,
-  accommodation,
   backgroundDark,
   backgroundLight,
   tertiary,
 } from 'libs/colors';
 import Drag from 'shared_components/icons/Drag';
 import Stars from 'shared_components/Rating/Stars';
-import ServiceOptions from './Options';
 import ServiceSettings from './Settings';
 import { TripContext } from '../../';
 import { getImageUrlFromMedia } from 'libs/media';
 import Settings from 'shared_components/icons/Settings';
-import Activity from 'shared_components/icons/RunningPerson';
-import Food from 'shared_components/icons/SilverWare';
-import Accommodation from 'shared_components/icons/Bed';
 import ArrowIcon from 'shared_components/icons/UpArrow';
+import ServiceIcon from 'shared_components/ServiceIcon';
 
 // i18n
 import { Trans } from '@lingui/macro';
@@ -287,17 +281,6 @@ function getPriceText(type, numberOfPeople) {
   return <Trans>for {numberOfPeople} people</Trans>;
 }
 
-const ServiceIcon = ({ type }) => {
-  if (type === 'food') {
-    return <Food style={{ color: food }} />;
-  }
-  if (type === 'accommodation') {
-    return <Accommodation style={{ color: accommodation }} />;
-  }
-
-  return <Activity style={{ color: activity }} />;
-};
-
 const Service = ({
   data,
   index,
@@ -306,7 +289,6 @@ const Service = ({
   connectDragPreview,
   isDragging,
   connectDropTarget,
-  selectOption,
   servicesByDay,
   selectedOptions,
   serviceIdByDay,
@@ -523,13 +505,6 @@ const Service = ({
                   <NotAvailable>
                     <Trans>Not available</Trans>
                   </NotAvailable>
-                )}
-                {options && (
-                  <ServiceOptions
-                    selectOption={selectOption}
-                    options={options}
-                    serviceData={data}
-                  />
                 )}
               </>
             )}

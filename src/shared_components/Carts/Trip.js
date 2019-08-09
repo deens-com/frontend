@@ -16,7 +16,6 @@ import searchActions from 'store/search/actions';
 import CssOnlyTruncate from 'shared_components/CssOnlyTruncate';
 import Pencil from 'shared_components/icons/PencilIcon';
 import Star from 'shared_components/icons/Star';
-import CartSpeed from 'shared_components/icons/CartSpeed';
 
 // COMPONENTS
 import Thumb from './components/Thumb';
@@ -40,6 +39,7 @@ import Rating from 'shared_components/Rating';
 import Camera from 'shared_components/icons/Camera';
 import InlineInput from 'shared_components/InlineInput';
 import TagSelector from 'shared_components/TagSelector';
+import FastBooking from 'shared_components/FastBooking';
 
 // i18n
 import { I18n } from '@lingui/react';
@@ -352,22 +352,7 @@ class TripCart extends Component {
     return (
       <AboveTitle>
         {owner && owner.level === 'pro' && <AuthorPro>PRO</AuthorPro>}
-        {this.isFastBookable() && (
-          <BookableTag>
-            <CartSpeed
-              style={{
-                color: colors.tertiary,
-                display: 'inline-block',
-                width: 12,
-                height: 12,
-                verticalAlign: 'middle',
-              }}
-            />
-            <span style={{ verticalAlign: 'middle', marginLeft: '5px' }}>
-              <Trans>fast booking</Trans>
-            </span>
-          </BookableTag>
-        )}
+        {this.isFastBookable() && <FastBooking />}
       </AboveTitle>
     );
   }
