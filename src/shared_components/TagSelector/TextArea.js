@@ -2,11 +2,11 @@ import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { textLight, primary, primaryDisabled } from 'libs/colors';
 
-function search(items, text) {
+function search(items, text, valueKey) {
   const lowercaseText = text.toLowerCase();
   return items.filter(function(item) {
     return lowercaseText.split(' ').every(function(el) {
-      return item.value.indexOf(el) > -1;
+      return item[valueKey].indexOf(el) > -1;
     });
   });
 }
@@ -80,9 +80,9 @@ export default ({
       if (suggestedTags.length === 0 || !textareaRef.current.value) {
         return;
       }
-      setSearchResults(search(suggestedTags, textareaRef.current.value));
+      setSearchResults(search(suggestedTags, textareaRef.current.value, valueKey));
     },
-    [suggestedTags, textareaRef],
+    [suggestedTags, textareaRef, valueKey],
   );
 
   useEffect(
@@ -117,7 +117,7 @@ export default ({
       setSearchResults([]);
       return;
     }
-    setSearchResults(search(suggestedTags, e.currentTarget.value));
+    setSearchResults(search(suggestedTags, e.currentTarget.value, valueKey));
     setIsShowing(true);
   };
 
