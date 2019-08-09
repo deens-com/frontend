@@ -337,7 +337,7 @@ export const modifyCustomService = (serviceId, data) => async (dispatch, getStat
   return apiClient.services.patch(serviceId, data);
 };
 
-export const markAsBooked = (serviceOrgId, status) => async (dispatch, getState) => {
+export const markAsBooked = (serviceId, serviceOrgId, status) => async (dispatch, getState) => {
   const trip = getState().tripDesigner.trip.data;
   dispatch({
     type: types.MARK_AS_BOOKED,
@@ -348,6 +348,6 @@ export const markAsBooked = (serviceOrgId, status) => async (dispatch, getState)
   });
 
   return status
-    ? apiClient.trips.services.book.post(trip._id, serviceOrgId)
-    : apiClient.trips.services.unbook.post(trip._id, serviceOrgId);
+    ? apiClient.trips.services.book.post(trip._id, serviceId)
+    : apiClient.trips.services.unbook.post(trip._id, serviceId);
 };

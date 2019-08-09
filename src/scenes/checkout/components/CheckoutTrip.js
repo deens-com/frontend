@@ -15,12 +15,12 @@ import FastBooking from 'shared_components/FastBooking';
 import ServiceIcon from 'shared_components/ServiceIcon';
 import ServiceOptions from 'shared_components/ServiceOptions';
 import { Checkbox } from 'semantic-ui-react';
-import Note from 'shared_components/icons/Note';
 
 // i18n
 import { Trans } from '@lingui/macro';
 import { backgroundDark, tertiary } from 'libs/colors';
 import Button from 'shared_components/Button';
+import Note from './Note';
 
 const Day = styled.div`
   color: #3c434b;
@@ -75,6 +75,11 @@ const Row = styled.div`
   min-height: 40px;
   border: 1px solid ${backgroundDark};
   margin-bottom: 15px;
+  ${media.minMedium} {
+    border: 0;
+    border-bottom: 1px solid ${backgroundDark};
+    margin-bottom: 0;
+  }
 `;
 
 const Type = styled.div`
@@ -400,21 +405,20 @@ export class CheckoutTrip extends React.Component {
     );
   };
 
-  renderStatusCheckbox = serviceOrgId => {
+  renderStatusCheckbox = (serviceOrgId, serviceId) => {
     const { inDayServices } = this.props;
     return (
       <Checkbox
         checked={Boolean(inDayServices[serviceOrgId].externallyBooked)}
         onChange={e => {
-          this.props.markAsBooked(serviceOrgId, !inDayServices[serviceOrgId].externallyBooked);
+          this.props.markAsBooked(
+            serviceId,
+            serviceOrgId,
+            !inDayServices[serviceOrgId].externallyBooked,
+          );
         }}
       />
     );
-  };
-
-  renderNoteContent = serviceOrgId => {
-    const { inDayServices } = this.props;
-    return <div>{inDayServices[serviceOrgId].notes['en'] || ''}</div>;
   };
 
   render() {
@@ -639,16 +643,10 @@ export class CheckoutTrip extends React.Component {
                     )}
                   </BookingInfo>
                   <Status>
-                    <Trans>{this.renderStatusCheckbox(serv.serviceOrgId)}</Trans>
+                    <Trans>{this.renderStatusCheckbox(serv.serviceOrgId, serv.service)}</Trans>
                   </Status>
                   <Notes>
-                    <Trans>
-                      <Popup
-                        trigger={<Note />}
-                        on="click"
-                        content={this.renderNoteContent(serv.serviceOrgId)}
-                      />
-                    </Trans>
+                    <Note serviceOrg={inDayServices[serv.serviceOrgId]} />
                   </Notes>
                   <LeftColumn>
                     <div style={{ fontSize: 20, marginBottom: 10 }}>
@@ -665,7 +663,7 @@ export class CheckoutTrip extends React.Component {
                         serv.lastDay,
                       )}
                     </div>
-                    {this.renderStatusCheckbox(serv.serviceOrgId)}
+                    {this.renderStatusCheckbox(serv.serviceOrgId, serv.service)}
                   </RightColumn>
                 </Row>
                 <BorderLine />
