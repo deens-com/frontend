@@ -10,6 +10,10 @@ import {
   removeFavoriteTrip as removeFavoriteTripLocally,
   getFavoriteTrips as getFavoriteTripsLocally,
   clearFavoriteTrips as clearLocalFavoriteTrips,
+  addFavoriteService as addFavoriteServiceLocally,
+  removeFavoriteService as removeFavoriteServiceLocally,
+  getFavoriteServices as getFavoriteServicesLocally,
+  clearFavoriteServices as clearLocalFavoriteServices,
 } from 'libs/localStorage';
 import { saveSession, getSession, removeSession } from 'libs/user-session';
 
@@ -30,6 +34,9 @@ export const types = {
   ADD_FAVORITE_TRIP: 'ADD_FAVORITE_TRIP',
   REMOVE_FAVORITE_TRIP: 'REMOVE_FAVORITE_TRIP',
   LOADED_FAVORITE_TRIPS: 'LOADED_FAVORITE_TRIPS',
+  ADD_FAVORITE_SERVICE: 'ADD_FAVORITE_SERVICE',
+  REMOVE_FAVORITE_SERVICE: 'REMOVE_FAVORITE_SERVICE',
+  LOADED_FAVORITE_SERVICES: 'LOADED_FAVORITE_SERVICES',
   MODIFY_USER: 'MODIFY_USER',
   IS_LOADING: 'IS_LOADING',
 };
@@ -99,40 +106,47 @@ export const changeCurrentUserTrip = trip => async dispatch => {
   dispatch({ type: types.LOADED_LATEST_TRIP, payload: trip });
 };
 
-export const getFavoriteTrips = () => async (dispatch, getState) => {
+export const getFavorites = type => async (dispatch, getState) => {
   const sessionData = getState().session.session;
+  const apiEndpoint =
+    type === 'trip'
+      ? apiClient.users.username.trips.hearts.get
+      : apiClient.users.username.services.hearts.get;
+  const apiEndpointToAdd =
+    type === 'trip' ? apiClient.trips.heart.post : apiClient.services.heart.post;
+  const actionType = type === 'trip' ? types.LOADED_FAVORITE_TRIPS : types.LOADED_FAVORITE_SERVICES;
+  const clearLocal = type === 'trip' ? clearLocalFavoriteTrips : clearLocalFavoriteServices;
 
-  const savedFavoriteTrips = getFavoriteTripsLocally() || {};
+  const savedFavorites =
+    (type === 'trip' ? getFavoriteTripsLocally() : getFavoriteServicesLocally()) || {};
   try {
     if (!sessionData.username) {
       return;
     }
-    const response = (await apiClient.users.username.hearts.get(
-      {},
-      { username: sessionData.username },
-    )).data;
+    const response = (await apiEndpoint({}, { username: sessionData.username })).data;
+
     const trips = response.reduce(
       (obj, id) => ({
         ...obj,
         [id]: true,
       }),
-      savedFavoriteTrips,
+      savedFavorites,
     );
     dispatch({
-      type: types.LOADED_FAVORITE_TRIPS,
+      type: actionType,
       payload: trips,
     });
-    Object.keys(savedFavoriteTrips)
-      .filter(id => savedFavoriteTrips[id])
-      .forEach(apiClient.trips.heart.post);
+    Object.keys(savedFavorites)
+      .filter(id => savedFavorites[id])
+      .forEach(apiEndpointToAdd);
 
     if (sessionData.username) {
-      clearLocalFavoriteTrips();
+      clearLocal();
     }
   } catch (e) {
     dispatch({
-      type: types.LOADED_FAVORITE_TRIPS,
-      payload: savedFavoriteTrips,
+      type: actionType,
+      payload: savedFavorites,
     });
   }
 };
@@ -277,7 +291,7 @@ export const loginRequest = (email, password, { from, action }) => {
           const userObject = fetch_helpers.buildUserJson(userData);
           dispatch(sessionsFetched({ session: userObject }));
           saveSession(userData);
-          getFavoriteTrips();
+          getFavorites();
           dispatch(getCurrentUserTrip());
           redirect(from, action);
         }
@@ -293,31 +307,31 @@ export const loginRequest = (email, password, { from, action }) => {
   };
 };
 
-export const addFavoriteTrip = id => {
+export const addFavorite = (id, type) => {
   return async (dispatch, getState) => {
     dispatch({
-      type: types.ADD_FAVORITE_TRIP,
+      type: type === 'trip' ? types.ADD_FAVORITE_TRIP : types.ADD_FAVORITE_SERVICE,
       payload: id,
     });
     if (!getState().session.session.username) {
-      addFavoriteTripLocally(id);
+      type === 'trip' ? addFavoriteTripLocally(id) : addFavoriteServiceLocally(id);
       return;
     }
-    apiClient.trips.heart.post(id);
+    type === 'trip' ? apiClient.trips.heart.post(id) : apiClient.services.heart.post(id);
   };
 };
 
-export const removeFavoriteTrip = id => {
+export const removeFavorite = (id, type) => {
   return async (dispatch, getState) => {
     dispatch({
-      type: types.REMOVE_FAVORITE_TRIP,
+      type: type === 'trip' ? types.REMOVE_FAVORITE_TRIP : types.REMOVE_FAVORITE_SERVICE,
       payload: id,
     });
     if (!getState().session.session.username) {
-      removeFavoriteTripLocally(id);
+      type === 'trip' ? removeFavoriteTripLocally(id) : removeFavoriteServiceLocally(id);
       return;
     }
-    apiClient.trips.heart.delete(id);
+    type === 'trip' ? apiClient.trips.heart.delete(id) : apiClient.services.heart.delete(id);
   };
 };
 

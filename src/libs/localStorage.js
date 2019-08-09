@@ -2,6 +2,7 @@ import { env } from 'libs/config';
 
 const tripKey = `deens-${env}-anonymous-trip`;
 const favoriteTripsKey = `deens-${env}-favorite-trips`;
+const favoriteServicesKey = `deens-${env}-favorite-services`;
 const lastSearchKey = `deens-${env}-last-search-params`;
 
 if (!('localStorage' in window)) {
@@ -21,20 +22,6 @@ if (!('localStorage' in window)) {
       return (this._data = {});
     },
   };
-}
-
-function removeUselessFields(trip) {
-  // this could be removed in the future
-  // it's for already saved trips to not break the app
-  delete trip._id;
-  delete trip.owner;
-  delete trip.bookingStatus;
-  delete trip.privacy;
-  delete trip.status;
-  delete trip.reviewCount;
-  delete trip.ratings;
-  delete trip.forkedBookingCounts;
-  delete trip.tags;
 }
 
 export function saveTrip(trip) {
@@ -65,41 +52,77 @@ export function isTripSaved() {
   return Boolean(trip && trip.services && trip.services.length > 0);
 }
 
-export function addFavoriteTrip(id) {
-  const savedTrips = localStorage.getItem(favoriteTripsKey);
-  if (savedTrips) {
+function addFavorite(id, type) {
+  const favKey = type === 'trip' ? favoriteTripsKey : favoriteServicesKey;
+  const savedElems = localStorage.getItem(favKey);
+  if (savedElems) {
     localStorage.setItem(
-      favoriteTripsKey,
+      favKey,
       JSON.stringify({
-        ...JSON.parse(savedTrips),
+        ...JSON.parse(savedElems),
         [id]: true,
       }),
     );
     return;
   }
-  localStorage.setItem(favoriteTripsKey, JSON.stringify({ [id]: true }));
+  localStorage.setItem(favKey, JSON.stringify({ [id]: true }));
 }
 
-export function removeFavoriteTrip(id) {
-  const savedTrips = localStorage.getItem(favoriteTripsKey);
-  if (!savedTrips) {
+export function addFavoriteTrip(id) {
+  addFavorite(id, 'trip');
+}
+
+export function addFavoriteService(id) {
+  addFavorite(id, 'service');
+}
+
+function removeFavorite(id, type) {
+  const favKey = type === 'trip' ? favoriteTripsKey : favoriteServicesKey;
+  const savedElems = localStorage.getItem(favKey);
+  if (!savedElems) {
     return;
   }
   localStorage.setItem(
-    favoriteTripsKey,
+    favKey,
     JSON.stringify({
-      ...JSON.parse(savedTrips),
+      ...JSON.parse(savedElems),
       [id]: false,
     }),
   );
 }
 
+export function removeFavoriteTrip(id) {
+  removeFavorite(id, 'trip');
+}
+
+export function removeFavoriteService(id) {
+  removeFavorite(id, 'service');
+}
+
+function getFavorites(type) {
+  const favKey = type === 'trip' ? favoriteTripsKey : favoriteServicesKey;
+  return JSON.parse(localStorage.getItem(favKey));
+}
+
 export function getFavoriteTrips() {
-  return JSON.parse(localStorage.getItem(favoriteTripsKey));
+  getFavorites('trip');
+}
+
+export function getFavoriteServices() {
+  getFavorites('service');
+}
+
+function clearFavorites(type) {
+  const favKey = type === 'trip' ? favoriteTripsKey : favoriteServicesKey;
+  localStorage.removeItem(favKey);
 }
 
 export function clearFavoriteTrips() {
-  localStorage.removeItem(favoriteTripsKey);
+  clearFavorites('trip');
+}
+
+export function clearFavoriteServices() {
+  clearFavorites('services');
 }
 
 export function setLastSearchParams(params) {

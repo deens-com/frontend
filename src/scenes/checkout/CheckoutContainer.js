@@ -219,9 +219,14 @@ class CheckoutContainer extends React.Component {
 
   componentDidMount() {
     this.props.cleanPaymentStatus();
+    this.checkForErrors();
   }
 
   componentDidUpdate() {
+    this.checkForErrors();
+  }
+
+  checkForErrors = () => {
     if (this.props.trip && !this.state.errorMsg) {
       if (this.props.trip && this.props.trip.owner !== this.props.session._id) {
         if (this.props.trip.privacy === PRIVACY_PUBLIC) {
@@ -284,7 +289,7 @@ class CheckoutContainer extends React.Component {
         }
       }
     }
-  }
+  };
 
   goToTripOrganizer = () => {
     history.replace(urls.trip.organize(this.tripId));

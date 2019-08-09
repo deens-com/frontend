@@ -11,7 +11,7 @@ import {
 } from 'libs/Utils';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { addFavoriteTrip, removeFavoriteTrip } from 'store/session/actions';
+import { addFavorite, removeFavorite } from 'store/session/actions';
 import searchActions from 'store/search/actions';
 import CssOnlyTruncate from 'shared_components/CssOnlyTruncate';
 import Pencil from 'shared_components/icons/PencilIcon';
@@ -312,16 +312,16 @@ class TripCart extends Component {
     if (this.props.editMode) {
       return;
     }
-    //event.stopPropagation();
+    const favType = this.props.type === 'trip' ? 'trip' : 'service';
     const tripId = this.props.item._id;
-    if (this.props.favoriteTrips[tripId]) {
-      this.props.removeFavoriteTrip(tripId);
+    if (this.props.favorites[tripId]) {
+      this.props.removeFavorite(tripId, favType);
       this.setState(prevState => ({
         sumToHearts: prevState.sumToHearts - 1,
       }));
       return;
     }
-    this.props.addFavoriteTrip(tripId);
+    this.props.addFavorite(tripId, favType);
     this.setState(prevState => ({
       sumToHearts: prevState.sumToHearts + 1,
     }));
@@ -408,7 +408,7 @@ class TripCart extends Component {
 
   renderThumb() {
     const { isPlaceholder, editMode, type } = this.props;
-    const isFavorite = isPlaceholder ? false : this.props.favoriteTrips[this.props.item._id];
+    const isFavorite = isPlaceholder ? false : this.props.favorites[this.props.item._id];
 
     return (
       <Thumb
@@ -416,29 +416,26 @@ class TripCart extends Component {
         url={isPlaceholder ? '' : getTripImage(this.props.item)}
         withTooltip={this.props.withTooltip}
       >
-        {type === 'trip' && (
-          <>
-            <HeartWrapper editMode={editMode} filled={isFavorite}>
-              <Heart style={{ height: '24px', width: '21px' }} onClick={this.toggleFavorite} />
-            </HeartWrapper>
-            {editMode && (
-              <>
-                <label htmlFor="cover-image">
-                  <AddImage>
-                    <Camera style={{ height: '1.3em', width: '1.3em', color: 'white' }} />
-                  </AddImage>
-                </label>
-                <input
-                  id="cover-image"
-                  accept=".jpg, .jpeg, .png"
-                  type="file"
-                  style={{ display: 'none' }}
-                  onChange={this.props.onFileSelect}
-                />
-              </>
-            )}
-          </>
-        )}
+        <HeartWrapper editMode={editMode} filled={isFavorite}>
+          <Heart style={{ height: '24px', width: '21px' }} onClick={this.toggleFavorite} />
+        </HeartWrapper>
+        {type === 'trip' &&
+          editMode && (
+            <>
+              <label htmlFor="cover-image">
+                <AddImage>
+                  <Camera style={{ height: '1.3em', width: '1.3em', color: 'white' }} />
+                </AddImage>
+              </label>
+              <input
+                id="cover-image"
+                accept=".jpg, .jpeg, .png"
+                type="file"
+                style={{ display: 'none' }}
+                onChange={this.props.onFileSelect}
+              />
+            </>
+          )}
         {this.renderTitle()}
       </Thumb>
     );
@@ -668,9 +665,10 @@ class TripCart extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, ownProps) => {
   return {
-    favoriteTrips: state.session.favoriteTrips,
+    favorites:
+      ownProps.type === 'trip' ? state.session.favoriteTrips : state.session.favoriteServices,
     tagsEntities: state.entities.tags,
   };
 };
@@ -678,8 +676,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      addFavoriteTrip,
-      removeFavoriteTrip,
+      addFavorite,
+      removeFavorite,
       updateSearchParams: searchActions.updateSearchParams,
     },
     dispatch,

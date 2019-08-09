@@ -106,6 +106,10 @@ export default {
     reviews: {
       get: (params, { serviceId }) => get(`/reviews/services/${serviceId}`)(params),
     },
+    heart: {
+      post: id => post(`/hearts/services/${id}`)(),
+      delete: id => deleteEndpoint(`/hearts/services/${id}`)(),
+    },
     import: {
       find: {
         post: body => post('/services/import/find')(body),
@@ -130,9 +134,14 @@ export default {
       },
       trips: {
         get: (params, { username }) => get(`/users/username/${username}/trips`)(params),
+        hearts: {
+          get: (params, { username }) => get(`/hearts/trips/by-username/${username}`)(params),
+        },
       },
-      hearts: {
-        get: (params, { username }) => get(`/hearts/trips/by-username/${username}`)(params),
+      services: {
+        hearts: {
+          get: (params, { username }) => get(`/hearts/services/by-username/${username}`)(params),
+        },
       },
     },
     me: {

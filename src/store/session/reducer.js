@@ -21,6 +21,7 @@ const initialState = {
   isLoading: false,
   latestTrip: null,
   favoriteTrips: {},
+  favoriteServices: {},
 };
 
 export default function session(state = initialState, action = {}) {
@@ -100,6 +101,14 @@ export default function session(state = initialState, action = {}) {
           [action.payload]: true,
         },
       };
+    case sessions_actions.types.ADD_FAVORITE_SERVICE:
+      return {
+        ...state,
+        favoriteServices: {
+          ...state.favoriteServices,
+          [action.payload]: true,
+        },
+      };
     case sessions_actions.types.REMOVE_FAVORITE_TRIP:
       return {
         ...state,
@@ -108,11 +117,27 @@ export default function session(state = initialState, action = {}) {
           [action.payload]: false,
         },
       };
+    case sessions_actions.types.REMOVE_FAVORITE_SERVICE:
+      return {
+        ...state,
+        favoriteServices: {
+          ...state.favoriteServices,
+          [action.payload]: false,
+        },
+      };
     case sessions_actions.types.LOADED_FAVORITE_TRIPS:
       return {
         ...state,
         favoriteTrips: {
           ...state.favoriteTrips,
+          ...action.payload,
+        },
+      };
+    case sessions_actions.types.LOADED_FAVORITE_SERVICES:
+      return {
+        ...state,
+        favoriteServices: {
+          ...state.favoriteServices,
           ...action.payload,
         },
       };

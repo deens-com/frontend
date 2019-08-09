@@ -6,7 +6,7 @@ import store from './store';
 import history from 'main/history';
 import { Router } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import { getCurrentUser, getFavoriteTrips } from 'store/session/actions';
+import { getCurrentUser, getFavorites } from 'store/session/actions';
 import Routes from './router';
 import Skeleton from './skeleton';
 import { createGlobalStyle } from 'styled-components';
@@ -120,7 +120,8 @@ class App extends React.Component {
 
   componentDidMount() {
     getCurrentUser()(store.dispatch, store.getState).then(() => {
-      getFavoriteTrips()(store.dispatch, store.getState);
+      getFavorites('trip')(store.dispatch, store.getState);
+      getFavorites('service')(store.dispatch, store.getState);
     });
     this.checkForReferrerAndSet();
     this.loadLocale();
