@@ -98,8 +98,19 @@ export default function entities(state = initialState, action = {}) {
         inDayServices: {
           ...state.inDayServices,
           [action.payload.id]: {
-            ...state.services[action.payload.id],
+            ...state.inDayServices[action.payload.id],
             externallyBooked: action.payload.status,
+          },
+        },
+      };
+    case tripDesignerActions.types.SET_SERVICE_NOTES:
+      return {
+        ...state,
+        inDayServices: {
+          ...state.inDayServices,
+          [action.payload.serviceOrgId]: {
+            ...state.inDayServices[action.payload.serviceOrgId],
+            notes: action.payload.notes,
           },
         },
       };

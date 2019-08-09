@@ -25,6 +25,7 @@ export const types = {
   ADD_CUSTOM_SERVICE_SUCCESS: 'ADD_CUSTOM_SERVICE_SUCCESS',
   MODIFY_CUSTOM_SERVICE: 'MODIFY_CUSTOM_SERVICE',
   MARK_AS_BOOKED: 'MARK_AS_BOOKED',
+  SET_SERVICE_NOTES: 'SET_SERVICE_NOTES',
 };
 
 const fieldsWithTranslation = {
@@ -113,8 +114,6 @@ export const removeServices = (serviceOrgIds = []) => async (dispatch, getState)
     type: types.REMOVE_SERVICES_SUCCESS,
     payload: normalizedData.entities.trips[trip._id],
   });
-
-  //console.log(response.data)
 };
 
 export const removeService = serviceOrgId => async (dispatch, getState) => {
@@ -350,4 +349,22 @@ export const markAsBooked = (serviceId, serviceOrgId, status) => async (dispatch
   return status
     ? apiClient.trips.services.book.post(trip._id, serviceId)
     : apiClient.trips.services.unbook.post(trip._id, serviceId);
+};
+
+export const setServiceNotes = (note, serviceOrgId) => async (dispatch, getState) => {
+  const trip = getState().tripDesigner.trip.data;
+  const noteWithLang = {
+    en: note,
+  };
+
+  const payload = {
+    serviceOrgId,
+    notes: note ? [noteWithLang] : [],
+  };
+  dispatch({
+    type: types.SET_SERVICE_NOTES,
+    payload,
+  });
+
+  return apiClient.trips.serviceOrganizations.notes.post(trip._id, [payload]);
 };

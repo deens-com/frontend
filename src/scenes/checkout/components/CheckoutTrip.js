@@ -192,6 +192,7 @@ const Status = styled.div`
 
 const Notes = styled.div`
   display: none;
+  position: relative;
   ${media.minMedium} {
     width: 50px;
     display: flex;
@@ -646,7 +647,10 @@ export class CheckoutTrip extends React.Component {
                     <Trans>{this.renderStatusCheckbox(serv.serviceOrgId, serv.service)}</Trans>
                   </Status>
                   <Notes>
-                    <Note serviceOrg={inDayServices[serv.serviceOrgId]} />
+                    <Note
+                      setNotes={this.props.setNotes}
+                      serviceOrg={inDayServices[serv.serviceOrgId]}
+                    />
                   </Notes>
                   <LeftColumn>
                     <div style={{ fontSize: 20, marginBottom: 10 }}>

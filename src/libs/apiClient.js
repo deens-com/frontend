@@ -93,6 +93,9 @@ export default {
       availabilityCode: {
         post: (id, body) => post(`/trip-ops/${id}/service-organizations/availability-code`)(body),
       },
+      notes: {
+        post: (id, body) => post(`/trip-ops/${id}/service-organizations/notes`)(body),
+      },
     },
     services: {
       book: {
