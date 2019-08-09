@@ -36,7 +36,7 @@ export const removeServiceRequest = async (id, serviceOrgId) => {
   return apiClient.trips.serviceOrganizations.remove(id, [serviceOrgId]);
 };
 
-export const addServiceToTrip = (tripServices, service, day) => {
+export const addServiceToTrip = (tripServices = [], service, day) => {
   return [
     ...tripServices,
     {

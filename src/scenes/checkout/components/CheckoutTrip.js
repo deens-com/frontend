@@ -116,6 +116,7 @@ const Dates = styled.div`
 const Options = styled.div`
   display: none;
   ${media.minMedium} {
+    display: block;
     width: 200px;
     text-align: center;
   }

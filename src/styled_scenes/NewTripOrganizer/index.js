@@ -187,22 +187,6 @@ class TripOrganizer extends React.Component {
   share = () => {
     history.push(urls.trip.share(this.props.tripId));
   };
-
-  requestAvailability = async () => {
-    const { adults, children, infants } = this.props;
-    const { startDate } = this.props.trip;
-    const bookingDate = moment(startDate).format('YYYY-MM-DD');
-    const peopleCount = adults + infants + children;
-    const data = {
-      bookingDate,
-      adultCount: adults,
-      childrenCount: children,
-      infantCount: infants,
-      peopleCount,
-    };
-
-    return apiClient.trips.availability.get(this.props.tripId, data);
-  };
   // SINGLE ACTIONS
 
   goToSettings = day => {
