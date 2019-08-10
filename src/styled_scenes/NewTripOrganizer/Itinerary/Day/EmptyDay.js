@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import AddServiceBox from './AddServiceBox';
-import DayTitle from './DayTitle';
+import DayTitle from 'shared_components/DayTitle';
 
 const Wrapper = styled.div`
   position: relative;

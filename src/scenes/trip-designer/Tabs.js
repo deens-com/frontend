@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { media } from 'libs/styled';
 import { throttle } from 'lodash';
 import Icon from 'shared_components/icons/Settings';
-import { H4, PXSmall, PStrong } from 'libs/commonStyles';
+import { H6, PXSmall, PStrong } from 'libs/commonStyles';
 import { primary, backgroundDark } from 'libs/colors';
 import { Loader } from 'semantic-ui-react';
 import history from 'main/history';
@@ -50,6 +50,12 @@ const SmallElement = styled(ElementBase)`
   flex-direction: column;
 `;
 
+const SettingsWrapper = styled(SmallElement)`
+  ${media.minSmall} {
+    width: 60px;
+  }
+`;
+
 export default ({ tripId, trip, isLoading, selected }) => {
   const [position, setPosition] = useState('relative');
   useEffect(
@@ -80,29 +86,32 @@ export default ({ tripId, trip, isLoading, selected }) => {
     <>
       {position === 'fixed' && <Placeholder />}
       <Wrapper position={position}>
-        <SmallElement
+        <SettingsWrapper
           onClick={() => history.push(urls.trip.settings(tripId))}
           selected={selected === 'settings'}
         >
           <Icon style={{ width: 20, height: 20 }} />
-        </SmallElement>
+        </SettingsWrapper>
         <Element onClick={() => history.push(urls.trip.organize(tripId))} selected={!selected}>
-          <H4>Plan</H4>
+          <H6>Plan</H6>
         </Element>
         <Element
           onClick={() => history.push(urls.trip.checkout(tripId))}
           selected={selected === 'checkout'}
         >
-          <H4>Book</H4>
+          <H6>Book</H6>
         </Element>
-        {/*<Element onClick={() => history.push(urls.trip.preview(tripId))} selected={selected === 'view'}>
-          <H4>View</H4>
-        </Element>*/}
+        <Element
+          onClick={() => history.push(urls.trip.preview(tripId))}
+          selected={selected === 'preview'}
+        >
+          <H6>View</H6>
+        </Element>
         <Element
           onClick={() => history.push(urls.trip.share(tripId))}
           selected={selected === 'share'}
         >
-          <H4>Share</H4>
+          <H6>Share</H6>
         </Element>
         <SmallElement style={{ background: 'white' }}>
           <PStrong>

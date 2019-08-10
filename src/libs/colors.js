@@ -26,6 +26,8 @@ export const secondaryValid = '#00A566';
 export const disabled = '#C4C4C4';
 export const boxStroke = '#F4F4F4';
 
+export const night = '#414755';
+
 // old
 //export const primaryContrast = '#65AFBB';
 export const secondaryContrast = '#12545F';

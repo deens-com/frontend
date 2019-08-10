@@ -5,11 +5,6 @@ import Popup from 'shared_components/Popup';
 import { P, PSmall } from 'libs/commonStyles';
 import { primary, secondary, primaryHover, backgroundDark, backgroundLight } from 'libs/colors';
 import Settings from 'shared_components/icons/Settings';
-import Walk from 'assets/walk.svg';
-import Bike from 'assets/bike.svg';
-import Car from 'assets/car.svg';
-import Train from 'assets/train.svg';
-import SadFace from 'assets/sad-face.svg';
 import { getKmFromMeters } from 'libs/Utils';
 import { secondsToHoursAndMinutes } from 'libs/trips';
 import { media } from 'libs/styled';
@@ -18,6 +13,7 @@ import CarIcon from 'shared_components/icons/Car';
 import WalkIcon from 'shared_components/icons/Walk';
 import BikeIcon from 'shared_components/icons/Bike';
 import TrainIcon from 'shared_components/icons/Train';
+import { getIconAndTextFromTransport, renderTime } from 'libs/transports';
 
 import { TripContext } from '../';
 
@@ -158,39 +154,6 @@ const TransportSteps = styled.ol`
   }
 `;
 
-function getIconAndText(data) {
-  const notFound = { text: 'Oops! We could not find a route', icon: SadFace };
-
-  if (!data || !data.route) {
-    return notFound;
-  }
-
-  switch (data.route.transportMode) {
-    case 'walking':
-      return { text: 'Walk', icon: Walk };
-    case 'car':
-      return { text: 'Drive your car', icon: Car };
-    case 'bicycle':
-      return { text: 'Ride a bike', icon: Bike };
-    case 'public-transit':
-      return { text: 'Public transport', icon: Train };
-    default:
-      return notFound;
-  }
-}
-
-const renderTime = time => {
-  if (!time) {
-    return null;
-  }
-
-  if (time.hours) {
-    return `${time.hours}h ${time.minutes}mn`;
-  }
-
-  return `${time.minutes}mn`;
-};
-
 const renderSteps = data => {
   if (!data || !data.route || !data.route.steps) {
     return null;
@@ -217,7 +180,7 @@ const Transportation = ({
   const showingTransports = context.showingTransports;
   const [isShowingTooltip, setShowingTooltip] = useState(false);
   const data = currentTransport;
-  const { text, icon } = getIconAndText(data);
+  const { text, icon } = getIconAndTextFromTransport(data);
   const distance = getKmFromMeters(data && data.route && data.route.distanceInMeters);
   const time = secondsToHoursAndMinutes(data && data.route && data.route.baseTimeInSeconds);
   const selected = data && data.route && data.route.transportMode;

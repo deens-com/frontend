@@ -13,7 +13,7 @@ import locationFinishIcon from 'assets/location-finish.svg';
 import Transportation from '../Transportation';
 import LocationEdit from './LocationEdit';
 import AddServiceBox from './AddServiceBox';
-import DayTitle from './DayTitle';
+import DayTitle from 'shared_components/DayTitle';
 import { TripContext } from '../..';
 import { media } from 'libs/styled';
 import I18nText from 'shared_components/I18nText';

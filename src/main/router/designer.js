@@ -11,6 +11,10 @@ const TripDesigner = asyncCommonHOCs(
   React.lazy(() => import(/* webpackChunkName: "trip-designer" */ 'scenes/trip-designer')),
 );
 
+const TripPreview = asyncCommonHOCs(
+  React.lazy(() => import(/* webpackChunkName: "trip-preview" */ 'scenes/trip-preview')),
+);
+
 const TripSettings = asyncCommonHOCs(
   React.lazy(() => import(/* webpackChunkName: "trip-settings" */ 'scenes/trip-settings')),
 );
@@ -45,6 +49,7 @@ export default props => {
         <Route path={`${props.match.path}/:id/checkout/failure`} component={Failure} />
         <Route path={`${props.match.path}/:id/checkout`} component={Checkout} />
         <Route path={`${props.match.path}/:id/settings`} component={TripSettings} />
+        <Route path={`${props.match.path}/:id/preview`} component={TripPreview} />
         <Route path={`${props.match.path}/:id`} component={TripOrganizer} />
       </Switch>
     </>

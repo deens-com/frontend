@@ -213,7 +213,12 @@ const GeneralSettings = ({
             <Trans>Description</Trans>
           </FieldName>
           <FullWidthField style={{ marginTop: 10 }}>
-            <InlineInput useTextarea hideIcon onChanged={onChangeDescription}>
+            <InlineInput
+              placeholder="Please write a description"
+              useTextarea
+              hideIcon
+              onChanged={onChangeDescription}
+            >
               {trip.description}
             </InlineInput>
           </FullWidthField>

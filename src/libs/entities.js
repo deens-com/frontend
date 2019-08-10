@@ -36,7 +36,8 @@ export const tripTransport = new schema.Entity(
   {
     idAttribute: value => {
       return (
-        `${value.toServiceOrgId || value.toServiceOrganizationId}` ||
+        value.toServiceOrgId ||
+        value.toServiceOrganizationId ||
         `last:${value.fromServiceOrgId || value.fromServiceOrganizationId}`
       );
     },
@@ -48,6 +49,7 @@ export const trip = new schema.Entity(
   {
     services: [inDayService],
     tags: [tag],
+    transports: [tripTransport],
   },
   { idAttribute },
 );
