@@ -1,9 +1,10 @@
 import React, { useRef, useEffect, useState } from 'react';
 import Note from 'shared_components/icons/Note';
 import { Popup } from 'semantic-ui-react';
+import I18nText from 'shared_components/I18nText';
 
 export default ({ setNotes, serviceOrg }) => {
-  const note = serviceOrg.notes && serviceOrg.notes[0] && serviceOrg.notes[0]['en'];
+  const note = I18nText.translate(serviceOrg.notes && serviceOrg.notes[0]);
   const [isOpen, setIsOpen] = useState(false);
   const textAreaRef = useRef(null);
   useEffect(() => {
