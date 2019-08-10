@@ -138,7 +138,11 @@ export const removeService = serviceOrgId => async (dispatch, getState) => {
     dispatch({
       type: types.REMOVE_SERVICE_SUCCESS,
       payload: {
-        trip: normalizedData.entities.trips[trip._id],
+        trip: {
+          ...normalizedData.entities.trips[trip._id],
+          // we do this because it behaves weird if you removed many services quickly
+          services: trip.services,
+        },
         removedService: serviceOrgId,
       },
     });

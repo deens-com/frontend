@@ -193,7 +193,12 @@ export default function tripDesigner(state = initialState, action = {}) {
         ...state,
         trip: {
           ...state.trip,
-          data: action.payload.trip,
+          data: {
+            ...action.payload.trip,
+            services: action.payload.trip.services.filter(
+              s => !state.lastRemovedService.find(removed => removed.id === s),
+            ),
+          },
         },
         lastRemovedService: state.lastRemovedService.filter(
           s => s.id !== action.payload.removedService,
