@@ -17,6 +17,7 @@ import Toggle from 'shared_components/ToggleSwitch';
 import people from 'assets/people.svg';
 import Logo from 'shared_components/icons/Logo';
 import calendar from 'assets/calendar.svg';
+import I18nText from 'shared_components/I18nText';
 
 const Wrapper = styled.div`
   position: relative;
@@ -113,8 +114,12 @@ class TripPreview extends Component {
               </Toggle>
               <ImageBackground img={getHeroImageUrlFromMedia(this.props.trip.media)}>
                 <TitleAndDesc>
-                  <Title>{this.props.trip.title}</Title>
-                  <P>{this.props.trip.description}</P>
+                  <Title>
+                    <I18nText data={this.props.trip.title} />
+                  </Title>
+                  <P>
+                    <I18nText data={this.props.trip.description} />
+                  </P>
                 </TitleAndDesc>
               </ImageBackground>
               <TripData>
