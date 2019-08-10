@@ -12,13 +12,14 @@ import Service from './Service';
 import { P, H2 } from 'libs/commonStyles';
 import { backgroundDark, backgroundLight } from 'libs/colors';
 import { googleMapsKey } from 'libs/config';
+import { uniqBy } from 'lodash';
 import Transport from './Transport';
 
 const DayWrapper = styled.div`
   margin-bottom: 25px;
   padding: 10px;
   background: ${backgroundLight};
-  &:nth-child(even) {
+  &:nth-child(odd) {
     background: ${backgroundDark};
   }
 `;
@@ -84,9 +85,29 @@ function mapMediaToDays(media) {
   return result;
 }
 
+function getLabel(num) {
+  // Google Maps only allows A-Z0-9 single chars for labels
+  // https://developers.google.com/maps/documentation/maps-static/dev-guide#Markers
+  if (num > 35) {
+    return '';
+  }
+  if (num < 10) {
+    return num;
+  }
+  // 'A' is 65, and 10 -> A
+  return String.fromCharCode(num + 55);
+}
+
+function parseMarkers(markers) {
+  return markers
+    .map(marker => `markers=color:0x097DA8%7Clabel:${marker.label}%7C${marker.coordinates}`)
+    .join('&');
+}
+
 export default ({ trip, services, inDayServices, transports, showTransports }) => {
   const [days, setDays] = useState([]);
   const [imagesByDay, setImagesByDay] = useState({});
+  const [markers, setMarkers] = useState([]);
   useEffect(
     () => {
       const numberOfDays = minutesToDays(trip.duration);
@@ -101,6 +122,27 @@ export default ({ trip, services, inDayServices, transports, showTransports }) =
     [trip.media],
   );
   let serviceNumber = 0;
+
+  useEffect(
+    () => {
+      const uniqueServices = uniqBy(trip.services, serviceOrg => inDayServices[serviceOrg].service);
+      // order is supposed to be the same that the one we show next to the service
+      // I could not make further checks on this but I'm pretty sure it works
+      setMarkers(
+        uniqueServices.map((serviceOrg, i) => {
+          const service = services[inDayServices[serviceOrg].service];
+          return {
+            label: i + 1,
+            coordinates: `${service.location.geo.coordinates[1]},${
+              service.location.geo.coordinates[0]
+            }`,
+          };
+        }),
+      );
+    },
+    [inDayServices, trip.services, services],
+  );
+
   return (
     <>
       {days.map((day, i) => {
@@ -152,7 +194,7 @@ export default ({ trip, services, inDayServices, transports, showTransports }) =
                         <Service
                           serviceNumber={
                             getFirstCategoryLowerCase(services[service.service].categories) !==
-                              'accommodation' && ++serviceNumber
+                              'accommodation' && getLabel(++serviceNumber)
                           }
                           serviceOrg={service}
                           services={services}
@@ -181,8 +223,9 @@ export default ({ trip, services, inDayServices, transports, showTransports }) =
         <H2>Itinerary map</H2>
         <img
           alt="Itinerary map"
-          src={`https://maps.googleapis.com/maps/api/staticmap?center=Williamsburg,Brooklyn,NY&zoom=13&size=400x400&
-          markers=color:blue%7Clabel:S%7C11211%7C11206%7C11222&key=${googleMapsKey}`}
+          src={`https://maps.googleapis.com/maps/api/staticmap?size=575x500&scale=2&${parseMarkers(
+            markers,
+          )}&key=${googleMapsKey}`}
         />
       </div>
     </>
