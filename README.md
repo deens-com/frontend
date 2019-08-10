@@ -29,11 +29,22 @@ $ export REACT_APP_PARSE_SERVER_URL=https://staging-api.deens.com
 $ yarn start
 ```
 
-## :art: Style Guidelines
+## :art: Guidelines
+
+This project have been changing it's structure along it's way. If you are using Redux please look at `/store/trip-designer` as a reference.
+Redux just saves global state. If it's well used it's very useful, but it can be a pain if you use it wrong. So if you don't need it, avoid it.
+
+The entry point of the app is `/main/app.js`.
+
+If you want to create a new route go to `/main/router`. We use to map a route to a component in `/scenes`. You can create your whole component there or (as we did before) link to a component in `/styled_scene`.
+
+Most reusable functions are in `/libs` but you may find some in other files. There's no special reason for that. They should be in `/libs`.
+Reusable components are in `/shared_components`. Be careful when modifying them, as you may break other part of the application.
 
 We use [Prettier](https://github.com/prettier/prettier) to format the code for this repo.
-
 Before committing, please run `yarn prettier-all` to format your code or add Prettier to the `pre-commit` hook to automatically take care of formatting.
+
+Unfortunately, tests are broken. The `/cypress` dir is not useful, but it's there as a reference in case we wanted to make integration tests again.
 
 #### How to add Prettier to pre-commit hook?
 
