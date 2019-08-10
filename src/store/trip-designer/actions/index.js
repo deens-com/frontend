@@ -112,7 +112,14 @@ const checkAvailability = () => async (dispatch, getState) => {
 
     const tripNormalized = normalize(response.data.trip, tripEntity);
     dispatch({ type: types.UPDATE_TRIP_ENTITIES, payload: tripNormalized });
-    dispatch({ type: types.CHECK_AVAILABILITY_SUCCESS, payload: response.data.availabilities });
+
+    dispatch({
+      type: types.CHECK_AVAILABILITY_SUCCESS,
+      payload: {
+        trip: tripNormalized.entities.trips[tripNormalized.result],
+        availabilities: response.data.availabilities,
+      },
+    });
   } catch (e) {
     if (axios.isCancel(e)) {
       return;

@@ -67,7 +67,7 @@ export default function tripDesigner(state = initialState, action = {}) {
         availabilities: {
           isLoading: false,
           error: null,
-          data: action.payload.reduce(
+          data: action.payload.availabilities.reduce(
             (prev, current) => ({
               ...prev,
               [current.serviceOrganizationId]: current,

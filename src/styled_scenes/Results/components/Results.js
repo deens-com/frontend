@@ -59,7 +59,7 @@ function getDays(type, day, tripDate, duration, start, end) {
   }
 
   if (endDate.isSameOrBefore(tripEndDate)) {
-    endDay = endDate.diff(tripStartDate, 'days') + 1;
+    endDay = endDate.diff(tripStartDate, 'days');
   } else {
     endDay = numberOfDays;
   }
@@ -349,10 +349,8 @@ class Results extends Component {
                   has been added to days {this.state.addedToTrip.days.join(', ')} of your trip
                 </Trans>
               ) : (
-                <Trans>
-                  has been added to day {this.state.addedToTrip.days.length} of your trip
-                </Trans>
-              )}
+                <Trans>has been added to day {this.state.addedToTrip.days[0]} of your trip</Trans>
+              )}{' '}
               <Link to={urls.trip.organize(this.state.addedToTrip.trip._id)}>
                 <I18nText data={this.state.addedToTrip.trip.title} />
               </Link>
