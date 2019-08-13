@@ -10,6 +10,7 @@ import { parseLocationData } from 'libs/location';
 import SingleImageUploader from './components/SingleImageUploader';
 import TagSelector from 'shared_components/TagSelector';
 import InlineInput from 'shared_components/InlineInput';
+import I18nText from 'shared_components/I18nText';
 import { parseTags } from 'libs/fetch_helpers';
 import { error, backgroundDark, primary } from 'libs/colors';
 
@@ -118,7 +119,7 @@ const GeneralSettings = ({
             <Input
               onBlur={updateTitle}
               wrapperStyle={{ marginTop: '10px' }}
-              defaultValue={trip.title}
+              defaultValue={I18nText.translate(trip.title)}
             />
           </Field>
         </Label>
@@ -219,7 +220,7 @@ const GeneralSettings = ({
               hideIcon
               onChanged={onChangeDescription}
             >
-              {trip.description}
+              {I18nText.translate(trip.description)}
             </InlineInput>
           </FullWidthField>
         </Label>
