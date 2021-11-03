@@ -73,7 +73,7 @@
     "slick-carousel": "^1.8.1",
     "styled-components": "^4.2.0",
     "url-search-params-polyfill": "^5.0.0",
-    "validator": "^9.4.1"
+    "validator": "^13.7.0"
   },
   "scripts": {
     "start": "cross-env HTTPS=true rescripts start",
